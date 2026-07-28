@@ -124,7 +124,7 @@ export default function Planner() {
     'Which features may be important to your business?',
     'When would you ideally like to begin?',
     'Would you like a recommendation?',
-    'Where should I send your plan?',
+    'Where should I send your plan and demo?',
   ];
 
   if (done && sent) return <Result a={a} plan={plan} onRestart={restart} headingRef={headingRef} />;
@@ -300,8 +300,9 @@ function ContactStep({ a, set, errors, onSubmit, sending }) {
   return (
     <div className="pl__contact">
       <p className="pl__hint pl__hint--top">
-        Your plan appears on the next screen either way — nothing is held back.
-        These details are only so I can send it to you and follow up.
+        Your plan appears on the next screen either way — nothing is held back. These details
+        are so I can send it to you and design your free homepage demo. No cost, and no
+        obligation once you have seen it.
       </p>
 
       <div className="pl__cgrid">
@@ -414,6 +415,14 @@ function Result({ a, plan, onRestart, headingRef }) {
         )}
 
         <section className="pl__block">
+          <h4>Next step <span className="pl__count">{meta.cta}</span></h4>
+          <p>
+            The free demo turns this plan into a designed homepage for your business — your
+            services, your work, your words. It costs nothing and obligates nothing.
+          </p>
+        </section>
+
+        <section className="pl__block">
           <h4>Rough timeline</h4>
           <p>
             <strong>{plan.time.low}–{plan.time.high} weeks</strong> — an estimate, not a commitment.
@@ -427,16 +436,17 @@ function Result({ a, plan, onRestart, headingRef }) {
         </div>
 
         <div className="pl__exits">
-          <a className="btn btn--primary" href="mailto:jp@jpwebdesign.com?subject=My%20website%20plan">
-            {meta.cta}
+          <a className="btn btn--primary" href={`mailto:jp@jpwebdesign.com?subject=${encodeURIComponent('Free demo request — ' + (a.company || a.name || 'my business'))}`}>
+            Get my free demo
           </a>
-          <a className="btn btn--ghost" href="/contact">Book a 20-minute review</a>
+          <a className="btn btn--ghost" href="/contact">Book a free consultation</a>
           <button type="button" className="pl__restart" onClick={onRestart}>Start over</button>
         </div>
 
         <p className="pl__sent">
-          Thanks{a.name ? `, ${a.name.split(' ')[0]}` : ''} — I’ll reply within one business day.
-          If I don’t, email me and say so.
+          Thanks{a.name ? `, ${a.name.split(' ')[0]}` : ''} — I’ll reply within one business day,
+          and your free homepage demo usually follows within 3–5 business days. Nothing is owed
+          either way. If I don’t reply, email me and say so.
         </p>
       </div>
 

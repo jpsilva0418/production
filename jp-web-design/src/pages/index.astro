@@ -37,6 +37,10 @@ const process = [
 ];
 
 const faqs = [
+  { q: 'Is the free demo actually free?',
+    a: 'Yes, and there is no catch attached to it. You answer the planner questions, I design a homepage concept for your business, and you look at it. If you do not want to go further, that is the end of it — no invoice, no follow-up sequence, no hard feelings. I do it because I am a new studio and showing you real work on your own business is more convincing than any portfolio I could point you at.' },
+  { q: 'What happens on the free consultation?',
+    a: 'About twenty minutes. I look at your current site beforehand so the call is spent on your business rather than on me asking basic questions. You get straight answers on scope, timeline and what a project would involve. There are no slides and no proposal ambush, and if a cheaper option is genuinely the right call for you, I will say so.' },
   { q: 'How much does a website cost?',
     a: 'It depends on the number of pages, the features, how much content exists already, and the timeline — which is why I quote after a short conversation rather than publishing a number that would be wrong for most people. The planner above will tell you which package fits before we ever speak.' },
   { q: 'How long does a project take?',
@@ -93,11 +97,12 @@ const faqSchema = {
           actually choose.
         </p>
         <div class="btn-row hero__cta">
-          <a class="btn btn--primary" href="#planner">Start Your Project</a>
-          <a class="btn btn--ghost" href="#packages">Explore Website Options</a>
+          <a class="btn btn--primary" href="#offer">Get a Free Demo</a>
+          <a class="btn btn--ghost" href="#offer">Book a Free Consultation</a>
         </div>
         <p class="small hero__note">
-          Founder-led by JP Silva. One project at a time — fixed scope, fixed launch date.
+          Both are free and carry no obligation. Founder-led by JP Silva —
+          one project at a time, fixed scope, fixed launch date.
         </p>
       </div>
 
@@ -112,6 +117,66 @@ const faqSchema = {
           <div class="viz__row viz__row--split"><i></i><i></i><i></i></div>
           <span class="viz__cap">Structure first. Everything else follows.</span>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 02b · THE OFFER ═════════════════════════════════════════════════
+       Sits directly under the hero because it is now the primary conversion.
+       "Free demo" without a definition reads as a gimmick, so both offers
+       state what you get, what it costs you, and where it stops. The demo
+       routes through the planner: the eight questions qualify the request
+       before a day of design gets spent on it. The consultation is cheap to
+       give, so it is directly bookable. ══════════════════════════════════ -->
+  <section class="section offer" id="offer" aria-labelledby="t-offer">
+    <div class="container">
+      <p class="mark"><b>§00</b> Two ways to start</p>
+      <div class="head">
+        <h2 class="h2" id="t-offer">See the work before you pay for any of it</h2>
+        <p class="lead">
+          You should not have to take a stranger's word for it. Both of these are free,
+          and neither one obligates you to anything afterwards.
+        </p>
+      </div>
+
+      <div class="grid g2 offer__g">
+        <article class="offer__c offer__c--lead">
+          <p class="offer__k">Free demo</p>
+          <h3 class="offer__t">A real design of your homepage, built for your business</h3>
+          <ul class="offer__l">
+            <li>A designed homepage concept using your services, your work, and your words — not a template with your logo dropped in</li>
+            <li>The page structure I would build, and the reasoning behind it</li>
+            <li>Yours to look at with no cost and no commitment</li>
+          </ul>
+          <p class="offer__how">
+            Answer the eight planner questions first. It takes about four minutes and it is
+            what lets me design something specific to you rather than generic.
+          </p>
+          <a class="btn btn--primary btn--wide" href="#planner">Start the free demo</a>
+          <p class="offer__fine">
+            <!-- TODO(launch): confirm a turnaround you can actually hold every time. -->
+            Usually back within 3–5 business days. I take one project at a time, so if I am
+            at capacity I will say so rather than keep you waiting.
+          </p>
+        </article>
+
+        <article class="offer__c">
+          <p class="offer__k">Free consultation</p>
+          <h3 class="offer__t">Twenty minutes on what is actually wrong</h3>
+          <ul class="offer__l">
+            <li>I look at your current site before we speak, so the time goes on your business rather than on discovery</li>
+            <li>Straight answers on scope, timeline and what a project would involve</li>
+            <li>If a cheaper option is genuinely right for you, I will tell you that instead</li>
+          </ul>
+          <p class="offer__how">
+            No slides, no proposal ambush, and no follow-up sequence. If it is not a fit we
+            will both know inside twenty minutes.
+          </p>
+          <a class="btn btn--ghost btn--wide" href="/contact">Book a free consultation</a>
+          <p class="offer__fine">
+            Prefer to type? Email works just as well and reaches me directly.
+          </p>
+        </article>
       </div>
     </div>
   </section>
@@ -194,11 +259,11 @@ const faqSchema = {
     <div class="container">
       <p class="mark"><b>§04</b> Website Project Planner</p>
       <div class="head">
-        <h2 class="h2" id="t-pln">Get a plan for your site in about four minutes</h2>
+        <h2 class="h2" id="t-pln">Eight questions, then your free demo</h2>
         <p class="lead">
-          Eight short questions. You get a page structure, a feature set, search priorities,
-          and a rough timeline — on screen, before you give me anything. No email required
-          to see it.
+          You get a page structure, a feature set, search priorities and a rough timeline on
+          screen straight away — no email required to see any of it. Leave your details at
+          the end and I will turn it into a designed homepage concept, free.
         </p>
       </div>
 
@@ -403,14 +468,15 @@ const faqSchema = {
   <!-- ═══ 12 · FINAL CTA ══════════════════════════════════════════════════ -->
   <section class="section cta" aria-labelledby="t-cta">
     <div class="container cta__in">
-      <h2 class="h2" id="t-cta">Tell me about your business</h2>
+      <h2 class="h2" id="t-cta">Start with the free demo</h2>
       <p class="lead cta__l">
-        The first conversation is about understanding what you do and who you are trying to
-        reach. No pitch, no pressure, and no obligation to go further.
+        See a real design of your homepage before any money changes hands. If you would
+        rather talk it through first, the consultation is free too — and either way there is
+        no obligation at the end of it.
       </p>
       <div class="btn-row cta__b">
-        <a class="btn btn--primary" href="#planner">Get My Website Plan</a>
-        <a class="btn btn--ghost" href="/contact">Or just email me</a>
+        <a class="btn btn--primary" href="#planner">Get a Free Demo</a>
+        <a class="btn btn--ghost" href="/contact">Book a Free Consultation</a>
       </div>
     </div>
   </section>
@@ -513,6 +579,32 @@ const faqSchema = {
   .cta__in { text-align: center; }
   .cta__l { margin: var(--s4) auto 0; }
   .cta__b { justify-content: center; margin-top: var(--s6); }
+
+  /* ---- The offer ---- */
+  .offer { padding-block: clamp(3rem, 6vw, 5rem); border-top: 1px solid var(--rule); }
+  .offer__g { gap: var(--s5); align-items: stretch; }
+  .offer__c {
+    display: flex; flex-direction: column; gap: var(--s3);
+    background: var(--card); border: 1px solid var(--rule);
+    border-radius: 3px; padding: var(--s5); height: 100%;
+  }
+  /* The demo is the primary path, so it carries the weight — border, not scale. */
+  .offer__c--lead { border-color: var(--ink); border-width: 2px; padding: calc(var(--s5) - 1px); }
+  .offer__k {
+    font-family: var(--mono); font-size: var(--fs-label); letter-spacing: .12em;
+    text-transform: uppercase; color: var(--redline);
+  }
+  .offer__t { font-size: 1.1875rem; font-weight: 660; letter-spacing: -.012em; line-height: 1.3; }
+  .offer__l { display: grid; gap: var(--s3); margin-top: var(--s2); font-size: var(--fs-small); }
+  .offer__l li { display: grid; grid-template-columns: 1rem 1fr; gap: var(--s3); align-items: start; }
+  .offer__l li::before { content: '✓'; color: var(--redline); font-size: .875rem; line-height: 1.5; }
+  .offer__how {
+    font-size: var(--fs-small); color: var(--graphite);
+    padding: var(--s3) var(--s4); background: var(--panel);
+    border-left: 2px solid var(--rule-hi); border-radius: 0 3px 3px 0;
+  }
+  .offer__c .btn { margin-top: auto; }
+  .offer__fine { font-size: .8125rem; color: var(--graphite); }
 
   /* ---- Planner supporting copy ---- */
   .pln__meta {
