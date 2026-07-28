@@ -1,0 +1,164 @@
+---
+/* Three tiers exactly as specified. No dollar amounts anywhere — the scope
+   line at the top of each card is what lets a visitor self-select instead.
+   Six features shown per card, chosen because they differentiate, not
+   because they came first; the rest sit in a real <details> so every panel
+   is in the DOM at load for crawlers and screen readers alike. */
+
+const packages = [
+  {
+    id: 'starter',
+    name: 'Starter Website',
+    scope: 'One page · one revision round',
+    desc: 'A focused, professional one-page website for businesses that need a strong and credible online presence.',
+    bestFor: ['New businesses', 'Solo professionals', 'Independent contractors', 'Beauty professionals and small studios'],
+    core: [
+      'One-page custom website, designed not templated',
+      'Professional hero, about, services and contact sections',
+      'Inquiry form, click-to-call and click-to-email',
+      'On-page SEO: title, meta description, heading structure',
+      'Image optimisation and accessibility setup',
+      'Domain connection and launch support',
+    ],
+    more: ['Mobile-responsive across all screen sizes', 'Social media links', 'One revision round'],
+    not: 'Does not include individual service pages, service-area pages, or an SEO content foundation. If your main goal is generating inquiries, look at Business Growth instead.',
+    cta: 'Request Starter Pricing',
+    popular: false,
+  },
+  {
+    id: 'growth',
+    name: 'Business Growth Website',
+    scope: 'Five to eight pages · two revision rounds',
+    desc: 'A strategic multi-page website built to establish trust, explain your services, generate qualified inquiries, and create a stronger SEO foundation.',
+    bestFor: ['Contractors and construction', 'Roofing, HVAC, plumbing, electrical', 'Salons, med spas, fitness studios', 'Established businesses wanting leads'],
+    core: [
+      'Everything in Starter, across five to eight custom pages',
+      'Individual service pages where they earn their place',
+      'Project gallery or portfolio, plus FAQ',
+      'Multiple lead forms and conversion-focused page structure',
+      'Keyword research, titles and metas for every page',
+      'Local SEO foundation, schema, Analytics and Search Console',
+    ],
+    more: ['Internal linking structure', 'Blog or resource section if it is genuinely needed', 'Two revision rounds', 'Post-launch support period'],
+    not: null,
+    cta: 'Request Growth Website Pricing',
+    popular: true,
+  },
+  {
+    id: 'custom',
+    name: 'Custom Website',
+    scope: 'Scoped per project',
+    desc: 'A completely tailored website strategy for businesses with advanced goals, features, content, integrations, or long-term growth plans.',
+    bestFor: ['Growing and multi-location businesses', 'E-commerce', 'Complex or multi-market services', 'Advanced lead qualification'],
+    core: [
+      'Everything in Business Growth, with custom architecture',
+      'Online booking, payments, or full e-commerce',
+      'CRM, email marketing and automation integrations',
+      'Advanced multi-step forms with conditional logic',
+      'Industry landing pages and service-area structure',
+      'Advanced analytics and event tracking',
+    ],
+    more: ['Customer portals and membership functionality', 'Custom interactive tools and calculators', 'Content and blog strategy', 'Priority support and a project-specific revision structure'],
+    not: null,
+    cta: 'Discuss a Custom Project',
+    popular: false,
+  },
+];
+---
+<div class="pk">
+  {packages.map((p) => (
+    <article class={`pk__c ${p.popular ? 'is-pop' : ''}`} aria-labelledby={`pk-${p.id}`}>
+      {p.popular && <p class="pk__tag">Most Popular</p>}
+
+      <h3 class="pk__n" id={`pk-${p.id}`}>{p.name}</h3>
+      <p class="pk__scope">{p.scope}</p>
+      <p class="pk__d">{p.desc}</p>
+
+      <h4 class="pk__h">Best for</h4>
+      <ul class="pk__best">{p.bestFor.map((b) => <li>{b}</li>)}</ul>
+
+      <h4 class="pk__h">What's included</h4>
+      <ul class="pk__f">{p.core.map((c) => <li>{c}</li>)}</ul>
+
+      <details class="pk__more">
+        <summary>See everything included</summary>
+        <ul class="pk__f">{p.more.map((m) => <li>{m}</li>)}</ul>
+      </details>
+
+      {p.not && <p class="pk__not">{p.not}</p>}
+
+      <a class={`btn ${p.popular ? 'btn--primary' : 'btn--ghost'} btn--wide pk__cta`} href="/#planner">
+        {p.cta}
+      </a>
+    </article>
+  ))}
+</div>
+
+<p class="pk__note">
+  Every project is different. Pricing is provided after a brief consultation based on your
+  goals, required pages, features, content, and timeline.
+</p>
+
+<style>
+  .pk { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s5); align-items: start; }
+  @media (max-width: 64rem) { .pk { grid-template-columns: 1fr; max-width: 34rem; margin-inline: auto; } }
+
+  .pk__c {
+    position: relative;
+    display: flex; flex-direction: column;
+    background: var(--card); border: 1px solid var(--rule);
+    border-radius: 3px; padding: var(--s5);
+    height: 100%;
+  }
+  /* Prominence via border weight and a marker — never a scale transform,
+     which breaks the comparison grid and costs layout stability. */
+  .pk__c.is-pop { border-color: var(--ink); border-width: 2px; padding: calc(var(--s5) - 1px); }
+
+  .pk__tag {
+    position: absolute; top: 0; right: var(--s5); transform: translateY(-50%);
+    font-family: var(--mono); font-size: var(--fs-label); letter-spacing: .1em;
+    text-transform: uppercase; background: var(--redline); color: #fff;
+    padding: .25rem .5rem; border-radius: 2px;
+  }
+
+  .pk__n { font-size: 1.25rem; font-weight: 680; letter-spacing: -.018em; }
+  .pk__scope {
+    font-family: var(--mono); font-size: var(--fs-label); letter-spacing: .08em;
+    text-transform: uppercase; color: var(--redline); margin-top: var(--s2);
+  }
+  .pk__d { font-size: var(--fs-small); color: var(--graphite); margin-top: var(--s3); }
+
+  .pk__h {
+    font-family: var(--mono); font-size: var(--fs-label); letter-spacing: .12em;
+    text-transform: uppercase; color: var(--graphite); font-weight: 500;
+    margin-top: var(--s5); padding-top: var(--s4); border-top: 1px solid var(--rule);
+  }
+
+  .pk__best, .pk__f { display: grid; gap: var(--s2); margin-top: var(--s3); font-size: var(--fs-small); }
+  .pk__best li { color: var(--graphite); }
+  .pk__f li { display: grid; grid-template-columns: 1rem 1fr; gap: var(--s3); align-items: start; }
+  .pk__f li::before { content: '✓'; color: var(--redline); font-size: .875rem; line-height: 1.5; }
+
+  .pk__more { margin-top: var(--s4); }
+  .pk__more summary {
+    cursor: pointer; font-size: var(--fs-small); font-weight: 600;
+    padding: var(--s2) 0; list-style: none;
+  }
+  .pk__more summary::-webkit-details-marker { display: none; }
+  .pk__more summary::before { content: '+ '; color: var(--redline); }
+  .pk__more[open] summary::before { content: '– '; }
+
+  .pk__not {
+    margin-top: var(--s4); padding: var(--s3) var(--s4);
+    background: var(--panel); border-left: 2px solid var(--rule-hi);
+    font-size: .875rem; color: var(--graphite); border-radius: 0 3px 3px 0;
+  }
+
+  .pk__cta { margin-top: auto; padding-top: 0; }
+  .pk__c > .pk__cta { margin-top: var(--s5); }
+
+  .pk__note {
+    margin-top: var(--s5); font-size: var(--fs-small); color: var(--graphite);
+    max-width: 62ch;
+  }
+</style>

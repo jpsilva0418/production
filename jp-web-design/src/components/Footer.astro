@@ -1,0 +1,103 @@
+---
+const cols = [
+  {
+    h: 'Services',
+    links: [
+      { href: '/#services', label: 'Website design' },
+      { href: '/#services', label: 'Website redesign' },
+      { href: '/#services', label: 'SEO foundations' },
+      { href: '/#services', label: 'Website care plans' },
+    ],
+  },
+  {
+    h: 'Industries',
+    links: [
+      { href: '/industries/construction-web-design', label: 'Construction & contracting' },
+      { href: '/#industries', label: 'All industries' },
+    ],
+  },
+  {
+    h: 'Company',
+    links: [
+      { href: '/about', label: 'About JP' },
+      { href: '/process', label: 'Process' },
+      { href: '/contact', label: 'Contact' },
+    ],
+  },
+];
+const year = new Date().getFullYear();
+---
+<footer class="ftr">
+  <div class="container">
+    <div class="ftr__top">
+      <div class="ftr__brand">
+        <a class="wm" href="/" aria-label="JP Web Design — home">
+          <span class="wm__i">JP</span><span class="wm__t">Web Design</span>
+        </a>
+        <p class="small ftr__pitch">
+          Websites built for the people deciding whether to call you.
+          Founder-led, one project at a time.
+        </p>
+        <p class="small ftr__area">Working with businesses across the United States.</p>
+      </div>
+
+      {cols.map((c) => (
+        <nav class="ftr__col" aria-label={c.h}>
+          <h2 class="ftr__h">{c.h}</h2>
+          <ul>{c.links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+        </nav>
+      ))}
+    </div>
+
+    <div class="ftr__contact">
+      <a class="tlink" href="mailto:jp@jpwebdesign.com">jp@jpwebdesign.com</a>
+      <!-- TODO(launch): real number. A phone a human answers is required for
+           the cold-outbound credibility check — see strategy, journey (c). -->
+      <span class="small ftr__todo">Phone — to be added before launch</span>
+    </div>
+
+    <div class="ftr__legal">
+      <p class="small">© {year} JP Web Design. <span class="ftr__todo">Legal entity and state — to be added.</span></p>
+      <ul class="ftr__legalnav">
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="/accessibility">Accessibility</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ftr { border-top: 1px solid var(--rule); padding-block: var(--s8) var(--s6); }
+  .ftr__top { display: grid; grid-template-columns: 1.6fr repeat(3, 1fr); gap: var(--s6); }
+  @media (max-width: 60rem) { .ftr__top { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 40rem) { .ftr__top { grid-template-columns: 1fr; gap: var(--s6); } }
+
+  .wm { display: inline-flex; align-items: center; gap: .5rem; text-decoration: none; }
+  .wm__i { font-family: var(--mono); font-weight: 600; font-size: .8125rem; letter-spacing: .04em;
+           background: var(--ink); color: var(--paper); padding: .25rem .375rem; border-radius: 2px; }
+  .wm__t { font-weight: 640; letter-spacing: -.014em; }
+
+  .ftr__pitch { margin-top: var(--s4); max-width: 30ch; }
+  .ftr__area { margin-top: var(--s2); }
+
+  .ftr__h {
+    font-family: var(--mono); font-size: var(--fs-label); letter-spacing: .12em;
+    text-transform: uppercase; color: var(--graphite); font-weight: 500; margin-bottom: var(--s3);
+  }
+  .ftr__col ul { display: grid; gap: var(--s2); }
+  .ftr__col a { font-size: var(--fs-small); text-decoration: none; color: var(--ink); }
+  .ftr__col a:hover { color: var(--redline); }
+
+  /* Tappable contact first on mobile — this is a business card opened in a truck. */
+  .ftr__contact { display: flex; flex-wrap: wrap; gap: var(--s3) var(--s5); align-items: center;
+                  margin-top: var(--s7); padding-top: var(--s5); border-top: 1px solid var(--rule); }
+
+  .ftr__legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s3);
+                margin-top: var(--s5); padding-top: var(--s4); border-top: 1px solid var(--rule); }
+  .ftr__legalnav { display: flex; flex-wrap: wrap; gap: var(--s5); }
+  .ftr__legalnav a { font-size: var(--fs-small); color: var(--graphite); text-decoration: none; }
+  .ftr__legalnav a:hover { color: var(--ink); }
+
+  .ftr__todo { font-family: var(--mono); font-size: .8125rem; color: var(--redline); }
+</style>

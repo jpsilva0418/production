@@ -1,0 +1,23 @@
+---
+const { heading, updated } = Astro.props;
+---
+<section class="section">
+  <div class="container lg">
+    <p class="mark"><b>§</b> {heading}</p>
+    <h1 class="display lg__h">{heading}</h1>
+    <p class="small lg__u">Last updated: {updated}</p>
+    <div class="lg__b"><slot /></div>
+  </div>
+</section>
+<style>
+  .lg { max-width: 48rem; }
+  .lg__h { font-size: clamp(2rem, 4.4vw, 3rem); }
+  .lg__u { margin-top: var(--s3); font-family: var(--mono); font-size: .8125rem; }
+  .lg__b { margin-top: var(--s7); }
+  .lg__b > * + * { margin-top: var(--s4); }
+  .lg__b .h3 { margin-top: var(--s7); padding-top: var(--s4); border-top: 1px solid var(--rule); }
+  .lg__b .note { margin-bottom: var(--s6); }
+  .lg__b .rows { margin-top: var(--s4); }
+  .todo { color: var(--redline); }
+  code { font-family: var(--mono); font-size: .9em; background: var(--panel); padding: .1em .3em; border-radius: 2px; }
+</style>

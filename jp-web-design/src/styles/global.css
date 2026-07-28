@@ -1,0 +1,211 @@
+/* ==========================================================================
+   JP Web Design — "Specification" design system
+   Register: technical documentation. Visible grid, hairline rules,
+   monospace labels, warm paper ground, redline accent used the way a
+   redline is used on a drawing — to mark the one thing that changed.
+   ========================================================================== */
+
+:root {
+  /* --- Color -------------------------------------------------------------
+     Paper is warm-biased off-white, not pure white: the bias toward the
+     accent's hue family is what makes a neutral read as chosen.
+     Redline is the single action colour. Slate is informational only, so
+     red keeps meaning exactly one thing. */
+  --paper:      #faf9f6;
+  --panel:      #f2f0ea;
+  --card:       #ffffff;
+  --ink:        #16181c;   /* 15.6:1 on paper */
+  --graphite:   #5c626a;   /*  5.4:1 on paper — passes AA for body */
+  --redline:    #b8321c;   /*  4.6:1 as text; white on it is 5.6:1 */
+  --redline-dk: #97270f;
+  --slate:      #1e4b6b;
+  --rule:       #e2ded6;
+  --rule-hi:    #cfc9bd;
+
+  /* --- Type --------------------------------------------------------------
+     TODO(launch): replace --sans with a licensed retail face (Klim Söhne
+     or Untitled Sans; open fallback Instrument Sans) self-hosted as a
+     subset woff2, and pair a metric-overridden fallback via Fontaine so
+     the swap costs zero CLS. The system stack below is a placeholder and
+     is the one thing standing between this and a fully bespoke feel. */
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  --fs-display: clamp(2.25rem, 5.4vw, 3.75rem);
+  --fs-h2:      clamp(1.75rem, 3.4vw, 2.5rem);
+  --fs-h3:      1.1875rem;
+  --fs-lead:    clamp(1.0625rem, 1.5vw, 1.1875rem);
+  --fs-body:    1.0625rem;
+  --fs-small:   0.9375rem;
+  --fs-label:   0.75rem;
+
+  /* --- Space: one scale, used everywhere -------------------------------- */
+  --s1: .25rem;  --s2: .5rem;   --s3: .75rem;  --s4: 1rem;
+  --s5: 1.5rem;  --s6: 2rem;    --s7: 3rem;    --s8: 4rem;   --s9: 6rem;
+
+  --section-y: clamp(3.5rem, 7vw, 6.5rem);
+  --gutter:    clamp(1.15rem, 4vw, 2.5rem);
+  --container: 72rem;
+  --measure:   66ch;
+
+  --header-h: 4.25rem;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + var(--s5));
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: var(--fs-body);
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, p, figure, blockquote, dl, dd { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+img, svg { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+button, input, select, textarea { font: inherit; color: inherit; }
+
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--redline);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.skip-link {
+  position: absolute; left: -9999px; top: var(--s2); z-index: 200;
+  background: var(--ink); color: var(--paper);
+  padding: var(--s3) var(--s5); border-radius: 2px;
+}
+.skip-link:focus { left: var(--s5); }
+
+.vh {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* --- Layout -------------------------------------------------------------- */
+.container {
+  width: 100%; max-width: var(--container);
+  margin-inline: auto; padding-inline: var(--gutter);
+}
+.section { padding-block: var(--section-y); }
+.section--panel { background: var(--panel); }
+.section--ink { background: var(--ink); color: var(--paper); }
+.section--ink .lead, .section--ink .mark { color: #b9beC6; }
+
+/* The structural device: a spec-style section marker over a hairline rule
+   that spans the full grid. Numbering is used only where the content is a
+   real sequence; elsewhere the marker carries the section name alone. */
+.mark {
+  display: flex; align-items: baseline; gap: var(--s3);
+  font-family: var(--mono); font-size: var(--fs-label);
+  letter-spacing: .12em; text-transform: uppercase; color: var(--graphite);
+  padding-bottom: var(--s3); margin-bottom: var(--s6);
+  border-bottom: 1px solid var(--rule);
+}
+.mark b { color: var(--redline); font-weight: 500; }
+.section--ink .mark { border-bottom-color: #33363d; }
+.section--ink .mark b { color: #f0785c; }
+
+.head { max-width: 44rem; margin-bottom: var(--s8); }
+.head > * + * { margin-top: var(--s4); }
+
+h1, h2, h3 { text-wrap: balance; }
+.display { font-size: var(--fs-display); line-height: 1.04; letter-spacing: -.03em; font-weight: 680; }
+.h2      { font-size: var(--fs-h2);      line-height: 1.1;  letter-spacing: -.024em; font-weight: 660; }
+.h3      { font-size: var(--fs-h3);      line-height: 1.3;  letter-spacing: -.01em;  font-weight: 660; }
+
+.lead { font-size: var(--fs-lead); line-height: 1.55; color: var(--graphite); max-width: var(--measure); text-wrap: pretty; }
+.body { max-width: var(--measure); }
+.body + .body { margin-top: var(--s4); }
+.small { font-size: var(--fs-small); color: var(--graphite); }
+
+/* --- Buttons ------------------------------------------------------------- */
+.btn {
+  display: inline-flex; align-items: center; gap: var(--s3);
+  padding: .8125rem 1.25rem;
+  font-size: var(--fs-small); font-weight: 620; letter-spacing: .005em;
+  border: 1px solid transparent; border-radius: 2px;
+  cursor: pointer; text-decoration: none; white-space: nowrap;
+  transition: background-color .18s var(--ease), border-color .18s var(--ease), color .18s var(--ease);
+}
+.btn--primary { background: var(--redline); color: #fff; }
+.btn--primary:hover { background: var(--redline-dk); }
+.btn--ghost { background: transparent; color: var(--ink); border-color: var(--rule-hi); }
+.btn--ghost:hover { border-color: var(--ink); }
+.btn--onink { background: var(--paper); color: var(--ink); }
+.btn--onink:hover { background: #fff; }
+.btn--sm { padding: .5625rem .875rem; }
+.btn--wide { width: 100%; justify-content: center; }
+
+.btn-row { display: flex; flex-wrap: wrap; gap: var(--s3); align-items: center; }
+
+/* Text link with the redline rule under it */
+.tlink {
+  font-size: var(--fs-small); font-weight: 600; text-decoration: none;
+  border-bottom: 1px solid var(--redline); padding-bottom: 1px; color: var(--ink);
+}
+.tlink:hover { color: var(--redline); }
+
+/* --- Grid --------------------------------------------------------------- */
+.grid { display: grid; gap: var(--s5); }
+.g2 { grid-template-columns: repeat(2, 1fr); }
+.g3 { grid-template-columns: repeat(3, 1fr); }
+.g4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 62rem) { .g3, .g4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 40rem) { .g2, .g3, .g4 { grid-template-columns: 1fr; } }
+
+/* --- Rule list: the recurring "spec row" component ----------------------- */
+.rows { border-top: 1px solid var(--rule); }
+.row {
+  display: grid; grid-template-columns: 3.5rem 1fr; gap: var(--s5);
+  padding: var(--s5) 0; border-bottom: 1px solid var(--rule);
+}
+.row__n { font-family: var(--mono); font-size: var(--fs-label); letter-spacing: .1em; color: var(--redline); padding-top: .3rem; }
+.row__b > * + * { margin-top: var(--s2); }
+@media (max-width: 40rem) { .row { grid-template-columns: 1fr; gap: var(--s2); } }
+
+/* --- Card --------------------------------------------------------------- */
+.card {
+  background: var(--card); border: 1px solid var(--rule);
+  border-radius: 3px; padding: var(--s5);
+  display: flex; flex-direction: column; gap: var(--s3); height: 100%;
+}
+.card__t { font-size: var(--fs-h3); font-weight: 660; letter-spacing: -.01em; }
+.card__x { color: var(--graphite); font-size: var(--fs-small); }
+
+/* --- Note / callout ------------------------------------------------------ */
+.note {
+  border-left: 2px solid var(--redline); background: var(--panel);
+  padding: var(--s4) var(--s5); border-radius: 0 3px 3px 0;
+}
+.note .lbl {
+  display: block; font-family: var(--mono); font-size: var(--fs-label);
+  letter-spacing: .1em; text-transform: uppercase; color: var(--redline);
+  margin-bottom: var(--s2);
+}
+
+/* Motion is spent in exactly one place — the planner's architecture diagram —
+   and nowhere else. A scroll-reveal starting at opacity 0 leaves whole
+   sections blank for anyone landing mid-page on an anchor, and buys nothing
+   a section this restrained actually needs. */

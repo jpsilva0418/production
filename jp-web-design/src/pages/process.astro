@@ -1,0 +1,78 @@
+---
+import Base from '../layouts/Base.astro';
+
+const steps = [
+  { n: '01', t: 'Discovery',  d: 'One working session. Your customers, your competition, and how work actually reaches you today.', you: '60–90 min', me: 'Research and notes' },
+  { n: '02', t: 'Strategy',   d: 'Page structure, conversion path and search targets, written down and agreed before any design.', you: 'Review', me: 'Structure document' },
+  { n: '03', t: 'Content',    d: 'I write it, you correct it. Nobody hands you a spreadsheet and asks you to fill in your own website.', you: '~1 hour', me: 'All copy' },
+  { n: '04', t: 'Design',     d: 'Every page type, desktop and mobile, at full fidelity before production code exists.', you: 'One round of notes', me: 'Design' },
+  { n: '05', t: 'Build',      d: 'Fast, accessible, semantic. The performance budget is enforced by the build, not checked at the end.', you: 'Nothing', me: 'Build and QA' },
+  { n: '06', t: 'Review',     d: 'You see it on a real URL and mark it up. Revisions run to the number named in your package.', you: '1–2 hours', me: 'Revisions' },
+  { n: '07', t: 'Testing',    d: 'Keyboard, screen reader, real devices, forms end to end. Every link and every state.', you: 'Nothing', me: 'Full test pass' },
+  { n: '08', t: 'Launch',     d: 'Redirects mapped, analytics verified, Search Console connected, every account in your name.', you: 'Approve go-live', me: 'Launch' },
+  { n: '09', t: 'Support',    d: 'A defined post-launch window, then an optional care plan. Not a silence.', you: 'Optional', me: 'Support' },
+];
+---
+<Base
+  title="Process | JP Web Design"
+  description="Nine steps from discovery to launch, with your total time commitment stated up front — around four hours."
+>
+  <section class="section">
+    <div class="container">
+      <p class="mark"><b>§01</b> Process</p>
+      <div class="head">
+        <h1 class="display">Nine steps. About four hours of your time.</h1>
+        <p class="lead">
+          The most common reason a website project drags on for months is that the client
+          quietly gets handed the work. Here is exactly who does what.
+        </p>
+      </div>
+
+      <ul class="rows">
+        {steps.map((s) => (
+          <li class="row prow">
+            <span class="row__n">{s.n}</span>
+            <div class="row__b">
+              <p class="h3">{s.t}</p>
+              <p class="small">{s.d}</p>
+            </div>
+            <span class="prow__m">
+              <span class="prow__l">You</span>{s.you}
+              <span class="prow__l prow__l--2">Me</span>{s.me}
+            </span>
+          </li>
+        ))}
+      </ul>
+
+      <div class="note pnote">
+        <span class="lbl">What I guarantee, and what I don't</span>
+        <p class="small">
+          Scope, price and launch date — in writing, before work starts, with a stated remedy
+          if I miss the date for reasons on my side. Not rankings, not lead volume, not
+          revenue. Nobody can promise those honestly, and the ones who do are selling
+          something else.
+        </p>
+      </div>
+
+      <div class="btn-row pcta">
+        <a class="btn btn--primary" href="/#planner">Start step one</a>
+        <a class="btn btn--ghost" href="mailto:jp@jpwebdesign.com">Ask me a question</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .prow { grid-template-columns: 3.5rem 1fr auto; align-items: start; }
+  .prow__m { font-family: var(--mono); font-size: .8125rem; color: var(--graphite);
+             text-align: right; padding-top: .25rem; display: grid; gap: .125rem; }
+  .prow__l { display: block; font-size: var(--fs-label); letter-spacing: .1em;
+             text-transform: uppercase; color: var(--rule-hi); }
+  .prow__l--2 { margin-top: var(--s2); }
+  @media (max-width: 52rem) {
+    .prow { grid-template-columns: 2.5rem 1fr; }
+    .prow__m { grid-column: 2; text-align: left; padding-top: var(--s3); }
+  }
+  .pnote { margin-top: var(--s6); max-width: 52rem; }
+  .pcta { margin-top: var(--s6); }
+</style>

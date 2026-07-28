@@ -1,0 +1,115 @@
+---
+import Base from '../layouts/Base.astro';
+
+/* Founder-led is the strongest trust asset available with no client logos.
+   The page is deliberately specific and falsifiable — vagueness reads as
+   concealment to anyone verifying a cold email. */
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'JP Silva',
+  jobTitle: 'Founder and web designer',
+  worksFor: { '@type': 'Organization', name: 'JP Web Design' },
+  url: new URL('/about', Astro.site).href,
+};
+---
+<Base
+  title="About JP Silva | JP Web Design"
+  description="JP Web Design is a founder-led studio run by JP Silva, building conversion-focused websites for businesses across the United States."
+  schema={person}
+>
+  <section class="section">
+    <div class="container">
+      <p class="mark"><b>§01</b> About</p>
+      <div class="head">
+        <h1 class="display">JP Silva</h1>
+        <p class="lead">
+          I build websites for businesses that need to be taken seriously by people who have
+          never met them.
+        </p>
+      </div>
+
+      <div class="ab">
+        <div class="ab__body">
+          <p class="body">
+            JP Web Design is a one-person studio, and that is a deliberate choice rather than
+            a stage I am trying to grow out of quickly. The person you speak to on the first
+            call is the person who writes the copy, designs the pages, and pushes the site
+            live. Nothing gets handed to a junior after the proposal is signed.
+          </p>
+          <p class="body">
+            I work with businesses across the United States — contractors and construction
+            firms, home-services operators, beauty and wellness studios, professional
+            practices, and established companies whose sites have quietly stopped doing
+            their job. Discovery happens on a call, review happens on a real URL, and none
+            of it requires being in the same room.
+          </p>
+          <p class="body">
+            The studio is new. I would rather say that plainly than pad this page with stock
+            photography and invented milestones. What I can offer instead is a written scope,
+            a fixed price, a launch date I commit to, and complete ownership of everything I
+            build for you — in your name, from the first day.
+          </p>
+
+          <div class="note ab__note">
+            <span class="lbl">What I won't do</span>
+            <p class="small">
+              I will not guarantee a Google ranking, a number of leads, or a revenue figure.
+              Anyone who does is either guessing or selling you advertising with a different
+              label on it. I will guarantee the scope, the price, and the date.
+            </p>
+          </div>
+        </div>
+
+        <aside class="ab__side">
+          <div class="ab__photo" aria-hidden="true">
+            <span>Photograph of JP<br />— to be added</span>
+          </div>
+          <dl class="ab__facts">
+            <div><dt>Studio</dt><dd>JP Web Design</dd></div>
+            <div><dt>Founded by</dt><dd>JP Silva</dd></div>
+            <div><dt>Working with</dt><dd>Businesses across the United States</dd></div>
+            <div><dt>Capacity</dt><dd>One project at a time</dd></div>
+            <div><dt>Email</dt><dd><a class="tlink" href="mailto:jp@jpwebdesign.com">jp@jpwebdesign.com</a></dd></div>
+            <div><dt>Legal entity</dt><dd class="todo">To be added before launch</dd></div>
+            <div><dt>Phone</dt><dd class="todo">To be added before launch</dd></div>
+          </dl>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--panel">
+    <div class="container cta__in">
+      <h2 class="h2">Want to talk it through?</h2>
+      <p class="lead cta__l">Fifteen minutes, no pitch. Tell me what the business does and what is not working.</p>
+      <div class="btn-row cta__b">
+        <a class="btn btn--primary" href="/#planner">Get My Website Plan</a>
+        <a class="btn btn--ghost" href="mailto:jp@jpwebdesign.com">Email JP directly</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ab { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+  @media (max-width: 56rem) { .ab { grid-template-columns: 1fr; } }
+  .ab__note { margin-top: var(--s6); }
+
+  .ab__photo {
+    aspect-ratio: 4 / 5; background: var(--panel); border: 1px dashed var(--rule-hi);
+    border-radius: 3px; display: grid; place-items: center; text-align: center;
+    font-family: var(--mono); font-size: .8125rem; color: var(--graphite); line-height: 1.7;
+  }
+  .ab__facts { margin-top: var(--s5); display: grid; gap: var(--s4); }
+  .ab__facts dt {
+    font-family: var(--mono); font-size: var(--fs-label); letter-spacing: .12em;
+    text-transform: uppercase; color: var(--graphite); margin-bottom: .1875rem;
+  }
+  .ab__facts dd { font-size: var(--fs-small); }
+  .todo { font-family: var(--mono); font-size: .8125rem; color: var(--redline); }
+
+  .cta__in { text-align: center; }
+  .cta__l { margin: var(--s4) auto 0; }
+  .cta__b { justify-content: center; margin-top: var(--s6); }
+</style>

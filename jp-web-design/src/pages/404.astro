@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Page not found | JP Web Design" description="That page does not exist." noindex={true}>
+  <section class="section">
+    <div class="container nf">
+      <p class="mark"><b>404</b> Not found</p>
+      <h1 class="display">That page doesn't exist.</h1>
+      <p class="lead nf__l">
+        It may have moved, or the link may be wrong. The homepage is the fastest way back.
+      </p>
+      <div class="btn-row nf__b">
+        <a class="btn btn--primary" href="/">Back to the homepage</a>
+        <a class="btn btn--ghost" href="/contact">Contact</a>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .nf { max-width: 44rem; }
+  .nf__l { margin-top: var(--s4); }
+  .nf__b { margin-top: var(--s6); }
+</style>

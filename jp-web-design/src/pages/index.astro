@@ -1,0 +1,524 @@
+---
+import Base from '../layouts/Base.astro';
+import Packages from '../components/Packages.astro';
+import Planner from '../components/planner/Planner.jsx';
+
+const services = [
+  { t: 'Website design',      d: 'A new site built around how your customers actually decide, not around a template’s section order.' },
+  { t: 'Website redesign',    d: 'You have a site. It looks dated, or it looks fine and does nothing. Different problems, different fixes.' },
+  { t: 'SEO foundations',     d: 'Structure, speed, and one clear topic per page. The groundwork rankings are built on, not a monthly promise.' },
+  { t: 'Local SEO',           d: 'Google Business Profile, consistent business details, and service-area pages capped at the places you actually work.' },
+  { t: 'Landing pages',       d: 'One page, one audience, one action. Built for campaigns where every click costs money.' },
+  { t: 'E-commerce',          d: 'Product and category structure that customers and search engines can both navigate.' },
+  { t: 'Website care',        d: 'Hosting, updates, backups, monitoring, and a set block of edit time each month.' },
+  { t: 'Conversion work',     d: 'Your traffic is fine and the phone isn’t ringing. Usually a structure problem, not a design one.' },
+];
+
+const industries = [
+  { slug: '/industries/construction-web-design', t: 'Construction & contracting', live: true,
+    d: 'Prequalification, project galleries, service areas, and the careers page that fills a superintendent seat.' },
+  { t: 'Roofing, HVAC & plumbing', d: 'Emergency response paths, financing, insurance-claim help, and photo galleries that don’t break on a phone.' },
+  { t: 'Beauty, salons & med spas', d: 'Booking as a navigation element, treatment pages that rank, and consent-governed before-and-afters.' },
+  { t: 'Professional & legal', d: 'Practice-area depth, credential display, and intake forms that respect how regulated advertising works.' },
+  { t: 'Real estate', d: 'Listing structure, neighbourhood guides, and valuation requests that reach the right agent.' },
+  { t: 'Restaurants & hospitality', d: 'Menu and hours first. Everything else is secondary and most sites get that backwards.' },
+];
+
+const process = [
+  { n: '01', t: 'Discovery',      d: 'One working session. I ask about your customers, your competition, and how work actually reaches you today.', you: '60–90 minutes' },
+  { n: '02', t: 'Strategy',       d: 'Page structure, conversion path, and search targets — written down and agreed before any design happens.', you: 'Review and approve' },
+  { n: '03', t: 'Content',        d: 'I write it. You correct it. Nobody hands you a spreadsheet and asks you to fill in your own website.', you: 'Around 1 hour' },
+  { n: '04', t: 'Design',         d: 'Full-fidelity design of every page type, on desktop and mobile, before a line of production code.', you: 'One round of notes' },
+  { n: '05', t: 'Build',          d: 'Fast, accessible, semantic. Performance budget enforced automatically rather than checked at the end.', you: 'Nothing' },
+  { n: '06', t: 'Review',         d: 'You see it on a real URL and mark it up. Revisions run to the number in your package, not to a vague “until you’re happy”.', you: '1–2 hours' },
+  { n: '07', t: 'Testing',        d: 'Keyboard, screen reader, real devices, forms end to end. Every link, every state.', you: 'Nothing' },
+  { n: '08', t: 'Launch',         d: 'Redirects mapped, analytics verified, Search Console connected. Every account in your name from day one.', you: 'Approve go-live' },
+  { n: '09', t: 'Support',        d: 'A defined post-launch window, then an optional care plan. Not a silence.', you: 'Optional' },
+];
+
+const faqs = [
+  { q: 'How much does a website cost?',
+    a: 'It depends on the number of pages, the features, how much content exists already, and the timeline — which is why I quote after a short conversation rather than publishing a number that would be wrong for most people. The planner above will tell you which package fits before we ever speak.' },
+  { q: 'How long does a project take?',
+    a: 'A Starter site is usually two to three weeks. A Business Growth site is usually five to seven. Custom projects are scoped individually. The single biggest variable is not design — it is how quickly photos and content decisions land.' },
+  { q: 'Do you work with businesses outside your area?',
+    a: 'Yes. I work with businesses across the United States. Discovery happens on a call, review happens on a real URL, and nothing about the process requires being in the same room.' },
+  { q: 'Do you provide SEO?',
+    a: 'I build the foundation — structure, speed, correct markup, one clear topic per page, and the local setup. I do not sell monthly SEO retainers, and I will not promise rankings. Anyone who guarantees a position is either guessing or selling you ads.' },
+  { q: 'Can you redesign my existing website?',
+    a: 'Yes, and it is a large share of the work. If we move platforms, the page addresses change — that needs a redirect map on day one, or you lose whatever search visibility you have built.' },
+  { q: 'Will I own my website?',
+    a: 'Completely, and from day one. The domain, the hosting account, the code, the content, and the analytics are all registered in your name. There is no licence, no lease, and no platform fee. If you ever want to move on, nothing is held.' },
+  { q: 'Can you write the website content?',
+    a: 'Yes, and that is the default. You talk for an hour or so and correct what I draft. The most common reason a website project stalls for months is a client being asked to write it themselves.' },
+  { q: 'Can you maintain the website after launch?',
+    a: 'Every project includes a post-launch support window. After that there is an optional care plan covering hosting, updates, backups, monitoring, and a set block of edit time each month. It is optional, and saying no does not affect anything.' },
+  { q: 'Do you build e-commerce websites?',
+    a: 'Yes, under the Custom Website package. Payments, tax, and shipping rules need deciding early — they shape the build more than the visual design does.' },
+  { q: 'What do you need from me to start?',
+    a: 'An hour of your time, whatever photos and logo files you have, and access to your domain. If you have none of those, that is a normal starting point and it is planned for rather than treated as a problem.' },
+  { q: 'How many revisions are included?',
+    a: 'One round with Starter, two with Business Growth, and a project-specific structure on Custom. They are named in the proposal so there is never an argument about what round we are on.' },
+  { q: 'Can you help with a domain and hosting?',
+    a: 'Yes. I will set both up in your name and hand you the credentials. I do not resell hosting or hold accounts on your behalf.' },
+  { q: 'What if I have no logo or professional photos?',
+    a: 'Common, and workable. I will direct what photography is needed and work with what exists in the meantime. If a logo is missing, we will use a clean typographic wordmark rather than stalling the project on a branding exercise you did not ask for.' },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+<Base
+  title="JP Web Design | Website Design for U.S. Businesses"
+  description="Founder-led web design for businesses across the United States. Conversion-focused websites with fixed scope, fixed price and a fixed launch date."
+  schema={faqSchema}
+>
+
+  <!-- ═══ 02 · HERO ═══════════════════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="container hero__in">
+      <div class="hero__copy">
+        <p class="hero__eyebrow">Website design · United States</p>
+        <h1 class="display">Websites built for the people deciding whether to call you.</h1>
+        <p class="lead hero__lead">
+          Most visitors decide before they ever fill in a form. I build sites that hold up
+          during that decision — clear, fast, and structured around how your customers
+          actually choose.
+        </p>
+        <div class="btn-row hero__cta">
+          <a class="btn btn--primary" href="#planner">Start Your Project</a>
+          <a class="btn btn--ghost" href="#packages">Explore Website Options</a>
+        </div>
+        <p class="small hero__note">
+          Founder-led by JP Silva. One project at a time — fixed scope, fixed launch date.
+        </p>
+      </div>
+
+      <!-- A structural sketch rather than a stock photograph. It shows the
+           thing being sold: the decision architecture of a page. -->
+      <div class="hero__viz" aria-hidden="true">
+        <div class="viz">
+          <span class="viz__tag">index.html</span>
+          <div class="viz__row viz__row--hero"><i></i><i></i></div>
+          <div class="viz__row viz__row--split"><i></i><i></i><i></i></div>
+          <div class="viz__row viz__row--wide"><i></i></div>
+          <div class="viz__row viz__row--split"><i></i><i></i><i></i></div>
+          <span class="viz__cap">Structure first. Everything else follows.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 03 · TRUST & POSITIONING ════════════════════════════════════════ -->
+  <section class="section section--panel" aria-labelledby="t-pos">
+    <div class="container">
+      <p class="mark"><b>§01</b> Why this matters</p>
+      <div class="head">
+        <h2 class="h2" id="t-pos">A website is not a brochure. It is where you get evaluated.</h2>
+      </div>
+
+      <div class="grid g2 posgrid">
+        <div>
+          <p class="body">
+            Someone hears your name, searches it, and decides in seconds whether you look
+            like a business worth calling. That happens whether or not they ever contact you,
+            and you never find out it happened.
+          </p>
+          <p class="body">
+            That is the job the site has to do. Not win a design award — survive a
+            forty-second scan by a sceptical stranger on a phone, and make the next step
+            obvious.
+          </p>
+        </div>
+        <ul class="rows">
+          <li class="row"><span class="row__n">01</span><div class="row__b">
+            <p class="h3">Credibility, first</p>
+            <p class="small">A dated site quietly costs you jobs you never hear about.</p></div></li>
+          <li class="row"><span class="row__n">02</span><div class="row__b">
+            <p class="h3">Built to be understood</p>
+            <p class="small">Clear services, clear proof, clear way to get in touch.</p></div></li>
+          <li class="row"><span class="row__n">03</span><div class="row__b">
+            <p class="h3">Fast on a phone</p>
+            <p class="small">Your buyer is on mobile data, one-handed, between jobs.</p></div></li>
+          <li class="row"><span class="row__n">04</span><div class="row__b">
+            <p class="h3">Ready to grow</p>
+            <p class="small">Structure that supports more pages later without a rebuild.</p></div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 04 · SERVICES ═══════════════════════════════════════════════════ -->
+  <section class="section" id="services" aria-labelledby="t-srv">
+    <div class="container">
+      <p class="mark"><b>§02</b> Services</p>
+      <div class="head">
+        <h2 class="h2" id="t-srv">What I do</h2>
+        <p class="lead">Design, build, and the search groundwork underneath it. One person, start to finish.</p>
+      </div>
+      <ul class="grid g4">
+        {services.map((s) => (
+          <li class="card">
+            <h3 class="card__t">{s.t}</h3>
+            <p class="card__x">{s.d}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ 05 · PACKAGES ═══════════════════════════════════════════════════ -->
+  <section class="section section--panel" id="packages" aria-labelledby="t-pkg">
+    <div class="container">
+      <p class="mark"><b>§03</b> Packages</p>
+      <div class="head">
+        <h2 class="h2" id="t-pkg">Three ways to work together</h2>
+        <p class="lead">
+          Most businesses land in the middle. If you are not sure, the planner below will
+          tell you which one fits and why.
+        </p>
+      </div>
+      <Packages />
+    </div>
+  </section>
+
+  <!-- ═══ 06 · PLANNER ════════════════════════════════════════════════════ -->
+  <section class="section" id="planner" aria-labelledby="t-pln">
+    <div class="container">
+      <p class="mark"><b>§04</b> Website Project Planner</p>
+      <div class="head">
+        <h2 class="h2" id="t-pln">Get a plan for your site in about four minutes</h2>
+        <p class="lead">
+          Eight short questions. You get a page structure, a feature set, search priorities,
+          and a rough timeline — on screen, before you give me anything. No email required
+          to see it.
+        </p>
+      </div>
+
+      <!-- The tool is embedded in a document, never the document itself. The
+           copy above and the definitions below are in the initial HTML so the
+           page has substance without executing a byte of planner JavaScript. -->
+      <Planner client:visible />
+
+      <div class="pln__meta">
+        <div>
+          <h3 class="h3">How the recommendation is made</h3>
+          <p class="small">
+            Your answers map to a site type, a page count, and a feature set. Business type
+            drives the page names, service breadth drives the structure, and your primary
+            goal decides what the site is optimised around. Nothing is scored secretly and
+            no answer is used to price you.
+          </p>
+        </div>
+        <div>
+          <h3 class="h3">What you get on screen</h3>
+          <p class="small">
+            The recommended package and why it was chosen, a suggested page list in your own
+            vocabulary, the features that follow from it, search priorities, one thing worth
+            leaving out, and an estimated timeline range.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 07 · INDUSTRIES ═════════════════════════════════════════════════ -->
+  <section class="section section--panel" id="industries" aria-labelledby="t-ind">
+    <div class="container">
+      <p class="mark"><b>§05</b> Industries</p>
+      <div class="head">
+        <h2 class="h2" id="t-ind">Built around how your customers actually decide</h2>
+        <p class="lead">
+          A roofing customer and a med spa client behave nothing alike. The structure should
+          not be the same, and neither should the page you land on.
+        </p>
+      </div>
+
+      <ul class="grid g3">
+        {industries.map((i) => (
+          <li class="card">
+            <h3 class="card__t">{i.t}</h3>
+            <p class="card__x">{i.d}</p>
+            {i.live
+              ? <a class="tlink ind__link" href={i.slug}>See the detail</a>
+              : <span class="ind__soon">Detailed page in progress</span>}
+          </li>
+        ))}
+      </ul>
+
+      <!-- Named, not linked. Captures the sales message without minting a
+           set of thin URLs that would drag the whole site down. -->
+      <p class="small ind__also">
+        Also working with: electricians, landscapers, cleaning and moving companies,
+        automotive businesses, barbershops, fitness studios, photography and creative
+        studios, accountants, consultants, e-commerce brands, startups, and established
+        companies that need a redesign.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ 08 · PROCESS ════════════════════════════════════════════════════ -->
+  <section class="section" id="process" aria-labelledby="t-prc">
+    <div class="container">
+      <p class="mark"><b>§06</b> Process</p>
+      <div class="head">
+        <h2 class="h2" id="t-prc">Nine steps, and your total time is about four hours</h2>
+        <p class="lead">
+          The most common reason a website project drags on for months is that the client
+          gets handed the work. Here is exactly what you do, and what I do.
+        </p>
+      </div>
+
+      <ul class="rows prc">
+        {process.map((p) => (
+          <li class="row prc__r">
+            <span class="row__n">{p.n}</span>
+            <div class="row__b">
+              <p class="h3">{p.t}</p>
+              <p class="small">{p.d}</p>
+            </div>
+            <span class="prc__you"><span class="prc__yl">Your time</span>{p.you}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div class="note prc__note">
+        <span class="lbl">What I guarantee, and what I don't</span>
+        <p class="small">
+          I guarantee the scope, the price, and the launch date — in writing, before work
+          starts. I do not guarantee rankings, lead volume, or revenue, and neither can
+          anyone else honestly.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 09 · WORK ═══════════════════════════════════════════════════════ -->
+  <section class="section section--panel" id="work" aria-labelledby="t-wrk">
+    <div class="container">
+      <p class="mark"><b>§07</b> Work</p>
+      <div class="head">
+        <h2 class="h2" id="t-wrk">Concept work, honestly labelled</h2>
+        <p class="lead">
+          JP Web Design is new. Rather than pad this section, here is what is actually true —
+          and the reasoning behind each piece, which is the part worth reading.
+        </p>
+      </div>
+
+      <div class="note wrk__note">
+        <span class="lbl">Read this before you scroll</span>
+        <p class="small">
+          Everything below is a concept, not a client engagement. No project here was
+          commissioned, and no business shown has endorsed or is affiliated with JP Web
+          Design. Client work will replace these, with permission and attribution, as it
+          launches.
+        </p>
+      </div>
+
+      <ul class="grid g3 wrk">
+        <li class="card wrk__c">
+          <span class="wrk__tag">Concept</span>
+          <h3 class="card__t">Commercial general contractor</h3>
+          <p class="card__x">
+            A 60-year-old firm whose buyers are project managers building a bid list, not
+            homeowners requesting quotes. No “free quote” form anywhere — the structure is
+            capabilities, delivery methods, project profiles, and a careers path.
+          </p>
+        </li>
+        <li class="card wrk__c">
+          <span class="wrk__tag">Placeholder</span>
+          <h3 class="card__t">Second concept — in progress</h3>
+          <p class="card__x">
+            A home-services operator whose booking path breaks on mobile. The rebuild is
+            about the route from search to booked job, not the visual design.
+          </p>
+        </li>
+        <li class="card wrk__c">
+          <span class="wrk__tag">Placeholder</span>
+          <h3 class="card__t">Third concept — in progress</h3>
+          <p class="card__x">
+            A multi-location practice where a single-location structure has stopped working.
+            Hours, staff, booking, and local search all fork at once.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ 10 · WHY JP ═════════════════════════════════════════════════════ -->
+  <section class="section section--ink" aria-labelledby="t-why">
+    <div class="container">
+      <p class="mark"><b>§08</b> Why JP Web Design</p>
+      <div class="head">
+        <h2 class="h2" id="t-why">You are hiring a person, not an account manager</h2>
+        <p class="lead">
+          The person you talk to is the person who builds it. That is not a slogan — it is a
+          capacity constraint, and it is the reason the work stays consistent.
+        </p>
+      </div>
+
+      <ul class="grid g3 why">
+        <li class="why__i"><h3 class="h3">You own everything</h3>
+          <p class="small">Domain, hosting, code, content, analytics — in your name from day one. No licence, no lease, no hostage situation at renewal.</p></li>
+        <li class="why__i"><h3 class="h3">Fixed scope and date</h3>
+          <p class="small">Written down before work starts. Revision rounds are named, so there is never an argument about which round we are on.</p></li>
+        <li class="why__i"><h3 class="h3">One project at a time</h3>
+          <p class="small">Your project is not queued behind five others. It also means availability is genuinely limited, and I will say so rather than overpromise.</p></li>
+        <li class="why__i"><h3 class="h3">Content is my job</h3>
+          <p class="small">You talk for an hour and correct a draft. Nobody hands you a spreadsheet and asks you to write your own website.</p></li>
+        <li class="why__i"><h3 class="h3">Built to a performance budget</h3>
+          <p class="small">Speed and accessibility targets are enforced automatically in the build, not checked once at the end and forgotten.</p></li>
+        <li class="why__i"><h3 class="h3">Straight answers</h3>
+          <p class="small">If a cheaper option is genuinely right for you, I will tell you. Sometimes the honest answer is a template and a weekend.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ 11 · FAQ ════════════════════════════════════════════════════════ -->
+  <section class="section" id="faq" aria-labelledby="t-faq">
+    <div class="container">
+      <p class="mark"><b>§09</b> Questions</p>
+      <div class="head">
+        <h2 class="h2" id="t-faq">Answers before you ask</h2>
+      </div>
+
+      <div class="faq">
+        {faqs.map((f) => (
+          <details class="faq__i">
+            <summary><span>{f.q}</span></summary>
+            <p class="small">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 12 · FINAL CTA ══════════════════════════════════════════════════ -->
+  <section class="section cta" aria-labelledby="t-cta">
+    <div class="container cta__in">
+      <h2 class="h2" id="t-cta">Tell me about your business</h2>
+      <p class="lead cta__l">
+        The first conversation is about understanding what you do and who you are trying to
+        reach. No pitch, no pressure, and no obligation to go further.
+      </p>
+      <div class="btn-row cta__b">
+        <a class="btn btn--primary" href="#planner">Get My Website Plan</a>
+        <a class="btn btn--ghost" href="/contact">Or just email me</a>
+      </div>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  /* ---- Hero ---- */
+  .hero { padding-block: clamp(3rem, 6vw, 5.5rem) clamp(3rem, 6vw, 5rem); }
+  .hero__in { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  @media (max-width: 60rem) { .hero__in { grid-template-columns: 1fr; } .hero__viz { order: -1; } }
+
+  .hero__eyebrow {
+    font-family: var(--mono); font-size: var(--fs-label); letter-spacing: .14em;
+    text-transform: uppercase; color: var(--redline); margin-bottom: var(--s4);
+  }
+  .hero__lead { margin-top: var(--s5); max-width: 46ch; }
+  .hero__cta { margin-top: var(--s6); }
+  .hero__note { margin-top: var(--s5); }
+
+  .viz {
+    position: relative; background: var(--panel); border: 1px solid var(--rule);
+    border-radius: 3px; padding: var(--s6) var(--s5) var(--s5);
+    display: grid; gap: .5rem;
+  }
+  .viz__tag {
+    position: absolute; top: 0; left: var(--s5); transform: translateY(-50%);
+    font-family: var(--mono); font-size: var(--fs-label); letter-spacing: .08em;
+    background: var(--paper); border: 1px solid var(--rule); color: var(--graphite);
+    padding: .1875rem .4375rem; border-radius: 2px;
+  }
+  .viz__row { display: grid; gap: .5rem; }
+  .viz__row i { display: block; background: var(--card); border: 1px solid var(--rule); border-radius: 2px; }
+  .viz__row--hero { grid-template-columns: 2fr 1fr; }
+  .viz__row--hero i { height: 4.5rem; }
+  .viz__row--hero i:first-child { border-left: 2px solid var(--redline); }
+  .viz__row--split { grid-template-columns: repeat(3, 1fr); }
+  .viz__row--split i { height: 2.25rem; }
+  .viz__row--wide i { height: 1.5rem; }
+  .viz__cap { font-family: var(--mono); font-size: .75rem; color: var(--graphite); margin-top: var(--s2); }
+
+  /* ---- Positioning ---- */
+  .posgrid { gap: clamp(2rem, 4vw, 3.5rem); align-items: start; }
+  .posgrid .rows { border-top: 1px solid var(--rule); }
+
+  /* ---- Industries ---- */
+  .ind__link { margin-top: auto; align-self: start; }
+  .ind__soon {
+    margin-top: auto; font-family: var(--mono); font-size: .75rem;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--graphite);
+  }
+  .ind__also { margin-top: var(--s6); max-width: 70ch; }
+
+  /* ---- Process ---- */
+  .prc__r { grid-template-columns: 3.5rem 1fr auto; align-items: start; }
+  .prc__you {
+    font-family: var(--mono); font-size: .8125rem; color: var(--graphite);
+    text-align: right; padding-top: .25rem; white-space: nowrap;
+  }
+  .prc__yl { display: block; font-size: var(--fs-label); letter-spacing: .1em; text-transform: uppercase; color: var(--rule-hi); }
+  @media (max-width: 48rem) {
+    .prc__r { grid-template-columns: 2.5rem 1fr; }
+    .prc__you { grid-column: 2; text-align: left; padding-top: var(--s2); }
+    .prc__yl { display: inline; margin-right: .375rem; }
+  }
+  .prc__note { margin-top: var(--s6); }
+
+  /* ---- Work ---- */
+  .wrk__note { margin-bottom: var(--s6); }
+  .wrk__tag {
+    font-family: var(--mono); font-size: var(--fs-label); letter-spacing: .1em;
+    text-transform: uppercase; color: var(--redline);
+    border: 1px solid var(--redline); border-radius: 2px;
+    padding: .125rem .375rem; align-self: start;
+  }
+
+  /* ---- Why ---- */
+  .why { gap: var(--s6) var(--s5); }
+  .why__i { padding-top: var(--s4); border-top: 1px solid #33363d; }
+  .why__i .h3 { margin-bottom: var(--s2); }
+  .why__i .small { color: #b9bec6; }
+
+  /* ---- FAQ ---- */
+  .faq { border-top: 1px solid var(--rule); max-width: 52rem; }
+  .faq__i { border-bottom: 1px solid var(--rule); }
+  .faq__i summary {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--s4);
+    cursor: pointer; padding: var(--s4) 0; font-weight: 620; list-style: none;
+    min-height: 2.75rem;
+  }
+  .faq__i summary::-webkit-details-marker { display: none; }
+  .faq__i summary::after {
+    content: '+'; font-family: var(--mono); color: var(--redline); font-size: 1.125rem; flex: none;
+  }
+  .faq__i[open] summary::after { content: '–'; }
+  .faq__i > p { padding-bottom: var(--s5); max-width: var(--measure); }
+
+  /* ---- Final CTA ---- */
+  .cta { padding-block: clamp(4rem, 8vw, 7rem); border-top: 1px solid var(--rule); }
+  .cta__in { text-align: center; }
+  .cta__l { margin: var(--s4) auto 0; }
+  .cta__b { justify-content: center; margin-top: var(--s6); }
+
+  /* ---- Planner supporting copy ---- */
+  .pln__meta {
+    display: grid; grid-template-columns: 1fr 1fr; gap: var(--s6);
+    margin-top: var(--s7); padding-top: var(--s5); border-top: 1px solid var(--rule);
+  }
+  .pln__meta .h3 { margin-bottom: var(--s2); }
+  @media (max-width: 48rem) { .pln__meta { grid-template-columns: 1fr; gap: var(--s5); } }
+</style>

@@ -1,0 +1,109 @@
+---
+const nav = [
+  { href: '/#services',   label: 'Services' },
+  { href: '/#packages',   label: 'Packages' },
+  { href: '/#industries', label: 'Industries' },
+  { href: '/#work',       label: 'Work' },
+  { href: '/process',     label: 'Process' },
+  { href: '/about',       label: 'About' },
+  { href: '/contact',     label: 'Contact' },
+];
+---
+<header class="hdr" id="hdr">
+  <div class="container hdr__in">
+    <a class="wm" href="/" aria-label="JP Web Design — home">
+      <span class="wm__i">JP</span>
+      <span class="wm__t">Web Design</span>
+    </a>
+
+    <nav class="nav" id="nav" aria-label="Primary">
+      <ul class="nav__l">
+        {nav.map((i) => <li><a class="nav__a" href={i.href}>{i.label}</a></li>)}
+      </ul>
+      <a class="btn btn--primary btn--sm nav__cta" href="/#planner">Start Your Project</a>
+    </nav>
+
+    <button class="tgl" id="tgl" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu">
+      <span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<style>
+  .hdr {
+    position: sticky; top: 0; z-index: 100;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid transparent;
+    transition: border-color .2s var(--ease);
+  }
+  .hdr.on { border-bottom-color: var(--rule); }
+  .hdr__in { display: flex; align-items: center; justify-content: space-between; gap: var(--s5); min-height: var(--header-h); }
+
+  .wm { display: inline-flex; align-items: center; gap: .5rem; text-decoration: none; }
+  .wm__i {
+    font-family: var(--mono); font-weight: 600; font-size: .8125rem; letter-spacing: .04em;
+    background: var(--ink); color: var(--paper);
+    padding: .25rem .375rem; border-radius: 2px;
+  }
+  .wm__t { font-weight: 640; letter-spacing: -.014em; font-size: 1rem; }
+
+  .nav { display: flex; align-items: center; gap: var(--s6); }
+  .nav__l { display: flex; align-items: center; gap: var(--s5); }
+  .nav__a {
+    font-size: var(--fs-small); color: var(--graphite); text-decoration: none;
+    padding-block: var(--s2); transition: color .18s var(--ease);
+  }
+  .nav__a:hover { color: var(--ink); }
+
+  .tgl {
+    display: none; flex-direction: column; gap: 5px; justify-content: center;
+    width: 2.75rem; height: 2.75rem; padding: 0;
+    background: none; border: 1px solid var(--rule-hi); border-radius: 2px; cursor: pointer;
+  }
+  .tgl span { width: 1.125rem; height: 1.5px; margin-inline: auto; background: var(--ink); transition: transform .2s var(--ease); }
+  .tgl[aria-expanded='true'] span:first-child { transform: translateY(3.25px) rotate(45deg); }
+  .tgl[aria-expanded='true'] span:last-child  { transform: translateY(-3.25px) rotate(-45deg); }
+
+  /* Full-screen overlay on mobile — a cramped drawer that leaves the page
+     half-visible behind it is the failure mode we're avoiding. */
+  @media (max-width: 60rem) {
+    .tgl { display: flex; }
+    .nav {
+      position: fixed; inset: var(--header-h) 0 0 0;
+      flex-direction: column; align-items: stretch; justify-content: flex-start;
+      gap: var(--s5); padding: var(--s6) var(--gutter) var(--s8);
+      background: var(--paper); overflow-y: auto;
+      opacity: 0; visibility: hidden; transform: translateY(-6px);
+      transition: opacity .2s var(--ease), transform .2s var(--ease), visibility .2s;
+    }
+    .nav.open { opacity: 1; visibility: visible; transform: none; }
+    .nav__l { flex-direction: column; align-items: stretch; gap: 0; }
+    .nav__a { display: block; padding-block: var(--s4); font-size: 1.125rem; color: var(--ink); border-bottom: 1px solid var(--rule); }
+    /* Primary action sits last and full-width — bottom-of-screen reach. */
+    .nav__cta { justify-content: center; padding-block: .9375rem; }
+  }
+</style>
+
+<script>
+  const hdr = document.getElementById('hdr')!;
+  const nav = document.getElementById('nav')!;
+  const tgl = document.getElementById('tgl')!;
+
+  const onScroll = () => hdr.classList.toggle('on', window.scrollY > 4);
+  onScroll();
+  addEventListener('scroll', onScroll, { passive: true });
+
+  const set = (open: boolean) => {
+    nav.classList.toggle('open', open);
+    tgl.setAttribute('aria-expanded', String(open));
+    tgl.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+
+  tgl.addEventListener('click', () => set(tgl.getAttribute('aria-expanded') !== 'true'));
+  nav.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('a')) set(false); });
+  addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && nav.classList.contains('open')) { set(false); tgl.focus(); }
+  });
+</script>
