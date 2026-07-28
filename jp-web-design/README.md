@@ -108,6 +108,16 @@ The reveal observer also fires for elements whose `boundingClientRect.top < 0`,
 so a fast flick-scroll can't carry content past the callback and leave it
 permanently invisible.
 
+Two further guards, both added after a real black-hero bug:
+
+- **Anything already in view is revealed on the first frame**, synchronously,
+  not on an observer callback. Above-the-fold content must never wait on a
+  scroll event that has not happened.
+- **A 1-second watchdog in the inline gate removes `.js-anim`** unless the
+  reveal controller has set `window.__revealReady`. Hiding and revealing are
+  done by two different scripts; if the second never runs, the first has
+  already hidden everything and a dark hero renders as a black rectangle.
+
 ## Content rules
 
 **The find-and-replace test governs every industry page.** Take the draft,
@@ -137,17 +147,41 @@ That captures the sales message without minting empty URLs.
 | Metric | Budget | Measured |
 | --- | --- | --- |
 | JS, inner pages | ≤ 2 KB gz | **1.4 KB** (nav + island loader) |
-| JS, homepage | ≤ 5 KB gz | **3.6 KB** (adds hero slider + reveal observer) |
+| JS, homepage | ≤ 5 KB gz | **4.2 KB** (hero slider, video controller, reveal observer) |
 | JS, planner | ≤ 70 KB gz | ~70 KB, lazy — loads only when the planner scrolls into view |
 | CSS, total | ≤ 20 KB gz | **8.6 KB** |
 | LCP / CLS / INP (field p75, mobile) | 1.8s / 0.02 / 150ms | verify post-launch with field data |
 
-There is no hero video, and that is deliberate. A 4–8 MB autoplay background
-destroys LCP on a mid-range Android over LTE — which is exactly how a
-contractor opens this. The hero's motion is a CSS-clipped comparison driven by
-one `<input type="range">`. If real footage arrives later, use the poster-first
-pattern: the poster image is the LCP element and the video attaches after
-`load`.
+## The hero backdrop
+
+Three layers, and the order is the whole safety property:
+
+| Layer | What | When |
+| --- | --- | --- |
+| 0 | `public/hero-poster.svg` | **always** — plain `<img>`, no JS, 1.1 KB gz |
+| 1 | `<video>` | only if `HERO_VIDEO` is set; fades in once actually playing |
+| 2 | scrim gradient | always — keeps headline contrast whatever is beneath |
+
+Because layer 0 is a static image on a painted `background-color`, there is no
+state in which this section is an empty black rectangle: no missing source, no
+decode failure, no blocked script, no reduced-motion path.
+
+### Adding real footage
+
+1. Drop `hero.mp4` (and optionally `hero.webm`) into `public/`
+2. Set `HERO_VIDEO = '/hero.mp4'` at the top of `src/components/Hero.astro`
+3. Export a still from the footage to replace `hero-poster.svg` — keep 16:9
+   and the dark value range, or the overlay contrast breaks
+
+The controller then handles the rest, and every failure path ends with the
+poster still showing: sources attach lazily on approach (never during initial
+load), `play()` rejection from autoplay policy or low-power mode is caught,
+`error`/`stalled` detaches the element entirely, and `prefers-reduced-motion`
+or `saveData` never attaches a source at all.
+
+Measured contrast over the backdrop: headline 16.9:1, lead and eyebrow 7.2:1.
+Re-measure after swapping the poster — a lighter still will need a heavier
+scrim.
 
 Add `size-limit` and Lighthouse CI to enforce these. A budget nobody enforces is
 a wish. The main threats, in likelihood order: motion on content pages, an

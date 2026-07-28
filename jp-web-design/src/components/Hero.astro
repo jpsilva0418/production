@@ -1,18 +1,49 @@
 ---
 /* ==========================================================================
-   HERO — the pitch, performed.
+   HERO
 
-   Not a background video. A live comparison of the website a business has
-   against the one it should have, which the visitor transforms themselves.
-   The interaction *is* the argument: nobody needs the difference explained
-   once their own hand has made it happen.
+   Backdrop contract — this is what stops the section ever rendering black:
 
-   Built entirely in HTML/CSS — no imagery, no video, no request. The control
-   is a real <input type="range">, so it is keyboard-operable and properly
-   labelled rather than a div with a mousemove listener.
+     layer 0  hero-poster.svg   ALWAYS painted, plain <img>, no JS, no
+                                autoplay, no decoding dependency
+     layer 1  <video>           optional, only rendered when HERO_VIDEO is
+                                set, fades in over the poster once it can
+                                actually play, removes itself on any error
+     layer 2  scrim             fixed gradient so headline contrast holds
+                                whatever is underneath
+
+   Because layer 0 is a static image sitting on a painted background, there
+   is no state — no missing source, no decode failure, no blocked script, no
+   reduced-motion path — in which this section is an empty black rectangle.
+
+   To use real footage: drop the file in /public, set HERO_VIDEO below, and
+   export a still to replace hero-poster.svg. Nothing else changes.
    ========================================================================== */
+
+/* Set to e.g. '/hero.mp4' when footage exists. null → poster only. */
+const HERO_VIDEO: string | null = null;
+const HERO_VIDEO_WEBM: string | null = null;
+const HERO_POSTER = '/hero-poster.svg';
 ---
-<section class="hero dark grain" aria-labelledby="hero-h">
+<section class="hero dark grain" aria-labelledby="hero-h" data-hero>
+
+  <div class="hero__bg" aria-hidden="true">
+    <!-- Layer 0. Always present. eager + high priority: this is the LCP
+         paint for the section and must never wait on anything. -->
+    <img class="hero__poster" src={HERO_POSTER} alt=""
+         width="1600" height="900" fetchpriority="high" decoding="async" />
+
+    {HERO_VIDEO && (
+      <video class="hero__video" id="heroVideo"
+             poster={HERO_POSTER}
+             muted playsinline loop preload="none"
+             tabindex="-1" aria-hidden="true"
+             data-src={HERO_VIDEO} data-src-webm={HERO_VIDEO_WEBM}></video>
+    )}
+
+    <span class="hero__scrim"></span>
+  </div>
+
   <div class="container hero__in">
 
     <div class="hero__copy">
@@ -126,9 +157,48 @@
 
 <style>
   .hero {
+    position: relative;
     padding-block: clamp(3rem, 7vw, 6rem) clamp(3.5rem, 8vw, 7rem);
     overflow: hidden;
+    /* Painted colour under everything, so even a failed image request
+       leaves a designed surface rather than a void. */
+    background-color: var(--void);
   }
+
+  .hero__bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+  .hero__poster,
+  .hero__video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    display: block;
+  }
+  /* Video starts transparent and is only faded up once it is genuinely
+     playing. If it never plays, the poster is simply never covered. */
+  .hero__video { opacity: 0; transition: opacity .8s var(--ease); }
+  .hero__video.is-playing { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) {
+    .hero__video { display: none; }
+  }
+
+  /* Readability scrim — sized so the copy column keeps full contrast on
+     desktop and the whole field darkens on narrow screens where the text
+     spans the width. */
+  .hero__scrim {
+    position: absolute; inset: 0;
+    background:
+      /* Heavy over the copy column, light over the comparison frame, which
+         is opaque anyway. Tuned by measuring rendered contrast, not by eye. */
+      linear-gradient(90deg, rgba(11,12,14,.80) 0%, rgba(11,12,14,.62) 38%, rgba(11,12,14,.12) 100%),
+      linear-gradient(180deg, rgba(11,12,14,.28) 0%, rgba(11,12,14,0) 36%, rgba(11,12,14,.34) 100%);
+  }
+  @media (max-width: 62rem) {
+    .hero__scrim { background: linear-gradient(180deg, rgba(11,12,14,.86), rgba(11,12,14,.8)); }
+  }
+
+  /* Content above the backdrop. The grain overlay sits between the two. */
+  .hero .hero__in { position: relative; z-index: 2; }
+  .hero.grain::after { z-index: 1; }
   .hero__in {
     display: grid;
     grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
@@ -319,6 +389,73 @@
 </style>
 
 <script>
+  /* ---------------------------------------------------------------------
+     Hero video controller.
+
+     Runs only if a <video> was rendered (HERO_VIDEO set). Every path ends
+     with the poster still visible, so failure is invisible rather than black:
+
+       · sources attach lazily, on approach, never during initial load
+       · play() is a promise — a rejection (autoplay policy, low power mode,
+         data saver) is caught and the poster simply stays
+       · any error/stalled event detaches the video entirely
+       · reduced-motion never attaches a source at all
+     --------------------------------------------------------------------- */
+  const video = document.getElementById('heroVideo') as HTMLVideoElement | null;
+
+  if (video) {
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const saveData = (navigator as any).connection?.saveData === true;
+
+    const giveUp = () => {
+      video.classList.remove('is-playing');
+      video.removeAttribute('src');
+      try { video.load(); } catch (e) {}
+      video.remove();               // poster is underneath, untouched
+    };
+
+    if (reduced || saveData) {
+      giveUp();
+    } else {
+      const attach = () => {
+        video.addEventListener('error', giveUp, { once: true });
+        video.addEventListener('stalled', giveUp, { once: true });
+
+        const webm = video.dataset.srcWebm;
+        if (webm) {
+          const s1 = document.createElement('source');
+          s1.src = webm; s1.type = 'video/webm';
+          video.appendChild(s1);
+        }
+        const mp4 = video.dataset.src;
+        if (mp4) {
+          const s2 = document.createElement('source');
+          s2.src = mp4; s2.type = 'video/mp4';
+          s2.addEventListener('error', giveUp, { once: true });
+          video.appendChild(s2);
+        }
+
+        video.addEventListener('playing', () => video.classList.add('is-playing'), { once: true });
+
+        video.preload = 'auto';
+        video.load();
+
+        const p = video.play();
+        if (p && typeof p.catch === 'function') p.catch(giveUp);
+      };
+
+      /* Lazy: don't compete with the LCP paint. */
+      if ('IntersectionObserver' in window) {
+        const vio = new IntersectionObserver((es) => {
+          es.forEach((e) => { if (e.isIntersecting) { vio.disconnect(); attach(); } });
+        }, { rootMargin: '200px' });
+        vio.observe(video);
+      } else {
+        addEventListener('load', attach, { once: true });
+      }
+    }
+  }
+
   /* Slider → CSS custom property. rAF-throttled so dragging never triggers
      layout work per input event. */
   const frame = document.getElementById('cmp');

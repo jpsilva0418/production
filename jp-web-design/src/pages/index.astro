@@ -104,9 +104,18 @@ const faqSchema = {
        not a blank one. */
     (function () {
       try {
-        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-          document.documentElement.classList.add('js-anim');
-        }
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var root = document.documentElement;
+        root.classList.add('js-anim');
+
+        /* Watchdog. Hiding and revealing are done by two different scripts;
+           if the second one never runs — bundle blocked, CSP, a JS error, an
+           extension — the first has already hidden everything and the dark
+           hero renders as a black rectangle. This guarantees that cannot
+           outlive a second. */
+        setTimeout(function () {
+          if (!window.__revealReady) root.classList.remove('js-anim');
+        }, 1000);
       } catch (e) {}
     })();
   </script>
@@ -692,6 +701,17 @@ const faqSchema = {
      crawler sees a finished page rather than an empty one. */
   const els = document.querySelectorAll<HTMLElement>('[data-anim]');
 
+  /* Tell the watchdog the reveal controller is alive. */
+  (window as any).__revealReady = true;
+
+  /* Anything already in view — the entire hero — is revealed on this frame
+     rather than waiting for an observer callback. Above-the-fold content
+     should never depend on a scroll event that has not happened. */
+  const vh = window.innerHeight || document.documentElement.clientHeight;
+  els.forEach((el) => {
+    if (el.getBoundingClientRect().top < vh) el.classList.add('in');
+  });
+
   if (document.documentElement.classList.contains('js-anim') && 'IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
@@ -704,7 +724,7 @@ const faqSchema = {
       });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
 
-    els.forEach((el) => io.observe(el));
+    els.forEach((el) => { if (!el.classList.contains('in')) io.observe(el); });
   } else {
     /* No observer support: reveal everything immediately rather than leaving
        anything hidden. */

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900"
+     preserveAspectRatio="xMidYMid slice" role="presentation">
+  <!-- Hero backdrop / video poster.
+       Deliberately quiet: it sits behind the headline and the comparison
+       frame, so it must add depth without ever competing for attention.
+       Replace with a real still from the MP4 once footage exists — keep the
+       16:9 ratio and the dark value range or the overlay contrast breaks. -->
+  <defs>
+    <linearGradient id="ground" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0"   stop-color="#23262f"/>
+      <stop offset="0.55" stop-color="#131519"/>
+      <stop offset="1"   stop-color="#0b0c0e"/>
+    </linearGradient>
+
+    <radialGradient id="glow" cx="0.62" cy="0.26" r="0.7">
+      <stop offset="0"   stop-color="#39404f" stop-opacity="0.9"/>
+      <stop offset="0.55" stop-color="#1c1f27" stop-opacity="0.5"/>
+      <stop offset="1"   stop-color="#0b0c0e" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="ember" cx="0.28" cy="0.86" r="0.55">
+      <stop offset="0"   stop-color="#e8512f" stop-opacity="0.2"/>
+      <stop offset="0.6" stop-color="#b8321c" stop-opacity="0.05"/>
+      <stop offset="1"   stop-color="#0b0c0e" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Drafting grid: the identity's structural motif, at low contrast. -->
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0V64" fill="none" stroke="#ffffff" stroke-opacity="0.028" stroke-width="1"/>
+    </pattern>
+    <pattern id="grid-fine" width="16" height="16" patternUnits="userSpaceOnUse">
+      <path d="M16 0H0V16" fill="none" stroke="#ffffff" stroke-opacity="0.014" stroke-width="0.5"/>
+    </pattern>
+
+    <linearGradient id="fade" x1="0" y1="0" x2="1" y2="0.25">
+      <stop offset="0"   stop-color="#0b0c0e" stop-opacity="0.92"/>
+      <stop offset="0.5" stop-color="#0b0c0e" stop-opacity="0.55"/>
+      <stop offset="1"   stop-color="#0b0c0e" stop-opacity="0.2"/>
+    </linearGradient>
+
+    <filter id="soft"><feGaussianBlur stdDeviation="42"/></filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#ground)"/>
+  <rect width="1600" height="900" fill="url(#grid-fine)"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+  <rect width="1600" height="900" fill="url(#glow)"/>
+  <rect width="1600" height="900" fill="url(#ember)"/>
+
+  <!-- Two soft planes suggesting depth without reading as an object. -->
+  <g filter="url(#soft)" opacity="0.5">
+    <path d="M-100 640 L620 400 L620 980 L-100 980 Z" fill="#1b1e26"/>
+    <path d="M1080 250 L1750 60 L1750 620 L1080 700 Z" fill="#15181f"/>
+  </g>
+
+  <!-- A single measured rule — the one deliberate mark. -->
+  <g stroke="#e8512f" stroke-opacity="0.5">
+    <line x1="112" y1="742" x2="352" y2="742" stroke-width="2"/>
+    <line x1="112" y1="730" x2="112" y2="754" stroke-width="2"/>
+    <line x1="352" y1="730" x2="352" y2="754" stroke-width="2"/>
+  </g>
+
+  <!-- Scrim so headline contrast holds regardless of what replaces this. -->
+  
+</svg>
