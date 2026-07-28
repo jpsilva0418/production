@@ -127,24 +127,23 @@ const faqSchema = {
        after a dense interactive hero, the page needs to exhale before it
        starts selling anything. ═══════════════════════════════════════════ -->
   <section class="stake" aria-labelledby="stake-h">
-    <div class="container">
-      <p class="mark" data-anim><b>§01</b> Why it matters</p>
+    <div class="container stake__in">
+      <p class="mark stake__mark" data-anim><b>§01</b> Why it matters</p>
+
       <h2 class="stake__h" id="stake-h" data-anim>
-        Good businesses lose work<br />
-        to worse ones with<br />
-        <em>better websites.</em>
+        <span class="rise"><span>Good businesses</span></span>
+        <span class="rise"><span>lose work to worse</span></span>
+        <span class="rise"><span>ones with <em>better</em></span></span>
+        <span class="rise"><span><em>websites</em><span class="hero__stop">.</span></span></span>
       </h2>
-      <div class="stake__grid">
-        <p class="stake__p" data-anim style="--d:80ms">
-          It is rarely a fair fight. The competitor who wins the call is not always better at
-          the work — they are just easier to believe in the ninety seconds someone spends
-          deciding.
-        </p>
-        <p class="stake__p" data-anim style="--d:160ms">
-          That is a solvable problem, and it is the only one I work on. Not awards, not
-          trends. The gap between how good you are and how good you look to a stranger.
-        </p>
-      </div>
+
+      <!-- Deliberately offset to the far corner and set small. The statement
+           owns the screen; this is a footnote to it, not a second column. -->
+      <p class="stake__note" data-anim style="--d:240ms">
+        It is rarely a fair fight. The competitor who wins the call is not always better at
+        the work — they are just easier to believe in the ninety seconds someone spends
+        deciding. That gap is the only problem I work on.
+      </p>
     </div>
   </section>
 
@@ -328,12 +327,22 @@ const faqSchema = {
   <section class="section prc" id="process" aria-labelledby="prc-h">
     <div class="container">
       <p class="mark" data-anim><b>§07</b> Process</p>
-      <div class="prc__top">
-        <h2 class="h2" id="prc-h" data-anim>Nine steps. About four hours of your time.</h2>
-        <p class="lead" data-anim style="--d:80ms">
-          The most common reason a website project drags on for months is that the client
-          quietly gets handed the work. Here is exactly who does what.
+
+      <div class="prc__hero">
+        <p class="prc__fig" data-anim aria-hidden="true">
+          <span class="prc__num">4</span><span class="prc__unit">hrs</span>
         </p>
+        <div class="prc__claim">
+          <h2 class="prc__h" id="prc-h" data-anim style="--d:60ms">
+            Four hours. That is your entire time commitment.
+          </h2>
+          <p class="lead" data-anim style="--d:120ms">
+            The reason these projects drag on for months is never design. It is that the
+            client quietly gets handed the work — the copy, the photo sourcing, the
+            chasing. Nine steps below, and the column on the right is what each one
+            actually costs you.
+          </p>
+        </div>
       </div>
 
       <ol class="prc__l">
@@ -424,21 +433,22 @@ const faqSchema = {
         </p>
       </div>
 
-      <ul class="why__g">
+      <ol class="why__l">
         {[
-          ['You own everything', 'Domain, hosting, code, content, analytics — in your name from day one. No licence, no lease, no hostage situation at renewal.'],
-          ['Fixed scope and date', 'Written down before work starts. Revision rounds are named, so there is never an argument about which round we are on.'],
-          ['One project at a time', 'Yours is not queued behind five others. It also means availability is genuinely limited, and I will say so rather than overpromise.'],
-          ['Content is my job', 'You talk for an hour and correct a draft. Nobody hands you a spreadsheet and asks you to write your own website.'],
-          ['Built to a budget', 'Speed and accessibility targets are enforced by the build itself, not checked once at the end and quietly forgotten.'],
-          ['Straight answers', 'If a cheaper option is genuinely right for you, I will tell you. Sometimes the honest answer is a template and a weekend.'],
+          ['You own everything.', 'Domain, hosting, code, content, analytics — in your name from day one. No licence, no lease, no hostage situation at renewal.'],
+          ['The date is fixed before we start.', 'So is the scope and the price. Revision rounds are named, so there is never an argument about which round we are on.'],
+          ['One project at a time.', 'Yours is not queued behind five others. It also means availability is genuinely limited, and I will say so rather than overpromise.'],
+          ['You do not write your own website.', 'You talk for an hour and correct a draft. Nobody hands a business owner a spreadsheet and calls it collaboration.'],
+          ['Speed is enforced, not promised.', 'The performance budget fails the build. It is not a line in a proposal that nobody checks after launch.'],
+          ['I will talk you out of it.', 'If a cheaper option is genuinely right for you, I will say so. Sometimes the honest answer is a template and a weekend.'],
         ].map(([t, d], i) => (
-          <li class="why__i" data-anim style={`--d:${i * 50}ms`}>
+          <li class="why__r" data-anim style={`--d:${i * 60}ms`}>
+            <span class="why__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
             <h3 class="why__t">{t}</h3>
             <p class="why__d">{d}</p>
           </li>
         ))}
-      </ul>
+      </ol>
     </div>
   </section>
 
@@ -479,25 +489,42 @@ const faqSchema = {
 </Base>
 
 <style>
-  /* ── The stake ───────────────────────────────────────────────────────── */
-  .stake { padding-block: clamp(4.5rem, 10vw, 9rem); }
+  /* ── The stake: a full-height pause ──────────────────────────────────── */
+  .stake { padding-block: clamp(4rem, 9vw, 7rem); }
+  .stake__in {
+    min-height: min(78svh, 46rem);
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: clamp(2rem, 5vw, 3.5rem);
+  }
+  .stake__mark { margin-bottom: 0; }
+
   .stake__h {
-    font-size: var(--fs-mega); line-height: 1.02; letter-spacing: -.035em;
-    font-weight: 690; margin-bottom: clamp(2.5rem, 5vw, 4rem);
+    align-self: center;
+    /* Larger than anything else on the page, including the hero. This is the
+       one line the whole argument rests on, and scale is how a page says so. */
+    font-size: clamp(2.5rem, 7.6vw, 6.5rem);
+    line-height: .96; letter-spacing: -.042em; font-weight: 700;
+    text-wrap: initial;   /* explicit line breaks; balancing would fight them */
   }
   .stake__h em { font-style: normal; color: var(--redline); }
-  .stake__grid {
-    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(1.5rem, 4vw, 4rem);
-    /* Offset into the right two-thirds — the asymmetry keeps a statement
-       section from reading as a centred inspirational quote. */
-    margin-left: auto; max-width: 58rem;
+
+  .stake__note {
+    justify-self: end; max-width: 42ch;
+    font-size: var(--fs-small); color: var(--graphite);
+    padding-top: var(--s4); border-top: 1px solid var(--rule);
   }
-  .stake__p { font-size: 1.0625rem; color: var(--graphite); max-width: 40ch; }
-  @media (max-width: 46rem) { .stake__grid { grid-template-columns: 1fr; } }
+  @media (max-width: 46rem) {
+    .stake__in { min-height: 0; }
+    .stake__note { justify-self: start; }
+  }
 
   /* ── Offer ───────────────────────────────────────────────────────────── */
-  .offer__g { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s5); align-items: stretch; }
+  .offer__g {
+    display: grid;
+    grid-template-columns: minmax(0, 1.32fr) minmax(0, 1fr);
+    gap: var(--s5); align-items: stretch;
+  }
   @media (max-width: 52rem) { .offer__g { grid-template-columns: 1fr; } }
   .offer__c {
     display: flex; flex-direction: column; gap: var(--s3);
@@ -506,7 +533,13 @@ const faqSchema = {
     transition: border-color .25s var(--ease), transform .25s var(--ease);
   }
   .offer__c:hover { border-color: var(--rule-hi); transform: translateY(-2px); }
-  .offer__c--lead { border-color: var(--ink); border-width: 2px; }
+  /* The demo carries the weight: darker edge, larger heading, roomier. */
+  .offer__c--lead {
+    border-color: var(--ink); border-width: 2px;
+    padding: clamp(1.5rem, 3.2vw, 2.25rem);
+  }
+  .offer__c--lead .offer__t { font-size: clamp(1.25rem, 2.2vw, 1.625rem); letter-spacing: -.022em; }
+  .offer__c--lead .offer__l { font-size: var(--fs-body); }
   .offer__k {
     font-family: var(--mono); font-size: var(--fs-label); letter-spacing: .12em;
     text-transform: uppercase; color: var(--redline);
@@ -610,11 +643,33 @@ const faqSchema = {
   .ind__also { margin-top: var(--s7); max-width: 68ch; }
 
   /* ── Process ─────────────────────────────────────────────────────────── */
-  .prc__top {
-    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: var(--s6); align-items: end; margin-bottom: var(--s7);
+  /* The number is the argument. Set at a scale nothing else on the page
+     reaches, and hung off the baseline of the claim beside it. */
+  .prc__hero {
+    display: grid; grid-template-columns: auto minmax(0, 1fr);
+    gap: clamp(1.5rem, 5vw, 4rem); align-items: end;
+    margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
   }
-  @media (max-width: 52rem) { .prc__top { grid-template-columns: 1fr; gap: var(--s4); } }
+  .prc__fig {
+    display: flex; align-items: baseline; gap: .1em;
+    line-height: .78; letter-spacing: -.06em; font-weight: 700;
+    color: var(--ink);
+  }
+  .prc__num { font-size: clamp(6rem, 17vw, 15rem); }
+  .prc__unit {
+    font-family: var(--mono); font-size: clamp(1rem, 2.2vw, 1.75rem);
+    font-weight: 400; letter-spacing: -.01em; color: var(--redline);
+  }
+  .prc__claim { padding-bottom: clamp(.5rem, 1.5vw, 1.25rem); }
+  .prc__h {
+    font-size: clamp(1.5rem, 3vw, 2.25rem); line-height: 1.12;
+    letter-spacing: -.026em; font-weight: 660; margin-bottom: var(--s4);
+    max-width: 24ch;
+  }
+  @media (max-width: 60rem) {
+    .prc__hero { grid-template-columns: 1fr; align-items: start; gap: var(--s5); }
+    .prc__claim { padding-bottom: 0; }
+  }
 
   .prc__l { border-top: 1px solid var(--rule); counter-reset: step; }
   .prc__i {
@@ -653,12 +708,30 @@ const faqSchema = {
   }
 
   /* ── Why ─────────────────────────────────────────────────────────────── */
-  .why__g { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s7) var(--s5); }
-  @media (max-width: 62rem) { .why__g { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 40rem) { .why__g { grid-template-columns: 1fr; gap: var(--s6); } }
-  .why__i { padding-top: var(--s4); border-top: 1px solid var(--void-rule); }
-  .why__t { font-size: 1.0625rem; font-weight: 660; margin-bottom: var(--s2); }
-  .why__d { font-size: var(--fs-small); color: var(--void-mute); }
+  /* Statement left at scale, evidence right and small. The eye reads six
+     positions in a column, then drops into detail only where it snags. */
+  .why__l { border-top: 1px solid var(--void-rule); }
+  .why__r {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1.05fr) minmax(0, .95fr);
+    gap: clamp(1rem, 3vw, 2.5rem);
+    align-items: baseline;
+    padding: clamp(1.35rem, 3vw, 2.15rem) 0;
+    border-bottom: 1px solid var(--void-rule);
+  }
+  .why__n {
+    font-family: var(--mono); font-size: var(--fs-label);
+    letter-spacing: .1em; color: var(--ember);
+  }
+  .why__t {
+    font-size: clamp(1.25rem, 2.5vw, 1.875rem);
+    line-height: 1.14; letter-spacing: -.026em; font-weight: 650;
+  }
+  .why__d { font-size: var(--fs-small); color: var(--void-mute); max-width: 46ch; }
+  @media (max-width: 60rem) {
+    .why__r { grid-template-columns: 2.5rem 1fr; gap: var(--s2) var(--s4); }
+    .why__d { grid-column: 2; margin-top: var(--s2); }
+  }
 
   /* ── FAQ ─────────────────────────────────────────────────────────────── */
   .faq__w { max-width: 54rem; }
