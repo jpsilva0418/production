@@ -1,0 +1,382 @@
+---
+/* ==========================================================================
+   HERO — the pitch, performed.
+
+   Not a background video. A live comparison of the website a business has
+   against the one it should have, which the visitor transforms themselves.
+   The interaction *is* the argument: nobody needs the difference explained
+   once their own hand has made it happen.
+
+   Built entirely in HTML/CSS — no imagery, no video, no request. The control
+   is a real <input type="range">, so it is keyboard-operable and properly
+   labelled rather than a div with a mousemove listener.
+   ========================================================================== */
+---
+<section class="hero dark grain" aria-labelledby="hero-h">
+  <div class="container hero__in">
+
+    <div class="hero__copy">
+      <p class="hero__eyebrow" data-anim>
+        <span class="hero__dot" aria-hidden="true"></span>
+        Website design · United States
+      </p>
+
+      <h1 class="hero__h" id="hero-h" data-anim>
+        <span class="rise"><span>They decide</span></span>
+        <span class="rise"><span>before you</span></span>
+        <span class="rise"><span>ever pick up<span class="hero__stop">.</span></span></span>
+      </h1>
+
+      <p class="lead hero__lead" data-anim style="--d:120ms">
+        Someone hears your name, finds you, and forms an opinion in seconds —
+        long before they call, and you never find out it happened.
+        That moment is the whole job.
+      </p>
+
+      <div class="btn-row hero__cta" data-anim style="--d:200ms">
+        <a class="btn btn--primary" href="#offer">Get a Free Demo</a>
+        <a class="btn btn--ghost" href="#offer">Book a Free Consultation</a>
+      </div>
+
+      <p class="hero__note small" data-anim style="--d:280ms">
+        Both free. No obligation either way.
+      </p>
+    </div>
+
+    <!-- ---------------------------------------------------------------- -->
+    <figure class="cmp" data-anim style="--d:160ms">
+      <figcaption class="cmp__cap">
+        <span class="cmp__capk">Drag to compare</span>
+        <span class="cmp__caps">The same business, two websites</span>
+      </figcaption>
+
+      <div class="cmp__frame" id="cmp">
+        <div class="cmp__chrome" aria-hidden="true">
+          <span></span><span></span><span></span>
+          <p class="cmp__url">yourbusiness.com</p>
+        </div>
+
+        <div class="cmp__stage">
+          <!-- Both layers share the SAME six zones in the same order, so any
+               slider position reads as one coherent page rather than two
+               unrelated layouts butted together. That parallelism is the
+               entire trick behind a before/after that actually works. -->
+
+          <!-- BEFORE: underneath, always fully rendered -->
+          <div class="mini mini--old" aria-hidden="true">
+            <div class="z z--bar">
+              <span class="o-logo">YOUR BUSINESS LLC</span>
+              <span class="o-nav">Home | About | Services | Contact</span>
+            </div>
+            <div class="z z--kick"><span class="o-kick">*** Serving the area since 1998 ***</span></div>
+            <div class="z z--head"><span class="o-head">WELCOME TO OUR WEBSITE!</span></div>
+            <div class="z z--body">
+              <span class="o-body">We are a family owned and operated company. We pride ourselves on
+              quality workmanship and customer satisfaction. Please browse our site to learn
+              more about the many services that we offer to our valued customers.</span>
+            </div>
+            <div class="z z--act"><span class="o-btn">CLICK HERE FOR A FREE QUOTE!!</span></div>
+            <div class="z z--row">
+              <span class="o-box"></span><span class="o-box"></span><span class="o-box"></span>
+            </div>
+          </div>
+
+          <!-- AFTER: on top, revealed from the left where its content lives -->
+          <div class="mini mini--new" aria-hidden="true">
+            <div class="z z--bar">
+              <span class="n-logo">Your Business</span>
+              <span class="n-cta">Get an estimate</span>
+            </div>
+            <div class="z z--kick"><span class="n-kick">Licensed &amp; insured · Since 1998</span></div>
+            <div class="z z--head"><span class="n-head">Roofing that holds up to a New England winter.</span></div>
+            <div class="z z--body">
+              <span class="n-body">Free inspections. Most repairs finished within a week.</span>
+            </div>
+            <div class="z z--act"><span class="n-btn">Get an estimate →</span></div>
+            <div class="z z--row">
+              <span class="n-box"></span><span class="n-box"></span><span class="n-box"></span>
+            </div>
+          </div>
+
+          <span class="cmp__seam" aria-hidden="true">
+            <span class="cmp__grip"></span>
+          </span>
+        </div>
+
+        <label class="vh" for="cmp-range">
+          Reveal the redesigned website. 0 shows the current site, 100 shows the redesign.
+        </label>
+        <input class="cmp__range" id="cmp-range" type="range"
+               min="0" max="100" value="40" step="1"
+               aria-describedby="cmp-desc" />
+      </div>
+
+      <p class="vh" id="cmp-desc">
+        A side-by-side comparison of a dated business website and a redesigned version of
+        the same business. Move the slider to reveal the redesign.
+      </p>
+
+      <div class="cmp__legend" aria-hidden="true">
+        <span class="cmp__l cmp__l--new">What it becomes</span>
+        <span class="cmp__l cmp__l--old">What they have now</span>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: clamp(3rem, 7vw, 6rem) clamp(3.5rem, 8vw, 7rem);
+    overflow: hidden;
+  }
+  .hero__in {
+    display: grid;
+    grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+    gap: clamp(2.5rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+  @media (max-width: 62rem) {
+    .hero__in { grid-template-columns: 1fr; gap: var(--s7); }
+  }
+
+  .hero__eyebrow {
+    display: inline-flex; align-items: center; gap: .5rem;
+    font-family: var(--mono); font-size: var(--fs-label);
+    letter-spacing: .16em; text-transform: uppercase; color: var(--void-mute);
+    margin-bottom: var(--s5);
+  }
+  .hero__dot {
+    width: .4375rem; height: .4375rem; border-radius: 50%;
+    background: var(--ember);
+    box-shadow: 0 0 0 0 rgba(232, 81, 47, .55);
+    animation: pulse 2.8s ease-out infinite;
+  }
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(232, 81, 47, .5); }
+    70%  { box-shadow: 0 0 0 .5rem rgba(232, 81, 47, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(232, 81, 47, 0); }
+  }
+  @media (prefers-reduced-motion: reduce) { .hero__dot { animation: none; } }
+
+  /* Sized against the hero column, not the viewport — at --fs-display this
+     headline swallowed the whole fold and stopped reading as confident. */
+  .hero__h {
+    font-size: clamp(2.5rem, 5vw, 4.25rem);
+    line-height: 1.0; letter-spacing: -.035em; font-weight: 690;
+  }
+  /* The full stop is the one saturated mark in the headline. Punctuation as
+     the accent — cheaper and more confident than colouring a whole word. */
+  .hero__stop { color: var(--ember); }
+
+  .hero__lead { margin-top: var(--s5); max-width: 34ch; }
+  .hero__cta  { margin-top: var(--s6); }
+  .hero__note { margin-top: var(--s4); color: var(--void-mute); }
+
+  /* ---------------------------------------------------------------- compare */
+  .cmp { --x: 40%; margin: 0; }
+
+  .cmp__cap {
+    display: flex; align-items: baseline; gap: var(--s3);
+    margin-bottom: var(--s3); flex-wrap: wrap;
+  }
+  .cmp__capk {
+    font-family: var(--mono); font-size: var(--fs-label);
+    letter-spacing: .12em; text-transform: uppercase; color: var(--ember);
+  }
+  .cmp__caps { font-size: .8125rem; color: var(--void-mute); }
+
+  .cmp__frame {
+    position: relative;
+    border: 1px solid var(--void-rule); border-radius: 6px;
+    background: var(--void-2); overflow: hidden;
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .7);
+  }
+
+  .cmp__chrome {
+    display: flex; align-items: center; gap: .375rem;
+    padding: .5rem .75rem; border-bottom: 1px solid var(--void-rule);
+    background: #17181d;
+  }
+  .cmp__chrome > span {
+    width: .5rem; height: .5rem; border-radius: 50%; background: #34363c; flex: none;
+  }
+  .cmp__url {
+    margin-left: .5rem; font-family: var(--mono);
+    font-size: .6875rem; color: #6b7078;
+  }
+
+  .cmp__stage {
+    position: relative;
+    aspect-ratio: 16 / 11;
+    background: #fff;
+  }
+  @media (max-width: 40rem) { .cmp__stage { aspect-ratio: 3 / 3.4; } }
+
+  .mini {
+    position: absolute; inset: 0;
+    padding: clamp(.7rem, 1.9vw, 1.15rem);
+    display: flex; flex-direction: column;
+    font-size: clamp(.5rem, .95vw, .6875rem);
+    line-height: 1.45;
+  }
+  /* On a phone the frame is narrow, so the floor has to rise or the
+     comparison stops being readable — which would defeat the whole point. */
+  @media (max-width: 40rem) { .mini { font-size: .59rem; } }
+  /* Shared zone rhythm. Both layers use identical heights so the seam always
+     cuts through matching bands. */
+  .z { display: flex; align-items: center; }
+  .z--bar  { justify-content: space-between; gap: .5rem; height: 12%; flex: none; }
+  .z--kick { height: 8%;  flex: none; }
+  .z--head { height: 26%; flex: none; }
+  .z--body { height: 20%; flex: none; align-items: flex-start; }
+  .z--act  { height: 14%; flex: none; }
+  .z--row  { height: 20%; flex: none; gap: .4rem; align-items: stretch; }
+  .z--row > span { flex: 1; }
+
+  /* --- the site they have ------------------------------------------------ */
+  .mini--old { background: #fff; color: #222; font-family: "Times New Roman", Times, serif; }
+  .mini--old .z--bar { border-bottom: 2px solid #1a3d8f; }
+  .o-logo { font-weight: 700; color: #1a3d8f; font-size: 1.05em; white-space: nowrap; }
+  .o-nav  { color: #1a3d8f; text-decoration: underline; font-size: .9em; white-space: nowrap; }
+  .o-kick { color: #b8261a; font-size: .9em; }
+  .o-head { font-weight: 700; color: #b8261a; font-size: 1.75em; line-height: 1.1; }
+  .o-body { color: #333; }
+  .o-btn  {
+    background: linear-gradient(#7ec24a, #4f9421); border: 1px solid #3d7418;
+    color: #fff; font-weight: 700; padding: .25rem .55rem; border-radius: 3px; font-size: .95em;
+    white-space: nowrap;
+  }
+  .o-box  { background: #d9dde6; border: 1px solid #b9bfcc; }
+
+  /* --- what it becomes ---------------------------------------------------- */
+  .mini--new {
+    background: #fbfaf8; color: #16181c; font-family: var(--sans);
+    /* Revealed from the LEFT, which is where this layout puts its content.
+       Clipping from the right showed an empty margin and read as a bug. */
+    clip-path: inset(0 calc(100% - var(--x)) 0 0);
+  }
+  .mini--new .z--bar { border-bottom: 1px solid #e6e2da; }
+  .n-logo { font-weight: 650; letter-spacing: -.01em; font-size: 1.05em; white-space: nowrap; }
+  .n-cta  {
+    background: #b8321c; color: #fff; font-weight: 600;
+    padding: .22rem .5rem; border-radius: 2px; font-size: .9em; white-space: nowrap;
+  }
+  .n-kick {
+    font-family: var(--mono); font-size: .8em; letter-spacing: .1em;
+    text-transform: uppercase; color: #b8321c; white-space: nowrap;
+  }
+  .n-head {
+    font-size: 2em; line-height: 1.05; letter-spacing: -.03em; font-weight: 700;
+    max-width: 15ch;
+  }
+  .n-body { color: #5c626a; }
+  .n-btn  {
+    background: #16181c; color: #fbfaf8; font-weight: 600;
+    padding: .3rem .65rem; border-radius: 2px; font-size: .95em; white-space: nowrap;
+  }
+  .n-box  { background: #efece6; border-radius: 2px; }
+
+  /* --- seam + control ----------------------------------------------------- */
+  .cmp__seam {
+    position: absolute; top: 0; bottom: 0; left: var(--x);
+    width: 2px; background: var(--ember);
+    transform: translateX(-1px); pointer-events: none; z-index: 3;
+  }
+  .cmp__grip {
+    position: absolute; top: 50%; left: 50%;
+    width: 2.25rem; height: 2.25rem; transform: translate(-50%, -50%);
+    border-radius: 50%; background: var(--ember);
+    display: grid; place-items: center;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, .4);
+  }
+  .cmp__grip::before {
+    content: '⟵ ⟶'; font-size: .5rem; color: #fff; letter-spacing: -.06em; white-space: nowrap;
+  }
+
+  /* The real control: a range input laid over the frame. Invisible thumb,
+     full-height hit area, native keyboard behaviour. */
+  .cmp__range {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    margin: 0; padding: 0; z-index: 4;
+    appearance: none; background: transparent; cursor: ew-resize;
+  }
+  .cmp__range::-webkit-slider-thumb {
+    appearance: none; width: 2.75rem; height: 100vh; background: transparent; cursor: ew-resize;
+  }
+  .cmp__range::-moz-range-thumb {
+    width: 2.75rem; height: 100vh; background: transparent; border: 0; cursor: ew-resize;
+  }
+  .cmp__range:focus-visible { outline: 2px solid var(--ember); outline-offset: 3px; }
+
+  .cmp__legend {
+    display: flex; justify-content: space-between; gap: var(--s3);
+    margin-top: var(--s3);
+    font-family: var(--mono); font-size: var(--fs-label);
+    letter-spacing: .1em; text-transform: uppercase;
+  }
+  .cmp__l--old { color: var(--void-mute); }
+  .cmp__l--new { color: var(--ember); }
+</style>
+
+<script>
+  /* Slider → CSS custom property. rAF-throttled so dragging never triggers
+     layout work per input event. */
+  const frame = document.getElementById('cmp');
+  const range = document.getElementById('cmp-range') as HTMLInputElement | null;
+
+  if (frame && range) {
+    const fig = frame.closest('.cmp') as HTMLElement;
+    let queued = false;
+
+    const paint = () => {
+      queued = false;
+      fig.style.setProperty('--x', range.value + '%');
+    };
+    const onInput = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(paint);
+    };
+
+    /* Narrow viewport: start further right so the redesigned side — the one
+       that carries the argument — has enough width to actually be read. */
+    if (window.innerWidth < 640) range.value = '58';
+
+    range.addEventListener('input', onInput);
+    paint();
+
+    /* A single slow sweep on first view, so the affordance is discovered
+       without a "drag me" animation running forever in the corner of the eye.
+       Cancelled the moment the visitor touches it. */
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduced) {
+      let played = false;
+      const sweep = () => {
+        if (played) return;
+        played = true;
+        const from = Number(range.value), to = window.innerWidth < 640 ? 72 : 58, dur = 1100;   /* rests balanced, both sides legible */
+        let t0: number | null = null;
+        let cancelled = false;
+        const stop = () => { cancelled = true; };
+        range.addEventListener('pointerdown', stop, { once: true });
+        range.addEventListener('keydown', stop, { once: true });
+
+        const step = (t: number) => {
+          if (cancelled) return;
+          if (t0 === null) t0 = t;
+          const p = Math.min((t - t0) / dur, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          range.value = String(Math.round(from + (to - from) * eased));
+          paint();
+          if (p < 1) requestAnimationFrame(step);
+        };
+        setTimeout(() => requestAnimationFrame(step), 700);
+      };
+
+      const io = new IntersectionObserver((es) => {
+        es.forEach((e) => { if (e.isIntersecting) { sweep(); io.disconnect(); } });
+      }, { threshold: 0.4 });
+      io.observe(frame);
+    }
+  }
+</script>

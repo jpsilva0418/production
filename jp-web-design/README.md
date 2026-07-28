@@ -92,6 +92,22 @@ Set `Reply-To` to the prospect so replying is one keystroke, and send an
 autoresponse restating the one-business-day SLA. That autoresponse is the most
 neglected conversion surface in the whole pipeline.
 
+## Motion
+
+One rule governs every animation: **the hide state is scoped to `.js-anim`**, a
+class set by a synchronous inline script that runs before paint. No JS, a
+failed bundle, or `prefers-reduced-motion` → the class never appears and the
+page renders finished.
+
+This inversion is the whole safety property. The conventional
+`[data-anim] { opacity: 0 }` means one script error blanks the site — the
+standard way scroll-reveals fail in production. Verified: with JavaScript
+disabled the homepage renders 18,000+ characters with zero hidden elements.
+
+The reveal observer also fires for elements whose `boundingClientRect.top < 0`,
+so a fast flick-scroll can't carry content past the callback and leave it
+permanently invisible.
+
 ## Content rules
 
 **The find-and-replace test governs every industry page.** Take the draft,
@@ -118,12 +134,20 @@ That captures the sales message without minting empty URLs.
 
 ## Performance budget
 
-| Metric | Budget | Status |
+| Metric | Budget | Measured |
 | --- | --- | --- |
-| JS, content pages | ≤ 2 KB gz | **1.0 KB** |
-| JS, planner route | ≤ 70 KB gz | ~70 KB (React 19 + island) |
-| CSS, total | ≤ 20 KB gz | **3.4 KB** |
-| LCP / CLS / INP (field p75, mobile) | 1.8s / 0.02 / 150ms | verify post-launch with real data |
+| JS, inner pages | ≤ 2 KB gz | **1.4 KB** (nav + island loader) |
+| JS, homepage | ≤ 5 KB gz | **3.6 KB** (adds hero slider + reveal observer) |
+| JS, planner | ≤ 70 KB gz | ~70 KB, lazy — loads only when the planner scrolls into view |
+| CSS, total | ≤ 20 KB gz | **8.6 KB** |
+| LCP / CLS / INP (field p75, mobile) | 1.8s / 0.02 / 150ms | verify post-launch with field data |
+
+There is no hero video, and that is deliberate. A 4–8 MB autoplay background
+destroys LCP on a mid-range Android over LTE — which is exactly how a
+contractor opens this. The hero's motion is a CSS-clipped comparison driven by
+one `<input type="range">`. If real footage arrives later, use the poster-first
+pattern: the poster image is the LCP element and the video attaches after
+`load`.
 
 Add `size-limit` and Lighthouse CI to enforce these. A budget nobody enforces is
 a wish. The main threats, in likelihood order: motion on content pages, an
