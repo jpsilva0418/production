@@ -1,69 +1,69 @@
 /* ==========================================================================
-   JP Web Design — "Proof" design system
-   Register: a printed sheet, not a screen. Warm stock ground, enormous
-   statement type against small caption prose (the missing middle), and one
-   press-orange accent used the way a press uses it — as an instruction.
-   Bright by default: the identity has to survive a phone in daylight on a
-   jobsite, which is where its buyers actually read it.
+   JP Web Design — launch design system
+   Light, airy, and friendly: cool-white ground over a faint dot grid, one
+   blue accent, colored pill labels per section, big rounded cards with soft
+   shadows. Motion is a feature of the brand — but every hide-state is
+   scoped to `.js-anim` (set pre-paint only when JS is alive), so a failed
+   script renders a finished page, never a blank one.
    ========================================================================== */
 
 :root {
   /* --- Color -------------------------------------------------------------
-     Stock is warm off-white biased toward the accent's hue family — the
-     bias is what makes a neutral read as chosen. Vermilion is the single
-     action colour and it appears two ways, never interchangeably:
-       · as a FILL it carries INK text  (ink on #E24E12 = 4.64:1; white fails)
-       · as TEXT it is the deep press variant #B33A0C   (5.0:1 on stock)
-     Ratios below are measured, not estimated. */
-  --paper:      #efebe3;   /* stock */
-  --panel:      #e7e1d3;
-  --card:       #f7f4ec;
-  --ink:        #16150f;   /* 15.4:1 on stock */
-  --graphite:   #5e5a4f;   /*  5.8:1 on stock — passes AA for body */
-  --redline:    #b33a0c;   /* press red, text-safe: 5.0:1 on stock */
-  --redline-dk: #96300a;
-  --verm:       #e24e12;   /* the fill. Never used as text on stock (3.3:1) */
+     Every pair below is measured, not estimated:
+       ink on paper 16.6:1 · graphite 5.6:1 · blue as text 5.1:1 ·
+       white on blue fill 5.4:1. Pill tints ship two values each — a fill
+       tint and a TEXT-safe dark variant — because the mid-tone that looks
+       right as a chip fails AA as prose. */
+  --paper:      #f6f8fc;
+  --panel:      #eef2f9;
+  --card:       #ffffff;
+  --ink:        #10182b;
+  --graphite:   #5a6478;   /* 5.6:1 on paper */
+  --redline:    #2f5cf0;   /* the accent. As text: 5.1:1 on paper */
+  --redline-dk: #2148c9;
+  --verm:       #2f5cf0;   /* legacy fill alias — same accent */
   --slate:      #1e4b6b;
-  --rule:       #ddd6c6;
-  --rule-hi:    #c8bfa9;
+  --rule:       #e4e9f2;
+  --rule-hi:    #cdd6e6;
+
+  --blue-soft:  #e8eeff;  --blue-bd:  #d3deff;
+  --red-t:      #bb2f23;  --red-soft: #fdeeec;  --red-bd:   #f7d8d4;
+  --green-t:    #0d6b40;  --green-soft:#e9f7f0; --green-bd: #cdeeda;
+  --amber-t:    #96660b;  --amber-soft:#fdf6e5; --amber-bd: #f3e4bd;
 
   /* --- Type --------------------------------------------------------------
-     TODO(launch): replace --sans with a licensed retail face (Archivo
-     Expanded for display + Instrument Sans for prose is the open pairing;
-     Söhne Breit / Söhne the licensed one) self-hosted as subset woff2 with
-     metric-overridden fallbacks so the swap costs zero CLS. The system
-     stack below is a placeholder and is the one thing standing between
-     this and a fully bespoke feel.
-
-     The scale runs on the missing-middle rule: two voices, the PLATE
-     (enormous) and the CAPTION (small), with as little as possible living
-     between them. Section headings jump straight to display sizes; prose
-     never leaves caption size. Visual hierarchy inside prose is carried by
-     colour (ink vs graphite) and weight, not by size. */
+     System stack on purpose: it is the face in the buyer's OS, it costs
+     zero bytes and zero CLS, and this identity leans on weight (800) and
+     tightness rather than an exotic family. Revisit post-launch only if a
+     licensed face earns its 60KB. */
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 
-  --fs-display: clamp(2.75rem, 8vw, 7rem);      /* PLATE-XL */
-  --fs-mega:    clamp(2.5rem, 6.6vw, 5.5rem);   /* PLATE-L  */
-  --fs-h2:      clamp(1.9rem, 4.4vw, 3.5rem);   /* section voice */
-  --fs-h3:      1.0625rem;                       /* caption-lead: size of body,
-                                                    weight does the work */
-  --fs-lead:    clamp(1.0625rem, 1.5vw, 1.1875rem);
-  --fs-body:    1.0625rem;                       /* 17px floor — daylight Android */
+  --fs-display: clamp(2.6rem, 7.2vw, 4.9rem);
+  --fs-mega:    clamp(2.2rem, 5.6vw, 3.9rem);
+  --fs-h2:      clamp(1.9rem, 4.6vw, 3rem);
+  --fs-h3:      1.2rem;
+  --fs-lead:    clamp(1.05rem, 2vw, 1.25rem);
+  --fs-body:    1.0625rem;   /* 17px floor — daylight Android */
   --fs-small:   0.9375rem;
-  --fs-label:   0.75rem;
+  --fs-label:   0.8rem;
 
-  /* --- Space: one scale, used everywhere -------------------------------- */
+  /* --- Space -------------------------------------------------------------- */
   --s1: .25rem;  --s2: .5rem;   --s3: .75rem;  --s4: 1rem;
   --s5: 1.5rem;  --s6: 2rem;    --s7: 3rem;    --s8: 4rem;   --s9: 6rem;
 
-  --section-y: clamp(3.5rem, 7vw, 6.5rem);
-  --gutter:    clamp(1.15rem, 4vw, 2.5rem);
-  --container: 72rem;
+  --section-y: clamp(3.5rem, 8vw, 6.5rem);
+  --gutter:    clamp(1.1rem, 4vw, 2.5rem);
+  --container: 70rem;
   --measure:   66ch;
+  --r:         20px;
+
+  --shadow:    0 10px 30px -12px rgba(16, 24, 43, .14);
+  --shadow-up: 0 24px 48px -20px rgba(16, 24, 43, .22);
 
   --header-h: 4.25rem;
   --ease: cubic-bezier(.2, .8, .2, 1);
+  --pop:  cubic-bezier(.34, 1.45, .44, 1);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -72,16 +72,23 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-h) + var(--s5));
   -webkit-text-size-adjust: 100%;
+  overflow-x: clip;
 }
 
 body {
   margin: 0;
-  background: var(--paper);
+  /* The dot grid is the ground's texture: zero requests, and it reads as
+     graph paper — the surface things get planned on. */
+  background:
+    radial-gradient(60vw 40vw at 80% -10%, #e9efff 0%, rgba(233, 239, 255, 0) 60%),
+    radial-gradient(1.5px 1.5px at center, #d9e0ec 1px, transparent 1.5px) 0 0/26px 26px,
+    var(--paper);
   color: var(--ink);
   font-family: var(--sans);
   font-size: var(--fs-body);
-  line-height: 1.62;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, p, figure, blockquote, dl, dd { margin: 0; }
@@ -91,15 +98,16 @@ a { color: inherit; }
 button, input, select, textarea { font: inherit; color: inherit; }
 
 :where(a, button, input, select, textarea, summary):focus-visible {
-  outline: 2px solid var(--redline);
+  outline: 3px solid var(--redline);
   outline-offset: 3px;
-  border-radius: 2px;
+  border-radius: 8px;
 }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: .01ms !important;
     scroll-behavior: auto !important;
   }
@@ -107,8 +115,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 .skip-link {
   position: absolute; left: -9999px; top: var(--s2); z-index: 200;
-  background: var(--ink); color: var(--paper);
-  padding: var(--s3) var(--s5); border-radius: 2px;
+  background: var(--ink); color: #fff;
+  padding: var(--s3) var(--s5); border-radius: 10px;
 }
 .skip-link:focus { left: var(--s5); }
 
@@ -124,66 +132,81 @@ button, input, select, textarea { font: inherit; color: inherit; }
 }
 .section { padding-block: var(--section-y); }
 .section--panel { background: var(--panel); }
-.section--ink { background: var(--ink); color: var(--paper); }
-.section--ink .lead, .section--ink .mark { color: #b5b0a2; }
+.section--ink { background: var(--ink); color: #eef1f8; }
+.section--ink .lead, .section--ink .mark { color: #aab3c7; }
 
-/* The structural device: a spec-style section marker over a hairline rule
-   that spans the full grid. Numbering is used only where the content is a
-   real sequence; elsewhere the marker carries the section name alone. */
+/* Section label. On this identity it is a pill, and inner pages that use
+   `.mark` inherit the pill automatically. */
 .mark {
-  display: flex; align-items: baseline; gap: var(--s3);
-  font-family: var(--mono); font-size: var(--fs-label);
-  letter-spacing: .12em; text-transform: uppercase; color: var(--graphite);
-  padding-bottom: var(--s3); margin-bottom: var(--s6);
-  border-bottom: 1px solid var(--rule);
+  display: inline-flex; align-items: center; gap: .45rem;
+  font-weight: 700; font-size: var(--fs-label);
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--redline); background: var(--blue-soft);
+  border: 1px solid var(--blue-bd); border-radius: 999px;
+  padding: .5rem 1.05rem; margin-bottom: var(--s6);
 }
-.mark b { color: var(--redline); font-weight: 500; }
-.section--ink .mark { border-bottom-color: #35332a; }
-.section--ink .mark b { color: #f0885f; }
+.mark b { color: var(--redline); font-weight: 700; }
+.section--ink .mark { background: #1b2334; border-color: #27324a; color: #8fa5f0; }
+.section--ink .mark b { color: #8fa5f0; }
 
-.head { max-width: 48rem; margin-bottom: var(--s8); }
+/* Pill variants for section labels that carry semantic color */
+.mark--red   { color: var(--red-t);   background: var(--red-soft);   border-color: var(--red-bd); }
+.mark--green { color: var(--green-t); background: var(--green-soft); border-color: var(--green-bd); }
+.mark--amber { color: var(--amber-t); background: var(--amber-soft); border-color: var(--amber-bd); }
+.mark--red b { color: var(--red-t); } .mark--green b { color: var(--green-t); } .mark--amber b { color: var(--amber-t); }
+
+.head { max-width: 48rem; margin-bottom: var(--s7); }
 .head > * + * { margin-top: var(--s4); }
 
 h1, h2, h3 { text-wrap: balance; }
-.display { font-size: var(--fs-display); line-height: .98; letter-spacing: -.035em; font-weight: 700; }
-.h2      { font-size: var(--fs-h2);      line-height: 1.04; letter-spacing: -.03em;  font-weight: 690; }
-.h3      { font-size: var(--fs-h3);      line-height: 1.4;  letter-spacing: -.005em; font-weight: 680; }
+.display { font-size: var(--fs-display); line-height: 1.05; letter-spacing: -.035em; font-weight: 800; }
+.h2      { font-size: var(--fs-h2);      line-height: 1.1;  letter-spacing: -.03em;  font-weight: 800; }
+.h3      { font-size: var(--fs-h3);      line-height: 1.35; letter-spacing: -.015em; font-weight: 800; }
 
 .lead { font-size: var(--fs-lead); line-height: 1.55; color: var(--graphite); max-width: var(--measure); text-wrap: pretty; }
 .body { max-width: var(--measure); }
 .body + .body { margin-top: var(--s4); }
 .small { font-size: var(--fs-small); color: var(--graphite); }
 
-/* --- Buttons -------------------------------------------------------------
-   The primary action is a vermilion fill carrying INK text — white on this
-   orange fails contrast, and dark type on an orange fill reads as ink on a
-   printed swatch, which is the identity. Hover inverts to solid ink rather
-   than darkening: darkening the fill would sink the ink text below AA. */
+/* --- Buttons ------------------------------------------------------------- */
 .btn {
-  display: inline-flex; align-items: center; gap: var(--s3);
-  padding: .875rem 1.375rem;
-  font-size: var(--fs-small); font-weight: 660; letter-spacing: .005em;
-  border: 1px solid transparent; border-radius: 2px;
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  padding: .95rem 1.5rem;
+  font-size: 1rem; font-weight: 700; letter-spacing: .005em;
+  border: 1px solid transparent; border-radius: 14px; overflow: hidden;
   cursor: pointer; text-decoration: none; white-space: nowrap;
-  transition: background-color .18s var(--ease), border-color .18s var(--ease), color .18s var(--ease);
+  transition: transform .18s var(--pop), background-color .18s var(--ease),
+              border-color .18s var(--ease), color .18s var(--ease), box-shadow .18s var(--ease);
 }
-.btn--primary { background: var(--verm); color: var(--ink); }
-.btn--primary:hover { background: var(--ink); color: var(--paper); }
-.btn--ghost { background: transparent; color: var(--ink); border-color: var(--rule-hi); }
-.btn--ghost:hover { border-color: var(--ink); }
-.btn--onink { background: var(--paper); color: var(--ink); }
-.btn--onink:hover { background: #fff; }
-.btn--sm { padding: .5625rem .875rem; }
-.btn--wide { width: 100%; justify-content: center; }
+.btn--primary {
+  background: var(--redline); color: #fff;
+  box-shadow: 0 14px 28px -10px rgba(47, 92, 240, .55);
+}
+.btn--primary:hover { background: var(--redline-dk); transform: translateY(-2px); }
+/* periodic shine sweep — decorative, dies under reduced motion */
+.btn--primary::after {
+  content: ''; position: absolute; top: 0; bottom: 0; width: 40%; left: -60%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, .45), transparent);
+  animation: shine 5.5s ease-in-out infinite;
+}
+@keyframes shine { 0%, 72% { left: -60%; } 88%, 100% { left: 130%; } }
+.btn--ghost {
+  background: var(--card); color: var(--ink);
+  border-color: var(--rule); box-shadow: var(--shadow);
+}
+.btn--ghost:hover { transform: translateY(-2px); border-color: var(--rule-hi); }
+.btn--onink { background: #fff; color: var(--ink); }
+.btn--sm { padding: .6rem 1.05rem; font-size: .95rem; border-radius: 12px; }
+.btn--wide { width: 100%; }
 
 .btn-row { display: flex; flex-wrap: wrap; gap: var(--s3); align-items: center; }
 
-/* Text link with the press-red rule under it */
 .tlink {
-  font-size: var(--fs-small); font-weight: 600; text-decoration: none;
-  border-bottom: 1px solid var(--redline); padding-bottom: 1px; color: var(--ink);
+  font-size: var(--fs-small); font-weight: 700; text-decoration: none;
+  color: var(--redline);
 }
-.tlink:hover { color: var(--redline); }
+.tlink:hover { color: var(--redline-dk); }
 
 /* --- Grid --------------------------------------------------------------- */
 .grid { display: grid; gap: var(--s5); }
@@ -193,106 +216,117 @@ h1, h2, h3 { text-wrap: balance; }
 @media (max-width: 62rem) { .g3, .g4 { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 40rem) { .g2, .g3, .g4 { grid-template-columns: 1fr; } }
 
-/* --- Rule list: the recurring "spec row" component ----------------------- */
+/* --- Rows (inner pages) -------------------------------------------------- */
 .rows { border-top: 1px solid var(--rule); }
 .row {
   display: grid; grid-template-columns: 3.5rem 1fr; gap: var(--s5);
   padding: var(--s5) 0; border-bottom: 1px solid var(--rule);
 }
-.row__n { font-family: var(--mono); font-size: var(--fs-label); letter-spacing: .1em; color: var(--redline); padding-top: .3rem; }
+.row__n { font-family: var(--mono); font-size: .8rem; letter-spacing: .1em; color: var(--redline); padding-top: .3rem; }
 .row__b > * + * { margin-top: var(--s2); }
 @media (max-width: 40rem) { .row { grid-template-columns: 1fr; gap: var(--s2); } }
 
 /* --- Card --------------------------------------------------------------- */
 .card {
   background: var(--card); border: 1px solid var(--rule);
-  border-radius: 3px; padding: var(--s5);
+  border-radius: var(--r); padding: var(--s5);
   display: flex; flex-direction: column; gap: var(--s3); height: 100%;
+  box-shadow: var(--shadow);
+  transition: transform .25s var(--pop), box-shadow .25s var(--ease);
 }
-.card__t { font-size: var(--fs-h3); font-weight: 680; letter-spacing: -.005em; }
+.card:hover { box-shadow: var(--shadow-up); }
+.card__t { font-size: var(--fs-h3); font-weight: 800; letter-spacing: -.015em; }
 .card__x { color: var(--graphite); font-size: var(--fs-small); }
 
 /* --- Note / callout ------------------------------------------------------ */
 .note {
-  border-left: 2px solid var(--redline); background: var(--panel);
-  padding: var(--s4) var(--s5); border-radius: 0 3px 3px 0;
+  border-left: 3px solid var(--redline); background: var(--card);
+  border: 1px solid var(--rule); border-left: 3px solid var(--redline);
+  padding: var(--s4) var(--s5); border-radius: 12px;
+  box-shadow: var(--shadow);
 }
 .note .lbl {
-  display: block; font-family: var(--mono); font-size: var(--fs-label);
+  display: block; font-weight: 700; font-size: var(--fs-label);
   letter-spacing: .1em; text-transform: uppercase; color: var(--redline);
   margin-bottom: var(--s2);
 }
 
+/* icon chip inside cards */
+.chip {
+  width: 3rem; height: 3rem; border-radius: 14px;
+  display: grid; place-items: center; flex: none;
+}
+.chip svg { width: 1.4rem; height: 1.4rem; }
+.chip--blue  { background: var(--blue-soft);  color: var(--redline); }
+.chip--red   { background: var(--red-soft);   color: var(--red-t); }
+.chip--green { background: var(--green-soft); color: var(--green-t); }
+.chip--amber { background: var(--amber-soft); color: var(--amber-t); }
+
 /* ==========================================================================
-   THE DARK ROOM
-   Used exactly once per page — the after-hours interlude. If a second dark
-   section appears, one of them is wrong. Bright is the identity; dark is
-   the one held breath inside it, which is the only reason it lands.
+   NIGHT — the one dark moment per page.
    ========================================================================== */
-
 :root {
-  --void:      #101013;
-  --void-2:    #17171b;
-  --void-rule: #2a2a30;
-  --void-ink:  #ede8dc;   /* bone — 15.5:1 on void */
-  --void-mute: #a8a398;   /*  7.6:1 on void */
-  --ember:     #f0623a;   /* the press red, lifted for the dark ground — 5.9:1 */
+  --night:      #0c0e14;
+  --night-2:    #171923;
+  --night-rule: #2a2d3c;
+  --night-ink:  #ede8dc;   /* 15.8:1 on night */
+  --night-mute: #a8a398;   /*  7.7:1 */
+  --ember:      #f0623a;   /*  6.0:1 */
 }
 
-/* One inline SVG turbulence, ~200 bytes, no request. Reads as film grain and
-   stops a large dark field from looking like flat CSS. */
-.grain::after {
-  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
-  opacity: .16; mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-.dark {
-  position: relative; isolation: isolate;
-  background: var(--void); color: var(--void-ink);
-}
-.dark .mark        { color: var(--void-mute); border-bottom-color: var(--void-rule); }
-.dark .mark b      { color: var(--ember); }
-.dark .lead        { color: var(--void-mute); }
-.dark .small       { color: var(--void-mute); }
-.dark .rows        { border-top-color: var(--void-rule); }
-.dark .row         { border-bottom-color: var(--void-rule); }
-.dark .row__n      { color: var(--ember); }
-.dark .tlink       { color: var(--void-ink); border-bottom-color: var(--ember); }
-.dark .btn--ghost  { color: var(--void-ink); border-color: var(--void-rule); }
-.dark .btn--ghost:hover { border-color: var(--void-ink); }
-.dark :where(a, button, summary):focus-visible { outline-color: var(--ember); }
-.dark .container   { position: relative; z-index: 2; }
-
-/* --- Motion -------------------------------------------------------------
-   Every hide rule is scoped to .js-anim, which a synchronous inline script
-   sets on <html> only when JS is alive AND motion is allowed. No JS, a
-   failed bundle, or prefers-reduced-motion → the class is never added and
-   the page renders finished.
-
-   This scoping is the whole safety property. An unscoped
-   `[data-anim] { opacity: 0 }` means a single script error blanks the site,
-   which is the standard way scroll-reveals fail in production. */
-.js-anim [data-anim] { opacity: 0; transform: translateY(14px); }
+/* ==========================================================================
+   MOTION SYSTEM
+   The gate: a synchronous inline script adds `.js-anim` to <html> before
+   paint, only when JS is alive AND motion is allowed, and a watchdog strips
+   it if the reveal controller never announces itself. Nothing below hides
+   anything unless that class is present.
+   ========================================================================== */
+.js-anim [data-anim] { opacity: 0; transform: translateY(26px); }
 .js-anim [data-anim].in {
   opacity: 1; transform: none;
   transition: opacity .7s var(--ease), transform .7s var(--ease);
   transition-delay: var(--d, 0ms);
 }
+.js-anim [data-anim="pop"] { transform: translateY(14px) scale(.92); }
+.js-anim [data-anim="pop"].in { transition-timing-function: var(--pop); transition-duration: .55s; }
+.js-anim [data-anim="left"]  { transform: translateX(-30px); }
+.js-anim [data-anim="right"] { transform: translateX(30px); }
+.js-anim [data-anim="card"]  { transform: translateY(34px) rotate(1.2deg); }
 
-/* Line-by-line headline entrance. Each line is a mask; the text rises into it. */
-.rise { display: block; overflow: hidden; }
+/* Masked line entrance for headlines */
+.rise { display: block; overflow: hidden; padding-bottom: .08em; margin-bottom: -.08em; }
 .rise > span { display: block; }
-.js-anim [data-anim] .rise > span { transform: translateY(105%); }
+.js-anim [data-anim] .rise > span { transform: translateY(110%); }
 .js-anim [data-anim].in .rise > span {
   transform: none;
-  transition: transform .85s cubic-bezier(.16, 1, .3, 1);
+  transition: transform .9s cubic-bezier(.16, 1, .3, 1);
   transition-delay: var(--d, 0ms);
 }
 
+/* Word-by-word rise — spans injected by JS only after the gate confirmed
+   itself, so a no-JS page shows the plain heading. */
+.js-anim [data-split] .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .1em; margin-bottom: -.1em; }
+.js-anim [data-split] .w > span { display: inline-block; transform: translateY(110%); }
+.js-anim [data-split].in .w > span {
+  transform: none;
+  transition: transform .7s cubic-bezier(.16, 1, .3, 1);
+  transition-delay: calc(var(--wd, 0) * 1ms);
+}
+
+/* Shared ambient keyframes */
+@keyframes drift { from { transform: translate(0, 0) scale(1); } to { transform: translate(6vw, 3vw) scale(1.12); } }
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(47, 92, 240, .45); }
+  70%  { box-shadow: 0 0 0 .5rem rgba(47, 92, 240, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(47, 92, 240, 0); }
+}
+@keyframes bobA { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes bobB { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+@keyframes levitate { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes gradShift { from { background-position: 0% 40%; } to { background-position: 100% 60%; } }
+
 @media (prefers-reduced-motion: reduce) {
-  .js-anim [data-anim],
-  .js-anim [data-anim].in { opacity: 1; transform: none; transition: none; }
-  .js-anim [data-anim] .rise > span,
-  .js-anim [data-anim].in .rise > span { transform: none; transition: none; }
+  .js-anim [data-anim], .js-anim [data-anim].in { opacity: 1; transform: none; transition: none; }
+  .js-anim [data-anim] .rise > span, .js-anim [data-anim].in .rise > span { transform: none; transition: none; }
+  .js-anim [data-split] .w > span { transform: none; transition: none; }
 }

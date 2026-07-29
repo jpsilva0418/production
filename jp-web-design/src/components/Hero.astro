@@ -1,120 +1,83 @@
 ---
 /* ==========================================================================
-   HERO — bright, typographic, and impossible to render black.
+   HERO — the aspiration machine.
 
-   The previous dark hero needed a three-layer poster/video/scrim contract
-   to guarantee it never painted as an empty black rectangle. This one
-   removes the failure class instead of defending against it: the ground is
-   the page's own stock colour with a CSS drafting grid — no image request,
-   no video, no scrim, nothing that can fail to arrive.
+   The headline voices the visitor's sentence; the browser frame beside it
+   makes the free-demo promise physical by auto-sweeping a before/after of
+   the same business. Floating activity chips ("New call", "Estimate
+   booked") are props inside the fictional demo — the sound of a website
+   that works.
 
-   The headline is the visitor's sentence, not ours: the one every owner
-   has said about somebody else's website. The comparison slider beside it
-   is the demo offer made physical — the same business twice, and the
-   second version is what "free homepage demo" actually means.
+   Everything here is progressive enhancement over a complete static page:
+   no JS → the slider rests at its default split, chips stay hidden
+   (they're aria-hidden decoration), text is simply present.
    ========================================================================== */
 ---
 <section class="hero" aria-labelledby="hero-h" data-hero>
+  <span class="blob blob--a" data-plx="-0.06" aria-hidden="true"></span>
+  <span class="blob blob--b" data-plx="0.08" aria-hidden="true"></span>
 
   <div class="container hero__in">
+    <p data-anim="pop"><span class="hpill"><span class="hpill__dot" aria-hidden="true"></span>Free homepage demo · No obligation</span></p>
 
-    <div class="hero__copy">
-      <p class="hero__eyebrow" data-anim>
-        <span class="hero__dot" aria-hidden="true"></span>
-        Website design · United States
-      </p>
+    <h1 class="hero__h" id="hero-h" data-anim>
+      <span class="rise"><span>&ldquo;I wish our website</span></span>
+      <span class="rise"><span style="--d:120ms">looked <em class="grad">like that</em>.&rdquo;</span></span>
+    </h1>
 
-      <h1 class="hero__h" id="hero-h" data-anim>
-        <span class="rise"><span>&ldquo;I wish our</span></span>
-        <span class="rise"><span>website looked</span></span>
-        <span class="rise"><span>like that<span class="hero__stop">.</span>&rdquo;</span></span>
-      </h1>
+    <p class="hero__sub" data-anim style="--d:220ms">
+      Every owner has said it about somebody else&rsquo;s site. This is where it becomes
+      yours: I design your homepage first — free — and you decide after you&rsquo;ve seen it.
+    </p>
 
-      <p class="lead hero__lead" data-anim style="--d:120ms">
-        Every owner has said it about somebody else&rsquo;s site. This is where
-        it becomes yours: I design your homepage first — free — and you decide
-        after you&rsquo;ve seen it.
-      </p>
-
-      <div class="btn-row hero__cta" data-anim style="--d:200ms">
-        <a class="btn btn--primary" href="#planner">Get your free demo</a>
-        <a class="btn btn--ghost" href="#offer">Book a free consultation</a>
-      </div>
-
-      <!-- The promise as real text inside the first viewport — not implied
-           by a button label, stated. -->
-      <p class="hero__note small" data-anim style="--d:280ms">
-        A real homepage design, built for your business. Free, and no
-        obligation after it.
-      </p>
+    <div class="hero__cta" data-anim style="--d:320ms">
+      <a class="btn btn--primary" id="magBtn" href="#planner">Get your free demo <span class="btn__arr" aria-hidden="true">→</span></a>
+      <a class="btn btn--ghost" href="#how">See how it works</a>
     </div>
 
-    <!-- ---------------------------------------------------------------- -->
-    <figure class="cmp" data-anim style="--d:160ms">
-      <figcaption class="cmp__cap">
-        <span class="cmp__capk">This is the demo</span>
-        <span class="cmp__caps">One business, before and after — drag to compare</span>
-      </figcaption>
+    <ul class="hero__checks" data-anim style="--d:420ms">
+      <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5 8.5 15 16 5.5"/></svg>Actually free</li>
+      <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5 8.5 15 16 5.5"/></svg>No obligation</li>
+      <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5 8.5 15 16 5.5"/></svg>Yours to keep</li>
+    </ul>
 
-      <div class="cmp__frame" id="cmp">
-        <div class="cmp__chrome" aria-hidden="true">
+    <figure class="shot" data-anim style="--d:480ms" id="shotWrap">
+      <div class="shot__frame" id="shotFrame">
+        <div class="shot__bar" aria-hidden="true">
           <span></span><span></span><span></span>
-          <p class="cmp__url">yourbusiness.com</p>
+          <p class="shot__url">yourbusiness.com</p>
         </div>
 
-        <div class="cmp__stage">
-          <!-- Both layers share the SAME six zones in the same order, so any
-               slider position reads as one coherent page rather than two
-               unrelated layouts butted together. That parallelism is the
-               entire trick behind a before/after that actually works. -->
-
+        <div class="shot__stage" id="shot">
           <!-- BEFORE: underneath, always fully rendered -->
           <div class="mini mini--old" aria-hidden="true">
-            <div class="z z--bar">
-              <span class="o-logo">YOUR BUSINESS LLC</span>
-              <span class="o-nav">Home | About | Services | Contact</span>
-            </div>
-            <div class="z z--kick"><span class="o-kick">*** Serving the area since 1998 ***</span></div>
-            <div class="z z--head"><span class="o-head">WELCOME TO OUR WEBSITE!</span></div>
-            <div class="z z--body">
-              <span class="o-body">We are a family owned and operated company. We pride ourselves on
-              quality workmanship and customer satisfaction. Please browse our site to learn
-              more about the many services that we offer to our valued customers.</span>
-            </div>
-            <div class="z z--act"><span class="o-btn">CLICK HERE FOR A FREE QUOTE!!</span></div>
-            <div class="z z--row">
-              <span class="o-box"></span><span class="o-box"></span><span class="o-box"></span>
-            </div>
+            <div class="mz"><span class="o-logo">YOUR BUSINESS LLC</span><span class="o-nav">Home | About | Contact</span></div>
+            <span class="o-head">WELCOME TO OUR WEBSITE!</span>
+            <span class="o-body">We are a family owned and operated company. We pride ourselves on
+            quality workmanship and customer satisfaction. Please browse our site to learn more.</span>
+            <span class="o-btn">CLICK HERE FOR A FREE QUOTE!!</span>
+            <div class="o-row"><span></span><span></span><span></span></div>
           </div>
 
-          <!-- AFTER: on top, revealed from the left where its content lives -->
-          <div class="mini mini--new" aria-hidden="true">
-            <div class="z z--bar">
-              <span class="n-logo">Your Business</span>
-              <span class="n-cta">Get an estimate</span>
+          <!-- AFTER: a real-looking trade site of its own, revealed from the left -->
+          <div class="mini mini--new" id="miniNew" aria-hidden="true">
+            <div class="mz"><span class="n-logo">YOUR<em>ROOFING</em> CO</span><span class="n-cta">Get an estimate</span></div>
+            <div class="n-photo">
+              <span class="n-kick">Storm damage? · Claims handled</span>
+              <span class="n-head">Roofing that holds up to a New England winter.</span>
+              <span class="n-btn">Free inspection →</span>
             </div>
-            <div class="z z--kick"><span class="n-kick">Licensed &amp; insured · Since 1998</span></div>
-            <div class="z z--head"><span class="n-head">Roofing that holds up to a New England winter.</span></div>
-            <div class="z z--body">
-              <span class="n-body">Free inspections. Most repairs finished within a week.</span>
-            </div>
-            <div class="z z--act"><span class="n-btn">Get an estimate →</span></div>
-            <div class="z z--row">
-              <span class="n-box"></span><span class="n-box"></span><span class="n-box"></span>
-            </div>
+            <div class="n-chips"><span>Licensed &amp; insured</span><span>Since 1998</span><span>Financing available</span></div>
           </div>
 
-          <span class="cmp__seam" aria-hidden="true">
-            <span class="cmp__grip"></span>
-          </span>
+          <span class="shot__seam" id="seam" aria-hidden="true"><span class="shot__grip">⟵ ⟶</span></span>
+
+          <label class="vh" for="cmp-range">
+            Reveal the redesigned website. 0 shows the current site, 100 shows the redesign.
+          </label>
+          <input class="shot__range" id="cmp-range" type="range"
+                 min="0" max="100" value="42" step="1" aria-describedby="cmp-desc" />
         </div>
-
-        <label class="vh" for="cmp-range">
-          Reveal the redesigned website. 0 shows the current site, 100 shows the redesign.
-        </label>
-        <input class="cmp__range" id="cmp-range" type="range"
-               min="0" max="100" value="40" step="1"
-               aria-describedby="cmp-desc" />
       </div>
 
       <p class="vh" id="cmp-desc">
@@ -122,289 +85,330 @@
         the same business. Move the slider to reveal the redesign.
       </p>
 
-      <div class="cmp__legend" aria-hidden="true">
-        <span class="cmp__l cmp__l--new">What you get</span>
-        <span class="cmp__l cmp__l--old">What you have now</span>
-      </div>
+      <!-- activity chips: decorative props of the fictional demo business -->
+      <span class="chipf chipf--a" aria-hidden="true">
+        <span class="chipf__i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"/></svg></span>
+        <span>New call<span class="chipf__s">Roof inspection · Cedar St</span></span>
+      </span>
+      <span class="chipf chipf--b" aria-hidden="true">
+        <span class="chipf__i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
+        <span>Found on Google<span class="chipf__s">&ldquo;roofer near me&rdquo;</span></span>
+      </span>
+      <span class="chipf chipf--c" aria-hidden="true">
+        <span class="chipf__i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+        <span>Estimate booked<span class="chipf__s">Tomorrow · 8:00 AM</span></span>
+      </span>
+
+      <figcaption class="shot__cap"><span class="a">What you get</span><span class="b">What you have now</span></figcaption>
     </figure>
+  </div>
+
+  <!-- dual-direction ticker: trades one way, promises the other -->
+  <div class="tick" aria-hidden="true">
+    <div class="tick__t tick__t--a" id="tickA"></div>
+    <div class="tick__t tick__t--b" id="tickB"></div>
   </div>
 </section>
 
 <style>
   .hero {
-    position: relative;
-    padding-block: clamp(3rem, 7vw, 6rem) clamp(3.5rem, 8vw, 7rem);
-    overflow: hidden;
-    background-color: var(--paper);
-    /* A drafting grid drawn in CSS: zero requests, and it keys the whole
-       identity — this is a sheet things get designed on. Masked so it
-       fades before it can compete with the prose. */
-    background-image:
-      linear-gradient(var(--rule) 1px, transparent 1px),
-      linear-gradient(90deg, var(--rule) 1px, transparent 1px);
-    background-size: 3.5rem 3.5rem;
+    position: relative; text-align: center; overflow: clip;
+    padding-block: clamp(3rem, 7vw, 5.5rem) 0;
   }
-  .hero::before {
-    content: ''; position: absolute; inset: 0; pointer-events: none;
-    background:
-      linear-gradient(180deg, rgba(239,235,227,.35) 0%, rgba(239,235,227,.92) 78%, var(--paper) 100%),
-      radial-gradient(80% 70% at 28% 30%, rgba(239,235,227,0) 0%, rgba(239,235,227,.75) 100%);
+  .blob {
+    position: absolute; border-radius: 50%; filter: blur(70px); opacity: .55;
+    pointer-events: none; z-index: -1; will-change: transform;
   }
-
-  .hero__in {
-    position: relative; z-index: 1;
-    display: grid;
-    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-    gap: clamp(2.5rem, 5vw, 4.5rem);
-    align-items: center;
+  .blob--a {
+    width: 44vw; height: 44vw; min-width: 340px; min-height: 340px; left: -12vw; top: -6vw;
+    background: radial-gradient(circle, #cdd9ff 0%, rgba(205, 217, 255, 0) 70%);
+    animation: drift 16s ease-in-out infinite alternate;
   }
-  @media (max-width: 62rem) {
-    .hero__in { grid-template-columns: 1fr; gap: var(--s7); }
+  .blob--b {
+    width: 36vw; height: 36vw; min-width: 300px; min-height: 300px; right: -10vw; top: 16vw;
+    background: radial-gradient(circle, #dfe9ff 0%, rgba(223, 233, 255, 0) 70%);
+    animation: drift 19s ease-in-out -6s infinite alternate-reverse;
   }
 
-  .hero__eyebrow {
-    display: inline-flex; align-items: center; gap: .5rem;
-    font-family: var(--mono); font-size: var(--fs-label);
-    letter-spacing: .16em; text-transform: uppercase; color: var(--graphite);
-    margin-bottom: var(--s5);
+  .hpill {
+    display: inline-flex; align-items: center; gap: .45rem;
+    font-weight: 700; font-size: var(--fs-label);
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--redline); background: var(--blue-soft);
+    border: 1px solid var(--blue-bd); border-radius: 999px; padding: .5rem 1.05rem;
   }
-  .hero__dot {
-    width: .4375rem; height: .4375rem; border-radius: 50%;
-    background: var(--verm);
-    box-shadow: 0 0 0 0 rgba(226, 78, 18, .5);
-    animation: pulse 2.8s ease-out infinite;
+  .hpill__dot {
+    width: .5rem; height: .5rem; border-radius: 50%; background: currentColor;
+    animation: pulse 2.4s ease-out infinite;
   }
-  @keyframes pulse {
-    0%   { box-shadow: 0 0 0 0 rgba(226, 78, 18, .45); }
-    70%  { box-shadow: 0 0 0 .5rem rgba(226, 78, 18, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(226, 78, 18, 0); }
-  }
-  @media (prefers-reduced-motion: reduce) { .hero__dot { animation: none; } }
 
-  /* Sized against the hero column, not the viewport. No hanging indent on
-     the quote: each .rise line is its own overflow-hidden block, so a
-     negative text-indent clips the first glyph of every line, not just
-     the quotation mark. */
   .hero__h {
-    font-size: clamp(2.6rem, 5.2vw, 4.5rem);
-    line-height: .99; letter-spacing: -.035em; font-weight: 720;
+    font-size: var(--fs-display); line-height: 1.06; letter-spacing: -.035em;
+    font-weight: 800; margin-top: 1.4rem;
   }
-  /* The full stop is the one saturated mark in the headline. Punctuation as
-     the accent — cheaper and more confident than colouring a whole word.
-     Display scale, so the fill orange passes large-text contrast here. */
-  .hero__stop { color: var(--verm); }
+  .grad {
+    font-style: normal;
+    background: linear-gradient(92deg, var(--redline) 10%, #7c9bff 55%, var(--redline) 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: gradSlide 5s ease-in-out infinite alternate;
+  }
+  @keyframes gradSlide { from { background-position: 0% 0; } to { background-position: 100% 0; } }
 
-  .hero__lead { margin-top: var(--s5); max-width: 36ch; }
-  .hero__cta  { margin-top: var(--s6); }
-  .hero__note { margin-top: var(--s4); }
+  .hero__sub {
+    font-size: var(--fs-lead); color: var(--graphite); max-width: 42rem;
+    margin: 1.3rem auto 0; text-wrap: pretty;
+  }
+  .hero__cta { display: flex; flex-direction: column; gap: .8rem; max-width: 30rem; margin: 2rem auto 0; }
+  @media (min-width: 40rem) { .hero__cta { flex-direction: row; justify-content: center; max-width: none; } }
+  .btn__arr { transition: transform .18s var(--ease); }
+  .btn--primary:hover .btn__arr { transform: translateX(4px); }
 
-  /* ---------------------------------------------------------------- compare */
-  .cmp { --x: 40%; margin: 0; }
+  .hero__checks {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem 1.5rem;
+    margin-top: 1.4rem; font-size: var(--fs-small); color: var(--graphite); font-weight: 600;
+  }
+  .hero__checks li { display: flex; align-items: center; gap: .4rem; }
+  .hero__checks svg { width: 1.05rem; height: 1.05rem; color: var(--green-t); flex: none; }
 
-  .cmp__cap {
-    display: flex; align-items: baseline; gap: var(--s3);
-    margin-bottom: var(--s3); flex-wrap: wrap;
+  /* ------------------------------------------------------------- screen */
+  .shot { position: relative; max-width: 56rem; margin: clamp(2.5rem, 5vw, 3.5rem) auto 0; perspective: 1200px; }
+  .shot__frame {
+    background: var(--card); border: 1px solid var(--rule); border-radius: var(--r);
+    overflow: hidden; box-shadow: 0 40px 80px -30px rgba(16, 24, 43, .28);
+    transform-style: preserve-3d; will-change: transform;
+    transition: transform .3s var(--ease);
   }
-  .cmp__capk {
-    font-family: var(--mono); font-size: var(--fs-label);
-    letter-spacing: .12em; text-transform: uppercase; color: var(--redline);
-  }
-  .cmp__caps { font-size: .8125rem; color: var(--graphite); }
+  .js-anim .shot[data-anim] { transform: translateY(46px) rotateX(9deg); }
+  .js-anim .shot[data-anim].in { transform: none; transition-duration: .9s; }
 
-  .cmp__frame {
-    position: relative;
-    border: 1px solid var(--rule-hi); border-radius: 6px;
-    background: var(--card); overflow: hidden;
-    box-shadow: 0 30px 60px -28px rgba(22, 21, 15, .38);
+  .shot__bar {
+    display: flex; align-items: center; gap: .4rem;
+    padding: .65rem .9rem; border-bottom: 1px solid var(--rule); background: #fafbfe;
   }
+  .shot__bar > span { width: .6rem; height: .6rem; border-radius: 50%; background: #dde3ee; flex: none; }
+  .shot__bar > span:nth-child(1) { background: #f6b1ab; }
+  .shot__bar > span:nth-child(2) { background: #f3d9a0; }
+  .shot__bar > span:nth-child(3) { background: #b6e3c6; }
+  .shot__url { margin-left: .5rem; font-family: var(--mono); font-size: .72rem; color: var(--graphite); }
 
-  .cmp__chrome {
-    display: flex; align-items: center; gap: .375rem;
-    padding: .5rem .75rem; border-bottom: 1px solid var(--rule);
-    background: var(--panel);
-  }
-  .cmp__chrome > span {
-    width: .5rem; height: .5rem; border-radius: 50%; background: var(--rule-hi); flex: none;
-  }
-  .cmp__url {
-    margin-left: .5rem; font-family: var(--mono);
-    font-size: .6875rem; color: var(--graphite);
-  }
-
-  .cmp__stage {
-    position: relative;
-    aspect-ratio: 16 / 11;
-    background: #fff;
-  }
-  @media (max-width: 40rem) { .cmp__stage { aspect-ratio: 3 / 3.4; } }
+  .shot__stage { position: relative; aspect-ratio: 16 / 10; background: #fff; }
+  @media (max-width: 40rem) { .shot__stage { aspect-ratio: 4 / 4.4; } }
 
   .mini {
-    position: absolute; inset: 0;
-    padding: clamp(.7rem, 1.9vw, 1.15rem);
-    display: flex; flex-direction: column;
-    font-size: clamp(.5rem, .95vw, .6875rem);
-    line-height: 1.45;
+    position: absolute; inset: 0; padding: clamp(.8rem, 2.4vw, 1.4rem);
+    display: flex; flex-direction: column; justify-content: space-between;
+    font-size: clamp(.55rem, 1.35vw, .8rem); line-height: 1.45; text-align: left;
   }
-  /* On a phone the frame is narrow, so the floor has to rise or the
-     comparison stops being readable — which would defeat the whole point. */
-  @media (max-width: 40rem) { .mini { font-size: .59rem; } }
-  /* Shared zone rhythm. Both layers use identical heights so the seam always
-     cuts through matching bands. */
-  .z { display: flex; align-items: center; }
-  .z--bar  { justify-content: space-between; gap: .5rem; height: 12%; flex: none; }
-  .z--kick { height: 8%;  flex: none; }
-  .z--head { height: 26%; flex: none; }
-  .z--body { height: 20%; flex: none; align-items: flex-start; }
-  .z--act  { height: 14%; flex: none; }
-  .z--row  { height: 20%; flex: none; gap: .4rem; align-items: stretch; }
-  .z--row > span { flex: 1; }
+  .mz { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
 
-  /* --- the site they have ------------------------------------------------ */
   .mini--old { background: #fff; color: #222; font-family: "Times New Roman", Times, serif; }
-  .mini--old .z--bar { border-bottom: 2px solid #1a3d8f; }
   .o-logo { font-weight: 700; color: #1a3d8f; font-size: 1.05em; white-space: nowrap; }
-  .o-nav  { color: #1a3d8f; text-decoration: underline; font-size: .9em; white-space: nowrap; }
-  .o-kick { color: #b8261a; font-size: .9em; }
-  .o-head { font-weight: 700; color: #b8261a; font-size: 1.75em; line-height: 1.1; }
-  .o-body { color: #333; }
+  .o-nav  { color: #1a3d8f; text-decoration: underline; font-size: .85em; white-space: nowrap; }
+  .o-head { font-weight: 700; color: #b8261a; font-size: 1.7em; line-height: 1.1; }
+  .o-body { color: #333; font-size: .95em; }
   .o-btn  {
     background: linear-gradient(#7ec24a, #4f9421); border: 1px solid #3d7418;
-    color: #fff; font-weight: 700; padding: .25rem .55rem; border-radius: 3px; font-size: .95em;
-    white-space: nowrap;
+    color: #fff; font-weight: 700; padding: .25rem .55rem; border-radius: 3px;
+    align-self: flex-start; white-space: nowrap;
   }
-  .o-box  { background: #d9dde6; border: 1px solid #b9bfcc; }
+  .o-row { display: flex; gap: .4rem; height: 22%; }
+  .o-row span { flex: 1; background: #d9dde6; border: 1px solid #b9bfcc; }
 
-  /* --- what you get -------------------------------------------------------
-     The "after" mini wears the studio's own identity — stock ground, ink
-     type, vermilion fill with ink text. The demo demonstrates the brand. */
+  /* the "after": forest green + amber, a drawn photo-hero with a roofline */
   .mini--new {
-    background: #f4f1ea; color: #16150f; font-family: var(--sans);
-    /* Revealed from the LEFT, which is where this layout puts its content.
-       Clipping from the right showed an empty margin and read as a bug. */
-    clip-path: inset(0 calc(100% - var(--x)) 0 0);
+    background: #f6f7f3; color: #17201a; font-family: var(--sans); gap: .55em;
+    clip-path: inset(0 calc(100% - var(--x, 42%)) 0 0);
   }
-  .mini--new .z--bar { border-bottom: 1px solid #ddd6c6; }
-  .n-logo { font-weight: 650; letter-spacing: -.01em; font-size: 1.05em; white-space: nowrap; }
-  .n-cta  {
-    background: #e24e12; color: #16150f; font-weight: 650;
-    padding: .22rem .5rem; border-radius: 2px; font-size: .9em; white-space: nowrap;
+  .n-logo { font-weight: 900; letter-spacing: -.01em; color: #1e4d38; font-size: 1.05em; white-space: nowrap; }
+  .n-logo em { font-style: normal; color: #c47b2c; }
+  .n-cta {
+    background: #1e4d38; color: #fff; font-weight: 700;
+    padding: .28rem .65rem; border-radius: 8px; font-size: .88em; white-space: nowrap;
   }
-  .n-kick {
-    font-family: var(--mono); font-size: .8em; letter-spacing: .1em;
-    text-transform: uppercase; color: #b33a0c; white-space: nowrap;
+  .n-photo {
+    position: relative; flex: 1; min-height: 0; border-radius: 10px; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 6% 6% 5%; color: #fff;
+    background: linear-gradient(180deg, #a7c4de 0%, #7fa3c2 48%, #42607a 100%);
   }
+  .n-photo::before {
+    content: ''; position: absolute; left: -4%; right: -4%; bottom: 0; height: 52%;
+    background: #243642; clip-path: polygon(0 100%, 0 66%, 22% 26%, 44% 66%, 44% 100%); opacity: .92;
+  }
+  .n-photo::after {
+    content: ''; position: absolute; left: -4%; right: -4%; bottom: 0; height: 58%;
+    background: #2d4250; clip-path: polygon(36% 100%, 36% 58%, 64% 10%, 92% 58%, 92% 100%);
+  }
+  .n-photo > * { position: relative; z-index: 2; }
+  .n-kick { color: #ffd9a3; font-weight: 800; font-size: .72em; letter-spacing: .12em; text-transform: uppercase; }
   .n-head {
-    font-size: 2em; line-height: 1.05; letter-spacing: -.03em; font-weight: 700;
-    max-width: 15ch;
+    font-size: 1.75em; line-height: 1.06; letter-spacing: -.02em; font-weight: 800;
+    max-width: 14ch; margin-top: .2em; text-shadow: 0 2px 10px rgba(10, 20, 26, .45);
   }
-  .n-body { color: #5e5a4f; }
-  .n-btn  {
-    background: #16150f; color: #efebe3; font-weight: 600;
-    padding: .3rem .65rem; border-radius: 2px; font-size: .95em; white-space: nowrap;
+  .n-btn {
+    background: #c47b2c; color: #fff; font-weight: 800; padding: .3rem .7rem;
+    border-radius: 7px; align-self: flex-start; margin-top: .6em; font-size: .9em;
   }
-  .n-box  { background: #e7e1d3; border-radius: 2px; }
-
-  /* --- seam + control ----------------------------------------------------- */
-  .cmp__seam {
-    position: absolute; top: 0; bottom: 0; left: var(--x);
-    width: 2px; background: var(--verm);
-    transform: translateX(-1px); pointer-events: none; z-index: 3;
-  }
-  .cmp__grip {
-    position: absolute; top: 50%; left: 50%;
-    width: 2.25rem; height: 2.25rem; transform: translate(-50%, -50%);
-    border-radius: 50%; background: var(--verm);
-    display: grid; place-items: center;
-    box-shadow: 0 4px 14px rgba(22, 21, 15, .3);
-  }
-  .cmp__grip::before {
-    content: '⟵ ⟶'; font-size: .5rem; color: var(--ink); letter-spacing: -.06em; white-space: nowrap;
+  .n-chips { display: flex; gap: .4em; flex-wrap: wrap; }
+  .n-chips span {
+    background: #fff; border: 1px solid #dce3da; border-radius: 999px;
+    padding: .22em .65em; font-weight: 700; font-size: .7em; color: #1e4d38; white-space: nowrap;
   }
 
-  /* The real control: a range input laid over the frame. Invisible thumb,
-     full-height hit area, native keyboard behaviour. */
-  .cmp__range {
-    position: absolute; inset: 0; width: 100%; height: 100%;
-    margin: 0; padding: 0; z-index: 4;
+  .shot__seam {
+    position: absolute; top: 0; bottom: 0; left: var(--x, 42%); width: 3px;
+    background: var(--redline); transform: translateX(-1.5px); z-index: 3; pointer-events: none;
+  }
+  .shot__grip {
+    position: absolute; top: 50%; left: 50%; width: 2.4rem; height: 2.4rem;
+    transform: translate(-50%, -50%); border-radius: 50%; background: var(--redline);
+    display: grid; place-items: center; color: #fff; font-size: .55rem;
+    letter-spacing: -.05em; white-space: nowrap; box-shadow: 0 6px 16px rgba(16, 24, 43, .3);
+  }
+  .shot__range {
+    position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; z-index: 4;
     appearance: none; background: transparent; cursor: ew-resize;
   }
-  .cmp__range::-webkit-slider-thumb {
-    appearance: none; width: 2.75rem; height: 100vh; background: transparent; cursor: ew-resize;
-  }
-  .cmp__range::-moz-range-thumb {
-    width: 2.75rem; height: 100vh; background: transparent; border: 0; cursor: ew-resize;
-  }
-  .cmp__range:focus-visible { outline: 2px solid var(--redline); outline-offset: 3px; }
+  .shot__range::-webkit-slider-thumb { appearance: none; width: 2.75rem; height: 100vh; background: transparent; cursor: ew-resize; }
+  .shot__range::-moz-range-thumb { width: 2.75rem; height: 100vh; background: transparent; border: 0; cursor: ew-resize; }
 
-  .cmp__legend {
-    display: flex; justify-content: space-between; gap: var(--s3);
-    margin-top: var(--s3);
-    font-family: var(--mono); font-size: var(--fs-label);
-    letter-spacing: .1em; text-transform: uppercase;
+  .shot__cap {
+    display: flex; justify-content: space-between; margin-top: .7rem;
+    font-size: .8rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
   }
-  .cmp__l--old { color: var(--graphite); }
-  .cmp__l--new { color: var(--redline); }
+  .shot__cap .a { color: var(--redline); }
+  .shot__cap .b { color: var(--graphite); }
+
+  /* ------------------------------------------------------- activity chips */
+  .chipf {
+    position: absolute; z-index: 5; display: flex; align-items: center; gap: .55rem;
+    background: var(--card); border: 1px solid var(--rule); border-radius: 14px;
+    box-shadow: 0 16px 32px -14px rgba(16, 24, 43, .28); padding: .6rem .85rem;
+    font-size: .8rem; font-weight: 700; text-align: left; pointer-events: none;
+    opacity: 0; transform: translateY(14px) scale(.9);
+  }
+  .chipf__i { width: 2rem; height: 2rem; border-radius: 10px; display: grid; place-items: center; flex: none; }
+  .chipf__i svg { width: 1rem; height: 1rem; }
+  .chipf__s { display: block; font-weight: 600; font-size: .72rem; color: var(--graphite); }
+  .chipf--a { left: -1.25rem; top: 16%; }
+  .chipf--a .chipf__i { background: var(--green-soft); color: var(--green-t); }
+  .chipf--b { right: -1.25rem; top: 42%; }
+  .chipf--b .chipf__i { background: var(--blue-soft); color: var(--redline); }
+  .chipf--c { left: 6%; bottom: .6rem; }
+  .chipf--c .chipf__i { background: var(--amber-soft); color: var(--amber-t); }
+  .js-anim .in .chipf--a { animation: chipIn .55s var(--pop) 1.1s forwards, bobA 5s ease-in-out 1.7s infinite; }
+  .js-anim .in .chipf--b { animation: chipIn .55s var(--pop) 1.7s forwards, bobB 6s ease-in-out 2.3s infinite; }
+  .js-anim .in .chipf--c { animation: chipIn .55s var(--pop) 2.3s forwards, bobA 5.5s ease-in-out 2.9s infinite; }
+  @keyframes chipIn { to { opacity: 1; transform: translateY(0) scale(1); } }
+  @media (max-width: 46rem) {
+    .chipf--b { display: none; }
+    .chipf--a { left: .4rem; }
+    .chipf--c { left: auto; right: .4rem; }
+  }
+
+  /* --------------------------------------------------------------- ticker */
+  .tick {
+    margin-top: clamp(3rem, 6vw, 4.5rem); padding-block: .4rem;
+    border-block: 1px solid var(--rule); overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  }
+  .tick__t { display: flex; width: max-content; padding-block: .55rem; }
+  .tick__t--a { animation: tickL 40s linear infinite; }
+  .tick__t--b { animation: tickR 46s linear infinite; }
+  :global(.tick__l) { display: flex; }
+  :global(.tick__l li) {
+    display: flex; align-items: center; gap: 1.4rem; padding-right: 1.4rem;
+    white-space: nowrap; font-weight: 700; font-size: 1.05rem; color: var(--graphite);
+  }
+  :global(.tick__l li span) { color: var(--redline); }
+  .tick__t--b :global(.tick__l li) { color: #9aa5ba; font-weight: 600; }
+  .tick__t--b :global(.tick__l li span) { color: #c3cade; }
+  @keyframes tickL { to { transform: translateX(-50%); } }
+  @keyframes tickR { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+  @media (prefers-reduced-motion: reduce) { .tick__t { animation: none; } }
 </style>
 
 <script>
-  /* Slider → CSS custom property. rAF-throttled so dragging never triggers
-     layout work per input event. */
-  const frame = document.getElementById('cmp');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fine = matchMedia('(pointer: fine)').matches;
+
+  /* ---------- tickers ---------- */
+  const trades = ['Roofing','HVAC','Plumbing','Electrical','Construction','Landscaping','Restaurants','Salons','Med spas','Law firms','Real estate','Fitness','Cleaning','Auto','Medical','E-commerce'];
+  const promises = ['One project at a time','You own everything','Fixed launch date','No price surprises','Founder-led','Fast on any phone','Written for you','Built to rank'];
+  const fill = (id: string, list: string[]) => {
+    const t = document.getElementById(id);
+    if (!t) return;
+    for (let k = 0; k < 2; k++) {
+      const ul = document.createElement('ul'); ul.className = 'tick__l';
+      ul.innerHTML = list.map((x) => '<li>' + x + '<span>·</span></li>').join('');
+      t.appendChild(ul);
+    }
+  };
+  fill('tickA', trades); fill('tickB', promises);
+
+  /* ---------- slider + one auto sweep ---------- */
   const range = document.getElementById('cmp-range') as HTMLInputElement | null;
+  const stage = document.getElementById('shot');
+  const seam = document.getElementById('seam');
+  const miniNew = document.getElementById('miniNew');
 
-  if (frame && range) {
-    const fig = frame.closest('.cmp') as HTMLElement;
-    let queued = false;
-
+  if (range && stage && seam && miniNew) {
     const paint = () => {
-      queued = false;
-      fig.style.setProperty('--x', range.value + '%');
+      seam.style.left = range.value + '%';
+      miniNew.style.clipPath = 'inset(0 ' + (100 - Number(range.value)) + '% 0 0)';
     };
-    const onInput = () => {
-      if (queued) return;
-      queued = true;
-      requestAnimationFrame(paint);
-    };
-
-    /* Narrow viewport: start further right so the redesigned side — the one
-       that carries the argument — has enough width to actually be read. */
+    range.addEventListener('input', () => requestAnimationFrame(paint));
     if (window.innerWidth < 640) range.value = '58';
-
-    range.addEventListener('input', onInput);
     paint();
 
-    /* A single slow sweep on first view, so the affordance is discovered
-       without a "drag me" animation running forever in the corner of the eye.
-       Cancelled the moment the visitor touches it. */
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!reduced) {
       let played = false;
       const sweep = () => {
-        if (played) return;
-        played = true;
-        const from = Number(range.value), to = window.innerWidth < 640 ? 72 : 58, dur = 1100;   /* rests balanced, both sides legible */
-        let t0: number | null = null;
-        let cancelled = false;
-        const stop = () => { cancelled = true; };
+        if (played) return; played = true;
+        const from = Number(range.value), to = window.innerWidth < 640 ? 74 : 60, dur = 1200;
+        let t0: number | null = null, dead = false;
+        const stop = () => { dead = true; };
         range.addEventListener('pointerdown', stop, { once: true });
         range.addEventListener('keydown', stop, { once: true });
-
-        const step = (t: number) => {
-          if (cancelled) return;
-          if (t0 === null) t0 = t;
-          const p = Math.min((t - t0) / dur, 1);
-          const eased = 1 - Math.pow(1 - p, 3);
-          range.value = String(Math.round(from + (to - from) * eased));
-          paint();
+        const step = (ts: number) => {
+          if (dead) return;
+          if (t0 === null) t0 = ts;
+          const p = Math.min((ts - t0) / dur, 1), e = 1 - Math.pow(1 - p, 3);
+          range.value = String(Math.round(from + (to - from) * e)); paint();
           if (p < 1) requestAnimationFrame(step);
         };
-        setTimeout(() => requestAnimationFrame(step), 700);
+        setTimeout(() => requestAnimationFrame(step), 1100);
       };
-
       const io = new IntersectionObserver((es) => {
         es.forEach((e) => { if (e.isIntersecting) { sweep(); io.disconnect(); } });
       }, { threshold: 0.4 });
-      io.observe(frame);
+      io.observe(stage);
+    }
+  }
+
+  /* ---------- 3D tilt + magnetic CTA (fine pointers only) ---------- */
+  if (fine && !reduced) {
+    const wrap = document.getElementById('shotWrap');
+    const frame = document.getElementById('shotFrame');
+    if (wrap && frame) {
+      wrap.addEventListener('pointermove', (e) => {
+        if (!wrap.classList.contains('in')) return;
+        const r = wrap.getBoundingClientRect();
+        const dx = (e.clientX - r.left) / r.width - .5, dy = (e.clientY - r.top) / r.height - .5;
+        frame.style.transform = 'rotateY(' + (dx * 6) + 'deg) rotateX(' + (-dy * 5) + 'deg)';
+      });
+      wrap.addEventListener('pointerleave', () => { frame.style.transform = ''; });
+    }
+    const mag = document.getElementById('magBtn');
+    if (mag) {
+      mag.addEventListener('pointermove', (e) => {
+        const r = mag.getBoundingClientRect();
+        const dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
+        mag.style.transform = 'translate(' + (dx * .12) + 'px,' + (dy * .22) + 'px)';
+      });
+      mag.addEventListener('pointerleave', () => { mag.style.transform = ''; });
     }
   }
 </script>

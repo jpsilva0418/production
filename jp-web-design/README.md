@@ -5,20 +5,20 @@ HTML/CSS/JS, so it deploys to any static host.
 
 ## The identity, in one paragraph
 
-Bright by default: warm stock ground (`#efebe3`), near-black ink, and one
-press-orange accent that appears two ways which are **never interchangeable** —
-as a *fill* (`--verm #e24e12`) it carries **ink text** (4.64:1; white on this
-orange fails at 3.9:1), and as *text* it is the deep press variant
-(`--redline #b33a0c`, 5.0:1 on stock). Exactly one dark section exists per page
-(the 9:47 PM interlude) and exactly one full-vermilion field (the close). If a
-second of either appears, one of them is wrong. The homepage's job is
-aspiration → demo: every section is built so the visitor pictures *their own
-business* transformed, and every section's exit points at the free demo.
-The "plates" (spec builds in the Work section) carry honest museum labels —
+Light, airy, and friendly: cool-white ground (`#f6f8fc`) over a faint dot
+grid, one blue accent (`#2f5cf0` — 5.1:1 as text, 5.4:1 under white on a
+fill), colored pill labels per section (red = problem, green = process,
+amber = trades), big rounded cards with soft shadows. Exactly one dark
+section exists per page — the 9:47 PM night scene — and one full-gradient
+field (the close card). Motion is part of the brand: an opening shutter
+sequence (once per session), scroll reveals, a self-typing search story,
+count-ups — every bit of it progressive enhancement over a complete static
+page (see Motion below). The homepage's job is aspiration → demo: the
+"plates" (three visibly different spec builds) carry honest museum labels —
 `SPEC BUILD` → `COMMISSIONED` → `IN SERVICE` — that only ever upgrade, and
-clicking "Build mine like this →" seeds the planner with that plate's industry
-via `sessionStorage` before the anchor jump, so choosing a plate *is* starting
-the demo with question one already answered.
+clicking "Build mine like this →" seeds the planner with that plate's
+industry via `sessionStorage` before the anchor jump, so choosing a plate
+*is* starting the demo with question one already answered.
 
 ```bash
 npm install
@@ -119,21 +119,27 @@ page renders finished.
 This inversion is the whole safety property. The conventional
 `[data-anim] { opacity: 0 }` means one script error blanks the site — the
 standard way scroll-reveals fail in production. Verified: with JavaScript
-disabled the homepage renders 18,000+ characters with zero hidden elements.
+disabled the homepage renders fully with zero hidden elements — including the
+night scene, which statically shows the clock at 9:47, all three search
+results, and the ringed winner; the script only adds the cinema (wipe, clock
+roll, typing, cascade, pick).
 
-The reveal observer also fires for elements whose `boundingClientRect.top < 0`,
-so a fast flick-scroll can't carry content past the callback and leave it
-permanently invisible.
+The same discipline extends to every cinematic element:
 
-Two further guards, both added after a real black-hero bug:
-
-- **Anything already in view is revealed on the first frame**, synchronously,
-  not on an observer callback. Above-the-fold content must never wait on a
-  scroll event that has not happened.
-- **A 1-second watchdog in the inline gate removes `.js-anim`** unless the
-  reveal controller has set `window.__revealReady`. Hiding and revealing are
-  done by two different scripts; if the second never runs, the first has
-  already hidden everything and a dark hero renders as a black rectangle.
+- **The opening shutter sequence** is `display:none` until the inline gate
+  arms it, plays once per session (`sessionStorage`), and self-destructs on
+  its own inline timer — no downstream failure can leave it covering the page.
+- **Word-split headlines** are split only after the gate confirmed itself;
+  no-JS shows the plain heading.
+- **Count-up stats** ship their final numbers in markup; JS zeroes and rolls
+  them only when it actually runs.
+- **The reveal observer** also fires for elements whose
+  `boundingClientRect.top < 0`, so a fast flick-scroll can't leave content
+  invisible; anything already in view reveals on the first frame; and a
+  1-second watchdog strips `.js-anim` unless the reveal controller has set
+  `window.__revealReady`.
+- Tilt, parallax, magnetic buttons: `pointer: fine` only; all animation is
+  `transform`/`opacity`, rAF-throttled.
 
 ## Content rules
 
@@ -164,9 +170,10 @@ That captures the sales message without minting empty URLs.
 | Metric | Budget | Measured |
 | --- | --- | --- |
 | JS, inner pages | ≤ 2 KB gz | **1.0 KB** (nav) |
-| JS, homepage | ≤ 5 KB gz | **4.1 KB** (comparison slider, reveal observer, plate→planner seeding) |
+| JS, homepage | ≤ 5 KB gz | **≈5 KB** (slider, reveals, tilt, night scene, counters, planner seeding — inlined by Astro) |
 | JS, planner | ≤ 70 KB gz | ~70 KB, lazy — loads only when the planner scrolls into view |
-| CSS, total | ≤ 20 KB gz | **6.5 KB** (homepage) |
+| CSS, total | ≤ 20 KB gz | **9.3 KB** (homepage) |
+| Whole homepage document | — | **20.7 KB gz** including all inline JS and JSON-LD |
 | LCP / CLS / INP (field p75, mobile) | 1.8s / 0.02 / 150ms | verify post-launch with field data |
 
 ## The hero

@@ -1,9 +1,9 @@
 ---
 const nav = [
-  { href: '/#services',   label: 'Services' },
+  { href: '/#how',        label: 'How it works' },
+  { href: '/#work',       label: 'Work' },
   { href: '/#packages',   label: 'Packages' },
   { href: '/#industries', label: 'Industries' },
-  { href: '/#work',       label: 'Work' },
   { href: '/process',     label: 'Process' },
   { href: '/about',       label: 'About' },
   { href: '/contact',     label: 'Contact' },
@@ -32,12 +32,14 @@ const nav = [
 <style>
   .hdr {
     position: sticky; top: 0; z-index: 100;
-    background: color-mix(in srgb, var(--paper) 88%, transparent);
-    backdrop-filter: saturate(180%) blur(12px);
+    background: color-mix(in srgb, var(--paper) 85%, transparent);
+    backdrop-filter: saturate(160%) blur(14px);
     border-bottom: 1px solid transparent;
-    transition: border-color .2s var(--ease);
+    transition: border-color .2s var(--ease), transform .35s var(--ease);
   }
   .hdr.on { border-bottom-color: var(--rule); }
+  /* slips away going down, returns the moment you scroll up */
+  .hdr.hide { transform: translateY(-100%); }
   .hdr__in { display: flex; align-items: center; justify-content: space-between; gap: var(--s5); min-height: var(--header-h); }
 
   .wm { display: inline-flex; align-items: center; gap: .5rem; text-decoration: none; }
@@ -90,7 +92,17 @@ const nav = [
   const nav = document.getElementById('nav')!;
   const tgl = document.getElementById('tgl')!;
 
-  const onScroll = () => hdr.classList.toggle('on', window.scrollY > 4);
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let lastY = 0;
+  const onScroll = () => {
+    const y = window.scrollY;
+    hdr.classList.toggle('on', y > 4);
+    if (!reduced && !nav.classList.contains('open')) {
+      if (y > 300 && y > lastY + 2) hdr.classList.add('hide');
+      else if (y < lastY - 2) hdr.classList.remove('hide');
+    }
+    lastY = y;
+  };
   onScroll();
   addEventListener('scroll', onScroll, { passive: true });
 
