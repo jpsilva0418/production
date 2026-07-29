@@ -1,42 +1,55 @@
 /* ==========================================================================
-   JP Web Design — "Specification" design system
-   Register: technical documentation. Visible grid, hairline rules,
-   monospace labels, warm paper ground, redline accent used the way a
-   redline is used on a drawing — to mark the one thing that changed.
+   JP Web Design — "Proof" design system
+   Register: a printed sheet, not a screen. Warm stock ground, enormous
+   statement type against small caption prose (the missing middle), and one
+   press-orange accent used the way a press uses it — as an instruction.
+   Bright by default: the identity has to survive a phone in daylight on a
+   jobsite, which is where its buyers actually read it.
    ========================================================================== */
 
 :root {
   /* --- Color -------------------------------------------------------------
-     Paper is warm-biased off-white, not pure white: the bias toward the
-     accent's hue family is what makes a neutral read as chosen.
-     Redline is the single action colour. Slate is informational only, so
-     red keeps meaning exactly one thing. */
-  --paper:      #faf9f6;
-  --panel:      #f2f0ea;
-  --card:       #ffffff;
-  --ink:        #16181c;   /* 15.6:1 on paper */
-  --graphite:   #5c626a;   /*  5.4:1 on paper — passes AA for body */
-  --redline:    #b8321c;   /*  4.6:1 as text; white on it is 5.6:1 */
-  --redline-dk: #97270f;
+     Stock is warm off-white biased toward the accent's hue family — the
+     bias is what makes a neutral read as chosen. Vermilion is the single
+     action colour and it appears two ways, never interchangeably:
+       · as a FILL it carries INK text  (ink on #E24E12 = 4.64:1; white fails)
+       · as TEXT it is the deep press variant #B33A0C   (5.0:1 on stock)
+     Ratios below are measured, not estimated. */
+  --paper:      #efebe3;   /* stock */
+  --panel:      #e7e1d3;
+  --card:       #f7f4ec;
+  --ink:        #16150f;   /* 15.4:1 on stock */
+  --graphite:   #5e5a4f;   /*  5.8:1 on stock — passes AA for body */
+  --redline:    #b33a0c;   /* press red, text-safe: 5.0:1 on stock */
+  --redline-dk: #96300a;
+  --verm:       #e24e12;   /* the fill. Never used as text on stock (3.3:1) */
   --slate:      #1e4b6b;
-  --rule:       #e2ded6;
-  --rule-hi:    #cfc9bd;
+  --rule:       #ddd6c6;
+  --rule-hi:    #c8bfa9;
 
   /* --- Type --------------------------------------------------------------
-     TODO(launch): replace --sans with a licensed retail face (Klim Söhne
-     or Untitled Sans; open fallback Instrument Sans) self-hosted as a
-     subset woff2, and pair a metric-overridden fallback via Fontaine so
-     the swap costs zero CLS. The system stack below is a placeholder and
-     is the one thing standing between this and a fully bespoke feel. */
+     TODO(launch): replace --sans with a licensed retail face (Archivo
+     Expanded for display + Instrument Sans for prose is the open pairing;
+     Söhne Breit / Söhne the licensed one) self-hosted as subset woff2 with
+     metric-overridden fallbacks so the swap costs zero CLS. The system
+     stack below is a placeholder and is the one thing standing between
+     this and a fully bespoke feel.
+
+     The scale runs on the missing-middle rule: two voices, the PLATE
+     (enormous) and the CAPTION (small), with as little as possible living
+     between them. Section headings jump straight to display sizes; prose
+     never leaves caption size. Visual hierarchy inside prose is carried by
+     colour (ink vs graphite) and weight, not by size. */
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 
-  --fs-display: clamp(2.75rem, 7.4vw, 5.75rem);
-  --fs-mega:    clamp(2.25rem, 6.2vw, 4.75rem);
-  --fs-h2:      clamp(1.75rem, 3.4vw, 2.5rem);
-  --fs-h3:      1.1875rem;
+  --fs-display: clamp(2.75rem, 8vw, 7rem);      /* PLATE-XL */
+  --fs-mega:    clamp(2.5rem, 6.6vw, 5.5rem);   /* PLATE-L  */
+  --fs-h2:      clamp(1.9rem, 4.4vw, 3.5rem);   /* section voice */
+  --fs-h3:      1.0625rem;                       /* caption-lead: size of body,
+                                                    weight does the work */
   --fs-lead:    clamp(1.0625rem, 1.5vw, 1.1875rem);
-  --fs-body:    1.0625rem;
+  --fs-body:    1.0625rem;                       /* 17px floor — daylight Android */
   --fs-small:   0.9375rem;
   --fs-label:   0.75rem;
 
@@ -112,7 +125,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .section { padding-block: var(--section-y); }
 .section--panel { background: var(--panel); }
 .section--ink { background: var(--ink); color: var(--paper); }
-.section--ink .lead, .section--ink .mark { color: #b9beC6; }
+.section--ink .lead, .section--ink .mark { color: #b5b0a2; }
 
 /* The structural device: a spec-style section marker over a hairline rule
    that spans the full grid. Numbering is used only where the content is a
@@ -125,33 +138,37 @@ button, input, select, textarea { font: inherit; color: inherit; }
   border-bottom: 1px solid var(--rule);
 }
 .mark b { color: var(--redline); font-weight: 500; }
-.section--ink .mark { border-bottom-color: #33363d; }
-.section--ink .mark b { color: #f0785c; }
+.section--ink .mark { border-bottom-color: #35332a; }
+.section--ink .mark b { color: #f0885f; }
 
-.head { max-width: 44rem; margin-bottom: var(--s8); }
+.head { max-width: 48rem; margin-bottom: var(--s8); }
 .head > * + * { margin-top: var(--s4); }
 
 h1, h2, h3 { text-wrap: balance; }
-.display { font-size: var(--fs-display); line-height: 1.04; letter-spacing: -.03em; font-weight: 680; }
-.h2      { font-size: var(--fs-h2);      line-height: 1.1;  letter-spacing: -.024em; font-weight: 660; }
-.h3      { font-size: var(--fs-h3);      line-height: 1.3;  letter-spacing: -.01em;  font-weight: 660; }
+.display { font-size: var(--fs-display); line-height: .98; letter-spacing: -.035em; font-weight: 700; }
+.h2      { font-size: var(--fs-h2);      line-height: 1.04; letter-spacing: -.03em;  font-weight: 690; }
+.h3      { font-size: var(--fs-h3);      line-height: 1.4;  letter-spacing: -.005em; font-weight: 680; }
 
 .lead { font-size: var(--fs-lead); line-height: 1.55; color: var(--graphite); max-width: var(--measure); text-wrap: pretty; }
 .body { max-width: var(--measure); }
 .body + .body { margin-top: var(--s4); }
 .small { font-size: var(--fs-small); color: var(--graphite); }
 
-/* --- Buttons ------------------------------------------------------------- */
+/* --- Buttons -------------------------------------------------------------
+   The primary action is a vermilion fill carrying INK text — white on this
+   orange fails contrast, and dark type on an orange fill reads as ink on a
+   printed swatch, which is the identity. Hover inverts to solid ink rather
+   than darkening: darkening the fill would sink the ink text below AA. */
 .btn {
   display: inline-flex; align-items: center; gap: var(--s3);
-  padding: .8125rem 1.25rem;
-  font-size: var(--fs-small); font-weight: 620; letter-spacing: .005em;
+  padding: .875rem 1.375rem;
+  font-size: var(--fs-small); font-weight: 660; letter-spacing: .005em;
   border: 1px solid transparent; border-radius: 2px;
   cursor: pointer; text-decoration: none; white-space: nowrap;
   transition: background-color .18s var(--ease), border-color .18s var(--ease), color .18s var(--ease);
 }
-.btn--primary { background: var(--redline); color: #fff; }
-.btn--primary:hover { background: var(--redline-dk); }
+.btn--primary { background: var(--verm); color: var(--ink); }
+.btn--primary:hover { background: var(--ink); color: var(--paper); }
 .btn--ghost { background: transparent; color: var(--ink); border-color: var(--rule-hi); }
 .btn--ghost:hover { border-color: var(--ink); }
 .btn--onink { background: var(--paper); color: var(--ink); }
@@ -161,7 +178,7 @@ h1, h2, h3 { text-wrap: balance; }
 
 .btn-row { display: flex; flex-wrap: wrap; gap: var(--s3); align-items: center; }
 
-/* Text link with the redline rule under it */
+/* Text link with the press-red rule under it */
 .tlink {
   font-size: var(--fs-small); font-weight: 600; text-decoration: none;
   border-bottom: 1px solid var(--redline); padding-bottom: 1px; color: var(--ink);
@@ -192,7 +209,7 @@ h1, h2, h3 { text-wrap: balance; }
   border-radius: 3px; padding: var(--s5);
   display: flex; flex-direction: column; gap: var(--s3); height: 100%;
 }
-.card__t { font-size: var(--fs-h3); font-weight: 660; letter-spacing: -.01em; }
+.card__t { font-size: var(--fs-h3); font-weight: 680; letter-spacing: -.005em; }
 .card__x { color: var(--graphite); font-size: var(--fs-small); }
 
 /* --- Note / callout ------------------------------------------------------ */
@@ -206,31 +223,24 @@ h1, h2, h3 { text-wrap: balance; }
   margin-bottom: var(--s2);
 }
 
-/* Motion is spent in exactly one place — the planner's architecture diagram —
-   and nowhere else. A scroll-reveal starting at opacity 0 leaves whole
-   sections blank for anyone landing mid-page on an anchor, and buys nothing
-   a section this restrained actually needs. */
-
-
 /* ==========================================================================
-   CINEMATIC LAYER
-   The paper ground stays dominant; dark is punctuation, not the default.
-   (Near-black-plus-one-accent as a whole identity is the current house style
-   of every AI-generated agency site — using it sparingly is what keeps this
-   from reading that way.)
+   THE DARK ROOM
+   Used exactly once per page — the after-hours interlude. If a second dark
+   section appears, one of them is wrong. Bright is the identity; dark is
+   the one held breath inside it, which is the only reason it lands.
    ========================================================================== */
 
 :root {
-  --void:      #0b0c0e;
-  --void-2:    #131418;
-  --void-rule: #24262b;
-  --void-ink:  #f4f2ee;
-  --void-mute: #9aa0a8;   /* 7.1:1 on --void */
-  --ember:     #e8512f;   /* the redline, lifted for dark grounds — 5.9:1 */
+  --void:      #101013;
+  --void-2:    #17171b;
+  --void-rule: #2a2a30;
+  --void-ink:  #ede8dc;   /* bone — 15.5:1 on void */
+  --void-mute: #a8a398;   /*  7.6:1 on void */
+  --ember:     #f0623a;   /* the press red, lifted for the dark ground — 5.9:1 */
 }
 
 /* One inline SVG turbulence, ~200 bytes, no request. Reads as film grain and
-   stops large dark fields from looking like flat CSS. */
+   stops a large dark field from looking like flat CSS. */
 .grain::after {
   content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
   opacity: .16; mix-blend-mode: overlay;

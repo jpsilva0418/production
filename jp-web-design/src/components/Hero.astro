@@ -1,48 +1,20 @@
 ---
 /* ==========================================================================
-   HERO
+   HERO — bright, typographic, and impossible to render black.
 
-   Backdrop contract — this is what stops the section ever rendering black:
+   The previous dark hero needed a three-layer poster/video/scrim contract
+   to guarantee it never painted as an empty black rectangle. This one
+   removes the failure class instead of defending against it: the ground is
+   the page's own stock colour with a CSS drafting grid — no image request,
+   no video, no scrim, nothing that can fail to arrive.
 
-     layer 0  hero-poster.svg   ALWAYS painted, plain <img>, no JS, no
-                                autoplay, no decoding dependency
-     layer 1  <video>           optional, only rendered when HERO_VIDEO is
-                                set, fades in over the poster once it can
-                                actually play, removes itself on any error
-     layer 2  scrim             fixed gradient so headline contrast holds
-                                whatever is underneath
-
-   Because layer 0 is a static image sitting on a painted background, there
-   is no state — no missing source, no decode failure, no blocked script, no
-   reduced-motion path — in which this section is an empty black rectangle.
-
-   To use real footage: drop the file in /public, set HERO_VIDEO below, and
-   export a still to replace hero-poster.svg. Nothing else changes.
+   The headline is the visitor's sentence, not ours: the one every owner
+   has said about somebody else's website. The comparison slider beside it
+   is the demo offer made physical — the same business twice, and the
+   second version is what "free homepage demo" actually means.
    ========================================================================== */
-
-/* Set to e.g. '/hero.mp4' when footage exists. null → poster only. */
-const HERO_VIDEO: string | null = null;
-const HERO_VIDEO_WEBM: string | null = null;
-const HERO_POSTER = '/hero-poster.svg';
 ---
-<section class="hero dark grain" aria-labelledby="hero-h" data-hero>
-
-  <div class="hero__bg" aria-hidden="true">
-    <!-- Layer 0. Always present. eager + high priority: this is the LCP
-         paint for the section and must never wait on anything. -->
-    <img class="hero__poster" src={HERO_POSTER} alt=""
-         width="1600" height="900" fetchpriority="high" decoding="async" />
-
-    {HERO_VIDEO && (
-      <video class="hero__video" id="heroVideo"
-             poster={HERO_POSTER}
-             muted playsinline loop preload="none"
-             tabindex="-1" aria-hidden="true"
-             data-src={HERO_VIDEO} data-src-webm={HERO_VIDEO_WEBM}></video>
-    )}
-
-    <span class="hero__scrim"></span>
-  </div>
+<section class="hero" aria-labelledby="hero-h" data-hero>
 
   <div class="container hero__in">
 
@@ -53,32 +25,35 @@ const HERO_POSTER = '/hero-poster.svg';
       </p>
 
       <h1 class="hero__h" id="hero-h" data-anim>
-        <span class="rise"><span>They decide</span></span>
-        <span class="rise"><span>before you</span></span>
-        <span class="rise"><span>ever pick up<span class="hero__stop">.</span></span></span>
+        <span class="rise"><span>&ldquo;I wish our</span></span>
+        <span class="rise"><span>website looked</span></span>
+        <span class="rise"><span>like that<span class="hero__stop">.</span>&rdquo;</span></span>
       </h1>
 
       <p class="lead hero__lead" data-anim style="--d:120ms">
-        Someone hears your name, finds you, and forms an opinion in seconds —
-        long before they call, and you never find out it happened.
-        That moment is the whole job.
+        Every owner has said it about somebody else&rsquo;s site. This is where
+        it becomes yours: I design your homepage first — free — and you decide
+        after you&rsquo;ve seen it.
       </p>
 
       <div class="btn-row hero__cta" data-anim style="--d:200ms">
-        <a class="btn btn--primary" href="#offer">Get a Free Demo</a>
-        <a class="btn btn--ghost" href="#offer">Book a Free Consultation</a>
+        <a class="btn btn--primary" href="#planner">Get your free demo</a>
+        <a class="btn btn--ghost" href="#offer">Book a free consultation</a>
       </div>
 
+      <!-- The promise as real text inside the first viewport — not implied
+           by a button label, stated. -->
       <p class="hero__note small" data-anim style="--d:280ms">
-        Both free. No obligation either way.
+        A real homepage design, built for your business. Free, and no
+        obligation after it.
       </p>
     </div>
 
     <!-- ---------------------------------------------------------------- -->
     <figure class="cmp" data-anim style="--d:160ms">
       <figcaption class="cmp__cap">
-        <span class="cmp__capk">Drag to compare</span>
-        <span class="cmp__caps">The same business, two websites</span>
+        <span class="cmp__capk">This is the demo</span>
+        <span class="cmp__caps">One business, before and after — drag to compare</span>
       </figcaption>
 
       <div class="cmp__frame" id="cmp">
@@ -148,8 +123,8 @@ const HERO_POSTER = '/hero-poster.svg';
       </p>
 
       <div class="cmp__legend" aria-hidden="true">
-        <span class="cmp__l cmp__l--new">What it becomes</span>
-        <span class="cmp__l cmp__l--old">What they have now</span>
+        <span class="cmp__l cmp__l--new">What you get</span>
+        <span class="cmp__l cmp__l--old">What you have now</span>
       </div>
     </figure>
   </div>
@@ -160,48 +135,26 @@ const HERO_POSTER = '/hero-poster.svg';
     position: relative;
     padding-block: clamp(3rem, 7vw, 6rem) clamp(3.5rem, 8vw, 7rem);
     overflow: hidden;
-    /* Painted colour under everything, so even a failed image request
-       leaves a designed surface rather than a void. */
-    background-color: var(--void);
+    background-color: var(--paper);
+    /* A drafting grid drawn in CSS: zero requests, and it keys the whole
+       identity — this is a sheet things get designed on. Masked so it
+       fades before it can compete with the prose. */
+    background-image:
+      linear-gradient(var(--rule) 1px, transparent 1px),
+      linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+    background-size: 3.5rem 3.5rem;
   }
-
-  .hero__bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-  .hero__poster,
-  .hero__video {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    object-fit: cover; object-position: center;
-    display: block;
-  }
-  /* Video starts transparent and is only faded up once it is genuinely
-     playing. If it never plays, the poster is simply never covered. */
-  .hero__video { opacity: 0; transition: opacity .8s var(--ease); }
-  .hero__video.is-playing { opacity: 1; }
-  @media (prefers-reduced-motion: reduce) {
-    .hero__video { display: none; }
-  }
-
-  /* Readability scrim — sized so the copy column keeps full contrast on
-     desktop and the whole field darkens on narrow screens where the text
-     spans the width. */
-  .hero__scrim {
-    position: absolute; inset: 0;
+  .hero::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
     background:
-      /* Heavy over the copy column, light over the comparison frame, which
-         is opaque anyway. Tuned by measuring rendered contrast, not by eye. */
-      linear-gradient(90deg, rgba(11,12,14,.80) 0%, rgba(11,12,14,.62) 38%, rgba(11,12,14,.12) 100%),
-      linear-gradient(180deg, rgba(11,12,14,.28) 0%, rgba(11,12,14,0) 36%, rgba(11,12,14,.34) 100%);
-  }
-  @media (max-width: 62rem) {
-    .hero__scrim { background: linear-gradient(180deg, rgba(11,12,14,.86), rgba(11,12,14,.8)); }
+      linear-gradient(180deg, rgba(239,235,227,.35) 0%, rgba(239,235,227,.92) 78%, var(--paper) 100%),
+      radial-gradient(80% 70% at 28% 30%, rgba(239,235,227,0) 0%, rgba(239,235,227,.75) 100%);
   }
 
-  /* Content above the backdrop. The grain overlay sits between the two. */
-  .hero .hero__in { position: relative; z-index: 2; }
-  .hero.grain::after { z-index: 1; }
   .hero__in {
+    position: relative; z-index: 1;
     display: grid;
-    grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
     gap: clamp(2.5rem, 5vw, 4.5rem);
     align-items: center;
   }
@@ -212,35 +165,38 @@ const HERO_POSTER = '/hero-poster.svg';
   .hero__eyebrow {
     display: inline-flex; align-items: center; gap: .5rem;
     font-family: var(--mono); font-size: var(--fs-label);
-    letter-spacing: .16em; text-transform: uppercase; color: var(--void-mute);
+    letter-spacing: .16em; text-transform: uppercase; color: var(--graphite);
     margin-bottom: var(--s5);
   }
   .hero__dot {
     width: .4375rem; height: .4375rem; border-radius: 50%;
-    background: var(--ember);
-    box-shadow: 0 0 0 0 rgba(232, 81, 47, .55);
+    background: var(--verm);
+    box-shadow: 0 0 0 0 rgba(226, 78, 18, .5);
     animation: pulse 2.8s ease-out infinite;
   }
   @keyframes pulse {
-    0%   { box-shadow: 0 0 0 0 rgba(232, 81, 47, .5); }
-    70%  { box-shadow: 0 0 0 .5rem rgba(232, 81, 47, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(232, 81, 47, 0); }
+    0%   { box-shadow: 0 0 0 0 rgba(226, 78, 18, .45); }
+    70%  { box-shadow: 0 0 0 .5rem rgba(226, 78, 18, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(226, 78, 18, 0); }
   }
   @media (prefers-reduced-motion: reduce) { .hero__dot { animation: none; } }
 
-  /* Sized against the hero column, not the viewport — at --fs-display this
-     headline swallowed the whole fold and stopped reading as confident. */
+  /* Sized against the hero column, not the viewport. No hanging indent on
+     the quote: each .rise line is its own overflow-hidden block, so a
+     negative text-indent clips the first glyph of every line, not just
+     the quotation mark. */
   .hero__h {
-    font-size: clamp(2.5rem, 5vw, 4.25rem);
-    line-height: 1.0; letter-spacing: -.035em; font-weight: 690;
+    font-size: clamp(2.6rem, 5.2vw, 4.5rem);
+    line-height: .99; letter-spacing: -.035em; font-weight: 720;
   }
   /* The full stop is the one saturated mark in the headline. Punctuation as
-     the accent — cheaper and more confident than colouring a whole word. */
-  .hero__stop { color: var(--ember); }
+     the accent — cheaper and more confident than colouring a whole word.
+     Display scale, so the fill orange passes large-text contrast here. */
+  .hero__stop { color: var(--verm); }
 
-  .hero__lead { margin-top: var(--s5); max-width: 34ch; }
+  .hero__lead { margin-top: var(--s5); max-width: 36ch; }
   .hero__cta  { margin-top: var(--s6); }
-  .hero__note { margin-top: var(--s4); color: var(--void-mute); }
+  .hero__note { margin-top: var(--s4); }
 
   /* ---------------------------------------------------------------- compare */
   .cmp { --x: 40%; margin: 0; }
@@ -251,28 +207,28 @@ const HERO_POSTER = '/hero-poster.svg';
   }
   .cmp__capk {
     font-family: var(--mono); font-size: var(--fs-label);
-    letter-spacing: .12em; text-transform: uppercase; color: var(--ember);
+    letter-spacing: .12em; text-transform: uppercase; color: var(--redline);
   }
-  .cmp__caps { font-size: .8125rem; color: var(--void-mute); }
+  .cmp__caps { font-size: .8125rem; color: var(--graphite); }
 
   .cmp__frame {
     position: relative;
-    border: 1px solid var(--void-rule); border-radius: 6px;
-    background: var(--void-2); overflow: hidden;
-    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .7);
+    border: 1px solid var(--rule-hi); border-radius: 6px;
+    background: var(--card); overflow: hidden;
+    box-shadow: 0 30px 60px -28px rgba(22, 21, 15, .38);
   }
 
   .cmp__chrome {
     display: flex; align-items: center; gap: .375rem;
-    padding: .5rem .75rem; border-bottom: 1px solid var(--void-rule);
-    background: #17181d;
+    padding: .5rem .75rem; border-bottom: 1px solid var(--rule);
+    background: var(--panel);
   }
   .cmp__chrome > span {
-    width: .5rem; height: .5rem; border-radius: 50%; background: #34363c; flex: none;
+    width: .5rem; height: .5rem; border-radius: 50%; background: var(--rule-hi); flex: none;
   }
   .cmp__url {
     margin-left: .5rem; font-family: var(--mono);
-    font-size: .6875rem; color: #6b7078;
+    font-size: .6875rem; color: var(--graphite);
   }
 
   .cmp__stage {
@@ -318,49 +274,51 @@ const HERO_POSTER = '/hero-poster.svg';
   }
   .o-box  { background: #d9dde6; border: 1px solid #b9bfcc; }
 
-  /* --- what it becomes ---------------------------------------------------- */
+  /* --- what you get -------------------------------------------------------
+     The "after" mini wears the studio's own identity — stock ground, ink
+     type, vermilion fill with ink text. The demo demonstrates the brand. */
   .mini--new {
-    background: #fbfaf8; color: #16181c; font-family: var(--sans);
+    background: #f4f1ea; color: #16150f; font-family: var(--sans);
     /* Revealed from the LEFT, which is where this layout puts its content.
        Clipping from the right showed an empty margin and read as a bug. */
     clip-path: inset(0 calc(100% - var(--x)) 0 0);
   }
-  .mini--new .z--bar { border-bottom: 1px solid #e6e2da; }
+  .mini--new .z--bar { border-bottom: 1px solid #ddd6c6; }
   .n-logo { font-weight: 650; letter-spacing: -.01em; font-size: 1.05em; white-space: nowrap; }
   .n-cta  {
-    background: #b8321c; color: #fff; font-weight: 600;
+    background: #e24e12; color: #16150f; font-weight: 650;
     padding: .22rem .5rem; border-radius: 2px; font-size: .9em; white-space: nowrap;
   }
   .n-kick {
     font-family: var(--mono); font-size: .8em; letter-spacing: .1em;
-    text-transform: uppercase; color: #b8321c; white-space: nowrap;
+    text-transform: uppercase; color: #b33a0c; white-space: nowrap;
   }
   .n-head {
     font-size: 2em; line-height: 1.05; letter-spacing: -.03em; font-weight: 700;
     max-width: 15ch;
   }
-  .n-body { color: #5c626a; }
+  .n-body { color: #5e5a4f; }
   .n-btn  {
-    background: #16181c; color: #fbfaf8; font-weight: 600;
+    background: #16150f; color: #efebe3; font-weight: 600;
     padding: .3rem .65rem; border-radius: 2px; font-size: .95em; white-space: nowrap;
   }
-  .n-box  { background: #efece6; border-radius: 2px; }
+  .n-box  { background: #e7e1d3; border-radius: 2px; }
 
   /* --- seam + control ----------------------------------------------------- */
   .cmp__seam {
     position: absolute; top: 0; bottom: 0; left: var(--x);
-    width: 2px; background: var(--ember);
+    width: 2px; background: var(--verm);
     transform: translateX(-1px); pointer-events: none; z-index: 3;
   }
   .cmp__grip {
     position: absolute; top: 50%; left: 50%;
     width: 2.25rem; height: 2.25rem; transform: translate(-50%, -50%);
-    border-radius: 50%; background: var(--ember);
+    border-radius: 50%; background: var(--verm);
     display: grid; place-items: center;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, .4);
+    box-shadow: 0 4px 14px rgba(22, 21, 15, .3);
   }
   .cmp__grip::before {
-    content: '⟵ ⟶'; font-size: .5rem; color: #fff; letter-spacing: -.06em; white-space: nowrap;
+    content: '⟵ ⟶'; font-size: .5rem; color: var(--ink); letter-spacing: -.06em; white-space: nowrap;
   }
 
   /* The real control: a range input laid over the frame. Invisible thumb,
@@ -376,7 +334,7 @@ const HERO_POSTER = '/hero-poster.svg';
   .cmp__range::-moz-range-thumb {
     width: 2.75rem; height: 100vh; background: transparent; border: 0; cursor: ew-resize;
   }
-  .cmp__range:focus-visible { outline: 2px solid var(--ember); outline-offset: 3px; }
+  .cmp__range:focus-visible { outline: 2px solid var(--redline); outline-offset: 3px; }
 
   .cmp__legend {
     display: flex; justify-content: space-between; gap: var(--s3);
@@ -384,78 +342,11 @@ const HERO_POSTER = '/hero-poster.svg';
     font-family: var(--mono); font-size: var(--fs-label);
     letter-spacing: .1em; text-transform: uppercase;
   }
-  .cmp__l--old { color: var(--void-mute); }
-  .cmp__l--new { color: var(--ember); }
+  .cmp__l--old { color: var(--graphite); }
+  .cmp__l--new { color: var(--redline); }
 </style>
 
 <script>
-  /* ---------------------------------------------------------------------
-     Hero video controller.
-
-     Runs only if a <video> was rendered (HERO_VIDEO set). Every path ends
-     with the poster still visible, so failure is invisible rather than black:
-
-       · sources attach lazily, on approach, never during initial load
-       · play() is a promise — a rejection (autoplay policy, low power mode,
-         data saver) is caught and the poster simply stays
-       · any error/stalled event detaches the video entirely
-       · reduced-motion never attaches a source at all
-     --------------------------------------------------------------------- */
-  const video = document.getElementById('heroVideo') as HTMLVideoElement | null;
-
-  if (video) {
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const saveData = (navigator as any).connection?.saveData === true;
-
-    const giveUp = () => {
-      video.classList.remove('is-playing');
-      video.removeAttribute('src');
-      try { video.load(); } catch (e) {}
-      video.remove();               // poster is underneath, untouched
-    };
-
-    if (reduced || saveData) {
-      giveUp();
-    } else {
-      const attach = () => {
-        video.addEventListener('error', giveUp, { once: true });
-        video.addEventListener('stalled', giveUp, { once: true });
-
-        const webm = video.dataset.srcWebm;
-        if (webm) {
-          const s1 = document.createElement('source');
-          s1.src = webm; s1.type = 'video/webm';
-          video.appendChild(s1);
-        }
-        const mp4 = video.dataset.src;
-        if (mp4) {
-          const s2 = document.createElement('source');
-          s2.src = mp4; s2.type = 'video/mp4';
-          s2.addEventListener('error', giveUp, { once: true });
-          video.appendChild(s2);
-        }
-
-        video.addEventListener('playing', () => video.classList.add('is-playing'), { once: true });
-
-        video.preload = 'auto';
-        video.load();
-
-        const p = video.play();
-        if (p && typeof p.catch === 'function') p.catch(giveUp);
-      };
-
-      /* Lazy: don't compete with the LCP paint. */
-      if ('IntersectionObserver' in window) {
-        const vio = new IntersectionObserver((es) => {
-          es.forEach((e) => { if (e.isIntersecting) { vio.disconnect(); attach(); } });
-        }, { rootMargin: '200px' });
-        vio.observe(video);
-      } else {
-        addEventListener('load', attach, { once: true });
-      }
-    }
-  }
-
   /* Slider → CSS custom property. rAF-throttled so dragging never triggers
      layout work per input event. */
   const frame = document.getElementById('cmp');

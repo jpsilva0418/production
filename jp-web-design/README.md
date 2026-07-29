@@ -3,6 +3,23 @@
 Astro 5 static site. Nine pages, one React island (the planner). Builds to plain
 HTML/CSS/JS, so it deploys to any static host.
 
+## The identity, in one paragraph
+
+Bright by default: warm stock ground (`#efebe3`), near-black ink, and one
+press-orange accent that appears two ways which are **never interchangeable** —
+as a *fill* (`--verm #e24e12`) it carries **ink text** (4.64:1; white on this
+orange fails at 3.9:1), and as *text* it is the deep press variant
+(`--redline #b33a0c`, 5.0:1 on stock). Exactly one dark section exists per page
+(the 9:47 PM interlude) and exactly one full-vermilion field (the close). If a
+second of either appears, one of them is wrong. The homepage's job is
+aspiration → demo: every section is built so the visitor pictures *their own
+business* transformed, and every section's exit points at the free demo.
+The "plates" (spec builds in the Work section) carry honest museum labels —
+`SPEC BUILD` → `COMMISSIONED` → `IN SERVICE` — that only ever upgrade, and
+clicking "Build mine like this →" seeds the planner with that plate's industry
+via `sessionStorage` before the anchor jump, so choosing a plate *is* starting
+the demo with question one already answered.
+
 ```bash
 npm install
 npm run dev      # http://localhost:4321
@@ -146,42 +163,31 @@ That captures the sales message without minting empty URLs.
 
 | Metric | Budget | Measured |
 | --- | --- | --- |
-| JS, inner pages | ≤ 2 KB gz | **1.4 KB** (nav + island loader) |
-| JS, homepage | ≤ 5 KB gz | **4.2 KB** (hero slider, video controller, reveal observer) |
+| JS, inner pages | ≤ 2 KB gz | **1.0 KB** (nav) |
+| JS, homepage | ≤ 5 KB gz | **4.1 KB** (comparison slider, reveal observer, plate→planner seeding) |
 | JS, planner | ≤ 70 KB gz | ~70 KB, lazy — loads only when the planner scrolls into view |
-| CSS, total | ≤ 20 KB gz | **8.6 KB** |
+| CSS, total | ≤ 20 KB gz | **6.5 KB** (homepage) |
 | LCP / CLS / INP (field p75, mobile) | 1.8s / 0.02 / 150ms | verify post-launch with field data |
 
-## The hero backdrop
+## The hero
 
-Three layers, and the order is the whole safety property:
+Bright and typographic, and that is a safety property, not just a look: the
+previous dark hero needed a three-layer poster/video/scrim contract to
+guarantee it never painted as an empty black rectangle. This one removes the
+failure class instead of defending against it — the ground is the page's own
+stock colour with a CSS drafting grid, so there is no image request, no video,
+no scrim, and nothing that can fail to arrive. The LCP element is the
+headline itself.
 
-| Layer | What | When |
-| --- | --- | --- |
-| 0 | `public/hero-poster.svg` | **always** — plain `<img>`, no JS, 1.1 KB gz |
-| 1 | `<video>` | only if `HERO_VIDEO` is set; fades in once actually playing |
-| 2 | scrim gradient | always — keeps headline contrast whatever is beneath |
+If real footage ever earns its way back in, it belongs in a *plate*, not
+behind the hero text — and it revives the old contract: poster `<img>` always
+painted first, video gated and faded in only on `playing`, self-removed on
+error. See git history for the reference implementation.
 
-Because layer 0 is a static image on a painted `background-color`, there is no
-state in which this section is an empty black rectangle: no missing source, no
-decode failure, no blocked script, no reduced-motion path.
-
-### Adding real footage
-
-1. Drop `hero.mp4` (and optionally `hero.webm`) into `public/`
-2. Set `HERO_VIDEO = '/hero.mp4'` at the top of `src/components/Hero.astro`
-3. Export a still from the footage to replace `hero-poster.svg` — keep 16:9
-   and the dark value range, or the overlay contrast breaks
-
-The controller then handles the rest, and every failure path ends with the
-poster still showing: sources attach lazily on approach (never during initial
-load), `play()` rejection from autoplay policy or low-power mode is caught,
-`error`/`stalled` detaches the element entirely, and `prefers-reduced-motion`
-or `saveData` never attaches a source at all.
-
-Measured contrast over the backdrop: headline 16.9:1, lead and eyebrow 7.2:1.
-Re-measure after swapping the poster — a lighter still will need a heavier
-scrim.
+Contrast is measured, not assumed: ink on stock 15.4:1, secondary
+`--graphite` 5.8:1, press-red text 5.0:1, ink on the vermilion fill 4.64:1.
+The orange fill may never carry white text and the bright stock may never
+carry `--verm` as text — both fail WCAG AA.
 
 Add `size-limit` and Lighthouse CI to enforce these. A budget nobody enforces is
 a wish. The main threats, in likelihood order: motion on content pages, an

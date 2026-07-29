@@ -59,7 +59,7 @@
   transition: border-color .16s var(--ease), background-color .16s var(--ease);
 }
 .pl__opt:hover { border-color: var(--rule-hi); }
-.pl__opt.is-on { border-color: var(--redline); background: #fff; }
+.pl__opt.is-on { border-color: var(--redline); background: var(--card); }
 
 .pl__opt input {
   position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0;
@@ -70,7 +70,7 @@
 /* Selected state uses a mark and a border change, never colour alone. */
 .pl__dot, .pl__tick {
   width: 1.125rem; height: 1.125rem; margin-top: .1875rem;
-  border: 1px solid var(--rule-hi); background: #fff; flex: none;
+  border: 1px solid var(--rule-hi); background: var(--card); flex: none;
 }
 .pl__dot { border-radius: 50%; }
 .pl__tick { border-radius: 2px; }
@@ -102,7 +102,7 @@
   font-size: var(--fs-small);
 }
 .pl__field input:focus, .pl__field select:focus, .pl__field textarea:focus {
-  background: #fff; border-color: var(--ink); outline-offset: 1px;
+  background: var(--card); border-color: var(--ink); outline-offset: 1px;
 }
 .pl__field [aria-invalid='true'] { border-color: var(--redline); }
 .pl__hint { font-size: .875rem; color: var(--graphite); }

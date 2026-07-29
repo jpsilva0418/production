@@ -4,6 +4,25 @@ import Hero from '../components/Hero.astro';
 import Packages from '../components/Packages.astro';
 import Planner from '../components/planner/Planner.jsx';
 
+/* The plates. Every one is a SPEC BUILD — uncommissioned, built to show the
+   pattern, and labelled so on the page. `industry` maps to the planner's
+   businessType ids, which is what lets "Build mine like this →" arrive at
+   the planner with the visitor's industry already answered. */
+const plates = [
+  {
+    n: '01', industry: 'construction', trade: 'Roofing / Storm repair',
+    cap: 'Opens with the one thing a homeowner with a leak needs: proof someone will actually come. Estimate path above the fold, insurance help named, photos load last.',
+  },
+  {
+    n: '02', industry: 'beauty', trade: 'Med spa / Aesthetics',
+    cap: 'Booking is the navigation, not a button hidden in it. Treatments read like outcomes, not a price list, and the whole page keeps a before-and-after level of calm.',
+  },
+  {
+    n: '03', industry: 'restaurant', trade: 'Restaurant / Neighborhood',
+    cap: 'Menu and hours in the first screen, because that is the entire reason anyone visits. Atmosphere comes from type and colour, not a slow carousel of dark photos.',
+  },
+];
+
 /* Services are a list, not a card grid. A grid of eight equal cards asks the
    eye to compare things that aren't comparable; a list with a revealed
    detail lets someone scan the eight names first and stop only where it
@@ -94,7 +113,7 @@ const faqSchema = {
 ---
 <Base
   title="JP Web Design | Website Design for U.S. Businesses"
-  description="Founder-led web design for businesses across the United States. Free demo, free consultation, fixed scope and a fixed launch date."
+  description="Founder-led web design for businesses across the United States. Free homepage demo, free consultation, fixed scope and a fixed launch date."
   schema={faqSchema}
 >
 
@@ -110,9 +129,8 @@ const faqSchema = {
 
         /* Watchdog. Hiding and revealing are done by two different scripts;
            if the second one never runs — bundle blocked, CSP, a JS error, an
-           extension — the first has already hidden everything and the dark
-           hero renders as a black rectangle. This guarantees that cannot
-           outlive a second. */
+           extension — the first has already hidden everything. This
+           guarantees that cannot outlive a second. */
         setTimeout(function () {
           if (!window.__revealReady) root.classList.remove('js-anim');
         }, 1000);
@@ -134,25 +152,130 @@ const faqSchema = {
         <span class="rise"><span>Good businesses</span></span>
         <span class="rise"><span>lose work to worse</span></span>
         <span class="rise"><span>ones with <em>better</em></span></span>
-        <span class="rise"><span><em>websites</em><span class="hero__stop">.</span></span></span>
+        <span class="rise"><span><em>websites</em><span class="stake__stop">.</span></span></span>
       </h2>
 
       <!-- Deliberately offset to the far corner and set small. The statement
            owns the screen; this is a footnote to it, not a second column. -->
       <p class="stake__note" data-anim style="--d:240ms">
-        It is rarely a fair fight. The competitor who wins the call is not always better at
-        the work — they are just easier to believe in the ninety seconds someone spends
-        deciding. That gap is the only problem I work on.
+        It is rarely a fair fight. The competitor who wins the call is not always better
+        at the work — they are just easier to believe in the ninety seconds someone
+        spends deciding. The free demo exists so you can see, on your own pages, which
+        side of that gap you would be on.
+        <a class="tlink stake__link" href="#planner">See yours</a>
       </p>
     </div>
   </section>
 
-  <!-- ══ THE OFFER ══════════════════════════════════════════════════════════ -->
-  <section class="section offer" id="offer" aria-labelledby="offer-h">
+  <!-- ══ THE PLATES ═════════════════════════════════════════════════════════
+       Three spec builds, labelled with total honesty. The label system is
+       the credibility mechanism: SPEC BUILD (uncommissioned, built to show
+       the pattern) upgrades in place to COMMISSIONED, then IN SERVICE with
+       a live date. Labels only ever move up, and nothing here pretends to
+       be client work. The conversion mechanic: each plate's link seeds the
+       planner with that industry, so choosing a plate IS starting the demo. -->
+  <section class="section plt" id="work" aria-labelledby="plt-h">
     <div class="container">
-      <p class="mark" data-anim><b>§02</b> Two ways to start</p>
+      <p class="mark" data-anim><b>§02</b> Spec builds — 03 plates</p>
       <div class="head" data-anim>
-        <h2 class="h2" id="offer-h">See the work before you pay for any of it</h2>
+        <h2 class="h2" id="plt-h">If your business were on this page</h2>
+        <p class="lead">
+          Three homepages, built to show the standard rather than describe it. None is
+          client work — the label under each says exactly that — but every one is how I
+          would open the argument for a business like yours. Pick the closest, and the
+          planner will already know your industry.
+        </p>
+      </div>
+
+      <div class="plt__g">
+
+        <!-- Plate 01 — roofing -->
+        <article class="plt__c" data-anim>
+          <div class="plt__frame" aria-hidden="true">
+            <div class="pm pm--roof">
+              <div class="pm__bar">
+                <span class="pm__logo">SUMMIT ROOFING</span>
+                <span class="pm__chip">Get an estimate</span>
+              </div>
+              <span class="pm__kick">Storm damage? · Insurance claims handled</span>
+              <span class="pm__head">On your roof this week, not this season.</span>
+              <span class="pm__sub">Free inspections across the county. Licensed &amp; insured.</span>
+              <span class="pm__cta">Request an inspection →</span>
+              <div class="pm__row"><span></span><span></span><span></span></div>
+            </div>
+          </div>
+          <p class="plt__spec">PLATE {plates[0].n} · {plates[0].trade} · <b>SPEC BUILD</b></p>
+          <p class="plt__cap">{plates[0].cap}</p>
+          <a class="tlink plt__go" href="#planner" data-plate-industry={plates[0].industry}>
+            Build mine like this →
+          </a>
+        </article>
+
+        <!-- Plate 02 — med spa -->
+        <article class="plt__c" data-anim style="--d:90ms">
+          <div class="plt__frame" aria-hidden="true">
+            <div class="pm pm--spa">
+              <div class="pm__bar">
+                <span class="pm__logo">Véla Aesthetics</span>
+                <span class="pm__chip">Book now</span>
+              </div>
+              <span class="pm__kick">Skin · Injectables · Laser</span>
+              <span class="pm__head">Leave looking like you slept for a week.</span>
+              <span class="pm__sub">Consultations are free, and nobody upsells you in a robe.</span>
+              <span class="pm__cta">See treatments →</span>
+              <div class="pm__row"><span></span><span></span><span></span></div>
+            </div>
+          </div>
+          <p class="plt__spec">PLATE {plates[1].n} · {plates[1].trade} · <b>SPEC BUILD</b></p>
+          <p class="plt__cap">{plates[1].cap}</p>
+          <a class="tlink plt__go" href="#planner" data-plate-industry={plates[1].industry}>
+            Build mine like this →
+          </a>
+        </article>
+
+        <!-- Plate 03 — restaurant -->
+        <article class="plt__c" data-anim style="--d:180ms">
+          <div class="plt__frame" aria-hidden="true">
+            <div class="pm pm--rest">
+              <div class="pm__bar">
+                <span class="pm__logo">Harbor &amp; Vine</span>
+                <span class="pm__chip">Reserve</span>
+              </div>
+              <span class="pm__kick">Open tonight until 11</span>
+              <span class="pm__head">Dinner is the easy decision.</span>
+              <span class="pm__sub">Tonight's menu, the wine list, and a table in two taps.</span>
+              <span class="pm__cta">View the menu →</span>
+              <div class="pm__row"><span></span><span></span><span></span></div>
+            </div>
+          </div>
+          <p class="plt__spec">PLATE {plates[2].n} · {plates[2].trade} · <b>SPEC BUILD</b></p>
+          <p class="plt__cap">{plates[2].cap}</p>
+          <a class="tlink plt__go" href="#planner" data-plate-industry={plates[2].industry}>
+            Build mine like this →
+          </a>
+        </article>
+      </div>
+
+      <div class="note plt__note" data-anim>
+        <span class="lbl">What the labels mean</span>
+        <p class="small">
+          <strong>SPEC BUILD</strong> is uncommissioned work — no client, no endorsement,
+          built to show the standard. When a plate is paid client work it will read
+          <strong>COMMISSIONED</strong>, and once it is live, <strong>IN SERVICE</strong> with
+          the launch date. Labels only ever upgrade, and nothing on this page will claim a
+          client it does not have. Your free demo, if you want it shown here, becomes the
+          next plate.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ THE OFFER ══════════════════════════════════════════════════════════ -->
+  <section class="section section--panel offer" id="offer" aria-labelledby="offer-h">
+    <div class="container">
+      <p class="mark" data-anim><b>§03</b> Two ways to start</p>
+      <div class="head" data-anim>
+        <h2 class="h2" id="offer-h">See yours before you pay for anything</h2>
         <p class="lead">
           You should not have to take a stranger's word for it. Both of these cost nothing,
           and neither obligates you to anything afterwards.
@@ -204,7 +327,7 @@ const faqSchema = {
        DOM at load — nothing here is hidden from a crawler or a reader. ═══ -->
   <section class="section svc" id="services" aria-labelledby="svc-h">
     <div class="container">
-      <p class="mark" data-anim><b>§03</b> Services</p>
+      <p class="mark" data-anim><b>§04</b> Services</p>
       <div class="svc__top" data-anim>
         <h2 class="h2" id="svc-h">Eight things I do</h2>
         <p class="lead">
@@ -228,12 +351,13 @@ const faqSchema = {
   <!-- ══ PACKAGES ═══════════════════════════════════════════════════════════ -->
   <section class="section section--panel" id="packages" aria-labelledby="pkg-h">
     <div class="container">
-      <p class="mark" data-anim><b>§04</b> Packages</p>
+      <p class="mark" data-anim><b>§05</b> Packages</p>
       <div class="head" data-anim>
         <h2 class="h2" id="pkg-h">Three ways to work together</h2>
         <p class="lead">
           Most businesses land in the middle. If you are unsure, the planner below will tell
-          you which one fits and why.
+          you which one fits and why — and whichever it is, the first step is the same free
+          demo, so choosing wrong costs nothing.
         </p>
       </div>
       <div data-anim style="--d:80ms"><Packages /></div>
@@ -243,7 +367,7 @@ const faqSchema = {
   <!-- ══ PLANNER ════════════════════════════════════════════════════════════ -->
   <section class="section" id="planner" aria-labelledby="pln-h">
     <div class="container">
-      <p class="mark" data-anim><b>§05</b> Website Project Planner</p>
+      <p class="mark" data-anim><b>§06</b> Website Project Planner</p>
       <div class="head" data-anim>
         <h2 class="h2" id="pln-h">Eight questions, then your free demo</h2>
         <p class="lead">
@@ -280,7 +404,7 @@ const faqSchema = {
   <!-- ══ INDUSTRIES ═════════════════════════════════════════════════════════ -->
   <section class="section section--panel ind" id="industries" aria-labelledby="ind-h">
     <div class="container">
-      <p class="mark" data-anim><b>§06</b> Industries</p>
+      <p class="mark" data-anim><b>§07</b> Industries</p>
       <div class="head" data-anim>
         <h2 class="h2" id="ind-h">Built around how your customers decide</h2>
         <p class="lead">
@@ -323,10 +447,42 @@ const faqSchema = {
     </div>
   </section>
 
+  <!-- ══ AFTER HOURS ════════════════════════════════════════════════════════
+       The one dark section on the page. Bright is the identity; this is the
+       single held breath inside it — the moment the visitor pictures the
+       customer they never knew they lost. If a second dark section ever
+       appears on this page, one of them is wrong. ═══════════════════════ -->
+  <section class="section dark grain ah" aria-labelledby="ah-h">
+    <div class="container">
+      <p class="mark" data-anim><b>§08</b> After hours</p>
+
+      <h2 class="ah__h" id="ah-h" data-anim>
+        <span class="rise"><span>9:47 PM<span class="ah__stop">.</span></span></span>
+        <span class="rise"><span>Someone just searched</span></span>
+        <span class="rise"><span>for what you do.</span></span>
+      </h2>
+
+      <div class="ah__b">
+        <p class="ah__mono" data-anim style="--d:160ms" aria-hidden="true">
+          RESULT&nbsp;&nbsp;→&nbsp;&nbsp;THE COMPANY THAT LOOKED READY
+        </p>
+        <p class="lead ah__lead" data-anim style="--d:220ms">
+          A homeowner with a leak, a bride pricing hair trials, a couple choosing where to
+          eat — at that hour nobody calls. They compare websites, pick one, and by morning
+          the decision is made. You never find out it happened, which is exactly why it
+          keeps happening.
+        </p>
+        <p class="ah__link" data-anim style="--d:280ms">
+          <a class="tlink" href="#planner">See what answering looks like — free demo →</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
   <!-- ══ PROCESS ════════════════════════════════════════════════════════════ -->
   <section class="section prc" id="process" aria-labelledby="prc-h">
     <div class="container">
-      <p class="mark" data-anim><b>§07</b> Process</p>
+      <p class="mark" data-anim><b>§09</b> Process</p>
 
       <div class="prc__hero">
         <p class="prc__fig" data-anim aria-hidden="true">
@@ -369,62 +525,10 @@ const faqSchema = {
     </div>
   </section>
 
-  <!-- ══ WORK ═══════════════════════════════════════════════════════════════ -->
-  <section class="section section--panel" id="work" aria-labelledby="wrk-h">
-    <div class="container">
-      <p class="mark" data-anim><b>§08</b> Work</p>
-      <div class="head" data-anim>
-        <h2 class="h2" id="wrk-h">Concept work, honestly labelled</h2>
-        <p class="lead">
-          JP Web Design is new. Rather than pad this section, here is what is actually true —
-          and the reasoning behind each piece, which is the part worth reading.
-        </p>
-      </div>
-
-      <div class="note wrk__note" data-anim>
-        <span class="lbl">Read this first</span>
-        <p class="small">
-          Everything below is a concept, not a client engagement. No project here was
-          commissioned, and no business shown has endorsed or is affiliated with JP Web
-          Design. Client work will replace these — with permission and attribution — as it
-          launches.
-        </p>
-      </div>
-
-      <ul class="grid g3 wrk">
-        <li class="card wrk__c" data-anim>
-          <span class="wrk__tag">Concept</span>
-          <h3 class="card__t">Commercial general contractor</h3>
-          <p class="card__x">
-            A sixty-year-old firm whose buyers are project managers building a bid list, not
-            homeowners requesting quotes. No "free quote" form anywhere — the structure is
-            capabilities, delivery methods, project profiles and a careers path.
-          </p>
-        </li>
-        <li class="card wrk__c" data-anim style="--d:80ms">
-          <span class="wrk__tag">Placeholder</span>
-          <h3 class="card__t">Second concept — in progress</h3>
-          <p class="card__x">
-            A home-services operator whose booking path breaks on mobile. The rebuild is
-            about the route from search to booked job, not the visual design.
-          </p>
-        </li>
-        <li class="card wrk__c" data-anim style="--d:160ms">
-          <span class="wrk__tag">Placeholder</span>
-          <h3 class="card__t">Third concept — in progress</h3>
-          <p class="card__x">
-            A multi-location practice where a single-location structure has stopped working.
-            Hours, staff, booking and local search all fork at once.
-          </p>
-        </li>
-      </ul>
-    </div>
-  </section>
-
   <!-- ══ WHY ════════════════════════════════════════════════════════════════ -->
-  <section class="section dark grain why" aria-labelledby="why-h">
+  <section class="section section--panel why" aria-labelledby="why-h">
     <div class="container">
-      <p class="mark" data-anim><b>§09</b> Why JP Web Design</p>
+      <p class="mark" data-anim><b>§10</b> Why JP Web Design</p>
       <div class="head" data-anim>
         <h2 class="h2" id="why-h">You are hiring a person, not an account manager</h2>
         <p class="lead">
@@ -455,7 +559,7 @@ const faqSchema = {
   <!-- ══ FAQ ════════════════════════════════════════════════════════════════ -->
   <section class="section" id="faq" aria-labelledby="faq-h">
     <div class="container faq__w">
-      <p class="mark" data-anim><b>§10</b> Questions</p>
+      <p class="mark" data-anim><b>§11</b> Questions</p>
       <div class="head" data-anim><h2 class="h2" id="faq-h">Answers before you ask</h2></div>
       <div class="faq" data-anim style="--d:60ms">
         {faqs.map((f) => (
@@ -468,20 +572,22 @@ const faqSchema = {
     </div>
   </section>
 
-  <!-- ══ CLOSE ══════════════════════════════════════════════════════════════ -->
-  <section class="close dark grain" aria-labelledby="close-h">
+  <!-- ══ CLOSE ══════════════════════════════════════════════════════════════
+       The one vermilion field on the site — the accent at full size, once,
+       carrying ink text (the only text colour that passes on this fill). -->
+  <section class="close" aria-labelledby="close-h">
     <div class="container close__in">
       <h2 class="close__h" id="close-h" data-anim>
-        <span class="rise"><span>Let's see what</span></span>
-        <span class="rise"><span>yours could be<span class="hero__stop">.</span></span></span>
+        <span class="rise"><span>Let's build the one</span></span>
+        <span class="rise"><span>you wish you had.</span></span>
       </h2>
-      <p class="lead close__l" data-anim style="--d:120ms">
-        A free demo of your homepage, or twenty free minutes on what is holding the current
-        one back. No obligation at the end of either.
+      <p class="close__l" data-anim style="--d:120ms">
+        A free demo of your homepage, or twenty free minutes on what is holding the
+        current one back. No obligation at the end of either.
       </p>
       <div class="btn-row close__b" data-anim style="--d:200ms">
-        <a class="btn btn--primary" href="#planner">Get a Free Demo</a>
-        <a class="btn btn--ghost" href="/contact">Book a Free Consultation</a>
+        <a class="btn close__cta" href="#planner">Get a Free Demo</a>
+        <a class="btn close__alt" href="/contact">Book a Free Consultation</a>
       </div>
     </div>
   </section>
@@ -504,20 +610,97 @@ const faqSchema = {
     /* Larger than anything else on the page, including the hero. This is the
        one line the whole argument rests on, and scale is how a page says so. */
     font-size: clamp(2.5rem, 7.6vw, 6.5rem);
-    line-height: .96; letter-spacing: -.042em; font-weight: 700;
+    line-height: .96; letter-spacing: -.042em; font-weight: 720;
     text-wrap: initial;   /* explicit line breaks; balancing would fight them */
   }
   .stake__h em { font-style: normal; color: var(--redline); }
+  /* Display scale — the fill orange passes large-text contrast here. */
+  .stake__stop { color: var(--verm); }
 
   .stake__note {
     justify-self: end; max-width: 42ch;
     font-size: var(--fs-small); color: var(--graphite);
     padding-top: var(--s4); border-top: 1px solid var(--rule);
   }
+  .stake__link { margin-left: .375rem; white-space: nowrap; }
   @media (max-width: 46rem) {
     .stake__in { min-height: 0; }
     .stake__note { justify-self: start; }
   }
+
+  /* ── Plates ──────────────────────────────────────────────────────────── */
+  .plt__g {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    align-items: stretch;
+  }
+  @media (max-width: 62rem) { .plt__g { grid-template-columns: 1fr; max-width: 34rem; } }
+
+  .plt__c { display: flex; flex-direction: column; gap: var(--s3); }
+
+  .plt__frame {
+    border: 1px solid var(--rule-hi); border-radius: 4px;
+    overflow: hidden; aspect-ratio: 4 / 3;
+    box-shadow: 0 20px 40px -24px rgba(22, 21, 15, .3);
+  }
+  /* Hover moves the camera, never the type: a slight push-in on the plate,
+     as if leaning toward the glass. */
+  .pm { transition: transform .45s var(--ease); }
+  @media (hover: hover) { .plt__c:hover .pm { transform: scale(1.025); } }
+
+  /* The spec label sits ON a hairline, museum-style. */
+  .plt__spec {
+    font-family: var(--mono); font-size: var(--fs-label);
+    letter-spacing: .1em; color: var(--graphite);
+    padding-top: var(--s3); border-top: 1px solid var(--rule);
+  }
+  .plt__spec b { color: var(--redline); font-weight: 500; }
+  .plt__cap { font-size: var(--fs-small); color: var(--graphite); }
+  .plt__go { align-self: start; margin-top: auto; }
+  .plt__note { margin-top: var(--s7); max-width: 56rem; }
+
+  /* Mini plate internals — each wears its own small identity so the grid
+     reads as three different businesses, not three recolourings. */
+  .pm {
+    width: 100%; height: 100%;
+    padding: 7% 8%;
+    display: flex; flex-direction: column; justify-content: space-between;
+    font-size: clamp(.55rem, 1.05vw, .72rem);
+    line-height: 1.4;
+  }
+  @media (max-width: 62rem) { .pm { font-size: .72rem; } }
+  .pm__bar { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+  .pm__logo { font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+  .pm__chip { font-weight: 650; padding: .28em .7em; border-radius: 2px; white-space: nowrap; }
+  .pm__kick { font-family: var(--mono); font-size: .82em; letter-spacing: .09em; text-transform: uppercase; }
+  .pm__head { font-size: 1.9em; line-height: 1.06; letter-spacing: -.025em; font-weight: 720; max-width: 14ch; }
+  .pm__sub { font-size: .95em; opacity: .78; max-width: 30ch; }
+  .pm__cta { font-weight: 650; font-size: .95em; }
+  .pm__row { display: flex; gap: .45rem; height: 16%; }
+  .pm__row > span { flex: 1; border-radius: 2px; }
+
+  .pm--roof { background: #fff; color: #171a1e; }
+  .pm--roof .pm__logo { color: #10365c; }
+  .pm--roof .pm__chip { background: #e8621d; color: #171a1e; }
+  .pm--roof .pm__kick { color: #b34a10; }
+  .pm--roof .pm__cta { color: #10365c; }
+  .pm--roof .pm__row > span { background: #e8eaef; }
+
+  .pm--spa { background: #faf3ef; color: #43322c; }
+  .pm--spa .pm__logo { font-family: Georgia, 'Times New Roman', serif; font-weight: 600; letter-spacing: .04em; }
+  .pm--spa .pm__head { font-family: Georgia, 'Times New Roman', serif; font-weight: 500; letter-spacing: -.01em; }
+  .pm--spa .pm__chip { background: #43322c; color: #faf3ef; border-radius: 999px; }
+  .pm--spa .pm__kick { color: #a05f45; }
+  .pm--spa .pm__cta { color: #a05f45; }
+  .pm--spa .pm__row > span { background: #eddcd3; }
+
+  .pm--rest { background: #201913; color: #f2e9dc; }
+  .pm--rest .pm__logo { font-family: Georgia, 'Times New Roman', serif; letter-spacing: .05em; }
+  .pm--rest .pm__chip { background: #d9a441; color: #201913; }
+  .pm--rest .pm__kick { color: #d9a441; }
+  .pm--rest .pm__cta { color: #d9a441; }
+  .pm--rest .pm__sub { opacity: .7; }
+  .pm--rest .pm__row > span { background: #32281e; }
 
   /* ── Offer ───────────────────────────────────────────────────────────── */
   .offer__g {
@@ -544,7 +727,7 @@ const faqSchema = {
     font-family: var(--mono); font-size: var(--fs-label); letter-spacing: .12em;
     text-transform: uppercase; color: var(--redline);
   }
-  .offer__t { font-size: 1.1875rem; font-weight: 660; letter-spacing: -.012em; line-height: 1.3; }
+  .offer__t { font-size: 1.1875rem; font-weight: 680; letter-spacing: -.012em; line-height: 1.3; }
   .offer__l { display: grid; gap: var(--s3); margin-top: var(--s2); font-size: var(--fs-small); }
   .offer__l li { display: grid; grid-template-columns: 1rem 1fr; gap: var(--s3); align-items: start; }
   .offer__l li::before { content: '✓'; color: var(--redline); font-size: .875rem; line-height: 1.5; }
@@ -578,7 +761,7 @@ const faqSchema = {
     color: var(--rule-hi); padding-top: .45rem;
     transition: color .3s var(--ease);
   }
-  .svc__t { font-size: clamp(1.125rem, 2.1vw, 1.5rem); font-weight: 640; letter-spacing: -.02em; }
+  .svc__t { font-size: clamp(1.125rem, 2.1vw, 1.5rem); font-weight: 660; letter-spacing: -.02em; }
   .svc__d { font-size: var(--fs-small); color: var(--graphite); max-width: 56ch; }
   .svc__x {
     justify-self: end; width: 1.5rem; height: 1.5rem; margin-top: .25rem;
@@ -597,8 +780,8 @@ const faqSchema = {
   @media (hover: hover) {
     .svc__i:hover { background: var(--panel); padding-left: var(--s4); }
     .svc__i:hover .svc__n { color: var(--redline); }
-    .svc__i:hover .svc__x { background: var(--redline); border-color: var(--redline); }
-    .svc__i:hover .svc__x::before { border-color: #fff; }
+    .svc__i:hover .svc__x { background: var(--verm); border-color: var(--verm); }
+    .svc__i:hover .svc__x::before { border-color: var(--ink); }
   }
   @media (max-width: 62rem) {
     .svc__i { grid-template-columns: 2.5rem 1fr; gap: var(--s3) var(--s4); }
@@ -618,7 +801,7 @@ const faqSchema = {
   .tick__l li {
     display: flex; align-items: center; gap: var(--s5);
     padding-right: var(--s5);
-    font-size: clamp(1.25rem, 2.6vw, 2rem); font-weight: 640;
+    font-size: clamp(1.25rem, 2.6vw, 2rem); font-weight: 660;
     letter-spacing: -.02em; color: var(--ink); white-space: nowrap;
   }
   .tick__l li span { color: var(--redline); font-weight: 400; }
@@ -633,7 +816,7 @@ const faqSchema = {
     display: flex; flex-direction: column; gap: var(--s3);
     padding-top: var(--s4); border-top: 2px solid var(--ink);
   }
-  .ind__t { font-size: 1.0625rem; font-weight: 660; letter-spacing: -.012em; }
+  .ind__t { font-size: 1.0625rem; font-weight: 680; letter-spacing: -.012em; }
   .ind__d { font-size: var(--fs-small); color: var(--graphite); }
   .ind__a, .ind__soon { margin-top: auto; align-self: start; }
   .ind__soon {
@@ -641,6 +824,28 @@ const faqSchema = {
     text-transform: uppercase; color: var(--graphite);
   }
   .ind__also { margin-top: var(--s7); max-width: 68ch; }
+
+  /* ── After hours ─────────────────────────────────────────────────────── */
+  .ah { padding-block: clamp(5rem, 11vw, 9rem); }
+  .ah__h {
+    font-size: clamp(2.5rem, 6.6vw, 5.5rem);
+    line-height: .98; letter-spacing: -.038em; font-weight: 720;
+  }
+  .ah__stop { color: var(--ember); }
+  .ah__b {
+    margin-top: clamp(2rem, 5vw, 3.5rem);
+    display: grid; gap: var(--s5);
+    justify-items: start;
+    max-width: 46rem; margin-left: auto;
+  }
+  .ah__mono {
+    font-family: var(--mono); font-size: var(--fs-label);
+    letter-spacing: .12em; color: var(--ember);
+    padding-bottom: var(--s3); border-bottom: 1px solid var(--void-rule);
+    width: 100%;
+  }
+  .ah__lead { max-width: 56ch; }
+  @media (max-width: 46rem) { .ah__b { margin-left: 0; } }
 
   /* ── Process ─────────────────────────────────────────────────────────── */
   /* The number is the argument. Set at a scale nothing else on the page
@@ -652,7 +857,7 @@ const faqSchema = {
   }
   .prc__fig {
     display: flex; align-items: baseline; gap: .1em;
-    line-height: .78; letter-spacing: -.06em; font-weight: 700;
+    line-height: .78; letter-spacing: -.06em; font-weight: 720;
     color: var(--ink);
   }
   .prc__num { font-size: clamp(6rem, 17vw, 15rem); }
@@ -663,7 +868,7 @@ const faqSchema = {
   .prc__claim { padding-bottom: clamp(.5rem, 1.5vw, 1.25rem); }
   .prc__h {
     font-size: clamp(1.5rem, 3vw, 2.25rem); line-height: 1.12;
-    letter-spacing: -.026em; font-weight: 660; margin-bottom: var(--s4);
+    letter-spacing: -.026em; font-weight: 680; margin-bottom: var(--s4);
     max-width: 24ch;
   }
   @media (max-width: 60rem) {
@@ -681,7 +886,7 @@ const faqSchema = {
     font-family: var(--mono); font-size: 1.125rem; color: var(--redline);
     letter-spacing: .04em;
   }
-  .prc__t { font-size: 1.0625rem; font-weight: 660; margin-bottom: var(--s2); }
+  .prc__t { font-size: 1.0625rem; font-weight: 680; margin-bottom: var(--s2); }
   .prc__d { font-size: var(--fs-small); color: var(--graphite); max-width: 62ch; }
   .prc__y {
     font-family: var(--mono); font-size: .8125rem; color: var(--graphite);
@@ -698,36 +903,27 @@ const faqSchema = {
   }
   .prc__note { margin-top: var(--s6); max-width: 54rem; }
 
-  /* ── Work ────────────────────────────────────────────────────────────── */
-  .wrk__note { margin-bottom: var(--s6); }
-  .wrk__tag {
-    align-self: start;
-    font-family: var(--mono); font-size: var(--fs-label); letter-spacing: .1em;
-    text-transform: uppercase; color: var(--redline);
-    border: 1px solid var(--redline); border-radius: 2px; padding: .125rem .375rem;
-  }
-
   /* ── Why ─────────────────────────────────────────────────────────────── */
   /* Statement left at scale, evidence right and small. The eye reads six
      positions in a column, then drops into detail only where it snags. */
-  .why__l { border-top: 1px solid var(--void-rule); }
+  .why__l { border-top: 1px solid var(--rule-hi); }
   .why__r {
     display: grid;
     grid-template-columns: 3rem minmax(0, 1.05fr) minmax(0, .95fr);
     gap: clamp(1rem, 3vw, 2.5rem);
     align-items: baseline;
     padding: clamp(1.35rem, 3vw, 2.15rem) 0;
-    border-bottom: 1px solid var(--void-rule);
+    border-bottom: 1px solid var(--rule-hi);
   }
   .why__n {
     font-family: var(--mono); font-size: var(--fs-label);
-    letter-spacing: .1em; color: var(--ember);
+    letter-spacing: .1em; color: var(--redline);
   }
   .why__t {
     font-size: clamp(1.25rem, 2.5vw, 1.875rem);
-    line-height: 1.14; letter-spacing: -.026em; font-weight: 650;
+    line-height: 1.14; letter-spacing: -.026em; font-weight: 680;
   }
-  .why__d { font-size: var(--fs-small); color: var(--void-mute); max-width: 46ch; }
+  .why__d { font-size: var(--fs-small); color: var(--graphite); max-width: 46ch; }
   @media (max-width: 60rem) {
     .why__r { grid-template-columns: 2.5rem 1fr; gap: var(--s2) var(--s4); }
     .why__d { grid-column: 2; margin-top: var(--s2); }
@@ -739,7 +935,7 @@ const faqSchema = {
   .faq__i { border-bottom: 1px solid var(--rule); }
   .faq__i summary {
     display: flex; align-items: center; justify-content: space-between; gap: var(--s4);
-    cursor: pointer; padding: var(--s4) 0; font-weight: 620; list-style: none;
+    cursor: pointer; padding: var(--s4) 0; font-weight: 640; list-style: none;
     min-height: 2.75rem;
   }
   .faq__i summary::-webkit-details-marker { display: none; }
@@ -750,14 +946,21 @@ const faqSchema = {
   .faq__i[open] summary::after { content: '–'; }
   .faq__i > p { padding-bottom: var(--s5); max-width: var(--measure); }
 
-  /* ── Close ───────────────────────────────────────────────────────────── */
-  .close { padding-block: clamp(5rem, 12vw, 10rem); }
-  .close__in { max-width: 46rem; }
+  /* ── Close: the vermilion field ──────────────────────────────────────── */
+  /* Ink is the only text colour that passes on this fill (4.64:1) — white
+     fails at 3.9:1, which is why nothing here is white. */
+  .close { background: var(--verm); color: var(--ink); padding-block: clamp(5rem, 12vw, 10rem); }
+  .close__in { max-width: 50rem; }
   .close__h {
-    font-size: var(--fs-mega); line-height: 1.0; letter-spacing: -.035em; font-weight: 690;
+    font-size: var(--fs-mega); line-height: 1.0; letter-spacing: -.035em; font-weight: 720;
   }
-  .close__l { margin-top: var(--s5); }
+  .close__l { margin-top: var(--s5); font-size: var(--fs-lead); line-height: 1.55; max-width: 52ch; }
   .close__b { margin-top: var(--s6); }
+  .close__cta { background: var(--ink); color: var(--paper); }
+  .close__cta:hover { background: #000; }
+  .close__alt { border-color: var(--ink); color: var(--ink); }
+  .close__alt:hover { background: rgba(22, 21, 15, .08); }
+  .close :where(a, button):focus-visible { outline-color: var(--ink); }
 
   /* ── Planner supporting copy ─────────────────────────────────────────── */
   .pln__meta {
@@ -769,7 +972,7 @@ const faqSchema = {
 </style>
 
 <script>
-  /* ~600 bytes. Content is visible by default; this only opts elements into
+  /* ~700 bytes. Content is visible by default; this only opts elements into
      the entrance once JS is confirmed alive, so a failed script or a
      crawler sees a finished page rather than an empty one. */
   const els = document.querySelectorAll<HTMLElement>('[data-anim]');
@@ -803,4 +1006,19 @@ const faqSchema = {
        anything hidden. */
     els.forEach((el) => el.classList.add('in'));
   }
+
+  /* "Build mine like this →" — clicking a plate seeds the planner with that
+     plate's industry before the anchor jump, so the first question arrives
+     already answered. The write happens in the click handler, synchronously
+     ahead of the scroll; the planner island hydrates on visibility and reads
+     sessionStorage on mount. Choosing a plate IS starting the demo. */
+  const KEY = 'jpwd.planner.v1';
+  document.querySelectorAll<HTMLAnchorElement>('[data-plate-industry]').forEach((a) => {
+    a.addEventListener('click', () => {
+      try {
+        const cur = JSON.parse(sessionStorage.getItem(KEY) || '{}');
+        sessionStorage.setItem(KEY, JSON.stringify({ ...cur, businessType: a.dataset.plateIndustry }));
+      } catch (e) { /* storage unavailable — the link still lands on the planner */ }
+    });
+  });
 </script>
