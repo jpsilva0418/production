@@ -11,7 +11,14 @@
    Everything here is progressive enhancement over a complete static page:
    no JS → the slider rests at its default split, chips stay hidden
    (they're aria-hidden decoration), text is simply present.
+   `variant` picks the proof surface: 'classic' keeps the before/after
+   slider; 'laptop' | 'phones' | 'hybrid' swap in <Showcase> with the real
+   project recordings. Copy, CTAs, ticker and the tilt/magnet script are
+   shared by all four.
    ========================================================================== */
+import Showcase from './Showcase.astro';
+export interface Props { variant?: 'classic' | 'laptop' | 'phones' | 'hybrid' }
+const { variant = 'classic' } = Astro.props;
 ---
 <section class="hero" aria-labelledby="hero-h" data-hero>
   <span class="blob blob--a" data-plx="-0.06" aria-hidden="true"></span>
@@ -41,6 +48,15 @@
       <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5 8.5 15 16 5.5"/></svg>Yours to keep</li>
     </ul>
 
+    {variant !== 'classic' && (
+      <p class="hero__scope" data-anim style="--d:460ms">
+        Websites · Custom software · Google &amp; Meta Ads — one person, start to finish.
+      </p>
+    )}
+
+    {variant !== 'classic' && <Showcase variant={variant} />}
+
+    {variant === 'classic' && (
     <figure class="shot" data-anim style="--d:480ms" id="shotWrap">
       <div class="shot__frame" id="shotFrame">
         <div class="shot__bar" aria-hidden="true">
@@ -101,6 +117,7 @@
 
       <figcaption class="shot__cap"><span class="a">What you get</span><span class="b">What you have now</span></figcaption>
     </figure>
+    )}
   </div>
 
   <!-- dual-direction ticker: trades one way, promises the other -->
@@ -172,6 +189,7 @@
   .hero__checks svg { width: 1.05rem; height: 1.05rem; color: var(--green-t); flex: none; }
 
   /* ------------------------------------------------------------- screen */
+  .hero__scope { margin: 1.1rem auto 0; font-size: var(--fs-small); color: var(--graphite); max-width: 36rem; }
   .shot { position: relative; max-width: 56rem; margin: clamp(2.5rem, 5vw, 3.5rem) auto 0; perspective: 1200px; }
   .shot__frame {
     background: var(--card); border: 1px solid var(--rule); border-radius: var(--r);

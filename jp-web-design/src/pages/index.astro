@@ -3,6 +3,11 @@ import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import Packages from '../components/Packages.astro';
 import Planner from '../components/planner/Planner.jsx';
+/* Hero variant. The homepage keeps the classic hero; /hero/laptop, /hero/phones
+   and /hero/hybrid render this same page with a different proof surface so
+   the options can be compared in place. Delete those pages and set the
+   default here once one is chosen. */
+const { variant = 'classic' } = Astro.props;
 
 /* The plates. Every one is a SPEC BUILD — uncommissioned, built to show the
    pattern, and labelled so on the page. `industry` maps to the planner's
@@ -86,7 +91,7 @@ const faqSchema = {
 const check = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5 8.5 15 16 5.5"/></svg>`;
 ---
 <Base
-  title="JP Web Design | Website Design for U.S. Businesses"
+  title="JP Silva Digital | Websites, Software & Ads for U.S. Businesses"
   description="Founder-led web design for businesses across the United States. Free homepage demo, free consultation, fixed scope and a fixed launch date."
   schema={faqSchema}
 >
@@ -130,7 +135,7 @@ const check = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke
     <div class="open__c">
       <p class="open__wm">
         <span class="open__badge">JP</span>
-        <span class="open__name"><span class="L" style="--i:0">W</span><span class="L" style="--i:1">e</span><span class="L" style="--i:2">b</span><span class="L" style="--i:3">&nbsp;</span><b><span class="L" style="--i:4">D</span><span class="L" style="--i:5">e</span><span class="L" style="--i:6">s</span><span class="L" style="--i:7">i</span><span class="L" style="--i:8">g</span><span class="L" style="--i:9">n</span></b></span>
+        <span class="open__name"><span class="L" style="--i:0">S</span><span class="L" style="--i:1">i</span><span class="L" style="--i:2">l</span><span class="L" style="--i:3">v</span><span class="L" style="--i:4">a</span><span class="L" style="--i:5">&nbsp;</span><b><span class="L" style="--i:6">D</span><span class="L" style="--i:7">i</span><span class="L" style="--i:8">g</span><span class="L" style="--i:9">i</span><span class="L" style="--i:10">t</span><span class="L" style="--i:11">a</span><span class="L" style="--i:12">l</span></b></span>
       </p>
       <span class="open__line"></span>
     </div>
@@ -138,7 +143,7 @@ const check = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke
 
   <div class="prog" id="prog" aria-hidden="true"></div>
 
-  <Hero />
+  <Hero variant={variant} />
 
   <!-- ══ THE PROBLEM ════════════════════════════════════════════════════ -->
   <section class="sec" aria-labelledby="prb-h">
@@ -484,7 +489,7 @@ const check = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke
   <!-- ══ WHY ════════════════════════════════════════════════════════════ -->
   <section class="sec sec--panel" aria-labelledby="why-h">
     <div class="container">
-      <p data-anim="pop"><span class="mark" style="margin-bottom:0">Why JP Web Design</span></p>
+      <p data-anim="pop"><span class="mark" style="margin-bottom:0">Why JP Silva Digital</span></p>
       <h2 class="sec__h" id="why-h" data-split data-anim>You are hiring a person, not an account manager</h2>
       <div class="why__g">
         {why.map(([t, d], i) => (
