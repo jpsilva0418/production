@@ -15,44 +15,45 @@
    ========================================================================== */
 import Social from './Social.astro';
 import { SITE_NAME } from '../data/site';
-import { SERVICES } from '../data/services';
+import { ROUTES, SERVICE_CHILDREN, normalise } from '../data/routes';
 
-/* One array drives both menus. `mobileOnly` is the single deliberate
-   difference: Process matters, but a desktop bar of eight items plus a CTA
-   starts to crowd — so it lives in the mobile menu and the footer.
+/* One array drives both menus, and every href in it comes from the
+   canonical route map in src/data/routes.ts. No menu invents a URL, so a
+   label cannot resolve to one page here and another page in the footer.
+
+   `mobileOnly` is the single deliberate difference between the two menus:
+   Process matters, but a desktop bar of eight items plus a CTA starts to
+   crowd — so it lives in the mobile menu and the footer.
 
    Every entry is a real route. No homepage anchors live in navigation; a
    link that looks like a page must open a page, at the top of it. */
 const nav = [
-  { href: '/', label: 'Home' },
+  { href: ROUTES.home.path, label: ROUTES.home.label },
   {
-    href: '/services',
-    label: 'Services',
-    children: [
-      ...SERVICES.map((s) => ({ href: `/services/${s.slug}`, label: s.navLabel ?? s.name })),
-      { href: '/services', label: 'All Services' },
-    ],
+    href: ROUTES.services.path,
+    label: ROUTES.services.label,
+    children: SERVICE_CHILDREN.map((r) => ({ href: r.path, label: r.label })),
   },
-  { href: '/work',       label: 'Work' },
-  { href: '/industries', label: 'Industries' },
-  { href: '/about',      label: 'About Me' },
-  { href: '/blog',       label: 'Blog' },
-  { href: '/process',    label: 'Process', mobileOnly: true },
-  { href: '/contact',    label: 'Contact' },
+  /* `long` is the mobile wording. The panel has full-width rows and room to
+     be explicit; the desktop bar does not, and the destination is identical
+     either way. */
+  { href: ROUTES.work.path,       label: ROUTES.work.label,       long: ROUTES.work.longLabel },
+  { href: ROUTES.industries.path, label: ROUTES.industries.label, long: ROUTES.industries.longLabel },
+  { href: ROUTES.about.path,      label: ROUTES.about.label },
+  { href: ROUTES.blog.path,       label: ROUTES.blog.label },
+  { href: ROUTES.process.path,    label: ROUTES.process.label, mobileOnly: true },
+  { href: ROUTES.contact.path,    label: ROUTES.contact.label },
 ];
 const desktopNav = nav.filter((i) => !i.mobileOnly);
 
 /* '/' matches exactly; everything else matches its subtree, so
    /work/leti-silva-beauty still marks Work as current.
 
-   `build.format: 'file'` means Astro.url.pathname arrives as '/work.html',
-   not '/work' — strip that first, or every section index silently fails to
-   mark itself current while its child pages succeed. */
-const path =
-  Astro.url.pathname
-    .replace(/\.html$/, '')
-    .replace(/\/index$/, '')
-    .replace(/\/$/, '') || '/';
+   `normalise` is shared with the client-side navigation script, so
+   "is this the current page?" has one answer on the server and the same
+   answer in the browser. (`build.format: 'file'` means Astro.url.pathname
+   arrives as '/work.html' — normalise undoes that.) */
+const path = normalise(Astro.url.pathname);
 const isCurrent = (href: string) =>
   href === '/' ? path === '/' : path === href || path.startsWith(`${href}/`);
 const inSection = (item: (typeof nav)[number]) =>
@@ -120,7 +121,7 @@ const inSection = (item: (typeof nav)[number]) =>
           {i.children ? (
             <>
               <div class="mnav__row">
-                <a class="mnav__a" href={i.href} aria-current={isCurrent(i.href) ? 'page' : undefined}>{i.label}</a>
+                <a class="mnav__a" href={i.href} aria-current={isCurrent(i.href) ? 'page' : undefined}>{i.long ?? i.label}</a>
                 <button class="mnav__exp" type="button" aria-expanded={inSection(i) ? 'true' : 'false'}
                         aria-controls={`sub-${i.href.slice(1)}`} aria-label={`Show ${i.label} pages`}>
                   <svg viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m1 1.5 5 5 5-5"/></svg>
@@ -136,7 +137,7 @@ const inSection = (item: (typeof nav)[number]) =>
             </>
           ) : (
             <div class="mnav__row">
-              <a class="mnav__a" href={i.href} aria-current={isCurrent(i.href) ? 'page' : undefined}>{i.label}</a>
+              <a class="mnav__a" href={i.href} aria-current={isCurrent(i.href) ? 'page' : undefined}>{i.long ?? i.label}</a>
             </div>
           )}
         </li>
@@ -163,7 +164,10 @@ const inSection = (item: (typeof nav)[number]) =>
   .hdr.hide { transform: translateY(-100%); }
   .hdr__in { display: flex; align-items: center; justify-content: space-between; gap: var(--s5); min-height: var(--header-h); }
 
-  .wm { display: inline-flex; align-items: center; gap: .5rem; text-decoration: none; }
+  /* min-height is a tap target, not a layout change: both bars are already
+     at least var(--header-h) tall and the mark stays vertically centred, so
+     nothing moves — the hit area simply grows from 29px to 44px. */
+  .wm { display: inline-flex; align-items: center; min-height: 44px; gap: .5rem; text-decoration: none; }
   .wm__i {
     font-family: var(--mono); font-weight: 600; font-size: .8125rem; letter-spacing: .04em;
     background: var(--ink); color: var(--paper);
@@ -307,37 +311,118 @@ const inSection = (item: (typeof nav)[number]) =>
     const mq = matchMedia('(max-width: 62rem)');
     let lastFocus: HTMLElement | null = null;
 
+    /* ── scroll lock ──────────────────────────────────────────────────────
+       `overflow: hidden` on <html> clamps the document scroll to 0, and the
+       browser does NOT put the visitor back when the property is removed.
+       So opening the menu halfway down a page and closing it again used to
+       dump you at the top — and tapping a same-page link from the menu
+       started its scroll from 0 instead of from where you were.
+
+       The lock is still needed (it stops iOS scrolling the page behind the
+       panel), so the position is recorded on the way in and restored on the
+       way out, instantly, never animated. */
+    let lockedY = 0;
+    const lock = () => {
+      lockedY = window.scrollY;
+      document.documentElement.style.overflow = 'hidden';
+    };
+    const unlock = (restore: boolean) => {
+      const root = document.documentElement;
+      root.style.overflow = '';
+      root.removeAttribute('data-menu-open');
+      if (!restore || Math.round(window.scrollY) === Math.round(lockedY)) return;
+      const prev = root.style.scrollBehavior;
+      root.style.scrollBehavior = 'auto';
+      window.scrollTo(0, lockedY);
+      root.style.scrollBehavior = prev;
+    };
+
     const focusables = () =>
       Array.from(mnav.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'))
         .filter((el) => el.offsetParent !== null);
 
-    const setOpen = (open: boolean) => {
+    const setOpen = (open: boolean, instant = false) => {
       tgl.setAttribute('aria-expanded', String(open));
-      document.documentElement.style.overflow = open ? 'hidden' : '';
+      tgl.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      if (open) {
+        lock();
+        /* Marker for anything that must not float over a full-screen panel
+           (the back-to-top control reads it). */
+        document.documentElement.setAttribute('data-menu-open', '');
+      } else {
+        unlock(true);
+      }
+
       if (open) {
         lastFocus = document.activeElement as HTMLElement;
         mnav.hidden = false;
         /* one frame so the transition has a starting state to move from */
         requestAnimationFrame(() => {
           mnav.classList.add('in');
-          mclose.focus();
+          mclose.focus({ preventScroll: true });
         });
       } else {
         mnav.classList.remove('in');
         const done = () => { mnav.hidden = true; };
-        if (matchMedia('(prefers-reduced-motion: reduce)').matches) done();
+        if (instant || matchMedia('(prefers-reduced-motion: reduce)').matches) done();
         else setTimeout(done, 250);
-        lastFocus?.focus();
+        /* preventScroll: restoring focus to the hamburger must not move the
+           page, which it will if the document scrolled while the panel was
+           open. */
+        lastFocus?.focus({ preventScroll: true });
       }
     };
 
     tgl.addEventListener('click', () => setOpen(mnav.hidden));
     mclose.addEventListener('click', () => setOpen(false));
 
-    /* Any navigation closes the panel, including same-page anchors which
-       fire no navigation of their own. */
+    /* Tapping a destination.
+
+       The click is never cancelled or delayed — the browser navigates on
+       its own, which is why no menu tap can be dropped or need a second
+       press.
+
+       What changes is the panel. A cross-document link used to start a
+       250ms fade-out, and a fade-out over a page that has not navigated
+       yet reveals the OLD page at its OLD scroll position for a quarter of
+       a second: JP's "random location underneath the closing menu". So for
+       a real navigation the panel is left opaque and in place, and the
+       arriving document simply replaces it. The scroll lock is released
+       immediately, so a navigation that never completes (offline, a
+       cancelled request) cannot strand a locked page.
+
+       A same-page link is the opposite case: no document arrives, so the
+       panel has to come away at once to reveal the scroll it triggered. */
     mnav.addEventListener('click', (e) => {
-      if ((e.target as HTMLElement).closest('a')) setOpen(false);
+      const a = (e.target as HTMLElement).closest('a[href]') as HTMLAnchorElement | null;
+      if (!a) return;
+
+      let url: URL | null = null;
+      try { url = new URL(a.href, location.href); } catch { url = null; }
+
+      const samePage =
+        !!url &&
+        url.origin === location.origin &&
+        /^https?:$/.test(url.protocol) &&
+        url.pathname.replace(/\.html$/, '') === location.pathname.replace(/\.html$/, '') &&
+        url.search === location.search;
+      const external = !url || url.origin !== location.origin || !/^https?:$/.test(url.protocol);
+
+      if (samePage || external || a.target === '_blank') {
+        /* Nothing replaces this document (or it opens elsewhere) — take the
+           panel away now. */
+        setOpen(false, samePage);
+        return;
+      }
+
+      /* Real navigation: unlock scrolling, keep the panel covering the old
+         page until the new document paints over it. The position is
+         restored as well — the new document replaces it a moment later, but
+         if the navigation never completes (offline, a cancelled request)
+         the visitor is left where they were rather than at the top. */
+      unlock(true);
+      tgl.setAttribute('aria-expanded', 'false');
+      tgl.setAttribute('aria-label', 'Open menu');
     });
 
     /* Services accordion. Server-rendered open when you are inside that
@@ -378,7 +463,9 @@ const inSection = (item: (typeof nav)[number]) =>
       mnav.hidden = true;
       tgl.setAttribute('aria-expanded', 'false');
       tgl.setAttribute('aria-label', 'Open menu');
-      document.documentElement.style.overflow = '';
+      /* A bfcache restore brings back its own scroll position; do not
+         overwrite it with one recorded before the visitor left. */
+      unlock(false);
     });
 
     /* Hide on scroll down, return on scroll up — never while the menu is open. */

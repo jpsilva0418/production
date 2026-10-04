@@ -21,5 +21,12 @@ export default defineConfig({
   ],
   trailingSlash: 'never',
   build: { inlineStylesheets: 'auto', format: 'file' },
-  prefetch: { prefetchAll: true, defaultStrategy: 'viewport' },
+  /* HTML-only prefetch, started on mousedown/touchstart. Deliberately NOT
+     'viewport', and deliberately no speculation-rules `prerender` alongside
+     it (see Base.astro): prerendering executes the target page's scripts in
+     a hidden document, which is what left pages half-animated and
+     mid-scroll on arrival. 'tap' warms the cache a few hundred
+     milliseconds before the click lands, runs none of the page's
+     JavaScript, and costs nothing on pages the visitor never opens. */
+  prefetch: { prefetchAll: true, defaultStrategy: 'tap' },
 });

@@ -1,36 +1,41 @@
 ---
 import Social from './Social.astro';
 import { SITE_NAME, EMAIL, PHONE, PHONE_URI, LEGAL_ENTITY, SERVICE_AREA } from '../data/site';
-import { SERVICES } from '../data/services';
+import { ROUTES, SERVICE_CHILDREN } from '../data/routes';
 
-/* Real routes only. A homepage anchor in a column of page links reads as a
+/* Every href comes from the canonical route map in src/data/routes.ts, the
+   same source the header and mobile menu read, so no label can resolve to
+   one page in the menu and a different page down here.
+
+   Real routes only. A homepage anchor in a column of page links reads as a
    page and lands the visitor mid-document, so none appear here. Work is what
    JP has built; Industries is who the work is for — they are separate
    columns because they are separate things. */
 const cols = [
   {
     h: 'Services',
-    links: [
-      ...SERVICES.map((s) => ({ href: `/services/${s.slug}`, label: s.navLabel ?? s.name })),
-      { href: '/services', label: 'All Services' },
-    ],
+    links: SERVICE_CHILDREN.map((r) => ({ href: r.path, label: r.label })),
   },
   {
     h: 'Work & industries',
     links: [
-      { href: '/work', label: 'Selected work' },
-      { href: '/industries', label: 'Industries I work with' },
+      { href: ROUTES.work.path,       label: ROUTES.work.longLabel },
+      { href: ROUTES.industries.path, label: ROUTES.industries.longLabel },
+      /* The one dedicated industry page that earns a route of its own.
+         It is a real page with its own content, reachable from the
+         /industries hub as well — not a portfolio entry and not a dead
+         item, so it stays. */
       { href: '/industries/construction-web-design', label: 'Construction & contracting' },
-      { href: '/free-demo', label: 'Free homepage demo' },
+      { href: ROUTES.freeDemo.path,   label: ROUTES.freeDemo.longLabel },
     ],
   },
   {
     h: 'Company',
     links: [
-      { href: '/about', label: 'About Me' },
-      { href: '/blog', label: 'Blog' },
-      { href: '/process', label: 'Process' },
-      { href: '/contact', label: 'Contact' },
+      { href: ROUTES.about.path,   label: ROUTES.about.label },
+      { href: ROUTES.blog.path,    label: ROUTES.blog.label },
+      { href: ROUTES.process.path, label: ROUTES.process.label },
+      { href: ROUTES.contact.path, label: ROUTES.contact.label },
     ],
   },
 ];
@@ -67,9 +72,9 @@ const year = new Date().getFullYear();
     <div class="ftr__legal">
       <p class="small">© {year} {LEGAL_ENTITY ?? SITE_NAME}.</p>
       <ul class="ftr__legalnav">
-        <li><a href="/privacy">Privacy</a></li>
-        <li><a href="/terms">Terms</a></li>
-        <li><a href="/accessibility">Accessibility</a></li>
+        <li><a href={ROUTES.privacy.path}>{ROUTES.privacy.label}</a></li>
+        <li><a href={ROUTES.terms.path}>{ROUTES.terms.label}</a></li>
+        <li><a href={ROUTES.accessibility.path}>{ROUTES.accessibility.label}</a></li>
       </ul>
     </div>
   </div>
@@ -82,7 +87,7 @@ const year = new Date().getFullYear();
   @media (max-width: 60rem) { .ftr__top { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 40rem) { .ftr__top { grid-template-columns: 1fr; gap: var(--s6); } }
 
-  .wm { display: inline-flex; align-items: center; gap: .5rem; text-decoration: none; }
+  .wm { display: inline-flex; align-items: center; min-height: 44px; gap: .5rem; text-decoration: none; }
   .wm__i { font-family: var(--mono); font-weight: 600; font-size: .8125rem; letter-spacing: .04em;
            background: var(--ink); color: var(--paper); padding: .25rem .375rem; border-radius: 2px; }
   .wm__t { font-weight: 640; letter-spacing: -.014em; }

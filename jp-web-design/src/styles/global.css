@@ -88,7 +88,20 @@ body {
   font-size: var(--fs-body);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  /* `clip`, NOT `hidden`.
+
+     `overflow-x: hidden` on <body> makes body a scroll container, and a
+     scroll container between the viewport and a `position: sticky` element
+     is what the sticky element sticks to. Body's scrollport never scrolls —
+     the viewport does — so the sticky header resolved against something
+     static and simply scrolled away with the page, never to return. On a
+     phone that put the hamburger permanently out of reach the moment you
+     scrolled down: the menu looked broken because it was unreachable.
+
+     `overflow-x: clip` contains the same horizontal overflow without
+     creating a scroll container, so sticky resolves against the viewport
+     again. html uses clip for the same reason. */
+  overflow-x: clip;
 }
 
 h1, h2, h3, h4, p, figure, blockquote, dl, dd { margin: 0; }

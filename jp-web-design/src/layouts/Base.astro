@@ -3,6 +3,8 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Analytics from '../components/Analytics.astro';
+import Navigation from '../components/Navigation.astro';
+import ToTop from '../components/ToTop.astro';
 import { SITE_NAME, EMAIL, PHONE_URI, SOCIALS, BASE_STATE, REGIONS } from '../data/site';
 
 export interface Props {
@@ -106,10 +108,21 @@ const ogImage = new URL('/og.png', Astro.site).href;
   <Analytics />
   {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
 
-  <!-- Native same-origin prefetch. A few hundred bytes, no library. -->
-  <script type="speculationrules">
-    {"prerender":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}
-  </script>
+  {/* NO speculation-rules prerender here, on purpose.
+
+      `prerender` renders the target page in a hidden document: its inline
+      scripts run, its IntersectionObserver reveals evaluate against a
+      viewport the visitor never saw, its `load` handlers fire, and the
+      homepage's once-per-session opening overlay burns its sessionStorage
+      flag and its 2.4s timer before anyone looks at it. Activating that
+      document does not re-run any of it, so pages arrived half-animated,
+      with a consumed opening sequence and a scroll state decided minutes
+      earlier. That was the page-change glitch, and it was intermittent
+      because it depended on whether a prerender had finished.
+
+      Astro's own `prefetch` (astro.config.mjs) stays: it warms the HTTP
+      cache with the HTML and runs none of the page's JavaScript, so
+      navigation is still instant and the new document starts clean. */}
 </head>
 <body>
   <script is:inline>
@@ -157,5 +170,7 @@ const ogImage = new URL('/og.png', Astro.site).href;
     <slot />
   </main>
   <Footer />
+  <ToTop />
+  <Navigation />
 </body>
 </html>

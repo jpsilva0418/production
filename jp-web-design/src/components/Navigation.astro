@@ -1,0 +1,111 @@
+---
+/* ==========================================================================
+   NAVIGATION BEHAVIOUR — the site's single scroll and click policy.
+
+   There is no client router here, and deliberately so. This is a static
+   Astro MPA: every navigation is a real document load, which is the most
+   reliable navigation a browser has. Nothing below intercepts a
+   cross-document link — the one case it does intercept is a link to the
+   page you are already on, which the browser would otherwise treat as a
+   reload and answer by restoring your scroll position.
+
+   The policy, in one place:
+
+     SAME path, no hash   → scroll to top of this page, no reload
+     SAME path, with hash → native anchor, scroll to that section
+     NEW path, no hash    → full navigation; new document starts at the top
+     NEW path, with hash  → full navigation; browser scrolls to the section
+     Back / forward       → the browser's own restoration, untouched
+     Reload               → the browser's own restoration, untouched
+
+   Loaded once from Base.astro, so it covers the header, the mobile menu,
+   the footer, service links, related-content links, homepage cards, CTAs,
+   blog navigation and portfolio navigation without any of them knowing it
+   exists.
+   ========================================================================== */
+---
+<script>
+  import { normalise } from '../data/routes';
+
+  const root = document.documentElement;
+  const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /** Jump or glide to the top without ever animating a *correction*. */
+  function toTop(smooth: boolean) {
+    if (smooth && !reduced()) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    const prev = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    window.scrollTo(0, 0);
+    root.style.scrollBehavior = prev;
+  }
+  (window as any).__jpToTop = toTop;
+
+  /* ── same-page links ──────────────────────────────────────────────────
+     An <a> whose href resolves to the pathname you are already on is a
+     reload as far as the browser is concerned, and a reload restores your
+     scroll position — which is why tapping "Web Design & Development" at
+     the bottom of the web design page appeared to do nothing. Handle it as
+     what the visitor meant: take me back to the start of this page.
+
+     Capture phase, so a card or accordion wrapper cannot swallow it first.
+     Everything that is not this case is left entirely alone. */
+  document.addEventListener(
+    'click',
+    (e) => {
+      const ev = e as MouseEvent;
+      if (ev.defaultPrevented) return;
+      if (ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+
+      const a = (ev.target as Element | null)?.closest?.('a[href]') as HTMLAnchorElement | null;
+      if (!a) return;
+      if (a.target && a.target !== '_self') return;
+      if (a.hasAttribute('download')) return;
+      if (a.dataset.noScroll !== undefined) return;
+
+      /* Resolved, not literal: href="/work" and href="./work" and a full
+         absolute URL to this origin all have to be recognised. */
+      let url: URL;
+      try { url = new URL(a.href, location.href); } catch { return; }
+      if (url.origin !== location.origin) return;          // external
+      if (!/^https?:$/.test(url.protocol)) return;         // mailto:, tel:
+      if (url.hash) return;                                // intentional anchor — native
+      if (normalise(url.pathname) !== normalise(location.pathname)) return;  // real navigation
+      if (url.search !== location.search) return;           // ?service= change is a navigation
+
+      ev.preventDefault();
+
+      /* A stale #section in the address bar would otherwise survive and
+         re-scroll on the next reload. Drop it without adding history. */
+      if (location.hash) {
+        history.replaceState(history.state, '', url.pathname + url.search);
+      }
+      window.dispatchEvent(new CustomEvent('jp:samepage'));
+
+      /* One frame of delay, deliberately.
+
+         This listener is on the capture phase so no card or accordion
+         wrapper can swallow the click first — which also means it runs
+         BEFORE the mobile menu's own handler. That handler releases the
+         scroll lock and restores the position the lock had clamped to
+         zero. Scrolling in this tick would therefore glide from 0 and then
+         be yanked back. A frame later the panel has released, and the
+         glide runs from where the visitor actually was. */
+      requestAnimationFrame(() => {
+        toTop(true);
+
+        /* Send keyboard and screen-reader users to the top of the content
+           as well as the viewport. preventScroll, or focus fights the
+           smooth scroll it was just given. */
+        const h1 = document.querySelector('main h1') as HTMLElement | null;
+        if (h1) {
+          if (!h1.hasAttribute('tabindex')) h1.setAttribute('tabindex', '-1');
+          h1.focus({ preventScroll: true });
+        }
+      });
+    },
+    true,
+  );
+</script>

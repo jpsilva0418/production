@@ -8,7 +8,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "seo-map": "python3 scripts/seo-map.py"
+    "seo-map": "python3 scripts/seo-map.py",
+    "check:links": "node scripts/check-links.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",

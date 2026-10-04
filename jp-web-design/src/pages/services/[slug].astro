@@ -4,6 +4,7 @@ import { SERVICES } from '../../data/services';
 import { PROJECTS } from '../../data/projects';
 import { getCollection } from 'astro:content';
 import { SITE_NAME, REPLY_SLA } from '../../data/site';
+import { contactFor } from '../../data/routes';
 
 /* Detail routes exist only because each pillar has genuinely different
    content — what is included, what it will not promise, and how the work
@@ -193,11 +194,11 @@ const reading = service.reading
           {service.slug === 'web-design-development' ? (
             <>
               <a class="btn btn--primary" href="/free-demo" data-track="get_free_demo_click" data-track-label={service.slug}>Get Your Free Demo</a>
-              <a class="btn btn--ghost" href={`/contact#${service.slug}`}>Start a project</a>
+              <a class="btn btn--ghost" href={contactFor(service.slug)}>Start a project</a>
             </>
           ) : (
             <>
-              <a class="btn btn--primary" href={`/contact?service=${service.slug}#${service.slug}`}
+              <a class="btn btn--primary" href={contactFor(service.slug)}
                  data-track="start_project_click" data-track-label={service.slug}>
                 Start a {service.name} project
               </a>

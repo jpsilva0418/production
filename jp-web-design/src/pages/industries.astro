@@ -47,9 +47,13 @@ const schema = {
   <section class="section section--panel" aria-labelledby="ind-h">
     <div class="container">
       <h2 class="vh" id="ind-h">Industries</h2>
+      <!-- Each card carries id={i.slug}, so /industries#construction-home-services
+           and its five siblings are real, working section anchors instead of
+           fragments that silently do nothing. The sticky header is already
+           cleared for every anchor by html { scroll-padding-top } in global.css. -->
       <ul class="ind">
         {INDUSTRIES.map((i, n) => (
-          <li class="ind__i" data-anim="card" style={`--d:${n * 70}ms`}>
+          <li class="ind__i" id={i.slug} data-anim="card" style={`--d:${n * 70}ms`}>
             <div class="ind__head">
               <span class={`mark mark--${i.tint} ind__tag`}>{String(n + 1).padStart(2, '0')}</span>
               <h3 class="h2 ind__n">{i.name}</h3>

@@ -129,7 +129,7 @@ pages supply only the distinctive part of the title.
 | **Primary CTA** | Get Your Free Demo |
 | **Canonical** | `https://www.jpsilvadigital.com/industries` |
 | **Indexing** | index, follow |
-| **Internal links in** | 1 (content links, excluding nav and footer) |
+| **Internal links in** | 2 (content links, excluding nav and footer) |
 | **Internal links out** | `/contact`, `/free-demo`, `/services/google-ads`, `/services/meta-ads`, `/services/web-design-development` |
 
 ## `/about`

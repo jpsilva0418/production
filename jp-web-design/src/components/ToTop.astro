@@ -1,0 +1,124 @@
+---
+/* ==========================================================================
+   BACK TO TOP — one global utility control.
+
+   A utility, not another CTA: white card, hairline border, the site's own
+   shadow, no label. It appears after roughly one viewport of scrolling and
+   gets out of the way again near the top.
+
+   Rendered inside <body> once, from Base.astro, after the footer so it is
+   last in the tab order rather than in the middle of the page's content.
+   ========================================================================== */
+---
+<button class="totop" id="totop" type="button" aria-label="Back to top" hidden>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 19V5M5 12l7-7 7 7" />
+  </svg>
+</button>
+
+<style>
+  .totop {
+    position: fixed;
+    /* Clear of the iPhone home indicator, and of the browser chrome that
+       sits over the bottom of the viewport on iOS Safari. */
+    right: calc(var(--gutter) + env(safe-area-inset-right, 0px));
+    bottom: calc(1.15rem + env(safe-area-inset-bottom, 0px));
+    /* Above page content, below the sticky header (100), the opening
+       overlay (200) and the mobile menu (300) — so it can never cover
+       navigation or sit on top of a full-screen panel. */
+    z-index: 90;
+
+    width: 2.875rem; height: 2.875rem;   /* 46px — comfortable thumb target */
+    display: grid; place-items: center;
+    border-radius: 50%;
+    border: 1px solid var(--rule-hi);
+    background: var(--card);
+    color: var(--ink);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+
+    opacity: 0; transform: translateY(.5rem) scale(.94);
+    transition: opacity .2s var(--ease), transform .2s var(--pop),
+                border-color .2s var(--ease), box-shadow .2s var(--ease);
+  }
+  .totop[hidden] { display: none; }
+  .totop.in { opacity: 1; transform: none; }
+  .totop:hover { border-color: var(--redline); color: var(--redline); box-shadow: var(--shadow-up); }
+  .totop:focus-visible { outline: 2px solid var(--redline); outline-offset: 3px; }
+  .totop svg { width: 1.0625rem; height: 1.0625rem; }
+
+  /* The mobile menu is a full-screen surface; nothing may float over it. */
+  :global(html[data-menu-open]) .totop { display: none; }
+
+  /* The planner's own sticky footer owns the bottom-right on /free-demo.
+     Lift the control clear of it rather than stacking on it. */
+  :global(body[data-totop-offset]) .totop {
+    bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .totop { transition: none; }
+  }
+</style>
+
+<script>
+  const btn = document.getElementById('totop') as HTMLButtonElement | null;
+
+  if (btn) {
+    /* One viewport, floored at 600px so a short laptop window still has to
+       be scrolled before the control earns its place. */
+    const threshold = () => Math.max(600, Math.round(window.innerHeight * 0.9));
+
+    let shown = false;
+    const sync = () => {
+      const want = window.scrollY > threshold();
+      if (want === shown) return;
+      shown = want;
+      if (want) {
+        btn.hidden = false;
+        /* One frame, so the transition has a start state to move from. */
+        requestAnimationFrame(() => btn.classList.add('in'));
+      } else {
+        btn.classList.remove('in');
+        /* Keep it focusable until it has actually faded, or a keyboard
+           user's focus is yanked out of the document mid-transition. */
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) btn.hidden = true;
+        else setTimeout(() => { if (!shown) btn.hidden = true; }, 220);
+      }
+    };
+
+    let ticking = false;
+    addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { ticking = false; sync(); });
+    }, { passive: true });
+    addEventListener('resize', sync, { passive: true });
+    addEventListener('pageshow', sync);
+    sync();
+
+    btn.addEventListener('click', () => {
+      /* The shared policy from Navigation.astro: smooth, unless the visitor
+         has asked for reduced motion, in which case instant. */
+      const top = (window as any).__jpToTop as ((smooth: boolean) => void) | undefined;
+      if (top) top(true);
+      else window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+
+      /* Hand focus to the top of the page rather than trapping it on a
+         control that is about to disappear. preventScroll so focus does not
+         cancel the smooth scroll it was given. */
+      const target =
+        (document.querySelector('.skip-link') as HTMLElement | null) ??
+        (document.querySelector('main h1') as HTMLElement | null);
+      if (target) {
+        if (!target.hasAttribute('tabindex') && target.tagName !== 'A') {
+          target.setAttribute('tabindex', '-1');
+        }
+        target.focus({ preventScroll: true });
+      } else {
+        btn.blur();
+      }
+    });
+  }
+</script>
