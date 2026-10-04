@@ -64,7 +64,7 @@ body.lock{overflow:hidden}
 }
 
 /* 2 · LAND : 4:5 frame left (cols 1–5), caption right (cols 8–11) --------- */
-.r-land{display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px;align-items:center;padding:12svh var(--gx)}
+.r-land{display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px;align-items:center;align-content:center;padding:12svh var(--gx)}
 .r-land .still{grid-column:1/13;display:contents}
 .r-land .frame{grid-column:1/-1;width:min(70vw,calc(60svh * .8))}
 .r-land .cap{grid-column:1/-1;margin-top:18px}
@@ -88,7 +88,7 @@ body.lock{overflow:hidden}
   display:flex;align-items:center;justify-content:center;padding:14svh var(--gx) calc(14svh + 56px)}
 .r-film .still{width:86vw;max-width:none}
 .r-film .frame{aspect-ratio:16/9;width:100%;background:#141414}
-.r-film .film-cap{position:absolute;left:var(--gx);bottom:calc(var(--gx) + 28px);margin:0;max-width:none;color:var(--mist)}
+.r-film .film-cap{position:absolute;left:var(--gx);bottom:calc(var(--study-gap) + 12px + env(safe-area-inset-bottom,0px));margin:0;max-width:none;color:var(--mist)}
 .r-film .film-cap .sep{color:rgba(154,154,150,.55)}
 @media (min-width:900px){
   .r-film{padding:0 var(--gx)}
@@ -98,8 +98,8 @@ body.lock{overflow:hidden}
 }
 
 /* 5 · TOUR : 3:2 frame anchored bottom-right, caption top-left ----------- */
-.r-tour{display:flex;flex-direction:column;padding:calc(var(--gx) + 56px) var(--gx) var(--gx)}
-.r-tour .still{display:flex;flex-direction:column;flex:1 1 auto;min-height:calc(100svh - var(--gx) * 2 - 56px)}
+.r-tour{display:flex;flex-direction:column;padding:calc(var(--gx) + 56px) var(--gx) calc(var(--study-gap) + 8px)}
+.r-tour .still{display:flex;flex-direction:column;flex:1 1 auto;min-height:calc(100svh - var(--gx) - 56px - var(--study-gap) - 8px)}
 .r-tour .cap{margin:0;align-self:flex-start}
 .r-tour .frame{width:80vw;margin-top:auto;margin-left:auto}
 @media (min-width:900px){
@@ -110,8 +110,8 @@ body.lock{overflow:hidden}
 
 /* 6 · ABOUT : one paragraph, column 2, nothing else ----------------------- */
 .r-about{display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px;align-items:center;padding:16svh var(--gx)}
-.about-col{grid-column:1/13;max-width:60ch}
-.about-p{font:300 var(--fs-about)/1.35 var(--serif);font-variation-settings:"opsz" 30;letter-spacing:-.002em;color:var(--graphite);text-wrap:pretty}
+.about-col{grid-column:1/13}
+.about-p{max-width:27em;font:300 var(--fs-about)/1.35 var(--serif);font-variation-settings:"opsz" 30;letter-spacing:-.002em;color:var(--graphite);text-wrap:pretty}
 .origin{margin-top:28px;color:var(--mist)}
 .origin .arrow{display:inline-block;padding:0 .4em;font-weight:300;letter-spacing:0;transform:translateY(-.04em)}
 @media (min-width:900px){.r-about{padding:0 var(--gx)}.about-col{grid-column:2/12}}
@@ -165,12 +165,12 @@ body.lock{overflow:hidden}
 .ov-inner>.label{margin-bottom:28px}
 .ov-list{margin-left:0}
 .ov-foot{margin-top:auto;padding-top:40px}
-.ov-foot a{text-decoration:underline;text-underline-offset:.4em;text-decoration-thickness:1px;color:var(--graphite)}
+.ov-foot a{display:inline-block;padding:16px 0;margin:-16px 0;text-decoration:underline;text-underline-offset:.4em;text-decoration-thickness:1px;color:var(--graphite)}
 @media (min-width:900px){.ov-inner{padding-left:calc(var(--gx) + (100vw - var(--gx) * 2 - 24px * 11) / 12 + 24px)}}
 
 /* ---- Skip hint (base positions it; recolour for a white page) ------------ */
-.skip-hint{color:var(--mist);font-family:var(--sans);font-weight:300;bottom:calc(var(--study-gap) + 8px + env(safe-area-inset-bottom,0px))}
-@media (min-width:900px){.skip-hint{bottom:calc(var(--gx) * .66 + 6px)}}
+.skip-hint{color:var(--mist);font-family:var(--sans);font-weight:300;right:auto;left:var(--gx);bottom:auto;top:calc(27px + env(safe-area-inset-top,0px))}
+@media (min-width:900px){.skip-hint{left:auto;top:auto;right:var(--gx);bottom:calc(var(--gx) * .66 + 6px)}}
 
 /* ======================================================================
    MOTION · hide-states exist only under html.js-anim.

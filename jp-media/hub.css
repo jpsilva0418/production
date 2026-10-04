@@ -24,8 +24,8 @@ body{background:var(--bg);color:var(--fg);font:400 1rem/1.5 var(--sans);min-heig
 
 /* plates behind everything */
 .plates{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.plates img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.04);transition:opacity 1.1s ease,transform 2.4s var(--ease);filter:saturate(.9) contrast(.98)}
-.plates img.is-on{opacity:.42;transform:none}
+.plates img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.04);transition:opacity 1.1s ease,transform 2.4s var(--ease);filter:saturate(.9) contrast(.98) blur(1.5px)}
+.plates img.is-on{opacity:.5;transform:none}
 .plates::after{content:"";position:absolute;inset:0;background:
   linear-gradient(180deg,rgba(11,11,12,.55) 0%,rgba(11,11,12,.25) 40%,rgba(11,11,12,.72) 100%),
   radial-gradient(120% 90% at 50% 60%,rgba(11,11,12,0) 40%,rgba(11,11,12,.7) 100%)}

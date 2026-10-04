@@ -1,0 +1,243 @@
+/* ============================================================
+   CONCEPT 03 — DUST & LIGHT  (Texas / Analog)
+   Low sun, grain, warm air. Field-note typography on horizon-anchored frames.
+   ------------------------------------------------------------
+   Palette   umber #1B1511 page · char #0F0C0A deep · bone #F1ECE3 type ·
+             dust #B4906A captions · amber #E39A4C glow (≤2% of pixels) ·
+             burnt #7A3B22 rules · line rgba(241,236,227,.14)
+   Type      Young Serif (display) · Courier Prime (field notes 12–13px) ·
+             Public Sans 300/400 (body)
+   Scale     name clamp(4rem,15vw,14rem) / phone 2 lines at 22vw
+             h2 clamp(2.4rem,6.4vw,6.4rem) · interlude clamp(1.6rem,3.6vw,3.2rem)
+             body 1.05rem/1.55 · notes 12.5px/1.5 tracking .06em
+   Horizon   --hz: fraction of the hero height where the plate's ground line sits
+             (desktop .737 = native plate; phone .64 via an over-tall frame).
+   Entrance  "the exposure settles" (key c03):
+             0 blown out (#F3D7AE + grain) · 300 stops down 1→0 /1.5s ·
+             900 field data types · 1700 name rises out of the ground (long) ·
+             2600 subline · 3300 header + roll cue · end ≈3.75 s
+   ============================================================ */
+:root{
+  --umber:#1B1511; --char:#0F0C0A; --bone:#F1ECE3; --dust:#B4906A; --amber:#E39A4C; --burnt:#7A3B22;
+  --line:rgba(241,236,227,.14); --blown:#F3D7AE;
+  --serif:"Young Serif","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --mono:"Courier Prime","Courier New",Courier,monospace;
+  --sans:"Public Sans",system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --gx:clamp(20px,4vw,56px);
+  --hz:.737;
+  --name:clamp(4rem,15vw,14rem);
+  --grain-opacity:.08; --grain-blend:soft-light;
+  color-scheme:dark;
+}
+html{background:var(--umber)}
+body{background:var(--umber);color:var(--bone);font:300 1.05rem/1.55 var(--sans);overflow-x:clip}
+::selection{background:var(--burnt);color:var(--bone)}
+.frame{background:var(--char)}
+.frame-grade{background:linear-gradient(rgba(27,21,17,.08),rgba(27,21,17,.28));z-index:1}
+.skip-link{position:absolute;left:-999px;top:10px;z-index:1000;font:400 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;background:var(--bone);color:var(--umber);padding:12px 16px}
+.skip-link:focus{left:var(--gx)}
+.skip-hint{color:var(--dust)}
+
+/* ---- Field-note typography ---------------------------------------- */
+.label,.note,.fd{font:400 12.5px/1.5 var(--mono);letter-spacing:.06em;color:var(--dust)}
+.label{text-transform:uppercase}
+.note b{font-weight:400;color:var(--bone)}
+.mask{display:block;overflow:hidden;padding-bottom:.14em;margin-bottom:-.14em}
+.mask>*{display:block}
+h2{font:400 clamp(2.4rem,6.4vw,6.4rem)/.96 var(--serif);letter-spacing:-.012em;color:var(--bone)}
+.body{max-width:34em;color:var(--bone)}
+
+/* ---- Reveals of this concept (hide-states only under .js-anim) -------- */
+.js-anim [data-reveal="flash"]{--rv-y:0;opacity:1;clip-path:inset(50% 0 50% 0);transition:clip-path .9s var(--ease-io) var(--d,0s)}
+.js-anim [data-reveal="flash"] img{filter:brightness(1.45) contrast(.9);transition:filter .7s ease calc(var(--d,0s) + .15s)}
+.js-anim [data-reveal="flash"].is-in img{filter:none}
+.js-anim .mask[data-reveal="rm"]{opacity:1;transform:none;clip-path:none;transition:none}
+.js-anim .mask[data-reveal="rm"]>*{transform:translateY(112%);transition:transform 1.05s var(--ease) var(--d,0s)}
+.js-anim .mask[data-reveal="rm"].is-in>*{transform:none}
+.js-anim [data-reveal="wipe"]{--rv-y:0;opacity:1;clip-path:inset(0 100% 0 0);transition:clip-path .8s steps(18,end) var(--d,0s)}
+
+/* ---- Exposure overlay (exists only while the entrance runs) ------------ */
+#exposure{display:none;position:fixed;inset:0;z-index:50;pointer-events:none;
+  background-image:var(--grain-url),radial-gradient(ellipse 70% 60% at 62% 74%,#FFF3DC 0%,var(--blown) 42%,#E7BF8C 100%);
+  background-size:256px 256px,auto;background-blend-mode:soft-light,normal;opacity:1}
+.js-anim #exposure{display:block}
+.js-anim.p1 #exposure{opacity:0;transition:opacity 1.6s cubic-bezier(.5,0,.25,1)}
+.is-opened #exposure{opacity:0;visibility:hidden;transition:opacity .6s ease,visibility 0s .6s}
+
+/* ---- Header ---------------------------------------------------------- */
+.site-head{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-items:center;justify-content:space-between;
+  height:64px;padding:0 var(--gx);padding-top:env(safe-area-inset-top,0px);border-bottom:1px solid transparent;
+  transition:opacity .8s ease,transform .9s var(--ease),border-color .4s ease,background .4s ease}
+.site-head.is-scrolled{border-color:var(--line);background:rgba(27,21,17,.88)}
+.brand{font:400 1.1rem/1 var(--serif);color:var(--bone);display:flex;align-items:center;height:44px}
+.site-nav{display:flex;gap:clamp(4px,2vw,22px)}
+.site-nav a{display:flex;align-items:center;height:44px;padding:0 8px;font:400 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--bone);position:relative}
+.site-nav a::after{content:"";position:absolute;left:8px;right:8px;bottom:12px;height:1px;background:var(--burnt);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.site-nav a:hover::after,.site-nav a:focus-visible::after{transform:scaleX(1)}
+.js-anim:not(.is-opened):not(.p5) .site-head{opacity:0;transform:translateY(-10px)}
+
+/* ---- Hero -------------------------------------------------------------- */
+.hero{position:relative;height:100svh;min-height:560px;overflow:hidden;isolation:isolate}
+.hero-frame{position:absolute;left:0;right:0;top:0;height:100%;z-index:0}
+.hero-frame>img{height:100%}
+/* the sun loop's horizon sits at .769 of its height, the plate's at .737: stretch the video so the two ground lines coincide */
+.hero-frame>video{top:-14.7%;height:115%}
+.hero-frame .frame-grade{background:linear-gradient(rgba(27,21,17,.18),rgba(27,21,17,0) 35%,rgba(27,21,17,0) 70%,rgba(27,21,17,.42))}
+.fd{position:absolute;z-index:2;top:calc(78px + env(safe-area-inset-top,0px));margin:0;color:var(--dust)}
+.fd span{display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;max-width:calc(23ch + 1.5em);transition:max-width .55s steps(23,end)}
+.fd-tl{left:var(--gx)}
+.fd-tr{right:var(--gx);width:calc(10ch + .62em);text-align:left}
+.fd-tr span{max-width:calc(10ch + .62em);transition-duration:.24s;transition-timing-function:steps(10,end)}
+.js-anim:not(.is-opened):not(.p2) .fd span{max-width:0}
+.js-anim.p2.is-opening .fd-tl::after{content:"_";color:var(--amber);animation:c03-blink .7s steps(1) infinite}
+@keyframes c03-blink{50%{opacity:0}}
+.hero-name-mask{position:absolute;z-index:2;left:var(--gx);right:var(--gx);top:0;height:calc(var(--hz) * 100% + .2em);
+  font-size:var(--name);display:flex;align-items:flex-end;overflow:hidden;pointer-events:none}
+.hero-name{font:400 1em/1 var(--serif);letter-spacing:-.018em;text-transform:uppercase;color:var(--bone);white-space:nowrap;
+  transition:transform 1.2s var(--ease);will-change:transform}
+.hero-name .w{display:inline}
+.js-anim:not(.is-opened):not(.p3):not(.p4) .hero-name{transform:translateY(103%)}
+.hero-sub-mask{position:absolute;z-index:2;left:var(--gx);right:var(--gx);top:calc(var(--hz) * 100% + 26px);overflow:hidden;padding-bottom:.3em}
+.hero-sub{font:300 1.05rem/1.4 var(--sans);color:var(--bone);max-width:30em;transition:transform .95s var(--ease)}
+.js-anim:not(.is-opened):not(.p4) .hero-sub{transform:translateY(120%)}
+.roll-cue{position:absolute;z-index:2;left:var(--gx);bottom:calc(76px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;height:44px;
+  font:400 12.5px/1 var(--mono);letter-spacing:.08em;color:var(--dust);transition:opacity .8s ease .1s,transform .9s var(--ease) .1s}
+.roll-cue span{display:inline-block;margin-right:.6em;animation:c03-cue 2.2s var(--ease-io) infinite}
+@keyframes c03-cue{0%,100%{transform:translateY(-3px)}50%{transform:translateY(3px)}}
+.js-anim:not(.is-opened):not(.p5) .roll-cue{opacity:0;transform:translateY(8px)}
+
+/* ---- Shots (frame + field note) ----------------------------------------- */
+.shot{margin:0}
+.shot figcaption{padding-top:10px}
+.shot .note{display:block}
+.shot .fr{color:var(--dust)}
+.shot .cap{color:var(--bone)}
+
+/* ---- 02 · On the road ------------------------------------------------------ */
+.road{position:relative;padding:clamp(72px,12vh,140px) 0 clamp(56px,8vh,120px)}
+.road-head{padding:0 var(--gx);max-width:40rem}
+.road-head .label{margin-bottom:14px}
+.road-note{margin-top:18px;max-width:30em;color:var(--dust);font-weight:300}
+.road-strip{display:flex;gap:14px;align-items:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;padding:36px var(--gx) 8px;scroll-padding:0 var(--gx)}
+.road-strip::-webkit-scrollbar{display:none}
+.road-item{flex:0 0 86vw;scroll-snap-align:start}
+.road-item.ri-2{flex-basis:62vw}
+.road-item.ri-4{flex-basis:50vw}
+
+/* ---- 03 · Portraits ----------------------------------------------------------- */
+.por{padding:clamp(56px,8vh,110px) var(--gx) clamp(72px,10vh,140px)}
+.por-head{text-align:right;margin-left:auto;max-width:40rem}
+.por-head .label{margin-bottom:14px}
+.por-pair{margin-top:40px}
+.por-a{width:84%}
+.por-b{width:80%;margin:28px 0 0 auto}
+.por figcaption{padding-top:10px}
+.por-b figcaption{text-align:right}
+
+/* ---- 04 · Warm interlude -------------------------------------------------------- */
+.leak{position:relative;height:70svh;min-height:420px;overflow:hidden;isolation:isolate}
+.leak-frame{position:absolute;inset:0}
+.leak-pass{position:absolute;top:-12%;bottom:-12%;left:0;width:40vw;min-width:260px;z-index:1;pointer-events:none;
+  background:linear-gradient(90deg,rgba(227,154,76,0) 0%,rgba(227,154,76,.5) 38%,rgba(243,215,174,.55) 52%,rgba(227,154,76,.3) 70%,rgba(227,154,76,0) 100%);
+  mix-blend-mode:screen;transform:translateX(30vw) skewX(-12deg);will-change:transform}
+.leak-line{position:absolute;z-index:2;left:var(--gx);right:var(--gx);bottom:clamp(36px,9vh,96px);
+  font:400 clamp(1.6rem,3.6vw,3.2rem)/1.12 var(--serif);max-width:22ch;color:var(--bone)}
+
+/* ---- 05 · Landscape ------------------------------------------------------------- */
+.land{position:relative;isolation:isolate}
+.land-frame{aspect-ratio:4/5}
+.land-meta{position:absolute;z-index:2;top:22px;right:var(--gx);max-width:50%;text-align:right}
+.land-title-mask{position:absolute;z-index:2;left:var(--gx);right:var(--gx);bottom:clamp(20px,4vw,48px)}
+.land-title{font-size:clamp(2.8rem,8.2vw,8.6rem);letter-spacing:-.02em}
+.land-frame img{transform-origin:62% 70%}
+
+/* ---- 06 · Behind the work --------------------------------------------------------- */
+.about{padding:clamp(72px,12vh,150px) var(--gx) clamp(56px,8vh,110px)}
+.about-text .label{margin-bottom:14px}
+.fromto{margin:28px 0 24px;border-top:1px solid var(--line);font:400 12.5px/1.5 var(--mono);letter-spacing:.06em}
+.fromto div{display:grid;grid-template-columns:5ch 1fr;gap:16px;padding:12px 0;border-bottom:1px solid var(--line)}
+.fromto dt{color:var(--dust);text-transform:uppercase}
+.fromto dd{color:var(--bone)}
+.about-shot{margin-top:40px;width:78%}
+
+/* ---- 07 · Contact + credits ----------------------------------------------------------- */
+.contact{padding:clamp(48px,8vh,110px) var(--gx) clamp(56px,8vh,110px);border-top:1px solid var(--line)}
+.contact .label{margin-bottom:14px}
+.contact-title{max-width:14ch;font-size:clamp(2.3rem,5.6vw,5.4rem)}
+.contact-ways{margin-top:40px;display:flex;flex-wrap:wrap;gap:8px 56px}
+.contact-ways li{display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+.contact-ways .k{font:400 12.5px/1.5 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--dust)}
+.contact-ways a,.mail-btn{display:inline-flex;align-items:center;min-height:44px;font:300 1.25rem/1.2 var(--sans);color:var(--bone);position:relative}
+.contact-ways a::after,.mail-btn::after{content:"";position:absolute;left:0;right:0;bottom:8px;height:1px;background:var(--burnt);transform-origin:left;transition:transform .5s var(--ease)}
+.contact-ways a:hover::after,.contact-ways a:focus-visible::after{transform:scaleX(1.0);background:var(--amber)}
+.mail-btn::after{transform:scaleX(.35)}
+.mail-btn:hover::after,.mail-btn:focus-visible::after,.mail-btn.is-noted::after{transform:scaleX(1)}
+.mail-note{color:var(--dust);transition:color .4s ease}
+.mail-btn.is-noted + .mail-note{color:var(--amber)}
+.credits{padding:48px var(--gx) calc(88px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);display:grid;gap:10px}
+.credits .end{color:var(--bone);margin-bottom:18px}
+.credits .study-note{max-width:38em;color:var(--dust);font-size:.95rem}
+.credits .label{text-transform:none}
+.credits-meta{display:grid;gap:6px}
+
+/* ============================================================
+   Desktop (≥ 900px): the diagonal, the pair, the split
+   ============================================================ */
+@media (min-width:900px){
+  .hero-name .w{display:inline}
+  .fd{top:calc(84px + env(safe-area-inset-top,0px))}
+  .roll-cue{bottom:calc(40px + env(safe-area-inset-bottom,0px))}
+
+  .road{padding:clamp(96px,14vh,180px) 0 0}
+  .road-strip{position:relative;display:block;height:88vw;overflow:visible;padding:0;scroll-snap-type:none}
+  .road-item{position:absolute;flex:none}
+  .road-item.ri-1{left:4vw;top:0;width:34vw}
+  .road-item.ri-2{left:47vw;top:9vw;width:19vw}
+  .road-item.ri-3{left:55vw;top:38.5vw;width:29vw}
+  .road-item.ri-4{left:78vw;top:60.5vw;width:15vw}
+  .road-head{position:absolute;left:4vw;top:40vw;max-width:40vw;padding:0}
+  .road-head h2{font-size:clamp(3rem,6.6vw,7.4rem)}
+
+  .por{padding-top:0;padding-bottom:clamp(96px,14vh,180px)}
+  .por-head{max-width:46rem}
+  .por-pair{display:grid;grid-template-columns:32vw 32vw;column-gap:10vw;margin-left:4vw;margin-top:-4vw}
+  .por-a,.por-b{width:auto;margin:0}
+  .por-b{margin-top:8vh}
+
+  .leak-line{bottom:clamp(48px,10vh,120px)}
+
+  .land-frame{aspect-ratio:2.39/1}
+  .land-meta{top:28px}
+  .js-anim.has-pointer .land-frame img{animation:c03-land 14s linear both paused}
+  .js-anim.has-pointer .land.in-view .land-frame img{animation-play-state:running}
+
+  .about{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);column-gap:8vw;align-items:start;padding-top:0;margin-top:-10vh}
+  .about-text{padding-top:calc(10vh + clamp(72px,12vh,150px))}
+  .about-shot{margin:0 0 0 auto;width:min(100%,32vw);position:relative;z-index:3}
+  .fromto{max-width:34em}
+
+  .contact{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);column-gap:8vw;align-items:end}
+  .contact-ways{margin-top:0;flex-direction:column;gap:14px;padding-bottom:10px}
+  .credits{grid-template-columns:1fr 1fr;align-items:end}
+  .credits .end{grid-column:1 / -1}
+  .credits-meta{text-align:right}
+}
+@keyframes c03-land{from{transform:scale(1)}to{transform:scale(1.05)}}
+
+/* ============================================================
+   Phones (< 900px): name on two lines, horizon at .64 of the viewport
+   ============================================================ */
+@media (max-width:899px){
+  :root{--hz:.64;--name:22vw}
+  .hero-frame{height:136%;top:-35.3%}
+  .hero-name .w{display:block}
+  .hero-name{line-height:.9}
+  .hero-name-mask{height:calc(var(--hz) * 100% + .22em)}
+  .hero-sub{max-width:22em}
+  .site-nav a{padding:0 7px}
+}
+@media (max-width:899px) and (max-height:700px){
+  .hero{min-height:0}
+  :root{--name:16vw}
+}
