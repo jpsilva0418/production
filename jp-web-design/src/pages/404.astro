@@ -11,8 +11,18 @@ import Base from '../layouts/Base.astro';
       </p>
       <div class="btn-row nf__b">
         <a class="btn btn--primary" href="/">Back to the homepage</a>
-        <a class="btn btn--ghost" href="/contact">Contact</a>
+        <a class="btn btn--ghost" href="/contact">Start a project</a>
       </div>
+
+      <nav class="nf__nav" aria-label="Popular pages">
+        <h2 class="h3">Or try one of these</h2>
+        <ul>
+          <li><a href="/services">Services</a><span>Websites, Google Ads and Meta Ads</span></li>
+          <li><a href="/work">Work</a><span>Projects I have designed and built</span></li>
+          <li><a href="/about">About Me</a><span>Who you would be working with</span></li>
+          <li><a href="/blog">Blog</a><span>Notes on websites and advertising</span></li>
+        </ul>
+      </nav>
     </div>
   </section>
 </Base>
@@ -20,4 +30,10 @@ import Base from '../layouts/Base.astro';
   .nf { max-width: 44rem; }
   .nf__l { margin-top: var(--s4); }
   .nf__b { margin-top: var(--s6); }
+  .nf__nav { margin-top: var(--s8); padding-top: var(--s5); border-top: 1px solid var(--rule); }
+  .nf__nav ul { margin-top: var(--s4); display: grid; gap: 0; }
+  .nf__nav li { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s4);
+                padding-block: var(--s4); border-bottom: 1px solid var(--rule); }
+  .nf__nav a { font-weight: 700; color: var(--redline); text-decoration: none; min-width: 7rem; }
+  .nf__nav span { font-size: var(--fs-small); color: var(--graphite); }
 </style>

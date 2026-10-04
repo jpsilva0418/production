@@ -1,118 +1,294 @@
 ---
 import Base from '../layouts/Base.astro';
+import { SITE_NAME, FOUNDER, EMAIL, PHONE, LEGAL_ENTITY, FOUNDER_PHOTO, SERVICE_AREA, REPLY_SLA } from '../data/site';
+import { SERVICES } from '../data/services';
+import { PROJECTS } from '../data/projects';
 
-/* Founder-led is the strongest trust asset available with no client logos.
-   The page is deliberately specific and falsifiable — vagueness reads as
-   concealment to anyone verifying a cold email. */
+/* About Me, not About Our Agency. Written in first person because one person
+   does the work, and kept falsifiable: no years in business, no client count,
+   no certifications, no awards. Everything stated here is either verifiable
+   from the work itself or a commitment about how I operate.
+
+   TODO(launch) — facts only JP can confirm, flagged rather than invented:
+     · how long he has been building for clients
+     · any certifications (Google Ads / Meta Blueprint) worth naming
+     · the town he is based in, if local positioning is wanted
+   Each has a marked slot below and renders nothing until supplied. */
 const person = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  name: 'JP Silva',
-  jobTitle: 'Founder and web designer',
-  worksFor: { '@type': 'Organization', name: 'JP Silva Digital' },
+  name: FOUNDER,
+  jobTitle: 'Founder, developer and digital marketer',
+  worksFor: { '@type': 'Organization', name: SITE_NAME, '@id': `${Astro.site}#org` },
+  email: EMAIL,
   url: new URL('/about', Astro.site).href,
+  knowsAbout: ['Web design', 'Web development', 'Google Ads', 'Meta Ads', 'Conversion optimisation'],
 };
+
+const principles = [
+  {
+    t: 'You see it before you pay for it',
+    d: 'The free homepage demo is not a lead magnet with a catch attached. I design the concept for your business, you look at it, and if you do not want to go further that is genuinely the end of it.',
+  },
+  {
+    t: 'You own everything',
+    d: 'Domain, hosting, code, content, analytics, ad accounts, pixels and audiences — all registered in your name from day one. If you ever move on, nothing is held back and nothing has to be rebuilt.',
+  },
+  {
+    t: 'The scope and the date are fixed before we start',
+    d: 'So is the price. Revision rounds are named in writing, so there is never an argument about which round we are on.',
+  },
+  {
+    t: 'One project at a time',
+    d: 'Yours is not queued behind five others. The cost of that is honesty about capacity: if I cannot start when you need to start, I will say so rather than take the deposit.',
+  },
+  {
+    t: 'No promises I cannot keep',
+    d: 'I will not guarantee a ranking, a lead volume, or a return on ad spend. Anyone who does is guessing. I guarantee the scope, the price, the date and that I answer my own email.',
+  },
+  {
+    t: 'I will talk you out of it',
+    d: 'If a cheaper option is genuinely right for you, or if the honest answer is that you are not ready to advertise yet, that is what I will tell you.',
+  },
+];
 ---
 <Base
-  title="About JP Silva | JP Silva Digital"
-  description="JP Silva Digital is a founder-led studio run by JP Silva, building conversion-focused websites for businesses across the United States."
+  title={`About ${FOUNDER} | ${SITE_NAME}`}
+  description={`${FOUNDER} builds websites and runs Google and Meta advertising for small businesses. One person, start to finish — here is how I work and why.`}
   schema={person}
 >
+  <!-- ══ INTRO ═══════════════════════════════════════════════════════════ -->
   <section class="section">
-    <div class="container">
-      <p class="mark"><b>§01</b> About</p>
-      <div class="head">
-        <h1 class="display">JP Silva</h1>
+    <div class="container ab__top">
+      <div class="ab__intro">
+        <p><span class="mark"><b>§01</b> About me</span></p>
+        <h1 class="display ab__h">I&rsquo;m JP. I build the website and run the ads.</h1>
         <p class="lead">
-          I build websites for businesses that need to be taken seriously by people who have
-          never met them.
+          {SITE_NAME} is me &mdash; one person who designs, writes, builds and launches, then
+          runs the Google and Meta campaigns that bring people to it. The person you speak to
+          on the first call is the person doing the work.
+        </p>
+        <div class="btn-row ab__cta">
+          <a class="btn btn--primary" href="/#planner" data-track="demo_start" data-track-label="about">Get your free demo</a>
+          <a class="btn btn--ghost" href="/contact">Start a project</a>
+        </div>
+      </div>
+
+      <figure class="ab__media">
+        <img
+          class="ab__img"
+          src={FOUNDER_PHOTO.src}
+          alt={FOUNDER_PHOTO.isReal ? FOUNDER_PHOTO.alt : ''}
+          aria-hidden={FOUNDER_PHOTO.isReal ? undefined : 'true'}
+          width="800" height="1000" loading="eager" decoding="async"
+        />
+        {!FOUNDER_PHOTO.isReal && (
+          <figcaption class="ab__todo">Founder photograph — to be added before launch</figcaption>
+        )}
+      </figure>
+    </div>
+  </section>
+
+  <!-- ══ WHO / WHAT ══════════════════════════════════════════════════════ -->
+  <section class="section section--panel" aria-labelledby="who-h">
+    <div class="container ab__cols">
+      <div>
+        <p><span class="mark"><b>§02</b> Who I am</span></p>
+        <h2 class="h2" id="who-h">A developer who had to learn marketing</h2>
+        <p class="body ab__p">
+          I started where most people start: building websites. What became obvious quickly is
+          that a good website is not the finish line. A business can have a site that looks
+          genuinely excellent and still hear nothing, because nobody arrives at it &mdash; and
+          it can buy plenty of traffic and still hear nothing, because the page it lands on
+          cannot answer the question that was asked.
+        </p>
+        <p class="body ab__p">
+          So I learned the other half. Google Ads, because it reaches people at the exact moment
+          they are looking. Meta, because most businesses also need to reach people who have not
+          thought of them yet. Doing both means I can tell you which half is actually your
+          problem &mdash; and that answer is often not the one you came in expecting.
+        </p>
+        <p class="body ab__p">
+          I build for businesses across the United States: home services and contractors, beauty
+          and wellness studios, professional practices, and established companies whose sites have
+          quietly stopped working. I have also built and shipped my own software, which is where
+          I learned most of what I know about making something complicated feel simple.
         </p>
       </div>
 
-      <div class="ab">
-        <div class="ab__body">
-          <p class="body">
-            JP Silva Digital is a one-person studio, and that is a deliberate choice rather than
-            a stage I am trying to grow out of quickly. The person you speak to on the first
-            call is the person who writes the copy, designs the pages, and pushes the site
-            live. Nothing gets handed to a junior after the proposal is signed.
-          </p>
-          <p class="body">
-            I work with businesses across the United States — contractors and construction
-            firms, home-services operators, beauty and wellness studios, professional
-            practices, and established companies whose sites have quietly stopped doing
-            their job. Discovery happens on a call, review happens on a real URL, and none
-            of it requires being in the same room.
-          </p>
-          <p class="body">
-            The studio is new. I would rather say that plainly than pad this page with stock
-            photography and invented milestones. What I can offer instead is a written scope,
-            a fixed price, a launch date I commit to, and complete ownership of everything I
-            build for you — in your name, from the first day.
-          </p>
-
-          <div class="note ab__note">
-            <span class="lbl">What I won't do</span>
-            <p class="small">
-              I will not guarantee a Google ranking, a number of leads, or a revenue figure.
-              Anyone who does is either guessing or selling you advertising with a different
-              label on it. I will guarantee the scope, the price, and the date.
-            </p>
-          </div>
-        </div>
-
-        <aside class="ab__side">
-          <div class="ab__photo" aria-hidden="true">
-            <span>Photograph of JP<br />— to be added</span>
-          </div>
-          <dl class="ab__facts">
-            <div><dt>Studio</dt><dd>JP Silva Digital</dd></div>
-            <div><dt>Founded by</dt><dd>JP Silva</dd></div>
-            <div><dt>Working with</dt><dd>Businesses across the United States</dd></div>
-            <div><dt>Capacity</dt><dd>One project at a time</dd></div>
-            <div><dt>Email</dt><dd><a class="tlink" href="mailto:jp@jpwebdesign.com">jp@jpwebdesign.com</a></dd></div>
-            <div><dt>Legal entity</dt><dd class="todo">To be added before launch</dd></div>
-            <div><dt>Phone</dt><dd class="todo">To be added before launch</dd></div>
-          </dl>
-        </aside>
+      <div>
+        <p><span class="mark mark--green"><b>§03</b> What I do</span></p>
+        <h2 class="h2">Three services, one argument</h2>
+        <p class="body ab__p">
+          Ads get people there. The website turns them into calls. Tracking tells you which part
+          worked. Most businesses buy those from three different vendors and then cannot work out
+          which one to blame.
+        </p>
+        <ul class="ab__svc">
+          {SERVICES.map((s) => (
+            <li>
+              <a href={`/services/${s.slug}`}>
+                <b>{s.name}</b>
+                <span>{s.blurb}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   </section>
 
-  <section class="section section--panel">
-    <div class="container cta__in">
-      <h2 class="h2">Want to see what I'd do with it?</h2>
-      <p class="lead cta__l">
-        The demo and the consultation are both free, and neither one obligates you to
-        anything afterwards.
+  <!-- ══ HOW I WORK ══════════════════════════════════════════════════════ -->
+  <section class="section" aria-labelledby="how-h">
+    <div class="container">
+      <p><span class="mark"><b>§04</b> How I work</span></p>
+      <div class="head">
+        <h2 class="h2" id="how-h">Six commitments, in plain language</h2>
+        <p class="lead">
+          These are the things I will not negotiate on, because every one of them exists in
+          response to how this industry usually treats small businesses.
+        </p>
+      </div>
+
+      <div class="grid g2">
+        {principles.map((p, i) => (
+          <article class="card ab__pr" data-anim="card" style={`--d:${i * 60}ms`}>
+            <span class="ab__n">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="card__t">{p.t}</h3>
+            <p class="card__x">{p.d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ WHY ═════════════════════════════════════════════════════════════ -->
+  <section class="section section--panel" aria-labelledby="why-h">
+    <div class="container ab__why">
+      <p><span class="mark mark--amber"><b>§05</b> Why I built this</span></p>
+      <h2 class="h2" id="why-h">Good businesses lose work to worse ones</h2>
+      <p class="body ab__p">
+        The thing that made me want to do this full time is watching it happen. A business that is
+        genuinely better at the work loses the call to a competitor who is merely easier to believe
+        in the ninety seconds someone spends deciding. Nothing about that is fair, and nothing about
+        it is mysterious either. It is a solvable problem, and it is usually solvable quickly.
       </p>
-      <div class="btn-row cta__b">
-        <a class="btn btn--primary" href="/#offer">Get a Free Demo</a>
-        <a class="btn btn--ghost" href="mailto:jp@jpwebdesign.com">Email JP directly</a>
+      <p class="body ab__p">
+        The industry&rsquo;s usual answer is a process designed to protect the agency: discovery
+        calls, proposals, account managers, and a person doing the work you never meet. The other
+        option is a website builder and six lost weekends. I built {SITE_NAME} to be the thing in
+        between &mdash; one person who does the work, tells you the truth, and shows you the
+        result before asking you to commit to it.
+      </p>
+      <p class="body ab__p">
+        That is also why the free demo exists. The studio is new. Real work on your own business
+        is more convincing than any portfolio I could point you at.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══ WORK + FACTS ════════════════════════════════════════════════════ -->
+  <section class="section" aria-labelledby="pf-h">
+    <div class="container">
+      <p><span class="mark"><b>§06</b> Recent work</span></p>
+      <h2 class="h2 ab__sh" id="pf-h">What I have built</h2>
+      <div class="grid g3">
+        {PROJECTS.map((p) => (
+          <a class="card ab__proj" href={`/work/${p.slug}`} data-track="project_view" data-track-label={p.slug}>
+            <img src={p.image} alt="" width="512" height="1000" loading="lazy" decoding="async" style={`background:${p.tint}`} />
+            <h3 class="card__t">{p.name}</h3>
+            <p class="card__x">{p.category}</p>
+          </a>
+        ))}
+      </div>
+
+      <dl class="ab__facts">
+        <div><dt>Business</dt><dd>{LEGAL_ENTITY ?? SITE_NAME}</dd></div>
+        <div><dt>Founder</dt><dd>{FOUNDER}</dd></div>
+        <div><dt>Working with</dt><dd>{SERVICE_AREA}</dd></div>
+        <div><dt>Capacity</dt><dd>One project at a time</dd></div>
+        <div><dt>Email</dt><dd><a class="tlink" href={`mailto:${EMAIL}`} data-track="email_click" data-track-label="about">{EMAIL}</a></dd></div>
+        <div>
+          <dt>Phone</dt>
+          <dd>{PHONE ? <a class="tlink" href={`tel:${PHONE.replace(/[^+\d]/g, '')}`} data-track="call_click">{PHONE}</a> : <span class="ab__pending">To be added before launch</span>}</dd>
+        </div>
+        {!LEGAL_ENTITY && (
+          <div><dt>Legal entity</dt><dd><span class="ab__pending">To be added before launch</span></dd></div>
+        )}
+      </dl>
+    </div>
+  </section>
+
+  <!-- ══ CLOSE ═══════════════════════════════════════════════════════════ -->
+  <section class="section section--panel" aria-labelledby="ab-cta">
+    <div class="container">
+      <div class="note ab__close">
+        <span class="lbl">Start here</span>
+        <h2 class="h3" id="ab-cta">Want to see what I&rsquo;d do with yours?</h2>
+        <p class="small">
+          The demo and the consultation are both free, and neither obligates you to anything.
+          I reply to every message within {REPLY_SLA} &mdash; and if I do not, email me again and say so.
+        </p>
+        <div class="btn-row ab__btns">
+          <a class="btn btn--primary" href="/#planner" data-track="demo_start" data-track-label="about-close">Get your free demo</a>
+          <a class="btn btn--ghost" href="/contact">Start a project</a>
+        </div>
       </div>
     </div>
   </section>
 </Base>
 
 <style>
-  .ab { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 4rem); align-items: start; }
-  @media (max-width: 56rem) { .ab { grid-template-columns: 1fr; } }
-  .ab__note { margin-top: var(--s6); }
+  .ab__top { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(var(--s6), 5vw, var(--s8)); align-items: center; }
+  @media (max-width: 56rem) { .ab__top { grid-template-columns: 1fr; } }
+  .ab__intro { display: flex; flex-direction: column; align-items: flex-start; }
+  .ab__h { margin-bottom: var(--s5); }
+  .ab__cta { margin-top: var(--s6); }
 
-  .ab__photo {
-    aspect-ratio: 4 / 5; background: var(--panel); border: 1px dashed var(--rule-hi);
-    border-radius: 3px; display: grid; place-items: center; text-align: center;
-    font-family: var(--mono); font-size: .8125rem; color: var(--graphite); line-height: 1.7;
+  .ab__media { margin: 0; }
+  .ab__img {
+    width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center 22%;
+    border-radius: var(--r); border: 1px solid var(--rule);
+    background: var(--panel); box-shadow: var(--shadow-up);
   }
-  .ab__facts { margin-top: var(--s5); display: grid; gap: var(--s4); }
-  .ab__facts dt {
-    font-family: var(--mono); font-size: var(--fs-label); letter-spacing: .12em;
-    text-transform: uppercase; color: var(--graphite); margin-bottom: .1875rem;
-  }
+  .ab__todo { margin-top: var(--s3); font-family: var(--mono); font-size: .8rem; letter-spacing: .04em; color: var(--redline); }
+  @media (max-width: 56rem) { .ab__media { max-width: 20rem; } .ab__img { aspect-ratio: 1 / 1; } }
+
+  .ab__cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(var(--s6), 5vw, var(--s8)); align-items: start; }
+  @media (max-width: 56rem) { .ab__cols { grid-template-columns: 1fr; } }
+  .ab__p { margin-top: var(--s4); font-size: var(--fs-small); color: var(--graphite); }
+  .ab__p:first-of-type { font-size: var(--fs-body); color: var(--ink); }
+
+  .ab__svc { display: grid; gap: 0; margin-top: var(--s5); border-top: 1px solid var(--rule); }
+  .ab__svc li { border-bottom: 1px solid var(--rule); }
+  .ab__svc a { display: flex; flex-direction: column; gap: .2rem; padding-block: var(--s4); text-decoration: none; transition: transform .2s var(--ease); }
+  .ab__svc a:hover { transform: translateX(4px); }
+  .ab__svc b { font-weight: 800; letter-spacing: -.015em; }
+  .ab__svc a:hover b { color: var(--redline); }
+  .ab__svc span { font-size: var(--fs-small); color: var(--graphite); }
+
+  .ab__pr { position: relative; }
+  .ab__n { font-family: var(--mono); font-size: .8rem; letter-spacing: .1em; color: var(--redline); }
+
+  .ab__why { max-width: 48rem; }
+  .ab__why .ab__p:first-of-type { margin-top: var(--s5); }
+
+  .ab__sh { margin-bottom: var(--s6); }
+  .ab__proj { text-decoration: none; padding: 0; overflow: hidden; }
+  .ab__proj img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; }
+  .ab__proj .card__t { margin-top: var(--s4); }
+  .ab__proj .card__t, .ab__proj .card__x { padding-inline: var(--s5); }
+  .ab__proj .card__x { padding-bottom: var(--s5); }
+
+  .ab__facts { margin-top: var(--s8); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--s7); border-top: 1px solid var(--rule); }
+  @media (max-width: 40rem) { .ab__facts { grid-template-columns: 1fr; } }
+  .ab__facts > div { display: grid; grid-template-columns: 9rem 1fr; gap: var(--s4); padding-block: var(--s4); border-bottom: 1px solid var(--rule); align-items: baseline; }
+  @media (max-width: 30rem) { .ab__facts > div { grid-template-columns: 1fr; gap: .2rem; } }
+  .ab__facts dt { font-family: var(--mono); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--graphite); }
   .ab__facts dd { font-size: var(--fs-small); }
-  .todo { font-family: var(--mono); font-size: .8125rem; color: var(--redline); }
+  .ab__pending { font-family: var(--mono); font-size: .8rem; color: var(--redline); }
 
-  .cta__in { text-align: center; }
-  .cta__l { margin: var(--s4) auto 0; }
-  .cta__b { justify-content: center; margin-top: var(--s6); }
+  .ab__close { max-width: 52rem; }
+  .ab__close h2 { margin-bottom: var(--s2); }
+  .ab__btns { margin-top: var(--s5); }
 </style>

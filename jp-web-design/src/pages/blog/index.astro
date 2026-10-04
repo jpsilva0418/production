@@ -1,0 +1,100 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { SITE_NAME } from '../../data/site';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: `${SITE_NAME} — Notes`,
+  url: new URL('/blog', Astro.site).href,
+  blogPost: posts.map((p) => ({
+    '@type': 'BlogPosting',
+    headline: p.data.title,
+    datePublished: p.data.date.toISOString(),
+    url: new URL(`/blog/${p.id}`, Astro.site).href,
+  })),
+};
+---
+<Base
+  title={`Blog | ${SITE_NAME}`}
+  description="Straight answers about websites and advertising for small businesses — what actually moves the needle, written by JP Silva."
+  schema={schema}
+>
+  <section class="section">
+    <div class="container">
+      <p><span class="mark"><b>§01</b> Blog</span></p>
+      <div class="head">
+        <h1 class="display">Notes on getting found and getting called</h1>
+        <p class="lead">
+          What I have learned building websites and running campaigns for small businesses.
+          No fabricated research, no borrowed statistics &mdash; if I have not seen it myself,
+          I say so.
+        </p>
+      </div>
+
+      {posts.length === 0 ? (
+        <p class="lead">The first posts are being written. Check back shortly.</p>
+      ) : (
+        <ul class="bl">
+          {posts.map((p, i) => (
+            <li class="bl__i" data-anim style={`--d:${i * 70}ms`}>
+              <a class="bl__a" href={`/blog/${p.id}`}>
+                <span class="bl__meta">
+                  <span class="bl__cat">{p.data.category}</span>
+                  <time datetime={p.data.date.toISOString()}>{fmt(p.data.date)}</time>
+                  <span class="bl__rt">{p.data.readingTime} min read</span>
+                </span>
+                <h2 class="h2 bl__t">{p.data.title}</h2>
+                <span class="lead bl__d">{p.data.description}</span>
+                <span class="tlink">Read it <span aria-hidden="true">&rarr;</span></span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </section>
+
+  <section class="section section--panel">
+    <div class="container">
+      <div class="note bl__cta">
+        <span class="lbl">Rather talk than read</span>
+        <p class="small">
+          If you want a straight answer about your own site or campaign, that conversation is
+          free and there is no obligation at the end of it.
+        </p>
+        <div class="btn-row bl__btns">
+          <a class="btn btn--primary" href="/#planner" data-track="demo_start" data-track-label="blog">Get your free demo</a>
+          <a class="btn btn--ghost" href="/contact">Start a project</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .bl { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+  .bl__i { border-bottom: 1px solid var(--rule); }
+  .bl__a {
+    display: flex; flex-direction: column; align-items: flex-start; gap: var(--s3);
+    padding-block: var(--s6); text-decoration: none; color: inherit;
+    transition: transform .22s var(--ease);
+  }
+  .bl__a:hover { transform: translateX(4px); }
+  .bl__a:hover .bl__t { color: var(--redline); }
+  .bl__t { transition: color .18s var(--ease); max-width: 26ch; }
+
+  .bl__meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3); font-family: var(--mono); font-size: .76rem; letter-spacing: .06em; text-transform: uppercase; color: var(--graphite); }
+  .bl__cat { color: var(--redline); background: var(--blue-soft); border: 1px solid var(--blue-bd); border-radius: 999px; padding: .3rem .6rem; }
+  .bl__d { max-width: 58ch; font-size: var(--fs-body); }
+
+  .bl__cta { max-width: 52rem; }
+  .bl__btns { margin-top: var(--s5); }
+</style>

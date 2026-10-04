@@ -1,0 +1,96 @@
+---
+/* ==========================================================================
+   MEET JP — the homepage founder section.
+
+   The site's whole argument is that a person builds the work, so the person
+   has to appear on the homepage. Kept short: the full story is /about.
+
+   The photograph slot is built to final spec now and holds a clearly marked
+   placeholder until JP supplies a real photo. No stock model, no generated
+   face. Swapping it is one constant in data/site.ts.
+   ========================================================================== */
+import { FOUNDER, FOUNDER_PHOTO, SITE_NAME } from '../data/site';
+---
+<section class="section" id="founder" aria-labelledby="fnd-h">
+  <div class="container fnd">
+    <figure class="fnd__media" data-anim="left">
+      <img
+        class="fnd__img"
+        src={FOUNDER_PHOTO.src}
+        alt={FOUNDER_PHOTO.isReal ? FOUNDER_PHOTO.alt : ''}
+        aria-hidden={FOUNDER_PHOTO.isReal ? undefined : 'true'}
+        width="800" height="1000"
+        loading="lazy" decoding="async"
+      />
+      {!FOUNDER_PHOTO.isReal && (
+        <figcaption class="fnd__todo">Founder photograph — to be added before launch</figcaption>
+      )}
+    </figure>
+
+    <div class="fnd__body" data-anim="right">
+      <p><span class="mark"><b>§</b> Meet JP</span></p>
+
+      <h2 class="h2" id="fnd-h">Hi, I&rsquo;m JP. You&rsquo;ll be working with me.</h2>
+
+      <p class="lead fnd__lead">
+        I build websites and run the advertising that fills them &mdash; with one goal behind both:
+        turning the attention your business already earns into customers who actually call.
+      </p>
+
+      <p class="body fnd__p">
+        {SITE_NAME} is a one-person business, and that is a deliberate choice rather than a stage
+        I am trying to grow out of. The person you speak to on the first call is the person who
+        designs the pages, writes the code, and builds the campaigns. Nothing gets handed to a
+        junior once the proposal is signed.
+      </p>
+
+      <p class="body fnd__p">
+        Most businesses come to me with one of three problems: a website that looks nothing like
+        the quality of their work, ads that spend money without anyone knowing what came back, or
+        both at once. Those are the same problem seen from two directions, which is why I do
+        both &mdash; the ads bring people in, and the site has to be worth their arrival.
+      </p>
+
+      <ul class="fnd__list">
+        <li><b>{FOUNDER}</b><span>Founder &middot; Developer &middot; Digital marketing</span></li>
+      </ul>
+
+      <div class="btn-row fnd__cta">
+        <a class="btn btn--primary" href="/about">More about me</a>
+        <a class="btn btn--ghost" href="/work">See the work</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .fnd { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(var(--s6), 5vw, var(--s8)); align-items: center; }
+  @media (max-width: 56rem) { .fnd { grid-template-columns: 1fr; gap: var(--s6); } }
+
+  .fnd__media { position: relative; margin: 0; }
+  .fnd__img {
+    width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center 22%;
+    border-radius: var(--r); border: 1px solid var(--rule);
+    background: var(--panel); box-shadow: var(--shadow-up);
+  }
+  .fnd__todo {
+    margin-top: var(--s3); font-family: var(--mono); font-size: .8rem;
+    letter-spacing: .04em; color: var(--redline);
+  }
+  /* On a phone the portrait must not eat the whole screen before the words. */
+  @media (max-width: 56rem) {
+    .fnd__media { max-width: 22rem; }
+    .fnd__img { aspect-ratio: 1 / 1; }
+  }
+
+  .fnd__body > * + * { margin-top: var(--s4); }
+  .fnd__lead { max-width: 34rem; }
+  .fnd__p { font-size: var(--fs-small); color: var(--graphite); max-width: 40rem; }
+
+  .fnd__list { margin-top: var(--s5); padding-top: var(--s4); border-top: 1px solid var(--rule); }
+  .fnd__list li { display: flex; flex-direction: column; gap: .15rem; }
+  .fnd__list b { font-weight: 800; letter-spacing: -.015em; }
+  .fnd__list span { font-family: var(--mono); font-size: .8rem; letter-spacing: .06em; color: var(--graphite); text-transform: uppercase; }
+
+  .fnd__cta { margin-top: var(--s5); }
+</style>

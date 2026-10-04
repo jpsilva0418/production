@@ -8,6 +8,10 @@ import {
 import Diagram from './Diagram.jsx';
 import './planner.css';
 
+import { sendInquiry, mailtoFor } from '../../lib/inquiry';
+import { track, EVENTS } from '../../lib/analytics';
+import { EMAIL, REPLY_SLA, DEMO_TURNAROUND } from '../../data/site';
+
 const KEY = 'jpwd.planner.v1';
 const TOTAL = 8;
 
@@ -94,7 +98,7 @@ export default function Planner() {
   const next = () => { if (canAdvance) setStep((s) => Math.min(s + 1, TOTAL)); };
   const back = () => { if (done) { setDone(false); setStep(TOTAL); } else setStep((s) => Math.max(s - 1, 1)); };
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
     const err = {};
     if (!a.name.trim()) err.name = 'Enter your name so I know who I’m replying to.';
@@ -106,9 +110,25 @@ export default function Planner() {
       return;
     }
     setSending(true);
-    /* No endpoint wired yet — see README. The payload shape is CRM-ready and
-       identical to what /api/inquiry will receive. */
-    setTimeout(() => { setSending(false); setSent('ok'); setDone(true); }, 400);
+    /* One transport for the whole site (src/lib/inquiry.ts). The plan is shown
+       either way — that was always the promise — but the confirmation text
+       below reports what actually happened to the submission. A failure is
+       never dressed up as a success. */
+    const res = await sendInquiry({
+      source: 'planner',
+      name: a.name,
+      email: a.email,
+      phone: a.phone || undefined,
+      company: a.company || undefined,
+      need: 'Website',
+      timeline: a.timeline || undefined,
+      message: `Free demo request from the planner. Preferred contact: ${a.contactPref || 'no preference'}.`,
+      plan: { answers: a, recommendation: plan },
+    });
+    setSending(false);
+    if (res.ok) track(EVENTS.demoComplete, { need: 'Website' });
+    setSent(res.ok ? 'ok' : res.reason === 'spam' ? 'ok' : res.reason);
+    setDone(true);
   };
 
   const restart = () => {
@@ -127,7 +147,7 @@ export default function Planner() {
     'Where should I send your plan and demo?',
   ];
 
-  if (done && sent) return <Result a={a} plan={plan} onRestart={restart} headingRef={headingRef} />;
+  if (done && sent) return <Result a={a} plan={plan} sent={sent} onRestart={restart} headingRef={headingRef} />;
 
   return (
     <div className="pl">
@@ -236,7 +256,7 @@ export default function Planner() {
               after an email should never be routed through a funnel built
               for strangers. */}
           <p className="pl__escape">
-            Rather not do this? <a className="tlink" href="mailto:jp@jpwebdesign.com">Just email me instead.</a>
+            Rather not do this? <a className="tlink" href="mailto:jp@jpsilvadigital.com">Just email me instead.</a>
           </p>
         </form>
       </div>
@@ -359,7 +379,7 @@ function ContactStep({ a, set, errors, onSubmit, sending }) {
 }
 
 /* ----------------------------------------------------------------- Result */
-function Result({ a, plan, onRestart, headingRef }) {
+function Result({ a, plan, sent, onRestart, headingRef }) {
   const meta = PACKAGE_META[plan.pkg];
   const chose = a.packageChoice;
   const disagrees = ['starter', 'growth', 'custom'].includes(chose) && chose !== plan.pkg;
@@ -435,19 +455,49 @@ function Result({ a, plan, onRestart, headingRef }) {
           goals, required pages, features, content, and timeline.
         </div>
 
-        <div className="pl__exits">
-          <a className="btn btn--primary" href={`mailto:jp@jpwebdesign.com?subject=${encodeURIComponent('Free demo request — ' + (a.company || a.name || 'my business'))}`}>
-            Get my free demo
-          </a>
-          <a className="btn btn--ghost" href="/contact">Book a free consultation</a>
-          <button type="button" className="pl__restart" onClick={onRestart}>Start over</button>
-        </div>
-
-        <p className="pl__sent">
-          Thanks{a.name ? `, ${a.name.split(' ')[0]}` : ''} — I’ll reply within one business day,
-          and your free homepage demo usually follows within 3–5 business days. Nothing is owed
-          either way. If I don’t reply, email me and say so.
-        </p>
+        {sent === 'ok' ? (
+          <>
+            <div className="pl__exits">
+              <a className="btn btn--ghost" href="/work">See recent work</a>
+              <button type="button" className="pl__restart" onClick={onRestart}>Start over</button>
+            </div>
+            <p className="pl__sent pl__sent--ok">
+              Got it{a.name ? `, ${a.name.split(' ')[0]}` : ''} — your request reached me. I reply
+              within {REPLY_SLA}, and the free homepage demo usually follows within {DEMO_TURNAROUND}.
+              Nothing is owed either way. If I don’t reply, email me and say so.
+            </p>
+          </>
+        ) : (
+          <>
+            <div className="pl__exits">
+              <a
+                className="btn btn--primary"
+                href={mailtoFor(
+                  {
+                    source: 'planner',
+                    name: a.name,
+                    email: a.email,
+                    phone: a.phone,
+                    company: a.company,
+                    need: 'Website',
+                    timeline: a.timeline,
+                    message: `Free demo request. Recommended package: ${meta.name}. Pages: ${plan.arch.pages.length}.`,
+                  },
+                  EMAIL,
+                )}
+              >
+                Send my demo request by email
+              </a>
+              <a className="btn btn--ghost" href="/contact">Book a free consultation</a>
+              <button type="button" className="pl__restart" onClick={onRestart}>Start over</button>
+            </div>
+            <p className="pl__sent pl__sent--warn">
+              {sent === 'unconfigured'
+                ? 'Your plan is above and it is yours to keep — but the form’s delivery address isn’t connected yet, so I’m not going to tell you this was sent when it wasn’t. The button above opens an email with your details already filled in.'
+                : 'Your plan is above and it is yours to keep, but the request didn’t send — something went wrong on the way. The button above carries the same details by email, and it reaches me exactly the same way.'}
+            </p>
+          </>
+        )}
       </div>
 
       <aside className="pl__side" aria-label="Your plan diagram">

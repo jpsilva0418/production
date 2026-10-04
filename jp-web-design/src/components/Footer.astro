@@ -1,25 +1,28 @@
 ---
+import { SITE_NAME, EMAIL, PHONE, LEGAL_ENTITY, SOCIALS, SERVICE_AREA } from '../data/site';
+import { SERVICES } from '../data/services';
+
 const cols = [
   {
     h: 'Services',
     links: [
-      { href: '/#services', label: 'Website design' },
-      { href: '/#services', label: 'Website redesign' },
-      { href: '/#services', label: 'SEO foundations' },
-      { href: '/#services', label: 'Website care plans' },
+      ...SERVICES.map((s) => ({ href: `/services/${s.slug}`, label: s.name })),
+      { href: '/services', label: 'All services' },
     ],
   },
   {
-    h: 'Industries',
+    h: 'Work',
     links: [
+      { href: '/work', label: 'Selected work' },
       { href: '/industries/construction-web-design', label: 'Construction & contracting' },
-      { href: '/#industries', label: 'All industries' },
+      { href: '/#packages', label: 'Packages' },
     ],
   },
   {
     h: 'Company',
     links: [
-      { href: '/about', label: 'About JP' },
+      { href: '/about', label: 'About Me' },
+      { href: '/blog', label: 'Blog' },
       { href: '/process', label: 'Process' },
       { href: '/contact', label: 'Contact' },
     ],
@@ -31,14 +34,19 @@ const year = new Date().getFullYear();
   <div class="container">
     <div class="ftr__top">
       <div class="ftr__brand">
-        <a class="wm" href="/" aria-label="JP Silva Digital — home">
+        <a class="wm" href="/" aria-label={`${SITE_NAME} — home`}>
           <span class="wm__i">JP</span><span class="wm__t">Silva Digital</span>
         </a>
         <p class="small ftr__pitch">
-          Websites built for the people deciding whether to call you.
-          Free demo, free consultation, and no obligation either way.
+          Websites built for the people deciding whether to call you, and the advertising
+          that puts you in front of them. Free demo, free consultation, no obligation either way.
         </p>
-        <p class="small ftr__area">Working with businesses across the United States.</p>
+        <p class="small ftr__area">{SERVICE_AREA}.</p>
+        {SOCIALS.length > 0 && (
+          <ul class="ftr__social">
+            {SOCIALS.map((s) => <li><a href={s.href} rel="noopener">{s.label}</a></li>)}
+          </ul>
+        )}
       </div>
 
       {cols.map((c) => (
@@ -50,14 +58,17 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="ftr__contact">
-      <a class="tlink" href="mailto:jp@jpwebdesign.com">jp@jpwebdesign.com</a>
-      <!-- TODO(launch): real number. A phone a human answers is required for
-           the cold-outbound credibility check — see strategy, journey (c). -->
-      <span class="small ftr__todo">Phone — to be added before launch</span>
+      <a class="tlink" href={`mailto:${EMAIL}`} data-track="email_click" data-track-label="footer">{EMAIL}</a>
+      {PHONE
+        ? <a class="tlink" href={`tel:${PHONE.replace(/[^+\d]/g, '')}`} data-track="call_click" data-track-label="footer">{PHONE}</a>
+        : <span class="small ftr__todo">Phone — to be added before launch</span>}
     </div>
 
     <div class="ftr__legal">
-      <p class="small">© {year} JP Silva Digital. <span class="ftr__todo">Legal entity and state — to be added.</span></p>
+      <p class="small">
+        © {year} {LEGAL_ENTITY ?? SITE_NAME}.
+        {!LEGAL_ENTITY && <span class="ftr__todo">Legal entity and state — to be added.</span>}
+      </p>
       <ul class="ftr__legalnav">
         <li><a href="/privacy">Privacy</a></li>
         <li><a href="/terms">Terms</a></li>
@@ -68,6 +79,8 @@ const year = new Date().getFullYear();
 </footer>
 
 <style>
+  .ftr__social { display: flex; flex-wrap: wrap; gap: var(--s4); margin-top: var(--s4); }
+  .ftr__social a { font-size: var(--fs-small); font-weight: 700; color: var(--redline); text-decoration: none; }
   .ftr { border-top: 1px solid var(--rule); padding-block: var(--s8) var(--s6); }
   .ftr__top { display: grid; grid-template-columns: 1.6fr repeat(3, 1fr); gap: var(--s6); }
   @media (max-width: 60rem) { .ftr__top { grid-template-columns: 1fr 1fr; } }

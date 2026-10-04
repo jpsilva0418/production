@@ -1,0 +1,153 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+import { SITE_NAME, FOUNDER } from '../../data/site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post, posts } }));
+}
+
+const { post, posts } = Astro.props;
+const { Content } = await render(post);
+const d = post.data;
+
+const fmt = (x: Date) => x.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+/* Two most recent other posts, newest first. */
+const more = posts
+  .filter((p) => p.id !== post.id)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 2);
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: d.title,
+  description: d.description,
+  datePublished: d.date.toISOString(),
+  ...(d.updated && { dateModified: d.updated.toISOString() }),
+  author: { '@type': 'Person', name: FOUNDER },
+  publisher: { '@type': 'Organization', name: SITE_NAME, '@id': `${Astro.site}#org` },
+  mainEntityOfPage: new URL(`/blog/${post.id}`, Astro.site).href,
+  articleSection: d.category,
+};
+---
+<Base title={`${d.title} | ${SITE_NAME}`} description={d.description} schema={schema} ogType="article">
+  <article class="section">
+    <div class="container">
+      <nav class="crumb" aria-label="Breadcrumb">
+        <a href="/blog">Blog</a> <span aria-hidden="true">/</span> <span>{d.category}</span>
+      </nav>
+
+      <header class="po__head">
+        <p class="po__meta">
+          <span class="po__cat">{d.category}</span>
+          <time datetime={d.date.toISOString()}>{fmt(d.date)}</time>
+          <span>{d.readingTime} min read</span>
+        </p>
+        <h1 class="display po__h">{d.title}</h1>
+        <p class="lead">{d.description}</p>
+        {d.updated && <p class="small po__upd">Updated {fmt(d.updated)}</p>}
+      </header>
+
+      {d.image && (
+        <figure class="po__fig">
+          <img src={d.image} alt={d.imageAlt ?? ''} loading="eager" decoding="async" />
+        </figure>
+      )}
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      <footer class="po__foot">
+        <p class="small">
+          Written by <strong>{FOUNDER}</strong>, who designs, builds and runs every project at {SITE_NAME}.
+        </p>
+        <div class="btn-row po__btns">
+          <a class="btn btn--primary" href="/#planner" data-track="demo_start" data-track-label={`post:${post.id}`}>Get your free demo</a>
+          <a class="btn btn--ghost" href="/contact">Start a project</a>
+        </div>
+      </footer>
+    </div>
+  </article>
+
+  {more.length > 0 && (
+    <section class="section section--panel" aria-labelledby="more-h">
+      <div class="container">
+        <h2 class="h3 po__mh" id="more-h">More notes</h2>
+        <div class="grid g2">
+          {more.map((p) => (
+            <a class="card po__more" href={`/blog/${p.id}`}>
+              <span class="po__mcat">{p.data.category}</span>
+              <h3 class="card__t">{p.data.title}</h3>
+              <p class="card__x">{p.data.description}</p>
+              <span class="tlink po__mgo">Read it <span aria-hidden="true">&rarr;</span></span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</Base>
+
+<style>
+  .crumb { font-size: var(--fs-small); color: var(--graphite); margin-bottom: var(--s5); }
+  .crumb a { color: var(--redline); font-weight: 700; text-decoration: none; }
+  .crumb span[aria-hidden] { margin-inline: .35rem; }
+
+  .po__head { max-width: 46rem; }
+  .po__meta {
+    display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3);
+    font-family: var(--mono); font-size: .76rem; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--graphite); margin-bottom: var(--s5);
+  }
+  .po__cat { color: var(--redline); background: var(--blue-soft); border: 1px solid var(--blue-bd); border-radius: 999px; padding: .3rem .6rem; }
+  .po__h { margin-bottom: var(--s5); }
+  .po__upd { margin-top: var(--s3); }
+
+  .po__fig { margin: var(--s7) 0 0; border-radius: var(--r); overflow: hidden; border: 1px solid var(--rule); }
+  .po__fig img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+
+  /* ---- Article typography. The only place on the site where raw Markdown
+     elements need styling, so the rules are scoped to .prose. ---- */
+  .prose { max-width: 38rem; margin-top: var(--s8); font-size: 1.1rem; line-height: 1.72; }
+  .prose > * + * { margin-top: var(--s5); }
+  .prose h2 {
+    font-size: clamp(1.45rem, 3.2vw, 1.9rem); line-height: 1.2; letter-spacing: -.025em; font-weight: 800;
+    margin-top: var(--s8); padding-top: var(--s5); border-top: 1px solid var(--rule);
+  }
+  .prose h3 { font-size: 1.2rem; line-height: 1.35; letter-spacing: -.015em; font-weight: 800; margin-top: var(--s6); }
+  .prose p { text-wrap: pretty; }
+  .prose strong { font-weight: 700; }
+  .prose a { color: var(--redline); font-weight: 600; text-underline-offset: .18em; }
+  .prose a:hover { color: var(--redline-dk); }
+  .prose ul, .prose ol { display: grid; gap: var(--s3); padding-left: 1.4rem; }
+  .prose ul { list-style: disc; }
+  .prose ol { list-style: decimal; }
+  .prose li::marker { color: var(--redline); }
+  .prose blockquote {
+    border-left: 3px solid var(--redline); padding-left: var(--s5);
+    font-size: 1.15rem; color: var(--graphite);
+  }
+  .prose code {
+    font-family: var(--mono); font-size: .9em;
+    background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: .1em .35em;
+  }
+  .prose pre {
+    background: var(--night); color: var(--night-ink); padding: var(--s5);
+    border-radius: 14px; overflow-x: auto; font-size: .92rem; line-height: 1.6;
+  }
+  .prose pre code { background: none; border: 0; padding: 0; }
+  .prose img { border-radius: 14px; border: 1px solid var(--rule); }
+  .prose hr { border: 0; border-top: 1px solid var(--rule); margin-block: var(--s7); }
+
+  .po__foot { max-width: 38rem; margin-top: var(--s8); padding-top: var(--s5); border-top: 1px solid var(--rule); }
+  .po__btns { margin-top: var(--s5); }
+
+  .po__mh { margin-bottom: var(--s6); }
+  .po__more { text-decoration: none; }
+  .po__mcat { font-family: var(--mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--redline); }
+  .po__mgo { margin-top: auto; }
+</style>

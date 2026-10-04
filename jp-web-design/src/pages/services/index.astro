@@ -1,0 +1,137 @@
+---
+import Base from '../../layouts/Base.astro';
+import { SERVICES } from '../../data/services';
+import { SITE_NAME } from '../../data/site';
+
+/* One page, three pillars, each linking to its own detail route. The free
+   demo stays the headline offer because it is still the strongest reason a
+   stranger makes contact. */
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: `Services — ${SITE_NAME}`,
+  itemListElement: SERVICES.map((s, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: s.name,
+    url: new URL(`/services/${s.slug}`, Astro.site).href,
+  })),
+};
+
+const icons: Record<string, string> = {
+  'web-development': `<path d="M3 5.5A1.5 1.5 0 0 1 4.5 4h15A1.5 1.5 0 0 1 21 5.5v10a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 15.5z"/><path d="M8 20h8M12 17v3M7.5 9 9 10.5 7.5 12M11.5 12h3"/>`,
+  'google-ads': `<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>`,
+  'meta-ads': `<path d="M3 11a4 4 0 0 1 4-4h2l6-3v14l-6-3H7a4 4 0 0 1-4-4z"/><path d="M18 9a4 4 0 0 1 0 4"/>`,
+};
+const tints: Record<string, string> = {
+  'web-development': 'chip--blue',
+  'google-ads': 'chip--green',
+  'meta-ads': 'chip--amber',
+};
+---
+<Base
+  title={`Services | ${SITE_NAME}`}
+  description="Web design and development, Google Ads and Meta Ads — built and managed by one person. Start with a free homepage demo, no obligation."
+  schema={schema}
+>
+  <section class="section">
+    <div class="container">
+      <p><span class="mark"><b>§01</b> Services</span></p>
+      <div class="head">
+        <h1 class="display">Three things, done properly</h1>
+        <p class="lead">
+          Advertising brings people to you. The website decides whether they call. I do both,
+          which means neither one gets blamed on the other vendor.
+        </p>
+      </div>
+
+      <div class="grid g3 svc__grid">
+        {SERVICES.map((s, i) => (
+          <article class="card svc" data-anim="card" style={`--d:${i * 90}ms`}>
+            <span class={`chip ${tints[s.slug]}`} aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" set:html={icons[s.slug]} />
+            </span>
+            <h2 class="card__t">{s.name}</h2>
+            <p class="card__x">{s.blurb}</p>
+            <ul class="svc__pts">
+              {s.includes.slice(0, 3).map((x) => <li>{x}</li>)}
+            </ul>
+            <a class="tlink svc__link" href={`/services/${s.slug}`}>
+              What this involves <span aria-hidden="true">&rarr;</span>
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--panel" aria-labelledby="chain-h">
+    <div class="container">
+      <p><span class="mark mark--green"><b>§02</b> How they fit together</span></p>
+      <div class="head">
+        <h2 class="h2" id="chain-h">Most businesses only have half the problem fixed</h2>
+        <p class="lead">
+          Ads sending traffic to a page that cannot convert is the most expensive mistake in small
+          business marketing. A beautiful site nobody can find is the second. They are usually
+          treated as separate purchases from separate vendors.
+        </p>
+      </div>
+
+      <ol class="chain">
+        <li class="chain__i"><b>Ads get them there</b><span>Google reaches people already searching. Meta reaches people who have not thought of you yet.</span></li>
+        <li class="chain__i"><b>The website converts them</b><span>Structure, speed and proof decide whether a visit becomes a call.</span></li>
+        <li class="chain__i"><b>Tracking tells you which worked</b><span>Conversion tracking wired on both sides, so the spend is accountable.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="start-h">
+    <div class="container">
+      <div class="note svc__close">
+        <span class="lbl">Where to start</span>
+        <h2 class="h3" id="start-h">If it is a website, see it before you pay for it</h2>
+        <p class="small">
+          Answer eight questions and I design your homepage concept for free. If it is advertising,
+          or you are not sure which you need, the project form is the faster route and the first
+          conversation costs nothing either way.
+        </p>
+        <div class="btn-row svc__btns">
+          <a class="btn btn--primary" href="/#planner" data-track="demo_start" data-track-label="services">Get your free demo</a>
+          <a class="btn btn--ghost" href="/contact">Start a project</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .svc__grid { align-items: stretch; }
+  .svc__pts { display: grid; gap: .4rem; margin-top: var(--s2); }
+  .svc__pts li {
+    font-size: var(--fs-small); color: var(--graphite);
+    padding-left: 1.1rem; position: relative;
+  }
+  .svc__pts li::before {
+    content: ''; position: absolute; left: 0; top: .62em;
+    width: .35rem; height: .35rem; border-radius: 50%; background: var(--redline);
+  }
+  .svc__link { margin-top: auto; padding-top: var(--s4); }
+
+  .chain { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s5); counter-reset: c; }
+  @media (max-width: 56rem) { .chain { grid-template-columns: 1fr; } }
+  .chain__i {
+    background: var(--card); border: 1px solid var(--rule); border-radius: var(--r);
+    padding: var(--s5); display: flex; flex-direction: column; gap: var(--s2);
+    position: relative; box-shadow: var(--shadow);
+  }
+  .chain__i::before {
+    counter-increment: c; content: counter(c, decimal-leading-zero);
+    font-family: var(--mono); font-size: .8rem; letter-spacing: .1em; color: var(--redline);
+  }
+  .chain__i b { font-size: var(--fs-h3); font-weight: 800; letter-spacing: -.015em; }
+  .chain__i span { font-size: var(--fs-small); color: var(--graphite); }
+
+  .svc__close { max-width: 52rem; }
+  .svc__close h2 { margin-bottom: var(--s2); }
+  .svc__btns { margin-top: var(--s5); }
+</style>

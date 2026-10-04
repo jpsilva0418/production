@@ -1,7 +1,10 @@
-# JP Web Design — website
+# JP Silva Digital — website
 
-Astro 5 static site. Nine pages, one React island (the planner). Builds to plain
-HTML/CSS/JS, so it deploys to any static host.
+Astro 5 static site. Twenty-one routes, one React island (the planner). Builds
+to plain HTML/CSS/JS, so it deploys to any static host.
+
+Three services: web design and development, Google Ads, and Meta Ads. The free
+homepage demo remains the headline offer and the primary conversion path.
 
 ## The identity, in one paragraph
 
@@ -73,27 +76,59 @@ node -e "import('./src/components/planner/logic.js').then(m=>console.log(
 
 ## Before this goes live
 
-| # | Item | Where |
-| --- | --- | --- |
-| 1 | **Domain** — replace `jpwebdesign.com` throughout | `astro.config.mjs` (`SITE`), `public/robots.txt` |
-| 2 | **Email address** | `Footer.astro`, `contact.astro`, `about.astro`, `Planner.jsx` |
-| 3 | **Phone number** — a human answers it | `Footer.astro`, `contact.astro`. Required for the outbound credibility check |
-| 4 | **Legal entity name + state** | `Footer.astro`, `about.astro` |
-| 5 | **Photograph of JP** | `about.astro` — founder-led doesn't work with an empty frame |
-| 6 | **Form endpoint** — see below | `Planner.jsx` `submit()` |
-| 7 | **Typeface** — swap the system stack | `--sans` in `global.css` |
-| 8 | **Legal review** of the three legal pages | `src/pages/privacy|terms|accessibility.astro` |
-| 9 | Payment terms | `terms.astro` |
-| 10 | `ProfessionalService` schema once there's a real address | `Base.astro` |
+Everything below is tracked as `TODO(launch)` in code. The three marked
+**BLOCKS LAUNCH** must be done; the rest can follow the site going live.
 
-Everything unfinished is marked `TODO(launch)` in code and rendered in redline on
-the page, so nothing ships by accident.
+| # | Item | Where | Status |
+| --- | --- | --- | --- |
+| 1 | **Domain** — replace `jpsilvadigital.com` | `astro.config.mjs` (`SITE`), `public/robots.txt` | **BLOCKS LAUNCH** |
+| 2 | **Inquiry endpoint** — otherwise the forms hand off to email instead of sending | `PUBLIC_INQUIRY_ENDPOINT` (see below) | **BLOCKS LAUNCH** |
+| 3 | **Email address** — a real inbox | `EMAIL` in `src/data/site.ts` | **BLOCKS LAUNCH** |
+| 4 | **Founder photograph** | see below | After launch |
+| 5 | **Phone number** — a human answers it | `PHONE` in `src/data/site.ts` (`null` renders nothing) | After launch |
+| 6 | **Legal entity name + state** | `LEGAL_ENTITY` in `src/data/site.ts` | After launch |
+| 7 | **Social profiles** — real URLs only | `SOCIALS` in `src/data/site.ts` (empty renders no row) | After launch |
+| 8 | **Analytics IDs** | `PUBLIC_GA_ID`, `PUBLIC_GOOGLE_ADS_ID`, `PUBLIC_META_PIXEL_ID` | After launch |
+| 9 | **Legal review** of the three legal pages | `src/pages/privacy\|terms\|accessibility.astro` | After launch |
+| 10 | `ProfessionalService` schema once there is a real address | `src/layouts/Base.astro` | Optional |
 
-### The form endpoint
+Nothing in `src/data/site.ts` may be invented. A fact JP has not confirmed stays
+`null`, and every template checks for null rather than printing a placeholder
+that looks real.
 
-`submit()` currently validates and shows the plan without transmitting. The
-payload shape is already CRM-ready. To wire it up, add `output: 'server'` for a
-single route and POST to `/api/inquiry`, which should:
+## Environment variables
+
+All are optional at build time and all are `PUBLIC_`, meaning they ship to the
+browser. **Never put a private API key in one.**
+
+```bash
+PUBLIC_INQUIRY_ENDPOINT=https://…   # where the forms POST. Unset = email handoff.
+PUBLIC_GA_ID=G-XXXXXXXXXX           # Google Analytics 4
+PUBLIC_GOOGLE_ADS_ID=AW-XXXXXXXXX   # Google Ads conversions
+PUBLIC_META_PIXEL_ID=XXXXXXXXXXXX   # Meta Pixel
+```
+
+With none set the site ships zero tracking bytes and sets no cookies, which is
+the correct state until the accounts exist.
+
+## The inquiry system
+
+There is exactly one submission path: `src/lib/inquiry.ts`. The contact form
+(`InquiryForm.astro`) and the planner's final step both call `sendInquiry()`.
+Neither owns its own endpoint or its own idea of what "sent" means.
+
+**The rule that governs it:** a form may never claim to have sent something it
+did not send. With no endpoint configured, both surfaces show an email handoff
+with every answer pre-filled — not a success message. This is deliberate and
+must survive any future change.
+
+To wire it up, set `PUBLIC_INQUIRY_ENDPOINT` to anything that accepts a JSON
+POST: Formspree, Web3Forms, Basin, Netlify Forms, or a Cloudflare Worker.
+A honeypot field (`trap`) is submitted-but-ignored; reject any payload where it
+is non-empty.
+
+If you later build a real server route, point the variable at `/api/inquiry` and
+implement this checklist, in this order:
 
 1. reject bodies over ~32 KB before parsing
 2. check `Origin` / `Sec-Fetch-Site`
@@ -108,6 +143,47 @@ single route and POST to `/api/inquiry`, which should:
 Set `Reply-To` to the prospect so replying is one keystroke, and send an
 autoresponse restating the one-business-day SLA. That autoresponse is the most
 neglected conversion surface in the whole pipeline.
+
+## Founder photograph
+
+The slot is built to final spec and currently holds a clearly marked
+placeholder (`public/media/founder-placeholder.svg`). It is a marked empty
+frame — never a stock model, never a generated face.
+
+To swap in the real photo:
+
+1. Save it as `public/media/jp-silva.jpg`. Portrait, at least 800×1000, with
+   headroom — both crops centre on roughly 22% from the top.
+2. In `src/data/site.ts`, set `FOUNDER_PHOTO.src` to `/media/jp-silva.jpg` and
+   `isReal: true`. That one flag also removes the "photo pending" captions.
+3. Check both crops: the homepage (`Founder.astro`, 4:5 desktop / 1:1 mobile)
+   and `/about` (same ratios, different column width).
+
+## Content
+
+`src/data/` holds everything the pages read from, so content never has to be
+hunted through templates:
+
+- `site.ts` — business facts. The only file with `null`s that gate rendering.
+- `services.ts` — the three pillars. Drives `/services`, the three detail
+  routes, the homepage overview and the inquiry form's options.
+- `projects.ts` — real work only. `outcome` describes what was built;
+  `results` stays `null` until a client supplies and approves a real figure.
+  No invented businesses, no percentages.
+
+Blog posts are Markdown in `src/content/blog/`, typed by `src/content.config.ts`.
+Adding a post is adding a file. A missing description or malformed date fails
+the build rather than shipping an empty `<meta>`.
+
+## Deployment
+
+Static output — `npm run build` writes `dist/`, which any static host serves.
+
+One host setting matters: `build.format` is `'file'`, so routes are emitted as
+`services.html` beside a `services/` directory. Hosts that resolve
+extensionless URLs to `.html` (Cloudflare Pages, Netlify, Vercel) serve `/services`
+correctly with no configuration. On a bare nginx/S3 setup, enable that resolution
+or switch `format` to `'directory'` in `astro.config.mjs`.
 
 ## Motion
 

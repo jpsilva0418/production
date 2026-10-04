@@ -1,0 +1,131 @@
+---
+import Base from '../../layouts/Base.astro';
+import { PROJECTS, STATUS_LABEL } from '../../data/projects';
+import { SITE_NAME } from '../../data/site';
+
+/* Three real projects. A small honest portfolio beats a padded one, and the
+   label under each card says exactly what the project's status is. The
+   original site's rule stands: labels only ever upgrade, and nothing here
+   claims a client it does not have. */
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: `Work — ${SITE_NAME}`,
+  url: new URL('/work', Astro.site).href,
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: PROJECTS.map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: p.name,
+      url: new URL(`/work/${p.slug}`, Astro.site).href,
+    })),
+  },
+};
+---
+<Base
+  title={`Work | ${SITE_NAME}`}
+  description="Selected projects by JP Silva — a bridal makeup studio, a family cleaning company, and a personal finance app, each designed and built end to end."
+  schema={schema}
+>
+  <section class="section">
+    <div class="container">
+      <p><span class="mark"><b>§01</b> Work</span></p>
+      <div class="head">
+        <h1 class="display">Real projects, honestly labelled</h1>
+        <p class="lead">
+          Three projects, each built end to end. The studio is young, so this is a short list
+          rather than a padded one &mdash; and every label under a card is the literal truth about
+          where that project stands.
+        </p>
+      </div>
+
+      <ul class="wk">
+        {PROJECTS.map((p, i) => (
+          <li class="wk__i" data-anim="card" style={`--d:${i * 90}ms`}>
+            <a class="wk__a" href={`/work/${p.slug}`} data-track="project_view" data-track-label={p.slug}>
+              <span class="wk__media" style={`background:${p.tint}`}>
+                <img src={p.image} alt={p.imageAlt} width="512" height="1000" loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
+              </span>
+              <span class="wk__body">
+                <span class={`wk__tag ${p.status === 'development' ? 'wk__tag--dev' : ''}`}>{STATUS_LABEL[p.status]}</span>
+                <span class="wk__cat">{p.category}</span>
+                <h2 class="h2 wk__n">{p.name}</h2>
+                <span class="lead wk__s">{p.summary}</span>
+                <span class="wk__svc">
+                  {p.services.map((s) => <span class="wk__chip">{s}</span>)}
+                </span>
+                <span class="tlink wk__go">View project <span aria-hidden="true">&rarr;</span></span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--panel">
+    <div class="container">
+      <div class="note wk__note">
+        <span class="lbl">About these labels</span>
+        <p class="small">
+          <b>In service</b> means the site is live and doing its job for a real business.
+          <b>In development</b> means it is built but not yet public. There are no invented
+          clients on this page, no borrowed logos, and no percentages &mdash; if a project ever
+          carries a number, it will be one the client measured and agreed to publish.
+        </p>
+      </div>
+
+      <div class="btn-row wk__cta">
+        <a class="btn btn--primary" href="/#planner" data-track="demo_start" data-track-label="work">Get your free demo</a>
+        <a class="btn btn--ghost" href="/contact">Start a project</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .wk { display: grid; gap: var(--s7); }
+  .wk__a {
+    display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(var(--s5), 4vw, var(--s7)); align-items: center;
+    text-decoration: none; color: inherit;
+    border-radius: var(--r);
+  }
+  /* alternate sides so a three-item list does not read as a form */
+  .wk__i:nth-child(even) .wk__a { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .wk__i:nth-child(even) .wk__media { order: 2; }
+  @media (max-width: 56rem) {
+    .wk__a, .wk__i:nth-child(even) .wk__a { grid-template-columns: 1fr; gap: var(--s5); }
+    .wk__i:nth-child(even) .wk__media { order: 0; }
+  }
+
+  .wk__media {
+    display: block; border-radius: var(--r); overflow: hidden;
+    border: 1px solid var(--rule); box-shadow: var(--shadow);
+    transition: transform .3s var(--pop), box-shadow .3s var(--ease);
+  }
+  .wk__media img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: top center; }
+  .wk__a:hover .wk__media { transform: translateY(-4px); box-shadow: var(--shadow-up); }
+
+  .wk__body { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s3); }
+  .wk__tag {
+    font-family: var(--mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase;
+    padding: .35rem .55rem; border-radius: 6px;
+    background: var(--green-soft); color: var(--green-t); border: 1px solid var(--green-bd);
+  }
+  .wk__tag--dev { background: var(--amber-soft); color: var(--amber-t); border-color: var(--amber-bd); }
+  .wk__cat { font-family: var(--mono); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--graphite); }
+  .wk__n { margin-top: calc(var(--s2) * -1); }
+  .wk__s { font-size: var(--fs-body); }
+  .wk__svc { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .wk__chip {
+    font-size: .78rem; color: var(--graphite);
+    background: var(--panel); border: 1px solid var(--rule); border-radius: 999px; padding: .3rem .65rem;
+  }
+  .wk__go { margin-top: var(--s2); }
+
+  .wk__note { max-width: 52rem; }
+  .wk__note b { color: var(--ink); }
+  .wk__cta { margin-top: var(--s6); }
+</style>

@@ -1,0 +1,47 @@
+---
+/* The only place a tracking script may be added. Renders nothing at all when
+   no IDs are configured, so the default build ships zero tracking bytes and
+   sets no cookies. See src/lib/analytics.ts for the variables. */
+import { GA_ID, ADS_ID, PIXEL_ID, hasAnalytics } from '../lib/analytics';
+const gtagId = GA_ID || ADS_ID;
+---
+{hasAnalytics && (
+  <>
+    {gtagId && (
+      <>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${gtagId}`}></script>
+        <script is:inline define:vars={{ GA_ID, ADS_ID }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag() { window.dataLayer.push(arguments); }
+          window.gtag = gtag;
+          gtag('js', new Date());
+          if (GA_ID) gtag('config', GA_ID);
+          if (ADS_ID) gtag('config', ADS_ID);
+        </script>
+      </>
+    )}
+
+    {PIXEL_ID && (
+      <script is:inline define:vars={{ PIXEL_ID }}>
+        !function (f, b, e, v, n, t, s) {
+          if (f.fbq) return; n = f.fbq = function () {
+            n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+          };
+          if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = [];
+          t = b.createElement(e); t.async = !0; t.src = v;
+          s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+        }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', PIXEL_ID);
+        fbq('track', 'PageView');
+      </script>
+    )}
+  </>
+)}
+
+<script>
+  /* Delegated click tracking for [data-track] elements. Loads either way:
+     with no tags configured every call is a no-op, which keeps the markup
+     identical between a tracked and an untracked build. */
+  import { bindDelegatedTracking } from '../lib/analytics';
+  bindDelegatedTracking();
+</script>

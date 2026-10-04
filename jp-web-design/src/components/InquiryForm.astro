@@ -1,0 +1,284 @@
+---
+/* ==========================================================================
+   INQUIRY FORM — the canonical form. Used on /contact and nowhere else.
+
+   Deliberately NOT a React island. The planner already costs ~70KB of React
+   and only loads when it scrolls into view; putting a second island on
+   /contact would put that cost on a page that needs eight inputs and a
+   fetch. This is ~1.5KB of vanilla script against the same transport.
+
+   States: idle → sending → sent | error | unconfigured. The success state is
+   only ever reached by a real 2xx from the endpoint (see lib/inquiry.ts).
+   With no endpoint configured the form does not pretend: it hands over to
+   email with every answer pre-filled.
+   ========================================================================== */
+import { NEED_OPTIONS } from '../data/services';
+import { EMAIL, REPLY_SLA } from '../data/site';
+
+export interface Props {
+  /** Pre-selects "What do you need?" from a service page CTA. */
+  need?: string;
+  id?: string;
+}
+const { need = '', id = 'inquiry' } = Astro.props;
+
+const budgets = ['Not sure yet', 'Under $2,000', '$2,000 – $5,000', '$5,000 – $10,000', 'Over $10,000'];
+const timelines = ['As soon as possible', 'Within a month', '1–3 months', 'Just planning ahead'];
+---
+
+<form class="iq" id={id} novalidate data-inquiry data-need={need}>
+  <div class="iq__grid">
+    <p class="iq__field">
+      <label for={`${id}-name`}>Name <span aria-hidden="true">*</span><span class="vh">(required)</span></label>
+      <input id={`${id}-name`} name="name" type="text" autocomplete="name" required />
+      <span class="iq__err" id={`${id}-name-e`} hidden></span>
+    </p>
+
+    <p class="iq__field">
+      <label for={`${id}-email`}>Email <span aria-hidden="true">*</span><span class="vh">(required)</span></label>
+      <input id={`${id}-email`} name="email" type="email" autocomplete="email" inputmode="email" required />
+      <span class="iq__err" id={`${id}-email-e`} hidden></span>
+    </p>
+
+    <p class="iq__field">
+      <label for={`${id}-company`}>Business name</label>
+      <input id={`${id}-company`} name="company" type="text" autocomplete="organization" />
+    </p>
+
+    <p class="iq__field">
+      <label for={`${id}-phone`}>Phone <span class="iq__opt">optional</span></label>
+      <input id={`${id}-phone`} name="phone" type="tel" autocomplete="tel" inputmode="tel" />
+    </p>
+
+    <p class="iq__field iq__field--full">
+      <label for={`${id}-website`}>Current website <span class="iq__opt">optional</span></label>
+      <input id={`${id}-website`} name="website" type="url" inputmode="url" placeholder="yourbusiness.com" />
+    </p>
+
+    <p class="iq__field iq__field--full">
+      <label for={`${id}-need`}>What do you need? <span aria-hidden="true">*</span><span class="vh">(required)</span></label>
+      <select id={`${id}-need`} name="need" required>
+        <option value="">Choose one</option>
+        {NEED_OPTIONS.map((o) => <option value={o} selected={o === need}>{o}</option>)}
+      </select>
+      <span class="iq__err" id={`${id}-need-e`} hidden></span>
+    </p>
+
+    <p class="iq__field">
+      <label for={`${id}-budget`}>Budget <span class="iq__opt">optional</span></label>
+      <select id={`${id}-budget`} name="budget">
+        <option value="">Prefer not to say</option>
+        {budgets.map((b) => <option value={b}>{b}</option>)}
+      </select>
+    </p>
+
+    <p class="iq__field">
+      <label for={`${id}-timeline`}>Timeline <span class="iq__opt">optional</span></label>
+      <select id={`${id}-timeline`} name="timeline">
+        <option value="">Not decided</option>
+        {timelines.map((t) => <option value={t}>{t}</option>)}
+      </select>
+    </p>
+
+    <p class="iq__field iq__field--full">
+      <label for={`${id}-message`}>Tell me about the project <span aria-hidden="true">*</span><span class="vh">(required)</span></label>
+      <textarea id={`${id}-message`} name="message" rows="5" required
+                placeholder="What the business does, what is not working, and what you want to happen."></textarea>
+      <span class="iq__err" id={`${id}-message-e`} hidden></span>
+    </p>
+  </div>
+
+  {/* Honeypot. Hidden from people and assistive tech; only bots fill it. */}
+  <p class="iq__trap" aria-hidden="true">
+    <label for={`${id}-fax`}>Fax number</label>
+    <input id={`${id}-fax`} name="trap" type="text" tabindex="-1" autocomplete="off" />
+  </p>
+
+  <div class="iq__foot">
+    <button class="btn btn--primary" type="submit" data-submit>
+      <span data-label>Send my inquiry</span>
+      <span class="iq__spin" data-spin hidden aria-hidden="true"></span>
+    </button>
+    <p class="small iq__sla">No obligation. I reply within {REPLY_SLA}.</p>
+  </div>
+
+  {/* Single live region for every outcome. Never pre-filled with success. */}
+  <div class="iq__out" data-out role="status" aria-live="polite" hidden></div>
+</form>
+
+<style>
+  .iq { max-width: 44rem; }
+  .iq__grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4) var(--s5); }
+  @media (max-width: 40rem) { .iq__grid { grid-template-columns: 1fr; } }
+  .iq__field { display: flex; flex-direction: column; gap: .4rem; min-width: 0; }
+  .iq__field--full { grid-column: 1 / -1; }
+  .iq__field label { font-weight: 700; font-size: var(--fs-small); }
+  .iq__field label span[aria-hidden] { color: var(--redline); }
+  .iq__opt { font-weight: 500; color: var(--graphite); font-size: .85em; }
+
+  .iq input, .iq select, .iq textarea {
+    width: 100%; padding: .8rem .9rem;
+    background: var(--card); border: 1px solid var(--rule-hi); border-radius: 12px;
+    font-size: 1rem; /* 16px — stops iOS zooming the page on focus */
+    transition: border-color .18s var(--ease), box-shadow .18s var(--ease);
+  }
+  .iq textarea { resize: vertical; min-height: 7.5rem; }
+  .iq input:hover, .iq select:hover, .iq textarea:hover { border-color: var(--graphite); }
+  .iq input:focus, .iq select:focus, .iq textarea:focus {
+    border-color: var(--redline); box-shadow: 0 0 0 3px var(--blue-soft); outline: none;
+  }
+  .iq [aria-invalid="true"] { border-color: var(--red-t); }
+  .iq [aria-invalid="true"]:focus { box-shadow: 0 0 0 3px var(--red-soft); }
+  .iq__err { color: var(--red-t); font-size: var(--fs-small); font-weight: 600; }
+
+  /* Off-screen rather than display:none — some bots skip hidden inputs. */
+  .iq__trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+  .iq__foot { display: flex; align-items: center; gap: var(--s5); flex-wrap: wrap; margin-top: var(--s6); }
+  .iq__sla { margin: 0; }
+  .iq [data-submit][disabled] { opacity: .75; cursor: progress; }
+  .iq__spin {
+    width: 1rem; height: 1rem; border-radius: 50%; flex: none;
+    border: 2px solid rgba(255, 255, 255, .45); border-top-color: #fff;
+    animation: iqspin .7s linear infinite;
+  }
+  @keyframes iqspin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .iq__spin { animation-duration: 2s; } }
+
+  .iq__out { margin-top: var(--s5); padding: var(--s5); border-radius: 14px; border: 1px solid var(--rule); background: var(--card); }
+  .iq__out h3 { font-size: var(--fs-h3); font-weight: 800; letter-spacing: -.015em; margin-bottom: var(--s2); }
+  .iq__out p { color: var(--graphite); font-size: var(--fs-small); }
+  .iq__out p + .btn, .iq__out p + p { margin-top: var(--s4); }
+  .iq__out--ok { border-left: 3px solid var(--green-t); }
+  .iq__out--ok h3 { color: var(--green-t); }
+  .iq__out--warn { border-left: 3px solid var(--amber-t); }
+  .iq__out--warn h3 { color: var(--amber-t); }
+</style>
+
+<script>
+  import { sendInquiry, mailtoFor, isConfigured, type Inquiry } from '../lib/inquiry';
+  import { track, EVENTS } from '../lib/analytics';
+  import { EMAIL, REPLY_SLA, DEMO_TURNAROUND } from '../data/site';
+
+  const form = document.querySelector<HTMLFormElement>('[data-inquiry]');
+  if (form) {
+    const out = form.querySelector<HTMLElement>('[data-out]')!;
+    const btn = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+    const spin = form.querySelector<HTMLElement>('[data-spin]')!;
+    const label = form.querySelector<HTMLElement>('[data-label]')!;
+
+    const field = (n: string) => form.elements.namedItem(n) as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null;
+
+    const setError = (n: string, msg: string | null) => {
+      const el = field(n);
+      const box = document.getElementById(`${form.id}-${n}-e`);
+      if (!el || !box) return;
+      el.setAttribute('aria-invalid', msg ? 'true' : 'false');
+      if (msg) { el.setAttribute('aria-describedby', box.id); box.textContent = msg; box.hidden = false; }
+      else { el.removeAttribute('aria-describedby'); box.hidden = true; }
+    };
+
+    const validate = () => {
+      const errs: Record<string, string> = {};
+      const name = field('name')!.value.trim();
+      const email = field('email')!.value.trim();
+      const need = field('need')!.value;
+      const message = field('message')!.value.trim();
+      if (!name) errs.name = 'Enter your name so I know who I am replying to.';
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) errs.email = 'Enter an email address — it needs an @ and a domain.';
+      if (!need) errs.need = 'Pick the closest option. “Not sure yet” is a real answer.';
+      if (message.length < 10) errs.message = 'A sentence or two is enough, but I need something to reply to.';
+      ['name', 'email', 'need', 'message'].forEach((n) => setError(n, errs[n] ?? null));
+      return errs;
+    };
+
+    const collect = (): Inquiry => ({
+      source: 'contact',
+      name: field('name')!.value.trim(),
+      email: field('email')!.value.trim(),
+      phone: field('phone')!.value.trim() || undefined,
+      company: field('company')!.value.trim() || undefined,
+      website: field('website')!.value.trim() || undefined,
+      need: field('need')!.value || undefined,
+      budget: field('budget')!.value || undefined,
+      timeline: field('timeline')!.value || undefined,
+      message: field('message')!.value.trim(),
+      trap: (field('trap') as HTMLInputElement)?.value || undefined,
+    });
+
+    const show = (cls: string, html: string) => {
+      out.className = `iq__out ${cls}`;
+      out.innerHTML = html;
+      out.hidden = false;
+    };
+
+    const busy = (on: boolean) => {
+      btn.disabled = on;
+      spin.hidden = !on;
+      label.textContent = on ? 'Sending…' : 'Send my inquiry';
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errs = validate();
+      if (Object.keys(errs).length) {
+        const first = field(Object.keys(errs)[0]);
+        first?.focus();
+        show('iq__out--warn', `<h3>Check a couple of fields</h3><p>The highlighted fields need an answer before this can send.</p>`);
+        return;
+      }
+
+      const data = collect();
+      busy(true);
+      const res = await sendInquiry(data);
+      busy(false);
+
+      /* A bot that filled the honeypot gets the same screen as a person, and
+         nothing is transmitted. */
+      if (res.ok || (!res.ok && res.reason === 'spam')) {
+        if (res.ok) {
+          track(EVENTS.inquiry, { need: data.need });
+          if (data.need) track(EVENTS.serviceInquiry, { label: data.need });
+        }
+        form.querySelector<HTMLElement>('.iq__grid')!.hidden = true;
+        form.querySelector<HTMLElement>('.iq__foot')!.hidden = true;
+        show('iq__out--ok',
+          `<h3>Got it — thank you.</h3>
+           <p>Your inquiry reached me. I reply within ${REPLY_SLA}, and if you asked for the free
+              homepage demo it usually follows within ${DEMO_TURNAROUND}. Nothing is owed either way.</p>`);
+        out.focus?.();
+        return;
+      }
+
+      /* Everything below is a failure, and says so. No success is shown. */
+      const href = mailtoFor(data, EMAIL);
+      if (res.reason === 'unconfigured') {
+        show('iq__out--warn',
+          `<h3>Send this by email instead</h3>
+           <p>The form’s delivery address is not connected yet, so I am not going to pretend this
+              was sent. Everything you typed is already in the email below — press send and it
+              reaches me exactly the same way.</p>
+           <a class="btn btn--primary" href="${href}">Open the email, pre-filled</a>
+           <p>Or write to <strong>${EMAIL}</strong> directly.</p>`);
+      } else {
+        show('iq__out--warn',
+          `<h3>That did not send</h3>
+           <p>Something went wrong on the way${res.reason === 'network' ? ' — it looks like a connection problem' : ''}.
+              Your answers are still in the form, so you can try again. If it keeps failing, the
+              email below carries the same details.</p>
+           <a class="btn btn--ghost" href="${href}">Send it by email instead</a>`);
+      }
+    });
+
+    /* Clear an error as soon as the field is corrected. */
+    ['name', 'email', 'need', 'message'].forEach((n) => {
+      field(n)?.addEventListener('input', () => {
+        if (field(n)?.getAttribute('aria-invalid') === 'true') setError(n, null);
+      });
+    });
+
+    if (!isConfigured) {
+      console.info('[inquiry] PUBLIC_INQUIRY_ENDPOINT is not set — the form will hand off to email.');
+    }
+  }
+</script>

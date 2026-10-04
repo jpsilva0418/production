@@ -1,0 +1,195 @@
+---
+import Base from '../../layouts/Base.astro';
+import { PROJECTS, STATUS_LABEL } from '../../data/projects';
+import { SITE_NAME } from '../../data/site';
+
+export function getStaticPaths() {
+  return PROJECTS.map((p) => ({ params: { slug: p.slug }, props: { project: p } }));
+}
+const { project: p } = Astro.props;
+const others = PROJECTS.filter((x) => x.slug !== p.slug);
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: p.name,
+  about: p.category,
+  description: p.summary,
+  url: new URL(`/work/${p.slug}`, Astro.site).href,
+  creator: { '@type': 'Organization', name: SITE_NAME, '@id': `${Astro.site}#org` },
+};
+---
+<Base title={`${p.name} | Work | ${SITE_NAME}`} description={p.summary} schema={schema}>
+  <section class="section">
+    <div class="container">
+      <nav class="crumb" aria-label="Breadcrumb">
+        <a href="/work">Work</a> <span aria-hidden="true">/</span> <span>{p.name}</span>
+      </nav>
+
+      <div class="pj__top">
+        <div class="pj__intro">
+          <span class={`pj__tag ${p.status === 'development' ? 'pj__tag--dev' : ''}`}>{STATUS_LABEL[p.status]}</span>
+          <h1 class="display pj__h">{p.name}</h1>
+          <p class="lead">{p.summary}</p>
+
+          <dl class="pj__meta">
+            <div><dt>Category</dt><dd>{p.category}</dd></div>
+            <div><dt>Services</dt><dd>{p.services.join(', ')}</dd></div>
+            <div>
+              <dt>Status</dt>
+              <dd>{p.url
+                ? <a class="tlink" href={p.url} rel="noopener" target="_blank">Visit the live site <span aria-hidden="true">&nearr;</span></a>
+                : 'In development — not yet public'}</dd>
+            </div>
+          </dl>
+        </div>
+
+        <figure class="pj__media" style={`background:${p.tint}`}>
+          {p.clip ? (
+            <video
+              class="pj__v" poster={p.image} muted playsinline loop preload="none"
+              aria-label={`Screen recording of ${p.name}`} data-clip
+            >
+              <source src={`${p.clip}.webm`} type="video/webm" />
+              <source src={`${p.clip}.mp4`} type="video/mp4" />
+            </video>
+          ) : (
+            <img src={p.image} alt={p.imageAlt} width="512" height="1000" loading="lazy" decoding="async" />
+          )}
+          <figcaption class="pj__cap">{p.imageAlt}</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--panel" aria-labelledby="ov-h">
+    <div class="container pj__cols">
+      <div>
+        <p><span class="mark"><b>§01</b> Overview</span></p>
+        <h2 class="h2" id="ov-h">What it is</h2>
+        <p class="body pj__p">{p.overview}</p>
+      </div>
+      <div>
+        <p><span class="mark mark--red"><b>§02</b> The challenge</span></p>
+        <h2 class="h2">What makes it hard</h2>
+        <p class="body pj__p">{p.challenge}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="work-h">
+    <div class="container">
+      <p><span class="mark mark--green"><b>§03</b> The work</span></p>
+      <h2 class="h2 pj__sh" id="work-h">What I built</h2>
+      <ol class="rows">
+        {p.work.map((w, i) => (
+          <li class="row">
+            <span class="row__n">{String(i + 1).padStart(2, '0')}</span>
+            <div class="row__b"><p>{w}</p></div>
+          </li>
+        ))}
+      </ol>
+
+      <div class="note pj__out">
+        <span class="lbl">Outcome</span>
+        <p class="small">{p.outcome}</p>
+      </div>
+
+      {p.results ? (
+        <div class="grid g3 pj__res">
+          {p.results.map((r) => (
+            <div class="card">
+              <span class="pj__rv">{r.value}</span>
+              <span class="card__t">{r.label}</span>
+              <span class="card__x">Source: {r.source}</span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p class="small pj__nores">
+          No performance figures are published for this project. I only put a number on a page
+          when the client has measured it and agreed to it being shown.
+        </p>
+      )}
+    </div>
+  </section>
+
+  <section class="section section--panel" aria-labelledby="next-h">
+    <div class="container">
+      <h2 class="h3 pj__sh" id="next-h">More work</h2>
+      <div class="grid g2">
+        {others.map((o) => (
+          <a class="card pj__other" href={`/work/${o.slug}`} data-track="project_view" data-track-label={o.slug}>
+            <img src={o.image} alt="" width="512" height="1000" loading="lazy" decoding="async" style={`background:${o.tint}`} />
+            <h3 class="card__t">{o.name}</h3>
+            <p class="card__x">{o.category}</p>
+          </a>
+        ))}
+      </div>
+
+      <div class="btn-row pj__cta">
+        <a class="btn btn--primary" href="/#planner" data-track="demo_start" data-track-label={p.slug}>Get your free demo</a>
+        <a class="btn btn--ghost" href="/contact">Start a project</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .crumb { font-size: var(--fs-small); color: var(--graphite); margin-bottom: var(--s5); }
+  .crumb a { color: var(--redline); font-weight: 700; text-decoration: none; }
+  .crumb span[aria-hidden] { margin-inline: .35rem; }
+
+  .pj__top { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: clamp(var(--s6), 5vw, var(--s8)); align-items: center; }
+  @media (max-width: 56rem) { .pj__top { grid-template-columns: 1fr; } }
+  .pj__intro { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s4); }
+  .pj__h { margin-top: calc(var(--s2) * -1); }
+  .pj__tag {
+    font-family: var(--mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase;
+    padding: .35rem .55rem; border-radius: 6px;
+    background: var(--green-soft); color: var(--green-t); border: 1px solid var(--green-bd);
+  }
+  .pj__tag--dev { background: var(--amber-soft); color: var(--amber-t); border-color: var(--amber-bd); }
+
+  .pj__meta { display: grid; gap: var(--s3); margin-top: var(--s3); padding-top: var(--s4); border-top: 1px solid var(--rule); width: 100%; }
+  .pj__meta > div { display: grid; grid-template-columns: 7rem 1fr; gap: var(--s4); align-items: baseline; }
+  @media (max-width: 30rem) { .pj__meta > div { grid-template-columns: 1fr; gap: .2rem; } }
+  .pj__meta dt { font-family: var(--mono); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--graphite); }
+  .pj__meta dd { font-size: var(--fs-small); }
+
+  .pj__media { margin: 0; border-radius: var(--r); overflow: hidden; border: 1px solid var(--rule); box-shadow: var(--shadow-up); }
+  .pj__media img, .pj__v { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: top center; display: block; }
+  .pj__cap { padding: var(--s3) var(--s4); font-size: .8rem; color: var(--graphite); background: var(--card); border-top: 1px solid var(--rule); }
+
+  .pj__cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(var(--s6), 5vw, var(--s8)); align-items: start; }
+  @media (max-width: 56rem) { .pj__cols { grid-template-columns: 1fr; } }
+  .pj__p { margin-top: var(--s2); }
+
+  .pj__sh { margin-bottom: var(--s6); }
+  .pj__out { margin-top: var(--s6); max-width: 52rem; }
+  .pj__nores { margin-top: var(--s5); max-width: var(--measure); }
+  .pj__res { margin-top: var(--s6); }
+  .pj__rv { font-size: 2rem; font-weight: 800; letter-spacing: -.03em; color: var(--redline); font-variant-numeric: tabular-nums; }
+
+  .pj__other { text-decoration: none; padding: 0; overflow: hidden; }
+  .pj__other img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; }
+  .pj__other .card__t { margin-top: var(--s4); }
+  .pj__other .card__t, .pj__other .card__x { padding-inline: var(--s5); }
+  .pj__other .card__x { padding-bottom: var(--s5); }
+  .pj__cta { margin-top: var(--s7); }
+</style>
+
+<script>
+  /* The clip is decoration for a page whose content is already complete, so
+     it loads only when it reaches the viewport and stops when it leaves.
+     Reduced motion gets the poster frame and nothing else. */
+  const v = document.querySelector<HTMLVideoElement>('[data-clip]');
+  if (v && !matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) { v.preload = 'auto'; v.play().catch(() => {}); }
+        else v.pause();
+      }
+    }, { threshold: 0.3 }).observe(v);
+  }
+</script>

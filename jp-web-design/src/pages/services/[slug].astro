@@ -1,0 +1,196 @@
+---
+import Base from '../../layouts/Base.astro';
+import InquiryForm from '../../components/InquiryForm.astro';
+import { SERVICES } from '../../data/services';
+import { PROJECTS } from '../../data/projects';
+import { SITE_NAME, SERVICE_AREA } from '../../data/site';
+
+/* Detail routes exist only because each pillar has genuinely different
+   content — what is included, what it will not promise, and how the work
+   runs. They are not three copies of the services page with a word swapped.
+   Services stays the single nav item; these sit beneath it. */
+export function getStaticPaths() {
+  return SERVICES.map((s) => ({ params: { slug: s.slug }, props: { service: s } }));
+}
+
+const { service } = Astro.props;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: service.name,
+  serviceType: service.name,
+  provider: { '@type': 'Organization', name: SITE_NAME, '@id': `${Astro.site}#org` },
+  areaServed: { '@type': 'Country', name: 'United States' },
+  url: new URL(`/services/${service.slug}`, Astro.site).href,
+  description: service.blurb,
+};
+
+/* Only show related work where the project genuinely used this service. */
+const related = PROJECTS.filter((p) =>
+  p.services.some((x) => {
+    const t = x.toLowerCase();
+    if (service.slug === 'web-development') return t.includes('web') || t.includes('design') || t.includes('development');
+    if (service.slug === 'google-ads') return t.includes('google') || t.includes('seo');
+    return t.includes('meta') || t.includes('social');
+  }),
+);
+
+const others = SERVICES.filter((s) => s.slug !== service.slug);
+---
+<Base
+  title={`${service.name} | ${SITE_NAME}`}
+  description={service.blurb}
+  schema={schema}
+>
+  <section class="section">
+    <div class="container">
+      <nav class="crumb" aria-label="Breadcrumb">
+        <a href="/services">Services</a> <span aria-hidden="true">/</span> <span>{service.name}</span>
+      </nav>
+
+      <div class="head sd__head">
+        <h1 class="display">{service.name}</h1>
+        <p class="lead">{service.problem}</p>
+      </div>
+
+      <p class="body sd__intro">{service.intro}</p>
+    </div>
+  </section>
+
+  <section class="section section--panel" aria-labelledby="inc-h">
+    <div class="container sd__cols">
+      <div>
+        <p><span class="mark"><b>§01</b> What&rsquo;s included</span></p>
+        <h2 class="h2" id="inc-h">The work itself</h2>
+        <ul class="sd__inc">
+          {service.includes.map((x) => (
+            <li>
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5 8.5 15 16 5.5"/></svg>
+              <span>{x}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <aside class="sd__limits" aria-labelledby="lim-h">
+        <h2 class="h3" id="lim-h">What I won&rsquo;t promise</h2>
+        <ul>
+          {service.limits.map((x) => <li>{x}</li>)}
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="how-h">
+    <div class="container">
+      <p><span class="mark mark--green"><b>§02</b> How it runs</span></p>
+      <h2 class="h2 sd__h" id="how-h">From first call to live</h2>
+      <ol class="rows sd__steps">
+        {service.steps.map((s, i) => (
+          <li class="row">
+            <span class="row__n">{String(i + 1).padStart(2, '0')}</span>
+            <div class="row__b">
+              <h3 class="h3">{s.t}</h3>
+              <p class="small">{s.d}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {related.length > 0 && (
+    <section class="section section--panel" aria-labelledby="rel-h">
+      <div class="container">
+        <p><span class="mark"><b>§03</b> Related work</span></p>
+        <h2 class="h2 sd__h" id="rel-h">Where this has been built</h2>
+        <div class="grid g3">
+          {related.map((p) => (
+            <a class="card sd__proj" href={`/work/${p.slug}`} data-track="project_view" data-track-label={p.slug}>
+              <img src={p.image} alt="" width="512" height="1000" loading="lazy" decoding="async" style={`background:${p.tint}`} />
+              <h3 class="card__t">{p.name}</h3>
+              <p class="card__x">{p.category}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="section" aria-labelledby="sd-cta">
+    <div class="container sd__cta">
+      <div class="head">
+        <p><span class="mark"><b>§</b> Start here</span></p>
+        <h2 class="h2" id="sd-cta">Tell me what you need</h2>
+        <p class="lead">
+          {service.slug === 'web-development'
+            ? 'The free homepage demo is the fastest way to see what I would do with your site — a real concept for your business, before you pay anything.'
+            : `The first conversation is free and there is no obligation. ${SERVICE_AREA}.`}
+        </p>
+      </div>
+
+      {service.slug === 'web-development' && (
+        <div class="btn-row sd__demo">
+          <a class="btn btn--primary" href="/#planner" data-track="demo_start" data-track-label={service.slug}>Get your free demo</a>
+          <span class="small">Or use the form below.</span>
+        </div>
+      )}
+
+      <InquiryForm need={service.needValue} />
+    </div>
+  </section>
+
+  <section class="section section--panel" aria-labelledby="oth-h">
+    <div class="container">
+      <h2 class="h3 sd__h" id="oth-h">Other services</h2>
+      <div class="grid g2">
+        {others.map((s) => (
+          <a class="card sd__other" href={`/services/${s.slug}`}>
+            <h3 class="card__t">{s.name}</h3>
+            <p class="card__x">{s.blurb}</p>
+            <span class="tlink">What this involves <span aria-hidden="true">&rarr;</span></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .crumb { font-size: var(--fs-small); color: var(--graphite); margin-bottom: var(--s5); }
+  .crumb a { color: var(--redline); font-weight: 700; text-decoration: none; }
+  .crumb span[aria-hidden] { margin-inline: .35rem; }
+
+  .sd__head { margin-bottom: var(--s6); }
+  .sd__intro { font-size: var(--fs-lead); line-height: 1.55; }
+  .sd__h { margin-bottom: var(--s6); }
+
+  .sd__cols { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(var(--s6), 5vw, var(--s8)); align-items: start; }
+  @media (max-width: 56rem) { .sd__cols { grid-template-columns: 1fr; } }
+
+  .sd__inc { display: grid; gap: var(--s3); }
+  .sd__inc li { display: grid; grid-template-columns: 1.3rem 1fr; gap: var(--s3); align-items: start; }
+  .sd__inc svg { width: 1.1rem; height: 1.1rem; color: var(--green-t); margin-top: .35rem; }
+
+  .sd__limits {
+    background: var(--card); border: 1px solid var(--rule); border-left: 3px solid var(--amber-t);
+    border-radius: 14px; padding: var(--s5); box-shadow: var(--shadow);
+  }
+  .sd__limits h2 { margin-bottom: var(--s4); }
+  .sd__limits ul { display: grid; gap: var(--s3); }
+  .sd__limits li { font-size: var(--fs-small); color: var(--graphite); padding-left: 1.1rem; position: relative; }
+  .sd__limits li::before { content: '—'; position: absolute; left: 0; color: var(--amber-t); }
+
+  .sd__steps { margin-top: 0; }
+
+  .sd__proj { text-decoration: none; padding: 0; overflow: hidden; }
+  .sd__proj img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; }
+  .sd__proj .card__t, .sd__proj .card__x { padding-inline: var(--s5); }
+  .sd__proj .card__t { margin-top: var(--s4); }
+  .sd__proj .card__x { padding-bottom: var(--s5); }
+
+  .sd__demo { margin-bottom: var(--s6); }
+  .sd__other { text-decoration: none; }
+  .sd__other .tlink { margin-top: auto; }
+</style>

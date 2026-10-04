@@ -1,26 +1,42 @@
 ---
+/* Six items, no more. The three services live under Services rather than in
+   the bar — a nav that lists every offering stops being navigation and starts
+   being a price list. The CTA stays the free demo, because it is still the
+   offer that makes a stranger act. */
+import { SITE_NAME } from '../data/site';
+
 const nav = [
-  { href: '/#how',        label: 'How it works' },
-  { href: '/#work',       label: 'Work' },
-  { href: '/#packages',   label: 'Packages' },
-  { href: '/#industries', label: 'Industries' },
-  { href: '/process',     label: 'Process' },
-  { href: '/about',       label: 'About' },
-  { href: '/contact',     label: 'Contact' },
+  { href: '/',        label: 'Home' },
+  { href: '/services', label: 'Services' },
+  { href: '/work',     label: 'Work' },
+  { href: '/about',    label: 'About Me' },
+  { href: '/blog',     label: 'Blog' },
+  { href: '/contact',  label: 'Contact' },
 ];
+
+/* Mark the current section so the nav says where you are. '/' only matches
+   exactly; everything else matches its subtree, so /work/leti-silva-beauty
+   still highlights Work. */
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isCurrent = (href: string) =>
+  href === '/' ? path === '/' : path === href || path.startsWith(`${href}/`);
 ---
 <header class="hdr" id="hdr">
   <div class="container hdr__in">
-    <a class="wm" href="/" aria-label="JP Silva Digital — home">
+    <a class="wm" href="/" aria-label={`${SITE_NAME} — home`}>
       <span class="wm__i">JP</span>
       <span class="wm__t">Silva Digital</span>
     </a>
 
     <nav class="nav" id="nav" aria-label="Primary">
       <ul class="nav__l">
-        {nav.map((i) => <li><a class="nav__a" href={i.href}>{i.label}</a></li>)}
+        {nav.map((i) => (
+          <li>
+            <a class="nav__a" href={i.href} aria-current={isCurrent(i.href) ? 'page' : undefined}>{i.label}</a>
+          </li>
+        ))}
       </ul>
-      <a class="btn btn--primary btn--sm nav__cta" href="/#offer">Get a Free Demo</a>
+      <a class="btn btn--primary btn--sm nav__cta" href="/#planner" data-track="demo_start" data-track-label="header">Get Your Free Demo</a>
     </nav>
 
     <button class="tgl" id="tgl" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu">
@@ -53,69 +69,101 @@ const nav = [
   .nav { display: flex; align-items: center; gap: var(--s6); }
   .nav__l { display: flex; align-items: center; gap: var(--s5); }
   .nav__a {
-    font-size: var(--fs-small); color: var(--graphite); text-decoration: none;
+    position: relative; font-size: var(--fs-small); color: var(--graphite); text-decoration: none;
     padding-block: var(--s2); transition: color .18s var(--ease);
   }
   .nav__a:hover { color: var(--ink); }
+  .nav__a[aria-current="page"] { color: var(--ink); font-weight: 700; }
+  .nav__a[aria-current="page"]::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: .1rem;
+    height: 2px; border-radius: 2px; background: var(--redline);
+  }
 
   .tgl {
-    display: none; flex-direction: column; gap: 5px; justify-content: center;
-    width: 2.75rem; height: 2.75rem; padding: 0;
-    background: none; border: 1px solid var(--rule-hi); border-radius: 2px; cursor: pointer;
+    display: none; width: 2.75rem; height: 2.75rem; border: 1px solid var(--rule);
+    background: var(--card); border-radius: 12px; cursor: pointer;
+    position: relative; flex: none;
   }
-  .tgl span { width: 1.125rem; height: 1.5px; margin-inline: auto; background: var(--ink); transition: transform .2s var(--ease); }
-  .tgl[aria-expanded='true'] span:first-child { transform: translateY(3.25px) rotate(45deg); }
-  .tgl[aria-expanded='true'] span:last-child  { transform: translateY(-3.25px) rotate(-45deg); }
+  .tgl span {
+    position: absolute; left: 50%; width: 1.1rem; height: 2px; background: var(--ink);
+    border-radius: 2px; transform: translateX(-50%);
+    transition: transform .3s var(--ease), opacity .2s var(--ease);
+  }
+  .tgl span:nth-child(1) { top: 1.05rem; }
+  .tgl span:nth-child(2) { bottom: 1.05rem; }
+  .tgl[aria-expanded="true"] span:nth-child(1) { top: 50%; transform: translate(-50%, -50%) rotate(45deg); }
+  .tgl[aria-expanded="true"] span:nth-child(2) { bottom: 50%; transform: translate(-50%, 50%) rotate(-45deg); }
 
-  /* Full-screen overlay on mobile — a cramped drawer that leaves the page
-     half-visible behind it is the failure mode we're avoiding. */
-  @media (max-width: 60rem) {
-    .tgl { display: flex; }
+  @media (max-width: 62rem) {
+    .tgl { display: block; z-index: 2; }
     .nav {
-      position: fixed; inset: var(--header-h) 0 0 0;
-      flex-direction: column; align-items: stretch; justify-content: flex-start;
-      gap: var(--s5); padding: var(--s6) var(--gutter) var(--s8);
-      background: var(--paper); overflow-y: auto;
-      opacity: 0; visibility: hidden; transform: translateY(-6px);
-      transition: opacity .2s var(--ease), transform .2s var(--ease), visibility .2s;
+      position: fixed; inset: 0; z-index: 1;
+      flex-direction: column; align-items: stretch; justify-content: center;
+      gap: var(--s6); padding: var(--s8) var(--gutter);
+      background: var(--paper);
+      opacity: 0; visibility: hidden; transform: translateY(-1rem);
+      transition: opacity .28s var(--ease), transform .28s var(--ease), visibility .28s;
+      overflow-y: auto;
     }
     .nav.open { opacity: 1; visibility: visible; transform: none; }
     .nav__l { flex-direction: column; align-items: stretch; gap: 0; }
-    .nav__a { display: block; padding-block: var(--s4); font-size: 1.125rem; color: var(--ink); border-bottom: 1px solid var(--rule); }
-    /* Primary action sits last and full-width — bottom-of-screen reach. */
-    .nav__cta { justify-content: center; padding-block: .9375rem; }
+    .nav__l li { border-bottom: 1px solid var(--rule); }
+    .nav__a {
+      display: block; padding-block: var(--s5); font-size: 1.5rem; font-weight: 700;
+      letter-spacing: -.02em; color: var(--ink);
+    }
+    .nav__a[aria-current="page"] { color: var(--redline); }
+    .nav__a[aria-current="page"]::after { display: none; }
+    .nav__cta { width: 100%; padding-block: 1.05rem; font-size: 1.05rem; }
   }
 </style>
 
 <script>
-  const hdr = document.getElementById('hdr')!;
-  const nav = document.getElementById('nav')!;
-  const tgl = document.getElementById('tgl')!;
+  const hdr = document.getElementById('hdr');
+  const tgl = document.getElementById('tgl');
+  const nav = document.getElementById('nav');
 
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let lastY = 0;
-  const onScroll = () => {
-    const y = window.scrollY;
-    hdr.classList.toggle('on', y > 4);
-    if (!reduced && !nav.classList.contains('open')) {
-      if (y > 300 && y > lastY + 2) hdr.classList.add('hide');
-      else if (y < lastY - 2) hdr.classList.remove('hide');
-    }
-    lastY = y;
-  };
-  onScroll();
-  addEventListener('scroll', onScroll, { passive: true });
+  if (hdr && tgl && nav) {
+    const mq = matchMedia('(max-width: 62rem)');
 
-  const set = (open: boolean) => {
-    nav.classList.toggle('open', open);
-    tgl.setAttribute('aria-expanded', String(open));
-    tgl.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-    document.body.style.overflow = open ? 'hidden' : '';
-  };
+    const setOpen = (open: boolean) => {
+      nav.classList.toggle('open', open);
+      tgl.setAttribute('aria-expanded', String(open));
+      tgl.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      /* Lock the page behind the overlay, and never leave it locked. */
+      document.documentElement.style.overflow = open ? 'hidden' : '';
+    };
 
-  tgl.addEventListener('click', () => set(tgl.getAttribute('aria-expanded') !== 'true'));
-  nav.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('a')) set(false); });
-  addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && nav.classList.contains('open')) { set(false); tgl.focus(); }
-  });
+    tgl.addEventListener('click', () => setOpen(!nav.classList.contains('open')));
+
+    /* Any navigation inside the overlay closes it — including same-page
+       anchors, which fire no navigation of their own. */
+    nav.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) setOpen(false);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && nav.classList.contains('open')) { setOpen(false); tgl.focus(); }
+    });
+
+    /* Resizing past the breakpoint must not strand a locked page. */
+    mq.addEventListener('change', (e) => { if (!e.matches) setOpen(false); });
+
+    /* Hide on scroll down, return on scroll up. Never while the menu is open. */
+    let last = window.scrollY;
+    let ticking = false;
+    const onScroll = () => {
+      const y = window.scrollY;
+      hdr.classList.toggle('on', y > 8);
+      if (!nav.classList.contains('open')) {
+        hdr.classList.toggle('hide', y > last && y > 240);
+      }
+      last = y;
+      ticking = false;
+    };
+    addEventListener('scroll', () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
+    }, { passive: true });
+    onScroll();
+  }
 </script>

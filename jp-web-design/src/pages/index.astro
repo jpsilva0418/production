@@ -3,26 +3,15 @@ import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import Packages from '../components/Packages.astro';
 import Planner from '../components/planner/Planner.jsx';
-/* Hero variant. The homepage keeps the classic hero; /hero/laptop, /hero/phones
-   and /hero/hybrid render this same page with a different proof surface so
-   the options can be compared in place. Delete those pages and set the
-   default here once one is chosen. */
-const { variant = 'classic' } = Astro.props;
+import Founder from '../components/Founder.astro';
+import { PROJECTS, STATUS_LABEL } from '../data/projects';
+import { SERVICES } from '../data/services';
 
-/* The plates. Every one is a SPEC BUILD — uncommissioned, built to show the
-   pattern, and labelled so on the page. `industry` maps to the planner's
-   businessType ids: clicking "Build mine like this" seeds the planner with
-   that industry before the anchor jump. */
-const services = [
-  { t: 'Website design',   d: 'Built around how your customers decide — not a template’s section order.' },
-  { t: 'Website redesign', d: 'Dated, or fine-looking but silent. Different problems, different fixes.' },
-  { t: 'SEO foundations',  d: 'Structure, speed, correct markup. The groundwork rankings are built on.' },
-  { t: 'Local SEO',        d: 'Google Business Profile, consistent details, honest service-area pages.' },
-  { t: 'Landing pages',    d: 'One page, one audience, one action — for clicks with a price on them.' },
-  { t: 'E-commerce',       d: 'Product structure customers and search engines can both navigate.' },
-  { t: 'Website care',     d: 'Hosting, updates, backups, monitoring, and set edit time. Optional.' },
-  { t: 'Conversion work',  d: 'Traffic without calls is a structure problem wearing design’s clothes.' },
-];
+/* Selected work is real now, so the spec-build plates have served their
+   purpose and retired. The label system they established carries over
+   unchanged: IN SERVICE for live client work, IN DEVELOPMENT for what is
+   built but not public. Labels only ever upgrade. Data lives in
+   src/data/projects.ts so /work and the homepage cannot drift apart. */
 
 const industries = [
   { t: 'Construction & contracting', live: '/industries/construction-web-design',
@@ -92,7 +81,7 @@ const check = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke
 ---
 <Base
   title="JP Silva Digital | Websites, Software & Ads for U.S. Businesses"
-  description="Founder-led web design for businesses across the United States. Free homepage demo, free consultation, fixed scope and a fixed launch date."
+  description="Websites, Google Ads and Meta Ads for U.S. businesses — built and run by JP Silva. Free homepage demo, free consultation, no obligation either way."
   schema={faqSchema}
 >
 
@@ -143,7 +132,7 @@ const check = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke
 
   <div class="prog" id="prog" aria-hidden="true"></div>
 
-  <Hero variant={variant} />
+  <Hero />
 
   <!-- ══ THE PROBLEM ════════════════════════════════════════════════════ -->
   <section class="sec" aria-labelledby="prb-h">
@@ -210,96 +199,43 @@ const check = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke
     </div>
   </section>
 
-  <!-- ══ THE PLATES ═════════════════════════════════════════════════════ -->
+  <!-- ══ SELECTED WORK ═══════════════════════════════════════════════ -->
   <section class="sec" id="work" aria-labelledby="plt-h">
     <div class="container">
-      <p data-anim="pop"><span class="mark mark--amber" style="margin-bottom:0">Your trade</span></p>
-      <h2 class="sec__h" id="plt-h" data-split data-anim>If your business were on this page</h2>
+      <p data-anim="pop"><span class="mark mark--amber" style="margin-bottom:0">Selected work</span></p>
+      <h2 class="sec__h" id="plt-h" data-split data-anim>Real projects, honestly labelled</h2>
       <p class="sec__sub" data-anim style="--d:160ms">
-        Three spec builds — none is client work, the label under each says exactly that —
-        but every one is how I&rsquo;d open the argument for a business like yours. Pick the
-        closest, and the planner will already know your industry.
+        A bridal studio, a family cleaning company, and a finance app I designed and built
+        myself. The label under each one is the literal truth about where it stands &mdash;
+        and there is nothing on this page I did not build.
       </p>
 
-      <div class="cards3">
-        <!-- Plate 01 · a bold trade site -->
-        <article class="card plate" data-anim="card">
-          <div class="plate__view" aria-hidden="true"><div class="pm rf">
-            <div class="rf-nav"><span class="rf-logo">SUMMIT<em>ROOFING</em></span><span class="rf-call">☎ Call today</span></div>
-            <div class="rf-hero">
-              <span class="rf-kick">24/7 storm response · Claims handled</span>
-              <span class="rf-head">On your roof this week, not this season.</span>
-              <span class="rf-cta">Request free inspection</span>
-            </div>
-            <div class="rf-trust"><span>Licensed &amp; insured</span><span>Local crews</span><span>Financing</span></div>
-            <div class="rf-tiles">
-              <span class="rf-tile"><i></i>Asphalt &amp; shingle</span>
-              <span class="rf-tile"><i></i>Metal roofing</span>
-              <span class="rf-tile"><i></i>Storm repair</span>
-            </div>
-            <div class="rf-strip"><span>Recent work</span><span>Before → After</span></div>
-            <div class="rf-ba"><span></span><span></span></div>
-          </div></div>
-          <div class="plate__body">
-            <p class="plate__tag">PLATE 01 · ROOFING · <b>SPEC BUILD</b></p>
-            <h3 class="card__t">Roofing &amp; storm repair</h3>
-            <a class="tlink" href="#planner" data-plate-industry="construction">Build mine like this →</a>
-          </div>
-        </article>
-
-        <!-- Plate 02 · a soft editorial spa -->
-        <article class="card plate" data-anim="card" style="--d:130ms">
-          <div class="plate__view" aria-hidden="true"><div class="pm sp">
-            <div class="sp-nav"><span class="sp-logo">Véla<i>AESTHETICS</i></span><span class="sp-book">Book</span></div>
-            <span class="sp-head">Leave looking like you slept for a week.</span>
-            <span class="sp-sub">Consultations are always free</span>
-            <div class="sp-arches"><span class="sp-arch"></span><span class="sp-arch"></span><span class="sp-arch"></span></div>
-            <div class="sp-pills">
-              <span class="sp-pill">Skin</span><span class="sp-pill">Injectables</span>
-              <span class="sp-pill">Laser</span><span class="sp-pill">Facials</span>
-            </div>
-            <div class="sp-band">New clients — <b>your first consult is on us</b></div>
-            <div class="sp-foot"><span>TUE–SAT</span><span>DOWNTOWN</span><span>BOOK ONLINE</span></div>
-          </div></div>
-          <div class="plate__body">
-            <p class="plate__tag">PLATE 02 · MED SPA · <b>SPEC BUILD</b></p>
-            <h3 class="card__t">Med spa &amp; aesthetics</h3>
-            <a class="tlink" href="#planner" data-plate-industry="beauty">Build mine like this →</a>
-          </div>
-        </article>
-
-        <!-- Plate 03 · a moody restaurant -->
-        <article class="card plate" data-anim="card" style="--d:260ms">
-          <div class="plate__view" aria-hidden="true"><div class="pm rs">
-            <div class="rs-top">EST · 2016</div>
-            <span class="rs-logo">HARBOR &amp; VINE</span>
-            <span class="rs-tag">COASTAL KITCHEN · RAW BAR</span>
-            <span class="rs-hours">TUE–SUN · 5–11 PM · WALK-INS WELCOME</span>
-            <div class="rs-photo"><i></i><i></i><i></i></div>
-            <div class="rs-menu">
-              <p class="rs-mh">Tonight</p>
-              <p class="rs-row"><span>Seared scallops</span><i></i><span class="rs-price">21</span></p>
-              <p class="rs-row"><span>Squid-ink tagliatelle</span><i></i><span class="rs-price">24</span></p>
-              <p class="rs-row"><span>Half-shell oysters</span><i></i><span class="rs-price">3</span></p>
-            </div>
-            <span class="rs-cta">Reserve a table</span>
-          </div></div>
-          <div class="plate__body">
-            <p class="plate__tag">PLATE 03 · RESTAURANT · <b>SPEC BUILD</b></p>
-            <h3 class="card__t">Restaurants &amp; hospitality</h3>
-            <a class="tlink" href="#planner" data-plate-industry="restaurant">Build mine like this →</a>
-          </div>
-        </article>
+      <div class="wrk">
+        {PROJECTS.map((p, i) => (
+          <a class="wrk__c" href={`/work/${p.slug}`} data-anim="card" style={`--d:${i * 90}ms`}
+             data-track="project_view" data-track-label={p.slug}>
+            <span class="wrk__m" style={`background:${p.tint}`}>
+              <img src={p.image} alt={p.imageAlt} width="512" height="1000" loading="lazy" decoding="async" />
+            </span>
+            <span class="wrk__b">
+              <span class={`wrk__tag ${p.status === 'development' ? 'wrk__tag--dev' : ''}`}>{STATUS_LABEL[p.status]}</span>
+              <span class="wrk__cat">{p.category}</span>
+              <h3 class="wrk__n">{p.name}</h3>
+              <span class="wrk__x">{p.summary}</span>
+              <span class="tlink wrk__go">View project <span aria-hidden="true">&rarr;</span></span>
+            </span>
+          </a>
+        ))}
       </div>
 
       <div class="note plt__note" data-anim>
         <span class="lbl">What the labels mean</span>
         <p class="small">
-          <strong>SPEC BUILD</strong> is uncommissioned work — no client, no endorsement, built
-          to show the standard. When a plate is paid client work it will read
-          <strong>COMMISSIONED</strong>, and once it is live, <strong>IN SERVICE</strong> with the
-          launch date. Labels only ever upgrade, and nothing on this page will claim a client it
-          does not have. Your free demo, if you want it shown here, becomes the next plate.
+          <strong>IN SERVICE</strong> means the site is live and working for a real business.
+          <strong>IN DEVELOPMENT</strong> means it is built but not yet public. Labels only ever
+          upgrade, nothing here claims a client it does not have, and no project carries a
+          performance figure unless the client measured it and agreed to publish it.
+          <a class="tlink plt__all" href="/work">See all work &rarr;</a>
         </p>
       </div>
     </div>
@@ -347,22 +283,38 @@ const check = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke
     </div>
   </section>
 
-  <!-- ══ SERVICES (compact) ═════════════════════════════════════════════ -->
+  <!-- ══ SERVICES ═══════════════════════════════════════════════════ -->
   <section class="sec" id="services" aria-labelledby="svc-h">
     <div class="container">
       <p data-anim="pop"><span class="mark" style="margin-bottom:0">Services</span></p>
-      <h2 class="sec__h" id="svc-h" data-split data-anim>Eight things I do</h2>
-      <p class="sec__sub" data-anim style="--d:160ms">Most projects need three or four of them. The planner works out which.</p>
+      <h2 class="sec__h" id="svc-h" data-split data-anim>Three things, done properly</h2>
+      <p class="sec__sub" data-anim style="--d:160ms">
+        Advertising brings people to you. The website decides whether they call. I do both,
+        so neither one gets blamed on the other vendor.
+      </p>
+
       <div class="svc__g">
-        {services.map((s, i) => (
-          <div class="card svc__c" data-anim style={`--d:${(i % 4) * 70}ms`}>
-            <h3 class="svc__t">{s.t}</h3>
-            <p class="card__x">{s.d}</p>
-          </div>
+        {SERVICES.map((s, i) => (
+          <a class="card svc__c" href={`/services/${s.slug}`} data-anim style={`--d:${i * 80}ms`}>
+            <h3 class="svc__t">{s.name}</h3>
+            <p class="card__x">{s.blurb}</p>
+            <ul class="svc__l">
+              {s.includes.slice(0, 3).map((x) => <li>{x}</li>)}
+            </ul>
+            <span class="tlink svc__go">What this involves <span aria-hidden="true">&rarr;</span></span>
+          </a>
         ))}
       </div>
+
+      <p class="svc__note" data-anim>
+        Ads get them there &middot; the website turns them into calls &middot; tracking tells you which worked.
+        <a class="tlink" href="/services">All services &rarr;</a>
+      </p>
     </div>
   </section>
+
+  <!-- ══ MEET JP ════════════════════════════════════════════════════════ -->
+  <Founder />
 
   <!-- ══ PLANNER ════════════════════════════════════════════════════════ -->
   <section class="sec sec--panel" id="planner" aria-labelledby="pln-h">
@@ -632,96 +584,31 @@ const check = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke
     .steps > .card { position: relative; z-index: 1; }
   }
 
-  /* ── plates ──────────────────────────────────────────────────────────── */
-  .plate { padding: 0; overflow: hidden; }
-  .plate__view {
-    aspect-ratio: 16 / 10; position: relative; overflow: hidden;
-    border-bottom: 1px solid var(--rule); border-radius: var(--r) var(--r) 0 0;
+  /* ── selected work ──────────────────────────────────────────────────── */
+  .wrk { display: grid; gap: var(--s5); margin-top: clamp(2rem, 4vw, 3rem); }
+  @media (min-width: 52rem) { .wrk { grid-template-columns: repeat(3, 1fr); } }
+  .wrk__c {
+    display: flex; flex-direction: column; text-align: left; text-decoration: none; color: inherit;
+    background: var(--card); border: 1px solid var(--rule); border-radius: var(--r);
+    overflow: hidden; box-shadow: var(--shadow);
+    transition: transform .25s var(--pop), box-shadow .25s var(--ease);
   }
-  .plate__body { padding: 1.3rem 1.5rem 1.5rem; text-align: left; display: flex; flex-direction: column; gap: .5rem; }
-  .plate__tag { font-family: var(--mono); font-size: .72rem; letter-spacing: .09em; color: var(--graphite); }
-  .plate__tag b { color: var(--amber-t); font-weight: 700; }
-  .plt__note { margin-top: var(--s7); max-width: 56rem; margin-inline: auto; text-align: left; }
-
-  .pm {
-    position: absolute; left: 0; right: 0; top: 0; height: 136%;
-    display: flex; flex-direction: column;
-    font-size: clamp(.55rem, 1.1vw, .72rem); line-height: 1.4; text-align: left;
-    transition: transform .8s var(--ease);
+  .wrk__c:hover { transform: translateY(-4px); box-shadow: var(--shadow-up); }
+  .wrk__m { display: block; aspect-ratio: 16 / 10; overflow: hidden; border-bottom: 1px solid var(--rule); }
+  .wrk__m img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform .5s var(--ease); }
+  .wrk__c:hover .wrk__m img { transform: scale(1.03); }
+  .wrk__b { display: flex; flex-direction: column; align-items: flex-start; gap: .5rem; padding: 1.3rem 1.5rem 1.5rem; flex: 1; }
+  .wrk__tag {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+    padding: .3rem .5rem; border-radius: 6px;
+    background: var(--green-soft); color: var(--green-t); border: 1px solid var(--green-bd);
   }
-  .pm > * { flex: 0 0 auto; }
-  @media (hover: hover) { .plate:hover .pm { transform: translateY(-26.5%); } }
-
-  /* plate 01 — trade site */
-  .rf { background: #f4f6f9; color: #141a22; }
-  .rf-nav { display: flex; justify-content: space-between; align-items: center; padding: 4.5% 7%; background: #fff; border-bottom: 2px solid #10365c; }
-  .rf-logo { font-weight: 900; letter-spacing: -.01em; color: #10365c; font-size: 1.05em; }
-  .rf-logo em { font-style: normal; color: #e8621d; }
-  .rf-call { background: #e8621d; color: #fff; font-weight: 800; padding: .3em .7em; border-radius: 6px; font-size: .85em; white-space: nowrap; }
-  .rf-hero {
-    position: relative; padding: 9% 7% 8%; color: #fff; overflow: hidden; min-height: 9em;
-    display: flex; flex-direction: column; justify-content: flex-end;
-    background: linear-gradient(180deg, #8fb6d9 0%, #5c86ad 55%, #2e4a63 100%);
-  }
-  .rf-hero::before {
-    content: ''; position: absolute; left: -4%; right: -4%; bottom: 0; height: 48%;
-    background: #1b2836; clip-path: polygon(0 100%, 0 62%, 18% 28%, 36% 62%, 36% 100%); opacity: .9;
-  }
-  .rf-hero::after {
-    content: ''; position: absolute; left: -4%; right: -4%; bottom: 0; height: 54%;
-    background: #22303f; clip-path: polygon(28% 100%, 28% 55%, 58% 10%, 88% 55%, 88% 100%);
-  }
-  .rf-hero > * { position: relative; z-index: 2; }
-  .rf-kick { font-weight: 800; font-size: .72em; letter-spacing: .12em; color: #ffd9a3; text-transform: uppercase; }
-  .rf-head { display: block; font-size: 1.75em; line-height: 1.05; font-weight: 900; letter-spacing: -.02em; max-width: 13ch; margin-top: .25em; text-shadow: 0 2px 8px rgba(0, 0, 0, .4); }
-  .rf-cta { display: inline-block; align-self: flex-start; background: #e8621d; color: #fff; font-weight: 800; padding: .45em .9em; border-radius: 6px; margin-top: .8em; font-size: .9em; }
-  .rf-trust { display: flex; gap: 1.2em; justify-content: center; padding: 3.5% 7%; background: #10365c; color: #cfe0f2; font-weight: 700; font-size: .66em; letter-spacing: .06em; white-space: nowrap; }
-  .rf-tiles { display: flex; gap: 4%; padding: 5% 7% 3%; }
-  .rf-tile { flex: 1; background: #fff; border: 1px solid #dde4ee; border-radius: 8px; padding: 5%; font-weight: 800; font-size: .76em; }
-  .rf-tile i { display: block; width: 1.6em; height: 1.6em; border-radius: 5px; margin-bottom: .5em; background: linear-gradient(135deg, #e8621d, #c24e12); }
-  .rf-strip { display: flex; justify-content: space-between; align-items: center; gap: .6em; padding: 4% 7%; font-weight: 800; font-size: .78em; color: #10365c; }
-  .rf-ba { display: flex; gap: 4%; padding: 0 7% 6%; }
-  .rf-ba span { flex: 1; height: 3.4em; border-radius: 6px; }
-  .rf-ba span:first-child { background: linear-gradient(135deg, #7a6a55, #4a4238); }
-  .rf-ba span:last-child { background: linear-gradient(135deg, #37516b, #1f3247); }
-
-  /* plate 02 — spa */
-  .sp { background: #fbf6f2; color: #4a372f; text-align: center; }
-  .sp-nav { display: flex; justify-content: space-between; align-items: center; padding: 4.5% 7%; }
-  .sp-logo { font-family: Georgia, serif; font-size: 1.2em; letter-spacing: .02em; line-height: 1; text-align: left; }
-  .sp-logo i { font-style: normal; display: block; font-size: .44em; letter-spacing: .42em; color: #b98a74; font-family: var(--sans); font-weight: 700; margin-top: .3em; }
-  .sp-book { border: 1px solid #4a372f; border-radius: 999px; padding: .3em .9em; font-weight: 700; font-size: .78em; }
-  .sp-head { display: block; font-family: Georgia, serif; font-weight: 500; font-size: 1.6em; line-height: 1.14; max-width: 17ch; margin: 3.5% auto 0; }
-  .sp-sub { display: block; color: #a07a64; font-size: .82em; margin: 1.5% auto 0; }
-  .sp-arches { display: flex; gap: 5%; align-items: flex-end; padding: 5% 10% 2%; }
-  .sp-arch { flex: 1; height: 6.2em; border-radius: 99em 99em 10px 10px; }
-  .sp-arch:nth-child(1) { background: linear-gradient(165deg, #f3d9c8, #d9a284); }
-  .sp-arch:nth-child(2) { background: linear-gradient(165deg, #e9cdc0, #bf8f77); height: 7em; }
-  .sp-arch:nth-child(3) { background: linear-gradient(165deg, #f6e3d4, #dfae8e); }
-  .sp-pills { display: flex; flex-wrap: wrap; gap: .45em; justify-content: center; padding: 4% 9%; }
-  .sp-pill { border: 1px solid #d9bfae; border-radius: 999px; padding: .22em .8em; font-weight: 700; font-size: .7em; color: #8a5d44; white-space: nowrap; }
-  .sp-band { background: #4a372f; color: #f6e8dd; padding: 5.5% 8%; font-family: Georgia, serif; font-size: 1em; }
-  .sp-band b { color: #e8b28f; font-weight: 600; }
-  .sp-foot { display: flex; justify-content: center; gap: 1.6em; padding: 4.5%; font-size: .68em; font-weight: 700; color: #8a5d44; letter-spacing: .08em; }
-
-  /* plate 03 — restaurant */
-  .rs { background: #191410; color: #f2e9dc; text-align: center; }
-  .rs-top { padding: 5.5% 7% 0; font-size: .62em; letter-spacing: .32em; color: #d9a441; font-weight: 700; }
-  .rs-logo { display: block; font-family: Georgia, serif; font-size: 1.85em; letter-spacing: .06em; line-height: 1.05; margin-top: .15em; }
-  .rs-tag { display: block; font-size: .68em; color: #b7a68c; letter-spacing: .16em; margin-top: .5em; }
-  .rs-hours { display: inline-block; margin-top: 3%; border: 1px solid #3a2f22; border-radius: 999px; padding: .32em 1em; font-size: .66em; letter-spacing: .12em; color: #d9a441; font-weight: 700; }
-  .rs-photo { position: relative; margin: 4.5% 7%; height: 5.8em; border-radius: 8px; overflow: hidden; background: linear-gradient(120deg, #2a1f16, #3d2c1d 55%, #241a12); }
-  .rs-photo::after { content: ''; position: absolute; inset: 0; background: radial-gradient(60% 80% at 70% 20%, rgba(255, 196, 110, .28), transparent 70%); }
-  .rs-photo i { position: absolute; border-radius: 50%; }
-  .rs-photo i:nth-child(1) { width: 3.6em; height: 3.6em; left: 11%; top: 16%; background: radial-gradient(circle at 35% 30%, #ead9be, #b09067 62%, #77604a); }
-  .rs-photo i:nth-child(2) { width: 2.5em; height: 2.5em; right: 19%; top: 34%; background: radial-gradient(circle at 35% 30%, #d9b98c, #8a6a44); }
-  .rs-photo i:nth-child(3) { width: 1.5em; height: 1.5em; right: 40%; bottom: 12%; background: radial-gradient(circle at 40% 35%, #c9a06a, #6d5336); }
-  .rs-menu { padding: 1% 9% 2%; text-align: left; }
-  .rs-mh { font-size: .62em; letter-spacing: .3em; color: #d9a441; font-weight: 700; text-align: center; margin-bottom: .8em; text-transform: uppercase; }
-  .rs-row { display: flex; align-items: baseline; gap: .55em; font-size: .78em; padding: .22em 0; font-family: Georgia, serif; }
-  .rs-row i { flex: 1; border-bottom: 1px dotted #4a3b28; transform: translateY(-.3em); }
-  .rs-price { color: #d9a441; }
-  .rs-cta { display: inline-block; background: #d9a441; color: #191410; font-weight: 800; border-radius: 6px; padding: .45em 1.1em; margin: 3.5% 0 5.5%; font-size: .85em; }
+  .wrk__tag--dev { background: var(--amber-soft); color: var(--amber-t); border-color: var(--amber-bd); }
+  .wrk__cat { font-family: var(--mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--graphite); }
+  .wrk__n { font-size: 1.15rem; font-weight: 800; letter-spacing: -.02em; }
+  .wrk__x { font-size: var(--fs-small); color: var(--graphite); }
+  .wrk__go { margin-top: auto; padding-top: var(--s3); }
+  .plt__all { display: inline-block; margin-top: var(--s3); }
 
   /* ── offer ───────────────────────────────────────────────────────────── */
   .offer__g {
@@ -744,9 +631,19 @@ const check = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke
   /* ── services ────────────────────────────────────────────────────────── */
   .svc__g { display: grid; gap: 1rem; margin-top: clamp(2rem, 4vw, 3rem); text-align: left; }
   @media (min-width: 40rem) { .svc__g { grid-template-columns: repeat(2, 1fr); } }
-  @media (min-width: 62rem) { .svc__g { grid-template-columns: repeat(4, 1fr); } }
-  .svc__c { padding: 1.25rem 1.4rem; gap: .4rem; }
-  .svc__t { font-size: 1.02rem; font-weight: 800; letter-spacing: -.01em; }
+  @media (min-width: 62rem) { .svc__g { grid-template-columns: repeat(3, 1fr); } }
+  .svc__c { padding: var(--s5); gap: .55rem; text-decoration: none; color: inherit; }
+  .svc__c:hover { transform: translateY(-4px); }
+  .svc__c:hover .svc__t { color: var(--redline); }
+  .svc__t { font-size: 1.15rem; font-weight: 800; letter-spacing: -.02em; transition: color .18s var(--ease); }
+  .svc__l { display: grid; gap: .35rem; margin-top: .35rem; }
+  .svc__l li { font-size: var(--fs-small); color: var(--graphite); padding-left: 1.05rem; position: relative; }
+  .svc__l li::before { content: ''; position: absolute; left: 0; top: .62em; width: .32rem; height: .32rem; border-radius: 50%; background: var(--redline); }
+  .svc__go { margin-top: auto; padding-top: var(--s4); }
+  .svc__note {
+    margin-top: var(--s6); font-size: var(--fs-small); color: var(--graphite);
+    display: flex; flex-wrap: wrap; gap: var(--s3); align-items: baseline; justify-content: center;
+  }
 
   /* ── planner ─────────────────────────────────────────────────────────── */
   .pln__wrap { text-align: left; margin-top: clamp(2rem, 4vw, 3rem); }
@@ -1056,14 +953,4 @@ const check = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke
     });
   }
 
-  /* ---------- "Build mine like this" → seed the planner's industry ------ */
-  const KEY = 'jpwd.planner.v1';
-  document.querySelectorAll<HTMLAnchorElement>('[data-plate-industry]').forEach((a) => {
-    a.addEventListener('click', () => {
-      try {
-        const cur = JSON.parse(sessionStorage.getItem(KEY) || '{}');
-        sessionStorage.setItem(KEY, JSON.stringify({ ...cur, businessType: a.dataset.plateIndustry }));
-      } catch (e) { /* storage unavailable — the link still lands on the planner */ }
-    });
-  });
 </script>

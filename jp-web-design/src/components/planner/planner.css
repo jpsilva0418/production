@@ -174,6 +174,13 @@
   font-size: var(--fs-small); color: var(--graphite); text-decoration: underline;
 }
 .pl__sent { font-size: var(--fs-small); color: var(--graphite); }
+/* The result screen reports what actually happened to the submission. */
+.pl__sent--ok, .pl__sent--warn {
+  margin-top: var(--s4); padding: var(--s4) var(--s5);
+  border: 1px solid var(--rule); border-radius: 12px; background: var(--card);
+}
+.pl__sent--ok { border-left: 3px solid var(--green-t); }
+.pl__sent--warn { border-left: 3px solid var(--amber-t); }
 
 /* ======================================================== The diagram ==== */
 .pl__side { position: sticky; top: calc(var(--header-h) + 1.5rem); }

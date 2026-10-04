@@ -2,6 +2,8 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Analytics from '../components/Analytics.astro';
+import { SITE_NAME, EMAIL, SOCIALS } from '../data/site';
 
 export interface Props {
   title: string;
@@ -10,9 +12,11 @@ export interface Props {
   noindex?: boolean;
   /** Extra JSON-LD emitted after the sitewide Organization block. */
   schema?: Record<string, unknown> | Record<string, unknown>[];
+  /** 'article' on blog posts; everything else is a website. */
+  ogType?: 'website' | 'article';
 }
 
-const { title, description, noindex = false, schema } = Astro.props;
+const { title, description, noindex = false, schema, ogType = 'website' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 
 /* Sitewide entity. Deliberately minimal: no foundingDate, no
@@ -24,13 +28,20 @@ const org = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   '@id': `${Astro.site}#org`,
-  name: 'JP Silva Digital',
+  name: SITE_NAME,
   url: Astro.site?.href,
   description:
-    'Founder-led web design studio building conversion-focused websites for businesses across the United States.',
+    'Founder-led studio building conversion-focused websites and running Google and Meta advertising for businesses across the United States.',
   founder: { '@type': 'Person', name: 'JP Silva' },
+  email: EMAIL,
   areaServed: { '@type': 'Country', name: 'United States' },
+  /* Only real profiles. An empty SOCIALS array emits no sameAs at all. */
+  ...(SOCIALS.length > 0 && { sameAs: SOCIALS.map((s) => s.href) }),
 };
+
+/* One share image for the whole site until per-page art exists. Absolute URL
+   is required — relative og:image is ignored by most scrapers. */
+const ogImage = new URL('/og.png', Astro.site).href;
 ---
 <!doctype html>
 <html lang="en">
@@ -43,17 +54,23 @@ const org = {
   <link rel="canonical" href={canonical} />
   {noindex && <meta name="robots" content="noindex, follow" />}
 
-  <meta property="og:type" content="website" />
+  <meta property="og:type" content={ogType} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:url" content={canonical} />
-  <meta property="og:site_name" content="JP Silva Digital" />
+  <meta property="og:site_name" content={SITE_NAME} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content={`${SITE_NAME} — websites, Google Ads and Meta Ads`} />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content={ogImage} />
   <meta name="theme-color" content="#f6f8fc" />
 
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
   <script type="application/ld+json" set:html={JSON.stringify(org)} />
+  <Analytics />
   {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
 
   <!-- Native same-origin prefetch. A few hundred bytes, no library. -->

@@ -3,8 +3,11 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 
-// TODO(launch): replace with the real domain once registered.
-export const SITE = 'https://www.jpwebdesign.com';
+/* TODO(launch) — BLOCKS LAUNCH. The real domain, once registered. This single
+   constant drives canonical URLs, Open Graph URLs, the sitemap and all
+   structured data, so changing it here is the whole domain migration.
+   public/robots.txt carries the same host and must be changed with it. */
+export const SITE = 'https://www.jpsilvadigital.com';
 
 export default defineConfig({
   site: SITE,
