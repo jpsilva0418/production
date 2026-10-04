@@ -30,7 +30,7 @@
 
 <header class="hd">
   <a class="hd-brand" href="#top">JP Media</a>
-  <a class="hd-menu" id="menu-btn" href="#menu" aria-controls="menu" aria-expanded="false">Menu</a>
+  <a class="hd-menu" id="menu-btn" href="#menu" role="button" aria-controls="menu" aria-expanded="false">Menu</a>
 </header>
 
 <!-- FULL-SCREEN MENU -->
@@ -45,20 +45,22 @@
     </ol>
   </nav>
   <p class="menu-foot"><span>Austin, TX</span><a href="https://www.instagram.com/jp.media/" rel="noopener" target="_blank">Instagram @jp.media</a></p>
-  <a class="menu-close" id="menu-close" href="#top" aria-label="Close menu">Close</a>
+  <a class="menu-close" id="menu-close" href="#top" role="button" aria-label="Close menu">Close</a>
 </div>
 
 <main id="main">
 
-<!-- 1 · HERO : the downbeat -->
+<!-- 1 · HERO : the downbeat. Concert cut, then sparks; one playing at a time. -->
 <section class="hero" id="hero" aria-label="JP Silva, filmmaker, producer, photographer">
-  <figure class="frame hero-frame" style="aspect-ratio:9/16" aria-hidden="true">
-    <img src="../media/plates/stage-vertical-720.jpg"
-         srcset="../media/plates/stage-vertical-720.jpg 720w, ../media/plates/stage-vertical.jpg 1200w"
-         sizes="(min-width:900px) 26vw, 48vw" width="1200" height="2133" alt="" fetchpriority="high" decoding="async">
-    <video class="jp-video" muted playsinline loop autoplay preload="metadata" aria-hidden="true" poster="../media/loops/stage-poster.jpg">
-      <source src="../media/loops/stage.webm" type="video/webm">
-      <source src="../media/loops/stage.mp4" type="video/mp4">
+  <figure class="frame hero-frame" aria-hidden="true">
+    <img src="../media/film/m-concert-poster.jpg" width="490" height="960" alt="" fetchpriority="high" decoding="async">
+    <video class="jp-video hero-v hero-v1" muted playsinline autoplay preload="metadata" aria-hidden="true" poster="../media/film/m-concert-poster.jpg">
+      <source src="../media/film/m-concert.webm" type="video/webm">
+      <source src="../media/film/m-concert.mp4" type="video/mp4">
+    </video>
+    <video class="hero-v hero-v2" muted playsinline preload="none" aria-hidden="true" poster="../media/stills/m-bokeh.jpg">
+      <source src="../media/film/m-bokeh.webm" type="video/webm">
+      <source src="../media/film/m-bokeh.mp4" type="video/mp4">
     </video>
   </figure>
   <h1 class="hero-name">
@@ -73,81 +75,81 @@
   </div>
   <div class="hero-foot">
     <p class="hero-meta"><span class="tag">Live</span>Filmmaker, producer and photographer in Austin, Texas. Live music, music videos, the road.</p>
-    <p class="hero-coords">30.2672° N<br>97.7431° W</p>
   </div>
 </section>
 
 <!-- 2 · ON STAGE / IN THE PIT : the broken grid -->
 <section class="stage" id="work" aria-labelledby="stage-h">
   <header class="sec-head">
-    <p class="kicker"><b>01</b>Selected work · Live</p>
+    <p class="kicker">Selected work</p>
     <h2 class="sec-title" id="stage-h">On stage. In the pit.</h2>
   </header>
   <div class="stage-grid">
     <p class="big big-1" data-skew="1" aria-hidden="true">Austin</p>
     <figure class="frame sf sf-1" data-reveal="cut" style="aspect-ratio:9/16">
-      <img src="../media/plates/stage-vertical-720.jpg" srcset="../media/plates/stage-vertical-720.jpg 720w, ../media/plates/stage-vertical.jpg 1200w" sizes="(min-width:900px) 24vw, 56vw" width="1200" height="2133" alt="Red stage wash and a flare from above" loading="lazy" decoding="async">
-      <figcaption><span class="tag">Live</span>Live, Austin · 2025 · Cam A</figcaption>
+      <img src="../media/stills/m-concert.jpg" width="490" height="960" alt="Concert crowd, arms raised against stage light" loading="lazy" decoding="async">
+      <figcaption><span class="tag">Live</span>Showreel · Direction, Camera, Edit</figcaption>
     </figure>
     <figure class="frame sf sf-2" data-reveal="cut" style="aspect-ratio:1/1">
-      <img src="../media/plates/night-halation-900.jpg" srcset="../media/plates/night-halation-900.jpg 900w, ../media/plates/night-halation.jpg 1800w" sizes="(min-width:900px) 22vw, 50vw" width="1800" height="1012" alt="A dark room with one warm light blooming through dust" loading="lazy" decoding="async">
-      <figcaption><span class="tag">Live</span>Soundcheck · 18:40</figcaption>
+      <img src="../media/stills/m-bokeh.jpg" width="490" height="960" alt="Light bokeh and sparks" loading="lazy" decoding="async" style="object-position:50% 45%">
+      <figcaption><span class="tag">Reel</span>Sparks</figcaption>
     </figure>
     <figure class="frame sf sf-3" data-reveal="cut" style="aspect-ratio:16/9">
-      <img src="../media/plates/stage-red-900.jpg" srcset="../media/plates/stage-red-900.jpg 900w, ../media/plates/stage-red.jpg 1800w" sizes="(min-width:900px) 46vw, 100vw" width="1800" height="1012" alt="Hard red stage light and a white hot spot through haze" loading="lazy" decoding="async">
-      <figcaption><span class="tag">Live</span>Live, Austin · wide</figcaption>
+      <img src="../media/stills/nr-headlight.jpg" width="738" height="390" alt="Headlight coming down the road at night" loading="lazy" decoding="async">
+      <figcaption><span class="tag">MV</span>Night Ride · Camera, Edit</figcaption>
     </figure>
     <p class="big big-2" data-skew="-1" aria-hidden="true">Soundcheck</p>
     <figure class="frame sf sf-4" data-reveal="cut" style="aspect-ratio:4/5">
-      <img src="../media/plates/night-beam-720.jpg" srcset="../media/plates/night-beam-720.jpg 720w, ../media/plates/night-beam.jpg 1200w" sizes="(min-width:900px) 24vw, 52vw" width="1200" height="2133" alt="A single soft beam of light falling through darkness" loading="lazy" decoding="async">
-      <figcaption><span class="tag">Live</span>Pit · song three</figcaption>
+      <img src="../media/stills/m-horse.jpg" width="490" height="960" alt="Horse mid-gallop" loading="lazy" decoding="async" style="object-position:50% 22%">
+      <figcaption><span class="tag">Reel</span>Horse</figcaption>
     </figure>
     <figure class="frame sf sf-5" data-reveal="cut" style="aspect-ratio:3/2">
-      <img src="../media/plates/ember-900.jpg" srcset="../media/plates/ember-900.jpg 900w, ../media/plates/ember.jpg 1800w" sizes="(min-width:900px) 38vw, 64vw" width="1800" height="1200" alt="Deep red-brown light with a hot glowing edge" loading="lazy" decoding="async">
-      <figcaption><span class="tag">Live</span>Encore · house lights</figcaption>
+      <img src="../media/film/fd-dance-poster.jpg" width="846" height="470" alt="Dancers in a field, blue hour" loading="lazy" decoding="async">
+      <video class="jp-video" muted playsinline loop autoplay preload="none" aria-hidden="true" poster="../media/film/fd-dance-poster.jpg">
+        <source src="../media/film/fd-dance.webm" type="video/webm">
+        <source src="../media/film/fd-dance.mp4" type="video/mp4">
+      </video>
+      <figcaption><span class="tag">MV</span>Field at Dusk · Direction, Camera</figcaption>
     </figure>
     <p class="big big-3" data-skew="1" aria-hidden="true">Encore</p>
   </div>
-  <p class="stage-note">Live performance film and stills. Camera and edit, shot from the pit and the wings.</p>
+  <p class="stage-note">Live shows, reel cuts and music-video frames. Camera and edit, shot from the pit, the wings and the road.</p>
 </section>
 
 <!-- 3 · MUSIC VIDEOS : the strip -->
 <section class="mv" id="film" aria-labelledby="mv-h">
   <header class="sec-head sec-head-row">
-    <div>
-      <p class="kicker"><b>02</b>Music videos · Film</p>
-      <h2 class="sec-title" id="mv-h">Cut to the beat.</h2>
-    </div>
-    <div class="mv-ctl" aria-hidden="true">
-      <button type="button" class="mv-btn" data-dir="-1" tabindex="-1">←</button>
-      <button type="button" class="mv-btn" data-dir="1" tabindex="-1">→</button>
-    </div>
+    <h2 class="sec-title" id="mv-h">Cut to the beat.</h2>
+    <button type="button" class="mv-next" id="mv-next" aria-label="Next video">Next <i>→</i></button>
   </header>
   <ul class="strip" id="strip" data-reveal="cut">
     <li class="mv-item">
       <figure class="frame mv-frame" style="aspect-ratio:16/9">
-        <img src="../media/plates/stage-vertical-720.jpg" srcset="../media/plates/stage-vertical-720.jpg 720w, ../media/plates/stage-vertical.jpg 1200w" sizes="(min-width:900px) 44vw, 78vw" width="1200" height="2133" alt="Red stage wash and a flare from above" loading="lazy" decoding="async">
+        <img src="../media/film/fd-flare-poster.jpg" width="846" height="470" alt="Dancers against the setting sun" loading="lazy" decoding="async">
       </figure>
-      <p class="mv-label"><span class="tag">MV — 2024</span>Direction, Camera</p>
-      <h3 class="mv-title">Soundcheck</h3>
+      <p class="mv-label"><span class="tag">Music Video</span>Direction, Camera</p>
+      <h3 class="mv-title">Field at Dusk</h3>
     </li>
     <li class="mv-item">
       <figure class="frame mv-frame" style="aspect-ratio:16/9">
-        <img src="../media/plates/night-halation-900.jpg" srcset="../media/plates/night-halation-900.jpg 900w, ../media/plates/night-halation.jpg 1800w" sizes="(min-width:900px) 44vw, 78vw" width="1800" height="1012" alt="A dark room with one warm light blooming through dust" loading="lazy" decoding="async">
-        <video class="jp-video" muted playsinline loop autoplay preload="none" aria-hidden="true" poster="../media/loops/dust-poster.jpg">
-          <source src="../media/loops/dust.webm" type="video/webm">
-          <source src="../media/loops/dust.mp4" type="video/mp4">
-        </video>
+        <img src="../media/film/w-ride-poster.jpg" width="636" height="500" alt="Rider at a gallop, black and white" loading="lazy" decoding="async" style="object-position:50% 70%">
       </figure>
-      <p class="mv-label"><span class="tag">Film — 2025</span>Direction, Camera, Edit</p>
-      <h3 class="mv-title">Working Title I</h3>
+      <p class="mv-label"><span class="tag">Music Video</span>Direction, Camera</p>
+      <h3 class="mv-title">Western, Black &amp; White</h3>
     </li>
     <li class="mv-item">
       <figure class="frame mv-frame" style="aspect-ratio:16/9">
-        <img src="../media/plates/stage-red-900.jpg" srcset="../media/plates/stage-red-900.jpg 900w, ../media/plates/stage-red.jpg 1800w" sizes="(min-width:900px) 44vw, 78vw" width="1800" height="1012" alt="Hard red stage light and a white hot spot through haze" loading="lazy" decoding="async">
+        <img src="../media/film/nr-silhouette-poster.jpg" width="738" height="390" alt="Rider silhouette at dusk" loading="lazy" decoding="async">
       </figure>
-      <p class="mv-label"><span class="tag">Live — 2025</span>Camera, Edit</p>
-      <h3 class="mv-title">Live, Austin</h3>
+      <p class="mv-label"><span class="tag">Music Video</span>Camera, Edit</p>
+      <h3 class="mv-title">Night Ride</h3>
+    </li>
+    <li class="mv-item">
+      <figure class="frame mv-frame" style="aspect-ratio:16/9">
+        <img src="../media/film/ch-ride-poster.jpg" width="656" height="450" alt="Couple on a chopper on a desert highway" loading="lazy" decoding="async">
+      </figure>
+      <p class="mv-label"><span class="tag">Music Video</span>Camera</p>
+      <h3 class="mv-title">Desert Highway</h3>
     </li>
   </ul>
 </section>
@@ -165,34 +167,33 @@
 <section class="por" id="photography" aria-labelledby="por-h">
   <h2 class="por-big" id="por-h">Portraits</h2>
   <div class="por-row">
-    <p class="kicker kicker-dark"><b>03</b>Photography</p>
-    <p class="por-intro">Portraits, monochrome series and behind-the-scenes stills. The quiet frames between shows.</p>
+    <p class="kicker kicker-dark">Photography</p>
+    <p class="por-intro">Portraits, monochrome frames and the studio between shows. The quiet pictures.</p>
   </div>
   <div class="por-grid">
     <figure class="pf pf-1" data-reveal="cut">
       <div class="frame" style="aspect-ratio:2/3">
-        <img src="../media/plates/mono-leak-800.jpg" srcset="../media/plates/mono-leak-800.jpg 800w, ../media/plates/mono-leak.jpg 1400w" sizes="(min-width:900px) 28vw, 56vw" width="1400" height="2100" alt="Black-and-white frame with a blown-out light leak" loading="lazy" decoding="async">
+        <img src="../media/stills/w-portrait.jpg" width="636" height="500" alt="Hat portrait, black and white" loading="lazy" decoding="async" style="object-position:38% 50%">
       </div>
-      <figcaption><b>Portraits, Vol. I</b>2025 · Photography</figcaption>
+      <figcaption><b>Western, Black &amp; White</b>Direction, Camera</figcaption>
     </figure>
     <figure class="pf pf-2" data-reveal="cut">
       <div class="frame" style="aspect-ratio:3/2">
-        <img src="../media/plates/mono-grain-900.jpg" srcset="../media/plates/mono-grain-900.jpg 900w, ../media/plates/mono-grain.jpg 1800w" sizes="(min-width:900px) 34vw, 70vw" width="1800" height="1200" alt="A black-and-white field of light and heavy film grain" loading="lazy" decoding="async">
+        <img src="../media/stills/m-studio.jpg" width="490" height="960" alt="Two subjects in a white studio" loading="lazy" decoding="async" style="object-position:50% 46%">
       </div>
-      <figcaption><b>Black &amp; White</b>2023 · Photography</figcaption>
+      <figcaption><b>Studio</b>Showreel · Direction, Camera, Edit</figcaption>
     </figure>
     <figure class="pf pf-3" data-reveal="cut">
-      <div class="frame" style="aspect-ratio:4/5">
-        <img src="../media/plates/dusk-haze-800.jpg" srcset="../media/plates/dusk-haze-800.jpg 800w, ../media/plates/dusk-haze.jpg 1400w" sizes="(min-width:900px) 24vw, 48vw" width="1400" height="1750" alt="Amber haze and drifting dust in evening light" loading="lazy" decoding="async">
+      <div class="frame pf-jp" style="aspect-ratio:4/5">
+        <img src="../media/photos/jp-portrait-4x5-800.jpg" srcset="../media/photos/jp-portrait-4x5-800.jpg 800w, ../media/photos/jp-portrait-4x5.jpg 1046w" sizes="(min-width:900px) 24vw, 48vw" width="1046" height="1308" alt="JP Silva laughing in a sunlit field" loading="lazy" decoding="async">
       </div>
-      <figcaption><b>Production Stills</b>2025 · Behind the scenes</figcaption>
+      <figcaption><b>JP Silva</b>Austin since 2025</figcaption>
     </figure>
   </div>
 </section>
 
 <!-- 6 · ABOUT -->
 <section class="about" id="about" aria-labelledby="about-h">
-  <p class="kicker"><b>04</b>About</p>
   <h2 class="about-name" id="about-h" data-reveal="stamp">JP Silva</h2>
   <i class="rule" data-reveal="rule" aria-hidden="true"></i>
   <div class="about-body">
@@ -209,13 +210,11 @@
 
 <!-- 7 · CONTACT -->
 <section class="contact" id="contact" aria-labelledby="contact-h">
-  <p class="kicker"><b>05</b>Contact</p>
   <h2 class="contact-h" id="contact-h" data-reveal="stamp">Got a show? A video? A tour?</h2>
-  <a class="contact-ig" href="https://www.instagram.com/jp.media/" rel="noopener" target="_blank" data-reveal="stamp">@jp.media</a>
+  <a class="contact-ig" href="https://www.instagram.com/jp.media/" rel="noopener" target="_blank" data-reveal="stamp" aria-label="Instagram @jp.media">@jp.media</a>
   <div class="contact-row">
     <button type="button" class="btn-email" id="email-btn" aria-describedby="email-note">Email</button>
     <span class="email-note" id="email-note" role="status">Enabled at launch</span>
-    <span class="contact-ig-sm">Instagram <a href="https://www.instagram.com/jp.media/" rel="noopener" target="_blank">@jp.media</a></span>
   </div>
 </section>
 
@@ -229,8 +228,7 @@
     </div>
   </div>
   <div class="foot-row">
-    <p class="foot-note">Private concept preview. Plates are procedural stand-ins for JP's stills and footage; titles are working labels.</p>
-    <p class="foot-credit">Website design study — JP Web Design</p>
+    <p class="foot-note">Private concept preview. Footage and stills are JP's own, cut from his films; titles are working labels.</p>
   </div>
 </footer>
 

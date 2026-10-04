@@ -1,12 +1,14 @@
 /* ============================================================
    CONCEPT 06 — STILL · quiet cinema
-   One frame at a time. No accent colour: the plates are the only colour.
-   Type: Newsreader 200/300 (display, about) · Hanken Grotesk 300/400 (voice)
+   One frame at a time. No accent colour: the frames are the only colour.
+   Type: Newsreader 300 (display, about) · Hanken Grotesk 300/400 (voice)
    Labels: 11px / .22em / uppercase.  Motion: opacity + scale(1.02→1) only.
    Entrance (key c06): 0 white · 400 frame · 1400 caption · 2200 name + Index · 3000 done.
+   Media: JP's real stills (512px sources) shown at or near 1:1, never stretched;
+   the one loop (fd-headlights) sits inside the black room at ≤ 60vw on desktop.
    ============================================================ */
 :root{
-  --white:#FAFAF8; --graphite:#1A1A1A; --mist:#9A9A96; --line:rgba(26,26,26,.12); --room:#0A0A0A;
+  --white:#FAFAF8; --graphite:#1A1A1A; --mist:#6F6F6B; --line:rgba(26,26,26,.12); --room:#0A0A0A;
   --serif:"Newsreader","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
   --sans:"Hanken Grotesk","Helvetica Neue",Helvetica,Arial,sans-serif;
   --gx:6vw;                                   /* room side margin */
@@ -15,7 +17,7 @@
   --t-still:1.6s; --t-cap:1.2s;
   --nav-h:44px; --study-gap:72px;
 }
-@media (max-width:899px){:root{--gx:16px}}
+@media (max-width:899px){:root{--gx:16px;--study-gap:92px}}
 
 html{background:var(--white);scroll-behavior:smooth;scroll-padding-top:0}
 html.is-opening{overflow:hidden}
@@ -28,7 +30,7 @@ body.lock{overflow:hidden}
 .label{font:300 var(--fs-label)/1.5 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--mist)}
 .sep{color:var(--mist);padding:0 .1em}
 .skip{position:absolute;top:-100px;left:var(--gx);z-index:1000;background:var(--graphite);color:var(--white);
-  padding:12px 16px;font:400 12px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase}
+  display:inline-flex;align-items:center;min-height:44px;padding:15px 16px;font:400 12px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase}
 .skip:focus{top:12px}
 
 /* ---- The one nav item: Index, top-right, always reachable --------------- */
@@ -43,6 +45,7 @@ body.lock{overflow:hidden}
 .room{position:relative;min-height:100svh;background:var(--white)}
 .still{margin:0}
 .frame{background:#e9e9e6}                   /* white room: an empty frame reads as paper, not a hole */
+.frame img{object-position:50% 50%}
 .cap{display:block;margin-top:14px;max-width:34ch}
 .cap-title{display:block;font:300 var(--fs-title)/1.2 var(--serif);font-variation-settings:"opsz" 24;color:var(--graphite);margin-bottom:6px}
 .cap .label{display:block}
@@ -51,7 +54,9 @@ body.lock{overflow:hidden}
 .hero{display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:var(--nav-h) var(--gx) calc(var(--study-gap) + 56px);}
 .hero-still{display:flex;flex-direction:column;align-items:center;width:min(86vw,calc(52svh * 1.5));}
-.hero-still .frame{width:100%}
+.hero-still .frame{width:100%;background:transparent}      /* the frame fades up from the page white, not from a grey card */
+.is-opened .hero-still .frame{background:#e9e9e6}
+.hero-still img{object-position:50% 38%}
 .hero-cap{margin-top:18px;text-align:center;color:var(--graphite)}
 .hero-cap .sep{color:var(--mist)}
 .hero-name{position:absolute;left:var(--gx);bottom:calc(var(--study-gap) + env(safe-area-inset-bottom,0px))}
@@ -59,62 +64,72 @@ body.lock{overflow:hidden}
 .roles{margin-top:6px;font:300 13px/1.4 var(--sans);color:var(--mist);letter-spacing:.01em}
 @media (min-width:900px){
   .hero{padding-bottom:var(--nav-h)}
-  .hero-still{width:min(46vw,calc(62svh * 1.5))}
+  .hero-still{width:min(46vw,calc(62svh * 1.5))}      /* ≈ 660px at 1440: the still at 1:1 */
   .hero-name{bottom:calc(var(--gx) * .66)}
 }
 
-/* 2 · LAND : 4:5 frame left (cols 1–5), caption right (cols 8–11) --------- */
-.r-land{display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px;align-items:center;align-content:center;padding:12svh var(--gx)}
-.r-land .still{grid-column:1/13;display:contents}
-.r-land .frame{grid-column:1/-1;width:min(70vw,calc(60svh * .8))}
-.r-land .cap{grid-column:1/-1;margin-top:18px}
+/* 2 · FOREST : 4:5 frame left (cols 1–5), caption right (cols 8–11) ------- */
+.r-forest{display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px;align-items:center;align-content:center;padding:12svh var(--gx)}
+.r-forest .still{grid-column:1/13;display:contents}
+.r-forest .frame{grid-column:1/-1;width:min(70vw,calc(60svh * .8))}
+.r-forest img{object-position:50% 22%}
+.r-forest .cap{grid-column:1/-1;margin-top:18px}
 @media (min-width:900px){
-  .r-land{padding:0 var(--gx)}
-  .r-land .frame{grid-column:1/6;width:min(100%,calc(80svh * .8));align-self:center}
-  .r-land .cap{grid-column:8/12;align-self:center;margin:0}
+  .r-forest{padding:0 var(--gx)}
+  .r-forest .frame{grid-column:1/6;width:min(100%,calc(80svh * .8));align-self:center}
+  .r-forest .cap{grid-column:8/12;align-self:center;margin:0}
 }
 
-/* 3 · POR : one small 2:3 frame in a huge white field --------------------- */
-.r-por{padding:40svh 0 14svh}
-.r-por .still{margin-left:calc(100% - 44vw - var(--gx));width:44vw}
-.r-por .cap{margin-top:14px;max-width:none}
+/* 3 · LIVE : one small 2:3 frame in a huge white field --------------------- */
+.r-live{padding:40svh 0 14svh}
+.r-live .still{margin-left:48%;width:44vw}             /* 48% + 44vw = 92%: it floats, it does not hug the gutter */
+.r-live .cap{margin-top:14px;max-width:none}
 @media (min-width:900px){
-  .r-por{padding:40svh 0 10svh}
-  .r-por .still{margin-left:62%;width:18vw}
+  .r-live{padding:40svh 0 10svh}
+  .r-live .still{margin-left:62%;width:18vw}
 }
 
 /* 4 · FILM : the one black room ----------------------------------------- */
-.r-film{background:var(--room);color:var(--white);overflow:hidden;--grain-opacity:.03;--grain-blend:screen;--grain-z:3;
+.r-film{background:var(--room);color:var(--white);--mist:#9A9A96;overflow:hidden;--grain-opacity:.03;--grain-blend:screen;--grain-z:3;
   display:flex;align-items:center;justify-content:center;padding:14svh var(--gx) calc(14svh + 56px)}
 .r-film .still{width:86vw;max-width:none}
 .r-film .frame{aspect-ratio:16/9;width:100%;background:#141414}
+.r-film .frame img,.r-film .frame video{object-position:50% 72%}
 .r-film .film-cap{position:absolute;left:var(--gx);bottom:calc(var(--study-gap) + 12px + env(safe-area-inset-bottom,0px));margin:0;max-width:none;color:var(--mist)}
 .r-film .film-cap .sep{color:rgba(154,154,150,.55)}
 @media (min-width:900px){
   .r-film{padding:0 var(--gx)}
-  .r-film .still{width:min(86vw,calc(74svh * 2.333))}
+  .r-film .still{width:min(60vw,calc(74svh * 2.333))}   /* ≤ 60vw: an 846px source never stretched across the room */
   .r-film .frame{aspect-ratio:21/9}
   .r-film .film-cap{bottom:calc(var(--gx) * .66)}
 }
 
-/* 5 · TOUR : 3:2 frame anchored bottom-right, caption top-left ----------- */
-.r-tour{display:flex;flex-direction:column;padding:calc(var(--gx) + 56px) var(--gx) calc(var(--study-gap) + 8px)}
-.r-tour .still{display:flex;flex-direction:column;flex:1 1 auto;min-height:calc(100svh - var(--gx) - 56px - var(--study-gap) - 8px)}
-.r-tour .cap{margin:0;align-self:flex-start}
-.r-tour .frame{width:80vw;margin-top:auto;margin-left:auto}
+/* 5 · ROAD : 3:2 frame anchored bottom-right, caption top-left ----------- */
+.r-road{display:flex;flex-direction:column;padding:calc(var(--gx) + 56px) var(--gx) calc(var(--study-gap) + 8px)}
+.r-road .still{display:flex;flex-direction:column;flex:1 1 auto;min-height:calc(100svh - var(--gx) - 56px - var(--study-gap) - 8px)}
+.r-road .cap{margin:0;align-self:flex-start}
+.r-road .frame{width:80vw;margin-top:auto;margin-left:auto}
+.r-road img{object-position:50% 60%}
 @media (min-width:900px){
-  .r-tour{padding:var(--gx)}
-  .r-tour .still{min-height:calc(100svh - var(--gx) * 2)}
-  .r-tour .frame{width:min(52vw,calc(66svh * 1.5))}
+  .r-road{padding:var(--gx)}
+  .r-road .still{min-height:calc(100svh - var(--gx) * 2)}
+  .r-road .frame{width:min(46vw,calc(66svh * 1.5))}
 }
 
-/* 6 · ABOUT : one paragraph, column 2, nothing else ----------------------- */
+/* 6 · ABOUT : one paragraph at column 2, one monochrome portrait at the right ---- */
 .r-about{display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px;align-items:center;padding:16svh var(--gx)}
 .about-col{grid-column:1/13}
 .about-p{max-width:27em;font:300 var(--fs-about)/1.35 var(--serif);font-variation-settings:"opsz" 30;letter-spacing:-.002em;color:var(--graphite);text-wrap:pretty}
 .origin{margin-top:28px;color:var(--mist)}
 .origin .arrow{display:inline-block;padding:0 .4em;font-weight:300;letter-spacing:0;transform:translateY(-.04em)}
-@media (min-width:900px){.r-about{padding:0 var(--gx)}.about-col{grid-column:2/12}}
+.about-still{grid-column:1/13;grid-row:1;width:44vw;margin:0 0 40px}
+.about-col{grid-row:2}
+.about-still img{object-position:50% 30%;filter:grayscale(1) contrast(1.05)}
+@media (min-width:900px){
+  .r-about{padding:0 var(--gx);align-items:end}
+  .about-col{grid-column:2/8;grid-row:1;padding-bottom:4svh}
+  .about-still{grid-column:9/12;grid-row:1;width:100%;margin:0 0 4svh}
+}
 
 /* 7 · INDEX : the quiet list ---------------------------------------------- */
 .index-sec{padding:14svh var(--gx) 10svh}
@@ -125,7 +140,9 @@ body.lock{overflow:hidden}
   align-items:baseline;column-gap:16px;min-height:56px;padding:12px 0}
 .ix-title{grid-area:t;font:300 var(--fs-index)/1.25 var(--serif);font-variation-settings:"opsz" 20;color:var(--graphite)}
 .ix-label{grid-area:l;font:300 var(--fs-label)/1.5 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--mist);margin-top:4px}
-.ix-year{grid-area:y;font:300 13px/1.25 var(--sans);color:var(--mist);letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.ix-meta{grid-area:y;font:300 13px/1.25 var(--sans);color:var(--mist);letter-spacing:.04em;text-align:right}
+.index-list .ix-row{cursor:default}
+.index-list .ix-row .ix-title{color:var(--mist)}       /* in the index only: the hierarchy tells the truth */
 .index-list a:hover .ix-title,.index-list a:focus-visible .ix-title{text-decoration:underline;text-underline-offset:.22em;text-decoration-thickness:1px;text-decoration-color:var(--mist)}
 .index-list a:focus-visible{outline-offset:-2px}
 @media (min-width:900px){
@@ -134,7 +151,6 @@ body.lock{overflow:hidden}
   .index-list{margin-left:calc((100% - 24px * 11) / 12 + 24px)}   /* start at column 2, like the paragraph */
   .index-list a,.index-list .ix-row{grid-template-columns:minmax(0,5fr) minmax(0,4fr) auto;grid-template-areas:"t l y";min-height:64px;padding:16px 0}
   .ix-label{margin-top:0}
-  .ix-year{text-align:right}
 }
 
 /* 8 · CONTACT + CREDITS --------------------------------------------------- */
@@ -153,7 +169,8 @@ body.lock{overflow:hidden}
   .contact{padding:4svh var(--gx) 12svh}
   .contact-list{margin-left:calc((100% - 24px * 11) / 12 + 24px)}
   .contact h2{margin-left:calc((100% - 24px * 11) / 12 + 24px)}
-  .credits{max-width:none;grid-template-columns:1fr 1fr 1fr;gap:24px;padding-bottom:calc(var(--study-gap) + 40px)}
+  .credits{max-width:none;grid-template-columns:1fr 2fr;gap:24px;padding-bottom:calc(var(--study-gap) + 40px)}
+  .credits .note{max-width:60ch}
 }
 
 /* ---- Index overlay: white, the list again ------------------------------ */
@@ -168,9 +185,11 @@ body.lock{overflow:hidden}
 .ov-foot a{display:inline-block;padding:16px 0;margin:-16px 0;text-decoration:underline;text-underline-offset:.4em;text-decoration-thickness:1px;color:var(--graphite)}
 @media (min-width:900px){.ov-inner{padding-left:calc(var(--gx) + (100vw - var(--gx) * 2 - 24px * 11) / 12 + 24px)}}
 
-/* ---- Skip hint (base positions it; recolour for a white page) ------------ */
-.skip-hint{color:var(--mist);font-family:var(--sans);font-weight:300;right:auto;left:var(--gx);bottom:auto;top:calc(27px + env(safe-area-inset-top,0px))}
-@media (min-width:900px){.skip-hint{left:auto;top:auto;right:var(--gx);bottom:calc(var(--gx) * .66 + 6px)}}
+/* ---- Skip hint: arrives late, leaves before the name, never shares an edge with Index ---- */
+.skip-hint{color:var(--mist);font-family:var(--sans);font-weight:300;right:auto;left:var(--gx);top:auto;
+  bottom:calc(var(--study-gap) + 64px + env(safe-area-inset-bottom,0px));transition:opacity .6s ease 1.2s}
+html.o3 .skip-hint{opacity:0;transition-delay:0s}
+@media (min-width:900px){.skip-hint{left:auto;right:var(--gx);bottom:calc(var(--gx) * .66 + 6px)}}
 
 /* ======================================================================
    MOTION · hide-states exist only under html.js-anim.

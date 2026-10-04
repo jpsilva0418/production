@@ -7,7 +7,7 @@
   /* 1 ─ Entrance (key c02). Classes land on <html>; concept.css reads them.
         0 gutter draws · 600 words rise · 1500 gutter opens + plate drops (long) · 2300 running head. */
   var seq = JP.sequence({
-    key: 'c02', tail: 600,
+    key: 'c02', tail: 600, skipAfter: 1,
     steps: [
       { at: 0, add: 'p0' },
       { at: 600, add: 'p1' },
@@ -16,7 +16,16 @@
     ]
   });
   var started = false;
-  function go() { if (started) return; started = true; seq.start(); }
+  /* a tap during the font wait must skip too: arm it before the sequence has started */
+  function earlySkip() { go(); seq.skip(); }
+  function onEarlyKey(ev) { if (ev.key === 'Enter' || ev.key === ' ' || ev.key === 'Escape') earlySkip(); }
+  d.addEventListener('pointerdown', earlySkip, { passive: true });
+  d.addEventListener('keydown', onEarlyKey);
+  function go() {
+    if (started) return; started = true;
+    d.removeEventListener('pointerdown', earlySkip); d.removeEventListener('keydown', onEarlyKey);
+    seq.start();
+  }
   /* the gutter needs no font: draw it now. The words wait for Fraunces so they rise in the right face, never past 700 ms */
   if (!JP.reduced) root.classList.add('p0');
   if (d.fonts && d.fonts.ready && d.fonts.ready.then) { d.fonts.ready.then(go, go); setTimeout(go, 700); }

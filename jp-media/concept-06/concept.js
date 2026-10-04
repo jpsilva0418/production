@@ -14,7 +14,7 @@
         { at: 2200, add: 'o3' }
       ],
       tail: 800,
-      skipAfter: 500
+      skipAfter: 250
     }).start();
   } else {
     root.classList.add('is-opened');
@@ -27,7 +27,7 @@
     list.innerHTML = src.innerHTML;
     var last = null, isOpen = false;
     function focusables() {
-      return Array.prototype.filter.call(ov.querySelectorAll('a[href],button:not([disabled])'), function (e) { return e.offsetParent !== null; });
+      return Array.prototype.filter.call(ov.querySelectorAll('a[href],button:not([disabled])'), function (e) { return e.getClientRects().length > 0 && getComputedStyle(e).visibility !== 'hidden'; });
     }
     function show() {
       if (isOpen) return; isOpen = true; last = d.activeElement;

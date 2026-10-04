@@ -6,7 +6,7 @@
 
   /* 1 ─ Entrance: the exposure settles. Classes land on <html>; concept.css moves from the intro state. */
   JP.sequence({
-    key: 'c03', tail: 450,
+    key: 'c03', tail: 450, skipAfter: 250,
     steps: [
       { at: 0, add: 'p0' },                       /* blown out (already painted by CSS) */
       { at: 300, add: 'p1' },                     /* stop down: overlay 1 → 0 over 1.5 s */
@@ -17,12 +17,15 @@
     ]
   }).start();
 
-  /* 2 ─ Header: a hairline once the hero has scrolled 60px. */
+  /* 2 ─ Hero clip: fd-flare is a short edit of one scene, so it loops natively. No runtime seeking: the preview
+         host serves no byte ranges and video.seekable is empty there, so any data-start seek would clamp to 0. */
+
+  /* 3 ─ Header: a hairline once the hero has scrolled 60px. */
   var head = d.querySelector('.site-head');
   var leak = d.querySelector('.leak'), pass = d.querySelector('.leak-pass');
   JP.onFrame(function (s) {
     if (head) head.classList.toggle('is-scrolled', s.y > 60);
-    /* 3 ─ Light leak: a 40vw warm pass travels -40% → 140% of the section while it is in view (transform only). */
+    /* 4 ─ Light leak: a 40vw warm pass travels -40% → 140% of the section while it is in view (transform only). */
     if (pass && leak && !JP.reduced) {
       var pr = JP.progress(leak, s.vh);
       if (pr.inView) {
@@ -32,7 +35,7 @@
     }
   });
 
-  /* 4 ─ Landscape: the 14 s drift runs only while the frame is on screen (desktop, fine pointer; CSS gates the rest). */
+  /* 5 ─ Landscape: the 14 s drift runs only while the frame is on screen (desktop, fine pointer; CSS gates the rest). */
   var land = d.querySelector('.land');
   if (land && 'IntersectionObserver' in w) {
     new IntersectionObserver(function (es) {
@@ -40,7 +43,7 @@
     }, { threshold: 0.15 }).observe(land);
   }
 
-  /* 5 ─ Tour strip on touch: when the strip is a horizontal roll, all four frames flash in together (staggered)
+  /* 6 ─ Tour strip on touch: when the strip is a horizontal roll, all four frames flash in together (staggered)
          as soon as the strip enters the viewport, so nothing waits off-screen to the right. */
   var strip = d.querySelector('.road-strip');
   if (strip && 'IntersectionObserver' in w) {
@@ -59,7 +62,7 @@
     io.observe(strip);
   }
 
-  /* 6 ─ Email control is demo-safe: it only lights the note. */
+  /* 7 ─ Email control is demo-safe: it only lights the note. */
   var mail = d.querySelector('.mail-btn');
   if (mail) {
     var t = 0;

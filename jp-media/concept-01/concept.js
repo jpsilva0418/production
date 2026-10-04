@@ -12,7 +12,8 @@
   var desk = w.matchMedia ? w.matchMedia('(min-width:900px) and (pointer:fine)') : { matches: false };
 
   /* ── 1 · Entrance ─────────────────────────────────────────────── */
-  var name = $('.name'), band = $('.band'), opener = $('#opener'), tcEl = $('#tc');
+  var name = $('.name'), band = $('.band'), stage = $('#stage'), opener = $('#opener'), tcEl = $('#tc');
+  var wide = w.matchMedia ? w.matchMedia('(min-width:900px)') : { matches: false };
   var phase = 0, tcTimer = 0, frames = 0;
 
   function pad(n) { return (n < 10 ? '0' : '') + n; }
@@ -41,13 +42,33 @@
     void name.offsetWidth;
     name.style.transition = prevT;
   }
+  /* the letterbox opens to the clip on phones, to the whole 2.39 stage on desktop */
   function measureBars() {
-    if (!band) return;
-    var r = band.getBoundingClientRect(), vh = w.innerHeight, half = vh / 2;
+    var lb = wide.matches ? (stage || band) : band; if (!lb) return;
+    var r = lb.getBoundingClientRect(), vh = w.innerHeight, half = vh / 2;
     root.style.setProperty('--bt', Math.max(0, r.top / half).toFixed(4));
     root.style.setProperty('--bb', Math.max(0, (vh - r.bottom) / half).toFixed(4));
   }
   function prep() { measureName(); measureBars(); }
+
+  /* ── 1b · The showreel: plays once from the moment the letterbox opens, then freezes on its
+         last frame (the rooftop sunset) which stays as the hero still. ── */
+  var reel = $('#reel'), reelTC = $('#band-tc'), reelImg = band ? $('img', band) : null;
+  var LAST = '../media/stills/m-rooftop.jpg';
+  function reelFromTop() { if (reel && reel.readyState > 0 && reel.currentTime > 0.2) { try { reel.currentTime = 0; } catch (e) {} } }
+  if (reel && reelTC) {
+    reel.addEventListener('timeupdate', function () {
+      var t = reel.currentTime, s = Math.floor(t), f = Math.floor((t - s) * 24);
+      reelTC.textContent = '00:00:' + pad(s) + ':' + pad(f);
+    });
+    reel.addEventListener('playing', function () { var im = new Image(); im.src = LAST; }, { once: true });
+    reel.addEventListener('ended', function () {
+      root.classList.add('reel-ended');
+      if (reelImg) { reelImg.removeAttribute('srcset'); reelImg.src = LAST; }
+      /* the still underneath is the last frame: fade the player out and drop it so nothing can restart it */
+      setTimeout(function () { reel.classList.remove('is-playing'); setTimeout(function () { if (reel.parentNode) reel.remove(); }, 1000); }, 250);
+    });
+  }
 
   if (JP.sequence && name) {
     if (anim) {
@@ -61,11 +82,11 @@
       key: 'c01', tail: 400,
       steps: [
         { at: 0, add: 'p0', fn: function () { phase = 0; startTC(); } },
-        { at: 1100, add: 'p1', fn: function () { phase = 1; } },
-        { at: 1700, add: 'p2', fn: function () { phase = 2; } },
-        { at: 2600, add: 'p3', long: true, fn: function (instant) { phase = 3; if (!instant) measureBars(); } },
-        { at: 3300, add: 'p4', fn: function () { phase = 4; } },
-        { at: 3800, add: 'p5', fn: function () { phase = 5; } }
+        { at: 700, add: 'p1', fn: function () { phase = 1; } },
+        { at: 1150, add: 'p2', fn: function () { phase = 2; } },
+        { at: 1950, add: 'p3', long: true, fn: function (instant) { phase = 3; if (!instant) measureBars(); reelFromTop(); } },
+        { at: 2650, add: 'p4', fn: function () { phase = 4; } },
+        { at: 3100, add: 'p5', fn: function () { phase = 5; } }
       ],
       done: function () {
         stopTC();

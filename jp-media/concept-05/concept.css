@@ -4,22 +4,31 @@
    ------------------------------------------------------------
    TYPE   display  Anton 400, uppercase, lh .82, ls -.01em
           body     Bricolage Grotesque 400/600
-   SCALE  hero name   min(clamp(10rem,42vw,30rem), 40svh)
-          big labels  17vw phone / 11vw desktop
-          statement   clamp(3.6rem,14vw,13rem)
+   SCALE  hero name   min(clamp(9rem,40vw,30rem), 40svh) phone · 40svh desktop
+          big labels  15.5vw phone / 11vw desktop
+          statement   clamp(2.4rem,11.5vw,13rem) phone · clamp(3.6rem,13vw,13rem) desktop
           titles      clamp(2.4rem,7vw,5.5rem)
           labels      10–13px, .08–.14em, uppercase
    PALETTE black #0B0B0B · paper #F3F1EC (portraits only) · red #FF2E1F
           smoke #6F6F6B · line rgba(243,241,236,.16)
+   MEDIA  hero 9:16 column = m-concert then m-bokeh, sequenced, one playing
+          grid = m-concert · m-bokeh · nr-headlight · m-horse · fd-dance (clip)
+          strip = fd-flare · w-ride · nr-silhouette · ch-ride (stills)
+          portraits = w-portrait · m-studio · photos/jp-portrait-4x5 (hi-con)
    ENTRANCE (key c05, ≈3.1 s) — the count-in, no sound
-          200/500/800/950/1100/1250  count stamps, 120 ms each (n1..n4)
-          1250–1310                  red full-screen flash (fl)
-          1400  DOWNBEAT   h-jp     JP slams in, stage frame + loop cut in
+          200/500/800/950/1100/1250  count stamps (n1..n4), 140–160 ms
+          1100 + 1250                'pre': the stage column flickers through
+          1250–1310                  red full-screen flash (fl); the 4 holds
+          1400  DOWNBEAT   h-jp     JP slams in, stage column cuts in
           1900             h-silva  SILVA slams in
           2300             h-mq     marquee starts
           2700             h-hd     header, hero foot
           end  = hero. Tap skips. Hide-states only under .js-anim.
    ============================================================ */
+
+/* Size-adjusted local fallback so SILVA / SOUNDCHECK / PORTRAITS keep their
+   width while Anton swaps in (or when the font CDN is unreachable). */
+@font-face{font-family:"Anton Fallback";src:local("Impact"),local("Arial Narrow Bold"),local("Roboto Condensed Bold"),local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Bold"),local("Helvetica-Bold"),local("Liberation Sans Bold"),local("LiberationSans-Bold"),local("DejaVu Sans Bold"),local("DejaVuSans-Bold"),local("Arial");size-adjust:73%;ascent-override:95%;descent-override:25%}
 
 :root{
   --black:#0B0B0B;
@@ -27,10 +36,10 @@
   --red:#FF2E1F;
   --smoke:#6F6F6B;
   --line:rgba(243,241,236,.16);
-  --display:"Anton","Impact","Arial Narrow",sans-serif;
+  --display:"Anton","Anton Fallback",sans-serif;
   --body:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
   --gutter:clamp(16px,4vw,56px);
-  --hero-size:min(clamp(10rem,42vw,30rem),40svh);
+  --hero-size:min(clamp(9rem,40vw,30rem),40svh);
   --grain-opacity:.06;
   --grain-blend:screen;
 }
@@ -47,10 +56,9 @@ body{background:var(--black);color:var(--paper);font:400 15px/1.45 var(--body)}
 /* ---- Shared bits ----------------------------------------------- */
 .tag{display:inline-block;font:600 10px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;background:var(--red);color:var(--black);padding:4px 6px 3px;white-space:nowrap}
 .kicker{display:flex;align-items:center;gap:12px;font:600 11px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--smoke)}
-.kicker b{color:var(--red);font-weight:600}
+.kicker::before{content:"";width:8px;height:8px;background:var(--red)}
 .sec-head{display:flex;flex-direction:column;gap:14px;margin-bottom:clamp(28px,5vh,56px)}
-.sec-head-row{flex-direction:row;justify-content:space-between;align-items:flex-end}
-.sec-head-row>div:first-child{display:flex;flex-direction:column;gap:14px}
+.sec-head-row{flex-direction:row;justify-content:space-between;align-items:flex-end;gap:16px}
 .sec-title{font:400 clamp(2.4rem,7vw,5.5rem)/.85 var(--display);text-transform:uppercase;letter-spacing:-.01em}
 section{padding:clamp(72px,12vh,140px) var(--gutter)}
 
@@ -63,15 +71,17 @@ section{padding:clamp(72px,12vh,140px) var(--gutter)}
 .opener{position:fixed;inset:0;z-index:800;background:var(--black);display:none}
 .js-anim .opener{display:block}
 .js-anim.h-jp .opener,.js-anim.is-opened .opener{display:none}
-.count{position:absolute;right:var(--gutter);bottom:calc(6vh + env(safe-area-inset-bottom,0px));font:400 clamp(3rem,12vw,9rem)/.82 var(--display);color:var(--paper);visibility:hidden}
+.opener.pre{background:transparent}
+.count{position:absolute;left:50%;bottom:50%;transform:translate(-50%,50%);font:400 min(60vw,70svh)/.82 var(--display);color:var(--paper);visibility:hidden}
 .opener.n1 .count-1,.opener.n2 .count-2,.opener.n3 .count-3,.opener.n4 .count-4{visibility:visible}
 .flash{position:absolute;inset:0;background:var(--red);opacity:0}
-.opener.fl .flash{opacity:.9}
+.opener.fl .flash{opacity:1}
 .skip-hint{right:auto;left:var(--gutter);font-family:var(--body);font-weight:600}
 
 /* Hero hide-states exist only while the entrance runs. */
 .js-anim:not(.is-opened):not(.h-jp) .hero-jp,
 .js-anim:not(.is-opened):not(.h-jp) .hero-frame{visibility:hidden}
+html.js-anim .opener.pre~main .hero-frame{visibility:visible}
 .js-anim:not(.is-opened):not(.h-silva) .hero-silva{visibility:hidden}
 .js-anim:not(.is-opened):not(.h-mq) .hero-mq{visibility:hidden}
 .js-anim:not(.is-opened):not(.h-hd) .hd,
@@ -107,14 +117,18 @@ html.menu-open{overflow:hidden}
 
 /* ---- 1 · HERO --------------------------------------------------- */
 .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;padding:calc(72px + env(safe-area-inset-top,0px)) var(--gutter) calc(68px + env(safe-area-inset-bottom,0px));overflow:hidden}
-.hero-frame{position:absolute;z-index:1;top:calc(56px + env(safe-area-inset-top,0px));right:0;width:48vw;background:#1a0806}
-.hero-name{position:relative;z-index:2;display:flex;flex-direction:column;font:400 var(--hero-size)/.82 var(--display);text-transform:uppercase;letter-spacing:-.01em;margin:9svh 0 0}
+/* phones: the stage column runs the full height of the screen, right edge */
+.hero-frame{position:absolute;z-index:1;top:calc(56px + env(safe-area-inset-top,0px));bottom:calc(150px + env(safe-area-inset-bottom,0px));right:0;width:48vw;background:#120a08}
+.hero-frame>img{object-position:56% 50%}
+.hero-frame>video{object-position:56% 50%;opacity:0;transition:none}
+.hero-frame>video.is-playing{opacity:1}
+.hero-name{position:relative;z-index:2;display:flex;flex-direction:column;font:400 var(--hero-size)/.82 var(--display);text-transform:uppercase;letter-spacing:-.01em;margin:8svh 0 0}
 .hero-jp,.hero-silva{display:block;transform-origin:left top}
-.hero-mq{position:relative;z-index:2;margin:22px calc(-1*var(--gutter)) 0;order:3}
-.hero-foot{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-top:auto;padding-top:40px;order:2}
-.hero-meta{max-width:30ch;font:400 14px/1.4 var(--body);color:var(--smoke)}
+.hero-silva{padding-top:.07em}
+.hero-mq{position:relative;z-index:2;margin:24px calc(-1*var(--gutter)) 0;order:2;background:var(--black)}
+.hero-foot{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-top:auto;padding-top:40px;order:3}
+.hero-meta{max-width:28ch;font:400 14px/1.4 var(--body);color:var(--smoke)}
 .hero-meta .tag{margin-right:10px;vertical-align:1px}
-.hero-coords{font:600 11px/1.35 var(--body);letter-spacing:.08em;text-align:right;color:var(--smoke);white-space:nowrap}
 
 /* ---- 2 · ON STAGE: the broken grid ----------------------------- */
 .stage{padding-bottom:clamp(56px,8vh,96px);overflow:hidden}
@@ -129,42 +143,44 @@ html.menu-open{overflow:hidden}
 .sf-4{grid-column:2;grid-row:5;z-index:2;margin-top:-6px}
 .sf-5{grid-column:1;grid-row:5;align-self:end;margin-right:-16px;margin-bottom:44px;z-index:3}
 .big-3{grid-column:1/3;grid-row:6;z-index:4;margin-top:-.34em}
-.sf figcaption{position:absolute;left:10px;bottom:10px;z-index:2;display:flex;align-items:center;gap:8px;font:600 10px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--paper);text-shadow:0 1px 0 rgba(0,0,0,.5)}
+.sf figcaption{position:absolute;left:10px;right:10px;bottom:10px;z-index:2;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;font:600 10px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--paper);text-shadow:0 1px 0 rgba(0,0,0,.6)}
 .sf-3 figcaption{bottom:auto;top:10px}
 .stage-note{margin-top:clamp(32px,6vh,72px);max-width:44ch;font:400 15px/1.45 var(--body);color:var(--smoke)}
 
 /* ---- 3 · MUSIC VIDEOS: the strip ------------------------------- */
 .mv{padding-bottom:clamp(40px,6vh,80px);overflow:hidden}
-.mv-ctl{display:none;gap:8px}
-.mv-btn{width:48px;height:48px;border:1px solid var(--line);font:400 20px/1 var(--body);color:var(--paper);display:inline-flex;align-items:center;justify-content:center}
-.mv-btn:hover{background:var(--paper);color:var(--black)}
+.mv-next{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 2px 2px;font:600 12px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--paper);border-bottom:1px solid var(--paper);white-space:nowrap}
+.mv-next i{font-style:normal;color:var(--red)}
+.mv-next:hover{color:var(--red);border-color:var(--red)}
 .strip{display:flex;gap:clamp(16px,3vw,40px);overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;margin:0 calc(-1*var(--gutter));padding:0 var(--gutter) 8px;scroll-padding-left:var(--gutter)}
 .strip::-webkit-scrollbar{display:none}
 .mv-item{position:relative;flex:0 0 78vw;scroll-snap-align:start}
 .mv-item:last-child{margin-right:var(--gutter)}
 .mv-frame{background:#141210}
-.mv-label{position:absolute;top:12px;left:12px;z-index:3;display:flex;align-items:center;gap:10px;font:600 10px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--paper);text-shadow:0 1px 0 rgba(0,0,0,.5)}
-.mv-title{position:relative;z-index:2;font:400 clamp(2.6rem,11vw,5rem)/.82 var(--display);text-transform:uppercase;letter-spacing:-.01em;white-space:nowrap;margin-top:-.41em;padding-left:.04em}
+.mv-label{position:absolute;top:12px;left:12px;z-index:3;display:flex;align-items:center;gap:10px;font:600 10px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--paper);text-shadow:0 1px 0 rgba(0,0,0,.6)}
+.mv-title{position:relative;z-index:2;font:400 clamp(2.6rem,11vw,5rem)/.82 var(--display);text-transform:uppercase;letter-spacing:-.01em;margin-top:-.41em;padding-left:.04em;text-wrap:balance}
 
 /* ---- 4 · KINETIC STATEMENT -------------------------------------- */
-.kin{padding:clamp(72px,12vh,140px) 0;min-height:100svh;display:flex;align-items:center;overflow:hidden}
+.kin{padding:clamp(96px,18vh,160px) 0;display:flex;align-items:center;overflow:hidden}
 .kin-wrap{width:100%;overflow:hidden;padding:.1em 0}
-.kin-line{font:400 clamp(3.6rem,14vw,13rem)/.9 var(--display);text-transform:uppercase;letter-spacing:-.01em;white-space:nowrap;padding-left:var(--gutter);will-change:transform}
+.kin-line{font:400 clamp(2.4rem,11.5vw,13rem)/.9 var(--display);text-transform:uppercase;letter-spacing:-.01em;white-space:nowrap;padding-left:var(--gutter);will-change:transform}
 .kin-1{margin-left:0}
-.kin-2{margin-left:-14vw;color:transparent;-webkit-text-stroke:1px var(--paper)}
+.kin-2{margin-left:-8vw;color:transparent;-webkit-text-stroke:1.5px var(--paper)}
 .kin-2 span{color:var(--red);-webkit-text-stroke:0}
-.kin-3{margin-left:10vw}
+.kin-3{margin-left:8vw}
+/* at rest (no JS, reduced motion) the outlined line sits on the gutter: nothing clipped */
+html:not(.js-anim) .kin-2{margin-left:0}
 
 /* ---- 5 · PORTRAITS: the drop to paper -------------------------- */
 .por{background:var(--paper);color:var(--black);position:relative;overflow:hidden;padding-top:0;padding-bottom:clamp(80px,14vh,160px)}
 .por-big{font:400 clamp(5rem,22vw,20rem)/.82 var(--display);text-transform:uppercase;letter-spacing:-.01em;white-space:nowrap;margin:-.24em 0 0 -.03em}
 .por-row{display:flex;flex-direction:column;gap:18px;margin:clamp(20px,4vh,40px) 0 clamp(36px,6vh,72px)}
 .kicker-dark{color:var(--black)}
-.kicker-dark b{color:var(--red)}
 .por-intro{font:400 15px/1.45 var(--body);max-width:40ch}
 .por-grid{display:grid;grid-template-columns:repeat(12,1fr);column-gap:12px}
 .pf{position:relative}
 .pf .frame{border:2px solid var(--black);background:var(--paper)}
+.pf-jp>img{object-position:50% 30%;filter:contrast(1.25) saturate(.85)}
 .pf figcaption{display:flex;flex-direction:column;gap:3px;margin-top:10px;font:400 12px/1.3 var(--body);color:var(--black)}
 .pf figcaption b{font-weight:600;letter-spacing:.06em;text-transform:uppercase}
 .pf-1{grid-column:1/8;z-index:1}
@@ -172,7 +188,7 @@ html.menu-open{overflow:hidden}
 .pf-3{grid-column:1/7;margin-top:28px;z-index:3}
 
 /* ---- 6 · ABOUT ------------------------------------------------- */
-.about-name{font:400 clamp(4rem,18vw,16rem)/.82 var(--display);text-transform:uppercase;letter-spacing:-.01em;margin-top:22px}
+.about-name{font:400 clamp(4rem,18vw,16rem)/.82 var(--display);text-transform:uppercase;letter-spacing:-.01em}
 .rule{display:block;height:4px;background:var(--red);margin:18px 0 clamp(32px,5vh,56px);transform-origin:left center}
 .about-body{display:grid;gap:40px}
 .about-bio p{font:400 clamp(16px,1.25vw,19px)/1.5 var(--body);max-width:52ch}
@@ -182,7 +198,7 @@ html.menu-open{overflow:hidden}
 
 /* ---- 7 · CONTACT ------------------------------------------------ */
 .contact{padding-bottom:clamp(64px,10vh,120px)}
-.contact-h{font:400 clamp(2.4rem,8vw,7rem)/.85 var(--display);text-transform:uppercase;letter-spacing:-.01em;max-width:13ch;margin-top:22px}
+.contact-h{font:400 clamp(2.4rem,8vw,7rem)/.85 var(--display);text-transform:uppercase;letter-spacing:-.01em;max-width:13ch}
 .contact-ig{display:inline-block;font:400 clamp(3.4rem,12vw,11rem)/1 var(--display);letter-spacing:-.01em;margin-top:clamp(28px,5vh,56px);border-bottom:4px solid var(--red);padding-bottom:.02em}
 .contact-ig:hover{color:var(--red);border-color:var(--paper)}
 .contact-row{display:flex;align-items:center;gap:20px 28px;flex-wrap:wrap;margin-top:clamp(28px,5vh,56px);font:400 14px/1 var(--body);color:var(--smoke)}
@@ -190,9 +206,6 @@ html.menu-open{overflow:hidden}
 .btn-email:hover{background:var(--paper);color:var(--black)}
 .email-note{font:600 11px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--smoke);margin-left:-8px}
 .email-note.is-hit{color:var(--red);animation:slam .12s steps(2) both}
-.contact-ig-sm{display:inline-flex;align-items:center;gap:6px}
-.contact-ig-sm a{display:inline-flex;align-items:center;min-height:44px;color:var(--paper);border-bottom:1px solid var(--line)}
-.contact-ig-sm a:hover{border-color:var(--red)}
 
 /* ---- Footer ------------------------------------------------------ */
 .foot{padding:0 0 calc(84px + env(safe-area-inset-bottom,0px))}
@@ -217,11 +230,18 @@ html.menu-open{overflow:hidden}
 
 /* ---- Desktop ------------------------------------------------------- */
 @media (min-width:900px){
-  .hero{padding-top:calc(80px + env(safe-area-inset-top,0px))}
-  .hero-frame{top:-8vh;right:auto;left:60%;width:26vw;z-index:1}
+  :root{--hero-size:min(clamp(10rem,42vw,30rem),40svh)}
+  .count{left:auto;bottom:calc(6vh + env(safe-area-inset-bottom,0px));right:var(--gutter);transform:none;font-size:clamp(6rem,18vw,14rem)}
+  .hero{padding-top:calc(80px + env(safe-area-inset-top,0px));padding-bottom:calc(28px + env(safe-area-inset-bottom,0px));min-height:max(100svh,calc(28vw * 16 / 9 + 180px))}
+  /* the stage column bleeds off the top and the right edge, 28vw ≈ source width at 1440 */
+  .hero-frame{top:-8vh;bottom:auto;right:0;left:auto;width:28vw;aspect-ratio:9/16;z-index:1}
+  .hero-frame>img,.hero-frame>video{object-position:50% 50%}
   .hero-name{margin:5svh 0 0}
-  .hero{padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))}
-  .hero-meta{max-width:40ch;font-size:15px}
+  .hero-silva{padding-top:0;margin-left:.55em}
+  .hero-mq{background:transparent}
+  /* meta docks under the column, flush with its left edge */
+  .hero-foot{position:absolute;left:72vw;right:var(--gutter);top:calc(28vw * 16 / 9 - 8vh + 22px);margin:0;padding:0;flex-direction:column;align-items:flex-start}
+  .hero-meta{max-width:none;font-size:15px}
 
   .stage-grid{grid-template-columns:repeat(12,1fr);column-gap:clamp(12px,1.6vw,24px)}
   .big{font-size:11vw}
@@ -233,28 +253,28 @@ html.menu-open{overflow:hidden}
   .sf-4{grid-column:9/12;grid-row:5/7;margin:-3vw 0 0 0;align-self:start;z-index:3}
   .sf-5{grid-column:1/6;grid-row:5/6;margin:3vw -2vw 0 0;align-self:start;z-index:1}
   .big-3{grid-column:5/13;grid-row:6;align-self:end;margin:0 0 -.12em;z-index:4;text-align:right}
-  .sf figcaption{left:14px;bottom:14px}
+  .sf figcaption{left:14px;right:14px;bottom:14px}
   .sf-3 figcaption{bottom:14px;top:auto}
   .sf-1 figcaption{bottom:auto;top:14px}
   .big[data-skew]{transition:transform .28s var(--ease);will-change:transform}
 
-  .mv-ctl{display:flex}
   .mv-item{flex-basis:44vw}
   .mv-title{font-size:6vw}
   .mv-label{top:16px;left:16px}
 
-  .kin-2{margin-left:-18vw}
-  .kin-3{margin-left:14vw}
+  .kin{min-height:100svh;padding:clamp(72px,12vh,140px) 0}
+  /* 13vw: "Shot in the room." and "Nothing staged." both clear the 1440 content edge at transform 0 */
+  .kin-line{font-size:clamp(3.6rem,13vw,13rem)}
+  .kin-2{margin-left:-18vw;-webkit-text-stroke:1px var(--paper)}
+  .kin-3{margin-left:7vw}
 
   .por-big{margin-left:-.02em}
   .pf-1{grid-column:1/5;grid-row:1;margin-top:0}
   .pf-2{grid-column:6/11;grid-row:1;margin-top:6vh}
   .pf-3{grid-column:10/13;grid-row:1;margin-top:30vh}
 
-  .about-name{margin-top:28px}
   .contact-h{max-width:16ch}
 }
 
-@media (min-width:1300px){
-  .hero-frame{left:62%}
-}
+/* at rest under reduced motion the outlined line sits on the gutter at every width */
+@media (prefers-reduced-motion:reduce){.kin-2{margin-left:0}}
