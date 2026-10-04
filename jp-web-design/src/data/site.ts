@@ -12,8 +12,8 @@ export const FOUNDER = 'JP Silva';
 export const EMAIL = 'jp@jpsilvadigital.com';
 
 /** Display form and the tel: URI, kept together so they cannot drift. */
-export const PHONE = '(774) 214-6342';
-export const PHONE_URI = 'tel:+17742146342';
+export const PHONE = '(774) 214-6352';
+export const PHONE_URI = 'tel:+17742146352';
 
 /** TODO(launch): confirmed service area. Drives copy only — never an address,
     and never LocalBusiness schema, which requires a real street address. */
