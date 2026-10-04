@@ -119,6 +119,8 @@
     }
     var nudge = function () { var p = v.play(); if (p && p.catch) p.catch(function () {}); };
     v.addEventListener('playing', function () { v.classList.add('is-playing'); });
+    /* declarative autoplay may already be running before this listener exists */
+    if (!v.paused && !v.ended && v.readyState > 2) v.classList.add('is-playing');
     v.addEventListener('error', function () { v.classList.remove('is-playing'); v.remove(); }, true);
     if ('IntersectionObserver' in w) {
       var io = new IntersectionObserver(function (es) {
