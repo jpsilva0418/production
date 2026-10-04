@@ -50,6 +50,13 @@ window.JP_MEDIA = {
     mist:   { mp4: 'loops/mist.mp4',   webm: 'loops/mist.webm',   poster: 'loops/mist-poster.jpg',   w: 960, h: 540, tone: 'light' }
   },
 
+  /* Real photographs of JP (supplied by the founder). Use for portrait / about slots. */
+  photos: {
+    'jp-portrait':     { src: 'photos/jp-portrait.jpg',     small: 'photos/jp-portrait-800.jpg',     w: 1320, h: 1308, alt: 'JP Silva laughing in a dry field under the sun, round glasses, white T-shirt' },
+    'jp-portrait-4x5': { src: 'photos/jp-portrait-4x5.jpg', small: 'photos/jp-portrait-4x5-800.jpg', w: 1046, h: 1308, alt: 'JP Silva, portrait in afternoon light' },
+    'jp-exhibition':   { src: 'photos/jp-exhibition.jpg',   small: 'photos/jp-exhibition-800.jpg',   w: 1320, h: 1034, alt: 'JP Silva standing beside his printed photographs at a gallery wall' }
+  },
+
   /* The body of work, as working labels. Each concept selects 4–6. */
   works: [
     { id: 'film-01',   label: 'Selected Film',       title: 'Working Title I',   year: '2025', roles: ['Direction', 'Camera', 'Edit'],      note: 'Short film · narrative',           plate: 'night-halation', loop: 'dust' },
@@ -66,6 +73,7 @@ window.JP_MEDIA = {
   person: {
     name: 'JP Silva', studio: 'JP Media', roles: ['Filmmaker', 'Producer', 'Photographer'],
     city: 'Austin, Texas', coords: '30.2672° N, 97.7431° W', origin: 'Bauru, São Paulo, Brazil',
-    instagram: '@jp.media', focus: ['Film', 'Music & live performance', 'Portraits', 'Landscape', 'Documentary']
+    instagram: '@jp.media', focus: ['Film', 'Music & live performance', 'Portraits', 'Landscape', 'Documentary'],
+    movedToAustin: 'spring 2025', exhibited: true /* his prints have hung in a group exhibition (Niagra Arc, Sixth & Strings, Stacked Lives) */
   }
 };
