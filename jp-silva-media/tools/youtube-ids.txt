@@ -1,0 +1,8 @@
+# JP Silva Media films on YouTube, as supplied by the founder. One id per line.
+# Pushing a change to this file runs .github/workflows/jpsm-media-meta.yml, which fetches each film's
+# public oEmbed title, channel, length, publish date and description, and its poster frame.
+D9iNANLSWJI
+bQmgSBOyIBQ
+uM2j8bYrv68
+IO-0co8MI4Y
+3qoGu5U9sfc
