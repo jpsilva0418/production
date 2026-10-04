@@ -1,10 +1,10 @@
-# JP Silva Media only. Runs when the YouTube id list changes on the site branch; fetches public
-# metadata + poster frames (the build sandbox has no route to YouTube) and commits them back.
+# JP Silva Media only. Runs when tools/youtube-ids.txt changes on the site branch: fetches public
+# oEmbed metadata + a poster frame for any NEW film id and commits them back. Existing posters are kept.
 name: jpsm-media-meta
 on:
   push:
     branches: ['site/jp-silva-media']
-    paths: ['jp-silva-media/tools/youtube-ids.txt', 'jp-silva-media/tools/fetch-youtube-meta.mjs', '.github/workflows/jpsm-media-meta.yml']
+    paths: ['jp-silva-media/tools/youtube-ids.txt']
 permissions:
   contents: write
 concurrency:
@@ -25,6 +25,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add jp-silva-media/src/data/youtube.json jp-silva-media/public/media/posters jp-silva-media/tools/research
+          git add jp-silva-media/src/data/youtube.json jp-silva-media/public/media/posters
           git diff --cached --quiet || git commit -m "JP Silva Media: fetch YouTube metadata and poster frames"
           git push

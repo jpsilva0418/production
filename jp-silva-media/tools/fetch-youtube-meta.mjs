@@ -2,9 +2,9 @@
 /* Fetches public metadata and poster frames for the ids in tools/youtube-ids.txt.
    Runs on a GitHub Actions runner (the build sandbox cannot reach YouTube).
    Writes:
-     src/data/youtube.json            { [id]: { title, author, authorUrl, lengthSeconds, publishDate, description, poster } }
-     public/media/posters/yt-<id>.jpg poster frame (maxres → sd → hq)
-     tools/research/*.txt             channel inventory + current-site text, for the copy pass (not shipped) */
+     src/data/youtube.json            { [id]: { title, author, authorUrl, poster, … } }  (existing entries are kept)
+     public/media/posters/yt-<id>.jpg poster frame (maxres → sd → hq) — only for ids that have no poster yet
+   To add a film: append its id to tools/youtube-ids.txt and push; then add a project entry in src/data/projects.mjs. */
 import fs from 'node:fs/promises';
 import path from 'node:path';
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
@@ -12,13 +12,15 @@ const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/537.36 (KHT
 const H = { 'user-agent': UA, 'accept-language': 'en-US,en;q=0.9', cookie: 'CONSENT=YES+1; SOCS=CAI' };
 const ids = (await fs.readFile(path.join(ROOT, 'tools/youtube-ids.txt'), 'utf8')).split('\n').map(s => s.trim()).filter(s => s && !s.startsWith('#'));
 await fs.mkdir(path.join(ROOT, 'public/media/posters'), { recursive: true });
-await fs.mkdir(path.join(ROOT, 'tools/research'), { recursive: true });
 await fs.mkdir(path.join(ROOT, 'src/data'), { recursive: true });
 const get = async (url, as = 'text') => { const r = await fetch(url, { headers: H, redirect: 'follow' }); if (!r.ok) throw new Error(url + ' → ' + r.status); return as === 'buf' ? Buffer.from(await r.arrayBuffer()) : as === 'json' ? r.json() : r.text(); };
 const pick = (html, re) => { const m = html.match(re); return m ? m[1] : null; };
 const unesc = s => s == null ? null : JSON.parse('"' + s + '"');
-const out = {};
+let out = {};
+try { out = JSON.parse(await fs.readFile(path.join(ROOT, 'src/data/youtube.json'), 'utf8')); } catch (e) {}
+const exists = async p => { try { await fs.access(p); return true; } catch (e) { return false; } };
 for (const id of ids) {
+  if (out[id] && out[id].title && await exists(path.join(ROOT, `public/media/posters/yt-${id}.jpg`))) { console.log('keep', id); continue; }
   const rec = { id };
   try { const o = await get(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`, 'json'); rec.title = o.title; rec.author = o.author_name; rec.authorUrl = o.author_url; } catch (e) { rec.oembedError = String(e.message); }
   // 1) innertube player endpoint (structured; no page scraping)
@@ -52,14 +54,3 @@ for (const id of ids) {
   if (rec.description) console.log('DESC ' + id + ' :: ' + rec.description.replace(/\n/g, ' | ').slice(0, 1500));
 }
 await fs.writeFile(path.join(ROOT, 'src/data/youtube.json'), JSON.stringify(out, null, 2) + '\n');
-// research only: his channel inventory and the current site's text
-const strip = h => h.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&#39;|&rsquo;/g, "'").replace(/\s+/g, ' ').trim();
-try {
-  const ch = await get('https://www.youtube.com/@jpsilvafilms/videos?hl=en');
-  const vids = [...ch.matchAll(/"videoId":"([\w-]{11})"[\s\S]{0,400}?"title":\{"runs":\[\{"text":"((?:[^"\\]|\\.)*)"/g)].map(m => m[1] + '  ' + unesc(m[2]));
-  await fs.writeFile(path.join(ROOT, 'tools/research/youtube-channel.txt'), [...new Set(vids)].join('\n') + '\n');
-  console.log('channel videos:', new Set(vids).size);
-} catch (e) { console.log('channel error', e.message); }
-for (const p of ['', 'about', 'contact', 'work', 'portfolio', 'photography', 'film', 'videos', 'services']) {
-  try { const h = await get('https://www.jpsilvamedia.com/' + p); await fs.writeFile(path.join(ROOT, `tools/research/site-${p || 'home'}.txt`), strip(h).slice(0, 20000) + '\n'); console.log('site', p || 'home', 'ok'); } catch (e) { console.log('site', p || 'home', e.message); }
-}

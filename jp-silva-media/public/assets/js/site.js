@@ -6,9 +6,10 @@
   var $ = function (s, c) { return (c || d).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || d).querySelectorAll(s)); };
   var anim = root.classList.contains('js-anim');
+  var page = root.getAttribute('data-page') || (w.JPSM && w.JPSM.page) || '';
 
   /* pages without an entrance are open from the first frame (the head gate already set it; this is the net) */
-  if (root.getAttribute('data-page') !== 'home') root.classList.add('is-opened');
+  if (page !== 'home') root.classList.add('is-opened');
 
   /* 1 · header line */
   if (JP.onFrame) JP.onFrame(function (s) { root.classList.toggle('is-scrolled', s.y > 40); });
@@ -69,6 +70,6 @@
       lastVH = vh;
     });
     w.addEventListener('jp:opened', function () { setTimeout(function () { sweep(w.innerHeight, false); }, 1200); }, { once: true });
-    setTimeout(function () { sweep(w.innerHeight, false); }, root.getAttribute('data-page') === 'home' ? 9000 : 1200);
+    setTimeout(function () { sweep(w.innerHeight, false); }, page === 'home' ? 9000 : 1200);
   }
 })();

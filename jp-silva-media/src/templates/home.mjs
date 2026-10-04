@@ -198,7 +198,7 @@ function contact(ctx) {
   const s = ctx.site, ig = s.socials.find(x => x.id === 'instagram'), yt = s.socials.find(x => x.id === 'youtube');
   return `<section class="contact" id="contact" aria-labelledby="contact-h">
     <div class="cc" data-stag=".12">
-      <h2 id="contact-h" class="cc-ey" data-reveal="fade">Now booking</h2>
+      <h2 id="contact-h" class="cc-ey" data-reveal="fade">Contact</h2>
       <p class="cc-title" data-reveal="fade">Tell JP what you’re making.</p>
       <dl class="cc-rows" data-reveal="fade">
         <div><dt>New project</dt><i aria-hidden="true"></i><dd><a href="${ctx.href('inquire')}">Start an inquiry</a></dd></div>
