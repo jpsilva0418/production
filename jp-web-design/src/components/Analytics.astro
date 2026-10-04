@@ -5,24 +5,39 @@
 import { GA_ID, ADS_ID, PIXEL_ID, hasAnalytics } from '../lib/analytics';
 const gtagId = GA_ID || ADS_ID;
 ---
+{/* The ids travel as data-* attributes and are read back with
+    document.currentScript.dataset, deliberately NOT with `define:vars`.
+
+    define:vars interpolates the value into the body of a <script>, and the
+    sanitiser that is supposed to neutralise a `</script>` sequence in that
+    position is incomplete in every Astro release up to 7.2.7
+    (GHSA-j687-52p2-xcff). Nothing attacker-controlled reaches here — these
+    are JP's own environment variables and the build is fully static — so it
+    was not exploitable. But an attribute value is escaped by the ordinary,
+    patched path, the runtime behaviour is identical, and this stops the
+    question arising again the moment a real measurement id is set. */}
 {hasAnalytics && (
   <>
     {gtagId && (
       <>
         <script async src={`https://www.googletagmanager.com/gtag/js?id=${gtagId}`}></script>
-        <script is:inline define:vars={{ GA_ID, ADS_ID }}>
-          window.dataLayer = window.dataLayer || [];
-          function gtag() { window.dataLayer.push(arguments); }
-          window.gtag = gtag;
-          gtag('js', new Date());
-          if (GA_ID) gtag('config', GA_ID);
-          if (ADS_ID) gtag('config', ADS_ID);
+        <script is:inline data-ga={GA_ID} data-ads={ADS_ID}>
+          (function () {
+            var ids = document.currentScript.dataset;
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { window.dataLayer.push(arguments); }
+            window.gtag = gtag;
+            gtag('js', new Date());
+            if (ids.ga) gtag('config', ids.ga);
+            if (ids.ads) gtag('config', ids.ads);
+          })();
         </script>
       </>
     )}
 
     {PIXEL_ID && (
-      <script is:inline define:vars={{ PIXEL_ID }}>
+      <script is:inline data-pixel={PIXEL_ID}>
+        var jpPixelId = document.currentScript.dataset.pixel;
         !function (f, b, e, v, n, t, s) {
           if (f.fbq) return; n = f.fbq = function () {
             n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
@@ -31,7 +46,7 @@ const gtagId = GA_ID || ADS_ID;
           t = b.createElement(e); t.async = !0; t.src = v;
           s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
         }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', PIXEL_ID);
+        fbq('init', jpPixelId);
         fbq('track', 'PageView');
       </script>
     )}
