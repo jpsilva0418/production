@@ -192,13 +192,14 @@
       <span class="no">Moving plate</span><span class="t">Western, Black &amp; White</span><span class="m">Music Video</span><span class="r">Direction, Camera</span>
     </figcaption>
   </figure>
-  <!-- contact sheet: four stills pulled from the same reel, beside the moving plate -->
+  <!-- contact sheet: four stills pulled from the same reel, beside the moving plate. About 170 KB together,
+       fetched eagerly at low priority so no cell of the sheet can paint as an empty box -->
   <figure class="sheet" data-reveal="line">
     <ol class="sheet-row" data-stag=".09">
-      <li><div class="frame" data-reveal="img"><img src="../media/stills/w-hat.jpg" width="636" height="500" sizes="(min-width:900px) 16vw, 58vw" alt="Frame 01: the back of a wide hat against a white sky" loading="lazy" decoding="async"></div><span class="fr">01</span></li>
-      <li><div class="frame" data-reveal="img"><img src="../media/stills/w-aim.jpg" width="636" height="500" sizes="(min-width:900px) 16vw, 58vw" alt="Frame 02: a revolver held out level against the clouds" loading="lazy" decoding="async"></div><span class="fr">02</span></li>
-      <li><div class="frame" data-reveal="img"><img src="../media/stills/w-gallop.jpg" width="636" height="500" sizes="(min-width:900px) 16vw, 58vw" alt="Frame 03: horse and rider at speed through the brush" loading="lazy" decoding="async"></div><span class="fr">03</span></li>
-      <li><div class="frame" data-reveal="img"><img src="../media/stills/w-saguaro.jpg" width="636" height="500" sizes="(min-width:900px) 16vw, 58vw" alt="Frame 04: saguaros under a moving sky" loading="lazy" decoding="async"></div><span class="fr">04</span></li>
+      <li><div class="frame" data-reveal="img"><img src="../media/stills/w-hat.jpg" width="636" height="500" sizes="(min-width:900px) 16vw, 58vw" alt="Frame 01: the back of a wide hat against a white sky" loading="eager" fetchpriority="low" decoding="sync"></div><span class="fr">01</span></li>
+      <li><div class="frame" data-reveal="img"><img src="../media/stills/w-aim.jpg" width="636" height="500" sizes="(min-width:900px) 16vw, 58vw" alt="Frame 02: a revolver held out level against the clouds" loading="eager" fetchpriority="low" decoding="sync"></div><span class="fr">02</span></li>
+      <li><div class="frame" data-reveal="img"><img src="../media/stills/w-gallop.jpg" width="636" height="500" sizes="(min-width:900px) 16vw, 58vw" alt="Frame 03: horse and rider at speed through the brush" loading="eager" fetchpriority="low" decoding="sync"></div><span class="fr">03</span></li>
+      <li><div class="frame" data-reveal="img"><img src="../media/stills/w-saguaro.jpg" width="636" height="500" sizes="(min-width:900px) 16vw, 58vw" alt="Frame 04: saguaros under a moving sky" loading="eager" fetchpriority="low" decoding="sync"></div><span class="fr">04</span></li>
     </ol>
     <figcaption class="cap cap-row" data-reveal="cap" style="--d:.5s">
       <span class="no">Contact sheet</span><span class="t">Four frames, the same reel</span><span class="m">Stills pulled from the film</span>
