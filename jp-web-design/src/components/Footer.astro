@@ -1,5 +1,6 @@
 ---
-import { SITE_NAME, EMAIL, PHONE, PHONE_URI, LEGAL_ENTITY, SOCIALS, SERVICE_AREA } from '../data/site';
+import Social from './Social.astro';
+import { SITE_NAME, EMAIL, PHONE, PHONE_URI, LEGAL_ENTITY, SERVICE_AREA } from '../data/site';
 import { SERVICES } from '../data/services';
 
 /* Real routes only. A homepage anchor in a column of page links reads as a
@@ -47,11 +48,7 @@ const year = new Date().getFullYear();
           that puts you in front of them. Free demo, free consultation, no obligation either way.
         </p>
         <p class="small ftr__area">{SERVICE_AREA}.</p>
-        {SOCIALS.length > 0 && (
-          <ul class="ftr__social">
-            {SOCIALS.map((s) => <li><a href={s.href} rel="noopener">{s.label}</a></li>)}
-          </ul>
-        )}
+        <Social class="ftr__social" size="sm" />
       </div>
 
       {cols.map((c) => (
@@ -79,8 +76,7 @@ const year = new Date().getFullYear();
 </footer>
 
 <style>
-  .ftr__social { display: flex; flex-wrap: wrap; gap: var(--s4); margin-top: var(--s4); }
-  .ftr__social a { font-size: var(--fs-small); font-weight: 700; color: var(--redline); text-decoration: none; }
+  .ftr__social { margin-top: var(--s5); }
   .ftr { border-top: 1px solid var(--rule); padding-block: var(--s8) var(--s6); }
   .ftr__top { display: grid; grid-template-columns: 1.6fr repeat(3, 1fr); gap: var(--s6); }
   @media (max-width: 60rem) { .ftr__top { grid-template-columns: 1fr 1fr; } }

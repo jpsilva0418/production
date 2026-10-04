@@ -1,0 +1,91 @@
+---
+/* ==========================================================================
+   SOCIAL — one row of profile links, three sizes.
+
+   Social is secondary to the business CTAs everywhere it appears, so this is
+   a row of icons rather than a section. Direct links only: no embedded
+   feeds, no third-party widgets, no follower counts — a launch-day feed
+   embed costs several hundred kilobytes of someone else's JavaScript and
+   breaks the moment their API changes.
+
+   Renders nothing when SOCIALS is empty, so removing a profile from
+   data/site.ts removes it from the whole site.
+   ========================================================================== */
+import { SOCIALS, FOUNDER } from '../data/site';
+
+export interface Props {
+  /** `icons` for the footer and menu, `labelled` where names help. */
+  variant?: 'icons' | 'labelled';
+  size?: 'sm' | 'md';
+  /** Describes the row for screen readers. */
+  title?: string;
+  class?: string;
+}
+const { variant = 'icons', size = 'md', title = `${FOUNDER} on social media`, class: cls = '' } = Astro.props;
+
+/* Single-path marks, recognisable at 18px. */
+const ICONS: Record<string, string> = {
+  instagram: `<rect x="2.5" y="2.5" width="19" height="19" rx="5.4" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="12" cy="12" r="4.6" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="17.6" cy="6.4" r="1.25" fill="currentColor"/>`,
+  x: `<path fill="currentColor" d="M17.53 3h3.04l-6.64 7.59L21.75 21h-5.9l-4.62-6.04L5.94 21H2.9l7.1-8.12L2.25 3h6.05l4.18 5.52L17.53 3Zm-1.07 16.17h1.69L7.62 4.74H5.81l10.65 14.43Z"/>`,
+  facebook: `<path fill="currentColor" d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.91 3.77-3.91 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.44-4.92 8.44-9.94Z"/>`,
+  linkedin: `<path fill="currentColor" d="M20.45 2H3.55A1.53 1.53 0 0 0 2 3.51v16.98A1.53 1.53 0 0 0 3.55 22h16.9A1.53 1.53 0 0 0 22 20.49V3.51A1.53 1.53 0 0 0 20.45 2ZM8.12 18.9H5.17V9.4h2.95v9.5ZM6.65 8.1a1.71 1.71 0 1 1 0-3.42 1.71 1.71 0 0 1 0 3.42ZM18.9 18.9h-2.94v-4.62c0-1.1-.02-2.52-1.53-2.52-1.54 0-1.78 1.2-1.78 2.44v4.7H9.71V9.4h2.82v1.3h.04a3.1 3.1 0 0 1 2.78-1.53c2.98 0 3.53 1.96 3.53 4.5v5.23Z"/>`,
+};
+---
+{SOCIALS.length > 0 && (
+  <ul class:list={['soc', `soc--${variant}`, `soc--${size}`, cls]} aria-label={title}>
+    {SOCIALS.map((s) => (
+      <li>
+        <a
+          href={s.href}
+          target="_blank"
+          rel="me noopener noreferrer"
+          aria-label={`${FOUNDER} on ${s.label}`}
+          data-track="social_click"
+          data-track-label={s.id}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" set:html={ICONS[s.id]} />
+          {variant === 'labelled' && (
+            <span class="soc__t">{s.label}<b>{s.handle ?? ''}</b></span>
+          )}
+        </a>
+      </li>
+    ))}
+  </ul>
+)}
+
+<style>
+  .soc { display: flex; flex-wrap: wrap; gap: var(--s3); align-items: center; }
+
+  .soc a {
+    display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
+    color: var(--graphite); text-decoration: none;
+    background: var(--card); border: 1px solid var(--rule); border-radius: 12px;
+    transition: color .18s var(--ease), border-color .18s var(--ease),
+                transform .18s var(--pop), background-color .18s var(--ease);
+  }
+  .soc a:hover { color: var(--redline); border-color: var(--rule-hi); transform: translateY(-2px); }
+  .soc a:active { transform: none; }
+  .soc svg { flex: none; }
+
+  /* icon-only: square, and never below the 44px touch target the
+     accessibility statement commits to. 2.75rem = 44px at the default root. */
+  .soc--icons a { width: 2.75rem; height: 2.75rem; }
+  .soc--icons.soc--sm a { width: 2.75rem; height: 2.75rem; }
+  .soc--icons svg { width: 1.15rem; height: 1.15rem; }
+  .soc--icons.soc--sm svg { width: 1.05rem; height: 1.05rem; }
+
+  /* labelled: name plus handle where one exists. Equal heights regardless,
+     so a row mixing one-line and two-line entries does not look ragged. */
+  .soc--labelled { align-items: stretch; }
+  .soc--labelled a { padding: .55rem .95rem .55rem .75rem; min-height: 3.4rem; }
+  .soc--labelled svg { width: 1.15rem; height: 1.15rem; }
+  .soc__t { display: flex; flex-direction: column; line-height: 1.25; text-align: left; }
+  .soc__t { font-size: var(--fs-small); font-weight: 700; color: var(--ink); }
+  .soc__t b {
+    font-family: var(--mono); font-weight: 500; font-size: .72rem;
+    letter-spacing: .02em; color: var(--graphite);
+  }
+  .soc--labelled a:hover .soc__t { color: var(--redline); }
+
+  @media (prefers-reduced-motion: reduce) { .soc a { transition: none; } }
+</style>

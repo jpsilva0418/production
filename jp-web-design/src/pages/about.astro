@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import Social from '../components/Social.astro';
 import { SITE_NAME, FOUNDER, EMAIL, PHONE, PHONE_URI, LEGAL_ENTITY, FOUNDER_PHOTO, SERVICE_AREA, REPLY_SLA } from '../data/site';
 import { SERVICES } from '../data/services';
 import { PROJECTS } from '../data/projects';
@@ -211,6 +212,12 @@ const principles = [
           <dd><a class="tlink" href={PHONE_URI} data-track="call_click" data-track-label="about">{PHONE}</a></dd>
         </div>
       </dl>
+
+      <div class="ab__connect">
+        <h3 class="h3">Connect with me</h3>
+        <p class="small">Not the fastest way to reach me about a project &mdash; that is the form &mdash; but you are welcome to say hello.</p>
+        <Social variant="labelled" class="ab__soc" />
+      </div>
     </div>
   </section>
 
@@ -281,6 +288,10 @@ const principles = [
   @media (max-width: 30rem) { .ab__facts > div { grid-template-columns: 1fr; gap: .2rem; } }
   .ab__facts dt { font-family: var(--mono); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--graphite); }
   .ab__facts dd { font-size: var(--fs-small); }
+
+  .ab__connect { margin-top: var(--s8); padding-top: var(--s5); border-top: 1px solid var(--rule); max-width: 48rem; }
+  .ab__connect .small { margin-top: var(--s2); }
+  .ab__soc { margin-top: var(--s4); }
 
   .ab__close { max-width: 52rem; }
   .ab__close h2 { margin-bottom: var(--s2); }

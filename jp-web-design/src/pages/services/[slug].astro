@@ -42,7 +42,7 @@ const others = SERVICES.filter((s) => s.slug !== service.slug);
   description={service.seoDescription}
   schema={schema}
 >
-  <section class="section">
+  <section class="section sd__top">
     <div class="container">
       <nav class="crumb" aria-label="Breadcrumb">
         <a href="/services">Services</a> <span aria-hidden="true">/</span> <span>{service.name}</span>
@@ -57,10 +57,37 @@ const others = SERVICES.filter((s) => s.slug !== service.slug);
     </div>
   </section>
 
+  <!-- ══ WHO IT'S FOR ════════════════════════════════════════════════════ -->
+  <section class="section" aria-labelledby="fit-h">
+    <div class="container">
+      <p><span class="mark mark--green"><b>§01</b> Who this is for</span></p>
+      <h2 class="h2 sd__h" id="fit-h">
+        {service.slug === 'web-design-development' ? 'When a new site is the right purchase'
+          : service.slug === 'google-ads' ? 'When Google Ads is the right channel'
+          : 'When Facebook and Instagram are the right channel'}
+      </h2>
+
+      <div class="grid g2">
+        {service.fitFor.map((f, i) => (
+          <article class="card sd__fit" data-anim="card" style={`--d:${i * 60}ms`}>
+            <span class="sd__fitn">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="card__t">{f.t}</h3>
+            <p class="card__x">{f.d}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="note sd__notfor">
+        <span class="lbl">And when it is not</span>
+        <p class="small">{service.notFor}</p>
+      </div>
+    </div>
+  </section>
+
   <section class="section section--panel" aria-labelledby="inc-h">
     <div class="container sd__cols">
       <div>
-        <p><span class="mark"><b>§01</b> What&rsquo;s included</span></p>
+        <p><span class="mark"><b>§02</b> What&rsquo;s included</span></p>
         <h2 class="h2" id="inc-h">The work itself</h2>
         <ul class="sd__inc">
           {service.includes.map((x) => (
@@ -83,7 +110,7 @@ const others = SERVICES.filter((s) => s.slug !== service.slug);
 
   <section class="section" aria-labelledby="how-h">
     <div class="container">
-      <p><span class="mark mark--green"><b>§02</b> How it runs</span></p>
+      <p><span class="mark mark--amber"><b>§03</b> How it runs</span></p>
       <h2 class="h2 sd__h" id="how-h">From first call to live</h2>
       <ol class="rows sd__steps">
         {service.steps.map((s, i) => (
@@ -102,7 +129,7 @@ const others = SERVICES.filter((s) => s.slug !== service.slug);
   {related.length > 0 && (
     <section class="section section--panel" aria-labelledby="rel-h">
       <div class="container">
-        <p><span class="mark"><b>§03</b> Related work</span></p>
+        <p><span class="mark"><b>§04</b> Related work</span></p>
         <h2 class="h2 sd__h" id="rel-h">Where this has been built</h2>
         <div class="grid g3">
           {related.map((p) => (
@@ -139,7 +166,10 @@ const others = SERVICES.filter((s) => s.slug !== service.slug);
             </>
           ) : (
             <>
-              <a class="btn btn--primary" href={`/contact#${service.slug}`} data-track="service_inquiry" data-track-label={service.slug}>Start a project</a>
+              <a class="btn btn--primary" href={`/contact?service=${service.slug}#${service.slug}`}
+                 data-track="service_inquiry" data-track-label={service.slug}>
+                Start a {service.name} project
+              </a>
               <a class="btn btn--ghost" href="/services">See all services</a>
             </>
           )}
@@ -169,6 +199,9 @@ const others = SERVICES.filter((s) => s.slug !== service.slug);
   .crumb a { color: var(--redline); font-weight: 700; text-decoration: none; }
   .crumb span[aria-hidden] { margin-inline: .35rem; }
 
+  /* The intro and the "who this is for" section are one thought, so the
+     full section rhythm between them leaves a dead band of dot grid. */
+  .sd__top { padding-block-end: var(--s6); }
   .sd__head { margin-bottom: var(--s6); }
   /* "Meta Ads — Facebook & Instagram" is a long title; the full display scale
      pushes it to three lines and the intro below the fold. */
@@ -199,6 +232,11 @@ const others = SERVICES.filter((s) => s.slug !== service.slug);
   .sd__proj .card__t, .sd__proj .card__x { padding-inline: var(--s5); }
   .sd__proj .card__t { margin-top: var(--s4); }
   .sd__proj .card__x { padding-bottom: var(--s5); }
+
+  .sd__fit { position: relative; }
+  .sd__fitn { font-family: var(--mono); font-size: .8rem; letter-spacing: .1em; color: var(--green-t); }
+  .sd__notfor { margin-top: var(--s6); max-width: 52rem; border-left-color: var(--amber-t); }
+  .sd__notfor .lbl { color: var(--amber-t); }
 
   .sd__cta { max-width: 52rem; }
   .sd__cta h2 { margin-bottom: var(--s2); }

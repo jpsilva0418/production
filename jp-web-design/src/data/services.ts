@@ -32,6 +32,11 @@ export interface Service {
   intro: string;
   /** What the work includes. Deliverables, not outcomes. */
   includes: string[];
+  /** Who the service actually suits, and the one case where it does not.
+      Buyers self-select here before reading the deliverables. */
+  fitFor: { t: string; d: string }[];
+  /** The honest counter-case: when this is the wrong thing to buy. */
+  notFor: string;
   /** Honest boundaries — what this service is not. */
   limits: string[];
   /** Detail-page process, 3–4 steps. */
@@ -64,6 +69,14 @@ export const SERVICES: Service[] = [
       'Analytics and Search Console connected before your site goes live',
       'Domain connection, launch, and a post-launch support window',
     ],
+    fitFor: [
+      { t: 'A business with no website at all', d: 'Or one that exists only as a social page, which you do not own and cannot change the rules of.' },
+      { t: 'A site that looks nothing like the quality of the work', d: 'The most common reason a good business loses the call to a worse one.' },
+      { t: 'A site that gets traffic but no calls', d: 'That is a structure problem, and it is usually solvable without a full rebuild.' },
+      { t: 'A business about to start advertising', d: 'Paid clicks landing on a page that cannot answer them is the most expensive mistake in small-business marketing.' },
+    ],
+    notFor:
+      'If your current site is working and you simply dislike how it looks, say so on the call — a redesign is sometimes the wrong purchase, and I would rather tell you that than sell you one.',
     limits: [
       'I do not sell monthly SEO retainers and I will not promise rankings.',
       'I take one project at a time. If I am at capacity I say so rather than leave you waiting.',
@@ -96,9 +109,20 @@ export const SERVICES: Service[] = [
       'Search campaigns written around what people actually type',
       'Conversion tracking for calls and form submissions, verified before spend starts',
       'Landing-page alignment so the click lands on a page about what was searched',
-      'Ongoing optimisation: search terms, bids, budget, ad copy',
+      'Geographic targeting set to the area you actually serve, and exclusions for the areas you do not',
+      'Ad scheduling matched to when enquiries actually arrive and get answered',
+      'Call extensions, so urgent customers can ring you straight from the ad',
+      'Ongoing optimisation: search terms, negative keywords, bids, budget, ad copy',
       'Plain-English reporting on what was spent and what came back',
     ],
+    fitFor: [
+      { t: 'Urgent and emergency services', d: 'Plumbing, roofing after a storm, locksmiths, auto repair. The search is the moment of need, and whoever appears gets the call.' },
+      { t: 'Established, well-understood services', d: 'Cleaning, landscaping, accounting, legal. People already know these exist and search for them by name.' },
+      { t: 'High-consideration local purchases', d: 'Someone researching a contractor for a kitchen remodel searches, compares and reads. You want to be in that comparison.' },
+      { t: 'Businesses with a page worth landing on', d: 'Search advertising buys attention. What happens in the ten seconds after the click is the landing page’s job.' },
+    ],
+    notFor:
+      'If nobody is searching for what you sell yet — a new treatment, an unfamiliar offer — search cannot help, because there is no existing demand to capture. That is a Meta Ads problem, and I will say so rather than spend your budget finding out.',
     limits: [
       'I will not promise a cost per lead or a return on ad spend before a campaign has data.',
       'Ad spend is paid by you directly to Google. It is never bundled into my fee.',
@@ -138,6 +162,14 @@ export const SERVICES: Service[] = [
       'Ongoing testing of creative, audience and placement',
       'Reporting on spend, results and what is being learned',
     ],
+    fitFor: [
+      { t: 'Visual results', d: 'Beauty, aesthetics, fitness, interiors, photography, food. A before-and-after stops a thumb in a way a text ad cannot.' },
+      { t: 'New or unfamiliar offers', d: 'If you have to explain it before someone wants it, search cannot help — nobody searches for what they have not heard of.' },
+      { t: 'Impulse and discretionary purchases', d: 'Treatments, classes, events, seasonal offers — decisions made in the feed rather than researched.' },
+      { t: 'Retargeting, for almost any business', d: 'Showing a relevant ad to someone who already visited your site is among the most sensible advertising a small business can run.' },
+    ],
+    notFor:
+      'If people are already searching for exactly what you sell, Google is usually the cheaper first move and Meta is better kept for retargeting. I have written about how to tell the two apart.',
     limits: [
       'I will not promise a lead volume or a return before a campaign has data.',
       'Accounts, pixels and audiences stay in your Business Manager, in your name.',

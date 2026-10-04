@@ -23,8 +23,31 @@ export const SERVICE_AREA = 'Businesses across the United States';
    brand copyright. Nothing is invented, and no placeholder is published. */
 export const LEGAL_ENTITY: string | null = null;
 
-/** Real profiles only. An empty array renders no social row. */
-export const SOCIALS: { label: string; href: string }[] = [];
+/** Real profiles only, exactly as JP supplied them — no handle was inferred.
+    An empty array renders no social row anywhere, and `sameAs` is omitted
+    from the Organization schema rather than published empty.
+
+    NOT VERIFIED FROM THIS ENVIRONMENT: the build sandbox's egress proxy
+    denies instagram.com, x.com, facebook.com and linkedin.com, so these
+    URLs could not be fetched to confirm they resolve. Each needs one tap
+    before launch.
+
+    The LinkedIn URL is the supplied one with its `utm_*` tracking
+    parameters removed — same profile path, nothing else changed. The
+    Facebook link is a /share/ redirect and is kept byte-for-byte, since a
+    cleaner canonical form cannot be derived without resolving it. */
+export type SocialId = 'instagram' | 'x' | 'facebook' | 'linkedin';
+
+export const SOCIALS: { id: SocialId; label: string; handle?: string; href: string }[] = [
+  { id: 'instagram', label: 'Instagram', handle: '@jpsilva1994',
+    href: 'https://www.instagram.com/jpsilva1994/' },
+  { id: 'x', label: 'X', handle: '@Jpzs0w',
+    href: 'https://x.com/Jpzs0w' },
+  { id: 'facebook', label: 'Facebook',
+    href: 'https://www.facebook.com/share/1CMTuH1NRC/?mibextid=wwXIfr' },
+  { id: 'linkedin', label: 'LinkedIn',
+    href: 'https://www.linkedin.com/in/jp-silva-117aa5a8' },
+];
 
 /** JP's own photograph, cropped two ways from one source. The compact crop
     is head-and-shoulders for the homepage circle; the wider one carries more

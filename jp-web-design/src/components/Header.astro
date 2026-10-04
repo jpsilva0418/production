@@ -13,6 +13,7 @@
    Both menus read from one `nav` array, so a route cannot exist in one and
    not the other.
    ========================================================================== */
+import Social from './Social.astro';
 import { SITE_NAME } from '../data/site';
 import { SERVICES } from '../data/services';
 
@@ -146,6 +147,7 @@ const inSection = (item: (typeof nav)[number]) =>
   <div class="mnav__foot">
     <a class="btn btn--primary btn--wide" href="/free-demo" data-track="demo_start" data-track-label="mobile-menu">Get Your Free Demo</a>
     <p class="mnav__fine">Free, and no obligation.</p>
+    <Social class="mnav__soc" size="sm" />
   </div>
 </div>
 
@@ -280,6 +282,8 @@ const inSection = (item: (typeof nav)[number]) =>
     border-top: 1px solid var(--rule); background: var(--card);
   }
   .mnav__fine { margin-top: var(--s3); text-align: center; font-size: var(--fs-small); color: var(--graphite); }
+  /* Secondary to the CTA above it, and visually quieter. */
+  .mnav__soc { justify-content: center; margin-top: var(--s4); padding-top: var(--s4); border-top: 1px solid var(--rule); }
 
   @media (max-width: 62rem) {
     .dnav { display: none; }

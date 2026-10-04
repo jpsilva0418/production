@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import InquiryForm from '../components/InquiryForm.astro';
+import Social from '../components/Social.astro';
 import { SITE_NAME, EMAIL, PHONE, PHONE_URI, REPLY_SLA, DEMO_TURNAROUND } from '../data/site';
 
 /* The one inquiry page. Every CTA on the site that is not the free demo
@@ -59,6 +60,12 @@ const schema = {
             <a class="tlink ct__tel" href={PHONE_URI} data-track="call_click" data-track-label="contact">{PHONE}</a>
           </div>
 
+          <div class="ct__block">
+            <h2 class="h3">Elsewhere</h2>
+            <p class="small">For a project, the form is the right route. Otherwise:</p>
+            <Social class="ct__soc" size="sm" />
+          </div>
+
           <div class="ct__block ct__block--last">
             <h2 class="h3">What happens next</h2>
             <p class="small">
@@ -89,4 +96,5 @@ const schema = {
   .ct__block--last { gap: var(--s3); }
   /* The number must never wrap mid-way across a narrow phone screen. */
   .ct__tel { white-space: nowrap; }
+  .ct__soc { margin-top: var(--s2); }
 </style>

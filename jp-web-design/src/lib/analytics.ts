@@ -32,6 +32,7 @@ export const EVENTS = {
   projectView: 'project_view',      // portfolio project opened
   call: 'call_click',
   email: 'email_click',
+  social: 'social_click',
 } as const;
 
 export type EventName = (typeof EVENTS)[keyof typeof EVENTS];

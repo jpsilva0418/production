@@ -144,7 +144,8 @@ const { need = '', id = 'inquiry' } = Astro.props;
        preview environment. */
     const needSel = field('need') as HTMLSelectElement | null;
     if (needSel && !needSel.value) {
-      const hint = new URLSearchParams(location.search).get('need') ?? location.hash;
+      const q = new URLSearchParams(location.search);
+      const hint = q.get('need') ?? q.get('service') ?? location.hash;
       const resolved = needFromHint(hint);
       if (resolved) needSel.value = resolved;
     }
