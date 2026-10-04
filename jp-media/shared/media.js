@@ -2,11 +2,9 @@
    JP MEDIA — study manifest + media manifest
    ------------------------------------------------------------
    Every image/video slot in the six concepts resolves through this file.
-   The plates are PROCEDURAL (light, haze, grain, horizon, metal, paper —
-   see ../tools/make-plates.py). No photography is used. When JP's real
-   stills and footage arrive, drop them into ../media/ and point the
-   entries below at them — the concepts do not change.
-   Project titles are WORKING LABELS, not real credits.
+   All media is JP Silva's own work, supplied by the founder and cut by
+   ../tools/cut-media.sh (film, stills) plus two photographs of JP.
+   Song/film titles are unknown and are shown by DESCRIPTOR, never invented.
    ============================================================ */
 window.JP_STUDY = {
   title: 'JP Media — Website Art Direction Study',
@@ -21,34 +19,11 @@ window.JP_STUDY = {
 };
 
 window.JP_MEDIA = {
-  /* resolve('plates/x.jpg') from a concept page → '../media/plates/x.jpg'; from the hub → 'media/plates/x.jpg' */
+  /* resolve('film/x.mp4') from a concept page → '../media/film/x.mp4'; from the hub → 'media/film/x.mp4' */
   base: (location.pathname.indexOf('/concept-') > -1) ? '../media/' : 'media/',
   url: function (p) { return this.base + p; },
 
-  plates: {
-    'night-halation': { src: 'plates/night-halation.jpg', small: 'plates/night-halation-900.jpg', w: 1800, h: 1012, tone: 'dark',  alt: 'A dark room with one warm light blooming through dust' },
-    'night-beam':     { src: 'plates/night-beam.jpg',     small: 'plates/night-beam-720.jpg',     w: 1200, h: 2133, tone: 'dark',  alt: 'A single soft beam of light falling through darkness' },
-    'dusk-horizon':   { src: 'plates/dusk-horizon.jpg',   small: 'plates/dusk-horizon-900.jpg',   w: 1800, h: 753,  tone: 'warm',  alt: 'A low sun burning over a dark horizon line' },
-    'dusk-haze':      { src: 'plates/dusk-haze.jpg',      small: 'plates/dusk-haze-800.jpg',      w: 1400, h: 1750, tone: 'warm',  alt: 'Amber haze and drifting dust in evening light' },
-    'ember':          { src: 'plates/ember.jpg',          small: 'plates/ember-900.jpg',          w: 1800, h: 1200, tone: 'warm',  alt: 'Deep red-brown light with a hot glowing edge' },
-    'leak-warm':      { src: 'plates/leak-warm.jpg',      small: 'plates/leak-warm-900.jpg',      w: 1800, h: 1012, tone: 'warm',  alt: 'A warm film light leak burning in from the edge of frame' },
-    'silver-edge':    { src: 'plates/silver-edge.jpg',    small: 'plates/silver-edge-900.jpg',    w: 1800, h: 1012, tone: 'cool',  alt: 'A graphite field cut by a hard diagonal of light' },
-    'silver-brushed': { src: 'plates/silver-brushed.jpg', small: 'plates/silver-brushed-800.jpg', w: 1400, h: 1867, tone: 'cool',  alt: 'Brushed metal catching light from above' },
-    'bone-paper':     { src: 'plates/bone-paper.jpg',     small: 'plates/bone-paper-800.jpg',     w: 1400, h: 1750, tone: 'light', alt: 'A sheet of bone-coloured paper with a soft shadow' },
-    'mono-grain':     { src: 'plates/mono-grain.jpg',     small: 'plates/mono-grain-900.jpg',     w: 1800, h: 1200, tone: 'mono',  alt: 'A black-and-white field of light and heavy film grain' },
-    'mono-leak':      { src: 'plates/mono-leak.jpg',      small: 'plates/mono-leak-800.jpg',      w: 1400, h: 2100, tone: 'mono',  alt: 'Black-and-white frame with a blown-out light leak' },
-    'stage-red':      { src: 'plates/stage-red.jpg',      small: 'plates/stage-red-900.jpg',      w: 1800, h: 1012, tone: 'stage', alt: 'Hard red stage light and a white hot spot through haze' },
-    'stage-vertical': { src: 'plates/stage-vertical.jpg', small: 'plates/stage-vertical-720.jpg', w: 1200, h: 2133, tone: 'stage', alt: 'Red stage wash and a flare from above' },
-    'mist-white':     { src: 'plates/mist-white.jpg',     small: 'plates/mist-white-900.jpg',     w: 1800, h: 1200, tone: 'light', alt: 'Near-white mist with a faint grey gradient' }
-  },
 
-  loops: {
-    dust:   { mp4: 'loops/dust.mp4',   webm: 'loops/dust.webm',   poster: 'loops/dust-poster.jpg',   w: 960, h: 540, tone: 'dark' },
-    sun:    { mp4: 'loops/sun.mp4',    webm: 'loops/sun.webm',    poster: 'loops/sun-poster.jpg',    w: 960, h: 540, tone: 'warm' },
-    stage:  { mp4: 'loops/stage.mp4',  webm: 'loops/stage.webm',  poster: 'loops/stage-poster.jpg',  w: 540, h: 960, tone: 'stage' },
-    silver: { mp4: 'loops/silver.mp4', webm: 'loops/silver.webm', poster: 'loops/silver-poster.jpg', w: 960, h: 540, tone: 'cool' },
-    mist:   { mp4: 'loops/mist.mp4',   webm: 'loops/mist.webm',   poster: 'loops/mist-poster.jpg',   w: 960, h: 540, tone: 'light' }
-  },
 
   /* Real photographs of JP (supplied by the founder). Use for portrait / about slots. */
   photos: {

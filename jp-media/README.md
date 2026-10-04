@@ -13,10 +13,12 @@ jp-media/
     core.js                          gate · reveal · entrance sequencer · video gating · frame loop · study nav
     media.js                         JP_STUDY (concept list) + JP_MEDIA (plates, loops, works, verified facts)
   media/
-    plates/                          procedural stills (light, haze, horizon, metal, paper, grain) + small variants
-    loops/                           five 3 s seamless loops: webm + mp4 + poster
+    film/                            38 muted clips cut from JP's films (webm + mp4 + poster), a 12 s hero edit, the full showreel
+    stills/                          35 frames from the same films
+    photos/                          JP's portrait and his exhibition photograph
     grain-256.png                    tileable grain for CSS overlays
-  tools/make-plates.py               regenerates every plate and loop (Pillow, numpy, ffmpeg)
+  tools/cut-media.sh                 re-cuts the whole library from the source exports (ffmpeg)
+  tools/catalog-media.py             regenerates the film/stills catalogue in shared/media.js
 ```
 
 | # | Concept | Territory | Ground |
@@ -36,16 +38,17 @@ Serve the repository root (or this folder) with any static server and open `/jp-
 python3 -m http.server 8787        # from the repository root → http://127.0.0.1:8787/jp-media/
 ```
 
-## About the frames
+## About the media
 
-JP's stills and footage were not available when this study was built (nothing was uploaded to the session
-and his site, Instagram and YouTube are blocked from the build sandbox). Every frame therefore carries a
-**procedural stand-in** made of light, haze and grain. Nothing is a photograph and nothing is borrowed from
-another client. Project titles are working labels.
+Every frame is JP Silva's own work: his showreel, four music videos, a short, his exhibited prints and two
+photographs of him, supplied by the founder. The exports available to this study were phone-compressed
+(512 px short side), so the concepts frame softness as film (letterbox, grain, grade, pillarboxed portrait
+clips) rather than stretching it. Five of his films on YouTube are linked as long-form work; they cannot be
+embedded on the preview host. Song and film titles are shown by descriptor until confirmed; no client, award,
+year or credit appears that the source material does not support.
 
-To bring in real selects: drop files into `media/` and edit the `plates`, `loops` and `works` entries in
-`shared/media.js` (or the `src`/`srcset`/`poster` attributes in a concept). Keep the aspect ratios of the slots
-or let `object-fit: cover` crop; no layout changes are needed.
+To upgrade to original masters: re-export the same cuts with `tools/cut-media.sh <folder-of-sources>` and run
+`tools/catalog-media.py`; the slots and manifest ids stay the same.
 
 ## Conventions that every concept follows
 
@@ -59,8 +62,9 @@ or let `object-fit: cover` crop; no layout changes are needed.
   One playing loop per viewport.
 - **Mobile first**: 390/430 designed, 1440 designed, `100svh`, no horizontal scroll, 44 px targets, no hover-only
   functionality, native scroll-snap strips for horizontal sequences.
-- **Nothing fabricated**: no clients, awards, press, testimonials, logos or statistics. No email address is
-  published; "Email" controls are demo-safe. Verified facts live in `shared/media.js → JP_MEDIA.person`.
+- **Nothing fabricated**: no clients, awards, press, testimonials, logos or statistics, and no other company named
+  anywhere. No email address is published; "Email" controls are demo-safe. Verified facts live in
+  `shared/media.js → JP_MEDIA.person`.
 - **Only external resource**: Google Fonts.
 
 ## If a direction is chosen
