@@ -1,0 +1,164 @@
+---
+import Base from '../layouts/Base.astro';
+import { INDUSTRIES } from '../data/industries';
+import { SERVICES } from '../data/services';
+import { SITE_NAME, SERVICE_AREA } from '../data/site';
+
+/* The canonical "who do you work with" page. Six categories, one hub — no
+   thin per-industry routes minted for search. An industry earns its own page
+   only when there is genuinely unique content to carry one, which today is
+   construction alone.
+
+   Every claim here is about fit, not about clients. The only businesses this
+   site says JP has worked for are the three real projects on /work. */
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: `Industries — ${SITE_NAME}`,
+  url: new URL('/industries', Astro.site).href,
+  description: 'The kinds of business JP Silva Digital builds websites and runs advertising for.',
+};
+---
+<Base
+  title={`Industries I Work With | ${SITE_NAME}`}
+  description="Construction and home services, beauty and wellness, creative and media, professional services, hospitality and real estate — the businesses these websites and ad campaigns are built for."
+  schema={schema}
+>
+  <!-- ══ INTRO ═══════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="container">
+      <p><span class="mark"><b>§01</b> Industries</span></p>
+      <div class="head">
+        <h1 class="display">Who I work with</h1>
+        <p class="lead">
+          A roofing customer and a bridal client behave nothing alike. One is in a hurry and
+          needs a phone number; the other is comparing portfolios for a decision months away.
+          The structure of the site should not be the same, and neither should the page they
+          land on.
+        </p>
+        <p class="lead ind__lead2">
+          These are the kinds of business this work is built for. {SERVICE_AREA}.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ THE SIX ═════════════════════════════════════════════════════════ -->
+  <section class="section section--panel" aria-labelledby="ind-h">
+    <div class="container">
+      <h2 class="vh" id="ind-h">Industries</h2>
+      <ul class="ind">
+        {INDUSTRIES.map((i, n) => (
+          <li class="ind__i" data-anim="card" style={`--d:${n * 70}ms`}>
+            <div class="ind__head">
+              <span class={`mark mark--${i.tint} ind__tag`}>{String(n + 1).padStart(2, '0')}</span>
+              <h3 class="h2 ind__n">{i.name}</h3>
+            </div>
+
+            <p class="lead ind__b">{i.blurb}</p>
+
+            <ul class="ind__ex">
+              {i.examples.map((e) => <li>{e}</li>)}
+            </ul>
+
+            <p class="small ind__note">{i.note}</p>
+
+            {i.detail && (
+              <a class="tlink ind__more" href={i.detail}>
+                Read the detail on {i.name.toLowerCase()} <span aria-hidden="true">&rarr;</span>
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+
+      <p class="small ind__other">
+        Not on this list? The work is the same shape for most small businesses that need to be
+        taken seriously by someone who has never met them. <a class="tlink" href="/contact">Ask me</a>
+        &mdash; and if it is genuinely not a fit, I will say so.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══ WHAT THAT MEANS IN PRACTICE ═════════════════════════════════════ -->
+  <section class="section" aria-labelledby="fit-h">
+    <div class="container">
+      <p><span class="mark mark--green"><b>§02</b> What changes, and what doesn&rsquo;t</span></p>
+      <div class="head">
+        <h2 class="h2" id="fit-h">The services are the same. The build is not.</h2>
+        <p class="lead">
+          The three things I do do not change by industry. What changes is the page structure,
+          the vocabulary, which questions get answered first, and where the advertising budget
+          is worth spending at all.
+        </p>
+      </div>
+
+      <div class="grid g3">
+        {SERVICES.map((s) => (
+          <a class="card ind__svc" href={`/services/${s.slug}`}>
+            <h3 class="card__t">{s.name}</h3>
+            <p class="card__x">{s.blurb}</p>
+            <span class="tlink ind__svcgo">What this involves <span aria-hidden="true">&rarr;</span></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CLOSE ═══════════════════════════════════════════════════════════ -->
+  <section class="section section--panel" aria-labelledby="ind-cta">
+    <div class="container">
+      <div class="note ind__close">
+        <span class="lbl">Start here</span>
+        <h2 class="h3" id="ind-cta">See what I&rsquo;d do with yours</h2>
+        <p class="small">
+          Answer eight questions and I design a homepage concept for your business &mdash; free,
+          and no obligation once you have seen it. If it is advertising you need, the project
+          form is the faster route.
+        </p>
+        <div class="btn-row ind__btns">
+          <a class="btn btn--primary" href="/free-demo" data-track="demo_start" data-track-label="industries">Get Your Free Demo</a>
+          <a class="btn btn--ghost" href="/contact">Start a project</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ind__lead2 { color: var(--ink); }
+
+  .ind { display: grid; gap: var(--s5); }
+  @media (min-width: 52rem) { .ind { grid-template-columns: repeat(2, 1fr); } }
+  .ind__i {
+    background: var(--card); border: 1px solid var(--rule); border-radius: var(--r);
+    padding: clamp(1.3rem, 3vw, 2rem);
+    display: flex; flex-direction: column; align-items: flex-start; gap: var(--s3);
+    box-shadow: var(--shadow);
+  }
+  .ind__head { display: flex; align-items: center; gap: var(--s4); flex-wrap: wrap; }
+  .ind__tag { margin-bottom: 0; padding: .4rem .8rem; }
+  .ind__n { font-size: clamp(1.25rem, 2.4vw, 1.6rem); }
+  .ind__b { font-size: var(--fs-body); }
+
+  .ind__ex { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: var(--s2); }
+  .ind__ex li {
+    font-size: .82rem; color: var(--graphite);
+    background: var(--panel); border: 1px solid var(--rule); border-radius: 999px; padding: .3rem .7rem;
+  }
+
+  .ind__note {
+    margin-top: var(--s2); padding-top: var(--s4); border-top: 1px solid var(--rule);
+    width: 100%;
+  }
+  .ind__more { margin-top: auto; padding-top: var(--s3); }
+
+  .ind__other { margin-top: var(--s7); max-width: var(--measure); }
+
+  .ind__svc { text-decoration: none; }
+  .ind__svcgo { margin-top: auto; padding-top: var(--s4); }
+
+  .ind__close { max-width: 52rem; }
+  .ind__close h2 { margin-bottom: var(--s2); }
+  .ind__btns { margin-top: var(--s5); }
+</style>

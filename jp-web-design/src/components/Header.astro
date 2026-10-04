@@ -16,18 +16,30 @@
 import { SITE_NAME } from '../data/site';
 import { SERVICES } from '../data/services';
 
+/* One array drives both menus. `mobileOnly` is the single deliberate
+   difference: Process matters, but a desktop bar of eight items plus a CTA
+   starts to crowd — so it lives in the mobile menu and the footer.
+
+   Every entry is a real route. No homepage anchors live in navigation; a
+   link that looks like a page must open a page, at the top of it. */
 const nav = [
   { href: '/', label: 'Home' },
   {
     href: '/services',
     label: 'Services',
-    children: SERVICES.map((s) => ({ href: `/services/${s.slug}`, label: s.name })),
+    children: [
+      ...SERVICES.map((s) => ({ href: `/services/${s.slug}`, label: s.navLabel ?? s.name })),
+      { href: '/services', label: 'All Services' },
+    ],
   },
-  { href: '/work',    label: 'Work' },
-  { href: '/about',   label: 'About Me' },
-  { href: '/blog',    label: 'Blog' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/work',       label: 'Work' },
+  { href: '/industries', label: 'Industries' },
+  { href: '/about',      label: 'About Me' },
+  { href: '/blog',       label: 'Blog' },
+  { href: '/process',    label: 'Process', mobileOnly: true },
+  { href: '/contact',    label: 'Contact' },
 ];
+const desktopNav = nav.filter((i) => !i.mobileOnly);
 
 /* '/' matches exactly; everything else matches its subtree, so
    /work/leti-silva-beauty still marks Work as current.
@@ -43,7 +55,7 @@ const path =
 const isCurrent = (href: string) =>
   href === '/' ? path === '/' : path === href || path.startsWith(`${href}/`);
 const inSection = (item: (typeof nav)[number]) =>
-  isCurrent(item.href) || (item.children?.some((c) => isCurrent(c.href)) ?? false);
+  isCurrent(item.href) || (item.children?.some((c) => c.href !== item.href && isCurrent(c.href)) ?? false);
 ---
 <header class="hdr" id="hdr">
   <div class="container hdr__in">
@@ -55,7 +67,7 @@ const inSection = (item: (typeof nav)[number]) =>
     <!-- ── desktop ─────────────────────────────────────────────────────── -->
     <nav class="dnav" aria-label="Primary">
       <ul class="dnav__l">
-        {nav.map((i) => (
+        {desktopNav.map((i) => (
           <li class={i.children ? 'dnav__has' : ''}>
             <a class="dnav__a" href={i.href} aria-current={inSection(i) ? 'page' : undefined}>
               {i.label}
@@ -66,10 +78,11 @@ const inSection = (item: (typeof nav)[number]) =>
             {i.children && (
               <div class="dnav__drop">
                 <ul>
-                  {i.children.map((c) => (
-                    <li><a href={c.href} aria-current={isCurrent(c.href) ? 'page' : undefined}>{c.label}</a></li>
+                  {i.children.map((c, n) => (
+                    <li class={n === i.children.length - 1 ? 'dnav__dall' : ''}>
+                      <a href={c.href} aria-current={c.href !== i.href && isCurrent(c.href) ? 'page' : undefined}>{c.label}</a>
+                    </li>
                   ))}
-                  <li class="dnav__dall"><a href={i.href}>All services</a></li>
                 </ul>
               </div>
             )}
@@ -108,13 +121,15 @@ const inSection = (item: (typeof nav)[number]) =>
               <div class="mnav__row">
                 <a class="mnav__a" href={i.href} aria-current={isCurrent(i.href) ? 'page' : undefined}>{i.label}</a>
                 <button class="mnav__exp" type="button" aria-expanded={inSection(i) ? 'true' : 'false'}
-                        aria-controls={`sub-${i.label}`} aria-label={`Show ${i.label} pages`}>
+                        aria-controls={`sub-${i.href.slice(1)}`} aria-label={`Show ${i.label} pages`}>
                   <svg viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m1 1.5 5 5 5-5"/></svg>
                 </button>
               </div>
-              <ul class="mnav__sub" id={`sub-${i.label}`} hidden={!inSection(i)}>
+              <ul class="mnav__sub" id={`sub-${i.href.slice(1)}`} hidden={!inSection(i)}>
                 {i.children.map((c) => (
-                  <li><a href={c.href} aria-current={isCurrent(c.href) ? 'page' : undefined}>{c.label}</a></li>
+                  <li>
+                    <a href={c.href} aria-current={c.href !== i.href && isCurrent(c.href) ? 'page' : undefined}>{c.label}</a>
+                  </li>
                 ))}
               </ul>
             </>

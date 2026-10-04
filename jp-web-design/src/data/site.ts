@@ -9,7 +9,7 @@
 export const SITE_NAME = 'JP Silva Digital';
 export const FOUNDER = 'JP Silva';
 
-export const EMAIL = 'jp@jpsilvadigital.com';
+export const EMAIL = 'jpsilva0418@gmail.com';
 
 /** Display form and the tel: URI, kept together so they cannot drift. */
 export const PHONE = '(774) 214-6352';

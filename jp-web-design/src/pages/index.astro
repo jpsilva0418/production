@@ -6,6 +6,7 @@ import Founder from '../components/Founder.astro';
 import { getCollection } from 'astro:content';
 import { PROJECTS, STATUS_LABEL } from '../data/projects';
 import { SERVICES } from '../data/services';
+import { INDUSTRIES } from '../data/industries';
 
 /* Latest two posts. The homepage previews the blog; /blog is the real index. */
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
@@ -19,20 +20,6 @@ const fmtDate = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', mo
    built but not public. Labels only ever upgrade. Data lives in
    src/data/projects.ts so /work and the homepage cannot drift apart. */
 
-const industries = [
-  { t: 'Construction & contracting', live: '/industries/construction-web-design',
-    d: 'Prequalification, project profiles, and the careers page that fills a superintendent seat.' },
-  { t: 'Roofing, HVAC & plumbing',
-    d: 'Emergency paths, financing, insurance-claim help, and galleries that survive a phone on LTE.' },
-  { t: 'Beauty, salons & med spas',
-    d: 'Booking as a navigation element, treatment pages that rank, consent-governed before-and-afters.' },
-  { t: 'Legal & professional',
-    d: 'Practice-area depth, credential display, and intake that respects how regulated advertising works.' },
-  { t: 'Real estate',
-    d: 'Listing structure, neighbourhood guides, and valuation requests that reach the right person.' },
-  { t: 'Restaurants & hospitality',
-    d: 'Menu and hours first. Everything else is secondary, and most sites get that exactly backwards.' },
-];
 
 const why = [
   ['You own everything', 'Domain, hosting, code, content, analytics — in your name from day one.'],
@@ -352,30 +339,32 @@ const check = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke
     </div>
   </section>
 
-  <!-- ══ INDUSTRIES ═════════════════════════════════════════════════════ -->
+  <!-- ══ INDUSTRIES PREVIEW ══════════════════════════════════════════
+       Who the work is for. The full page is /industries; this is the door
+       to it. Work (what JP built) and Industries (who it suits) stay
+       separate things throughout the site. ═══════════════════════════════ -->
   <section class="sec" id="industries" aria-labelledby="ind-h">
     <div class="container">
       <p data-anim="pop"><span class="mark" style="margin-bottom:0">Industries</span></p>
       <h2 class="sec__h" id="ind-h" data-split data-anim>Built around how your customers decide</h2>
       <p class="sec__sub" data-anim style="--d:160ms">
-        A roofing customer and a med spa client behave nothing alike. The structure should
-        not be the same, and neither should the page they land on.
+        A roofing customer and a bridal client behave nothing alike. The structure should not
+        be the same, and neither should the page they land on.
       </p>
-      <div class="cards3">
-        {industries.map((i, n) => (
-          <div class="card" data-anim style={`--d:${n * 55}ms`}>
-            <h3 class="card__t">{i.t}</h3>
-            <p class="card__x">{i.d}</p>
-            {i.live
-              ? <a class="tlink ind__a" href={i.live}>See the detail →</a>
-              : <span class="ind__soon">Detailed page in progress</span>}
-          </div>
+
+      <ul class="indp" data-anim style="--d:120ms">
+        {INDUSTRIES.map((i) => (
+          <li class="indp__i">
+            <a href="/industries">
+              <b>{i.name}</b>
+              <span>{i.examples.slice(0, 4).join(' · ')}</span>
+            </a>
+          </li>
         ))}
-      </div>
-      <p class="small ind__also" data-anim>
-        Also working with electricians, landscapers, cleaning and moving companies,
-        automotive businesses, barbershops, fitness studios, photography and creative
-        studios, accountants, consultants, medical offices, and startups.
+      </ul>
+
+      <p class="indp__go" data-anim>
+        <a class="btn btn--ghost" href="/industries">See who I work with</a>
       </p>
     </div>
   </section>
@@ -727,7 +716,23 @@ const check = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke
   .pln__meta .h3 { margin-bottom: var(--s2); }
   @media (max-width: 48rem) { .pln__meta { grid-template-columns: 1fr; gap: var(--s5); } }
 
-  /* ── industries ──────────────────────────────────────────────────────── */
+  /* ── industries preview ──────────────────────────────────────────────── */
+  .indp { display: grid; gap: .6rem; margin-top: clamp(2rem, 4vw, 3rem); text-align: left; }
+  @media (min-width: 40rem) { .indp { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 62rem) { .indp { grid-template-columns: repeat(3, 1fr); } }
+  .indp__i a {
+    display: flex; flex-direction: column; gap: .2rem; height: 100%;
+    padding: 1rem 1.2rem; text-decoration: none; color: inherit;
+    background: var(--card); border: 1px solid var(--rule); border-radius: 14px;
+    transition: transform .2s var(--pop), border-color .2s var(--ease);
+  }
+  .indp__i a:hover { transform: translateY(-3px); border-color: var(--rule-hi); }
+  .indp__i b { font-weight: 800; letter-spacing: -.015em; font-size: 1rem; }
+  .indp__i a:hover b { color: var(--redline); }
+  .indp__i span { font-size: .82rem; color: var(--graphite); }
+  .indp__go { margin-top: var(--s6); }
+
+  /* ── industries (legacy) ─────────────────────────────────────────────── */
   .ind__a { margin-top: auto; align-self: start; }
   .ind__soon {
     margin-top: auto; align-self: start;

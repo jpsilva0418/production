@@ -38,8 +38,8 @@ const related = PROJECTS.filter((p) =>
 const others = SERVICES.filter((s) => s.slug !== service.slug);
 ---
 <Base
-  title={`${service.name} | ${SITE_NAME}`}
-  description={service.blurb}
+  title={`${service.seoTitle} | ${SITE_NAME}`}
+  description={service.seoDescription}
   schema={schema}
 >
   <section class="section">
@@ -49,7 +49,7 @@ const others = SERVICES.filter((s) => s.slug !== service.slug);
       </nav>
 
       <div class="head sd__head">
-        <h1 class="display">{service.name}</h1>
+        <h1 class="display">{service.pageTitle ?? service.name}</h1>
         <p class="lead">{service.problem}</p>
       </div>
 
@@ -170,6 +170,9 @@ const others = SERVICES.filter((s) => s.slug !== service.slug);
   .crumb span[aria-hidden] { margin-inline: .35rem; }
 
   .sd__head { margin-bottom: var(--s6); }
+  /* "Meta Ads — Facebook & Instagram" is a long title; the full display scale
+     pushes it to three lines and the intro below the fold. */
+  .sd__head .display { font-size: clamp(2.2rem, 5.4vw, 3.7rem); }
   .sd__intro { font-size: var(--fs-lead); line-height: 1.55; }
   .sd__h { margin-bottom: var(--s6); }
 

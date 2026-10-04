@@ -267,7 +267,7 @@ export default function Planner() {
               after an email should never be routed through a funnel built
               for strangers. */}
           <p className="pl__escape">
-            Rather not do this? <a className="tlink" href="mailto:jp@jpsilvadigital.com">Just email me instead.</a>
+            Rather not do this? <a className="tlink" href="mailto:jpsilva0418@gmail.com">Just email me instead.</a>
           </p>
         </form>
       </div>

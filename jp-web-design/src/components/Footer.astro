@@ -2,20 +2,25 @@
 import { SITE_NAME, EMAIL, PHONE, PHONE_URI, LEGAL_ENTITY, SOCIALS, SERVICE_AREA } from '../data/site';
 import { SERVICES } from '../data/services';
 
+/* Real routes only. A homepage anchor in a column of page links reads as a
+   page and lands the visitor mid-document, so none appear here. Work is what
+   JP has built; Industries is who the work is for — they are separate
+   columns because they are separate things. */
 const cols = [
   {
     h: 'Services',
     links: [
-      ...SERVICES.map((s) => ({ href: `/services/${s.slug}`, label: s.name })),
-      { href: '/services', label: 'All services' },
+      ...SERVICES.map((s) => ({ href: `/services/${s.slug}`, label: s.navLabel ?? s.name })),
+      { href: '/services', label: 'All Services' },
     ],
   },
   {
-    h: 'Work',
+    h: 'Work & industries',
     links: [
       { href: '/work', label: 'Selected work' },
+      { href: '/industries', label: 'Industries I work with' },
       { href: '/industries/construction-web-design', label: 'Construction & contracting' },
-      { href: '/#packages', label: 'Packages' },
+      { href: '/free-demo', label: 'Free homepage demo' },
     ],
   },
   {

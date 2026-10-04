@@ -13,6 +13,15 @@
 export interface Service {
   slug: string;
   name: string;
+  /** H1 on the detail page, where it differs from `name` — Meta's service is
+      sold as Meta Ads but bought as Facebook and Instagram, so the page says
+      both while the brand name stays short everywhere else. */
+  pageTitle?: string;
+  /** Navigation label, where the menu needs more than `name`. */
+  navLabel?: string;
+  /** <title> and meta description for the detail page. */
+  seoTitle: string;
+  seoDescription: string;
   /** Nav/card short form. */
   short: string;
   /** One sentence, used on the homepage overview and the services index. */
@@ -35,6 +44,9 @@ export const SERVICES: Service[] = [
   {
     slug: 'web-design-development',
     name: 'Web Design & Development',
+    seoTitle: 'Web Design & Development for Small Businesses',
+    seoDescription:
+      'Custom business websites, redesigns and landing pages, designed and built end to end. Start with a free homepage demo — no obligation.',
     short: 'Websites',
     blurb:
       'Custom business websites, redesigns and landing pages — designed around how your customers actually decide.',
@@ -68,6 +80,9 @@ export const SERVICES: Service[] = [
   {
     slug: 'google-ads',
     name: 'Google Ads',
+    seoTitle: 'Google Ads Management for Local & Service Businesses',
+    seoDescription:
+      'Google Ads campaign setup, keyword strategy, conversion tracking and ongoing management — reaching people already searching for what you do.',
     short: 'Google Ads',
     blurb:
       'Search campaigns for people already looking for what you do — set up properly, tracked honestly, managed month to month.',
@@ -100,19 +115,26 @@ export const SERVICES: Service[] = [
   {
     slug: 'meta-ads',
     name: 'Meta Ads',
+    pageTitle: 'Meta Ads — Facebook & Instagram',
+    navLabel: 'Meta Ads — Facebook & Instagram',
+    seoTitle: 'Meta Ads Management — Facebook & Instagram Advertising',
+    seoDescription:
+      'Facebook and Instagram advertising managed end to end: Meta Ads Manager setup, audience strategy, creative, retargeting, conversion tracking and reporting.',
     short: 'Meta Ads',
     blurb:
-      'Facebook and Instagram campaigns for demand you have to create rather than capture — audiences, creative and tracking handled together.',
+      'Facebook and Instagram advertising for demand you have to create rather than capture — audiences, creative and tracking handled together.',
     problem:
-      'Nobody searches for a service they have not thought about yet. Meta is how they find out it exists.',
+      'Nobody searches for a service they have not thought about yet. Facebook and Instagram are how they find out it exists.',
     intro:
-      'Meta advertising works differently from search: you are interrupting rather than answering, so the creative carries most of the weight. Setup, audiences and tracking still decide whether any of it is measurable.',
+      'Facebook and Instagram are one advertising system — Meta Ads — run from a single Ads Manager account, with one pixel, one set of audiences and one budget deciding which feed an ad appears in. Treating them as two separate campaigns is how small budgets get split in half. Meta advertising also works differently from search: you are interrupting rather than answering, so the creative carries most of the weight, while setup and tracking decide whether any of it is measurable.',
     includes: [
-      'Facebook and Instagram campaign setup inside your own Business Manager',
-      'Audience strategy: interest, lookalike, retargeting, and exclusions',
-      'Creative direction and ad copy built for the feed, not repurposed print',
-      'Pixel and Conversions API setup, verified end to end',
-      'Landing page or lead form, aligned with the ad that sent the click',
+      'Facebook and Instagram campaign setup in Meta Ads Manager, inside your own Business Manager',
+      'Audience strategy: interest and behaviour targeting, lookalikes, custom audiences and exclusions',
+      'Retargeting the people who already visited your site or engaged with your posts',
+      'Creative direction and ad copy built for the feed and for Stories and Reels, not repurposed print',
+      'Meta Pixel and Conversions API setup, verified end to end',
+      'Placement strategy across Facebook, Instagram and the rest of the Meta network',
+      'Landing page or instant lead form, aligned with the ad that sent the click',
       'Ongoing testing of creative, audience and placement',
       'Reporting on spend, results and what is being learned',
     ],
@@ -122,7 +144,7 @@ export const SERVICES: Service[] = [
       'Creative needs real material — photos, video, or a plan to get them.',
     ],
     steps: [
-      { t: 'Offer and audience', d: 'What you are selling, who should see it, and whether Meta is the right channel at all.' },
+      { t: 'Offer and audience', d: 'What you are selling, who should see it on Facebook or Instagram, and whether Meta is the right channel at all.' },
       { t: 'Tracking first', d: 'Pixel and Conversions API set up and verified before any budget runs.' },
       { t: 'Test deliberately', d: 'A small number of real variables at a time, so results mean something.' },
       { t: 'Scale what works', d: 'Budget follows evidence, and the reporting shows you the same numbers I see.' },
