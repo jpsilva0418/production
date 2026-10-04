@@ -137,6 +137,15 @@ for (const [route, html] of docs) {
   }
 }
 
+/* ---------- 8. no developer notes in the shipped HTML ----------
+   Astro strips {/* ... *\/} but passes <!-- ... --> straight through, so a
+   note meant for the source can end up readable in the published page. */
+const NOTE = /<!--[^>]*?(TODO|FIXME|HACK|XXX|placeholder|FAKE|REMOVE)[\s\S]*?-->/i;
+for (const [route, html] of docs) {
+  const m = NOTE.exec(html);
+  if (m) fail.push(`DEVELOPER NOTE IN OUTPUT: ${route} ships ${m[0].slice(0, 70).replace(/\s+/g, ' ')}...`);
+}
+
 /* ---------- report ---------- */
 console.log(
   `checked ${docs.size} pages · ${internalCount} internal links · ${anchorCount} fragments`,

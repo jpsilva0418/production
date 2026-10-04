@@ -255,7 +255,10 @@ const check = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke
           </ul>
           <a class="btn btn--primary btn--wide" href="/free-demo">Start the free demo</a>
           <p class="offer__fine">
-            <!-- TODO(launch): set a turnaround JP can hold every single time. -->
+            {/* A JSX comment, not an HTML one. Astro strips these; it passes
+                <!-- --> straight through to the browser, which is how a
+                developer note ended up readable in the shipped page source.
+                TODO(launch): set a turnaround JP can hold every single time. */}
             Usually back within 3–5 business days. One project at a time — if I&rsquo;m at
             capacity I&rsquo;ll say so rather than leave you waiting.
           </p>
