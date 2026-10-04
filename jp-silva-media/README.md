@@ -18,7 +18,7 @@ jp-silva-media/
   lib/inquiry.mjs           validation, spam rules, storage adapters (Vercel Blob · local files)
   scripts/serve.mjs         local host that behaves like production (clean URLs, ranges, /api)
   scripts/check.mjs         link/asset/heading/noindex/JSON-LD/brand checks over a build
-  scripts/test-*.mjs        inquiry + reel tests
+  scripts/test-*.mjs        inquiry, reel + project player tests
   tools/                    media pipeline (cut-media.sh, encode-films.sh) and the YouTube metadata fetcher
   vercel.json               clean URLs, headers (noindex while in preview), function config
 ```
@@ -39,7 +39,9 @@ description, featured, order`. Only add credits, years and descriptions that are
 
 - **A YouTube film:** add its id to `tools/youtube-ids.txt` and push. The `jpsm-media-meta` GitHub Action (this branch
   only) fetches its public title, channel and poster frame into `src/data/youtube.json` and `public/media/posters/`.
-  Then add the project entry with `media: { kind: 'youtube', id }`.
+  Then add the project entry with `media: { kind: 'youtube', id }`. On the real host a tap anywhere on the poster plays
+  it in the page (YouTube IFrame API, nocookie host). A film marked `embeddable: false` in `youtube.json` gets the
+  poster with a link to YouTube instead, and the home reel leaves it out.
 - **A film file:** put the master in a folder and adapt `tools/encode-films.sh` (H.264/AAC mp4 + VP9/Opus webm + poster).
 - **Photos:** add images under `public/media/` and list them in the project's `gallery`.
 - **Home reel order:** `site.reel.youtube` (real host) and `site.reel.files` (fallback when YouTube cannot load).

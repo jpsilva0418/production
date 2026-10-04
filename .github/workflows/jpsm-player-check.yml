@@ -1,0 +1,62 @@
+# JP Silva Media only. Verifies the YouTube player against REAL YouTube (the build sandbox cannot reach it).
+# A test job, not a deployment: it builds the web target, serves it on the runner at 127.0.0.1 and drives it with
+# Playwright (Chromium desktop + WebKit iPhone 13). Nothing is published and nothing is committed: this branch is the
+# Vercel Production Branch, so a push from here would deploy. Embeddability is reported only (step summary +
+# results.json in the run artifact, "would change" lines for youtube.json); a person applies a change by hand.
+name: jpsm-player-check
+on:
+  push:
+    branches: ['site/jp-silva-media']
+    paths:
+      - 'jp-silva-media/**'
+      - '.github/workflows/jpsm-player-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: jpsm-player-check
+  cancel-in-progress: false
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PORT: '8811'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build the web target (dist/, YouTube embeds on)
+        run: node jp-silva-media/build.mjs
+      # Playwright lives outside the repo: the site stays dependency-free
+      - name: Install Playwright (temp dir, not saved)
+        working-directory: ${{ runner.temp }}
+        run: |
+          mkdir -p pw && cd pw
+          npm init -y > /dev/null
+          npm i --no-save --no-audit --no-fund playwright@1
+          npx playwright install --with-deps chromium webkit
+      - name: Serve dist on 127.0.0.1
+        run: |
+          nohup node jp-silva-media/scripts/serve.mjs --dir=dist --port="$PORT" > "$RUNNER_TEMP/serve.log" 2>&1 &
+          for i in $(seq 1 30); do
+            curl -fsS -o /dev/null "http://127.0.0.1:$PORT/" && exit 0
+            sleep 1
+          done
+          cat "$RUNNER_TEMP/serve.log"; exit 1
+      - name: Player check (embeddability + site)
+        env:
+          BASE_URL: http://127.0.0.1:${{ env.PORT }}
+          OUT_DIR: ${{ runner.temp }}/jpsm-player-check
+          PLAYWRIGHT_MODULE: ${{ runner.temp }}/pw/node_modules/playwright/index.mjs
+          NO_WRITE: '1'
+        run: node jp-silva-media/tools/ci-player-check.mjs
+      - name: Upload screenshots + results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: jpsm-player-check
+          path: ${{ runner.temp }}/jpsm-player-check
+          if-no-files-found: warn
+          retention-days: 14

@@ -7,6 +7,8 @@ import { displayTitle } from '../data/projects.mjs';
 const catLabel = (ctx, id) => (ctx.categories.find(c => c.id === id) || {}).label || id;
 const ytWatch = id => `https://www.youtube.com/watch?v=${id}`;
 const music = p => !!(p.artist && p.category.includes('music-videos'));
+/* in-page player only on the real host, and never for a film whose owner turned embedding off (youtube.json) */
+const embeds = (ctx, id) => ctx.youtube && !(ctx.ytMeta && ctx.ytMeta[id] && ctx.ytMeta[id].embeddable === false);
 
 function titleCard(ctx, p, n, total) {
   const title = music(p)
@@ -24,14 +26,19 @@ function hero(ctx, p) {
   const name = displayTitle(p);
   if (m.kind === 'youtube') {
     const poster = img(ctx, p.poster, { sizes: '(min-width:900px) 92vw, 100vw', eager: true });
-    /* a link to YouTube without JS (and on the preview build); project.js upgrades it to the in-page facade */
-    const control = `<a class="play pj-play pj-play--corner" href="${ytWatch(m.id)}" target="_blank" rel="noopener"${ctx.youtube ? ` data-yt="${esc(m.id)}" data-label="Play ${esc(name)} (loads YouTube, with sound)"` : ''}><i aria-hidden="true"></i><span>${ctx.youtube ? 'Play film' : 'Watch on YouTube <b aria-hidden="true">↗</b>'}</span><span class="vh"> (opens YouTube in a new tab)</span></a>`;
+    const embed = embeds(ctx, m.id);
+    /* embedding turned off (web build): the poster with the same message + link project.js restores when YouTube
+       refuses the film at play time, so both read alike (and CI sees data-yt-state="error") */
+    const refused = ctx.youtube && !embed;
+    /* a link to YouTube without JS (and on the preview build); project.js upgrades it to the in-page player.
+       pj-play--full stretches its hit area over the whole frame, so a tap anywhere on the poster plays the film */
+    const control = `<a class="play pj-play pj-play--corner${embed ? ' pj-play--full' : ''}${refused ? ' pj-yt-out' : ''}" href="${ytWatch(m.id)}" target="_blank" rel="noopener"${embed ? ` data-yt="${esc(m.id)}" data-label="Play ${esc(name)}"` : ''}${refused ? ' aria-describedby="pj-yt-msg"' : ''}><i aria-hidden="true"></i><span>${embed ? 'Play film' : 'Watch on YouTube <b aria-hidden="true">↗</b>'}</span><span class="vh"> (opens YouTube in a new tab)</span></a>`;
     return `<section class="pj-stage" aria-label="Film">
     <div class="pj-screen" style="--ar:16/9;--arn:${(16 / 9).toFixed(4)}">
-      <div class="frame pj-yt" id="pj-yt" data-title="${esc(name)}">
+      <div class="frame pj-yt${refused ? ' is-external' : ''}" id="pj-yt" data-title="${esc(name)}"${refused ? ' data-yt-state="error"' : ''}>
         ${poster}
         <span class="frame-grade" aria-hidden="true"></span>
-        ${control}
+        ${refused ? '<p class="pj-yt-msg mono" id="pj-yt-msg" role="status">This film plays on YouTube</p>\n        ' : ''}${control}
       </div>
     </div>
     <p class="pj-under mono">${ctx.youtube ? `<a href="${ytWatch(m.id)}" target="_blank" rel="noopener">Watch on YouTube <span aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a>` : '<span>Plays on YouTube</span>'}<span>Channel · ${esc(m.channel)}</span></p>

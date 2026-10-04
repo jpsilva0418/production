@@ -39,7 +39,9 @@ function entry(ctx, p, kind) {
 export function reelSection(ctx) {
   const by = Object.fromEntries(ctx.projects.map(p => [p.id, p]));
   const r = ctx.site.reel;
-  const yt = r.youtube.map(id => by[id]).filter(p => p && p.media && p.media.kind === 'youtube').map(p => entry(ctx, p, 'youtube'));
+  /* a film whose owner turned embedding off (youtube.json embeddable:false) cannot play in the reel: it is left out */
+  const embeddable = p => !(ctx.ytMeta && ctx.ytMeta[p.media.id] && ctx.ytMeta[p.media.id].embeddable === false);
+  const yt = r.youtube.map(id => by[id]).filter(p => p && p.media && p.media.kind === 'youtube' && embeddable(p)).map(p => entry(ctx, p, 'youtube'));
   const files = r.files.map(id => by[id]).filter(p => p && p.media && p.media.kind === 'file').map(p => entry(ctx, p, 'file'));
   const list = ctx.youtube && yt.length ? yt : files;
   const engine = list === yt ? 'youtube' : 'file';

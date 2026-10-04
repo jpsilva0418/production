@@ -144,8 +144,18 @@ html:not(.js) .wk-filter{display:none}
 .pj-play--corner i::before{left:12px;top:9px;border-width:7px 0 7px 10px}
 .pj-play--corner span{font-size:11px}
 @media (min-width:900px){.pj-play--corner{right:16px;bottom:16px}}
+/* real host: the control's hit area is the whole frame (the frame clips it); the visible control stays in the corner.
+   It leaves with the control once the player is up: nothing sits over a playing film */
+.pj-play--full::after{content:"";position:absolute;inset:-100vmax}
+.pj-yt.is-loading .pj-play--full{cursor:progress}
+/* YouTube refused the film (embedding off, unavailable, unreachable): poster, a note above the link to YouTube */
+.pj-yt-msg{position:absolute;right:12px;bottom:68px;z-index:4;max-width:calc(100% - 24px);margin:0;padding:6px 8px;font-size:10px;line-height:1.4;color:var(--bone);background:rgba(5,5,5,.72);text-align:right}
+@media (min-width:900px){.pj-yt-msg{right:16px;bottom:72px}}
 .pj-specs{color:var(--mid)}
 .pj-yt>iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+/* the site-wide grain (base.css) is a fixed layer over the whole page: it steps out only while the YouTube player is
+   up (project.js adds html.yt-on when the poster leaves, removes it if YouTube refuses the film) */
+html.yt-on .grain-layer{visibility:hidden}
 .pj-yt>.frame-grade,.pj-film::after{background:linear-gradient(180deg,rgba(5,5,5,0) 55%,rgba(5,5,5,.6) 100%)}
 .pj-play{background:rgba(5,5,5,.08);transition:background-color .3s ease}
 .pj-play:hover{background:rgba(5,5,5,.2)}

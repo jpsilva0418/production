@@ -1,7 +1,7 @@
 /* FEATURED WORK reel — two engines, one UI.
    YouTube engine (JPSM.youtube): one YT.Player (nocookie), muted reel of segment-long excerpts; watch mode plays through.
    File engine (preview host / YouTube unavailable): two stacked <video>s for a true A/B crossfade, his films with sound.
-   Content comes only from #reel-data. Test hooks: window.JPSM_REEL_TEST = { segment, blockMs, apiMs, errMs }. */
+   Content comes only from #reel-data. Test hooks: window.JPSM_REEL_TEST = { segment, blockMs, apiMs, errMs, readyMs }. */
 (function () {
   'use strict';
   var sec = document.getElementById('featured');
@@ -12,7 +12,7 @@
   var W = window, JPSM = W.JPSM || {}, JP = W.JP || {};
   var T = W.JPSM_REEL_TEST || {};
   var SEG = T.segment || DATA.segment || 28;
-  var BLOCK_MS = T.blockMs || 3500, API_MS = T.apiMs || 6000, ERR_MS = T.errMs || 4000;
+  var BLOCK_MS = T.blockMs || 3500, API_MS = T.apiMs || 6000, ERR_MS = T.errMs || 4000, READY_MS = T.readyMs || 15000;
   var reduced = !!(JP.reduced || (W.matchMedia && W.matchMedia('(prefers-reduced-motion: reduce)').matches));
   var conn = navigator.connection || {};
   var saveData = !!(JP.saveData || conn.saveData || (conn.effectiveType && conn.effectiveType !== '4g'));
@@ -242,7 +242,7 @@
   /* ---------------- YouTube engine ---------------- */
   var BAD = { 2: 1, 5: 1, 100: 1, 101: 1, 150: 1 };
   function YouTubeEngine() {
-    var P = null, ready = false, blockT = 0, revealT = 0, pendingSeek = false, loadingI = -1, retryT = 0, wantPlay = false;
+    var P = null, ready = false, blockT = 0, revealT = 0, pendingSeek = false, loadingI = -1, retryT = 0, wantPlay = false, readyT = 0;
     function reveal(on) { ytWrap.classList.toggle('is-on', !!on); }
     function armBlock() {
       clearTimeout(blockT);
@@ -273,7 +273,8 @@
     function onError(e) {
       var f = film();
       if (!BAD[e.data]) return;
-      clearTimeout(blockT);
+      // nothing may uncover the player behind the card (YouTube's own error screen): no gate, no retry reveal
+      clearTimeout(blockT); clearTimeout(retryT); clearTimeout(revealT);
       f.bad = true; setPlaying(false); reveal(false); hideGate();
       errYt.href = f.youtubeUrl;
       errYt.setAttribute('aria-label', 'Watch ' + f.display + ' on YouTube (opens in a new tab)');
@@ -292,9 +293,11 @@
           modestbranding: 1, origin: location.origin, start: f.start != null ? f.start : 0 },
         events: {
           onReady: function () {
-            ready = true;
+            ready = true; clearTimeout(readyT);
             try { P.mute(); } catch (e) {}
             if (!S.muted) { try { P.unMute(); } catch (e) {} }
+            // the visitor moved to another film while the player was loading: start on that one, not the stale id
+            if (wantPlay && S.i !== loadingI) { loadingI = S.i; E.load(S.i, 'pick'); return; }
             if (wantPlay) { pendingSeek = f.start == null; try { P.playVideo(); } catch (e) {} armBlock(); }
             else showGate('Play film');
           },
@@ -302,6 +305,13 @@
           onError: onError
         }
       });
+      // the API loaded but the player never answers (embed host filtered or unreachable): the same films as posters
+      // with "Watch on YouTube", as when the API itself cannot load
+      readyT = setTimeout(function () {
+        if (ready) return;
+        try { P.destroy(); } catch (e) {}
+        P = null; E = null; useFiles();
+      }, READY_MS);
     }
     return {
       kind: 'youtube',
@@ -311,6 +321,7 @@
         if (!P || !ready) return;
         hideGate(); clearTimeout(blockT); clearTimeout(revealT);
         var f = S.list[i];
+        f.bad = false; // asked again: YouTube answers again
         reveal(false); setPlaying(false);
         if (reduced && how !== 'pick') { try { P.pauseVideo(); } catch (e) {} setPlaying(false); showGate('Play film'); return; }
         var go = function () {
@@ -325,7 +336,8 @@
         if (reduced) go(); else setTimeout(go, 450);
       },
       play: function (user) {
-        if (!P || !ready) return;
+        // a film YouTube refused keeps its card (Watch on YouTube · next film): never uncover YouTube's error screen
+        if (!P || !ready || film().bad) return;
         hideGate(); sec.classList.remove('is-blocked');
         try { P.playVideo(); } catch (e) {}
         clearTimeout(retryT);
