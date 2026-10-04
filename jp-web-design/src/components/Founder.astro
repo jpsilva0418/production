@@ -5,26 +5,25 @@
    The site's whole argument is that a person builds the work, so the person
    has to appear on the homepage. Kept short: the full story is /about.
 
-   The photograph slot is built to final spec now and holds a clearly marked
-   placeholder until JP supplies a real photo. No stock model, no generated
-   face. Swapping it is one constant in data/site.ts.
+   The portrait is JP's own photograph, cropped head-and-shoulders and shown
+   as a circle — compact on purpose, so this reads as a person introducing
+   himself rather than a second hero image.
    ========================================================================== */
 import { FOUNDER, FOUNDER_PHOTO, SITE_NAME } from '../data/site';
 ---
 <section class="section" id="founder" aria-labelledby="fnd-h">
   <div class="container fnd">
     <figure class="fnd__media" data-anim="left">
-      <img
-        class="fnd__img"
-        src={FOUNDER_PHOTO.src}
-        alt={FOUNDER_PHOTO.isReal ? FOUNDER_PHOTO.alt : ''}
-        aria-hidden={FOUNDER_PHOTO.isReal ? undefined : 'true'}
-        width="800" height="1000"
-        loading="lazy" decoding="async"
-      />
-      {!FOUNDER_PHOTO.isReal && (
-        <figcaption class="fnd__todo">Founder photograph — to be added before launch</figcaption>
-      )}
+      <picture>
+        <source srcset={FOUNDER_PHOTO.portrait.webp} type="image/webp" />
+        <img
+          class="fnd__img"
+          src={FOUNDER_PHOTO.portrait.jpg}
+          alt={FOUNDER_PHOTO.alt}
+          width={FOUNDER_PHOTO.portrait.size} height={FOUNDER_PHOTO.portrait.size}
+          loading="lazy" decoding="async"
+        />
+      </picture>
     </figure>
 
     <div class="fnd__body" data-anim="right">
@@ -64,23 +63,19 @@ import { FOUNDER, FOUNDER_PHOTO, SITE_NAME } from '../data/site';
 </section>
 
 <style>
-  .fnd { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(var(--s6), 5vw, var(--s8)); align-items: center; }
-  @media (max-width: 56rem) { .fnd { grid-template-columns: 1fr; gap: var(--s6); } }
+  .fnd { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(var(--s5), 4vw, var(--s8)); align-items: center; }
+  @media (max-width: 56rem) { .fnd { grid-template-columns: 1fr; gap: var(--s5); } }
 
   .fnd__media { position: relative; margin: 0; }
   .fnd__img {
-    width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center 22%;
-    border-radius: var(--r); border: 1px solid var(--rule);
+    width: clamp(11rem, 20vw, 15rem); height: clamp(11rem, 20vw, 15rem);
+    object-fit: cover; object-position: center 38%;
+    border-radius: 50%;
+    border: 4px solid var(--card); outline: 1px solid var(--rule);
     background: var(--panel); box-shadow: var(--shadow-up);
   }
-  .fnd__todo {
-    margin-top: var(--s3); font-family: var(--mono); font-size: .8rem;
-    letter-spacing: .04em; color: var(--redline);
-  }
-  /* On a phone the portrait must not eat the whole screen before the words. */
   @media (max-width: 56rem) {
-    .fnd__media { max-width: 22rem; }
-    .fnd__img { aspect-ratio: 1 / 1; }
+    .fnd__img { width: 9.5rem; height: 9.5rem; }
   }
 
   .fnd__body > * + * { margin-top: var(--s4); }

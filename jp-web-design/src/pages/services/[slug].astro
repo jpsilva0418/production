@@ -1,9 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
-import InquiryForm from '../../components/InquiryForm.astro';
 import { SERVICES } from '../../data/services';
 import { PROJECTS } from '../../data/projects';
-import { SITE_NAME, SERVICE_AREA } from '../../data/site';
+import { SITE_NAME, SERVICE_AREA, REPLY_SLA } from '../../data/site';
 
 /* Detail routes exist only because each pillar has genuinely different
    content — what is included, what it will not promise, and how the work
@@ -119,25 +118,33 @@ const others = SERVICES.filter((s) => s.slug !== service.slug);
   )}
 
   <section class="section" aria-labelledby="sd-cta">
-    <div class="container sd__cta">
-      <div class="head">
-        <p><span class="mark"><b>§</b> Start here</span></p>
-        <h2 class="h2" id="sd-cta">Tell me what you need</h2>
-        <p class="lead">
+    <div class="container">
+      <div class="note sd__cta">
+        <span class="lbl">Start here</span>
+        <h2 class="h3" id="sd-cta">
           {service.slug === 'web-design-development'
-            ? 'The free homepage demo is the fastest way to see what I would do with your site — a real concept for your business, before you pay anything.'
-            : `The first conversation is free and there is no obligation. ${SERVICE_AREA}.`}
+            ? 'See what I\u2019d do with your homepage first'
+            : 'Tell me what you are trying to sell'}
+        </h2>
+        <p class="small">
+          {service.slug === 'web-design-development'
+            ? 'Answer eight questions and I design a homepage concept for your business \u2014 free, with no obligation once you have seen it.'
+            : `The first conversation is free and there is no obligation at the end of it. ${SERVICE_AREA}, and I reply within ${REPLY_SLA}.`}
         </p>
-      </div>
-
-      {service.slug === 'web-design-development' && (
-        <div class="btn-row sd__demo">
-          <a class="btn btn--primary" href="/free-demo" data-track="demo_start" data-track-label={service.slug}>Get your free demo</a>
-          <span class="small">Or use the form below.</span>
+        <div class="btn-row sd__ctab">
+          {service.slug === 'web-design-development' ? (
+            <>
+              <a class="btn btn--primary" href="/free-demo" data-track="demo_start" data-track-label={service.slug}>Get Your Free Demo</a>
+              <a class="btn btn--ghost" href={`/contact#${service.slug}`}>Start a project</a>
+            </>
+          ) : (
+            <>
+              <a class="btn btn--primary" href={`/contact#${service.slug}`} data-track="service_inquiry" data-track-label={service.slug}>Start a project</a>
+              <a class="btn btn--ghost" href="/services">See all services</a>
+            </>
+          )}
         </div>
-      )}
-
-      <InquiryForm need={service.needValue} />
+      </div>
     </div>
   </section>
 
@@ -190,7 +197,9 @@ const others = SERVICES.filter((s) => s.slug !== service.slug);
   .sd__proj .card__t { margin-top: var(--s4); }
   .sd__proj .card__x { padding-bottom: var(--s5); }
 
-  .sd__demo { margin-bottom: var(--s6); }
+  .sd__cta { max-width: 52rem; }
+  .sd__cta h2 { margin-bottom: var(--s2); }
+  .sd__ctab { margin-top: var(--s5); }
   .sd__other { text-decoration: none; }
   .sd__other .tlink { margin-top: auto; }
 </style>

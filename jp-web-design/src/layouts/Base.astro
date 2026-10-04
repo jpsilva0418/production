@@ -3,7 +3,7 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Analytics from '../components/Analytics.astro';
-import { SITE_NAME, EMAIL, SOCIALS } from '../data/site';
+import { SITE_NAME, EMAIL, PHONE_URI, SOCIALS } from '../data/site';
 
 export interface Props {
   title: string;
@@ -22,8 +22,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 /* Sitewide entity. Deliberately minimal: no foundingDate, no
    numberOfEmployees, no award, no aggregateRating — none of it is true yet,
    and markup that outruns reality is how structured-data penalties happen.
-   TODO(launch): add `telephone`, `address` and real `sameAs` profiles, then
-   upgrade @type to ProfessionalService. */
+   No address and no aggregateRating: both would have to be invented, and
+   markup that outruns reality is how structured-data penalties happen. */
 const org = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -34,6 +34,7 @@ const org = {
     'Founder-led studio building conversion-focused websites and running Google and Meta advertising for businesses across the United States.',
   founder: { '@type': 'Person', name: 'JP Silva' },
   email: EMAIL,
+  telephone: PHONE_URI.replace('tel:', ''),
   areaServed: { '@type': 'Country', name: 'United States' },
   /* Only real profiles. An empty SOCIALS array emits no sameAs at all. */
   ...(SOCIALS.length > 0 && { sameAs: SOCIALS.map((s) => s.href) }),

@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import InquiryForm from '../components/InquiryForm.astro';
-import { SITE_NAME, EMAIL, PHONE, REPLY_SLA, DEMO_TURNAROUND } from '../data/site';
+import { SITE_NAME, EMAIL, PHONE, PHONE_URI, REPLY_SLA, DEMO_TURNAROUND } from '../data/site';
 
 /* The one inquiry page. Every CTA on the site that is not the free demo
    points here, and the form on this page is the only form besides the
@@ -41,7 +41,7 @@ const schema = {
             <h2 class="h3">See the demo first</h2>
             <p class="small">
               Eight questions, about four minutes, and I design a homepage concept for your
-              business. Free, yours to keep, and no obligation once you have seen it. It usually
+              business. Free, and no obligation once you have seen it. The concept usually
               comes back within {DEMO_TURNAROUND}.
             </p>
             <a class="btn btn--primary btn--wide ct__demobtn" href="/free-demo" data-track="demo_start" data-track-label="contact">Start the free demo</a>
@@ -55,20 +55,8 @@ const schema = {
 
           <div class="ct__block">
             <h2 class="h3">Prefer to talk?</h2>
-            {PHONE ? (
-              <>
-                <p class="small">Call or text, and a human answers.</p>
-                <a class="tlink" href={`tel:${PHONE.replace(/[^+\d]/g, '')}`} data-track="call_click" data-track-label="contact">{PHONE}</a>
-              </>
-            ) : (
-              <>
-                <p class="small">
-                  A number a human answers is going up before launch. Until then, send the form or
-                  email me and we will find a time to speak.
-                </p>
-                <p class="ct__todo">Phone — to be added before launch</p>
-              </>
-            )}
+            <p class="small">Call or text, and you get me — not a call centre.</p>
+            <a class="tlink ct__tel" href={PHONE_URI} data-track="call_click" data-track-label="contact">{PHONE}</a>
           </div>
 
           <div class="ct__block ct__block--last">
@@ -99,5 +87,6 @@ const schema = {
   .ct__block { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s2);
                padding-top: var(--s5); border-top: 1px solid var(--rule); }
   .ct__block--last { gap: var(--s3); }
-  .ct__todo { font-family: var(--mono); font-size: .8125rem; color: var(--redline); }
+  /* The number must never wrap mid-way across a narrow phone screen. */
+  .ct__tel { white-space: nowrap; }
 </style>

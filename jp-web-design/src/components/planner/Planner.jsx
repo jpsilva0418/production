@@ -9,11 +9,19 @@ import Diagram from './Diagram.jsx';
 import './planner.css';
 
 import { sendInquiry, mailtoFor } from '../../lib/inquiry';
+import { INTAKE_FIELDS, validateIntake } from '../../lib/intake';
 import { track, EVENTS } from '../../lib/analytics';
 import { EMAIL, REPLY_SLA, DEMO_TURNAROUND } from '../../data/site';
 
 const KEY = 'jpwd.planner.v1';
 const TOTAL = 8;
+
+/* This flow only handles website projects, and it asks its own timeline
+   question at step 6 — so those two canonical fields are preset rather than
+   re-asked. Everything else on the final step is the canonical intake. */
+const PLANNER_NEED = 'Website / Web Development';
+const PLANNER_INTAKE = { preset: ['need', 'timeline'], optional: ['message'] };
+const PLANNER_LABELS = { message: 'Anything else worth knowing?' };
 
 const EMPTY = {
   businessType: '', businessTypeOther: '',
@@ -21,7 +29,7 @@ const EMPTY = {
   packageChoice: '', packageChoiceOther: '',
   features: [], timeline: '', wantsRecommendation: '',
   name: '', company: '', email: '', phone: '', website: '',
-  contactPref: '', notes: '',
+  budget: '', notes: '',
 };
 
 /* Answers persist across Back/Forward and refresh (WCAG 2.2 — 3.3.7
@@ -100,9 +108,10 @@ export default function Planner() {
 
   const submit = async (e) => {
     e.preventDefault();
-    const err = {};
-    if (!a.name.trim()) err.name = 'Enter your name so I know who I’m replying to.';
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(a.email)) err.email = 'Enter an email address — it needs an @ and a domain.';
+    /* The same validator the contact page uses. `need` and `timeline` are
+       preset by this flow, and the plan itself carries the project detail,
+       so the message field is optional here. */
+    const err = validateIntake({ ...a, message: a.notes }, PLANNER_INTAKE);
     setErrors(err);
     if (Object.keys(err).length) {
       const first = document.getElementById(`f-${Object.keys(err)[0]}`);
@@ -120,13 +129,15 @@ export default function Planner() {
       email: a.email,
       phone: a.phone || undefined,
       company: a.company || undefined,
-      need: 'Website',
+      website: a.website || undefined,
+      need: PLANNER_NEED,
+      budget: a.budget || undefined,
       timeline: a.timeline || undefined,
-      message: `Free demo request from the planner. Preferred contact: ${a.contactPref || 'no preference'}.`,
+      message: a.notes || 'Free homepage demo requested through the website planner.',
       plan: { answers: a, recommendation: plan },
     });
     setSending(false);
-    if (res.ok) track(EVENTS.demoComplete, { need: 'Website' });
+    if (res.ok) track(EVENTS.demoComplete, { need: PLANNER_NEED });
     setSent(res.ok ? 'ok' : res.reason === 'spam' ? 'ok' : res.reason);
     setDone(true);
   };
@@ -316,7 +327,14 @@ function Text({ id, label, value, onChange, hint, type = 'text' }) {
 }
 
 /* ------------------------------------------------------------ Contact step */
-function ContactStep({ a, set, errors, onSubmit, sending }) {
+function ContactStep({ a, set, errors }) {
+  /* Rendered from INTAKE_FIELDS so this step and /contact can never drift
+     apart. `notes` is this flow's name for the canonical `message`. */
+  const fields = INTAKE_FIELDS.filter((f) => !PLANNER_INTAKE.preset.includes(f.key));
+  const valueOf = (k) => (k === 'message' ? a.notes : a[k]) ?? '';
+  const setOf = (k, v) => set(k === 'message' ? { notes: v } : { [k]: v });
+  const isOptional = (f) => !f.required || PLANNER_INTAKE.optional.includes(f.key);
+
   return (
     <div className="pl__contact">
       <p className="pl__hint pl__hint--top">
@@ -325,50 +343,42 @@ function ContactStep({ a, set, errors, onSubmit, sending }) {
         obligation once you have seen it.
       </p>
 
+      <p className="pl__preset">
+        <span>What you need</span>
+        <b>{PLANNER_NEED}</b>
+      </p>
+
       <div className="pl__cgrid">
-        <div className="pl__field">
-          <label htmlFor="f-name">Name</label>
-          <input id="f-name" value={a.name} autoComplete="name"
-                 aria-invalid={!!errors.name} aria-describedby={errors.name ? 'e-name' : undefined}
-                 onChange={(e) => set({ name: e.target.value })} />
-          {errors.name && <p className="pl__err" id="e-name">{errors.name}</p>}
-        </div>
+        {fields.map((f) => {
+          const err = errors[f.key];
+          const id = `f-${f.key}`;
+          const label = PLANNER_LABELS[f.key] ?? f.label;
+          return (
+            <div key={f.key} className={`pl__field${f.full ? ' pl__field--full' : ''}`}>
+              <label htmlFor={id}>
+                {label}{isOptional(f) && <span className="pl__opt2">optional</span>}
+              </label>
 
-        <div className="pl__field">
-          <label htmlFor="f-company">Business name</label>
-          <input id="f-company" value={a.company} autoComplete="organization"
-                 onChange={(e) => set({ company: e.target.value })} />
-        </div>
+              {f.kind === 'select' ? (
+                <select id={id} value={valueOf(f.key)} onChange={(e) => setOf(f.key, e.target.value)}>
+                  <option value="">{f.empty}</option>
+                  {f.options.map((o) => <option key={o}>{o}</option>)}
+                </select>
+              ) : f.kind === 'textarea' ? (
+                <textarea id={id} rows="3" value={valueOf(f.key)}
+                          aria-invalid={!!err} aria-describedby={err ? `e-${f.key}` : undefined}
+                          onChange={(e) => setOf(f.key, e.target.value)} />
+              ) : (
+                <input id={id} type={f.kind} value={valueOf(f.key)}
+                       autoComplete={f.autocomplete} inputMode={f.inputmode} placeholder={f.placeholder}
+                       aria-invalid={!!err} aria-describedby={err ? `e-${f.key}` : undefined}
+                       onChange={(e) => setOf(f.key, e.target.value)} />
+              )}
 
-        <div className="pl__field">
-          <label htmlFor="f-email">Email</label>
-          <input id="f-email" type="email" value={a.email} autoComplete="email" inputMode="email"
-                 aria-invalid={!!errors.email} aria-describedby={errors.email ? 'e-email' : undefined}
-                 onChange={(e) => set({ email: e.target.value })} />
-          {errors.email && <p className="pl__err" id="e-email">{errors.email}</p>}
-        </div>
-
-        <div className="pl__field">
-          <label htmlFor="f-phone">Phone <span className="pl__opt2">optional</span></label>
-          <input id="f-phone" type="tel" value={a.phone} autoComplete="tel" inputMode="tel"
-                 onChange={(e) => set({ phone: e.target.value })} />
-        </div>
-
-        <div className="pl__field pl__field--full">
-          <label htmlFor="f-pref">Preferred contact method</label>
-          <select id="f-pref" value={a.contactPref} onChange={(e) => set({ contactPref: e.target.value })}>
-            <option value="">No preference</option>
-            <option>Email</option>
-            <option>Phone call</option>
-            <option>Text message</option>
-          </select>
-        </div>
-
-        <div className="pl__field pl__field--full">
-          <label htmlFor="f-notes">Anything else worth knowing? <span className="pl__opt2">optional</span></label>
-          <textarea id="f-notes" rows="3" value={a.notes}
-                    onChange={(e) => set({ notes: e.target.value })} />
-        </div>
+              {err && <p className="pl__err" id={`e-${f.key}`}>{err}</p>}
+            </div>
+          );
+        })}
       </div>
 
       <p className="pl__privacy">
@@ -493,8 +503,8 @@ function Result({ a, plan, sent, onRestart, headingRef }) {
             </div>
             <p className="pl__sent pl__sent--warn">
               {sent === 'unconfigured'
-                ? 'Your plan is above and it is yours to keep — but the form’s delivery address isn’t connected yet, so I’m not going to tell you this was sent when it wasn’t. The button above opens an email with your details already filled in.'
-                : 'Your plan is above and it is yours to keep, but the request didn’t send — something went wrong on the way. The button above carries the same details by email, and it reaches me exactly the same way.'}
+                ? 'Your plan is above — but the form’s delivery address isn’t connected yet, so I’m not going to tell you this was sent when it wasn’t. The button above opens an email with your details already filled in.'
+                : 'Your plan is above, but the request didn’t send — something went wrong on the way. The button above carries the same details by email, and it reaches me exactly the same way.'}
             </p>
           </>
         )}

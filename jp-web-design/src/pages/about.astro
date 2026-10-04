@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { SITE_NAME, FOUNDER, EMAIL, PHONE, LEGAL_ENTITY, FOUNDER_PHOTO, SERVICE_AREA, REPLY_SLA } from '../data/site';
+import { SITE_NAME, FOUNDER, EMAIL, PHONE, PHONE_URI, LEGAL_ENTITY, FOUNDER_PHOTO, SERVICE_AREA, REPLY_SLA } from '../data/site';
 import { SERVICES } from '../data/services';
 import { PROJECTS } from '../data/projects';
 
@@ -9,11 +9,8 @@ import { PROJECTS } from '../data/projects';
    no certifications, no awards. Everything stated here is either verifiable
    from the work itself or a commitment about how I operate.
 
-   TODO(launch) — facts only JP can confirm, flagged rather than invented:
-     · how long he has been building for clients
-     · any certifications (Google Ads / Meta Blueprint) worth naming
-     · the town he is based in, if local positioning is wanted
-   Each has a marked slot below and renders nothing until supplied. */
+   Facts JP has not confirmed — years in business, certifications, a home
+   town — are simply absent rather than guessed at or marked up for later. */
 const person = {
   '@context': 'https://schema.org',
   '@type': 'Person',
@@ -21,6 +18,7 @@ const person = {
   jobTitle: 'Founder, developer and digital marketer',
   worksFor: { '@type': 'Organization', name: SITE_NAME, '@id': `${Astro.site}#org` },
   email: EMAIL,
+  telephone: PHONE_URI.replace('tel:', ''),
   url: new URL('/about', Astro.site).href,
   knowsAbout: ['Web design', 'Web development', 'Google Ads', 'Meta Ads', 'Conversion optimisation'],
 };
@@ -75,16 +73,16 @@ const principles = [
       </div>
 
       <figure class="ab__media">
-        <img
-          class="ab__img"
-          src={FOUNDER_PHOTO.src}
-          alt={FOUNDER_PHOTO.isReal ? FOUNDER_PHOTO.alt : ''}
-          aria-hidden={FOUNDER_PHOTO.isReal ? undefined : 'true'}
-          width="800" height="1000" loading="eager" decoding="async"
-        />
-        {!FOUNDER_PHOTO.isReal && (
-          <figcaption class="ab__todo">Founder photograph — to be added before launch</figcaption>
-        )}
+        <picture>
+          <source srcset={FOUNDER_PHOTO.wide.webp} type="image/webp" />
+          <img
+            class="ab__img"
+            src={FOUNDER_PHOTO.wide.jpg}
+            alt={FOUNDER_PHOTO.alt}
+            width={FOUNDER_PHOTO.wide.size} height={FOUNDER_PHOTO.wide.size}
+            loading="eager" decoding="async" fetchpriority="high"
+          />
+        </picture>
       </figure>
     </div>
   </section>
@@ -210,11 +208,8 @@ const principles = [
         <div><dt>Email</dt><dd><a class="tlink" href={`mailto:${EMAIL}`} data-track="email_click" data-track-label="about">{EMAIL}</a></dd></div>
         <div>
           <dt>Phone</dt>
-          <dd>{PHONE ? <a class="tlink" href={`tel:${PHONE.replace(/[^+\d]/g, '')}`} data-track="call_click">{PHONE}</a> : <span class="ab__pending">To be added before launch</span>}</dd>
+          <dd><a class="tlink" href={PHONE_URI} data-track="call_click" data-track-label="about">{PHONE}</a></dd>
         </div>
-        {!LEGAL_ENTITY && (
-          <div><dt>Legal entity</dt><dd><span class="ab__pending">To be added before launch</span></dd></div>
-        )}
       </dl>
     </div>
   </section>
@@ -245,14 +240,14 @@ const principles = [
   .ab__h { margin-bottom: var(--s5); }
   .ab__cta { margin-top: var(--s6); }
 
-  .ab__media { margin: 0; }
+  .ab__media { margin: 0; display: flex; justify-content: center; }
   .ab__img {
-    width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center 22%;
-    border-radius: var(--r); border: 1px solid var(--rule);
+    width: 100%; max-width: 21rem; aspect-ratio: 1 / 1; object-fit: cover; object-position: center 42%;
+    border-radius: 50%;
+    border: 5px solid var(--card); outline: 1px solid var(--rule);
     background: var(--panel); box-shadow: var(--shadow-up);
   }
-  .ab__todo { margin-top: var(--s3); font-family: var(--mono); font-size: .8rem; letter-spacing: .04em; color: var(--redline); }
-  @media (max-width: 56rem) { .ab__media { max-width: 20rem; } .ab__img { aspect-ratio: 1 / 1; } }
+  @media (max-width: 56rem) { .ab__img { max-width: 15rem; } }
 
   .ab__cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(var(--s6), 5vw, var(--s8)); align-items: start; }
   @media (max-width: 56rem) { .ab__cols { grid-template-columns: 1fr; } }
@@ -286,7 +281,6 @@ const principles = [
   @media (max-width: 30rem) { .ab__facts > div { grid-template-columns: 1fr; gap: .2rem; } }
   .ab__facts dt { font-family: var(--mono); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--graphite); }
   .ab__facts dd { font-size: var(--fs-small); }
-  .ab__pending { font-family: var(--mono); font-size: .8rem; color: var(--redline); }
 
   .ab__close { max-width: 52rem; }
   .ab__close h2 { margin-bottom: var(--s2); }

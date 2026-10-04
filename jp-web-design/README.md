@@ -1,6 +1,6 @@
 # JP Silva Digital — website
 
-Astro 5 static site. Twenty-one routes, one React island (the planner). Builds
+Astro 5 static site. Twenty-five routes, one React island (the planner). Builds
 to plain HTML/CSS/JS, so it deploys to any static host.
 
 Three services: web design and development, Google Ads, and Meta Ads. The free
@@ -84,9 +84,7 @@ Everything below is tracked as `TODO(launch)` in code. The three marked
 | 1 | **Domain** — replace `jpsilvadigital.com` | `astro.config.mjs` (`SITE`), `public/robots.txt` | **BLOCKS LAUNCH** |
 | 2 | **Inquiry endpoint** — otherwise the forms hand off to email instead of sending | `PUBLIC_INQUIRY_ENDPOINT` (see below) | **BLOCKS LAUNCH** |
 | 3 | **Email address** — a real inbox | `EMAIL` in `src/data/site.ts` | **BLOCKS LAUNCH** |
-| 4 | **Founder photograph** | see below | After launch |
-| 5 | **Phone number** — a human answers it | `PHONE` in `src/data/site.ts` (`null` renders nothing) | After launch |
-| 6 | **Legal entity name + state** | `LEGAL_ENTITY` in `src/data/site.ts` | After launch |
+| 4 | **Legal entity name + state**, if one is registered | `LEGAL_ENTITY` in `src/data/site.ts` (`null` shows the plain brand copyright) | Optional |
 | 7 | **Social profiles** — real URLs only | `SOCIALS` in `src/data/site.ts` (empty renders no row) | After launch |
 | 8 | **Analytics IDs** | `PUBLIC_GA_ID`, `PUBLIC_GOOGLE_ADS_ID`, `PUBLIC_META_PIXEL_ID` | After launch |
 | 9 | **Legal review** of the three legal pages | `src/pages/privacy\|terms\|accessibility.astro` | After launch |
@@ -113,9 +111,22 @@ the correct state until the accounts exist.
 
 ## The inquiry system
 
-There is exactly one submission path: `src/lib/inquiry.ts`. The contact form
-(`InquiryForm.astro`) and the planner's final step both call `sendInquiry()`.
-Neither owns its own endpoint or its own idea of what "sent" means.
+There is exactly one inquiry system, in two files:
+
+- `src/lib/intake.ts` — the canonical fields, labels, option lists and
+  validator.
+- `src/lib/inquiry.ts` — the single submission path, `sendInquiry()`.
+
+Two surfaces render it. `/contact` is the general project inquiry.
+`/free-demo` asks eight website-specific questions first, then renders these
+exact fields at its final step — it is an extension of this intake, not a
+second contact system. Both validate with `validateIntake()` and submit
+through `sendInquiry()`.
+
+Add, rename or reorder a field in `intake.ts` and both surfaces follow.
+Never add one to only one of them. Service pages link to
+`/contact#<service-slug>`, which preselects "What do you need?" via
+`needFromHint()`.
 
 **The rule that governs it:** a form may never claim to have sent something it
 did not send. With no endpoint configured, both surfaces show an email handoff
@@ -146,18 +157,19 @@ neglected conversion surface in the whole pipeline.
 
 ## Founder photograph
 
-The slot is built to final spec and currently holds a clearly marked
-placeholder (`public/media/founder-placeholder.svg`). It is a marked empty
-frame — never a stock model, never a generated face.
+JP's own photograph, cropped two ways from one source file and shown as a
+circle on both pages:
 
-To swap in the real photo:
+- `public/media/jp-silva-portrait.*` — 480px head-and-shoulders, homepage.
+- `public/media/jp-silva.*` — 620px wider crop, `/about`.
 
-1. Save it as `public/media/jp-silva.jpg`. Portrait, at least 800×1000, with
-   headroom — both crops centre on roughly 22% from the top.
-2. In `src/data/site.ts`, set `FOUNDER_PHOTO.src` to `/media/jp-silva.jpg` and
-   `isReal: true`. That one flag also removes the "photo pending" captions.
-3. Check both crops: the homepage (`Founder.astro`, 4:5 desktop / 1:1 mobile)
-   and `/about` (same ratios, different column width).
+Both crops sit wholly inside the circular area of the source photo, so the
+round treatment never exposes its white corners. WebP first with a JPEG
+fallback; paths live in `FOUNDER_PHOTO` in `src/data/site.ts`.
+
+To replace it, drop in new files at those paths (square, subject centred) or
+point `FOUNDER_PHOTO` somewhere else. Never substitute a stock or generated
+face.
 
 ## Content
 

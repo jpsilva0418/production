@@ -173,6 +173,17 @@
   background: none; border: 0; cursor: pointer; padding: .5rem;
   font-size: var(--fs-small); color: var(--graphite); text-decoration: underline;
 }
+.pl__preset {
+  display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap;
+  margin-bottom: var(--s5); padding: .7rem .9rem;
+  background: var(--green-soft); border: 1px solid var(--green-bd); border-radius: 10px;
+}
+.pl__preset span {
+  font-family: var(--mono); font-size: .7rem; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--green-t);
+}
+.pl__preset b { font-weight: 700; font-size: var(--fs-small); }
+
 .pl__sent { font-size: var(--fs-small); color: var(--graphite); }
 /* The result screen reports what actually happened to the submission. */
 .pl__sent--ok, .pl__sent--warn {

@@ -49,7 +49,7 @@ export const SERVICES: Service[] = [
       'Service pages, project galleries and FAQs where they earn their place',
       'Inquiry forms, click-to-call and click-to-email wired and tested',
       'On-page SEO: titles, metas, heading structure, schema, sitemap',
-      'Analytics and Search Console connected before launch',
+      'Analytics and Search Console connected before your site goes live',
       'Domain connection, launch, and a post-launch support window',
     ],
     limits: [
@@ -63,7 +63,7 @@ export const SERVICES: Service[] = [
       { t: 'Build and review', d: 'You review on a real URL, not a PDF. Revision rounds are named in the proposal.' },
       { t: 'Launch and hand over', d: 'Domain, hosting, code, content and analytics are all in your name from day one.' },
     ],
-    needValue: 'Website',
+    needValue: 'Website / Web Development',
   },
   {
     slug: 'google-ads',
@@ -133,9 +133,6 @@ export const SERVICES: Service[] = [
 
 export const bySlug = (slug: string) => SERVICES.find((s) => s.slug === slug);
 
-/** Options for the canonical inquiry form's "What do you need?" field. */
-export const NEED_OPTIONS = [
-  ...SERVICES.map((s) => s.needValue),
-  'Multiple services',
-  'Not sure yet',
-];
+/* The "What do you need?" options live in lib/intake.ts — one canonical list
+   shared by the contact page, the planner and these service pages. */
+export { NEED_OPTIONS } from '../lib/intake';

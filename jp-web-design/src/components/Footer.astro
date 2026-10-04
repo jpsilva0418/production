@@ -1,5 +1,5 @@
 ---
-import { SITE_NAME, EMAIL, PHONE, LEGAL_ENTITY, SOCIALS, SERVICE_AREA } from '../data/site';
+import { SITE_NAME, EMAIL, PHONE, PHONE_URI, LEGAL_ENTITY, SOCIALS, SERVICE_AREA } from '../data/site';
 import { SERVICES } from '../data/services';
 
 const cols = [
@@ -59,16 +59,11 @@ const year = new Date().getFullYear();
 
     <div class="ftr__contact">
       <a class="tlink" href={`mailto:${EMAIL}`} data-track="email_click" data-track-label="footer">{EMAIL}</a>
-      {PHONE
-        ? <a class="tlink" href={`tel:${PHONE.replace(/[^+\d]/g, '')}`} data-track="call_click" data-track-label="footer">{PHONE}</a>
-        : <span class="small ftr__todo">Phone — to be added before launch</span>}
+      <a class="tlink ftr__tel" href={PHONE_URI} data-track="call_click" data-track-label="footer">{PHONE}</a>
     </div>
 
     <div class="ftr__legal">
-      <p class="small">
-        © {year} {LEGAL_ENTITY ?? SITE_NAME}.
-        {!LEGAL_ENTITY && <span class="ftr__todo">Legal entity and state — to be added.</span>}
-      </p>
+      <p class="small">© {year} {LEGAL_ENTITY ?? SITE_NAME}.</p>
       <ul class="ftr__legalnav">
         <li><a href="/privacy">Privacy</a></li>
         <li><a href="/terms">Terms</a></li>
@@ -112,5 +107,5 @@ const year = new Date().getFullYear();
   .ftr__legalnav a { font-size: var(--fs-small); color: var(--graphite); text-decoration: none; }
   .ftr__legalnav a:hover { color: var(--ink); }
 
-  .ftr__todo { font-family: var(--mono); font-size: .8125rem; color: var(--redline); }
+  .ftr__tel { white-space: nowrap; }
 </style>
