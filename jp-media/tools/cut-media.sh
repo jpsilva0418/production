@@ -20,7 +20,7 @@ clip () { # name src start dur [vf]
   ffmpeg -v error -y -ss "$ss" -i "$src" -vf "$vf" -frames:v 1 -q:v 3 "$FILM/$name-poster.jpg"
   printf '  %-22s %5s KB mp4  %5s KB webm\n' "$name" $(( $(stat -c%s "$FILM/$name.mp4")/1024 )) $(( $(stat -c%s "$FILM/$name.webm")/1024 ))
 }
-FDC="crop=846:470:14:0"; NRC="crop=738:390:20:78"; CHC="crop=656:450:0:24"; WC="crop=680:500:0:6"
+FDC="crop=846:470:14:0"; NRC="crop=738:390:20:78"; CHC="crop=656:450:0:24"; WC="crop=660:500:0:6"
 still () { # name src time [vf]
   ffmpeg -v error -y -ss "$3" -i "$2" -vf "${4:-null}" -frames:v 1 -q:v 2 "$STILLS/$1.jpg"
 }
@@ -87,13 +87,13 @@ clip jp-sea       "$JP" 25.0 6.0 "crop=504:390:8:312"
 clip jp-sea-fade  "$JP" 36.0 6.0 "crop=504:390:8:312"
 
 echo "stills"
-still m-hat     "$M" 0.3  "$MVF";   still m-concert "$M" 4.5 "$MVF";  still m-wing "$M" 12.6 "$MVF"
+still m-hat     "$M" 0.3  "$MVF";   still m-concert "$M" 4.68 "$MVF";  still m-wing "$M" 12.6 "$MVF"
 still m-moto    "$M" 22.6 "$MVF";   still m-sunset  "$M" 28.0 "$MVF"; still m-bokeh "$M" 31.0 "$MVF"
 still m-studio  "$M" 32.6 "$MVF";   still m-horse   "$M" 37.2 "$MVF"; still m-bw "$M" 39.6 "$MVF"; still m-rooftop "$M" 46.4 "$MVF"
-for x in "fd-fence 3.2" "fd-flare 37.4" "fd-truck 50.6" "fd-silhouettes 24.9" "fd-headlights 1:22.2" "fd-clouds 1:23.6"; do set -- $x; still $1 "$FD" $2 "$FDC"; done
+for x in "fd-fence 3.2" "fd-flare 35.8" "fd-truck 50.6" "fd-silhouettes 24.9" "fd-headlights 1:22.2" "fd-clouds 1:23.6"; do set -- $x; still $1 "$FD" $2 "$FDC"; done
 for x in "w-aim 9.3" "w-silhouette 16.2" "w-saguaro 30.4" "w-gallop 36.6" "w-skyward 40.6" "w-portrait 57.2" "w-hat 51.4"; do set -- $x; still $1 "$W" $2 "$WC"; done
 for x in "nr-dash 6.2" "nr-silhouette 16.8" "nr-headlight 32.2"; do set -- $x; still $1 "$NR" $2 "$NRC"; done
-for x in "ch-ride 3.2" "ch-road 12.7" "ch-camera 20.9" "ch-detail 8.0"; do set -- $x; still $1 "$CH" $2 "$CHC"; done
+for x in "ch-ride 3.2" "ch-road 12.3" "ch-camera 20.9" "ch-detail 8.0"; do set -- $x; still $1 "$CH" $2 "$CHC"; done
 still fo-trees  "$FO" 12.9 "crop=492:960:4:0"; still fo-fire "$FO" 22.3 "crop=492:960:4:0"; still fo-umbrella "$FO" 3.3 "crop=492:960:4:0"
 still jp-sea    "$JP" 27.6 "crop=504:390:8:312"; still jp-sea-rail "$JP" 31.0 "crop=504:390:8:312"
 du -sh "$FILM" "$STILLS"; ls "$STILLS" | wc -l

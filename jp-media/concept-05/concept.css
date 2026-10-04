@@ -93,7 +93,7 @@ html.menu-open{overflow:hidden}
 .menu.is-open,.menu:target{visibility:visible}
 .menu-list li{--i:0}
 .menu-list li:nth-child(2){--i:1}.menu-list li:nth-child(3){--i:2}.menu-list li:nth-child(4){--i:3}.menu-list li:nth-child(5){--i:4}
-.menu-list a{display:flex;align-items:flex-start;gap:.18em;font:400 min(clamp(3rem,10vh,7rem),13.5vw)/.9 var(--display);text-transform:uppercase;letter-spacing:-.01em;padding:.03em 0}
+.menu-list a{display:flex;align-items:flex-start;gap:.18em;font:400 min(clamp(3rem,10vh,7rem),15vw)/.9 var(--display);text-transform:uppercase;letter-spacing:-.01em;padding:.03em 0}
 .menu-list a b{font:600 12px/1 var(--body);color:var(--red);letter-spacing:.1em;min-width:3ch;margin-top:.28em}
 .menu-list a:hover{color:var(--red)}
 .menu-list a:hover b{color:var(--paper)}
