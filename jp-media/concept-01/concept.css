@@ -14,16 +14,17 @@
         0  p0  corner marks draw · PICTURE START · counter ticks
       700  p1  eyebrow "A VISUAL WORLD BY"
      1150  p2  JP SILVA opens from a vertical seam (clip-path, 900ms ease-io)
-     1950  p3  letterbox opens (bars scaleY to the stage), name travels to the
-               title-card position (FLIP, 1s ease); the showreel starts  [long]
+     1950  p3  letterbox opens (bars scaleY to the band), name travels to the
+               title-card position (FLIP, 1s ease, settles at ~34%); the cuts start  [long]
      2650  p4  credit line, band timecode
      3100  p5  header, scroll cue; opener chrome fades
      3500  is-opened: opener gone, page scrolls
    Hero media. Phones: hero-montage (490×960, 12 s) full width under the header,
    the name straddles the band's lower edge, roles + place on black beneath.
-   Desktop: a 2.39 stage of three 9:16 frames, m-wing | m-bw | m-rooftop, played in
-   sequence (7.8 s); the third freezes and becomes 01 / 06. One clock: the slate
-   counter hands over to the in-frame timecode when the letterbox opens.
+   Desktop: ONE letterboxed 2.39 band at --band-w; fd-headlights then nr-silhouette
+   play back to back inside it and the second freezes. The name overlaps the
+   band's bottom edge by half its height. One clock: the slate counter hands over
+   to the in-band timecode when the letterbox opens.
    Base styles are the finished state; hide-states only under html.js-anim.
    ============================================================ */
 :root{
@@ -42,10 +43,11 @@
   color-scheme:dark;
 }
 @media (min-width:900px){
-  :root{--inset:28px;--name-intro:clamp(4.5rem,21vw,19rem);--name-fs:clamp(5rem,9vw,8.5rem);--name-half:.43em;--head-h:68px;
+  :root{--inset:28px;--name-intro:clamp(4.5rem,21vw,19rem);--name-fs:clamp(4.4rem,7.1vw,6.5rem);--name-half:.43em;--head-h:68px;
+    /* the band: 2.39:1, as wide as the room allows while the credits still fit under it */
     --band-w:min(100vw,calc((100svh - 250px) * 2.39));
-    /* the hero stage is three 9:16 frames: as tall as the viewport allows, never wider than the room, never past the source's sharpness */
-    --tri-gap:12px;--stage-hmax:calc(100svh - var(--head-h) - 190px);
+    /* the showreel triptych (feature 01): three 9:16 frames inside a 2.39 stage */
+    --tri-gap:12px;--stage-hmax:calc(100svh - 140px);
     --tri-w:min(calc(var(--stage-hmax) * 9 / 16),calc((100vw - 2 * var(--inset) - 2 * var(--tri-gap)) / 3),460px);
     --stage-h:calc(var(--tri-w) * 16 / 9);--stage-w:calc(3 * var(--tri-w) + 2 * var(--tri-gap))}
 }
@@ -59,9 +61,7 @@ body{background:var(--black);overflow-x:clip}
 
 /* ---- Type helpers ------------------------------------------------- */
 .mono{font:400 11px/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mid)}
-.cond{font-family:var(--cond);text-transform:uppercase;line-height:1}
 .ey{font:300 clamp(.95rem,1.1vw,1.1rem)/1 var(--cond);letter-spacing:.4em;text-indent:.4em;text-transform:uppercase;color:var(--bone)}
-.rule{height:1px;background:var(--line)}
 
 /* ---- Header -------------------------------------------------------- */
 .site-head{position:fixed;inset:0 0 auto 0;z-index:700;height:calc(var(--head-h) + env(safe-area-inset-top,0px));padding:env(safe-area-inset-top,0px) var(--inset) 0;
@@ -75,7 +75,6 @@ html.is-scrolled .site-head::after{opacity:1}
 .head-nav a,.head-nav button{font:500 12px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;height:44px;padding:0 12px;color:var(--bone)}
 .head-nav button{border:1px solid var(--line-2);padding:0 16px}
 .head-nav button span{margin-left:10px;color:var(--amber)}
-/* hidden header is also out of the tab order (visibility), shown with no delay */
 .js-anim:not(.is-opened):not(.p5) .site-head{opacity:0;transform:translateY(-10px);visibility:hidden;transition:opacity .9s ease,transform .9s var(--ease),visibility 0s linear .9s}
 
 /* ---- Opener (exists only while the entrance runs) ------------------- */
@@ -84,7 +83,6 @@ html.is-scrolled .site-head::after{opacity:1}
 .bar{position:absolute;left:0;right:0;height:50svh;background:var(--black);transition:transform 1s var(--ease)}
 .bar-t{top:0;transform-origin:50% 0}
 .bar-b{bottom:0;transform-origin:50% 100%}
-/* the letterbox opens at p3; on a replay p3 is skipped, so p4 opens it too */
 .p3 .bar-t,.p4 .bar-t{transform:scaleY(var(--bt,0.3))}
 .p3 .bar-b,.p4 .bar-b{transform:scaleY(var(--bb,0.3))}
 .cm{position:absolute;width:18px;height:18px}
@@ -101,7 +99,6 @@ html:not(.p0) .cm::after{transform:scaleY(0)}
 .op-mark,.op-tc{position:absolute;font:400 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--bone);white-space:nowrap;
   opacity:0;transition:opacity .6s ease .3s}
 .p0 .op-mark,.p0 .op-tc{opacity:1}
-/* one clock: the slate counter hands over to the in-frame timecode the moment the letterbox opens */
 .p3 .op-tc,.p4 .op-tc{opacity:0;transition:opacity .25s ease}
 .p5 .op-mark{opacity:0;transition-delay:0s}
 .op-mark{left:calc(var(--inset) + 28px);top:calc(var(--inset) + 5px + env(safe-area-inset-top,0px));display:flex;align-items:center;gap:10px}
@@ -122,31 +119,15 @@ html:not(.p0) .cm::after{transform:scaleY(0)}
 /* phone: the 9:16 showreel fills the width under the transparent header. Height is capped so the name's
    second line, the roles and the place all land on black above the study-nav zone */
 .band{width:100%;height:min(calc(100vw * 16 / 9),calc(100svh - 36px - .86 * var(--name-fs) - 84px - env(safe-area-inset-bottom,0px)));background:var(--smoke)}
-.band>img{object-position:50% 35%}
-.band>video{object-position:50% 35%}
-.tri{display:none}
-/* finished state is the base: the top of the frozen frame is graded so the title card reads on the pale sky.
-   While the reel runs only the lower grade is there (JS state) */
-.frame.rc-host>.frame-grade{background:linear-gradient(180deg,rgba(5,5,5,.78) 0%,rgba(5,5,5,.35) 30%,rgba(5,5,5,0) 48%,rgba(5,5,5,0) 58%,rgba(5,5,5,.6) 100%)}
-.js-anim:not(.reel-ended) .frame.rc-host>.frame-grade{background:linear-gradient(180deg,rgba(5,5,5,0) 55%,rgba(5,5,5,.55) 100%)}
+.band>img,.band>video{object-position:50% 35%}
+.band>.frame-grade,.dband>.frame-grade{background:linear-gradient(180deg,rgba(5,5,5,0) 55%,rgba(5,5,5,.55) 100%)}
+.dband{display:none}
 html:not(.js) .band-tc{display:none}
 .band-tc{position:absolute;right:12px;bottom:12px;z-index:3;font:400 10px/1 var(--mono);letter-spacing:.14em;color:var(--bone);font-variant-numeric:tabular-nums;white-space:nowrap}
 .band-tc b{font-weight:400;color:var(--mid);margin-right:.9em}
 .js-anim .band-tc{transition:opacity .6s ease .2s}
 .js-anim:not(.p3):not(.p4) .band-tc{opacity:0}
 .reel-ended .band-tc{opacity:0;transition:opacity .6s ease}
-.reel-card{position:absolute;left:12px;top:calc(var(--head-h) + 10px);z-index:3;display:grid;gap:6px;font:400 10px/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--bone)}
-.rc-no b{font-weight:400;color:var(--amber)}
-.rc-label{font:500 clamp(1.3rem,4.6vw,1.9rem)/1 var(--cond);letter-spacing:.08em;margin-top:4px}
-.rc-roles{color:var(--bone);opacity:.8}
-.rc-link{display:inline-flex;align-items:center;gap:8px;min-height:44px;color:var(--bone);font-size:11px;border-bottom:1px solid var(--bone);width:max-content;padding:0 2px}
-.rc-link:hover{border-color:var(--amber)}
-.rc-link span{color:var(--amber)}
-.js-anim .reel-card{transition:visibility 0s 0s}
-.js-anim .reel-card>*{transition:opacity .8s ease,transform .9s var(--ease)}
-.js-anim:not(.reel-ended) .reel-card{pointer-events:none;visibility:hidden;transition:visibility 0s .9s}
-.js-anim:not(.reel-ended) .reel-card>*{opacity:0;transform:translateY(10px)}
-.reel-ended .reel-card>:nth-child(2){transition-delay:.1s}.reel-ended .reel-card>:nth-child(3){transition-delay:.2s}.reel-ended .reel-card>:nth-child(4){transition-delay:.3s}
 .name{position:absolute;left:var(--inset);bottom:calc(-1 * var(--name-half));z-index:810;margin:0;
   font:600 var(--name-fs)/.86 var(--cond);letter-spacing:-.01em;text-transform:uppercase;color:var(--bone);white-space:nowrap;
   transform-origin:0 0;will-change:transform}
@@ -177,19 +158,17 @@ html:not(.js) .band-tc{display:none}
 @media (max-width:374px){.roles{letter-spacing:.12em;font-size:11px}}
 @media (min-width:900px){
   .hero{padding-top:calc(var(--head-h) + env(safe-area-inset-top,0px))}
-  /* the 2.39 stage is three 9:16 frames; the title straddles its lower edge like a card, the credits sit under it */
-  .hero-stage{width:var(--stage-w);height:var(--stage-h)}
+  /* one 2.39 band; the title straddles its lower edge like a card, the credits sit under it */
+  .hero-stage{width:var(--band-w);aspect-ratio:2.39/1}
   .band{display:none}
-  .tri{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--tri-gap);height:100%}
-  .tri-f{height:100%;background:var(--smoke)}
-  .tri-f>img,.tri-f>video{object-position:50% 40%}
-  .tri-v{opacity:0;transition:opacity .5s ease}
-  .tri-v.is-playing{opacity:1}
-  .tri-f .frame-grade{background:linear-gradient(180deg,rgba(5,5,5,0) 62%,rgba(5,5,5,.6) 100%)}
-  .band-tc{right:14px;bottom:14px}
-  .reel-card{left:calc(2 * (var(--tri-w) + var(--tri-gap)) + 16px);top:16px}
+  .dband{display:block;position:absolute;inset:0;background:var(--smoke)}
+  .dband>img,.dband>video{object-position:50% 50%}
+  .dv{opacity:0;transition:opacity .6s ease}
+  .dv.is-playing,.dv.is-held{opacity:1}
+  .dband>.frame-grade{background:linear-gradient(180deg,rgba(5,5,5,.18) 0%,rgba(5,5,5,0) 22%,rgba(5,5,5,0) 58%,rgba(5,5,5,.62) 100%)}
+  .band-tc{right:16px;bottom:14px;font-size:11px}
   .name .br-m{display:none}
-  .hero-credits{margin-top:calc(var(--name-half) + 24px);width:var(--stage-w);margin-left:auto;margin-right:auto}
+  .hero-credits{margin-top:calc(var(--name-half) + 26px);width:var(--band-w);margin-left:auto;margin-right:auto}
   .roles{font-size:14px}
 }
 
@@ -199,29 +178,32 @@ html:not(.js) .band-tc{display:none}
 .slate h2{font:300 clamp(2rem,5.2vw,4.4rem)/1 var(--cond);letter-spacing:.12em;text-indent:.12em;text-transform:uppercase;margin-top:10px}
 .slate .mono{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 
-/* ---- Features: five title cards, five geometries ---------------------
-   f-ref   reference frame: 2.39 band (desktop) / 16:9 band + card below (phone)
+/* ---- Features: six title cards. Phones: every frame fills the viewport, cover-cropped, card on top.
+   Desktop geometries:
+   f-tri   the showreel as three 9:16 frames inside a 2.39 stage
+   f-ref   reference frame: 2.39 band inside black
    f-full  full-bleed 100svh, title top-left, credits bottom-right
-   f-quiet small 2.39 band, light grade, sits low in the viewport
-   f-tall  portrait source: full-bleed on phone, pillarboxed beside its card on desktop
-   f-wide  ultra-wide 2.76 band, title only                                     */
-.feature{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;background:var(--black);overflow:clip;
-  padding:calc(var(--head-h) + 12px) 0 calc(84px + env(safe-area-inset-bottom,0px))}
-.feat-stage{position:relative;width:100%;max-width:100%}
+   f-quiet small 2.39 band, light grade
+   f-tall  portrait source pillarboxed 9:16 beside its card
+   f-wide  ultra-wide 2.76 band                                                     */
+.feature{position:relative;height:100svh;min-height:560px;display:flex;flex-direction:column;justify-content:center;align-items:center;background:var(--black);overflow:clip;padding:0}
+.feat-stage{position:absolute;inset:0;width:100%}
 .feature .frame{position:absolute;inset:0;background:var(--smoke)}
 .feature .frame>img,.feature .frame>video{object-position:var(--pos,50% 50%)}
 .feature .frame>img{transform:translate3d(0,var(--py,0px),0) scale(1.06)}
 .feature .frame>video{transform:scale(1.04)}
 .feature .frame-grade{background:linear-gradient(180deg,rgba(5,5,5,var(--grade-top,.5)) 0%,rgba(5,5,5,0) 32%,rgba(5,5,5,0) 55%,rgba(5,5,5,var(--grade-bot,.7)) 100%)}
-.tc{position:absolute;inset:0;padding:calc(var(--head-h) + 8px) var(--inset) calc(92px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;justify-content:space-between;pointer-events:none}
+.tri{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.tri .frame{position:relative;inset:auto;height:100%}
+.tri .frame>img{object-position:50% 40%}
+.f-tri{--grade-top:.62;--grade-bot:.72}
+.tc{position:absolute;inset:0;padding:calc(var(--head-h) + 8px + env(safe-area-inset-top,0px)) var(--inset) calc(92px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;justify-content:space-between;pointer-events:none}
 .tc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
 .tc-no{font:400 12px/1 var(--mono);letter-spacing:.14em;color:var(--bone)}
 .tc-no b{font-weight:400;color:var(--amber)}
 .tc-credits{text-align:right;font:400 11px/1.75 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--bone)}
 .tc-credits .tc-line{display:block}
-.tc-credits .tc-line+.tc-line>span{color:var(--mid)}
-.tc-credits i{font-style:normal}
-.tc-credits .gd{display:none}
+.tc-credits .tc-line:last-child>span{color:var(--mid)}
 .tc-bottom{max-width:100%}
 .tc-label{font:300 clamp(.9rem,1.1vw,1.05rem)/1 var(--cond);letter-spacing:.32em;text-transform:uppercase;color:var(--bone);margin-bottom:14px}
 .tc-title{font:600 clamp(2.6rem,7vw,7rem)/.9 var(--cond);letter-spacing:-.005em;text-transform:uppercase;color:var(--bone);text-wrap:balance}
@@ -230,36 +212,23 @@ html:not(.js) .band-tc{display:none}
 .tc-line>span{display:block;transition:transform .95s var(--ease) var(--d,0s),opacity .6s ease var(--d,0s)}
 .js-anim .feature:not(.is-on) .tc-line>span{transform:translateY(112%);opacity:.001}
 .tc-credits .tc-line>span{transition-duration:.7s}
-/* full-bleed frames (f-full everywhere, f-tall on phones) */
-.f-full,.f-tall{padding:0}
-.f-full .feat-stage,.f-tall .feat-stage{height:100svh}
 .f-full .tc{flex-direction:column}
 .f-full .tc-bottom{order:1}
 .f-full .tc-top{order:2;align-items:flex-end}
 .f-full{--grade-top:.55;--grade-bot:.6}
 .f-full .tc-title{font-size:clamp(2.6rem,6vw,6rem)}
 .f-full .tc-note{margin-top:14px}
-/* band frames with the card in flow (phone: f-ref, f-quiet, f-wide; desktop: f-tall) */
 @media (max-width:899px){
-  .f-ref .feat-stage,.f-quiet .feat-stage,.f-wide .feat-stage{display:flex;flex-direction:column;gap:18px}
-  .f-ref .frame,.f-quiet .frame,.f-wide .frame{position:relative;inset:auto;order:2}
-  .f-ref .frame{aspect-ratio:16/9}
-  .f-quiet .frame{aspect-ratio:2.39/1}
-  .f-wide .frame{aspect-ratio:2.76/1}
-  .f-ref .tc,.f-quiet .tc,.f-wide .tc{display:contents}
-  .f-ref .tc-top,.f-quiet .tc-top,.f-wide .tc-top{order:1;padding:0 var(--inset)}
-  .f-ref .tc-bottom,.f-quiet .tc-bottom,.f-wide .tc-bottom{order:3;padding:6px var(--inset) 0}
-  .f-ref,.f-quiet,.f-wide{--grade-top:.18;--grade-bot:.3}
-  .f-quiet{justify-content:flex-end}
-  .f-ref,.f-wide{justify-content:flex-start}
-  .f-ref .feat-stage{padding-top:8px}
-  .f-quiet .tc-title{font-size:clamp(2rem,5.5vw,5rem)}
+  .f-ref,.f-quiet,.f-wide,.f-tall{--grade-top:.42;--grade-bot:.66}
   .f-wide .tc-bottom{text-align:right}
+  .f-quiet .tc-title{font-size:clamp(2.2rem,9vw,5rem)}
 }
 @media (min-width:900px){
-  .feature{padding:0}
-  .feat-stage{width:var(--band-w);aspect-ratio:2.39/1}
-  .f-full .feat-stage{width:100%;aspect-ratio:auto;height:100svh}
+  .feat-stage{position:relative;inset:auto;width:var(--band-w);aspect-ratio:2.39/1}
+  .f-tri .feat-stage{width:var(--stage-w);height:var(--stage-h);aspect-ratio:auto}
+  .tri{gap:var(--tri-gap)}
+  .f-tri{--grade-top:.2;--grade-bot:.5}
+  .f-full .feat-stage{position:absolute;inset:0;width:100%;aspect-ratio:auto}
   .f-ref .feat-stage{width:min(var(--band-w),1100px)}
   .f-quiet .feat-stage{width:min(var(--band-w),960px)}
   .f-wide .feat-stage{width:100%;aspect-ratio:2.76/1}
@@ -270,10 +239,11 @@ html:not(.js) .band-tc{display:none}
   .f-tall .tc-top{flex-direction:column;gap:22px;align-items:flex-start}
   .f-tall .tc-credits{text-align:left}
   .f-tall{--grade-top:.2;--grade-bot:.35}
+  .f-ref,.f-quiet,.f-wide{--grade-top:.3;--grade-bot:.55}
   .tc{padding:26px 28px 28px}
+  .f-tri .tc{padding:22px 24px 26px}
   .f-full .tc{padding:calc(var(--head-h) + 12px) var(--inset) 36px}
   .tc-credits{font-size:12px}
-  .tc-credits .gd{display:inline}.tc-credits .gm{display:none}
 }
 @media (min-width:900px) and (pointer:fine){
   html{scroll-snap-type:y proximity}
@@ -281,40 +251,46 @@ html:not(.js) .band-tc{display:none}
   .has-pointer .feature .frame>img{will-change:transform}
 }
 
-/* ---- Film: intertitle, then the full reel behind a play control ---------- */
+/* ---- Film: intertitle, the reel as a letterboxed band, a credit roll of the long-form work ---- */
 .film{border-top:1px solid var(--line)}
 .intertitle{min-height:70svh;display:grid;place-items:center;padding:60px var(--inset);text-align:center}
 .intertitle p{font:300 clamp(1.6rem,4vw,3.6rem)/1.25 var(--cond);letter-spacing:.08em;text-indent:.08em;text-transform:uppercase;max-width:26ch;margin:0 auto;--rv-y:12px}
-.film-grid{display:grid;grid-template-columns:1fr;gap:40px;padding:0 var(--inset) 96px}
-.film-copy h2{font:300 clamp(1.7rem,4vw,3.4rem)/1 var(--cond);letter-spacing:.12em;text-transform:uppercase;margin:10px 0 18px}
-.film-note{font:400 clamp(1rem,1.2vw,1.15rem)/1.5 var(--body);color:#c9c7c1;max-width:40ch}
-.yt{margin-top:34px;border-top:1px solid var(--line)}
-.yt a{display:flex;align-items:center;gap:16px;min-height:48px;padding:6px 0;border-bottom:1px solid var(--line);font:500 13px/1 var(--cond);letter-spacing:.22em;text-transform:uppercase;color:var(--bone);transition:color .3s ease}
-.yt a small{font:400 10px/1 var(--mono);letter-spacing:.14em;color:var(--mid);min-width:4.2em}
-.yt a span{margin-left:auto;font:400 10px/1 var(--mono);letter-spacing:.1em;color:var(--bone);text-transform:none;white-space:nowrap;transition:color .3s ease}
-.yt a span em{font-style:normal;color:var(--mid)}
-.yt a:hover,.yt a:hover span{color:var(--amber)}
-/* the reel sits pillarboxed: a 9:16 window, never wider than it is sharp */
-.reel-full{height:min(72svh,640px);aspect-ratio:9/16;margin:0 auto;background:var(--smoke)}
-.reel-full>img{object-position:50% 40%}
-.reel-full>video{opacity:0;transition:opacity .9s ease}
-.reel-full.is-playing>video{opacity:1}
-.reel-full .frame-grade{background:linear-gradient(180deg,rgba(5,5,5,.1) 0%,rgba(5,5,5,0) 30%,rgba(5,5,5,0) 70%,rgba(5,5,5,.5) 100%)}
-.play{position:absolute;left:0;right:0;top:0;bottom:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+/* phones: a full-width 4:5 window (the source is 9:16); desktop: a full-width 2.39 band, the 9:16 window
+   centred at band height, leader furniture burned into the black either side */
+.reel-band{position:relative;width:100%;aspect-ratio:4/5;background:var(--smoke);overflow:clip}
+.reel-win{position:absolute;inset:0;background:var(--smoke)}
+.reel-win>img{object-position:50% 40%}
+.reel-win>video{opacity:0;transition:opacity .9s ease}
+.reel-win.is-playing>video{opacity:1}
+.reel-win .frame-grade{background:linear-gradient(180deg,rgba(5,5,5,.12) 0%,rgba(5,5,5,0) 30%,rgba(5,5,5,0) 70%,rgba(5,5,5,.55) 100%)}
+.play{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
   font:500 12px/1 var(--mono);letter-spacing:.22em;text-indent:.22em;text-transform:uppercase;color:var(--bone);cursor:pointer}
 .play i{display:block;width:64px;height:64px;border:1px solid var(--bone);position:relative;transition:border-color .3s ease,transform .5s var(--ease)}
 .play i::before{content:"";position:absolute;left:26px;top:20px;border-style:solid;border-width:12px 0 12px 18px;border-color:transparent transparent transparent var(--bone)}
 .play:hover i{border-color:var(--amber)}
-.reel-full.is-playing .play{align-items:flex-start;justify-content:flex-end;flex-direction:row;padding:14px}
-.reel-full.is-playing .play i{width:44px;height:44px;border-color:var(--line-2)}
-.reel-full.is-playing .play i::before{left:15px;top:14px;width:4px;height:16px;border:0;border-left:4px solid var(--bone);border-right:4px solid var(--bone)}
-.reel-full.is-playing .play span{position:absolute;left:14px;top:28px;color:var(--mid)}
-.reel-full .band-tc{opacity:0;transition:opacity .6s ease}
-.reel-full.is-playing .band-tc{opacity:1}
+.reel-win.is-playing .play{align-items:flex-start;justify-content:flex-end;flex-direction:row;padding:14px}
+.reel-win.is-playing .play i{width:44px;height:44px;border-color:var(--line-2)}
+.reel-win.is-playing .play i::before{left:15px;top:14px;width:4px;height:16px;border:0;border-left:4px solid var(--bone);border-right:4px solid var(--bone)}
+.reel-win.is-playing .play span{position:absolute;left:14px;top:28px;color:var(--mid)}
+.reel-meta{position:absolute;left:var(--inset);bottom:14px;z-index:5;display:grid;gap:2px;color:var(--bone);font-size:10px;pointer-events:none}
+.reel-meta span+span{color:var(--mid)}
+.reel-tc{position:absolute;right:var(--inset);bottom:12px;z-index:5;display:flex;align-items:center;gap:12px;color:var(--bone);pointer-events:none;
+  font:300 clamp(1.1rem,2.4vw,2rem)/1 var(--cond);letter-spacing:.08em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.reel-tc i{width:6px;height:6px;background:var(--line-2)}
+.reel-band.is-live .reel-tc i{background:var(--amber);animation:op-blink 1s steps(2,jump-none) infinite}
+.reel-tc b{font:400 10px/1 var(--mono);letter-spacing:.14em;color:var(--mid)}
+html:not(.js) .reel-tc{display:none}
+.longroll{display:grid;justify-items:center;gap:6px;padding:64px var(--inset) 96px;text-align:center}
+.longroll a{display:grid;justify-items:center;gap:8px;min-height:48px;padding:12px 16px;color:var(--bone);transition:color .3s ease}
+.lr-t{font:300 clamp(1.6rem,3.6vw,3rem)/1 var(--cond);letter-spacing:.14em;text-indent:.14em;text-transform:uppercase}
+.lr-s{display:block;font-size:10px;color:var(--mid);transition:color .3s ease}
+.longroll a:hover .lr-t,.longroll a:hover .lr-s{color:var(--amber)}
 @media (min-width:900px){
-  .film-grid{grid-template-columns:minmax(0,1fr) auto;gap:72px;align-items:center;padding:0 var(--inset) 140px;max-width:1200px;margin:0 auto}
-  .film-copy{max-width:52ch}
-  .reel-full{height:min(78svh,760px)}
+  .reel-band{aspect-ratio:2.39/1}
+  .reel-win{inset:0 auto 0 50%;width:auto;height:100%;aspect-ratio:9/16;transform:translateX(-50%)}
+  .reel-meta{bottom:22px;font-size:11px}
+  .reel-tc{bottom:18px}
+  .longroll{padding:96px var(--inset) 150px;gap:10px}
 }
 
 /* ---- Photography: contact strip ------------------------------------ */
@@ -343,16 +319,17 @@ html:not(.js) .band-tc{display:none}
 }
 @media (min-width:900px) and (pointer:coarse){.strip{--sh:min(58svh,560px);gap:14px}}
 
-/* ---- About: director's statement ----------------------------------- */
-.about{padding:96px var(--inset) 80px;border-top:1px solid var(--line)}
-.about-grid{display:grid;grid-template-columns:1fr;gap:40px}
+/* ---- About: an intertitle card, then the statement ----------------- */
+.about{border-top:1px solid var(--line)}
+.about-card{min-height:70svh;display:grid;place-items:center;padding:60px var(--inset);text-align:center;background:var(--black)}
+.about-card h2{font:300 clamp(1.7rem,4.6vw,4.2rem)/1.1 var(--cond);letter-spacing:.3em;text-indent:.3em;text-transform:uppercase;--rv-y:12px}
+.about-grid{display:grid;grid-template-columns:1fr;gap:40px;padding:0 var(--inset) 80px}
 .labels{display:grid;grid-template-columns:auto 1fr;gap:14px 24px;align-content:start}
 .labels dt{font:400 11px/1.7 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mid)}
 .labels dd{font:400 clamp(1rem,1.2vw,1.1rem)/1.7 var(--body);color:var(--bone)}
 .labels dd small{display:block;font:400 10px/1.6 var(--mono);letter-spacing:.14em;color:var(--mid)}
 .statement p{font:400 clamp(1.15rem,1.6vw,1.4rem)/1.5 var(--body);max-width:62ch;color:var(--bone)}
 .statement p+p{margin-top:1.1em;color:#c9c7c1}
-.statement h2{font:300 clamp(1.5rem,2.6vw,2.4rem)/1 var(--cond);letter-spacing:.14em;text-transform:uppercase;margin-bottom:28px}
 .prints{margin-top:44px;max-width:620px}
 .prints .frame{background:var(--black)}
 .prints .frame>img{object-position:50% 42%;filter:saturate(.9) contrast(1.04)}
@@ -365,30 +342,28 @@ html:not(.js) .band-tc{display:none}
 .portrait figcaption{display:flex;justify-content:space-between;padding-top:10px;font:400 10px/1.5 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mid)}
 .portrait figcaption b{font-weight:400;color:var(--bone)}
 @media (min-width:900px){
-  .about{padding:140px var(--inset) 120px}
-  .about-grid{grid-template-columns:minmax(200px,.9fr) minmax(0,2.2fr) minmax(200px,.9fr);gap:56px;align-items:start}
+  .about-grid{grid-template-columns:minmax(200px,.9fr) minmax(0,2.2fr) minmax(200px,.9fr);gap:56px;align-items:start;padding:0 var(--inset) 140px}
   .labels{grid-template-columns:1fr;gap:28px}
   .portrait{max-width:none;justify-self:end;width:min(100%,300px)}
 }
 
-/* ---- Contact: a lower-third, not a centred stack --------------------- */
-.contact{min-height:80svh;display:flex;flex-direction:column;justify-content:flex-end;padding:96px var(--inset) 72px;border-top:1px solid var(--line)}
-.contact-wrap{display:grid;grid-template-columns:1fr;gap:40px;align-items:end}
-.contact .mono{margin-bottom:22px}
-.contact h2{font:500 clamp(2.6rem,8vw,7rem)/.92 var(--cond);letter-spacing:.02em;text-transform:uppercase}
-.contact h2 small{display:block;font-size:.34em;font-weight:300;letter-spacing:.3em;margin-top:.7em;color:var(--bone)}
-.contact-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 36px}
-.contact-actions a{font:500 14px/1 var(--cond);letter-spacing:.24em;text-transform:uppercase;display:inline-flex;align-items:center;height:48px;padding:0 4px;border-bottom:1px solid var(--line-2)}
-.contact-actions a:hover{border-color:var(--bone)}
-.email-ctl{font:500 14px/1 var(--cond);letter-spacing:.24em;text-indent:.24em;text-transform:uppercase;height:48px;padding:0 28px;border:1px solid var(--line-2);display:inline-flex;align-items:center;transition:border-color .3s ease}
-.email-ctl:hover,.email-ctl[aria-expanded="true"]{border-color:var(--amber)}
-.email-note{margin-top:18px;min-height:1.6em;color:var(--mid)}
-.email-note b{font-weight:400;color:var(--amber)}
+/* ---- Contact: an end-credit card ------------------------------------ */
+.contact{min-height:80svh;display:grid;place-items:center;padding:96px var(--inset) 80px;border-top:1px solid var(--line)}
+.cc{width:min(100%,600px);text-align:center}
+.cc-ey{font:300 clamp(1rem,1.4vw,1.2rem)/1 var(--cond);letter-spacing:.4em;text-indent:.4em;text-transform:uppercase;color:var(--bone);margin-bottom:44px}
+.cc-rows{display:grid;gap:6px;text-align:left}
+.cc-rows>div{display:flex;align-items:baseline;gap:14px;min-height:48px;font:400 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;padding:10px 0}
+.cc-rows dt{color:var(--mid);flex:0 0 auto}
+.cc-rows i{flex:1 1 auto;height:1px;border-bottom:1px dotted var(--line-2);transform:translateY(-3px)}
+.cc-rows dd{flex:0 0 auto;color:var(--bone);margin:0}
+.cc-rows a,.cc-rows button{display:inline-flex;align-items:center;min-height:44px;margin:-14px 0;padding:0 2px;font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--bone);border-bottom:1px solid transparent;transition:border-color .3s ease,color .3s ease}
+.cc-rows a:hover,.cc-rows button:hover,.cc-rows button[aria-expanded="true"]{border-color:var(--amber);color:var(--amber)}
+.cc-note{margin-top:34px;display:flex;justify-content:center;align-items:center;gap:12px;min-height:1.6em;color:var(--mid);font-size:10px}
+.cc-note i{width:6px;height:6px;background:var(--amber);flex:0 0 auto}
+.cc-note b{font-weight:400;color:var(--bone)}
 @media (min-width:900px){
-  .contact{padding:140px var(--inset) 96px}
-  .contact-wrap{grid-template-columns:minmax(0,1.6fr) minmax(280px,1fr);gap:56px}
-  .contact-side{justify-self:end;text-align:right;padding-bottom:6px}
-  .contact-actions{justify-content:flex-end}
+  .contact{padding:140px var(--inset) 120px}
+  .cc-rows>div{font-size:13px}
 }
 
 /* ---- Closing credits ----------------------------------------------- */
@@ -406,6 +381,13 @@ html:not(.js) .band-tc{display:none}
 .picture-end i:nth-child(3){left:0;bottom:0;border-width:0 0 1px 1px}
 .picture-end i:nth-child(4){right:0;bottom:0;border-width:0 1px 1px 0}
 .picture-end em{font-style:normal;color:var(--amber);display:inline-block;width:6px;height:6px;background:var(--amber);vertical-align:middle;margin-left:14px}
+
+/* ---- Reveal robustness: a viewport that grows past 2× in one step is a capture or print; everything
+   lands finished, no transitions, so nothing can be caught half-painted ------------------------------ */
+html.is-capture .js-anim [data-reveal],html.is-capture [data-reveal],html.is-capture .tc-line>span,html.is-capture .hero-credits,html.is-capture .name{transition:none!important}
+html.is-capture [data-reveal]{opacity:1!important;transform:none!important;clip-path:none!important}
+html.is-capture [data-reveal="img"] img{transform:none!important}
+html.is-capture .feature .tc-line>span{transform:none!important;opacity:1!important}
 
 /* ---- Index menu ------------------------------------------------------ */
 .menu{position:fixed;inset:0;z-index:850;background:var(--black);display:flex;flex-direction:column;
@@ -431,9 +413,8 @@ html.menu-open,html.menu-open body{overflow:hidden}
   .menu-side dt{color:var(--mid)}
   .menu-side dd{color:var(--bone);line-height:1.6}
 }
-.menu-foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.menu-foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
 .menu-foot a{color:var(--bone);display:inline-flex;align-items:center;min-height:44px}
-.menu-foot{align-items:center}
 
 /* ---- Focus ------------------------------------------------------------- */
 :focus-visible{outline-color:var(--amber)}

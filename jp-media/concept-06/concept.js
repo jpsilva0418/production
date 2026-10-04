@@ -1,5 +1,5 @@
-/* CONCEPT 06 — STILL · entrance (three seconds of film that come to rest), the showreel on request,
-   index overlay, demo-safe email. Nothing else moves. */
+/* CONCEPT 06 — STILL · entrance (three seconds of film that come to rest), index overlay with one more
+   deliberate move (a row travels to its room and the frame settles 1.02 → 1), demo-safe email. Nothing else moves. */
 (function () {
   'use strict';
   var d = document, root = d.documentElement, JP = window.JP || {};
@@ -52,34 +52,7 @@
     root.classList.add('is-opened'); rest();
   }
 
-  /* 2 · The showreel: a small screen, muted, plays only on request. Pause is visible; off-screen it stops. */
-  var reel = d.getElementById('reel'), rbtn = d.getElementById('reel-btn');
-  if (reel && rbtn) {
-    var txt = rbtn.querySelector('.reel-txt');
-    reel.muted = true; reel.defaultMuted = true;
-    function setBtn(on) {
-      rbtn.setAttribute('aria-pressed', on ? 'true' : 'false');
-      if (txt) txt.textContent = on ? 'Pause the showreel' : 'Play the showreel, muted';
-    }
-    function stopReel() { reel.pause(); }
-    rbtn.addEventListener('click', function () {
-      if (reel.paused) { var p = reel.play(); if (p && p.catch) p.catch(function () { setBtn(false); }); }
-      else stopReel();
-    });
-    reel.addEventListener('playing', function () { reel.classList.add('is-playing'); setBtn(true); });
-    reel.addEventListener('pause', function () { setBtn(false); });
-    reel.addEventListener('ended', function () { reel.classList.remove('is-playing'); setBtn(false); try { reel.currentTime = 0; } catch (e) {} });
-    reel.addEventListener('error', function (e) {
-      if (e.target !== reel && e.target.nextElementSibling) return;   /* a fallback source remains */
-      reel.classList.remove('is-playing'); setBtn(false); rbtn.disabled = true; if (txt) txt.textContent = 'Unavailable';
-    }, true);
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (es) { es.forEach(function (e) { if (!e.isIntersecting && !reel.paused) stopReel(); }); }, { threshold: 0.2 }).observe(reel);
-    }
-    d.addEventListener('visibilitychange', function () { if (d.hidden && !reel.paused) stopReel(); });
-  }
-
-  /* 3 · Index overlay: white, the same list, Esc / close, focus trap, body lock. */
+  /* 2 · Index overlay: white, the same list, Esc / close, focus trap, body lock. */
   var open = d.getElementById('index-open'), ov = d.getElementById('index-overlay'), close = d.getElementById('index-close');
   var src = d.getElementById('index-list'), list = ov && ov.querySelector('.ov-list');
   if (open && ov && close && src && list) {
@@ -112,7 +85,18 @@
     }
     open.addEventListener('click', function (e) { e.preventDefault(); show(); });
     close.addEventListener('click', function () { hide(); });
-    /* a row links to its room (or one square of the strip): close first, then travel, then hand focus over */
+    /* a row links to its room: close first, then travel; the destination frame settles 1.02 → 1 once the page arrives */
+    var arriving = null;
+    function settle(frame) {
+      if (!frame || still || !root.classList.contains('js-anim')) return;
+      if (arriving) { arriving.classList.remove('is-arriving', 'is-arrived'); }
+      arriving = frame;
+      frame.classList.add('is-arriving');
+      requestAnimationFrame(function () { requestAnimationFrame(function () {
+        frame.classList.remove('is-arriving'); frame.classList.add('is-arrived');
+        setTimeout(function () { frame.classList.remove('is-arrived'); if (arriving === frame) arriving = null; }, 1500);
+      }); });
+    }
     function travel(e) {
       var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
       if (!a) return;
@@ -120,20 +104,22 @@
       if (!t) return;
       e.preventDefault(); hide(false);
       var behavior = JP.reduced ? 'auto' : 'smooth';
-      if (t.closest('.strip')) {                /* a square: the strip slides to it, the page stops 14svh above it */
-        t.scrollIntoView({ behavior: behavior, block: 'nearest', inline: 'start' });
-        window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - window.innerHeight * 0.14, behavior: behavior });
-      } else {
-        t.scrollIntoView({ behavior: behavior, block: 'start' });
-      }
+      var frame = t.querySelector('.frame'), from = window.pageYOffset;
+      t.scrollIntoView({ behavior: behavior, block: 'start' });
       try { history.replaceState(null, '', a.getAttribute('href')); } catch (err) {}
       t.setAttribute('tabindex', '-1'); t.focus({ preventScroll: true });   /* keyboard / AT keep their place */
+      if (!frame || behavior === 'auto') return;
+      var done = false, tid = 0;
+      function arrive() { if (done) return; done = true; clearTimeout(tid); window.removeEventListener('scrollend', arrive); settle(frame); }
+      if (Math.abs(window.pageYOffset - from) < 2 && Math.abs(t.getBoundingClientRect().top) < 2) { settle(frame); return; }   /* already there */
+      window.addEventListener('scrollend', arrive, { once: true });
+      tid = setTimeout(arrive, 'onscrollend' in window ? 2500 : 700);
     }
     list.addEventListener('click', travel);
     src.addEventListener('click', travel);
   }
 
-  /* 4 · Email: demo-safe. The note is always visible; a press just makes it speak up. */
+  /* 3 · Email: demo-safe. The note is always visible; a press just makes it speak up. */
   var btn = d.getElementById('email-btn'), note = d.getElementById('email-note');
   if (btn && note) {
     btn.addEventListener('click', function () {

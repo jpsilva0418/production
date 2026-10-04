@@ -39,11 +39,11 @@
 </header>
 
 <main id="top">
-  <!-- 1 · HERO: the end state of the title sequence. The showreel edit plays once and freezes on its last frame. -->
+  <!-- 1 · HERO: the end state of the title sequence. The letterbox opens on a band; the opening cuts play once and freeze. -->
   <section class="hero" aria-labelledby="name">
     <div class="hero-stage" id="stage">
       <!-- phones: the 12 s showreel edit, full width under the header -->
-      <figure class="frame band rc-host" id="band">
+      <figure class="frame band" id="band">
         <img src="../media/film/hero-montage-poster.jpg" width="490" height="960" alt="" fetchpriority="high" decoding="async">
         <video class="jp-video" id="reel" muted playsinline preload="metadata" aria-hidden="true" poster="../media/film/hero-montage-poster.jpg">
           <source src="../media/film/hero-montage.webm" type="video/webm">
@@ -51,41 +51,20 @@
         </video>
         <span class="frame-grade" aria-hidden="true"></span>
       </figure>
-      <!-- desktop: a triptych of three 9:16 cuts inside the 2.39 stage, played one after another between their in/out points; the third freezes -->
-      <div class="tri" id="tri">
-        <figure class="frame tri-f">
-          <img src="../media/film/m-truck-poster.jpg" width="490" height="960" alt="" loading="lazy" decoding="async">
-          <video class="tri-v" muted playsinline preload="none" aria-hidden="true" poster="../media/film/m-truck-poster.jpg" data-in=".12" data-out=".76">
-            <source src="../media/film/m-truck.webm" type="video/webm">
-            <source src="../media/film/m-truck.mp4" type="video/mp4">
-          </video>
-          <span class="frame-grade" aria-hidden="true"></span>
-        </figure>
-        <figure class="frame tri-f">
-          <img src="../media/stills/m-bw.jpg" width="490" height="960" alt="" loading="lazy" decoding="async">
-          <video class="tri-v" muted playsinline preload="none" aria-hidden="true" poster="../media/stills/m-bw.jpg" data-in="0" data-out="1.6">
-            <source src="../media/film/m-bw.webm" type="video/webm">
-            <source src="../media/film/m-bw.mp4" type="video/mp4">
-          </video>
-          <span class="frame-grade" aria-hidden="true"></span>
-        </figure>
-        <figure class="frame tri-f rc-host">
-          <img src="../media/stills/m-rooftop.jpg" width="490" height="960" alt="" loading="lazy" decoding="async">
-          <video class="tri-v" muted playsinline preload="none" aria-hidden="true" poster="../media/stills/m-rooftop.jpg" data-in=".28" data-out="3.15">
-            <source src="../media/film/m-rooftop.webm" type="video/webm">
-            <source src="../media/film/m-rooftop.mp4" type="video/mp4">
-          </video>
-          <span class="frame-grade" aria-hidden="true"></span>
-        </figure>
-      </div>
+      <!-- desktop: one letterboxed 2.39 band; two cuts play back to back inside it, the second freezes -->
+      <figure class="frame dband" id="dband">
+        <img src="../media/film/fd-headlights-poster.jpg" width="860" height="512" alt="" loading="lazy" decoding="async">
+        <video class="dv" muted playsinline preload="none" aria-hidden="true" poster="../media/film/fd-headlights-poster.jpg">
+          <source src="../media/film/fd-headlights.webm" type="video/webm">
+          <source src="../media/film/fd-headlights.mp4" type="video/mp4">
+        </video>
+        <video class="dv" muted playsinline preload="none" aria-hidden="true" poster="../media/film/nr-silhouette-poster.jpg">
+          <source src="../media/film/nr-silhouette.webm" type="video/webm">
+          <source src="../media/film/nr-silhouette.mp4" type="video/mp4">
+        </video>
+        <span class="frame-grade" aria-hidden="true"></span>
+      </figure>
       <p class="band-tc" aria-hidden="true"><b>A001</b><span id="band-tc">00:00:00:00</span></p>
-      <!-- the reel's last frame freezes and becomes the first work: its title card emerges around it -->
-      <div class="reel-card" id="reel-card">
-        <p class="rc-no"><b>01</b> / 06</p>
-        <p class="rc-label">Showreel</p>
-        <p class="rc-roles">Direction · Camera · Edit</p>
-        <a class="rc-link" href="#film">Full reel<span aria-hidden="true">↓</span></a>
-      </div>
       <h1 class="name" id="name">JP<br class="br-m"> Silva</h1>
     </div>
     <div class="hero-credits">
@@ -95,14 +74,36 @@
     <span class="cue" aria-hidden="true"></span>
   </section>
 
-  <!-- 2 · SELECTED WORK: five features, cut from JP's films -->
+  <!-- 2 · SELECTED WORK: six features, cut from JP's films. Every frame fills the viewport on phones and carries its title card. -->
   <section id="work" aria-labelledby="work-h">
     <div class="slate">
       <p class="mono"><span>Reel 01 · Selected work</span><span>06 features</span></p>
       <h2 id="work-h" data-reveal="clip">Features</h2>
     </div>
 
-    <!-- 01 · reference frame: 2.39 band on desktop, 16:9 band on phones -->
+    <!-- 01 · the showreel as a triptych of three 9:16 frames -->
+    <article class="feature f-tri" data-feature>
+      <div class="feat-stage">
+        <div class="tri">
+          <figure class="frame tri-f"><img src="../media/stills/m-wing.jpg" width="490" height="960" alt="Plane wing over a dry landscape" loading="lazy" decoding="async"><span class="frame-grade" aria-hidden="true"></span></figure>
+          <figure class="frame tri-f"><img src="../media/stills/m-bw.jpg" width="490" height="960" alt="Face in black and white, water on skin" loading="lazy" decoding="async"><span class="frame-grade" aria-hidden="true"></span></figure>
+          <figure class="frame tri-f"><img src="../media/stills/m-rooftop.jpg" width="490" height="960" alt="Shadows on a rooftop at sunset" loading="lazy" decoding="async"><span class="frame-grade" aria-hidden="true"></span></figure>
+        </div>
+        <div class="tc">
+          <div class="tc-top">
+            <p class="tc-no"><span class="tc-line"><span><b>01</b> / 06</span></span></p>
+            <p class="tc-credits"><span class="tc-line"><span>Dir. JP Silva</span></span><span class="tc-line" style="--d:.09s"><span>Cam. JP Silva</span></span><span class="tc-line" style="--d:.18s"><span>2025</span></span></p>
+          </div>
+          <div class="tc-bottom">
+            <p class="tc-label"><span class="tc-line"><span>Showreel</span></span></p>
+            <h3 class="tc-title"><span class="tc-line" style="--d:.09s"><span>Three frames</span></span></h3>
+            <p class="tc-note"><span class="tc-line" style="--d:.18s"><span>Wing · Black and white · Rooftop</span></span></p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 02 · reference frame: 2.39 band on desktop, full-bleed on phones -->
     <article class="feature f-ref" data-feature>
       <div class="feat-stage">
         <figure class="frame" style="--pos:50% 45%">
@@ -116,7 +117,7 @@
         <div class="tc">
           <div class="tc-top">
             <p class="tc-no"><span class="tc-line"><span><b>02</b> / 06</span></span></p>
-            <p class="tc-credits"><span class="tc-line" style="--d:.09s"><span>Direction · Camera</span></span><span class="tc-line" style="--d:.18s"><span><i class="gd">2.39 : 1</i><i class="gm">16 : 9</i></span></span></p>
+            <p class="tc-credits"><span class="tc-line"><span>Dir. JP Silva</span></span><span class="tc-line" style="--d:.09s"><span>Cam. JP Silva</span></span><span class="tc-line" style="--d:.18s"><span>2.39 : 1</span></span></p>
           </div>
           <div class="tc-bottom">
             <p class="tc-label"><span class="tc-line"><span>Music video</span></span></p>
@@ -127,7 +128,7 @@
       </div>
     </article>
 
-    <!-- 02 · full-bleed, black and white; title top-left, credits bottom-right -->
+    <!-- 03 · full-bleed, black and white; title top-left, credits bottom-right -->
     <article class="feature f-full" data-feature>
       <div class="feat-stage">
         <figure class="frame" style="--pos:50% 45%">
@@ -137,7 +138,7 @@
         <div class="tc">
           <div class="tc-top">
             <p class="tc-no"><span class="tc-line"><span><b>03</b> / 06</span></span></p>
-            <p class="tc-credits"><span class="tc-line" style="--d:.09s"><span>Direction · Camera</span></span><span class="tc-line" style="--d:.18s"><span>Full frame · B&amp;W</span></span></p>
+            <p class="tc-credits"><span class="tc-line"><span>Dir. JP Silva</span></span><span class="tc-line" style="--d:.09s"><span>Cam. JP Silva</span></span><span class="tc-line" style="--d:.18s"><span>Full frame · B&amp;W</span></span></p>
           </div>
           <div class="tc-bottom">
             <p class="tc-label"><span class="tc-line"><span>Music video</span></span></p>
@@ -148,21 +149,17 @@
       </div>
     </article>
 
-    <!-- 03 · a quiet cut: small 2.39 band, light grade; the night-ride clip loops -->
+    <!-- 04 · a quiet cut: small 2.39 band on desktop, light grade -->
     <article class="feature f-quiet" data-feature style="--grade-top:.3;--grade-bot:.45">
       <div class="feat-stage">
         <figure class="frame" style="--pos:50% 55%">
-          <img src="../media/film/nr-headlight-poster.jpg" width="778" height="512" alt="Headlight coming down the road at night" loading="lazy" decoding="async">
-          <video class="jp-video" muted playsinline loop preload="none" aria-hidden="true" poster="../media/film/nr-headlight-poster.jpg">
-            <source src="../media/film/nr-headlight.webm" type="video/webm">
-            <source src="../media/film/nr-headlight.mp4" type="video/mp4">
-          </video>
+          <img src="../media/stills/nr-headlight.jpg" width="778" height="512" alt="Headlight coming down the road at night" loading="lazy" decoding="async">
           <span class="frame-grade" aria-hidden="true"></span>
         </figure>
         <div class="tc">
           <div class="tc-top">
             <p class="tc-no"><span class="tc-line"><span><b>04</b> / 06</span></span></p>
-            <p class="tc-credits"><span class="tc-line" style="--d:.09s"><span>Camera · Edit</span></span><span class="tc-line" style="--d:.18s"><span>2.39 : 1 · Night</span></span></p>
+            <p class="tc-credits"><span class="tc-line"><span>Cam. JP Silva</span></span><span class="tc-line" style="--d:.09s"><span>Edit JP Silva</span></span><span class="tc-line" style="--d:.18s"><span>2.39 : 1 · Night</span></span></p>
           </div>
           <div class="tc-bottom">
             <p class="tc-label"><span class="tc-line"><span>Music video</span></span></p>
@@ -173,7 +170,7 @@
       </div>
     </article>
 
-    <!-- 04 · portrait still: full-bleed on phones, pillarboxed 9:16 beside its card on desktop -->
+    <!-- 05 · portrait still: full-bleed on phones, pillarboxed 9:16 beside its card on desktop -->
     <article class="feature f-tall" data-feature>
       <div class="feat-stage">
         <figure class="frame" style="--pos:50% 40%">
@@ -183,7 +180,7 @@
         <div class="tc">
           <div class="tc-top">
             <p class="tc-no"><span class="tc-line"><span><b>05</b> / 06</span></span></p>
-            <p class="tc-credits"><span class="tc-line" style="--d:.09s"><span>Direction · Camera</span></span><span class="tc-line" style="--d:.18s"><span>9 : 16 · Still</span></span></p>
+            <p class="tc-credits"><span class="tc-line"><span>Dir. JP Silva</span></span><span class="tc-line" style="--d:.09s"><span>Cam. JP Silva</span></span><span class="tc-line" style="--d:.18s"><span>9 : 16 · Still</span></span></p>
           </div>
           <div class="tc-bottom">
             <p class="tc-label"><span class="tc-line"><span>Short · Personal</span></span></p>
@@ -194,7 +191,7 @@
       </div>
     </article>
 
-    <!-- 05 · ultra-wide 2.76 band, title only -->
+    <!-- 06 · ultra-wide 2.76 band on desktop -->
     <article class="feature f-wide" data-feature>
       <div class="feat-stage">
         <figure class="frame" style="--pos:50% 58%">
@@ -204,45 +201,43 @@
         <div class="tc">
           <div class="tc-top">
             <p class="tc-no"><span class="tc-line"><span><b>06</b> / 06</span></span></p>
-            <p class="tc-credits"><span class="tc-line" style="--d:.09s"><span>Camera</span></span><span class="tc-line" style="--d:.18s"><span>2.76 : 1</span></span></p>
+            <p class="tc-credits"><span class="tc-line"><span>Cam. JP Silva</span></span><span class="tc-line" style="--d:.09s"><span>2.76 : 1</span></span></p>
           </div>
           <div class="tc-bottom">
             <p class="tc-label"><span class="tc-line"><span>Music video</span></span></p>
             <h3 class="tc-title"><span class="tc-line" style="--d:.09s"><span>Desert Highway</span></span></h3>
+            <p class="tc-note"><span class="tc-line" style="--d:.18s"><span>A chopper, a film camera, open road</span></span></p>
           </div>
         </div>
       </div>
     </article>
   </section>
 
-  <!-- 3 · FILM: intertitle, then the full showreel behind a play control (muted, preload none) -->
+  <!-- 3 · FILM: intertitle, the full reel as a letterboxed band with the leader counter burned in, then a credit roll of the long-form work -->
   <section class="film" id="film" aria-labelledby="film-h">
     <div class="intertitle">
       <p data-reveal="fade">Film that feels lived in, not staged.</p>
     </div>
-    <div class="film-grid">
-      <div class="film-copy" data-stag=".1">
-        <p class="mono" data-reveal="fade">Reel 02 · Long form</p>
-        <h2 id="film-h" data-reveal="clip">The full reel</h2>
-        <p class="film-note" data-reveal>Forty-eight seconds, muted, cut from live shows, music videos and the road. Tap to run it.</p>
-        <ul class="yt" data-reveal="fade" aria-label="Long-form work on YouTube">
-          <li><a href="https://youtu.be/D9iNANLSWJI" target="_blank" rel="noopener"><small>MV 01</small>Music video<span><em>youtu.be/</em>D9iNANLSWJI</span></a></li>
-          <li><a href="https://youtu.be/bQmgSBOyIBQ" target="_blank" rel="noopener"><small>MV 02</small>Music video<span><em>youtu.be/</em>bQmgSBOyIBQ</span></a></li>
-          <li><a href="https://youtu.be/uM2j8bYrv68" target="_blank" rel="noopener"><small>FL 01</small>Film<span><em>youtu.be/</em>uM2j8bYrv68</span></a></li>
-          <li><a href="https://youtu.be/IO-0co8MI4Y" target="_blank" rel="noopener"><small>FL 02</small>Film<span><em>youtu.be/</em>IO-0co8MI4Y</span></a></li>
-          <li><a href="https://youtu.be/3qoGu5U9sfc" target="_blank" rel="noopener"><small>FL 03</small>Film<span><em>youtu.be/</em>3qoGu5U9sfc</span></a></li>
-        </ul>
-      </div>
-      <figure class="frame reel-full" id="full-frame" data-reveal="img">
+    <h2 id="film-h" class="vh">The full reel and long-form work</h2>
+    <div class="reel-band" id="reel-band" data-reveal="fade">
+      <figure class="frame reel-win" id="full-frame">
         <img src="../media/stills/m-sunset.jpg" width="490" height="960" alt="Two figures at sunset, a frame from the showreel" loading="lazy" decoding="async">
         <video id="full" muted playsinline preload="none" poster="../media/film/montage-full-poster.jpg" aria-hidden="true" tabindex="-1">
           <source src="../media/film/montage-full.mp4" type="video/mp4">
         </video>
         <span class="frame-grade" aria-hidden="true"></span>
         <button type="button" class="play" id="play" aria-pressed="false" aria-label="Play the full showreel, muted"><i aria-hidden="true"></i><span>Play</span></button>
-        <figcaption class="band-tc" aria-hidden="true"><b>A002</b><span id="full-tc">00:00:00:00</span></figcaption>
       </figure>
+      <p class="reel-meta mono" aria-hidden="true"><span>Reel 02 · The full reel</span><span>00:48 · Muted</span></p>
+      <p class="reel-tc" aria-hidden="true"><i></i><b>A002</b><span id="full-tc">00:00:00:00</span></p>
     </div>
+    <ol class="longroll" aria-label="Long-form work on YouTube" data-stag=".08">
+      <li data-reveal="rise"><a href="https://youtu.be/D9iNANLSWJI" target="_blank" rel="noopener"><span class="lr-t">Music video</span><span class="lr-s mono">YouTube · D9iNANLSWJI</span></a></li>
+      <li data-reveal="rise"><a href="https://youtu.be/bQmgSBOyIBQ" target="_blank" rel="noopener"><span class="lr-t">Music video</span><span class="lr-s mono">YouTube · bQmgSBOyIBQ</span></a></li>
+      <li data-reveal="rise"><a href="https://youtu.be/uM2j8bYrv68" target="_blank" rel="noopener"><span class="lr-t">Film</span><span class="lr-s mono">YouTube · uM2j8bYrv68</span></a></li>
+      <li data-reveal="rise"><a href="https://youtu.be/IO-0co8MI4Y" target="_blank" rel="noopener"><span class="lr-t">Film</span><span class="lr-s mono">YouTube · IO-0co8MI4Y</span></a></li>
+      <li data-reveal="rise"><a href="https://youtu.be/3qoGu5U9sfc" target="_blank" rel="noopener"><span class="lr-t">Film</span><span class="lr-s mono">YouTube · 3qoGu5U9sfc</span></a></li>
+    </ol>
   </section>
 
   <!-- 4 · PHOTOGRAPHY: contact strip of stills from the films -->
@@ -258,8 +253,8 @@
       <ul class="strip" id="strip" aria-label="Six stills from the films">
         <li class="is-cur"><figure><div class="frame" style="aspect-ratio:680/512"><img src="../media/stills/w-portrait.jpg" width="680" height="512" alt="Hat portrait, black and white" loading="lazy" decoding="async"></div><figcaption><b>FR 01</b><span>Western, B&amp;W</span></figcaption></figure></li>
         <li><figure><div class="frame" style="aspect-ratio:860/512"><img src="../media/stills/fd-truck.jpg" width="860" height="512" alt="Red pickup under a dusk sky" loading="lazy" decoding="async"></div><figcaption><b>FR 02</b><span>Field at Dusk</span></figcaption></figure></li>
-        <li><figure><div class="frame" style="aspect-ratio:490/960"><img src="../media/stills/m-bw.jpg" width="490" height="960" alt="Black-and-white motion blur" loading="lazy" decoding="async"></div><figcaption><b>FR 03</b><span>Showreel</span></figcaption></figure></li>
-        <li><figure><div class="frame" style="aspect-ratio:778/512"><img src="../media/stills/nr-headlight.jpg" width="778" height="512" alt="Headlight coming down the road at night" loading="lazy" decoding="async"></div><figcaption><b>FR 04</b><span>Night Ride</span></figcaption></figure></li>
+        <li><figure><div class="frame" style="aspect-ratio:490/960"><img src="../media/stills/m-concert.jpg" width="490" height="960" alt="Concert crowd, arms raised against stage light" loading="lazy" decoding="async"></div><figcaption><b>FR 03</b><span>Showreel</span></figcaption></figure></li>
+        <li><figure><div class="frame" style="aspect-ratio:778/512"><img src="../media/stills/nr-dash.jpg" width="778" height="512" alt="Motorcycle dashboard at dusk" loading="lazy" decoding="async"></div><figcaption><b>FR 04</b><span>Night Ride</span></figcaption></figure></li>
         <li><figure><div class="frame" style="aspect-ratio:656/512"><img src="../media/stills/ch-camera.jpg" width="656" height="512" alt="Film camera on a motorcycle tank" loading="lazy" decoding="async"></div><figcaption><b>FR 05</b><span>Desert Highway</span></figcaption></figure></li>
         <li><figure><div class="frame" style="aspect-ratio:492/960"><img src="../media/stills/fo-umbrella.jpg" width="492" height="960" alt="Figure with an umbrella in a rain-dark forest" loading="lazy" decoding="async"></div><figcaption><b>FR 06</b><span>Forest, Rain</span></figcaption></figure></li>
       </ul>
@@ -267,8 +262,11 @@
     </div>
   </section>
 
-  <!-- 5 · ABOUT: director's statement -->
+  <!-- 5 · ABOUT: an intertitle card, then the director's statement -->
   <section class="about" id="about" aria-labelledby="about-h">
+    <div class="about-card">
+      <h2 id="about-h" data-reveal="fade">Director’s statement</h2>
+    </div>
     <div class="about-grid">
       <dl class="labels" data-reveal="fade">
         <dt>Statement</dt><dd>JP Silva</dd>
@@ -277,7 +275,6 @@
         <dt>Works in</dt><dd>Film, music, portraits, documentary</dd>
       </dl>
       <div class="statement" data-stag=".1">
-        <h2 id="about-h" data-reveal="clip">Director’s statement</h2>
         <p data-reveal>JP Silva makes films and photographs that chase a feeling before they chase a look. A live show, a music video, a quiet minute behind the scenes: the work is about honest emotion, caught while it is still raw.</p>
         <p data-reveal>Born in Bauru, São Paulo, Brazil, and in the United States since his teens. Austin since 2025, and wherever the tour goes next.</p>
         <figure class="prints" data-reveal="img">
@@ -296,20 +293,15 @@
     </div>
   </section>
 
-  <!-- 6 · CONTACT -->
+  <!-- 6 · CONTACT: an end-credit card -->
   <section class="contact" id="contact" aria-labelledby="contact-h">
-    <div class="contact-wrap" data-stag=".12">
-      <div class="contact-card">
-        <p class="mono" data-reveal="fade">Film · live music · music videos · tour · portraits</p>
-        <h2 id="contact-h" data-reveal="clip">Now booking<small>Austin &amp; on location</small></h2>
-      </div>
-      <div class="contact-side">
-        <div class="contact-actions" data-reveal="fade">
-          <a href="https://www.instagram.com/jp.media/" rel="noopener" target="_blank">Instagram @jp.media</a>
-          <button type="button" class="email-ctl" id="email-ctl" aria-expanded="false" aria-controls="email-note">Email</button>
-        </div>
-        <p class="email-note mono" id="email-note" data-reveal="fade">Email <b>enabled at launch</b></p>
-      </div>
+    <div class="cc" data-stag=".12">
+      <h2 id="contact-h" class="cc-ey" data-reveal="fade">Contact</h2>
+      <dl class="cc-rows" data-reveal="fade">
+        <div><dt>Instagram</dt><i aria-hidden="true"></i><dd><a href="https://www.instagram.com/jp.media/" rel="noopener" target="_blank">@jp.media</a></dd></div>
+        <div><dt>Email</dt><i aria-hidden="true"></i><dd><button type="button" class="email-ctl" id="email-ctl" aria-expanded="false" aria-controls="email-note">Email JP</button></dd></div>
+      </dl>
+      <p class="cc-note mono" id="email-note" data-reveal="fade"><i aria-hidden="true"></i>Email <b>enabled at launch</b></p>
     </div>
   </section>
 </main>

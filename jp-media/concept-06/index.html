@@ -66,21 +66,16 @@
       </figure>
     </section>
 
-    <!-- the small screen: the showreel, muted, plays only on request. The scale change is the point. -->
+    <!-- the small frame: one 2:3 still in a huge white field. The scale change is the point. -->
     <section id="room-reel" class="room r-reel" aria-labelledby="t-reel">
       <figure class="still">
-        <div class="frame screen" data-reveal="still" style="aspect-ratio:9/16">
+        <div class="frame" data-reveal="still" style="aspect-ratio:2/3">
           <img src="../media/film/montage-full-poster.jpg" width="490" height="960"
                alt="JP crouched behind a camera rig on a dusty set, round glasses, black T-shirt" loading="lazy" decoding="async">
-          <video id="reel" class="reel" muted playsinline preload="none" aria-label="Showreel, muted, 48 seconds"
-                 poster="../media/film/montage-full-poster.jpg">
-            <source src="../media/film/montage-full.mp4" type="video/mp4">
-          </video>
         </div>
         <figcaption class="cap" data-reveal="cap" style="--d:.2s">
           <span class="cap-title" id="t-reel">Showreel</span>
-          <span class="label">A cross-section of the work <span aria-hidden="true">·</span> 2025</span>
-          <button class="reel-btn label" type="button" id="reel-btn" aria-controls="reel" aria-pressed="false"><span class="reel-txt">Play the showreel, muted</span></button>
+          <span class="label">Behind the camera <span aria-hidden="true">·</span> 2025</span>
         </figcaption>
       </figure>
     </section>
@@ -115,77 +110,42 @@
       </figure>
     </section>
 
-    <section id="room-nightride" class="room r-night" aria-labelledby="t-night">
+    <!-- the prints: one photograph of his work on a wall, centred, the book-end of the opening frame -->
+    <section id="room-prints" class="room r-prints" aria-labelledby="t-prints">
       <figure class="still">
-        <figcaption class="cap" data-reveal="cap" style="--d:.2s">
-          <span class="cap-title" id="t-night">Night Ride</span>
-          <span class="label">Music video <span aria-hidden="true">·</span> One headlight</span>
-        </figcaption>
-        <div class="frame" data-reveal="still" style="aspect-ratio:2.39/1">
-          <img src="../media/stills/nr-headlight.jpg" width="738" height="390"
-               alt="A motorcycle coming head-on at dusk, its single headlight lit, guardrail behind" loading="lazy" decoding="async">
+        <div class="frame" data-reveal="still" style="aspect-ratio:4/3">
+          <img src="../media/photos/jp-exhibition-800.jpg"
+               srcset="../media/photos/jp-exhibition-800.jpg 800w, ../media/photos/jp-exhibition.jpg 1320w"
+               sizes="(min-width:900px) 40vw, 76vw" width="1320" height="1034"
+               alt="JP Silva beside his printed photographs on a gallery wall" loading="lazy" decoding="async">
         </div>
+        <figcaption class="cap" data-reveal="cap" style="--d:.2s">
+          <span class="cap-title" id="t-prints">Prints</span>
+          <span class="label">Prints shown, group exhibition, 2025</span>
+        </figcaption>
       </figure>
-    </section>
-
-    <!-- frames pulled from the films, and one photograph of the prints: the stills beside the motion -->
-    <section id="room-frames" class="room r-frames" aria-labelledby="t-frames">
-      <h2 id="t-frames" class="label" data-reveal="cap">Frames <span aria-hidden="true">·</span> Stills and prints</h2>
-      <ul class="strip" data-reveal="cap" style="--d:.15s">
-        <li>
-          <figure class="still">
-            <div class="frame" style="aspect-ratio:1"><img src="../media/stills/w-saguaro.jpg" width="636" height="500" alt="A tall saguaro under a storm sky, a rider leading a horse beneath it, black and white" loading="lazy" decoding="async"></div>
-            <figcaption class="label">Western <span class="sep">—</span> Saguaro</figcaption>
-          </figure>
-        </li>
-        <li>
-          <figure class="still">
-            <div class="frame" style="aspect-ratio:1"><img src="../media/stills/fd-silhouettes.jpg" width="846" height="470" alt="Five dancers silhouetted against a gold sunset, arms raised" loading="lazy" decoding="async"></div>
-            <figcaption class="label">Field at Dusk <span class="sep">—</span> Dancers</figcaption>
-          </figure>
-        </li>
-        <li>
-          <figure class="still">
-            <div class="frame" style="aspect-ratio:1"><img src="../media/stills/nr-silhouette.jpg" width="738" height="390" alt="A helmeted rider in silhouette against a green dusk sky" loading="lazy" decoding="async"></div>
-            <figcaption class="label">Night Ride <span class="sep">—</span> Dusk</figcaption>
-          </figure>
-        </li>
-        <li>
-          <figure class="still">
-            <div class="frame" style="aspect-ratio:1"><img src="../media/stills/m-bw.jpg" width="490" height="960" alt="A man in a fur hat with a pole across his shoulders, black and white" loading="lazy" decoding="async"></div>
-            <figcaption class="label">Showreel <span class="sep">—</span> Portrait</figcaption>
-          </figure>
-        </li>
-        <li id="frame-prints">
-          <figure class="still">
-            <div class="frame" style="aspect-ratio:1"><img src="../media/photos/jp-exhibition-800.jpg" width="800" height="627" alt="JP Silva beside his printed photographs on a gallery wall" loading="lazy" decoding="async"></div>
-            <figcaption class="label">Prints shown, group exhibition, 2025</figcaption>
-          </figure>
-        </li>
-      </ul>
     </section>
 
   </div>
 
-  <!-- 3 · ABOUT : one paragraph, one portrait, him at the sea -->
+  <!-- 3 · ABOUT : one paragraph, the line beneath it, nothing else on the viewport -->
   <section id="about" class="room r-about" aria-label="About JP Silva">
     <div class="about-col">
       <p class="about-p" data-reveal="cap">JP Silva is a filmmaker, producer and photographer in Austin, Texas, working across film, live music and the long road between shows. He was born in Bauru, São Paulo, moved to the United States as a teenager, and still looks for the same thing in every frame: the honest moment, not the loud one.</p>
       <p class="label origin" data-reveal="cap" style="--d:.2s"><span class="o1">Bauru, São Paulo <span class="arrow" aria-hidden="true">→</span><span class="sr-only">to</span> Austin, Texas</span><span class="o-sep" aria-hidden="true">·</span><span class="o2">since 2025</span></p>
-      <figure class="still sea-still" data-reveal="cap" style="--d:.3s">
-        <div class="frame" style="aspect-ratio:504/390">
-          <img src="../media/stills/jp-sea.jpg" width="504" height="390" alt="JP from behind at a sea rail, cap on, light breaking through cloud over the water, black and white" loading="lazy" decoding="async">
-        </div>
-        <figcaption class="label">At the sea <span class="sep">—</span> Personal</figcaption>
-      </figure>
     </div>
-    <figure class="still about-still">
+  </section>
+
+  <!-- 3b · PORTRAIT : him, small, in monochrome, at column 2, just before the Index -->
+  <section id="portrait" class="room r-portrait" aria-label="Portrait of JP Silva">
+    <figure class="still">
       <div class="frame" data-reveal="still" style="aspect-ratio:4/5">
         <img src="../media/photos/jp-portrait-4x5-800.jpg"
              srcset="../media/photos/jp-portrait-4x5-800.jpg 800w, ../media/photos/jp-portrait-4x5.jpg 1046w"
-             sizes="(min-width:900px) 22vw, 44vw" width="1046" height="1308"
+             sizes="(min-width:900px) 20vw, 56vw" width="1046" height="1308"
              alt="JP Silva laughing in a sunlit field, round glasses, white T-shirt" loading="lazy" decoding="async">
       </div>
+      <figcaption class="cap label" data-reveal="cap" style="--d:.2s">JP Silva <span class="sep">—</span> Austin, Texas</figcaption>
     </figure>
   </section>
 
@@ -193,14 +153,12 @@
   <section id="index" class="index-sec" aria-labelledby="t-index">
     <h2 id="t-index" class="label">Index <span aria-hidden="true">·</span> Selected work</h2>
     <ol class="index-list" id="index-list">
-      <li><a href="#room-reel"><span class="ix-title">Showreel</span><span class="ix-label">A cross-section of the work</span><span class="ix-meta">Direction, camera, edit</span></a></li>
-      <li><a href="#room-film"><span class="ix-title">Field at Dusk</span><span class="ix-label">Music video</span><span class="ix-meta">Direction, camera</span></a></li>
       <li><a href="#opener"><span class="ix-title">Western, Black &amp; White</span><span class="ix-label">Music video</span><span class="ix-meta">Direction, camera</span></a></li>
-      <li><a href="#room-nightride"><span class="ix-title">Night Ride</span><span class="ix-label">Music video</span><span class="ix-meta">Camera, edit</span></a></li>
-      <li><a href="#room-road"><span class="ix-title">Desert Highway</span><span class="ix-label">Music video</span><span class="ix-meta">Camera</span></a></li>
       <li><a href="#room-forest"><span class="ix-title">Forest, Rain</span><span class="ix-label">Short <span aria-hidden="true">·</span> Personal</span><span class="ix-meta">Direction, camera</span></a></li>
-      <li><a href="#frame-prints"><span class="ix-title">Prints</span><span class="ix-label">Photography <span aria-hidden="true">·</span> Exhibited, 2025 <span aria-hidden="true">·</span> In frames</span><span class="ix-meta">Photography</span></a></li>
-      <li><a href="#about"><span class="ix-title">At the Sea</span><span class="ix-label">Personal</span><span class="ix-meta">Camera</span></a></li>
+      <li><a href="#room-reel"><span class="ix-title">Showreel</span><span class="ix-label">Behind the camera</span><span class="ix-meta">Direction, camera, edit</span></a></li>
+      <li><a href="#room-film"><span class="ix-title">Field at Dusk</span><span class="ix-label">Music video</span><span class="ix-meta">Direction, camera</span></a></li>
+      <li><a href="#room-road"><span class="ix-title">Desert Highway</span><span class="ix-label">Music video</span><span class="ix-meta">Camera</span></a></li>
+      <li><a href="#room-prints"><span class="ix-title">Prints</span><span class="ix-label">Photography <span aria-hidden="true">·</span> Exhibited, 2025</span><span class="ix-meta">Photography</span></a></li>
     </ol>
   </section>
 

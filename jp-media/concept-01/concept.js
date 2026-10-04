@@ -1,7 +1,8 @@
 /* CONCEPT 01 — PICTURE START · runtime
    Entrance sequencer (phase classes p0…p5 on <html>), FLIP of the title into
    its title-card position, letterbox bars, timecode, header line, Index menu,
-   feature title cards, contact strip counter + desktop pin, email control. */
+   feature title cards, contact strip counter + desktop pin, the full reel,
+   reveal robustness, email control. */
 (function () {
   'use strict';
   var d = document, root = d.documentElement, w = window;
@@ -42,7 +43,7 @@
     void name.offsetWidth;
     name.style.transition = prevT;
   }
-  /* the letterbox opens to the clip on phones, to the whole 2.39 stage on desktop */
+  /* the letterbox opens to the clip on phones, to the 2.39 band on desktop */
   function measureBars() {
     var lb = wide.matches ? (stage || band) : band; if (!lb) return;
     var r = lb.getBoundingClientRect(), vh = w.innerHeight, half = vh / 2;
@@ -51,78 +52,66 @@
   }
   function prep() { measureName(); measureBars(); }
 
-  /* ── 1b · The showreel. Phones: hero-montage plays once from the moment the letterbox opens and freezes
-         on its last frame (the rooftop sunset). Desktop: three cuts play in sequence across the triptych and the
-         third freezes. Either way the frozen frame becomes 01 / 06 and its card emerges around it. ── */
+  /* ── 1b · The opening cuts. Phones: hero-montage plays once from the moment the letterbox opens and freezes
+         on its last frame. Desktop: two landscape cuts play back to back inside the band and the second
+         holds its last frame. ── */
   var reel = $('#reel'), reelTC = $('#band-tc'), reelImg = band ? $('img', band) : null;
   var LAST = '../media/stills/m-rooftop.jpg';
-  var tri = $('#tri'), triV = tri ? $$('video', tri) : [], triIdx = -1, triOff = 0, triStarted = false, triPlayed = false;
-  var useTri = wide.matches && triV.length === 3 && !JP.reduced && !JP.saveData;
+  var dband = $('#dband'), seqV = dband ? $$('video', dband) : [], seqIdx = -1, seqOff = 0, seqStarted = false, seqPlayed = false;
+  var useSeq = wide.matches && seqV.length > 0 && !JP.reduced && !JP.saveData;
   function setTC(t) { var s = Math.floor(t), f = Math.floor((t - s) * 24); if (reelTC) reelTC.textContent = '00:00:' + pad(s) + ':' + pad(f); }
-  function cardNow() { root.classList.add('reel-ended'); }
+  function reelEnd() { root.classList.add('reel-ended'); }
   function reelFromTop() { if (reel && reel.readyState > 0 && reel.currentTime > 0.2) { try { reel.currentTime = 0; } catch (e) {} } }
-  if (reel && reelTC && !useTri) {
+  if (reel && reelTC && !useSeq) {
     reel.addEventListener('timeupdate', function () { setTC(reel.currentTime); });
     reel.addEventListener('playing', function () { var im = new Image(); im.src = LAST; }, { once: true });
     reel.addEventListener('ended', function () {
-      cardNow();
+      reelEnd();
       if (reelImg) { reelImg.removeAttribute('srcset'); reelImg.src = LAST; }
-      /* the still underneath is the last frame: fade the player out and drop it so nothing can restart it */
       setTimeout(function () { reel.classList.remove('is-playing'); setTimeout(function () { if (reel.parentNode) reel.remove(); }, 1000); }, 250);
     });
   }
-  /* desktop triptych: one clip at a time, left to right, each between its in/out points (the exports carry
-     the neighbouring shots at head and tail); a clip pauses on its out-frame, a clip that cannot play is skipped */
-  function triIn(v) { return parseFloat(v.getAttribute('data-in')) || 0; }
-  function triOut(v) { return parseFloat(v.getAttribute('data-out')) || (v.duration || 9); }
-  function triEnd(i) {
-    var v = triV[i]; if (triIdx !== i || v.__done) return; v.__done = true;
-    clearTimeout(v.__t); try { v.pause(); } catch (e) {}
-    triOff += Math.max(0, triOut(v) - triIn(v));
-    triPlay(i + 1);
+  function seqEnd(i) {
+    var v = seqV[i]; if (seqIdx !== i || v.__done) return; v.__done = true;
+    try { v.pause(); } catch (e) {}
+    seqOff += v.duration || 0;
+    if (i + 1 < seqV.length) seqPlay(i + 1);
+    else { v.classList.add('is-held'); reelEnd(); }
   }
-  function triPlay(i) {
-    if (i >= triV.length) { cardNow(); return; }
-    triIdx = i; var v = triV[i], t0 = triIn(v);
-    if (triV[i + 1]) triV[i + 1].preload = 'auto';
-    var seek = function () { try { if (Math.abs(v.currentTime - t0) > 0.05) v.currentTime = t0; } catch (e) {} };
-    if (v.readyState >= 1) seek(); else v.addEventListener('loadedmetadata', seek, { once: true });
-    var p = v.play(); if (p && p.catch) p.catch(function () { if (triIdx === i && !v.__done) { v.__done = true; triPlay(i + 1); } });
+  function seqPlay(i) {
+    seqIdx = i; var v = seqV[i];
+    if (seqV[i + 1]) seqV[i + 1].preload = 'auto';
+    var p = v.play(); if (p && p.catch) p.catch(function () { if (seqIdx === i && !v.__done) { v.__done = true; if (i + 1 < seqV.length) seqPlay(i + 1); else reelEnd(); } });
   }
-  if (useTri) {
-    triV[0].preload = 'auto';
-    triV.forEach(function (v, i) {
+  if (useSeq) {
+    seqV[0].preload = 'auto';
+    seqV.forEach(function (v, i) {
       var last = v.querySelector('source:last-child');
-      v.addEventListener('playing', function () {
-        triPlayed = true; v.classList.add('is-playing');
-        clearTimeout(v.__t); v.__t = setTimeout(function () { triEnd(i); }, Math.max(0, (triOut(v) - v.currentTime) * 1000));
-      });
-      v.addEventListener('timeupdate', function () { if (triIdx !== i || v.__done) return; if (v.currentTime >= triOut(v)) triEnd(i); else setTC(triOff + Math.max(0, v.currentTime - triIn(v))); });
-      v.addEventListener('ended', function () { triEnd(i); });
-      v.addEventListener('error', function (ev) { if (triIdx === i && !v.__done && (ev.target === v || ev.target === last)) { v.__done = true; triPlay(i + 1); } }, true);
+      v.addEventListener('playing', function () { seqPlayed = true; v.classList.add('is-playing'); if (i > 0) seqV[i - 1].classList.remove('is-playing'); });
+      v.addEventListener('timeupdate', function () { if (seqIdx === i && !v.__done) setTC(seqOff + v.currentTime); });
+      v.addEventListener('ended', function () { seqEnd(i); });
+      v.addEventListener('error', function (ev) { if (seqIdx === i && !v.__done && (ev.target === v || ev.target === last)) { v.__done = true; if (i + 1 < seqV.length) seqPlay(i + 1); else reelEnd(); } }, true);
     });
-    d.addEventListener('visibilitychange', function () { if (!d.hidden && triIdx >= 0 && !root.classList.contains('reel-ended')) { var v = triV[triIdx]; if (v.paused && !v.ended && !v.__done) { var p = v.play(); if (p && p.catch) p.catch(function () {}); } } });
+    d.addEventListener('visibilitychange', function () { if (!d.hidden && seqIdx >= 0 && !root.classList.contains('reel-ended')) { var v = seqV[seqIdx]; if (v.paused && !v.ended && !v.__done) { var p = v.play(); if (p && p.catch) p.catch(function () {}); } } });
   }
   function startReel() {
-    if (useTri) { if (!triStarted) { triStarted = true; triPlay(0); } }
+    if (useSeq) { if (!seqStarted) { seqStarted = true; seqPlay(0); } }
     else reelFromTop();
   }
-  /* no reel (reduced motion, Save-Data, error, blocked autoplay): the poster is the frame and the card shows */
-  if (useTri) {
+  if (useSeq) {
     w.addEventListener('jp:opened', function () {
-      setTimeout(function () { if (!triPlayed) cardNow(); }, 2500);
-      setTimeout(cardNow, 12000);
+      setTimeout(function () { if (!seqPlayed) reelEnd(); }, 2500);
+      setTimeout(reelEnd, 12000);
     }, { once: true });
-  } else if (!reel || reel.classList.contains('is-static') || JP.reduced || JP.saveData) cardNow();
+  } else if (!reel || reel.classList.contains('is-static') || JP.reduced || JP.saveData) reelEnd();
   else {
-    reel.addEventListener('error', cardNow, true);
+    reel.addEventListener('error', reelEnd, true);
     w.addEventListener('jp:opened', function () {
-      setTimeout(function () { if (!root.classList.contains('reel-ended') && (reel.paused || !reel.parentNode)) cardNow(); }, 2500);
-      setTimeout(cardNow, 14000);
+      setTimeout(function () { if (!root.classList.contains('reel-ended') && (reel.paused || !reel.parentNode)) reelEnd(); }, 2500);
+      setTimeout(reelEnd, 14000);
     }, { once: true });
   }
 
-  /* the letterbox opens at p3; on a replay p3 (long) is skipped and p4 opens it instead */
   var opened = false;
   function openBox(instant) {
     if (opened) return; opened = true;
@@ -149,7 +138,6 @@
       ],
       done: function () {
         stopTC();
-        /* the title is home: drop the transform hooks so nothing can move it again */
         setTimeout(function () { if (name) { name.style.removeProperty('--flip'); name.style.willChange = 'auto'; } }, 1300);
       }
     }).start();
@@ -196,26 +184,53 @@
     });
   }
 
-  /* ── 4 · Feature title cards: rise at ≥ 55% in view, stay until the frame is nearly gone; desktop parallax ── */
+  /* ── 4 · Feature title cards: rise once the frame is ≥ 55% in view and stay; desktop parallax ── */
   var feats = $$('[data-feature]');
+  function cardOn(f) { if (!f.classList.contains('is-on')) f.classList.add('is-on'); }
   if (feats.length && 'IntersectionObserver' in w && anim) {
     var fio = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { e.target.classList.toggle('is-on', e.intersectionRatio >= 0.55 || (e.target.classList.contains('is-on') && e.intersectionRatio > 0.1)); });
-    }, { threshold: [0, 0.1, 0.55, 1] });
+      es.forEach(function (e) { if (e.intersectionRatio >= 0.55) { cardOn(e.target); fio.unobserve(e.target); } });
+    }, { threshold: [0.55, 1] });
     feats.forEach(function (f) { fio.observe(f); });
   } else {
-    feats.forEach(function (f) { f.classList.add('is-on'); });
+    feats.forEach(cardOn);
   }
   if (JP.onFrame && desk.matches && root.classList.contains('has-pointer') && !JP.reduced) {
     var plates = feats.map(function (f) { return { stage: $('.feat-stage', f), img: $('.frame>img', f) }; });
     JP.onFrame(function (s) {
       for (var i = 0; i < plates.length; i++) {
-        var pl = plates[i]; if (!pl.img) continue;
+        var pl = plates[i]; if (!pl.img || !pl.stage) continue;
         var pr = JP.progress(pl.stage, s.vh);
         if (!pr.inView) continue;
         pl.img.style.setProperty('--py', ((0.5 - pr.p) * pr.r.height * 0.06).toFixed(1) + 'px');
       }
     });
+  }
+
+  /* ── 4b · Reveal robustness. The observers in core.js are the choreography; this is the net under them:
+         on every frame, anything with its top above the fold is revealed, a feature whose frame is mostly
+         past is carded, and a viewport that suddenly grows past 2× (print, full-page capture) lands the
+         whole page finished at once. ── */
+  if (anim) {
+    var pending = $$('[data-reveal]');
+    var lastVH = w.innerHeight;
+    function sweep(vh, all) {
+      if (pending.length) pending = pending.filter(function (el) {
+        if (el.classList.contains('is-in')) return false;
+        if (all || el.getBoundingClientRect().top < vh * 0.96) { el.classList.add('is-in'); return false; }
+        return true;
+      });
+      feats.forEach(function (f) { if (f.classList.contains('is-on')) return; var r = f.getBoundingClientRect(); if (all || (r.top < vh * 0.45 && r.bottom > vh * 0.55)) cardOn(f); });
+    }
+    if (JP.onFrame) JP.onFrame(function (s) { sweep(s.vh, false); });
+    w.addEventListener('resize', function () {
+      var vh = w.innerHeight;
+      if (vh > lastVH * 2) { root.classList.add('is-capture'); sweep(vh, true); }
+      lastVH = vh;
+    });
+    /* whatever happened, nothing above the fold may stay hidden after the entrance */
+    w.addEventListener('jp:opened', function () { setTimeout(function () { sweep(w.innerHeight, false); }, 1200); }, { once: true });
+    setTimeout(function () { sweep(w.innerHeight, false); }, 9000);
   }
 
   /* ── 5 · Contact strip: current frame counter; desktop pin link ── */
@@ -224,7 +239,6 @@
   function stripUpdate() {
     sraf = 0; if (!strip) return;
     var mid = strip.getBoundingClientRect().left + strip.clientWidth * 0.5, best = 0, bd = 1e9;
-    /* when the strip is scrolled to its end the last frame is current */
     if (strip.scrollLeft >= strip.scrollWidth - strip.clientWidth - 2) best = items.length - 1;
     else items.forEach(function (li, i) { var r = li.getBoundingClientRect(); var c = Math.abs(r.left + r.width / 2 - mid); if (r.left < mid && c < bd) { bd = c; best = i; } });
     items.forEach(function (li, i) { li.classList.toggle('is-cur', i === best); });
@@ -232,7 +246,6 @@
     if (live && best !== liveLast) { clearTimeout(liveT); liveT = setTimeout(function () { liveLast = best; live.textContent = 'Frame ' + (best + 1) + ' of ' + items.length; }, 600); }
   }
   if (strip) {
-    /* the strip is a swipe sequence: fetch its frames once the roll is near */
     if ('IntersectionObserver' in w) {
       var pio = new IntersectionObserver(function (es) {
         if (!es.some(function (e) { return e.isIntersecting; })) return;
@@ -254,16 +267,18 @@
     }
   }
 
-  /* ── 5b · The full reel: muted, preload none, plays only on tap, visible pause; pauses off-screen ── */
-  var full = $('#full'), fullFrame = $('#full-frame'), play = $('#play'), fullTC = $('#full-tc');
+  /* ── 5b · The full reel: muted, preload none, plays only on tap, visible pause; the leader counter is live
+         while it runs; pauses off-screen ── */
+  var full = $('#full'), fullFrame = $('#full-frame'), reelBand = $('#reel-band'), play = $('#play'), fullTC = $('#full-tc');
   if (full && play && fullFrame) {
     var playTxt = $('span', play);
-    function fullState(on) {
+    var fullState = function (on) {
       fullFrame.classList.toggle('is-playing', on);
+      if (reelBand) reelBand.classList.toggle('is-live', on);
       play.setAttribute('aria-pressed', on ? 'true' : 'false');
       play.setAttribute('aria-label', on ? 'Pause the showreel' : 'Play the full showreel, muted');
       if (playTxt) playTxt.textContent = on ? 'Pause' : 'Play';
-    }
+    };
     play.addEventListener('click', function () {
       if (full.paused || full.ended) { var p = full.play(); if (p && p.catch) p.catch(function () { fullState(false); }); }
       else full.pause();
@@ -287,6 +302,6 @@
   if (ec && en) ec.addEventListener('click', function () {
     var open = ec.getAttribute('aria-expanded') === 'true';
     ec.setAttribute('aria-expanded', open ? 'false' : 'true');
-    en.innerHTML = open ? 'Email <b>enabled at launch</b>' : 'Preview build: email is <b>enabled at launch</b>. Until then, Instagram @jp.media.';
+    en.innerHTML = open ? '<i aria-hidden="true"></i>Email <b>enabled at launch</b>' : '<i aria-hidden="true"></i>Preview build: email is <b>enabled at launch</b>. Until then, Instagram @jp.media.';
   });
 })();

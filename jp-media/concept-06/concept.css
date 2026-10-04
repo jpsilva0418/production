@@ -5,15 +5,15 @@
    Labels: 11px / .22em / uppercase.  Motion: opacity + scale(1.02→1) only.
    Entrance (key c06): 0 white · 250 the frame fades up and three seconds of the western play once
    · 2400 caption · ~2650 the clip comes to rest on her (freeze into the still) · 4300 name + Index · ~5000 done.
-   Media: JP's real footage (512 px sources) at or near 1:1, never stretched. Two autoplaying clips on the page
-   (hero, once; fd-headlights loop inside the black room at ≤ 60vw) and the muted showreel on request.
+   Media: JP's real footage (512 px sources). Two autoplaying clips on the page (hero, once; fd-headlights loop
+   inside the black room at 86vw behind grain and a grade). Everything else is a still. One frame per room.
    ============================================================ */
 :root{
   --white:#FAFAF8; --graphite:#1A1A1A; --mist:#6F6F6B; --line:rgba(26,26,26,.12); --room:#0A0A0A;
   --serif:"Newsreader","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
   --sans:"Hanken Grotesk","Helvetica Neue",Helvetica,Arial,sans-serif;
   --gx:6vw;                                   /* room side margin */
-  --fs-label:11px; --fs-name:1.5rem; --fs-title:1.6rem; --fs-index:1.25rem;
+  --fs-label:11px; --fs-name:1.5rem; --fs-title:1.6rem; --fs-index:1.5rem;
   --fs-about:clamp(1.45rem,2.6vw,2.2rem);
   --t-still:1.6s; --t-cap:1.2s;
   --nav-h:44px; --study-gap:72px;
@@ -96,20 +96,13 @@ body.lock{overflow:hidden}
   .r-forest .cap{grid-column:8/12;align-self:center;margin:0}
 }
 
-/* 3 · REEL : one small 9:16 screen in a huge white field; the showreel plays on request --- */
-.r-reel{padding:36svh 0 14svh}
-.r-reel .still{margin-left:48%;width:44vw}             /* 48% + 44vw = 92%: it floats, it does not hug the gutter */
-.r-reel .frame{background:#141414}
+/* 3 · REEL : one small 2:3 frame at 62% / 40% of a huge white field. Nothing else. --- */
+.r-reel{padding:40svh 0 12svh}
+.r-reel .still{margin-left:min(62%,calc(100% - 44vw - var(--gx)));width:44vw}
+.r-reel img{object-position:50% 30%}
 .r-reel .cap{margin-top:14px;max-width:none}
-.reel{opacity:0;transition:opacity .9s ease}
-.reel.is-playing{opacity:1}
-.reel-btn{display:inline-flex;align-items:center;text-align:left;min-height:44px;margin:4px 0 0 -2px;padding:0 2px;color:var(--graphite);
-  background:none;border:0;cursor:pointer;text-decoration:underline;text-underline-offset:.4em;text-decoration-thickness:1px;text-decoration-color:var(--line);transition:text-decoration-color .4s ease}
-.reel-btn:hover,.reel-btn:focus-visible{text-decoration-color:var(--graphite)}
-.reel-btn:focus-visible{outline:1px solid var(--graphite);outline-offset:2px}
 @media (min-width:900px){
-  .r-reel{padding:34svh 0 10svh}
-  .r-reel .still{margin-left:62%;width:min(18vw,calc(48svh * .5625))}
+  .r-reel .still{margin-left:62%;width:min(18vw,calc(44svh * .6667))}
 }
 
 /* 4 · FILM : the one black room ----------------------------------------- */
@@ -117,81 +110,60 @@ body.lock{overflow:hidden}
   display:flex;align-items:center;justify-content:center;padding:14svh var(--gx) calc(14svh + 56px)}
 .r-film .still{width:86vw;max-width:none}
 .r-film .frame{aspect-ratio:16/9;width:100%;background:#141414}
-.r-film .frame img,.r-film .frame video{object-position:50% 85%}
+.r-film .frame img,.r-film .frame video{object-position:50% 85%;filter:contrast(1.04) saturate(.92) brightness(.94)}   /* a grade and the grain: the 846px source reads as film, not as a stretch */
 .r-film .film-cap{position:absolute;left:var(--gx);bottom:calc(var(--study-gap) + 12px + env(safe-area-inset-bottom,0px));margin:0;max-width:none;color:var(--mist)}
 .r-film .film-cap .sep{color:rgba(154,154,150,.55)}
 @media (min-width:900px){
   .r-film{padding:0 var(--gx)}
-  .r-film .still{width:min(60vw,calc(74svh * 2.333))}   /* ≤ 60vw: an 846px source never stretched across the room */
+  .r-film .still{width:min(86vw,calc(78svh * 2.333))}   /* the cinema: 86vw at 21:9, the room's black cut hard at its edges */
   .r-film .frame{aspect-ratio:21/9}
   .r-film .film-cap{bottom:calc(var(--gx) * .66)}
 }
 
-/* 5 · ROAD : 3:2 frame anchored bottom-right, caption top-left ----------- */
+/* 5 · ROAD : one 3:2 frame anchored bottom-right (margin 6vw), caption top-left of the viewport ----- */
 .r-road{display:flex;flex-direction:column;padding:calc(var(--gx) + 56px) var(--gx) calc(var(--study-gap) + 8px)}
 .r-road .still{display:flex;flex-direction:column;flex:1 1 auto;min-height:calc(100svh - var(--gx) - 56px - var(--study-gap) - 8px)}
 .r-road .cap{margin:0;align-self:flex-start}
 .r-road .frame{width:80vw;margin-top:auto;margin-left:auto}
 .r-road img{object-position:50% 60%}
-@media (max-width:899px){.r-road,.r-night{min-height:0}.r-road .still{min-height:0;gap:26svh}}
+@media (max-width:899px){.r-road{min-height:0}.r-road .still{min-height:0;gap:26svh}}
 @media (min-width:900px){
-  .r-road{padding:var(--gx)}
-  .r-road .still{min-height:calc(100svh - var(--gx) * 2)}
-  .r-road .frame{width:min(46vw,calc(66svh * 1.5))}
+  .r-road{padding:6vw}
+  .r-road .still{min-height:calc(100svh - 12vw)}
+  .r-road .frame{width:min(52vw,calc(72svh * 1.5))}
 }
 
-/* 5b · NIGHT RIDE : 2.39:1 band anchored bottom-left, caption top-right (the mirror of the road) ---- */
-.r-night{display:flex;flex-direction:column;padding:calc(var(--gx) + 56px) var(--gx) calc(var(--study-gap) + 8px)}
-.r-night .still{display:flex;flex-direction:column;gap:22svh}
-.r-night .cap{margin:0;align-self:flex-end;text-align:right}
-.r-night .frame{width:88vw;max-width:100%;background:#141414}
-.r-night img{object-position:50% 50%}
+/* 6 · PRINTS : the photograph of his prints on a wall, centred, the book-end of the opening frame ------ */
+.r-prints{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14svh var(--gx) calc(var(--study-gap) + 24px)}
+.r-prints .still{display:flex;flex-direction:column;align-items:center;width:min(76vw,calc(56svh * 1.333))}
+.r-prints .frame{width:100%}
+.r-prints img{object-position:40% 50%;filter:grayscale(1) contrast(1.04)}
+.r-prints .cap{margin-top:16px;text-align:center;max-width:none}
 @media (min-width:900px){
-  .r-night{padding:var(--gx)}
-  .r-night .still{flex:1 1 auto;min-height:calc(100svh - var(--gx) * 2);gap:0}
-  .r-night .frame{width:min(52vw,calc(60svh * 2.39));margin-top:auto}
+  .r-prints{padding:0 var(--gx)}
+  .r-prints .still{width:min(40vw,calc(66svh * 1.333))}
 }
 
-/* 6 · FRAMES : five square frames in a row, hairline above; a native strip on touch ------- */
-.r-frames{min-height:0;padding:18svh 0 14svh}
-.r-frames h2{margin:0 var(--gx) 22px}
-.strip{list-style:none;margin:0;padding:0 var(--gx);display:flex;gap:14px;
-  overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gx);scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
-.strip::-webkit-scrollbar{display:none}
-.strip li{flex:0 0 58vw;scroll-snap-align:start;scroll-margin-top:14svh}
-.room:focus,.strip li:focus{outline:none}
-.strip .frame{width:100%}
-.strip figcaption{display:block;margin-top:10px}
-.strip li:nth-child(1) img{object-position:44% 50%}
-.strip li:nth-child(2) img{object-position:58% 50%}
-.strip li:nth-child(3) img{object-position:50% 50%}
-.strip li:nth-child(4) img{object-position:50% 22%}
-.strip li:nth-child(5) img{object-position:40% 50%;filter:grayscale(1) contrast(1.04)}
-@media (min-width:900px){
-  .r-frames{padding:14svh 0 12svh}
-  .strip{gap:24px;overflow:visible;scroll-snap-type:none;border-top:1px solid var(--line);padding-top:24px;margin:0 var(--gx)}
-  .strip li{flex:1 1 0;min-width:0}
-  .r-frames h2{margin-bottom:0;padding-bottom:16px}
-}
-
-/* 7 · ABOUT : one paragraph at column 2, one monochrome portrait at the right, him at the sea ---- */
+/* 7 · ABOUT : one paragraph at column 2, the line beneath it, nothing else on the viewport ---- */
 .r-about{display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px;align-items:center;padding:16svh var(--gx)}
 .about-col{grid-column:1/13}
 .about-p{max-width:27em;font:300 var(--fs-about)/1.35 var(--serif);font-variation-settings:"opsz" 30;letter-spacing:-.002em;color:var(--graphite);text-wrap:pretty}
 .origin{margin-top:28px;color:var(--mist);display:flex;flex-wrap:wrap;column-gap:.6em;row-gap:4px}
 @media (max-width:899px){.origin .o-sep{display:none}}
 .origin .arrow{display:inline-block;padding:0 .4em;font-weight:300;letter-spacing:0;transform:translateY(-.04em)}
-.sea-still{margin-top:40px;width:52vw}
-.sea-still img{object-position:50% 40%}
-.sea-still figcaption{display:block;margin-top:10px}
-.about-still{grid-column:1/13;grid-row:1;width:44vw;margin:0 0 40px}
-.about-col{grid-row:2}
-.about-still img{object-position:50% 30%;filter:grayscale(1) contrast(1.05)}
 @media (min-width:900px){
-  .r-about{padding:0 var(--gx);align-items:end}
-  .about-col{grid-column:2/8;grid-row:1;padding-bottom:4svh}
-  .sea-still{width:min(16vw,232px);margin-top:9svh}
-  .about-still{grid-column:9/12;grid-row:1;width:100%;margin:0 0 4svh}
+  .r-about{padding:0 var(--gx)}
+  .about-col{grid-column:2/9}
+}
+
+/* 7b · PORTRAIT : him, small, monochrome, at column 2, a short room before the Index ---- */
+.r-portrait{min-height:0;display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px;padding:4svh var(--gx) 10svh}
+.r-portrait .still{grid-column:1/13;width:56vw}
+.r-portrait img{object-position:50% 30%;filter:grayscale(1) contrast(1.05)}
+.r-portrait .cap{margin-top:12px;max-width:none}
+@media (min-width:900px){
+  .r-portrait{padding:10svh var(--gx) 12svh}
+  .r-portrait .still{grid-column:2/5;width:100%;max-width:min(20vw,calc(56svh * .8))}
 }
 
 /* 8 · INDEX : the quiet list ---------------------------------------------- */
@@ -200,8 +172,8 @@ body.lock{overflow:hidden}
 .index-list{border-top:1px solid var(--line)}
 .index-list li{border-bottom:1px solid var(--line)}
 .index-list a,.index-list .ix-row{display:grid;grid-template-columns:1fr auto;grid-template-areas:"t y" "l l";
-  align-items:baseline;column-gap:16px;min-height:56px;padding:12px 0}
-.ix-title{grid-area:t;font:300 var(--fs-index)/1.25 var(--serif);font-variation-settings:"opsz" 20;color:var(--graphite)}
+  align-items:baseline;column-gap:16px;min-height:56px;padding:10px 0}
+.ix-title{grid-area:t;font:300 var(--fs-index)/1.2 var(--serif);font-variation-settings:"opsz" 24;color:var(--graphite)}
 .ix-label{grid-area:l;font:300 var(--fs-label)/1.5 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--mist);margin-top:4px}
 .ix-meta{grid-area:y;font:300 13px/1.25 var(--sans);color:var(--mist);letter-spacing:.04em;text-align:right}
 .index-list a:hover .ix-title,.index-list a:focus-visible .ix-title{text-decoration:underline;text-underline-offset:.22em;text-decoration-thickness:1px;text-decoration-color:var(--mist)}
@@ -210,7 +182,7 @@ body.lock{overflow:hidden}
   .index-sec{padding:14svh var(--gx) 10svh}
   .index-sec h2{max-width:none}
   .index-list{margin-left:calc((100% - 24px * 11) / 12 + 24px)}   /* start at column 2, like the paragraph */
-  .index-list a,.index-list .ix-row{grid-template-columns:minmax(0,5fr) minmax(0,4fr) auto;grid-template-areas:"t l y";min-height:64px;padding:16px 0}
+  .index-list a,.index-list .ix-row{grid-template-columns:minmax(0,5fr) minmax(0,4fr) auto;grid-template-areas:"t l y";min-height:56px;padding:10px 0}
   .ix-label{margin-top:0}
 }
 
@@ -274,6 +246,11 @@ html.o4 .skip-hint{opacity:0;transition-delay:0s}
 .js-anim [data-reveal="still"].is-in{clip-path:none}
 .js-anim [data-reveal="cap"]{--rv-y:0;clip-path:none;transition:opacity var(--t-cap) ease var(--d,0s)}
 .js-anim [data-reveal="cap"].is-in{clip-path:none}
+
+/* arriving from the Index: the destination frame settles 1.02 → 1 (opacity + transform only) */
+.js-anim .frame.is-arriving{transition:none;opacity:.55;transform:scale(1.02)}
+.js-anim .frame.is-arrived{transition:opacity 1.2s ease,transform 1.4s var(--ease)}
+.js-anim .hero-still .frame.is-arriving{opacity:.55;transform:scale(1.02)}
 
 /* desktop with a mouse: rooms settle gently into place */
 @media (min-width:900px) and (pointer:fine) and (prefers-reduced-motion:no-preference){
