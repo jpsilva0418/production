@@ -7,13 +7,18 @@
    Type     Archivo wdth 125 (500/700, uppercase, +.02em) display · Archivo 100/400 body
             JetBrains Mono 400 slates, tables, metadata 11–13px
    Motion   linear or --ease-io, 200–500 ms, hard cuts, horizontal wipes, hairlines that draw.
-   Entrance key c04 (≈3.6 s)
-     0     html.c4-grid   12 hairlines extend top→bottom (scaleY 0→1, 500 ms linear, 30 ms stagger)
-     700   html.c4-slate  slate rows wipe L→R one per 140 ms; REC blinks twice, stays lit
-     1500  html.c4-wm     (long) wordmark snaps JP → MEDIA, step-end, 160 ms apart
-     2300  html.c4-cells  three cells wipe L→R (500 ms, 120 ms apart)
-     3000  html.c4-line   tagline + coordinates wipe, header hard-cuts in, border draws
-     +450  html.is-opened all hidden states release (they exist only under .js-anim:not(.is-opened))
+   Entrance key c04 (≈3.9 s) — "the slate", cut on a real frame
+     0     first paint    the frozen night-ride frame (.opener, poster still) is already there: phones full-width above
+                          the cell row, desktop a pillar in columns 7–12. html.c4-grid: the 12 hairlines draw over it
+                          (400 ms). The hero cell's chrome (border, caption) is held back until the frame lands.
+     500   html.c4-slate  slate rows wipe L→R one per 140 ms over the frame; REC blinks twice, stays lit
+     1300  html.c4-wm     (long) wordmark snaps JP → MEDIA across the frame, step-end, 160 ms apart
+     2300  html.c4-contract the frame CONTRACTS (left/top/width/height, 600 ms linear) into the hero's middle cell;
+                          it is at rest ~100 ms before the cut, so the dock never pops
+     3000  html.c4-cells  the opener hard-cuts away, the cell box appears around the same frame, its loop is armed and
+                          goes live (still → motion); the two side cells wipe L→R after it
+     3500  html.c4-line   tagline + coordinates wipe, header hard-cuts in, border draws
+     +400  html.is-opened all hidden states release (they exist only under .js-anim:not(.is-opened))
    ============================================================ */
 :root{
   --gun:#202226;--graphite:#2B2E33;--silver:#C9CCD1;--panel:#F2F3F5;--ink:#121316;
@@ -24,7 +29,7 @@
   --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   --gx:clamp(16px,2.5vw,36px);--cp:clamp(10px,1.2vw,18px);--head:56px;
   --fs-wm:clamp(3.4rem,18.5vw,11.5rem);
-  --fs-title:clamp(1.4rem,3vw,2.6rem);--fs-state:clamp(2rem,5.6vw,5.4rem);
+  --fs-title:clamp(1.4rem,2.6vw,2.3rem);--fs-state:clamp(2rem,5.6vw,5.4rem);
   --fs-body:clamp(1rem,.5vw + .85rem,1.125rem);--fs-mono:12px;--fs-mono-s:11px;--fs-mono-l:13px;
 }
 @media (min-width:900px){:root{--fs-wm:clamp(3.4rem,12.5vw,11.5rem)}}
@@ -46,6 +51,19 @@ body{background:var(--gun);color:var(--silver);font:400 var(--fs-body)/1.5 var(-
 .frame.pbox>img,.frame.pbox>video{object-fit:contain}
 .frame.pbox::before{content:"9:16";position:absolute;right:var(--cp);top:8px;z-index:2;font:400 11px/1 var(--f-mono);letter-spacing:.08em;color:var(--silver-dim)}
 img[data-src]{visibility:hidden}
+
+/* ---- title-sequence frame (entrance only) -------------------------------- */
+.opener{display:none;position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.js-anim:not(.is-opened) .opener{display:block}
+.js-anim.c4-cells .opener{visibility:hidden}
+.opener-frame{position:absolute;left:0;top:0;width:100%;height:52svh;background:var(--graphite)}
+.opener-frame>img{filter:saturate(.72) contrast(1.04)}
+.opener-frame .frame-grade{background:linear-gradient(rgba(32,34,38,.42),rgba(32,34,38,.66));transition:background .6s linear}
+.opener-tag{position:absolute;right:var(--cp);top:10px;z-index:2;display:flex;gap:1.5ch;color:var(--silver);font-size:var(--fs-mono-s);opacity:.85}
+.js-anim.c4-contract .opener-frame{transition:left .6s linear,top .6s linear,width .6s linear,height .6s linear}
+.js-anim.c4-contract .opener-frame .frame-grade{background:linear-gradient(rgba(32,34,38,0),rgba(32,34,38,.22))}
+.js-anim.c4-contract .opener-tag{opacity:0;transition:opacity .2s linear}
+@media (min-width:900px){.opener-frame{left:50%;width:calc(50% - var(--gx));height:72svh}}
 
 /* ---- hairline grid layer ---------------------------------------------- */
 .gridlayer{position:fixed;inset:0;z-index:1;pointer-events:none;display:none;grid-template-columns:repeat(12,minmax(0,1fr));padding:0 var(--gx)}
@@ -114,7 +132,7 @@ body.menu-open{overflow:hidden}
 .cell-main{display:block;border-left:1px solid var(--line-d)}
 .cell .frame{aspect-ratio:16/9}
 .cell .frame-grade{background:linear-gradient(rgba(32,34,38,0),rgba(32,34,38,.22))}
-.cell-main .frame>video{filter:saturate(.8) contrast(1.02) brightness(1.1)}
+.cell-main .frame>video{filter:saturate(.72) contrast(1.04)}
 .cell figcaption{display:flex;justify-content:space-between;gap:8px;padding:8px var(--cp) 9px;font-size:var(--fs-mono-s);color:var(--silver-dim);border-top:1px solid var(--line-d);white-space:nowrap}
 @media (min-width:900px){
   .hero{padding-top:calc(var(--head) + 28px);padding-bottom:36px;row-gap:32px}
@@ -129,29 +147,34 @@ body.menu-open{overflow:hidden}
   .cell{display:block}
   .cell .frame{aspect-ratio:3/2}
 }
+@media (max-width:899px){.hero{row-gap:16px}.wm{align-self:start;margin-top:8px}.hero-bot{align-self:end}}
 @media (min-width:900px) and (max-height:760px){.hero{row-gap:18px}}
 
 /* ---- entrance hidden states (only under .js-anim:not(.is-opened)); "on" rules follow at equal specificity */
 .js-anim:not(.is-opened) .gridlayer{display:grid}
 .js-anim:not(.is-opened) .gridlayer i{transform:scaleY(0);transform-origin:top}
-.js-anim:not(.is-opened) .slate{opacity:0}
+.js-anim:not(.is-opened) .slate{opacity:0;background:rgba(32,34,38,.55)}
 .js-anim:not(.is-opened) .slate .row{clip-path:inset(0 100% 0 0)}
 .js-anim:not(.is-opened) .slate .rec{opacity:0}
 .js-anim:not(.is-opened) .wm .w{opacity:0}
 .js-anim:not(.is-opened) .cell .frame{clip-path:inset(0 100% 0 0)}
+.js-anim:not(.is-opened) .cell-main .frame{clip-path:none;opacity:0}
 .js-anim:not(.is-opened) .cell figcaption{opacity:0}
+.js-anim:not(.is-opened):not(.c4-cells) .cell,.js-anim:not(.is-opened):not(.c4-cells) .cell figcaption{border-color:transparent}
 .js-anim:not(.is-opened) .tagline,.js-anim:not(.is-opened) .hero-coords{clip-path:inset(0 100% 0 0)}
 .js-anim:not(.is-opened) .site-head{opacity:0}
 .js-anim:not(.is-opened) .site-head::after{transform:scaleX(0)}
 
-.js-anim.c4-grid .gridlayer i{transform:scaleY(1);transition:transform .5s linear var(--d,0s)}
+.js-anim.c4-grid .gridlayer i{transform:scaleY(1);transition:transform .4s linear var(--d,0s)}
 .js-anim.c4-slate .slate{opacity:1}
 .js-anim.c4-slate .slate .row{clip-path:inset(0 0 0 0);transition:clip-path .22s linear var(--d,0s)}
 .js-anim.c4-slate .slate .rec{opacity:1;animation:c4-blink .9s step-end .62s both}
 .js-anim.c4-wm .wm .w{opacity:1;transition:opacity 0s linear var(--wd,0s)}
 .wm .w1{--wd:0s}.wm .w2{--wd:.16s}
 .js-anim.c4-cells .cell .frame{clip-path:inset(0 0 0 0);transition:clip-path .5s linear var(--d,0s)}
+.js-anim.c4-cells .cell-main .frame{opacity:1}
 .js-anim.c4-cells .cell figcaption{opacity:1;transition:opacity 0s linear calc(var(--d,0s) + .5s)}
+.js-anim.c4-cells .cell-main figcaption{transition-delay:0s}
 .js-anim.c4-line .tagline,.js-anim.c4-line .hero-coords{clip-path:inset(0 0 0 0);transition:clip-path .4s linear}
 .js-anim.c4-line .site-head{opacity:1}
 .js-anim.c4-line .site-head::after{transform:scaleX(1);transition:transform .5s linear .05s}
@@ -194,14 +217,46 @@ html:not(.js) .wk-panel{grid-template-rows:1fr}
 .wk-body{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));padding:4px var(--gx) 32px;row-gap:16px;border-top:1px solid var(--line)}
 .wk-item.is-open .wk-body{padding-top:0}
 .wk-body .frame{grid-column:1/-1;border:1px solid var(--line)}
+.wk-body .frame>img,.wk-body .frame>video{object-position:50% 40%}
 .wk-body .frame.pbox{aspect-ratio:4/5!important}
-.wk-body figcaption{position:absolute;left:0;bottom:0;z-index:2;padding:7px var(--cp);background:rgba(32,34,38,.72);color:var(--silver);font-size:var(--fs-mono-s)}
+.wk-body .frame>figcaption{position:absolute;left:0;bottom:0;z-index:2;padding:7px var(--cp);background:rgba(32,34,38,.72);color:var(--silver);font-size:var(--fs-mono-s)}
 .wk-cred{grid-column:1/-1;display:grid;grid-template-columns:7ch minmax(0,1fr);column-gap:2ch;font-size:var(--fs-mono-s);align-content:start}
 .wk-cred dt{color:var(--ink-dim);padding:6px 0;border-top:1px solid var(--line)}
 .wk-cred dd{padding:6px 0;border-top:1px solid var(--line)}
 .wk-cred dt:first-of-type,.wk-cred dd:first-of-type{border-top:0}
+/* row 01 · showreel: contact strip of six frames (edit order) beside the muted long-form player (tap to play) */
+.sr-strip{grid-column:1/-1;display:flex;gap:10px;margin:0 calc(-1*var(--gx));padding:0 var(--gx);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.sr-strip::-webkit-scrollbar{display:none}
+.sr-strip li{flex:0 0 clamp(120px,36vw,170px);scroll-snap-align:start}
+.sr-strip .frame{aspect-ratio:490/960;border:1px solid var(--line)}
+.sr-strip .frame-grade{background:linear-gradient(rgba(32,34,38,.05),rgba(32,34,38,.3))}
+.sr-strip figcaption{display:flex;justify-content:space-between;padding:6px 0 0;font-size:var(--fs-mono-s);color:var(--ink-dim)}
+.sr-strip figcaption::before{content:counter(sr,decimal-leading-zero);color:var(--ink)}
+.sr-strip li{counter-increment:sr}
+.sr-strip{counter-reset:sr}
+.wk-body.sr .frame.sr-player{grid-column:1/-1;aspect-ratio:4/5;background:#141518;border:1px solid var(--line)}
+.sr-player>img,.sr-player>video{object-fit:cover}
+@media (max-width:899px){.wk-body.sr .frame.sr-player{aspect-ratio:490/960;width:min(100%,68vw);margin:0 auto}.sr-play .sp-x{display:none}}
+.sr-player .frame-grade{background:linear-gradient(rgba(32,34,38,0),rgba(32,34,38,.18))}
+.sr-player.is-live>img{visibility:hidden}
+.sr-play{position:absolute;left:0;right:0;bottom:0;z-index:3;display:grid;grid-template-columns:auto 1fr auto;align-items:center;column-gap:12px;min-height:48px;padding:0 var(--cp);background:rgba(32,34,38,.8);color:var(--silver);font-size:var(--fs-mono-s);text-align:left;transition:background .15s linear}
+.sr-play::before{content:"";width:0;height:0;border:6px solid transparent;border-left:9px solid var(--silver);border-right:0}
+.sr-player.is-playing .sr-play::before{width:9px;height:11px;border:0;border-left:3px solid var(--silver);border-right:3px solid var(--silver)}
+.sr-play:hover,.sr-play:focus-visible{background:rgba(32,34,38,.95)}
+.sr-play:focus-visible{outline-offset:-3px}
+.sr-play .sp-off{display:none}
+.sr-player.is-playing .sp-on{display:none}.sr-player.is-playing .sp-off{display:inline}
+.sr-tc{color:var(--silver-dim);white-space:nowrap;font-variant-numeric:tabular-nums}
+.sr-player.is-failed .sr-play{cursor:default;color:var(--silver-dim)}
+.sr-player.is-failed .sr-play::before{opacity:.4}
 .wk-prev{display:none}
 @media (min-width:900px){
+  .wk-body.sr{grid-template-columns:repeat(12,minmax(0,1fr))}
+  .wk-body.sr .frame.sr-player{grid-column:2/5;grid-row:1;aspect-ratio:9/16;align-self:start}
+  .sr-player>img,.sr-player>video{object-fit:contain}
+  .sr-strip{grid-column:5/9;grid-row:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 10px;margin:0;padding:0 var(--cp);overflow:visible;align-content:start}
+  .sr-strip li{flex:none}
+  .wk-body.sr .wk-cred{grid-column:9/13;grid-row:1}
   .wk-row{grid-template-columns:repeat(12,minmax(0,1fr));grid-template-areas:none;column-gap:0;align-items:baseline;min-height:84px;padding:24px var(--gx) 22px}
   .wk-no{grid-area:auto;grid-column:1;padding:0}
   .wk-title{grid-area:auto;grid-column:2/8;padding-right:var(--cp)}
@@ -228,18 +283,26 @@ html:not(.js) .wk-panel{grid-template-rows:1fr}
 .cap h3{grid-area:h;font-weight:500;font-size:clamp(1.15rem,1.4vw + .6rem,1.55rem)}
 .cap p{grid-area:p;max-width:34ch;color:var(--silver-dim);font-size:var(--fs-body)}
 @media (min-width:900px){
-  .caps{grid-template-columns:repeat(3,minmax(0,1fr));border-left:1px solid var(--line-d);border-top:1px solid var(--line-d);margin-top:0;padding-bottom:96px;background:
+  .caps{grid-template-columns:repeat(2,minmax(0,1fr));border-left:1px solid var(--line-d);border-top:1px solid var(--line-d);margin-top:0;padding-bottom:96px;background:
     linear-gradient(var(--line-d),var(--line-d)) left bottom 96px/100% 1px no-repeat}
   .cap{grid-template-columns:minmax(0,1fr);grid-template-areas:"i" "h" "p";grid-template-rows:auto auto 1fr;row-gap:0;min-height:300px;padding:22px var(--cp) 28px;border-right:1px solid var(--line-d);border-bottom:0}
+  .cap:first-child,.cap:last-child{grid-column:span 2}
+  .cap:first-child p,.cap:last-child p{max-width:48ch}
   .cap i{padding:0 0 64px}
   .cap h3{padding-bottom:18px}
   .cap p{align-self:end}
+}
+@media (min-width:1100px){
+  .caps{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .cap{min-height:320px}
+  .cap:first-child p,.cap:last-child p{max-width:44ch}
 }
 
 /* ---- 4 · statement plate ------------------------------------------------ */
 .state{position:relative;z-index:2;--grain-opacity:.03;--grain-z:1;min-height:80svh;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));align-content:end;padding:140px var(--gx) 56px;color:var(--silver);overflow:hidden}
 .state-frame{position:absolute;inset:0;z-index:0;aspect-ratio:auto;margin:0}
-.state-frame>img{filter:saturate(.55) contrast(1.08);object-position:50% 35%;transform:scale(1.04)}
+.state-frame>img{filter:saturate(.55) contrast(1.08);object-position:62% 30%}
+@media (min-width:900px){.state-frame>img{object-position:70% 24%}}
 .state-cap{position:absolute;right:var(--gx);bottom:18px;z-index:2;color:var(--silver-dim);font-size:var(--fs-mono-s)}
 .state-in{grid-column:1/-1;position:relative;z-index:2}
 .rule{display:block;height:1px;background:var(--silver);margin-bottom:28px}
@@ -250,20 +313,28 @@ html:not(.js) .wk-panel{grid-template-rows:1fr}
 /* ---- 5 · credits -------------------------------------------------------- */
 .cr{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));padding:0 var(--gx) 72px;row-gap:32px}
 .cr ul{grid-column:1/-1}
-.cr li{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) 5ch;column-gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:var(--fs-mono-s)}
-.cr li span:last-child{text-align:right}
+.cr li{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);column-gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:var(--fs-mono-s)}
 .cr li span:nth-child(2){color:var(--ink-dim)}
 .cr-head{color:var(--ink-dim)}
 .cr-head span:nth-child(2){color:inherit}
 .cr-note{border-bottom:0;color:var(--ink-dim);padding-top:22px;grid-template-columns:minmax(0,1fr)}
-.cr-note span:empty{display:none}
+.cr-yt{grid-column:1/-1;margin-top:-8px}
+.cr-yt li:not(.cr-head){display:block;padding:0}
+.cr-yt li a{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);column-gap:12px;min-height:44px;align-items:center;color:inherit;margin:0 calc(-1*var(--cp));padding:11px var(--cp);transition:background .15s linear}
+.cr-yt li a span:first-child i{font-style:normal;color:var(--ink)}
+.cr-yt li a span:nth-child(2){color:var(--ink-dim)}
+.cr-yt li a span:nth-child(2) u{text-decoration:underline;text-underline-offset:4px}
+.cr-yt li a:hover,.cr-yt li a:focus-visible{background:rgba(18,19,22,.045)}
+.cr-yt li a:hover span:nth-child(2),.cr-yt li a:focus-visible span:nth-child(2){color:var(--ink)}
+.cr-yt li a:focus-visible{outline-offset:-3px}
 .cr-fig{grid-column:1/-1;position:relative;max-width:560px}
 .cr-fig .frame{border:1px solid var(--line)}
 .cr-fig figcaption{padding:8px 0 0;color:var(--ink-dim);font-size:var(--fs-mono-s)}
 @media (min-width:900px){
   .cr{padding-bottom:96px;padding-top:24px}
   .cr ul{grid-column:1/8;padding-right:var(--cp)}
-  .cr li{font-size:var(--fs-mono);grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) 5ch}
+  .cr li{font-size:var(--fs-mono)}
+  .cr-yt{margin-top:0}
   .cr-fig{grid-column:8/13;max-width:none;align-self:start}
 }
 
@@ -295,15 +366,13 @@ html:not(.js) .wk-panel{grid-template-rows:1fr}
 .ns-grid p{display:grid;grid-template-columns:8ch minmax(0,1fr);column-gap:2ch;padding:14px var(--cp);border-top:1px solid var(--line-l);font-size:var(--fs-mono)}
 .ns-grid p:first-child{border-top:0}
 .ns-grid span{color:var(--ink-dim)}
-.ns-grid a{display:inline-flex;align-items:center;min-height:44px;margin:-13px 0;padding:0;text-decoration:underline;text-underline-offset:4px}
+.ns-grid a,.ns-grid button{display:inline-flex;align-items:center;gap:1.5ch;min-height:44px;margin:-13px 0;padding:0;color:var(--ink);text-decoration:underline;text-underline-offset:4px;font:inherit;letter-spacing:inherit;text-transform:inherit;background:none;border:0;cursor:pointer}
+.ns-grid button b{font-weight:400;color:var(--ink-dim);text-decoration:none}
+.ns-grid a:hover,.ns-grid button:hover{text-decoration-thickness:2px}
+.ns-grid a:focus-visible,.ns-grid button:focus-visible{outline-offset:4px}
 .ct-actions{grid-column:1/-1;display:grid;gap:12px;align-content:end}
-.ct-lede{max-width:28ch;margin-bottom:8px;color:var(--ink)}
-.btn{display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:56px;padding:0 16px;border:1px solid var(--ink);color:var(--ink);background:transparent;transition:background .15s linear,color .15s linear}
-.btn span:last-child{color:var(--ink-dim)}
-.btn:hover,.btn:focus-visible{background:var(--ink);color:var(--panel)}
-.btn:hover span:last-child,.btn:focus-visible span:last-child{color:rgba(242,243,245,.6)}
-.btn:focus-visible{outline-offset:3px}
-.note{font-size:var(--fs-mono-s);color:var(--ink-dim);min-height:1.5em}
+.ct-lede{max-width:28ch;color:var(--ink);font-size:clamp(1.125rem,.7vw + .9rem,1.375rem);line-height:1.4}
+.note{font-size:var(--fs-mono-s);color:var(--ink-dim);min-height:1.5em;padding-top:10px;border-top:1px solid var(--line-l);max-width:34ch}
 .note.is-flash{color:var(--rec)}
 @media (min-width:900px){
   .ct-g{padding:64px var(--gx) 112px}
@@ -312,7 +381,7 @@ html:not(.js) .wk-panel{grid-template-rows:1fr}
   .ns-grid p{padding:16px var(--cp);border-top:1px solid var(--line-l)}
   .ns-grid p:nth-child(2){border-top:0}
   .ns-grid p:nth-child(even){border-left:1px solid var(--line-l)}
-  .ct-actions{grid-column:9/13;padding-left:var(--cp)}
+  .ct-actions{grid-column:9/13;padding-left:var(--cp);align-content:start}
 }
 
 /* ---- footer -------------------------------------------------------------- */

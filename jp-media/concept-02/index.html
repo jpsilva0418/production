@@ -46,10 +46,15 @@
            sizes="(min-width:900px) 14vw, 48vw"
            alt="Plate 00, Western, black and white: a hat portrait in the desert, a film still"
            fetchpriority="high" decoding="async">
+      <!-- the plate arrives moving: the camera tilts from the horse's mane up to her face, then the frame freezes into the still above -->
+      <video class="hero-clip" muted playsinline preload="metadata" aria-hidden="true" poster="../media/stills/w-portrait.jpg">
+        <source src="../media/film/w-portrait.webm" type="video/webm">
+        <source src="../media/film/w-portrait.mp4" type="video/mp4">
+      </video>
     </div>
     <figcaption class="cap cap-hero"><span class="no">Plate 00</span><span class="dash"> — </span><span class="cap-t2">Western, Black &amp; White</span></figcaption>
   </figure>
-  <p class="hero-foot hero-foot-l">Filmmaker · Producer · Photographer</p>
+  <p class="hero-foot hero-foot-l"><span>Filmmaker</span><span class="sep"> · </span><span>Producer</span><span class="sep"> · </span><span>Photographer</span></p>
   <p class="hero-foot hero-foot-r"><span class="city">Austin, Texas</span><span class="coords">30.2672° N, 97.7431° W</span></p>
 </section>
 
@@ -57,7 +62,7 @@
 <section class="plates" id="plates" data-folio="02" aria-labelledby="plates-h">
   <header class="ch">
     <h2 class="ch-title" id="plates-h" data-reveal="text">Selected plates</h2>
-    <p class="ch-meta" data-reveal="cap">Plates 01 to 07, six works</p>
+    <p class="ch-meta" data-reveal="cap">Plates 01 to 07, five films and a wall</p>
   </header>
 
   <!-- Spread A: 01 large, 02 small pulled up -->
@@ -79,7 +84,7 @@
              alt="Plate 02, Field at Dusk: a red pickup with its headlights on under a dusk sky" loading="eager" decoding="sync">
       </div>
       <figcaption class="cap cap-row" data-reveal="cap" style="--d:.6s">
-        <span class="no">Plate 02</span><span class="t">Field at Dusk</span><span class="m">Music Video, the pickup</span><span class="r">Direction, Camera</span>
+        <span class="no">Plate 02</span><span class="t">The pickup</span><span class="m">Field at Dusk · Music Video</span><span class="r">Direction, Camera</span>
       </figcaption>
     </figure>
   </div>
@@ -95,7 +100,7 @@
       <span class="across" aria-hidden="true"><span class="mask"><span class="line">Field at Dusk</span></span></span>
     </div>
     <figcaption class="cap cap-row" data-reveal="cap" style="--d:.6s">
-      <span class="no">Plate 03</span><span class="t">Field at Dusk</span><span class="m">Music Video, the dancers</span><span class="r">Direction, Camera</span>
+      <span class="no">Plate 03</span><span class="m">Music Video, the dancers</span><span class="r">Direction, Camera</span>
     </figcaption>
   </figure>
 
@@ -118,7 +123,7 @@
              alt="Plate 05, Showreel: a figure in a fur hat, black and white, motion blur" loading="lazy" decoding="sync">
       </div>
       <figcaption class="cap cap-row" data-reveal="cap" style="--d:.6s">
-        <span class="no">Plate 05</span><span class="t">Showreel</span><span class="m">2025</span><span class="r">Direction, Camera, Edit</span>
+        <span class="no">Plate 05</span><span class="t">The fur hat</span><span class="m">From the showreel · 2025</span><span class="r">Direction, Camera, Edit</span>
       </figcaption>
     </figure>
   </div>
@@ -145,8 +150,7 @@
            alt="Plate 07, Prints: JP Silva standing beside his printed photographs on a gallery wall" loading="lazy" decoding="sync">
     </div>
     <figcaption class="cap cap-long cap-side" data-reveal="cap" style="--d:.6s">
-      <span class="no">Plate 07</span><span class="t">Prints</span><span class="m">Photography · Exhibited, 2025</span><span class="r">Photography</span>
-      <span class="note">Prints shown, group exhibition, 2025.</span>
+      <span class="no">Plate 07</span><span class="t">Prints on the wall</span><span class="m">Group exhibition, 2025</span><span class="r">Photography</span>
     </figcaption>
   </figure>
 </section>
@@ -188,7 +192,36 @@
       <span class="no">Moving plate</span><span class="t">Western, Black &amp; White</span><span class="m">Music Video</span><span class="r">Direction, Camera</span>
     </figcaption>
   </figure>
-  <p class="film-long" data-reveal="cap" style="--d:.8s"><span class="lbl">Long form</span><a class="yt" href="https://youtu.be/D9iNANLSWJI" target="_blank" rel="noopener">Watch the films on YouTube</a></p>
+  <!-- contact sheet: four stills pulled from the same reel, beside the moving plate -->
+  <figure class="sheet" data-reveal="line">
+    <ol class="sheet-row" data-stag=".09">
+      <li><div class="frame" data-reveal="img"><img src="../media/stills/w-hat.jpg" width="636" height="500" sizes="(min-width:900px) 16vw, 58vw" alt="Frame 01: the back of a wide hat against a white sky" loading="lazy" decoding="async"></div><span class="fr">01</span></li>
+      <li><div class="frame" data-reveal="img"><img src="../media/stills/w-aim.jpg" width="636" height="500" sizes="(min-width:900px) 16vw, 58vw" alt="Frame 02: a revolver held out level against the clouds" loading="lazy" decoding="async"></div><span class="fr">02</span></li>
+      <li><div class="frame" data-reveal="img"><img src="../media/stills/w-gallop.jpg" width="636" height="500" sizes="(min-width:900px) 16vw, 58vw" alt="Frame 03: horse and rider at speed through the brush" loading="lazy" decoding="async"></div><span class="fr">03</span></li>
+      <li><div class="frame" data-reveal="img"><img src="../media/stills/w-saguaro.jpg" width="636" height="500" sizes="(min-width:900px) 16vw, 58vw" alt="Frame 04: saguaros under a moving sky" loading="lazy" decoding="async"></div><span class="fr">04</span></li>
+    </ol>
+    <figcaption class="cap cap-row" data-reveal="cap" style="--d:.5s">
+      <span class="no">Contact sheet</span><span class="t">Four frames, the same reel</span><span class="m">Stills pulled from the film</span>
+    </figcaption>
+  </figure>
+
+  <!-- the reel: the full showreel, muted, behind a play control; nothing loads until it is asked for -->
+  <figure class="reel" id="reel" data-reveal="line">
+    <div class="frame reel-frame" data-reveal="img" style="--d:.3s">
+      <img src="../media/stills/m-concert.jpg" width="490" height="960"
+           sizes="(min-width:900px) 22vw, 62vw"
+           alt="Showreel: a crowd in silhouette, arms raised before a lit stage" loading="lazy" fetchpriority="low" decoding="async">
+      <video class="reel-video" muted playsinline preload="none" poster="../media/stills/m-concert.jpg" aria-label="Showreel, muted, 47 seconds">
+        <source src="../media/film/montage-full.mp4" type="video/mp4">
+      </video>
+      <button type="button" class="reel-btn" id="reel-btn" aria-pressed="false" aria-label="Play the showreel, muted"><i class="reel-ic" aria-hidden="true"></i><span class="reel-k">Play</span></button>
+    </div>
+    <figcaption class="cap cap-long reel-cap" data-reveal="cap" style="--d:.55s">
+      <span class="no">Reel</span><span class="t">Showreel, 2025</span><span class="m">47 seconds · muted</span><span class="r">Direction, Camera, Edit</span>
+      <span class="note">Concert, wing, rider, sunset, horse, rooftop. A cross-section of the work, cut to length.</span>
+      <span class="film-long"><span class="lbl">Long form</span><a class="yt" href="https://youtu.be/D9iNANLSWJI" target="_blank" rel="noopener">Watch the films on YouTube</a></span>
+    </figcaption>
+  </figure>
 </section>
 
 <!-- 05 · INDEX -->
@@ -199,20 +232,21 @@
   </header>
   <ol class="toc" data-stag=".06">
     <li data-reveal="cap"><a href="#plate-01"><span class="toc-no">01</span><span class="toc-t">Western, Black &amp; White</span><span class="toc-lead" aria-hidden="true"></span><span class="toc-m">Music Video</span></a></li>
-    <li data-reveal="cap"><a href="#plate-02"><span class="toc-no">02</span><span class="toc-t">Field at Dusk</span><span class="toc-lead" aria-hidden="true"></span><span class="toc-m">Music Video · the pickup</span></a></li>
-    <li data-reveal="cap"><a href="#plate-03"><span class="toc-no">03</span><span class="toc-t">Field at Dusk</span><span class="toc-lead" aria-hidden="true"></span><span class="toc-m">Music Video · the dancers</span></a></li>
+    <li data-reveal="cap"><a href="#plate-02"><span class="toc-no">02</span><span class="toc-t">The pickup</span><span class="toc-lead" aria-hidden="true"></span><span class="toc-m">Field at Dusk · Music Video</span></a></li>
+    <li data-reveal="cap"><a href="#plate-03"><span class="toc-no">03</span><span class="toc-t">The dancers</span><span class="toc-lead" aria-hidden="true"></span><span class="toc-m">Field at Dusk · Music Video</span></a></li>
     <li data-reveal="cap"><a href="#plate-04"><span class="toc-no">04</span><span class="toc-t">Forest, Rain</span><span class="toc-lead" aria-hidden="true"></span><span class="toc-m">Short · Personal</span></a></li>
-    <li data-reveal="cap"><a href="#plate-05"><span class="toc-no">05</span><span class="toc-t">Showreel</span><span class="toc-lead" aria-hidden="true"></span><span class="toc-m">2025</span></a></li>
+    <li data-reveal="cap"><a href="#plate-05"><span class="toc-no">05</span><span class="toc-t">The fur hat</span><span class="toc-lead" aria-hidden="true"></span><span class="toc-m">From the showreel · 2025</span></a></li>
     <li data-reveal="cap"><a href="#plate-06"><span class="toc-no">06</span><span class="toc-t">Desert Highway</span><span class="toc-lead" aria-hidden="true"></span><span class="toc-m">Music Video</span></a></li>
-    <li data-reveal="cap"><a href="#plate-07"><span class="toc-no">07</span><span class="toc-t">Prints</span><span class="toc-lead" aria-hidden="true"></span><span class="toc-m">Photography · Exhibited · 2025</span></a></li>
-    <li data-reveal="cap"><a href="#film"><span class="toc-no">M</span><span class="toc-t">Western, moving plate</span><span class="toc-lead" aria-hidden="true"></span><span class="toc-m">Music Video</span></a></li>
+    <li data-reveal="cap"><a href="#plate-07"><span class="toc-no">07</span><span class="toc-t">Prints on the wall</span><span class="toc-lead" aria-hidden="true"></span><span class="toc-m">Group exhibition · 2025</span></a></li>
+    <li data-reveal="cap"><a href="#film"><span class="toc-no">M</span><span class="toc-t">Moving plate</span><span class="toc-lead" aria-hidden="true"></span><span class="toc-m">Western · contact sheet</span></a></li>
+    <li data-reveal="cap"><a href="#reel"><span class="toc-no">R</span><span class="toc-t">The reel</span><span class="toc-lead" aria-hidden="true"></span><span class="toc-m">47 seconds · muted</span></a></li>
   </ol>
 </section>
 
 <!-- 06 · CONTACT + COLOPHON -->
 <section class="contact" id="contact" data-folio="06" aria-labelledby="contact-h">
   <p class="contact-k" data-reveal="cap">Commissions</p>
-  <h2 class="contact-h" id="contact-h" data-reveal="text">Film, stills and the road, from Austin.</h2>
+  <h2 class="contact-h" id="contact-h" data-reveal="text">Film, stills, the road. Austin.</h2>
   <div class="contact-row" data-stag=".08">
     <a class="ct" href="https://www.instagram.com/jp.media/" target="_blank" rel="noopener" data-reveal="cap"><span class="ct-k">Instagram</span><span class="ct-v">@jp.media</span></a>
     <div class="ct ct-mail" data-reveal="cap">
@@ -230,7 +264,6 @@
 </footer>
 
 <p class="skip-hint">Tap to skip</p>
-<b class="folio-fixed" aria-hidden="true"><i>Folio</i> <span id="folio-fixed-no">01</span></b>
 
 <script src="../shared/media.js"></script><script src="../shared/core.js"></script><script src="concept.js"></script>
 </body>

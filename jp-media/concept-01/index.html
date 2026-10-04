@@ -42,16 +42,50 @@
   <!-- 1 · HERO: the end state of the title sequence. The showreel edit plays once and freezes on its last frame. -->
   <section class="hero" aria-labelledby="name">
     <div class="hero-stage" id="stage">
-      <figure class="frame band" id="band">
+      <!-- phones: the 12 s showreel edit, full width under the header -->
+      <figure class="frame band rc-host" id="band">
         <img src="../media/film/hero-montage-poster.jpg" width="490" height="960" alt="" fetchpriority="high" decoding="async">
-        <video class="jp-video" id="reel" muted playsinline autoplay preload="metadata" aria-hidden="true" poster="../media/film/hero-montage-poster.jpg">
+        <video class="jp-video" id="reel" muted playsinline preload="metadata" aria-hidden="true" poster="../media/film/hero-montage-poster.jpg">
           <source src="../media/film/hero-montage.webm" type="video/webm">
           <source src="../media/film/hero-montage.mp4" type="video/mp4">
         </video>
         <span class="frame-grade" aria-hidden="true"></span>
-        <figcaption class="band-tc" aria-hidden="true"><b>A001</b><span id="band-tc">00:00:00:00</span></figcaption>
       </figure>
-      <p class="hero-ey ey" aria-hidden="true">A visual world by</p>
+      <!-- desktop: a triptych of three 9:16 cuts inside the 2.39 stage, played one after another between their in/out points; the third freezes -->
+      <div class="tri" id="tri">
+        <figure class="frame tri-f">
+          <img src="../media/film/m-truck-poster.jpg" width="490" height="960" alt="" loading="lazy" decoding="async">
+          <video class="tri-v" muted playsinline preload="none" aria-hidden="true" poster="../media/film/m-truck-poster.jpg" data-in=".12" data-out=".76">
+            <source src="../media/film/m-truck.webm" type="video/webm">
+            <source src="../media/film/m-truck.mp4" type="video/mp4">
+          </video>
+          <span class="frame-grade" aria-hidden="true"></span>
+        </figure>
+        <figure class="frame tri-f">
+          <img src="../media/stills/m-bw.jpg" width="490" height="960" alt="" loading="lazy" decoding="async">
+          <video class="tri-v" muted playsinline preload="none" aria-hidden="true" poster="../media/stills/m-bw.jpg" data-in="0" data-out="1.6">
+            <source src="../media/film/m-bw.webm" type="video/webm">
+            <source src="../media/film/m-bw.mp4" type="video/mp4">
+          </video>
+          <span class="frame-grade" aria-hidden="true"></span>
+        </figure>
+        <figure class="frame tri-f rc-host">
+          <img src="../media/stills/m-rooftop.jpg" width="490" height="960" alt="" loading="lazy" decoding="async">
+          <video class="tri-v" muted playsinline preload="none" aria-hidden="true" poster="../media/stills/m-rooftop.jpg" data-in=".28" data-out="3.15">
+            <source src="../media/film/m-rooftop.webm" type="video/webm">
+            <source src="../media/film/m-rooftop.mp4" type="video/mp4">
+          </video>
+          <span class="frame-grade" aria-hidden="true"></span>
+        </figure>
+      </div>
+      <p class="band-tc" aria-hidden="true"><b>A001</b><span id="band-tc">00:00:00:00</span></p>
+      <!-- the reel's last frame freezes and becomes the first work: its title card emerges around it -->
+      <div class="reel-card" id="reel-card">
+        <p class="rc-no"><b>01</b> / 06</p>
+        <p class="rc-label">Showreel</p>
+        <p class="rc-roles">Direction · Camera · Edit</p>
+        <a class="rc-link" href="#film">Full reel<span aria-hidden="true">↓</span></a>
+      </div>
       <h1 class="name" id="name">JP<br class="br-m"> Silva</h1>
     </div>
     <div class="hero-credits">
@@ -64,7 +98,7 @@
   <!-- 2 · SELECTED WORK: five features, cut from JP's films -->
   <section id="work" aria-labelledby="work-h">
     <div class="slate">
-      <p class="mono"><span>Reel 01 · Selected work</span><span>05 features</span></p>
+      <p class="mono"><span>Reel 01 · Selected work</span><span>06 features</span></p>
       <h2 id="work-h" data-reveal="clip">Features</h2>
     </div>
 
@@ -73,7 +107,7 @@
       <div class="feat-stage">
         <figure class="frame" style="--pos:50% 45%">
           <img src="../media/film/fd-flare-poster.jpg" width="860" height="512" alt="Dancers against the setting sun" loading="lazy" decoding="async">
-          <video class="jp-video" muted playsinline loop preload="none" aria-hidden="true">
+          <video class="jp-video" muted playsinline loop preload="none" aria-hidden="true" poster="../media/film/fd-flare-poster.jpg">
             <source src="../media/film/fd-flare.webm" type="video/webm">
             <source src="../media/film/fd-flare.mp4" type="video/mp4">
           </video>
@@ -81,8 +115,8 @@
         </figure>
         <div class="tc">
           <div class="tc-top">
-            <p class="tc-no"><span class="tc-line"><span><b>01</b> / 05</span></span></p>
-            <p class="tc-credits"><span class="tc-line" style="--d:.09s"><span><span>Dir.</span>JP Silva</span></span><span class="tc-line" style="--d:.18s"><span><span>Cam.</span>JP Silva</span></span></p>
+            <p class="tc-no"><span class="tc-line"><span><b>02</b> / 06</span></span></p>
+            <p class="tc-credits"><span class="tc-line" style="--d:.09s"><span>Direction · Camera</span></span><span class="tc-line" style="--d:.18s"><span><i class="gd">2.39 : 1</i><i class="gm">16 : 9</i></span></span></p>
           </div>
           <div class="tc-bottom">
             <p class="tc-label"><span class="tc-line"><span>Music video</span></span></p>
@@ -102,8 +136,8 @@
         </figure>
         <div class="tc">
           <div class="tc-top">
-            <p class="tc-no"><span class="tc-line"><span><b>02</b> / 05</span></span></p>
-            <p class="tc-credits"><span class="tc-line" style="--d:.09s"><span><span>Dir.</span>JP Silva</span></span><span class="tc-line" style="--d:.18s"><span><span>Cam.</span>JP Silva</span></span></p>
+            <p class="tc-no"><span class="tc-line"><span><b>03</b> / 06</span></span></p>
+            <p class="tc-credits"><span class="tc-line" style="--d:.09s"><span>Direction · Camera</span></span><span class="tc-line" style="--d:.18s"><span>Full frame · B&amp;W</span></span></p>
           </div>
           <div class="tc-bottom">
             <p class="tc-label"><span class="tc-line"><span>Music video</span></span></p>
@@ -114,17 +148,21 @@
       </div>
     </article>
 
-    <!-- 03 · a quiet cut: small 2.39 band, light grade -->
+    <!-- 03 · a quiet cut: small 2.39 band, light grade; the night-ride clip loops -->
     <article class="feature f-quiet" data-feature style="--grade-top:.3;--grade-bot:.45">
       <div class="feat-stage">
         <figure class="frame" style="--pos:50% 55%">
           <img src="../media/film/nr-headlight-poster.jpg" width="778" height="512" alt="Headlight coming down the road at night" loading="lazy" decoding="async">
+          <video class="jp-video" muted playsinline loop preload="none" aria-hidden="true" poster="../media/film/nr-headlight-poster.jpg">
+            <source src="../media/film/nr-headlight.webm" type="video/webm">
+            <source src="../media/film/nr-headlight.mp4" type="video/mp4">
+          </video>
           <span class="frame-grade" aria-hidden="true"></span>
         </figure>
         <div class="tc">
           <div class="tc-top">
-            <p class="tc-no"><span class="tc-line"><span><b>03</b> / 05</span></span></p>
-            <p class="tc-credits"><span class="tc-line" style="--d:.09s"><span><span>Cam.</span>JP Silva</span></span><span class="tc-line" style="--d:.18s"><span><span>Ed.</span>JP Silva</span></span></p>
+            <p class="tc-no"><span class="tc-line"><span><b>04</b> / 06</span></span></p>
+            <p class="tc-credits"><span class="tc-line" style="--d:.09s"><span>Camera · Edit</span></span><span class="tc-line" style="--d:.18s"><span>2.39 : 1 · Night</span></span></p>
           </div>
           <div class="tc-bottom">
             <p class="tc-label"><span class="tc-line"><span>Music video</span></span></p>
@@ -135,21 +173,17 @@
       </div>
     </article>
 
-    <!-- 04 · portrait source: full-bleed on phones, pillarboxed 9:16 beside its card on desktop -->
+    <!-- 04 · portrait still: full-bleed on phones, pillarboxed 9:16 beside its card on desktop -->
     <article class="feature f-tall" data-feature>
       <div class="feat-stage">
         <figure class="frame" style="--pos:50% 40%">
-          <img src="../media/film/fo-trees-poster.jpg" width="492" height="960" alt="Pines against a grey sky" loading="lazy" decoding="async">
-          <video class="jp-video" muted playsinline loop preload="none" aria-hidden="true">
-            <source src="../media/film/fo-trees.webm" type="video/webm">
-            <source src="../media/film/fo-trees.mp4" type="video/mp4">
-          </video>
+          <img src="../media/stills/fo-trees.jpg" width="492" height="960" alt="Pines against a grey sky" loading="lazy" decoding="async">
           <span class="frame-grade" aria-hidden="true"></span>
         </figure>
         <div class="tc">
           <div class="tc-top">
-            <p class="tc-no"><span class="tc-line"><span><b>04</b> / 05</span></span></p>
-            <p class="tc-credits"><span class="tc-line" style="--d:.09s"><span><span>Dir.</span>JP Silva</span></span><span class="tc-line" style="--d:.18s"><span><span>Cam.</span>JP Silva</span></span></p>
+            <p class="tc-no"><span class="tc-line"><span><b>05</b> / 06</span></span></p>
+            <p class="tc-credits"><span class="tc-line" style="--d:.09s"><span>Direction · Camera</span></span><span class="tc-line" style="--d:.18s"><span>9 : 16 · Still</span></span></p>
           </div>
           <div class="tc-bottom">
             <p class="tc-label"><span class="tc-line"><span>Short · Personal</span></span></p>
@@ -169,7 +203,8 @@
         </figure>
         <div class="tc">
           <div class="tc-top">
-            <p class="tc-no"><span class="tc-line"><span><b>05</b> / 05</span></span></p>
+            <p class="tc-no"><span class="tc-line"><span><b>06</b> / 06</span></span></p>
+            <p class="tc-credits"><span class="tc-line" style="--d:.09s"><span>Camera</span></span><span class="tc-line" style="--d:.18s"><span>2.76 : 1</span></span></p>
           </div>
           <div class="tc-bottom">
             <p class="tc-label"><span class="tc-line"><span>Music video</span></span></p>
@@ -180,10 +215,33 @@
     </article>
   </section>
 
-  <!-- 3 · INTERTITLE -->
-  <section class="intertitle" id="film" aria-label="Film">
-    <div>
+  <!-- 3 · FILM: intertitle, then the full showreel behind a play control (muted, preload none) -->
+  <section class="film" id="film" aria-labelledby="film-h">
+    <div class="intertitle">
       <p data-reveal="fade">Film that feels lived in, not staged.</p>
+    </div>
+    <div class="film-grid">
+      <div class="film-copy" data-stag=".1">
+        <p class="mono" data-reveal="fade">Reel 02 · Long form</p>
+        <h2 id="film-h" data-reveal="clip">The full reel</h2>
+        <p class="film-note" data-reveal>Forty-eight seconds, muted, cut from live shows, music videos and the road. Tap to run it.</p>
+        <ul class="yt" data-reveal="fade" aria-label="Long-form work on YouTube">
+          <li><a href="https://youtu.be/D9iNANLSWJI" target="_blank" rel="noopener"><small>MV 01</small>Music video<span><em>youtu.be/</em>D9iNANLSWJI</span></a></li>
+          <li><a href="https://youtu.be/bQmgSBOyIBQ" target="_blank" rel="noopener"><small>MV 02</small>Music video<span><em>youtu.be/</em>bQmgSBOyIBQ</span></a></li>
+          <li><a href="https://youtu.be/uM2j8bYrv68" target="_blank" rel="noopener"><small>FL 01</small>Film<span><em>youtu.be/</em>uM2j8bYrv68</span></a></li>
+          <li><a href="https://youtu.be/IO-0co8MI4Y" target="_blank" rel="noopener"><small>FL 02</small>Film<span><em>youtu.be/</em>IO-0co8MI4Y</span></a></li>
+          <li><a href="https://youtu.be/3qoGu5U9sfc" target="_blank" rel="noopener"><small>FL 03</small>Film<span><em>youtu.be/</em>3qoGu5U9sfc</span></a></li>
+        </ul>
+      </div>
+      <figure class="frame reel-full" id="full-frame" data-reveal="img">
+        <img src="../media/stills/m-sunset.jpg" width="490" height="960" alt="Two figures at sunset, a frame from the showreel" loading="lazy" decoding="async">
+        <video id="full" muted playsinline preload="none" poster="../media/film/montage-full-poster.jpg" aria-hidden="true" tabindex="-1">
+          <source src="../media/film/montage-full.mp4" type="video/mp4">
+        </video>
+        <span class="frame-grade" aria-hidden="true"></span>
+        <button type="button" class="play" id="play" aria-pressed="false" aria-label="Play the full showreel, muted"><i aria-hidden="true"></i><span>Play</span></button>
+        <figcaption class="band-tc" aria-hidden="true"><b>A002</b><span id="full-tc">00:00:00:00</span></figcaption>
+      </figure>
     </div>
   </section>
 
@@ -195,7 +253,7 @@
           <p class="mono">Roll 02 · Stills</p>
           <h2 id="photo-h">Contact strip</h2>
         </div>
-        <p class="strip-count" aria-live="polite"><b>FR 01</b> / 06</p>
+        <p class="strip-count"><b>FR 01</b> / 06</p><span class="vh" id="strip-live" aria-live="polite"></span>
       </div>
       <ul class="strip" id="strip" aria-label="Six stills from the films">
         <li class="is-cur"><figure><div class="frame" style="aspect-ratio:680/512"><img src="../media/stills/w-portrait.jpg" width="680" height="512" alt="Hat portrait, black and white" loading="lazy" decoding="async"></div><figcaption><b>FR 01</b><span>Western, B&amp;W</span></figcaption></figure></li>
@@ -222,6 +280,12 @@
         <h2 id="about-h" data-reveal="clip">Director’s statement</h2>
         <p data-reveal>JP Silva makes films and photographs that chase a feeling before they chase a look. A live show, a music video, a quiet minute behind the scenes: the work is about honest emotion, caught while it is still raw.</p>
         <p data-reveal>Born in Bauru, São Paulo, Brazil, and in the United States since his teens. Austin since 2025, and wherever the tour goes next.</p>
+        <figure class="prints" data-reveal="img">
+          <div class="frame" style="aspect-ratio:2.39/1">
+            <img src="../media/photos/jp-exhibition-800.jpg" srcset="../media/photos/jp-exhibition-800.jpg 800w, ../media/photos/jp-exhibition.jpg 1320w" sizes="(min-width:900px) 52vw, 100vw" width="1320" height="1034" alt="JP Silva standing beside his printed photographs at a gallery wall" loading="lazy" decoding="async">
+          </div>
+          <figcaption><b>Prints shown</b><span>Group exhibition, 2025</span></figcaption>
+        </figure>
       </div>
       <figure class="portrait" data-reveal="img">
         <div class="frame">
@@ -268,13 +332,21 @@
     <span class="wordmark"><i aria-hidden="true"></i>Index</span>
     <button type="button" class="menu-close" id="menu-close">Close</button>
   </div>
-  <nav class="menu-list" aria-label="Index">
-    <a href="#work" style="--i:0"><small>00:01</small>Work</a>
-    <a href="#film" style="--i:1"><small>00:02</small>Film</a>
-    <a href="#photography" style="--i:2"><small>00:03</small>Photography</a>
-    <a href="#about" style="--i:3"><small>00:04</small>About</a>
-    <a href="#contact" style="--i:4"><small>00:05</small>Contact</a>
-  </nav>
+  <div class="menu-body">
+    <nav class="menu-list" aria-label="Index">
+      <a href="#work" style="--i:0"><small>00:01</small>Work</a>
+      <a href="#film" style="--i:1"><small>00:02</small>Film</a>
+      <a href="#photography" style="--i:2"><small>00:03</small>Photography</a>
+      <a href="#about" style="--i:3"><small>00:04</small>About</a>
+      <a href="#contact" style="--i:4"><small>00:05</small>Contact</a>
+    </nav>
+    <dl class="menu-side mono">
+      <dt>Reel</dt><dd>A001 · Picture start</dd>
+      <dt>Based</dt><dd>Austin, Texas<br>30.2672° N · 97.7431° W</dd>
+      <dt>Works in</dt><dd>Film, live music, music videos, tour, portraits</dd>
+      <dt>Runtime</dt><dd>00:05 · Six features</dd>
+    </dl>
+  </div>
   <p class="menu-foot mono"><span>JP Media · Austin, Texas</span><a href="https://www.instagram.com/jp.media/" rel="noopener" target="_blank">Instagram @jp.media</a></p>
 </div>
 

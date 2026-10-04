@@ -26,15 +26,23 @@
 
 <main id="main">
 
-  <!-- 1 · HERO : the opening frame, the end state of the entrance. One still from the western, black and white. -->
+  <!-- 1 · HERO : the opening frame. Three seconds of the western play once, then the frame comes to rest on her.
+       Layers: the clip's first frame (horse mane) · the clip · the still she settles into. The still is the end state. -->
   <section id="opener" class="room hero" aria-label="JP Silva, filmmaker, producer, photographer">
     <figure class="still hero-still">
-      <div class="frame" style="aspect-ratio:3/2">
-        <img src="../media/stills/w-portrait.jpg" width="660" height="500"
+      <div class="frame hero-frame">
+        <img class="hero-first" src="../media/film/w-portrait-poster.jpg" width="636" height="500" alt=""
+             fetchpriority="high" decoding="async">
+        <video id="hero-clip" class="hero-clip" muted playsinline preload="metadata" aria-hidden="true"
+               poster="../media/film/w-portrait-poster.jpg">
+          <source src="../media/film/w-portrait.webm" type="video/webm">
+          <source src="../media/film/w-portrait.mp4" type="video/mp4">
+        </video>
+        <img class="hero-rest" src="../media/stills/w-portrait.jpg" width="636" height="500"
              alt="A woman in a wide-brimmed hat looks past the camera, black and white, a saguaro behind her"
              fetchpriority="high" decoding="async">
       </div>
-      <figcaption class="hero-cap label">Western, Black &amp; White <span class="sep">—</span> Music video</figcaption>
+      <figcaption class="hero-cap label"><span class="l1">Western, Black &amp; White</span> <span class="sep sep-ln">—</span> <span class="l2">Music video <span class="sep">—</span> Camera, direction</span></figcaption>
     </figure>
     <div class="hero-name">
       <h1 class="name">JP Silva</h1>
@@ -42,7 +50,7 @@
     </div>
   </section>
 
-  <!-- 2 · SELECTED WORK : four rooms, one frame each -->
+  <!-- 2 · SELECTED WORK : rooms, one frame each -->
   <div id="work" aria-label="Selected work" role="region">
 
     <section id="room-forest" class="room r-forest" aria-labelledby="t-forest">
@@ -53,20 +61,26 @@
         </div>
         <figcaption class="cap" data-reveal="cap" style="--d:.2s">
           <span class="cap-title" id="t-forest">Forest, Rain</span>
-          <span class="label">Short <span aria-hidden="true">·</span> Personal</span>
+          <span class="label">Short <span aria-hidden="true">·</span> Personal <span aria-hidden="true">·</span> Pines, evening</span>
         </figcaption>
       </figure>
     </section>
 
-    <section id="room-live" class="room r-live" aria-labelledby="t-live">
+    <!-- the small screen: the showreel, muted, plays only on request. The scale change is the point. -->
+    <section id="room-reel" class="room r-reel" aria-labelledby="t-reel">
       <figure class="still">
-        <div class="frame" data-reveal="still" style="aspect-ratio:2/3">
-          <img src="../media/stills/m-bokeh.jpg" width="490" height="960"
-               alt="Sparks and stage light blurring over a dark crowd" loading="lazy" decoding="async">
+        <div class="frame screen" data-reveal="still" style="aspect-ratio:9/16">
+          <img src="../media/film/montage-full-poster.jpg" width="490" height="960"
+               alt="JP crouched behind a camera rig on a dusty set, round glasses, black T-shirt" loading="lazy" decoding="async">
+          <video id="reel" class="reel" muted playsinline preload="none" aria-label="Showreel, muted, 48 seconds"
+                 poster="../media/film/montage-full-poster.jpg">
+            <source src="../media/film/montage-full.mp4" type="video/mp4">
+          </video>
         </div>
         <figcaption class="cap" data-reveal="cap" style="--d:.2s">
-          <span class="cap-title" id="t-live">Showreel</span>
-          <span class="label">Live <span aria-hidden="true">·</span> Stage light, 2025</span>
+          <span class="cap-title" id="t-reel">Showreel</span>
+          <span class="label">A cross-section of the work <span aria-hidden="true">·</span> 2025</span>
+          <button class="reel-btn label" type="button" id="reel-btn" aria-controls="reel" aria-pressed="false"><span class="reel-txt">Play the showreel, muted</span></button>
         </figcaption>
       </figure>
     </section>
@@ -75,7 +89,7 @@
       <figure class="still">
         <div class="frame" data-reveal="still">
           <img src="../media/stills/fd-headlights.jpg" width="846" height="470"
-               alt="A pickup at dusk with its headlights on, friends standing in the bed" loading="lazy" decoding="async">
+               alt="A pickup at dusk with its headlights on, a door open, friends climbing into the bed" loading="lazy" decoding="async">
           <video class="jp-video" muted playsinline loop preload="none" aria-hidden="true"
                  poster="../media/film/fd-headlights-poster.jpg">
             <source src="../media/film/fd-headlights.webm" type="video/webm">
@@ -83,7 +97,7 @@
           </video>
         </div>
         <figcaption class="cap film-cap label" data-reveal="cap" style="--d:.2s">
-          <span id="t-film">Field at Dusk</span> <span class="sep">—</span> Music video <span class="sep">—</span> Headlights
+          <span class="l1"><span id="t-film">Field at Dusk</span> <span class="sep">—</span> Music video</span> <span class="sep sep-ln">—</span> <span class="l2">Headlights, last light</span>
         </figcaption>
       </figure>
     </section>
@@ -92,7 +106,7 @@
       <figure class="still">
         <figcaption class="cap" data-reveal="cap" style="--d:.2s">
           <span class="cap-title" id="t-road">Desert Highway</span>
-          <span class="label">Music video</span>
+          <span class="label">Music video <span aria-hidden="true">·</span> Open road</span>
         </figcaption>
         <div class="frame" data-reveal="still" style="aspect-ratio:3/2">
           <img src="../media/stills/ch-road.jpg" width="656" height="450"
@@ -101,13 +115,69 @@
       </figure>
     </section>
 
+    <section id="room-nightride" class="room r-night" aria-labelledby="t-night">
+      <figure class="still">
+        <figcaption class="cap" data-reveal="cap" style="--d:.2s">
+          <span class="cap-title" id="t-night">Night Ride</span>
+          <span class="label">Music video <span aria-hidden="true">·</span> One headlight</span>
+        </figcaption>
+        <div class="frame" data-reveal="still" style="aspect-ratio:2.39/1">
+          <img src="../media/stills/nr-headlight.jpg" width="738" height="390"
+               alt="A motorcycle coming head-on at dusk, its single headlight lit, guardrail behind" loading="lazy" decoding="async">
+        </div>
+      </figure>
+    </section>
+
+    <!-- frames pulled from the films, and one photograph of the prints: the stills beside the motion -->
+    <section id="room-frames" class="room r-frames" aria-labelledby="t-frames">
+      <h2 id="t-frames" class="label" data-reveal="cap">Frames <span aria-hidden="true">·</span> Stills and prints</h2>
+      <ul class="strip" data-reveal="cap" style="--d:.15s">
+        <li>
+          <figure class="still">
+            <div class="frame" style="aspect-ratio:1"><img src="../media/stills/w-saguaro.jpg" width="636" height="500" alt="A tall saguaro under a storm sky, a rider leading a horse beneath it, black and white" loading="lazy" decoding="async"></div>
+            <figcaption class="label">Western <span class="sep">—</span> Saguaro</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure class="still">
+            <div class="frame" style="aspect-ratio:1"><img src="../media/stills/fd-silhouettes.jpg" width="846" height="470" alt="Five dancers silhouetted against a gold sunset, arms raised" loading="lazy" decoding="async"></div>
+            <figcaption class="label">Field at Dusk <span class="sep">—</span> Dancers</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure class="still">
+            <div class="frame" style="aspect-ratio:1"><img src="../media/stills/nr-silhouette.jpg" width="738" height="390" alt="A helmeted rider in silhouette against a green dusk sky" loading="lazy" decoding="async"></div>
+            <figcaption class="label">Night Ride <span class="sep">—</span> Dusk</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure class="still">
+            <div class="frame" style="aspect-ratio:1"><img src="../media/stills/m-bw.jpg" width="490" height="960" alt="A man in a fur hat with a pole across his shoulders, black and white" loading="lazy" decoding="async"></div>
+            <figcaption class="label">Showreel <span class="sep">—</span> Portrait</figcaption>
+          </figure>
+        </li>
+        <li id="frame-prints">
+          <figure class="still">
+            <div class="frame" style="aspect-ratio:1"><img src="../media/photos/jp-exhibition-800.jpg" width="800" height="627" alt="JP Silva beside his printed photographs on a gallery wall" loading="lazy" decoding="async"></div>
+            <figcaption class="label">Prints shown, group exhibition, 2025</figcaption>
+          </figure>
+        </li>
+      </ul>
+    </section>
+
   </div>
 
-  <!-- 3 · ABOUT : one paragraph, one portrait -->
+  <!-- 3 · ABOUT : one paragraph, one portrait, him at the sea -->
   <section id="about" class="room r-about" aria-label="About JP Silva">
     <div class="about-col">
       <p class="about-p" data-reveal="cap">JP Silva is a filmmaker, producer and photographer in Austin, Texas, working across film, live music and the long road between shows. He was born in Bauru, São Paulo, moved to the United States as a teenager, and still looks for the same thing in every frame: the honest moment, not the loud one.</p>
-      <p class="label origin" data-reveal="cap" style="--d:.2s">Bauru, São Paulo <span class="arrow" aria-hidden="true">→</span><span class="sr-only">to</span> Austin, Texas</p>
+      <p class="label origin" data-reveal="cap" style="--d:.2s"><span class="o1">Bauru, São Paulo <span class="arrow" aria-hidden="true">→</span><span class="sr-only">to</span> Austin, Texas</span><span class="o-sep" aria-hidden="true">·</span><span class="o2">since 2025</span></p>
+      <figure class="still sea-still" data-reveal="cap" style="--d:.3s">
+        <div class="frame" style="aspect-ratio:504/390">
+          <img src="../media/stills/jp-sea.jpg" width="504" height="390" alt="JP from behind at a sea rail, cap on, light breaking through cloud over the water, black and white" loading="lazy" decoding="async">
+        </div>
+        <figcaption class="label">At the sea <span class="sep">—</span> Personal</figcaption>
+      </figure>
     </div>
     <figure class="still about-still">
       <div class="frame" data-reveal="still" style="aspect-ratio:4/5">
@@ -119,18 +189,18 @@
     </figure>
   </section>
 
-  <!-- 4 · INDEX : every work, one quiet list. Rows with a room link to it; the rest are in the index only. -->
+  <!-- 4 · INDEX : every work, one quiet list. Rows with a room link to it. -->
   <section id="index" class="index-sec" aria-labelledby="t-index">
     <h2 id="t-index" class="label">Index <span aria-hidden="true">·</span> Selected work</h2>
     <ol class="index-list" id="index-list">
-      <li><a href="#room-live"><span class="ix-title">Showreel</span><span class="ix-label">Live <span aria-hidden="true">·</span> Stage light</span><span class="ix-meta">Direction, camera, edit</span></a></li>
+      <li><a href="#room-reel"><span class="ix-title">Showreel</span><span class="ix-label">A cross-section of the work</span><span class="ix-meta">Direction, camera, edit</span></a></li>
       <li><a href="#room-film"><span class="ix-title">Field at Dusk</span><span class="ix-label">Music video</span><span class="ix-meta">Direction, camera</span></a></li>
       <li><a href="#opener"><span class="ix-title">Western, Black &amp; White</span><span class="ix-label">Music video</span><span class="ix-meta">Direction, camera</span></a></li>
-      <li><span class="ix-row"><span class="ix-title">Night Ride</span><span class="ix-label">Music video</span><span class="ix-meta">Camera, edit</span></span></li>
+      <li><a href="#room-nightride"><span class="ix-title">Night Ride</span><span class="ix-label">Music video</span><span class="ix-meta">Camera, edit</span></a></li>
       <li><a href="#room-road"><span class="ix-title">Desert Highway</span><span class="ix-label">Music video</span><span class="ix-meta">Camera</span></a></li>
       <li><a href="#room-forest"><span class="ix-title">Forest, Rain</span><span class="ix-label">Short <span aria-hidden="true">·</span> Personal</span><span class="ix-meta">Direction, camera</span></a></li>
-      <li><span class="ix-row"><span class="ix-title">Prints</span><span class="ix-label">Photography <span aria-hidden="true">·</span> Exhibited, 2025</span><span class="ix-meta">Photography</span></span></li>
-      <li><span class="ix-row"><span class="ix-title">At the Sea</span><span class="ix-label">Personal</span><span class="ix-meta">Camera</span></span></li>
+      <li><a href="#frame-prints"><span class="ix-title">Prints</span><span class="ix-label">Photography <span aria-hidden="true">·</span> Exhibited, 2025 <span aria-hidden="true">·</span> In frames</span><span class="ix-meta">Photography</span></a></li>
+      <li><a href="#about"><span class="ix-title">At the Sea</span><span class="ix-label">Personal</span><span class="ix-meta">Camera</span></a></li>
     </ol>
   </section>
 

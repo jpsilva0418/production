@@ -37,11 +37,11 @@ body{background:var(--bone);color:var(--ink);font:400 15px/1.55 var(--f-t)}
 [id]{scroll-margin-top:calc(var(--rh) + 24px)}
 
 /* small caps label, the book's furniture */
-.lbl,.cap,.rh,.hero-foot,.ch-meta,.mn-label,.toc-m,.toc-no,.ct-k,.ct-note,.col-set,.col-note,.col-end,.film-long,.contact-k,.folio-fixed{
+.lbl,.cap,.rh,.hero-foot,.ch-meta,.mn-label,.toc-m,.toc-no,.ct-k,.ct-note,.col-set,.col-note,.col-end,.film-long,.contact-k{
   font:500 11px/1.6 var(--f-t);letter-spacing:.18em;text-transform:uppercase;color:var(--graphite)}
 
 /* skip link */
-.skip{position:fixed;top:8px;left:8px;z-index:1000;padding:10px 14px;background:var(--ink);color:var(--bone);
+.skip{position:fixed;top:8px;left:8px;z-index:1000;min-height:44px;display:inline-flex;align-items:center;padding:0 14px;background:var(--ink);color:var(--bone);
   font:500 11px/1 var(--f-t);letter-spacing:.14em;text-transform:uppercase;transform:translateY(-200%)}
 .skip:focus-visible{transform:none;outline-color:var(--folio)}
 
@@ -66,9 +66,9 @@ body{background:var(--bone);color:var(--ink);font:400 15px/1.55 var(--f-t)}
   .rh-narrow{display:inline}
   .rh-name{padding-right:8px;background:var(--bone);position:relative;z-index:1}
   .rh-nav{gap:12px}
-  .rh-link{font-size:11px;letter-spacing:.14em}
+  .rh-link{font-size:11px;letter-spacing:.14em;min-width:44px;justify-content:center;padding:0 4px;margin:0 -4px}
   /* the folio leaves the nav row: a small red number under the rule, right-hand page */
-  .rh-folio{position:absolute;right:var(--m);bottom:-19px;margin:0;font-size:10px;letter-spacing:.16em;background:var(--bone);padding:2px 0 2px 8px}
+  .rh-folio{position:absolute;right:var(--m);top:100%;margin:6px 0 0;font-size:10px;letter-spacing:.16em;line-height:1.2}
 }
 
 /* ---------- Hero / opening ---------------------------------------------- */
@@ -78,13 +78,19 @@ body{background:var(--bone);color:var(--ink);font:400 15px/1.55 var(--f-t)}
   display:flex;font:300 var(--name)/.86 var(--f-d);font-variation-settings:"opsz" 144;
   letter-spacing:-.025em;text-transform:uppercase;color:var(--ink);pointer-events:none}
 .w{flex:1 1 0;min-width:0}
-.w-jp{text-align:right;padding-right:1.5vw;transform:translateX(-6vw)}
-.w-silva{padding-left:1.5vw;transform:translateX(6vw)}
+.w-jp{text-align:right;padding-right:1.5vw;transform:translateX(-9vw)}
+.w-silva{padding-left:1.5vw;transform:translateX(9vw)}
 .mask{display:block;overflow:hidden;padding:.1em .04em .16em 0;margin:-.1em -.04em -.16em 0}
 .line{display:block}
-.hero-plate{position:absolute;left:50%;top:50%;width:clamp(120px,13.5vw,200px);transform:translate(-50%,-14%);z-index:2}
+.hero-plate{position:absolute;left:50%;top:50%;width:clamp(140px,16vw,236px);transform:translate(-50%,-18%);z-index:2}
 .hero-plate .frame{aspect-ratio:2/3;box-shadow:inset 0 0 0 1px var(--rule)}
 .hero-plate img{object-position:36% 42%}
+/* the moving plate: invisible until it plays, then it tilts up to her face and freezes back into the still.
+   The clip is framed higher than the still (30%) so even a from-zero start, on a host that cannot seek, already holds
+   the hat brim and the eyes; the freeze fade drifts it down onto the still's crop so the handoff never jumps. */
+.hero-clip{opacity:0;object-position:36% 30%;transition:opacity .55s ease;z-index:1}
+.hero-clip.is-playing{opacity:1}
+.hero-clip.is-frozen{opacity:0;object-position:36% 42%;transition:opacity 1.4s ease,object-position 1.4s ease;pointer-events:none}
 .cap-hero{margin-top:12px;white-space:nowrap}
 .hero-foot{position:absolute;bottom:calc(10svh + env(safe-area-inset-bottom,0px));color:var(--ink)}
 .hero-foot-l{left:var(--m)}
@@ -100,7 +106,9 @@ body{background:var(--bone);color:var(--ink);font:400 15px/1.55 var(--f-t)}
   .cap-hero .dash{display:none}
   .cap-hero .cap-t2{display:block}
   .hero-foot{bottom:calc(9svh + env(safe-area-inset-bottom,0px))}
-  .hero-foot-l{left:26vw;right:var(--m);max-width:60vw}
+  /* the three roles stack, one to a line, instead of breaking on an interpunct */
+  .hero-foot-l{left:26vw;right:var(--m);max-width:60vw;display:grid;row-gap:2px}
+  .hero-foot-l .sep{display:none}
   /* the city runs up the spine, left of the gutter, like a book's edge title */
   .hero-foot-r{right:auto;left:calc(16vw - 11px - 14px);text-align:left;writing-mode:vertical-rl;transform:rotate(180deg);bottom:calc(9svh + env(safe-area-inset-bottom,0px));white-space:nowrap}
   .coords{display:inline;margin-right:0;padding-right:1.6em}
@@ -163,6 +171,7 @@ body{background:var(--bone);color:var(--ink);font:400 15px/1.55 var(--f-t)}
 .across{position:absolute;left:var(--m);bottom:clamp(20px,3.6vw,52px);z-index:2;color:var(--bone);
   font:italic 300 clamp(2.6rem,8vw,8rem)/1 var(--f-d);font-variation-settings:"opsz" 144;letter-spacing:-.02em;white-space:nowrap}
 .across .mask{padding:.06em .08em .12em 0;margin:-.06em 0 -.12em}
+.has-pointer .pl-03:hover .across .line{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.08em;text-decoration-color:var(--folio)}
 
 /* spread C: 04 (cols 2–6, 2:3) and 05 (cols 7–11, 3:4) pulled down */
 .sp-c{display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--gap);align-items:start;margin-top:var(--sp)}
@@ -229,13 +238,53 @@ body{background:var(--bone);color:var(--ink);font:400 15px/1.55 var(--f-t)}
   writing-mode:vertical-rl;transform:rotate(180deg);justify-self:start;padding-top:.3em}
 .pl-film{grid-column:4/13}
 .pl-film .frame{aspect-ratio:4/3}
-.film-long{grid-column:4/13;display:flex;align-items:baseline;gap:1.2em;margin-top:clamp(20px,2.4vw,32px);padding-top:14px;border-top:1px solid var(--rule)}
+.pl-film video{object-position:50% 40%}
+
+/* contact sheet: four stills from the same reel, a strip under the moving plate */
+.sheet{grid-column:4/13;margin:clamp(28px,3.4vw,48px) 0 0;position:relative}
+.sheet::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--rule);transform-origin:left}
+.sheet-row{list-style:none;margin:0;padding:clamp(18px,2vw,28px) 0 0;display:grid;grid-template-columns:repeat(4,1fr);column-gap:var(--gap)}
+.sheet-row li{margin:0;position:relative}
+.sheet-row .frame{aspect-ratio:4/3;box-shadow:inset 0 0 0 1px var(--rule)}
+.sheet-row img{transition:filter .6s ease}
+.has-pointer .sheet-row li:hover img{filter:contrast(.9) brightness(1.04)}
+.fr{display:block;margin-top:8px;font:500 10px/1.4 var(--f-t);letter-spacing:.18em;color:var(--graphite);font-variant-numeric:tabular-nums}
+.sheet .cap{margin-top:10px}
+
+/* the reel: a 9:16 frame at ≤ 22vw, the showreel behind a play control; the caption stands to its right */
+.reel{grid-column:4/13;display:grid;grid-template-columns:repeat(9,1fr);column-gap:var(--gap);margin:var(--sp) 0 0;position:relative}
+.reel::before{content:"";grid-column:1/4;grid-row:1;height:1px;background:var(--ink);align-self:start;transform-origin:left;z-index:3;pointer-events:none}
+.reel-frame{grid-column:1/4;grid-row:1;aspect-ratio:9/16;background:var(--plate-bg);box-shadow:inset 0 0 0 1px var(--rule)}
+.reel-frame img{filter:saturate(.92)}
+.reel-video{opacity:0;transition:opacity .7s ease;z-index:1}
+.reel.is-on .reel-video{opacity:1}
+.reel-btn{position:absolute;left:0;bottom:0;z-index:4;display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 16px 0 14px;
+  background:var(--bone);color:var(--ink);font:500 11px/1 var(--f-t);letter-spacing:.18em;text-transform:uppercase;cursor:pointer;
+  transition:background .3s ease,color .3s ease}
+.reel-btn:hover,.reel-btn:focus-visible{background:var(--ink);color:var(--bone)}
+.reel-ic{width:0;height:0;border-style:solid;border-width:5px 0 5px 8px;border-color:transparent transparent transparent currentColor}
+.reel.is-on .reel-ic{width:3px;height:10px;border-width:0 3px;border-color:currentColor;border-style:solid;background:none}
+.reel-cap{grid-column:5/10;grid-row:1;align-self:end;margin:0}
+.reel.is-unavailable .reel-frame img{filter:saturate(.92) contrast(.96)}
+.reel-cap .film-long{display:flex;align-items:baseline;gap:1.2em;margin-top:clamp(20px,2.4vw,32px);padding-top:14px;border-top:1px solid var(--rule)}
 .film-long .lbl{color:var(--folio)}
 .yt{display:inline-flex;align-items:center;min-height:44px;color:var(--ink);font:400 1.05rem/1.3 var(--f-d);font-variation-settings:"opsz" 24;letter-spacing:0;text-transform:none;
   text-decoration:underline;text-underline-offset:.3em;text-decoration-thickness:1px;text-decoration-color:var(--folio)}
 @media (max-width:899px){
   .film{display:block}
   .chapter{writing-mode:horizontal-tb;transform:none;margin-bottom:28px;padding:0}
+  /* the sheet becomes a native strip that bleeds off the right-hand edge */
+  .sheet-row{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;
+    gap:10px;margin:0 calc(-1 * var(--m));padding:18px var(--m) 2px;scroll-padding-inline:var(--m)}
+  .sheet-row::-webkit-scrollbar{display:none}
+  .sheet-row li{flex:0 0 58vw;scroll-snap-align:start}
+  /* the reel frame keeps to the right-hand 62 %; its caption runs the full measure beneath */
+  .reel{display:block;margin:var(--sp) 0 0}
+  .reel::before{position:absolute;left:38%;right:0;top:0}
+  .reel-frame{width:62%;margin-left:auto}
+  .reel-cap{margin-top:14px;padding-left:38%}
+  .reel-cap .note{max-width:34ch}
+  .reel-cap .film-long{flex-wrap:wrap;row-gap:4px}
 }
 
 /* ---------- Index ------------------------------------------------------- */
@@ -287,11 +336,6 @@ body{background:var(--bone);color:var(--ink);font:400 15px/1.55 var(--f-t)}
   .col-set,.col-note,.col-end{grid-column:1;text-align:left}
 }
 
-/* fixed red folio, desktop only; the running head carries it on phones */
-.folio-fixed{position:fixed;right:var(--m);bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:90;color:var(--folio);
-  font-variant-numeric:tabular-nums;font-weight:500;display:none}
-.folio-fixed i{font-style:normal;color:var(--graphite);margin-right:.5em}
-@media (min-width:900px){.folio-fixed{display:block}}
 .skip-hint{color:var(--graphite);left:calc(16vw + 16px);right:auto;bottom:calc(24px + env(safe-area-inset-bottom,0px))}
 
 /* ============================================================
@@ -304,6 +348,8 @@ body{background:var(--bone);color:var(--ink);font:400 15px/1.55 var(--f-t)}
 .js-anim [data-reveal="line"]{opacity:1;transform:none;clip-path:none;transition:none}
 .js-anim [data-reveal="line"]::before{transform:scaleX(0);transition:transform .5s var(--ease-io)}
 .js-anim [data-reveal="line"].is-in::before{transform:scaleX(1)}
+.js-anim .sheet .frame,.js-anim .reel .frame{clip-path:inset(0 0 100% 0);transition:clip-path 1s var(--ease) var(--d,0s)}
+.js-anim .sheet .frame.is-in,.js-anim .reel .frame.is-in{clip-path:inset(0)}
 .js-anim .across .line{transform:translateY(110%);transition:transform 1.1s var(--ease) .55s}
 .js-anim .band .frame.is-in + .across .line{transform:none}
 .js-anim .plate .frame.is-in{clip-path:inset(0)}
@@ -316,15 +362,13 @@ body{background:var(--bone);color:var(--ink);font:400 15px/1.55 var(--f-t)}
 .js-anim.p1 .w-silva .line,.js-anim.is-opened .w-silva .line{transition-delay:.12s}
 .js-anim:not(.p2):not(.is-opened) .w-jp,.js-anim:not(.p2):not(.is-opened) .w-silva{transform:none}
 .js-anim .w{transition:transform 1.1s var(--ease)}
-.js-anim:not(.p2):not(.is-opened) .hero-plate{clip-path:inset(0 0 100% 0);transform:translate(-50%,calc(-14% - 36px))}
+.js-anim:not(.p2):not(.is-opened) .hero-plate{clip-path:inset(0 0 100% 0);transform:translate(-50%,calc(-18% - 36px))}
 .js-anim .hero-plate{transition:clip-path 1.1s var(--ease) .15s,transform 1.1s var(--ease) .15s}
 .js-anim:not(.p2):not(.is-opened) .cap-hero{opacity:0;transform:translateX(-12px)}
 .js-anim .cap-hero{transition:opacity .7s ease .8s,transform .9s var(--ease) .8s}
 .js-anim:not(.p3):not(.is-opened) .rh,.js-anim:not(.p3):not(.is-opened) .hero-foot{opacity:0}
 .js-anim .rh,.js-anim .hero-foot{transition:opacity .8s ease}
 .js-anim .hero-foot-r{transition-delay:.15s}
-.js-anim .folio-fixed{opacity:0;transition:opacity .6s ease .4s}
-.js-anim.is-opened .folio-fixed{opacity:1}
 @media (max-width:899px){
   .js-anim:not(.p2):not(.is-opened) .w{transform:translateX(20vw)}
   .js-anim:not(.p2):not(.is-opened) .hero-plate{transform:translateY(-36px)}
@@ -332,6 +376,9 @@ body{background:var(--bone);color:var(--ink);font:400 15px/1.55 var(--f-t)}
   .js-anim:not(.p3):not(.is-opened) .hero-foot-r{clip-path:inset(0 0 100% 0)}
   .js-anim .hero-foot-r{clip-path:inset(0);transition:opacity .8s ease .15s,clip-path 1.1s var(--ease) .15s}
 }
+/* a skipped opening: the first spread arrives without its stagger */
+.js-anim.is-skipped .plate .frame{transition-duration:.6s;transition-delay:0s}
+.js-anim.is-skipped .sp-a [data-reveal]{transition-delay:0s}
 /* a tap skips: snap, do not replay */
 .is-skipped .gutter,.is-skipped .name .line,.is-skipped .w,.is-skipped .hero-plate,.is-skipped .cap-hero,.is-skipped .rh,.is-skipped .hero-foot{transition-duration:0s!important;transition-delay:0s!important}
 

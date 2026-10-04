@@ -7,17 +7,21 @@
              burnt #7A3B22 rules · line rgba(241,236,227,.14)
    Type      Young Serif (display) · Courier Prime (field notes 12–13px) ·
              Public Sans 300/400 (body)
-   Scale     name clamp(4rem,15vw,14rem) / phone 2 lines at 22vw
+   Scale     name clamp(4rem,10.5vw,11rem) desktop / one line at 17.5vw on phones
              h2 clamp(2.4rem,6.4vw,6.4rem) · interlude clamp(1.6rem,3.6vw,3.2rem)
              body 1.05rem/1.55 · notes 12.5px/1.5 tracking .06em
-   Horizon   --hz: fraction of the hero height where the ground line of the
-             fd-flare frame sits (fence line ≈ .72 of the source, steady for the
-             whole clip; phone .68 via a slightly over-tall frame). The name
-             rises out of that line, between the dancers.
-   Entrance  "the exposure settles" (key c03):
-             0 blown out (#F3D7AE + grain) · 300 stops down 1→0 /1.5s ·
-             900 field data types · 1700 name rises out of the ground (long) ·
-             2600 subline · 3300 header + roll cue · end ≈3.75 s
+   Hero band The real footage is 846×470, so the hero holds it in an editorial band
+             near native size: --bw min(58vw,920px) right-aligned on desktop,
+             a 100×124vw portrait crop at full width on phones (sky above, name on the
+             treeline, subline and field data on the picture). --hzf is the treeline of the
+             fd-dance frame (≈.65 of its height); --hzy is that line on the page.
+             The name rises out of --hzy; the burnt ground line continues it.
+   Entrance  "the exposure settles" (key c03, ≈3.8 s, title-sequence overlap):
+             0 blown out (#F3D7AE + grain, frame scaled to cover) · 150 stops down 1→0 /1.3s ·
+             700 field data types · 1300 frame contracts into the band /1.2s (long), the
+             still thaws into motion as it lands · 1900 name rises out of the ground line
+             while the band is still landing (up by ≈2.95 s) + ground rule draws ·
+             2600 subline · 3200 header + roll cue · opened ≈3.8 s
    ============================================================ */
 :root{
   --umber:#1B1511; --char:#0F0C0A; --bone:#F1ECE3; --dust:#B4906A; --amber:#E39A4C; --burnt:#7A3B22;
@@ -26,8 +30,11 @@
   --mono:"Courier Prime","Courier New",Courier,monospace;
   --sans:"Public Sans",system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
   --gx:clamp(20px,4vw,56px);
-  --hz:.70;
-  --name:clamp(4rem,15vw,14rem);
+  --bw:min(58vw,920px); --bh:calc(var(--bw) * .5556); --hzf:.65;
+  --bt:calc(60svh - var(--bh) * var(--hzf));
+  --hzy:calc(var(--bt) + var(--bh) * var(--hzf));
+  --k:1.95; --ox:.78; --oy:.58;
+  --name:clamp(4rem,10.5vw,11rem);
   --grain-opacity:.08; --grain-blend:soft-light;
   color-scheme:dark;
 }
@@ -35,8 +42,10 @@ html{background:var(--umber)}
 body{background:var(--umber);color:var(--bone);font:300 1.05rem/1.55 var(--sans);overflow-x:clip}
 ::selection{background:var(--burnt);color:var(--bone)}
 .frame{background:var(--char)}
+/* the compressed sources carry a 2–4px black edge on the right and bottom: every frame over-scans by 2% */
+.frame>img,.frame>video,.frame>picture>img{width:104%;max-width:none;height:104%;left:-2%;top:-2%}
 .frame-grade{background:linear-gradient(rgba(27,21,17,.08),rgba(27,21,17,.28));z-index:1}
-.skip-link{position:absolute;left:-999px;top:10px;z-index:1000;font:400 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;background:var(--bone);color:var(--umber);padding:12px 16px}
+.skip-link{position:absolute;left:-999px;top:10px;z-index:1000;display:inline-flex;align-items:center;min-height:44px;font:400 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;background:var(--bone);color:var(--umber);padding:0 16px}
 .skip-link:focus{left:var(--gx)}
 .skip-hint{color:var(--dust)}
 
@@ -61,57 +70,71 @@ h2{font:400 clamp(2.4rem,6.4vw,6.4rem)/.96 var(--serif);letter-spacing:-.012em;c
 /* ---- Exposure overlay (exists only while the entrance runs) ------------ */
 #exposure{display:none;position:fixed;inset:0;z-index:50;pointer-events:none;
   background-image:var(--grain-url),radial-gradient(ellipse 70% 60% at 62% 74%,#FFF3DC 0%,var(--blown) 42%,#E7BF8C 100%);
-  background-size:256px 256px,auto;background-blend-mode:soft-light,normal;opacity:1}
+  background-size:256px 256px,auto;background-blend-mode:soft-light,normal;opacity:.94}
 .js-anim #exposure{display:block}
-.js-anim.p1 #exposure{opacity:0;transition:opacity 1.6s cubic-bezier(.5,0,.25,1)}
+.js-anim.p1 #exposure{opacity:0;transition:opacity 1.3s cubic-bezier(.5,0,.25,1)}
 .is-opened #exposure{opacity:0;visibility:hidden;transition:opacity .6s ease,visibility 0s .6s}
 
 /* ---- Header ---------------------------------------------------------- */
 .site-head{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-items:center;justify-content:space-between;
   height:calc(64px + env(safe-area-inset-top,0px));padding:0 var(--gx);padding-top:env(safe-area-inset-top,0px);border-bottom:1px solid transparent;
   transition:opacity .8s ease,transform .9s var(--ease),border-color .4s ease,background .4s ease}
-.site-head.is-scrolled{border-color:var(--line);background:rgba(27,21,17,.88)}
+.site-head.is-scrolled{border-color:var(--line);background:rgba(27,21,17,.96)}
 .brand{font:400 1.1rem/1 var(--serif);color:var(--bone);display:flex;align-items:center;height:44px}
 .site-nav{display:flex;gap:clamp(4px,2vw,22px)}
 .site-nav a{display:flex;align-items:center;height:44px;padding:0 8px;font:400 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--bone);position:relative}
 .site-nav a::after{content:"";position:absolute;left:8px;right:8px;bottom:12px;height:1px;background:var(--burnt);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
 .site-nav a:hover::after,.site-nav a:focus-visible::after{transform:scaleX(1)}
-.js-anim:not(.is-opened):not(.p5) .site-head{opacity:0;transform:translateY(-10px)}
+.js-anim:not(.is-opened):not(.p6) .site-head{opacity:0;transform:translateY(-10px)}
 
 /* ---- Hero -------------------------------------------------------------- */
-.hero{position:relative;height:100svh;min-height:560px;overflow:hidden;isolation:isolate}
-.hero-frame{position:absolute;left:0;right:0;top:0;height:100%;z-index:0}
-.hero-frame>img{height:100%}
-/* fd-flare is a 4 s edit of one scene (dancers, fence line, low sun), so it loops natively. The sky is nearly blown,
-   so the grade is a graduated ND: light at the top, denser through the name zone, dense at the ground. */
+.hero{position:relative;height:100svh;min-height:600px;overflow:hidden;isolation:isolate}
+/* The band. Base = final geometry (near-native footage, right-aligned). The intro state scales it about a computed
+   origin so it covers the viewport (uniform scale, no distortion); concept.js refines --k/--ox/--oy per viewport. */
+.hero-frame{position:absolute;top:var(--bt);right:var(--gx);width:var(--bw);height:var(--bh);z-index:0;
+  transform-origin:calc(var(--ox) * 100%) calc(var(--oy) * 100%);will-change:transform}
+.js-anim.p1 .hero-frame{transition:transform 1.2s var(--ease)}
+.js-anim:not(.is-opened):not(.p3) .hero-frame{transform:scale(var(--k))}
+.is-skipped .hero-frame{transition-duration:.8s}
 .hero-frame>img,.hero-frame>video{object-position:50% 50%}
-.hero-frame .frame-grade{background:linear-gradient(rgba(27,21,17,.28),rgba(27,21,17,.14) 26%,rgba(27,21,17,.26) 48%,rgba(27,21,17,.32) 70%,rgba(27,21,17,.58))}
+/* the still thaws into motion only once the band has landed */
+.hero-frame>video.jp-video{transition:opacity 1.1s ease .55s}
+.js-anim:not(.is-opened):not(.p3) .hero-frame>video.jp-video{opacity:0}
+.hero-frame .frame-grade{background:linear-gradient(rgba(27,21,17,.10),rgba(27,21,17,.06) 50%,rgba(27,21,17,.34))}
+.hero-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(90deg,rgba(27,21,17,.78),rgba(27,21,17,.34) 26%,rgba(27,21,17,0) 50%)}
+/* the ground line: the band's horizon continued across the page, under the name */
+.hero-ground{position:absolute;z-index:1;left:var(--gx);right:calc(var(--gx) + var(--bw) - 2px);top:calc(var(--hzy) + .07em);height:1px;background:var(--burnt);font-size:var(--name);
+  transform-origin:left;transition:transform .9s var(--ease) .55s}
+.js-anim:not(.is-opened):not(.p4) .hero-ground{transform:scaleX(0)}
 .fd{position:absolute;z-index:2;top:calc(78px + env(safe-area-inset-top,0px));margin:0;color:var(--dust)}
-.fd span{display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;max-width:calc(23ch + 1.5em);transition:max-width .55s steps(23,end)}
+.fd span{display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;max-width:calc(26ch + 1.5em);transition:max-width .55s steps(23,end)}
 .fd-tl{left:var(--gx)}
-.fd-tr{right:var(--gx);width:calc(10ch + .62em);text-align:left}
+.fd-tr{right:var(--gx);width:calc(10ch + .62em);text-align:left;white-space:nowrap}
 .fd-tr span{max-width:calc(10ch + .62em);transition-duration:.24s;transition-timing-function:steps(10,end)}
+.hero .fd-br{top:calc(var(--bt) + var(--bh) + 12px);right:var(--gx);width:var(--bw);text-align:right}
+.fd-br span{max-width:calc(30ch + 1.5em);transition-duration:.6s;transition-delay:.3s;transition-timing-function:steps(26,end)}
 .js-anim:not(.is-opened):not(.p2) .fd span{max-width:0}
 .js-anim.p2 .fd-tr span{transition-delay:.45s}
 .js-anim.p2.is-opening .fd-tl::after,.js-anim.p2.is-opening .fd-tr::after{content:"_";color:var(--amber);animation:c03-blink .7s steps(1) infinite}
 .js-anim.p2.is-opening .fd-tr::after{animation:c03-caret .7s steps(1) .45s infinite backwards}
 @keyframes c03-caret{0%{opacity:0}1%,50%{opacity:1}51%,100%{opacity:0}}
 @keyframes c03-blink{50%{opacity:0}}
-.hero-name-mask{position:absolute;z-index:2;left:var(--gx);right:var(--gx);top:0;height:calc(var(--hz) * 100% + .2em);
+.hero-name-mask{position:absolute;z-index:2;left:var(--gx);right:var(--gx);top:0;height:calc(var(--hzy) + .2em);
   font-size:var(--name);display:flex;align-items:flex-end;overflow:hidden;pointer-events:none}
 .hero-name{font:400 1em/1 var(--serif);letter-spacing:-.018em;text-transform:uppercase;color:var(--bone);white-space:nowrap;
-  transition:transform 1.2s var(--ease);will-change:transform}
+  transition:transform 1.05s var(--ease);will-change:transform}
 .hero-name .w{display:inline}
-.js-anim:not(.is-opened):not(.p3):not(.p4) .hero-name{transform:translateY(103%)}
-.hero-sub-mask{position:absolute;z-index:2;left:var(--gx);right:var(--gx);top:calc(var(--hz) * 100% + 26px);overflow:hidden;padding-bottom:.3em}
+.js-anim:not(.is-opened):not(.p4) .hero-name{transform:translateY(103%)}
+.hero-sub-mask{position:absolute;z-index:2;left:var(--gx);top:calc(var(--hzy) + 22px);max-width:calc(100% - var(--bw) - var(--gx) * 2 - 24px);overflow:hidden;padding-bottom:.3em}
 .hero-sub{font:300 1.05rem/1.4 var(--sans);color:var(--bone);max-width:30em;transition:transform .95s var(--ease)}
 .hero-sub .nb{white-space:nowrap}
-.js-anim:not(.is-opened):not(.p4) .hero-sub{transform:translateY(120%)}
+.js-anim:not(.is-opened):not(.p5) .hero-sub{transform:translateY(120%)}
 .roll-cue{position:absolute;z-index:2;left:var(--gx);bottom:calc(76px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;height:44px;
   font:400 12.5px/1 var(--mono);letter-spacing:.08em;color:var(--dust);transition:opacity .8s ease .1s,transform .9s var(--ease) .1s}
 .roll-cue span{display:inline-block;margin-right:.6em;animation:c03-cue 2.2s var(--ease-io) infinite}
 @keyframes c03-cue{0%,100%{transform:translateY(-3px)}50%{transform:translateY(3px)}}
-.js-anim:not(.is-opened):not(.p5) .roll-cue{opacity:0;transform:translateY(8px)}
+.js-anim:not(.is-opened):not(.p6) .roll-cue{opacity:0;transform:translateY(8px)}
 
 /* ---- Shots (frame + field note) ----------------------------------------- */
 .shot{margin:0}
@@ -155,18 +178,55 @@ h2{font:400 clamp(2.4rem,6.4vw,6.4rem)/.96 var(--serif);letter-spacing:-.012em;c
   mix-blend-mode:screen;transform:translateX(30vw) skewX(-12deg);will-change:transform}
 .leak-line{position:absolute;z-index:2;left:var(--gx);right:var(--gx);bottom:clamp(28px,6vh,64px);
   font:400 clamp(1.75rem,7.2vw,2.4rem)/1.12 var(--serif);max-width:22ch;color:var(--bone)}
-.leak-frame .frame-grade{background:linear-gradient(rgba(27,21,17,.12),rgba(27,21,17,.08) 50%,rgba(27,21,17,.5))}
+.leak-frame .frame-grade{background:linear-gradient(rgba(27,21,17,.16),rgba(27,21,17,.1) 50%,rgba(27,21,17,.54))}
 
 /* ---- 05 · Landscape ------------------------------------------------------------- */
-.land{position:relative;isolation:isolate}
+.land{position:relative;isolation:isolate;display:flex;flex-direction:column}
 .land-frame{aspect-ratio:4/5}
-.land-meta{position:absolute;z-index:2;top:22px;right:var(--gx);max-width:50%;text-align:right}
+/* phones: the field note sits above the frame like a slate line; desktop: bottom-right on the dark ground */
+.land-meta{display:block;order:-1;text-align:right;padding:0 var(--gx) 12px;color:var(--dust)}
+.land-meta .nb{white-space:nowrap}
 .land-title-mask{position:absolute;z-index:2;left:var(--gx);right:var(--gx);bottom:clamp(20px,4vw,48px)}
 .land-title{font-size:clamp(2.8rem,8.2vw,8.6rem);letter-spacing:-.02em}
 .land-frame img{transform-origin:50% 55%;object-position:50% 52%}
-.land-frame .frame-grade{background:linear-gradient(rgba(27,21,17,.22),rgba(27,21,17,.04) 30%,rgba(27,21,17,.08) 65%,rgba(27,21,17,.46))}
+.land-frame .frame-grade{background:linear-gradient(rgba(27,21,17,.22),rgba(27,21,17,.04) 30%,rgba(27,21,17,.08) 65%,rgba(27,21,17,.5))}
 
-/* ---- 06 · Behind the work --------------------------------------------------------- */
+/* ---- 06 · Showreel (long-form: plays only on tap, muted, visible pause) ------------- */
+.reel{padding:clamp(72px,12vh,150px) var(--gx) clamp(56px,8vh,110px)}
+.reel-text .label{margin-bottom:14px}
+.reel-note{margin-top:22px;max-width:26em}
+/* five films on YouTube: a filmstrip of 2:3 library posters, each a real link (native snap strip on touch) */
+.yt-label{margin-top:clamp(48px,8vh,96px)}
+.yt{display:flex;gap:12px;margin:16px calc(var(--gx) * -1) 0;padding:0 var(--gx) 6px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scroll-padding:0 var(--gx)}
+.yt::-webkit-scrollbar{display:none}
+.yt li{flex:0 0 44vw;max-width:260px;scroll-snap-align:start}
+.ytf{display:block;color:var(--bone)}
+.ytf .frame{display:block}
+.ytf img{transition:transform 1.2s var(--ease)}
+.ytf .note{display:block;padding-top:10px}
+.ytf .fr{color:var(--dust)}
+.ytf .cap{color:var(--bone)}
+.ytf .ext{display:inline-block;font:400 12.5px/1 var(--mono);color:var(--dust);transition:transform .4s var(--ease),color .3s ease}
+.ytf:hover .ext,.ytf:focus-visible .ext{transform:translate(3px,-3px);color:var(--amber)}
+.ytf:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+.reel-shot{margin:40px 0 0 auto;width:78%}
+.reel-frame>video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s ease}
+.reel-frame.is-on>video{opacity:1}
+.reel-frame .frame-grade{transition:opacity .6s ease}
+.reel-frame.is-on .frame-grade{opacity:.35}
+.reel-ctl{position:absolute;z-index:3;left:12px;right:12px;bottom:12px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px}
+.reel-btn{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 16px;border:1px solid rgba(241,236,227,.5);
+  background:rgba(15,12,10,.62);color:var(--bone);font:400 12.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap;
+  transition:background .3s ease,border-color .3s ease}
+.reel-btn::before{content:"";width:0;height:0;border-left:8px solid var(--bone);border-top:5px solid transparent;border-bottom:5px solid transparent}
+.reel-btn.is-link::before{border-left-color:var(--amber)}
+.reel-btn[aria-pressed="true"]::before{width:3px;height:10px;border:0;border-left:3px solid var(--bone);border-right:3px solid var(--bone)}
+.reel-btn:hover,.reel-btn:focus-visible{background:rgba(15,12,10,.86);border-color:var(--bone)}
+.reel-tc{display:none;font:400 12.5px/1 var(--mono);letter-spacing:.06em;color:var(--bone);text-shadow:0 1px 2px rgba(0,0,0,.6);white-space:nowrap}
+.reel-frame.is-on .reel-tc{display:block}
+
+/* ---- 07 · Behind the work --------------------------------------------------------- */
 .about{padding:clamp(72px,12vh,150px) var(--gx) clamp(56px,8vh,110px)}
 .about-text .label{margin-bottom:14px}
 .fromto{margin:28px 0 24px;border-top:1px solid var(--line);font:400 12.5px/1.5 var(--mono);letter-spacing:.06em}
@@ -176,7 +236,7 @@ h2{font:400 clamp(2.4rem,6.4vw,6.4rem)/.96 var(--serif);letter-spacing:-.012em;c
 .about-shot{margin-top:40px;width:78%}
 .bts-shot{margin:36px 0 0 auto;width:46%}
 
-/* ---- 07 · Contact + credits ----------------------------------------------------------- */
+/* ---- 08 · Contact + credits ----------------------------------------------------------- */
 .contact{padding:clamp(48px,8vh,110px) var(--gx) clamp(56px,8vh,110px);border-top:1px solid var(--line)}
 .contact .label{margin-bottom:14px}
 .contact-title{max-width:14ch;font-size:clamp(2.3rem,5.6vw,5.4rem)}
@@ -200,7 +260,6 @@ h2{font:400 clamp(2.4rem,6.4vw,6.4rem)/.96 var(--serif);letter-spacing:-.012em;c
    Desktop (≥ 900px): the diagonal, the pair, the split
    ============================================================ */
 @media (min-width:900px){
-  .hero-name .w{display:inline}
   .fd{top:calc(84px + env(safe-area-inset-top,0px))}
   .roll-cue{bottom:calc(40px + env(safe-area-inset-bottom,0px))}
 
@@ -225,12 +284,19 @@ h2{font:400 clamp(2.4rem,6.4vw,6.4rem)/.96 var(--serif);letter-spacing:-.012em;c
   .leak-line{bottom:clamp(48px,10vh,120px);font-size:clamp(1.6rem,3.6vw,3.2rem)}
 
   .land-frame{aspect-ratio:2.39/1}
-  .land-meta{top:28px}
+  .land-meta{position:absolute;z-index:2;top:auto;bottom:clamp(20px,4vw,48px);right:var(--gx);padding:0;max-width:40%;color:var(--bone);text-shadow:0 1px 2px rgba(15,12,10,.7)}
   .js-anim.has-pointer .land-frame img{animation:c03-land 14s linear both paused}
   .js-anim.has-pointer .land.in-view .land-frame img{animation-play-state:running}
 
-  .about{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);column-gap:8vw;align-items:start;padding-top:0;margin-top:-10vh}
-  .about-text{padding-top:calc(10vh + clamp(72px,12vh,150px))}
+  .reel{display:grid;grid-template-columns:minmax(0,1fr) min(28vw,420px);column-gap:8vw;align-items:end;padding-left:4vw}
+  .reel-shot{margin:0;width:auto}
+  .reel-text{padding-bottom:6vh}
+  .yt-label{grid-column:1 / -1;margin-top:clamp(72px,10vh,120px);text-align:right}
+  .yt{grid-column:1 / -1;margin:16px 0 0;padding:0;overflow:visible;scroll-snap-type:none}
+  .yt li{flex:1 1 0;max-width:none}
+  .ytf:hover img,.ytf:focus-visible img{transform:scale(1.04)}
+
+  .about{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);column-gap:8vw;align-items:start}
   .about-shot{margin:0 0 0 auto;width:min(100%,32vw);position:relative;z-index:3}
   .bts-shot{margin:48px 0 0 0;width:min(40%,14vw)}
   .fromto{max-width:34em}
@@ -244,20 +310,30 @@ h2{font:400 clamp(2.4rem,6.4vw,6.4rem)/.96 var(--serif);letter-spacing:-.012em;c
 @keyframes c03-land{from{transform:scale(1)}to{transform:scale(1.05)}}
 
 /* ============================================================
-   Phones (< 900px): name on two lines, horizon at .64 of the viewport
+   Phones (< 900px): the band at full width (100×88vw crop), name on one line out of its horizon
    ============================================================ */
 @media (max-width:899px){
-  :root{--hz:.68;--name:22vw}
-  .hero-frame{height:108%;top:-8%}
-  .hero-frame>img,.hero-frame>video{object-position:44% 50%}
-  .hero-name .w{display:block}
-  .hero-name{line-height:.9}
-  .hero-name-mask{height:calc(var(--hz) * 100% + .22em)}
-  .hero-sub{font-size:1rem;max-width:20em}
+  :root{--bw:100vw;--bh:124vw;--bt:calc(57svh - var(--bh) * var(--hzf));--k:2.5;--ox:.5;--oy:.52;--name:clamp(3rem,17.5vw,5.2rem)}
+  .hero{min-height:560px}
+  .hero-frame{right:0}
+  .hero-frame>img,.hero-frame>video{object-position:50% 50%}
+  .hero-scrim{background:linear-gradient(rgba(27,21,17,.46),rgba(27,21,17,.18) 34%,rgba(27,21,17,.06) 54%,rgba(27,21,17,.5) 78%,rgba(27,21,17,.62))}
+  /* field data sits on the sky at the top of the band; the ground rule is a short burnt stroke into the picture */
+  .fd{top:calc(var(--bt) + 14px);text-shadow:0 1px 2px rgba(15,12,10,.6)}
+  .hero .fd-br{display:block;top:calc(var(--bt) + var(--bh) + 12px);right:var(--gx);width:auto;text-shadow:none}
+  .hero-ground{display:block;right:auto;width:20vw;top:calc(var(--hzy) + .08em)}
+  .hero-name-mask{height:calc(var(--hzy) + .18em)}
+  .hero-sub-mask{top:calc(var(--hzy) + 18px);right:var(--gx);max-width:none}
+  .hero-sub{font-size:1rem;max-width:22em;text-shadow:0 1px 3px rgba(15,12,10,.55)}
   .road{padding-bottom:clamp(32px,5vh,64px)}
   .site-nav a{padding:0 7px}
+  .reel-shot{width:100%}
+  .bts-shot{width:56%}
+}
+@media (min-width:600px) and (max-width:899px){
+  :root{--bh:64vw}
 }
 @media (max-width:899px) and (max-height:700px){
+  :root{--bh:80vw;--bt:calc(55svh - var(--bh) * var(--hzf));--name:clamp(2.6rem,14vw,4rem)}
   .hero{min-height:0}
-  :root{--name:16vw}
 }

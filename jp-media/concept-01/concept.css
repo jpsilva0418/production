@@ -19,9 +19,11 @@
      2650  p4  credit line, band timecode
      3100  p5  header, scroll cue; opener chrome fades
      3500  is-opened: opener gone, page scrolls
-   Hero media: hero-montage (490×960). Phones: full-bleed 9:16 under the header,
-   the name straddles the band's lower edge. Desktop: a 2.39:1 black stage, the
-   clip pillarboxed right of centre, the title card in the left column.
+   Hero media. Phones: hero-montage (490×960, 12 s) full width under the header,
+   the name straddles the band's lower edge, roles + place on black beneath.
+   Desktop: a 2.39 stage of three 9:16 frames, m-wing | m-bw | m-rooftop, played in
+   sequence (7.8 s); the third freezes and becomes 01 / 06. One clock: the slate
+   counter hands over to the in-frame timecode when the letterbox opens.
    Base styles are the finished state; hide-states only under html.js-anim.
    ============================================================ */
 :root{
@@ -40,8 +42,12 @@
   color-scheme:dark;
 }
 @media (min-width:900px){
-  :root{--inset:28px;--name-intro:clamp(4.5rem,21vw,19rem);--name-fs:clamp(5rem,9vw,8.5rem);--name-half:.43em;
-    --band-w:min(100vw,calc((100svh - 250px) * 2.39));--stage-h:calc(var(--band-w) / 2.39);--head-h:68px}
+  :root{--inset:28px;--name-intro:clamp(4.5rem,21vw,19rem);--name-fs:clamp(5rem,9vw,8.5rem);--name-half:.43em;--head-h:68px;
+    --band-w:min(100vw,calc((100svh - 250px) * 2.39));
+    /* the hero stage is three 9:16 frames: as tall as the viewport allows, never wider than the room, never past the source's sharpness */
+    --tri-gap:12px;--stage-hmax:calc(100svh - var(--head-h) - 190px);
+    --tri-w:min(calc(var(--stage-hmax) * 9 / 16),calc((100vw - 2 * var(--inset) - 2 * var(--tri-gap)) / 3),460px);
+    --stage-h:calc(var(--tri-w) * 16 / 9);--stage-w:calc(3 * var(--tri-w) + 2 * var(--tri-gap))}
 }
 
 html{background:var(--black);color:var(--bone);font:400 1rem/1.5 var(--body);scroll-padding-top:var(--head-h)}
@@ -49,6 +55,7 @@ body{background:var(--black);overflow-x:clip}
 ::selection{background:var(--amber);color:var(--black)}
 .skip-link{position:absolute;left:var(--inset);top:-60px;z-index:1200;padding:12px 16px;min-height:44px;display:inline-flex;align-items:center;background:var(--bone);color:var(--black);font:500 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase}
 .skip-link:focus{top:12px}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 /* ---- Type helpers ------------------------------------------------- */
 .mono{font:400 11px/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mid)}
@@ -68,7 +75,8 @@ html.is-scrolled .site-head::after{opacity:1}
 .head-nav a,.head-nav button{font:500 12px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;height:44px;padding:0 12px;color:var(--bone)}
 .head-nav button{border:1px solid var(--line-2);padding:0 16px}
 .head-nav button span{margin-left:10px;color:var(--amber)}
-.js-anim:not(.is-opened):not(.p5) .site-head{opacity:0;transform:translateY(-10px)}
+/* hidden header is also out of the tab order (visibility), shown with no delay */
+.js-anim:not(.is-opened):not(.p5) .site-head{opacity:0;transform:translateY(-10px);visibility:hidden;transition:opacity .9s ease,transform .9s var(--ease),visibility 0s linear .9s}
 
 /* ---- Opener (exists only while the entrance runs) ------------------- */
 .opener{position:fixed;inset:0;z-index:800;pointer-events:none;opacity:0;visibility:hidden;transition:opacity .5s ease,visibility 0s .5s}
@@ -76,8 +84,9 @@ html.is-scrolled .site-head::after{opacity:1}
 .bar{position:absolute;left:0;right:0;height:50svh;background:var(--black);transition:transform 1s var(--ease)}
 .bar-t{top:0;transform-origin:50% 0}
 .bar-b{bottom:0;transform-origin:50% 100%}
-.p3 .bar-t{transform:scaleY(var(--bt,0.3))}
-.p3 .bar-b{transform:scaleY(var(--bb,0.3))}
+/* the letterbox opens at p3; on a replay p3 is skipped, so p4 opens it too */
+.p3 .bar-t,.p4 .bar-t{transform:scaleY(var(--bt,0.3))}
+.p3 .bar-b,.p4 .bar-b{transform:scaleY(var(--bb,0.3))}
 .cm{position:absolute;width:18px;height:18px}
 .cm::before,.cm::after{content:"";position:absolute;background:var(--bone);transition:transform .4s var(--ease),opacity .4s ease}
 .cm::before{left:0;top:0;width:18px;height:1px;transform-origin:0 50%}
@@ -92,7 +101,9 @@ html:not(.p0) .cm::after{transform:scaleY(0)}
 .op-mark,.op-tc{position:absolute;font:400 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--bone);white-space:nowrap;
   opacity:0;transition:opacity .6s ease .3s}
 .p0 .op-mark,.p0 .op-tc{opacity:1}
-.p5 .op-mark,.p5 .op-tc{opacity:0;transition-delay:0s}
+/* one clock: the slate counter hands over to the in-frame timecode the moment the letterbox opens */
+.p3 .op-tc,.p4 .op-tc{opacity:0;transition:opacity .25s ease}
+.p5 .op-mark{opacity:0;transition-delay:0s}
 .op-mark{left:calc(var(--inset) + 28px);top:calc(var(--inset) + 5px + env(safe-area-inset-top,0px));display:flex;align-items:center;gap:10px}
 .op-mark i{width:6px;height:6px;background:var(--amber);animation:op-blink 1s steps(2,jump-none) infinite}
 @keyframes op-blink{from{opacity:1}to{opacity:0}}
@@ -100,7 +111,7 @@ html:not(.p0) .cm::after{transform:scaleY(0)}
 .op-tc b{font-weight:400;color:var(--mid);margin-right:.9em}
 .op-eyebrow{position:absolute;left:0;right:0;top:calc(50% - var(--eb-off,120px));text-align:center;color:var(--bone);opacity:0;transition:opacity .7s ease}
 .p1 .op-eyebrow{opacity:.85}
-.p3 .op-eyebrow,.p5 .op-eyebrow{opacity:0;transition-duration:.5s}
+.p3 .op-eyebrow,.p4 .op-eyebrow,.p5 .op-eyebrow{opacity:0;transition-duration:.5s}
 .skip-hint{right:auto;bottom:auto;left:50%;transform:translateX(-50%);top:calc(var(--inset) + 5px + env(safe-area-inset-top,0px));font-family:var(--mono);letter-spacing:.14em;font-size:11px;color:var(--mid)}
 @media (max-width:899px){.skip-hint{display:none}}
 
@@ -108,17 +119,34 @@ html:not(.p0) .cm::after{transform:scaleY(0)}
 .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:center;
   padding:0 0 calc(76px + env(safe-area-inset-bottom,0px))}
 .hero-stage{position:relative;width:var(--band-w);margin:0 auto}
-/* phone: the 9:16 showreel fills the width under the transparent header; height capped so the
-   name's second line still lands on black above the fold */
-.band{width:100%;height:min(calc(100vw * 16 / 9),calc(100svh - 36px - .86 * var(--name-fs)));background:var(--smoke)}
+/* phone: the 9:16 showreel fills the width under the transparent header. Height is capped so the name's
+   second line, the roles and the place all land on black above the study-nav zone */
+.band{width:100%;height:min(calc(100vw * 16 / 9),calc(100svh - 36px - .86 * var(--name-fs) - 84px - env(safe-area-inset-bottom,0px)));background:var(--smoke)}
 .band>img{object-position:50% 35%}
 .band>video{object-position:50% 35%}
-.band .frame-grade{background:linear-gradient(180deg,rgba(5,5,5,0) 55%,rgba(5,5,5,.55) 100%)}
+.tri{display:none}
+/* finished state is the base: the top of the frozen frame is graded so the title card reads on the pale sky.
+   While the reel runs only the lower grade is there (JS state) */
+.frame.rc-host>.frame-grade{background:linear-gradient(180deg,rgba(5,5,5,.78) 0%,rgba(5,5,5,.35) 30%,rgba(5,5,5,0) 48%,rgba(5,5,5,0) 58%,rgba(5,5,5,.6) 100%)}
+.js-anim:not(.reel-ended) .frame.rc-host>.frame-grade{background:linear-gradient(180deg,rgba(5,5,5,0) 55%,rgba(5,5,5,.55) 100%)}
+html:not(.js) .band-tc{display:none}
 .band-tc{position:absolute;right:12px;bottom:12px;z-index:3;font:400 10px/1 var(--mono);letter-spacing:.14em;color:var(--bone);font-variant-numeric:tabular-nums;white-space:nowrap}
 .band-tc b{font-weight:400;color:var(--mid);margin-right:.9em}
-.js-anim .band-tc{transition:opacity .9s ease}
-.js-anim:not(.is-opened):not(.p4) .band-tc{opacity:0}
-.hero-ey{display:none}
+.js-anim .band-tc{transition:opacity .6s ease .2s}
+.js-anim:not(.p3):not(.p4) .band-tc{opacity:0}
+.reel-ended .band-tc{opacity:0;transition:opacity .6s ease}
+.reel-card{position:absolute;left:12px;top:calc(var(--head-h) + 10px);z-index:3;display:grid;gap:6px;font:400 10px/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--bone)}
+.rc-no b{font-weight:400;color:var(--amber)}
+.rc-label{font:500 clamp(1.3rem,4.6vw,1.9rem)/1 var(--cond);letter-spacing:.08em;margin-top:4px}
+.rc-roles{color:var(--bone);opacity:.8}
+.rc-link{display:inline-flex;align-items:center;gap:8px;min-height:44px;color:var(--bone);font-size:11px;border-bottom:1px solid var(--bone);width:max-content;padding:0 2px}
+.rc-link:hover{border-color:var(--amber)}
+.rc-link span{color:var(--amber)}
+.js-anim .reel-card{transition:visibility 0s 0s}
+.js-anim .reel-card>*{transition:opacity .8s ease,transform .9s var(--ease)}
+.js-anim:not(.reel-ended) .reel-card{pointer-events:none;visibility:hidden;transition:visibility 0s .9s}
+.js-anim:not(.reel-ended) .reel-card>*{opacity:0;transform:translateY(10px)}
+.reel-ended .reel-card>:nth-child(2){transition-delay:.1s}.reel-ended .reel-card>:nth-child(3){transition-delay:.2s}.reel-ended .reel-card>:nth-child(4){transition-delay:.3s}
 .name{position:absolute;left:var(--inset);bottom:calc(-1 * var(--name-half));z-index:810;margin:0;
   font:600 var(--name-fs)/.86 var(--cond);letter-spacing:-.01em;text-transform:uppercase;color:var(--bone);white-space:nowrap;
   transform-origin:0 0;will-change:transform}
@@ -127,41 +155,47 @@ html:not(.p0) .cm::after{transform:scaleY(0)}
 .js-anim:not(.is-opened):not(.p2) .name{clip-path:inset(0 50% 0 50%)}
 .js-anim:not(.is-opened):not(.p3):not(.p4) .name{transform:var(--flip,none)}
 .hero-credits{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;
-  margin-top:calc(var(--name-half) * 1 + 22px);font-size:var(--name-fs);padding:0 var(--inset)}
+  margin-top:calc(var(--name-half) + 22px);font-size:var(--name-fs);padding:0 var(--inset)}
 .hero-credits>*{font-size:1rem}
 .roles{font:500 13px/1.4 var(--cond);letter-spacing:.3em;text-transform:uppercase;color:var(--bone)}
 .roles b{font-weight:500;color:var(--amber)}
 .place{text-align:right}
 .place .mono{display:block;color:var(--bone);white-space:nowrap}
 .place .mono+.mono{color:var(--mid);font-size:10px}
-.js-anim .hero-credits,.js-anim .hero-ey{transition:opacity .9s ease,transform .9s var(--ease)}
-.js-anim:not(.is-opened):not(.p4) .hero-credits,.js-anim:not(.is-opened):not(.p4) .hero-ey{opacity:0;transform:translateY(10px)}
+.js-anim .hero-credits{transition:opacity .9s ease,transform .9s var(--ease)}
+.js-anim:not(.is-opened):not(.p4) .hero-credits{opacity:0;transform:translateY(10px)}
 .cue{position:absolute;right:var(--inset);bottom:calc(22px + env(safe-area-inset-bottom,0px));width:1px;height:44px;overflow:hidden;background:var(--line)}
 .cue::after{content:"";position:absolute;left:0;top:0;width:1px;height:100%;background:var(--bone);animation:cue 1.8s var(--ease-io) infinite}
 @keyframes cue{0%{transform:translateY(-100%)}60%{transform:translateY(100%)}100%{transform:translateY(100%)}}
 .js-anim .cue{transition:opacity .9s ease .3s}
 .js-anim:not(.is-opened):not(.p5) .cue{opacity:0}
 @media (max-width:899px){.cue{display:none}
-  .hero-credits{flex-direction:column;align-items:stretch;gap:12px;margin-top:calc(var(--name-half) + 58px)}
+  .hero-credits{flex-direction:column;align-items:stretch;gap:10px;margin-top:calc(var(--name-half) + 10px)}
   .roles{letter-spacing:.22em;white-space:nowrap;font-size:12px}
   .place{display:flex;justify-content:space-between;align-items:baseline;gap:12px;text-align:left}
   .place .mono+.mono{font-size:10px}}
 @media (max-width:374px){.roles{letter-spacing:.12em;font-size:11px}}
 @media (min-width:900px){
   .hero{padding-top:calc(var(--head-h) + env(safe-area-inset-top,0px))}
-  /* a 2.39:1 black stage: title card left, the pillarboxed clip right of centre */
-  .hero-stage{height:var(--stage-h);display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:48px;padding-right:calc(var(--band-w) * .2)}
-  .band{grid-column:2;grid-row:1;width:calc(var(--stage-h) * 9 / 16);height:var(--stage-h)}
-  .band .frame-grade{background:linear-gradient(180deg,rgba(5,5,5,0) 70%,rgba(5,5,5,.4) 100%)}
-  .hero-ey{display:block;grid-column:1;grid-row:1;align-self:end;padding-left:var(--inset);margin-bottom:calc(.86 * var(--name-fs) + 30px);text-indent:0}
-  .name{position:relative;left:auto;bottom:auto;grid-column:1;grid-row:1;align-self:end;padding-left:var(--inset);line-height:.86}
+  /* the 2.39 stage is three 9:16 frames; the title straddles its lower edge like a card, the credits sit under it */
+  .hero-stage{width:var(--stage-w);height:var(--stage-h)}
+  .band{display:none}
+  .tri{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--tri-gap);height:100%}
+  .tri-f{height:100%;background:var(--smoke)}
+  .tri-f>img,.tri-f>video{object-position:50% 40%}
+  .tri-v{opacity:0;transition:opacity .5s ease}
+  .tri-v.is-playing{opacity:1}
+  .tri-f .frame-grade{background:linear-gradient(180deg,rgba(5,5,5,0) 62%,rgba(5,5,5,.6) 100%)}
+  .band-tc{right:14px;bottom:14px}
+  .reel-card{left:calc(2 * (var(--tri-w) + var(--tri-gap)) + 16px);top:16px}
   .name .br-m{display:none}
-  .hero-credits{margin-top:26px;font-size:1rem;width:var(--band-w);margin-left:auto;margin-right:auto}
+  .hero-credits{margin-top:calc(var(--name-half) + 24px);width:var(--stage-w);margin-left:auto;margin-right:auto}
   .roles{font-size:14px}
 }
 
 /* ---- Slate (section title cards) ----------------------------------- */
 .slate{min-height:46svh;display:flex;flex-direction:column;justify-content:flex-end;padding:72px var(--inset) 40px;border-top:1px solid var(--line)}
+@media (max-width:899px){.slate{min-height:0;padding:40px var(--inset) 24px}}
 .slate h2{font:300 clamp(2rem,5.2vw,4.4rem)/1 var(--cond);letter-spacing:.12em;text-indent:.12em;text-transform:uppercase;margin-top:10px}
 .slate .mono{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 
@@ -177,6 +211,7 @@ html:not(.p0) .cm::after{transform:scaleY(0)}
 .feature .frame{position:absolute;inset:0;background:var(--smoke)}
 .feature .frame>img,.feature .frame>video{object-position:var(--pos,50% 50%)}
 .feature .frame>img{transform:translate3d(0,var(--py,0px),0) scale(1.06)}
+.feature .frame>video{transform:scale(1.04)}
 .feature .frame-grade{background:linear-gradient(180deg,rgba(5,5,5,var(--grade-top,.5)) 0%,rgba(5,5,5,0) 32%,rgba(5,5,5,0) 55%,rgba(5,5,5,var(--grade-bot,.7)) 100%)}
 .tc{position:absolute;inset:0;padding:calc(var(--head-h) + 8px) var(--inset) calc(92px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;justify-content:space-between;pointer-events:none}
 .tc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
@@ -184,7 +219,9 @@ html:not(.p0) .cm::after{transform:scaleY(0)}
 .tc-no b{font-weight:400;color:var(--amber)}
 .tc-credits{text-align:right;font:400 11px/1.75 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--bone)}
 .tc-credits .tc-line{display:block}
-.tc-credits .tc-line>span>span{color:var(--mid);display:inline-block;width:3.6em;text-align:left}
+.tc-credits .tc-line+.tc-line>span{color:var(--mid)}
+.tc-credits i{font-style:normal}
+.tc-credits .gd{display:none}
 .tc-bottom{max-width:100%}
 .tc-label{font:300 clamp(.9rem,1.1vw,1.05rem)/1 var(--cond);letter-spacing:.32em;text-transform:uppercase;color:var(--bone);margin-bottom:14px}
 .tc-title{font:600 clamp(2.6rem,7vw,7rem)/.9 var(--cond);letter-spacing:-.005em;text-transform:uppercase;color:var(--bone);text-wrap:balance}
@@ -214,6 +251,8 @@ html:not(.p0) .cm::after{transform:scaleY(0)}
   .f-ref .tc-bottom,.f-quiet .tc-bottom,.f-wide .tc-bottom{order:3;padding:6px var(--inset) 0}
   .f-ref,.f-quiet,.f-wide{--grade-top:.18;--grade-bot:.3}
   .f-quiet{justify-content:flex-end}
+  .f-ref,.f-wide{justify-content:flex-start}
+  .f-ref .feat-stage{padding-top:8px}
   .f-quiet .tc-title{font-size:clamp(2rem,5.5vw,5rem)}
   .f-wide .tc-bottom{text-align:right}
 }
@@ -234,6 +273,7 @@ html:not(.p0) .cm::after{transform:scaleY(0)}
   .tc{padding:26px 28px 28px}
   .f-full .tc{padding:calc(var(--head-h) + 12px) var(--inset) 36px}
   .tc-credits{font-size:12px}
+  .tc-credits .gd{display:inline}.tc-credits .gm{display:none}
 }
 @media (min-width:900px) and (pointer:fine){
   html{scroll-snap-type:y proximity}
@@ -241,9 +281,41 @@ html:not(.p0) .cm::after{transform:scaleY(0)}
   .has-pointer .feature .frame>img{will-change:transform}
 }
 
-/* ---- Intertitle ----------------------------------------------------- */
+/* ---- Film: intertitle, then the full reel behind a play control ---------- */
+.film{border-top:1px solid var(--line)}
 .intertitle{min-height:70svh;display:grid;place-items:center;padding:60px var(--inset);text-align:center}
 .intertitle p{font:300 clamp(1.6rem,4vw,3.6rem)/1.25 var(--cond);letter-spacing:.08em;text-indent:.08em;text-transform:uppercase;max-width:26ch;margin:0 auto;--rv-y:12px}
+.film-grid{display:grid;grid-template-columns:1fr;gap:40px;padding:0 var(--inset) 96px}
+.film-copy h2{font:300 clamp(1.7rem,4vw,3.4rem)/1 var(--cond);letter-spacing:.12em;text-transform:uppercase;margin:10px 0 18px}
+.film-note{font:400 clamp(1rem,1.2vw,1.15rem)/1.5 var(--body);color:#c9c7c1;max-width:40ch}
+.yt{margin-top:34px;border-top:1px solid var(--line)}
+.yt a{display:flex;align-items:center;gap:16px;min-height:48px;padding:6px 0;border-bottom:1px solid var(--line);font:500 13px/1 var(--cond);letter-spacing:.22em;text-transform:uppercase;color:var(--bone);transition:color .3s ease}
+.yt a small{font:400 10px/1 var(--mono);letter-spacing:.14em;color:var(--mid);min-width:4.2em}
+.yt a span{margin-left:auto;font:400 10px/1 var(--mono);letter-spacing:.1em;color:var(--bone);text-transform:none;white-space:nowrap;transition:color .3s ease}
+.yt a span em{font-style:normal;color:var(--mid)}
+.yt a:hover,.yt a:hover span{color:var(--amber)}
+/* the reel sits pillarboxed: a 9:16 window, never wider than it is sharp */
+.reel-full{height:min(72svh,640px);aspect-ratio:9/16;margin:0 auto;background:var(--smoke)}
+.reel-full>img{object-position:50% 40%}
+.reel-full>video{opacity:0;transition:opacity .9s ease}
+.reel-full.is-playing>video{opacity:1}
+.reel-full .frame-grade{background:linear-gradient(180deg,rgba(5,5,5,.1) 0%,rgba(5,5,5,0) 30%,rgba(5,5,5,0) 70%,rgba(5,5,5,.5) 100%)}
+.play{position:absolute;left:0;right:0;top:0;bottom:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  font:500 12px/1 var(--mono);letter-spacing:.22em;text-indent:.22em;text-transform:uppercase;color:var(--bone);cursor:pointer}
+.play i{display:block;width:64px;height:64px;border:1px solid var(--bone);position:relative;transition:border-color .3s ease,transform .5s var(--ease)}
+.play i::before{content:"";position:absolute;left:26px;top:20px;border-style:solid;border-width:12px 0 12px 18px;border-color:transparent transparent transparent var(--bone)}
+.play:hover i{border-color:var(--amber)}
+.reel-full.is-playing .play{align-items:flex-start;justify-content:flex-end;flex-direction:row;padding:14px}
+.reel-full.is-playing .play i{width:44px;height:44px;border-color:var(--line-2)}
+.reel-full.is-playing .play i::before{left:15px;top:14px;width:4px;height:16px;border:0;border-left:4px solid var(--bone);border-right:4px solid var(--bone)}
+.reel-full.is-playing .play span{position:absolute;left:14px;top:28px;color:var(--mid)}
+.reel-full .band-tc{opacity:0;transition:opacity .6s ease}
+.reel-full.is-playing .band-tc{opacity:1}
+@media (min-width:900px){
+  .film-grid{grid-template-columns:minmax(0,1fr) auto;gap:72px;align-items:center;padding:0 var(--inset) 140px;max-width:1200px;margin:0 auto}
+  .film-copy{max-width:52ch}
+  .reel-full{height:min(78svh,760px)}
+}
 
 /* ---- Photography: contact strip ------------------------------------ */
 .strip-sec{position:relative;border-top:1px solid var(--line)}
@@ -281,6 +353,11 @@ html:not(.p0) .cm::after{transform:scaleY(0)}
 .statement p{font:400 clamp(1.15rem,1.6vw,1.4rem)/1.5 var(--body);max-width:62ch;color:var(--bone)}
 .statement p+p{margin-top:1.1em;color:#c9c7c1}
 .statement h2{font:300 clamp(1.5rem,2.6vw,2.4rem)/1 var(--cond);letter-spacing:.14em;text-transform:uppercase;margin-bottom:28px}
+.prints{margin-top:44px;max-width:620px}
+.prints .frame{background:var(--black)}
+.prints .frame>img{object-position:50% 42%;filter:saturate(.9) contrast(1.04)}
+.prints figcaption{display:flex;justify-content:space-between;gap:12px;padding-top:10px;font:400 10px/1.5 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mid)}
+.prints figcaption b{font-weight:400;color:var(--bone)}
 .portrait{max-width:300px}
 /* the portrait sits letterboxed inside a 9:16 frame: black bars top and bottom, the photo in a 4:5 window */
 .portrait .frame{aspect-ratio:9/16;background:var(--black)}
@@ -338,7 +415,9 @@ html:not(.p0) .cm::after{transform:scaleY(0)}
 html.menu-open,html.menu-open body{overflow:hidden}
 .menu-head{display:flex;justify-content:space-between;align-items:center;height:var(--head-h);position:absolute;top:env(safe-area-inset-top,0px);left:var(--inset);right:var(--inset)}
 .menu-close{font:500 12px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;height:44px;padding:0 16px;border:1px solid var(--line-2);display:flex;align-items:center}
-.menu-list{margin:auto 0;display:grid;gap:4px}
+.menu-body{margin:auto 0;display:grid;grid-template-columns:1fr;gap:40px;align-items:end}
+.menu-side{display:none}
+.menu-list{display:grid;gap:4px}
 .menu-list a{display:flex;align-items:baseline;gap:18px;padding:8px 0;min-width:0;font:500 clamp(2rem,min(7vh,8.6vw),5rem)/1 var(--cond);letter-spacing:.02em;text-transform:uppercase;color:var(--bone);
   transform:translateX(0);transition:transform .7s var(--ease),opacity .6s ease,color .3s ease}
 .menu-list a:hover{color:var(--amber)}
@@ -346,6 +425,12 @@ html.menu-open,html.menu-open body{overflow:hidden}
 .menu-list a:hover small{color:var(--amber)}
 .js-anim .menu:not(.is-open) .menu-list a{opacity:0;transform:translateX(-14px)}
 .js-anim .menu.is-open .menu-list a{transition-delay:calc(.06s + var(--i,0) * .05s)}
+@media (min-width:900px){
+  .menu-body{grid-template-columns:minmax(0,1.4fr) minmax(260px,.8fr);gap:80px}
+  .menu-side{display:grid;grid-template-columns:auto 1fr;gap:18px 28px;align-content:end;padding-bottom:18px;border-left:1px solid var(--line);padding-left:40px}
+  .menu-side dt{color:var(--mid)}
+  .menu-side dd{color:var(--bone);line-height:1.6}
+}
 .menu-foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .menu-foot a{color:var(--bone);display:inline-flex;align-items:center;min-height:44px}
 .menu-foot{align-items:center}
