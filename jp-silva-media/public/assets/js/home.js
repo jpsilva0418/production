@@ -1,8 +1,7 @@
-/* CONCEPT 01 — PICTURE START · runtime
-   Entrance sequencer (phase classes p0…p5 on <html>), FLIP of the title into
-   its title-card position, letterbox bars, timecode, header line, Index menu,
-   feature title cards, contact strip counter + desktop pin, the full reel,
-   reveal robustness, email control. */
+/* JP SILVA MEDIA — HOME (Picture Start) · runtime
+   Entrance sequencer (phase classes p0…p5 on <html>), FLIP of the title into its title-card position,
+   letterbox bars, timecode, the opening cuts, feature title cards + desktop parallax, contact strip.
+   Site-wide behaviour (header line, Index menu, reveal safety net) lives in site.js. */
 (function () {
   'use strict';
   var d = document, root = d.documentElement, w = window;
@@ -56,7 +55,8 @@
          on its last frame. Desktop: two landscape cuts play back to back inside the band and the second
          holds its last frame. ── */
   var reel = $('#reel'), reelTC = $('#band-tc'), reelImg = band ? $('img', band) : null;
-  var LAST = '../media/stills/m-rooftop.jpg';
+  var BASE = (w.JPSM && w.JPSM.base) || '/';
+  var LAST = BASE + 'media/stills/m-rooftop.jpg';
   var dband = $('#dband'), seqV = dband ? $$('video', dband) : [], seqIdx = -1, seqOff = 0, seqStarted = false, seqPlayed = false;
   var useSeq = wide.matches && seqV.length > 0 && !JP.reduced && !JP.saveData;
   function setTC(t) { var s = Math.floor(t), f = Math.floor((t - s) * 24); if (reelTC) reelTC.textContent = '00:00:' + pad(s) + ':' + pad(f); }
@@ -145,45 +145,6 @@
     root.classList.add('is-opened');
   }
 
-  /* ── 2 · Header line after 40px ───────────────────────────────── */
-  if (JP.onFrame) JP.onFrame(function (s) { root.classList.toggle('is-scrolled', s.y > 40); });
-
-  /* ── 3 · Index menu: focus trap, Esc, body lock, inert when closed ── */
-  var menu = $('#menu'), menuBtn = $('#menu-btn'), menuClose = $('#menu-close'), lastFocus = null;
-  function focusables() { return $$('a[href],button:not([disabled])', menu).filter(function (e) { return e.offsetParent !== null || getComputedStyle(e).position === 'fixed'; }); }
-  function openMenu() {
-    if (!menu) return;
-    lastFocus = d.activeElement;
-    menu.removeAttribute('inert'); menu.setAttribute('aria-hidden', 'false');
-    menu.classList.add('is-open'); root.classList.add('menu-open');
-    menuBtn.setAttribute('aria-expanded', 'true');
-    setTimeout(function () { (menuClose || menu).focus(); }, 60);
-    d.addEventListener('keydown', onMenuKey);
-  }
-  function closeMenu(returnFocus) {
-    if (!menu || !menu.classList.contains('is-open')) return;
-    menu.classList.remove('is-open'); root.classList.remove('menu-open');
-    menu.setAttribute('inert', ''); menu.setAttribute('aria-hidden', 'true');
-    menuBtn.setAttribute('aria-expanded', 'false');
-    d.removeEventListener('keydown', onMenuKey);
-    if (returnFocus !== false && lastFocus && lastFocus.focus) lastFocus.focus();
-  }
-  function onMenuKey(ev) {
-    if (ev.key === 'Escape') { ev.preventDefault(); closeMenu(); return; }
-    if (ev.key !== 'Tab') return;
-    var f = focusables(); if (!f.length) return;
-    var first = f[0], last = f[f.length - 1];
-    if (ev.shiftKey && d.activeElement === first) { ev.preventDefault(); last.focus(); }
-    else if (!ev.shiftKey && d.activeElement === last) { ev.preventDefault(); first.focus(); }
-  }
-  if (menu && menuBtn) {
-    menuBtn.addEventListener('click', function () { menu.classList.contains('is-open') ? closeMenu() : openMenu(); });
-    if (menuClose) menuClose.addEventListener('click', function () { closeMenu(); });
-    $$('.menu-list a', menu).forEach(function (a) {
-      a.addEventListener('click', function () { closeMenu(false); });
-    });
-  }
-
   /* ── 4 · Feature title cards: rise once the frame is ≥ 55% in view and stay; desktop parallax ── */
   var feats = $$('[data-feature]');
   function cardOn(f) { if (!f.classList.contains('is-on')) f.classList.add('is-on'); }
@@ -207,30 +168,10 @@
     });
   }
 
-  /* ── 4b · Reveal robustness. The observers in core.js are the choreography; this is the net under them:
-         on every frame, anything with its top above the fold is revealed, a feature whose frame is mostly
-         past is carded, and a viewport that suddenly grows past 2× (print, full-page capture) lands the
-         whole page finished at once. ── */
-  if (anim) {
-    var pending = $$('[data-reveal]');
-    var lastVH = w.innerHeight;
-    function sweep(vh, all) {
-      if (pending.length) pending = pending.filter(function (el) {
-        if (el.classList.contains('is-in')) return false;
-        if (all || el.getBoundingClientRect().top < vh * 0.96) { el.classList.add('is-in'); return false; }
-        return true;
-      });
-      feats.forEach(function (f) { if (f.classList.contains('is-on')) return; var r = f.getBoundingClientRect(); if (all || (r.top < vh * 0.45 && r.bottom > vh * 0.55)) cardOn(f); });
-    }
-    if (JP.onFrame) JP.onFrame(function (s) { sweep(s.vh, false); });
-    w.addEventListener('resize', function () {
-      var vh = w.innerHeight;
-      if (vh > lastVH * 2) { root.classList.add('is-capture'); sweep(vh, true); }
-      lastVH = vh;
-    });
-    /* whatever happened, nothing above the fold may stay hidden after the entrance */
-    w.addEventListener('jp:opened', function () { setTimeout(function () { sweep(w.innerHeight, false); }, 1200); }, { once: true });
-    setTimeout(function () { sweep(w.innerHeight, false); }, 9000);
+  /* ── 4b · Feature cards safety net (site.js covers [data-reveal]): a feature mostly in view is carded ── */
+  if (anim && JP.onFrame) {
+    JP.onFrame(function (s) { feats.forEach(function (f) { if (f.classList.contains('is-on')) return; var r = f.getBoundingClientRect(); if (r.top < s.vh * 0.45 && r.bottom > s.vh * 0.55) cardOn(f); }); });
+    w.addEventListener('jp:capture', function () { feats.forEach(cardOn); });
   }
 
   /* ── 5 · Contact strip: current frame counter; desktop pin link ── */
@@ -267,41 +208,4 @@
     }
   }
 
-  /* ── 5b · The full reel: muted, preload none, plays only on tap, visible pause; the leader counter is live
-         while it runs; pauses off-screen ── */
-  var full = $('#full'), fullFrame = $('#full-frame'), reelBand = $('#reel-band'), play = $('#play'), fullTC = $('#full-tc');
-  if (full && play && fullFrame) {
-    var playTxt = $('span', play);
-    var fullState = function (on) {
-      fullFrame.classList.toggle('is-playing', on);
-      if (reelBand) reelBand.classList.toggle('is-live', on);
-      play.setAttribute('aria-pressed', on ? 'true' : 'false');
-      play.setAttribute('aria-label', on ? 'Pause the showreel' : 'Play the full showreel, muted');
-      if (playTxt) playTxt.textContent = on ? 'Pause' : 'Play';
-    };
-    play.addEventListener('click', function () {
-      if (full.paused || full.ended) { var p = full.play(); if (p && p.catch) p.catch(function () { fullState(false); }); }
-      else full.pause();
-    });
-    full.addEventListener('playing', function () { fullState(true); });
-    full.addEventListener('pause', function () { fullState(false); });
-    full.addEventListener('ended', function () { fullState(false); try { full.currentTime = 0; } catch (e) {} });
-    full.addEventListener('error', function () { fullState(false); play.hidden = true; }, true);
-    full.addEventListener('timeupdate', function () {
-      if (!fullTC) return; var t = full.currentTime, s = Math.floor(t), f = Math.floor((t - s) * 24);
-      fullTC.textContent = '00:00:' + pad(s) + ':' + pad(f);
-    });
-    if ('IntersectionObserver' in w) {
-      new IntersectionObserver(function (es) { es.forEach(function (e) { if (!e.isIntersecting && !full.paused) full.pause(); }); }, { threshold: 0.2 }).observe(fullFrame);
-    }
-    d.addEventListener('visibilitychange', function () { if (d.hidden && !full.paused) full.pause(); });
-  }
-
-  /* ── 6 · Email control: demo-safe ─────────────────────────────── */
-  var ec = $('#email-ctl'), en = $('#email-note');
-  if (ec && en) ec.addEventListener('click', function () {
-    var open = ec.getAttribute('aria-expanded') === 'true';
-    ec.setAttribute('aria-expanded', open ? 'false' : 'true');
-    en.innerHTML = open ? '<i aria-hidden="true"></i>Email <b>enabled at launch</b>' : '<i aria-hidden="true"></i>Preview build: email is <b>enabled at launch</b>. Until then, Instagram @jp.media.';
-  });
 })();

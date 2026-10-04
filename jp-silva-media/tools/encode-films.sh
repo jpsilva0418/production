@@ -13,10 +13,10 @@ enc () { # slug file crop posterAt
   ffmpeg -v error -y -ss "$at" -i "$src" -vf "$3" -frames:v 1 -q:v 2 "$OUT/$slug-poster.jpg"
   printf '  %-16s %6s KB mp4 %6s KB webm  %ss\n' "$slug" $(( $(stat -c%s "$OUT/$slug.mp4")/1024 )) $(( $(stat -c%s "$OUT/$slug.webm")/1024 )) "$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$OUT/$slug.mp4" | cut -d. -f1)"
 }
-enc showreel       aa5ebb59-CC9A073A-8C9D-4101-B308-CB7FE9C7FB28.mp4 "crop=490:960:22:0"  27.9
-enc field-at-dusk  6d047996-8E5C4E66-C22C-4BC7-BF0E-106CAFCAC56E.mp4 "crop=846:470:14:0"  36.4
-enc western        96fa1dda-3F8718DD-9D75-4B53-9F55-925675F7DE3F.mp4 "crop=636:500:0:6"   57.2
-enc night-ride     7bb0c291-431DE943-BCB5-408F-A4C2-210526CC87A1.mp4 "crop=738:390:20:78" 16.8
-enc desert-highway b55681d7-D41FC76B-25B5-430E-9DFD-7D36325BF1B6.mp4 "crop=656:450:0:24"  3.2
-enc forest-rain    aa460874-FA2A1871-53B2-47E7-9672-1846940C9071.mp4 "crop=492:960:4:0"   12.9
-enc at-the-sea     54a3b54a-42792596-3370-419B-A83E-DA225EA98AEA.mp4 "crop=504:390:8:312" 27.6
+enc showreel       aa5ebb59-CC9A073A-8C9D-4101-B308-CB7FE9C7FB28.mp4 "crop=478:960:34:0"  27.9
+enc field-at-dusk  6d047996-8E5C4E66-C22C-4BC7-BF0E-106CAFCAC56E.mp4 "crop=824:462:14:6"  36.4
+enc western        96fa1dda-3F8718DD-9D75-4B53-9F55-925675F7DE3F.mp4 "crop=630:496:0:6"   57.2
+enc night-ride     7bb0c291-431DE943-BCB5-408F-A4C2-210526CC87A1.mp4 "crop=734:384:5:80" 16.8
+enc desert-highway b55681d7-D41FC76B-25B5-430E-9DFD-7D36325BF1B6.mp4 "crop=654:450:0:24"  3.2
+enc forest-rain    aa460874-FA2A1871-53B2-47E7-9672-1846940C9071.mp4 "crop=486:950:5:0"   12.9
+enc at-the-sea     54a3b54a-42792596-3370-419B-A83E-DA225EA98AEA.mp4 "crop=490:378:20:320" 27.6

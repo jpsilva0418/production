@@ -3,7 +3,7 @@
 # Produces muted h264 + vp9 loops with posters, and still frames. Re-run when better masters arrive.
 set -e
 SRC=${1:-/root/.claude/uploads/e0535f77-93e9-53c6-ad6d-7e3e5a4f6f1f}
-OUT=$(cd "$(dirname "$0")/.." && pwd)/media
+OUT=$(cd "$(dirname "$0")/.." && pwd)/public/media
 FILM=$OUT/film; STILLS=$OUT/stills; mkdir -p "$FILM" "$STILLS"
 M=$SRC/aa5ebb59-CC9A073A-8C9D-4101-B308-CB7FE9C7FB28.mp4   # montage / showreel (portrait)
 FD=$SRC/6d047996-8E5C4E66-C22C-4BC7-BF0E-106CAFCAC56E.mp4  # field at dusk MV
@@ -20,12 +20,12 @@ clip () { # name src start dur [vf]
   ffmpeg -v error -y -ss "$ss" -i "$src" -vf "$vf" -frames:v 1 -q:v 3 "$FILM/$name-poster.jpg"
   printf '  %-22s %5s KB mp4  %5s KB webm\n' "$name" $(( $(stat -c%s "$FILM/$name.mp4")/1024 )) $(( $(stat -c%s "$FILM/$name.webm")/1024 ))
 }
-FDC="crop=846:470:14:0"; NRC="crop=738:390:20:78"; CHC="crop=656:450:0:24"; WC="crop=636:500:0:6"
+FDC="crop=824:462:14:6"; NRC="crop=734:384:5:80"; CHC="crop=654:450:0:24"; WC="crop=630:496:0:6"
 still () { # name src time [vf]
   ffmpeg -v error -y -ss "$3" -i "$2" -vf "${4:-null}" -frames:v 1 -q:v 2 "$STILLS/$1.jpg"
 }
 
-MVF="crop=490:960:22:0"   # montage: trim black edges
+MVF="crop=478:960:34:0"   # montage: trim black edges
 if [ -z "$SKIP_MONTAGE" ]; then
 echo "montage cuts (portrait 490x960)"
 clip m-hat      "$M" 0.0  1.6 "$MVF"
@@ -79,13 +79,13 @@ clip ch-ride      "$CH" 1.5  3.4 "$CHC"
 clip ch-road      "$CH" 9.4  3.4 "$CHC"
 clip ch-camera    "$CH" 20.6 3.2 "$CHC"
 echo "forest (portrait 492x960)"
-clip fo-umbrella  "$FO" 2.9  2.2 "crop=492:960:4:0"
-clip fo-trees     "$FO" 12.6 2.6 "crop=492:960:4:0"
-clip fo-dance     "$FO" 15.7 3.0 "crop=492:960:4:0"
-clip fo-fire      "$FO" 21.8 2.0 "crop=492:960:4:0"
+clip fo-umbrella  "$FO" 2.9  2.2 "crop=486:950:5:0"
+clip fo-trees     "$FO" 12.6 2.6 "crop=486:950:5:0"
+clip fo-dance     "$FO" 15.7 3.0 "crop=486:950:5:0"
+clip fo-fire      "$FO" 21.8 2.0 "crop=486:950:5:0"
 echo "jp at the sea (band 504x390)"
-clip jp-sea       "$JP" 25.0 6.0 "crop=504:390:8:312"
-clip jp-sea-fade  "$JP" 36.0 6.0 "crop=504:390:8:312"
+clip jp-sea       "$JP" 25.0 6.0 "crop=490:378:20:320"
+clip jp-sea-fade  "$JP" 36.0 6.0 "crop=490:378:20:320"
 
 echo "stills"
 still m-hat     "$M" 0.3  "$MVF";   still m-concert "$M" 5.4 "$MVF";  still m-wing "$M" 12.6 "$MVF"
@@ -95,6 +95,6 @@ for x in "fd-fence 3.2" "fd-flare 36.4" "fd-truck 50.6" "fd-silhouettes 24.9" "f
 for x in "w-aim 9.3" "w-silhouette 16.2" "w-saguaro 30.4" "w-gallop 36.6" "w-skyward 40.6" "w-portrait 57.2" "w-hat 51.4"; do set -- $x; still $1 "$W" $2 "$WC"; done
 for x in "nr-dash 6.2" "nr-silhouette 16.8" "nr-headlight 32.2"; do set -- $x; still $1 "$NR" $2 "$NRC"; done
 for x in "ch-ride 3.2" "ch-road 10.2" "ch-camera 20.9" "ch-detail 8.0"; do set -- $x; still $1 "$CH" $2 "$CHC"; done
-still fo-trees  "$FO" 12.9 "crop=492:960:4:0"; still fo-fire "$FO" 22.3 "crop=492:960:4:0"; still fo-umbrella "$FO" 3.3 "crop=492:960:4:0"
-still jp-sea    "$JP" 27.6 "crop=504:390:8:312"; still jp-sea-rail "$JP" 31.0 "crop=504:390:8:312"
+still fo-trees  "$FO" 12.9 "crop=486:950:5:0"; still fo-fire "$FO" 22.3 "crop=486:950:5:0"; still fo-umbrella "$FO" 3.3 "crop=486:950:5:0"
+still jp-sea    "$JP" 27.6 "crop=490:378:20:320"; still jp-sea-rail "$JP" 31.0 "crop=490:378:20:320"
 du -sh "$FILM" "$STILLS"; ls "$STILLS" | wc -l

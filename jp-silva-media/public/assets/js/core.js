@@ -1,6 +1,6 @@
 /* ============================================================
-   JP MEDIA — shared runtime (no dependencies, ~6 KB)
-   Gate · reveal · entrance sequencer · video gating · frame loop · study nav
+   JP SILVA MEDIA — shared runtime (no dependencies, ~6 KB)
+   Gate · reveal · entrance sequencer · video gating · frame loop
    Everything here is progressive enhancement over a page that is already
    complete without it.
    ============================================================ */
@@ -153,36 +153,10 @@
     return JP.clamp(-r.top / Math.max(1, r.height - vh), 0, 1);
   };
 
-  /* 6 ─ Study nav (from the JP_STUDY manifest in media.js) */
-  JP.studyNav = function (opts) {
-    var study = w.JP_STUDY; if (!study) return;
-    var slug = (opts && opts.current) || (d.body && d.body.getAttribute('data-concept'));
-    var list = study.concepts, idx = -1;
-    list.forEach(function (c, i) { if (c.slug === slug) idx = i; });
-    var prev = idx > 0 ? list[idx - 1] : null, next = idx >= 0 && idx < list.length - 1 ? list[idx + 1] : null;
-    var rel = (opts && opts.rel) || (idx >= 0 ? '../' : '');
-    var nav = d.createElement('nav'); nav.className = 'study-nav' + ((opts && opts.light) || (d.body && d.body.hasAttribute('data-study-light')) ? ' light' : '');
-    nav.setAttribute('aria-label', 'Art direction study');
-    var h = '';
-    h += '<a class="sn-index" href="' + rel + 'index.html" aria-label="All six directions">JP&nbsp;MEDIA<span>&nbsp;· Index</span></a>';
-    if (idx >= 0) {
-      h += '<span class="sn-cur"><b>' + list[idx].n + ' / 0' + list.length + '</b>' + list[idx].name + '</span>';
-      h += prev ? '<a class="sn-arrow" href="' + rel + prev.slug + '/index.html" aria-label="Previous: ' + prev.name + '">&larr;</a>' : '<span class="sn-arrow" aria-hidden="true" style="opacity:.3">&larr;</span>';
-      h += next ? '<a class="sn-arrow" href="' + rel + next.slug + '/index.html" aria-label="Next: ' + next.name + '">&rarr;</a>' : '<span class="sn-arrow" aria-hidden="true" style="opacity:.3">&rarr;</span>';
-    }
-    nav.innerHTML = h;
-    d.body.appendChild(nav);
-    var live = function () { requestAnimationFrame(function () { nav.classList.add('is-live'); }); };
-    if (root.classList.contains('is-opened') || !root.classList.contains('js-anim')) live();
-    else { w.addEventListener('jp:opened', live, { once: true }); setTimeout(live, (opts && opts.fallback) || 9000); }
-    return nav;
-  };
-
   /* 7 ─ Auto-init */
   function init() {
     JP.reveal();
     JP.videos();
-    if (d.body && d.body.hasAttribute('data-concept') && !d.body.hasAttribute('data-no-study-nav')) JP.studyNav();
   }
   if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', init); else init();
 })();
