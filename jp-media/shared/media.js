@@ -748,6 +748,17 @@ window.JP_MEDIA = {
     { id: 'self',      label: 'Personal',                     title: 'At the Sea',                     year: '',     roles: ['Camera'],                      note: 'JP, black and white',                 film: 'jp-sea',         still: 'jp-sea',      orient: 'band' }
   ],
 
+  /* Long-form work on YouTube (supplied by the founder as JP's own music videos / films). Titles could not be
+     fetched from this sandbox, so present them as "Film on YouTube" with a poster from the library and a link that
+     opens YouTube. Never autoplay or embed more than one, and never embed on the preview host (iframes are blocked). */
+  youtube: [
+    { id: 'D9iNANLSWJI', url: 'https://youtu.be/D9iNANLSWJI', label: 'Music video' },
+    { id: 'bQmgSBOyIBQ', url: 'https://youtu.be/bQmgSBOyIBQ', label: 'Music video' },
+    { id: 'uM2j8bYrv68', url: 'https://youtu.be/uM2j8bYrv68', label: 'Film' },
+    { id: 'IO-0co8MI4Y', url: 'https://youtu.be/IO-0co8MI4Y', label: 'Film' },
+    { id: '3qoGu5U9sfc', url: 'https://youtu.be/3qoGu5U9sfc', label: 'Film' }
+  ],
+
   /* Verified public facts only. Anything else stays placeholder copy. */
   person: {
     name: 'JP Silva', studio: 'JP Media', roles: ['Filmmaker', 'Producer', 'Photographer'],

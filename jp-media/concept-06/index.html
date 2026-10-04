@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#FAFAF8">
 <script>(function(h){try{h.className+=' js';if(!matchMedia('(prefers-reduced-motion: reduce)').matches){h.className+=' js-anim';setTimeout(function(){if(!(window.JP&&window.JP.__loaded))h.className=h.className.replace(' js-anim','')},4000)}}catch(e){}})(document.documentElement)</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200;0,6..72,300;1,6..72,300&family=Hanken+Grotesk:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300&family=Hanken+Grotesk:wght@300;400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared/base.css">
 <link rel="stylesheet" href="concept.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"JP Silva","jobTitle":"Filmmaker, Producer, Photographer","address":{"@type":"PostalAddress","addressLocality":"Austin","addressRegion":"TX","addressCountry":"US"},"sameAs":["https://www.instagram.com/jp.media/"]}</script>
@@ -26,16 +26,15 @@
 
 <main id="main">
 
-  <!-- 1 · HERO : the opening frame, the end state of the entrance -->
+  <!-- 1 · HERO : the opening frame, the end state of the entrance. One still from the western, black and white. -->
   <section id="opener" class="room hero" aria-label="JP Silva, filmmaker, producer, photographer">
     <figure class="still hero-still">
       <div class="frame" style="aspect-ratio:3/2">
-        <img src="../media/plates/mono-grain-900.jpg"
-             srcset="../media/plates/mono-grain-900.jpg 900w, ../media/plates/mono-grain.jpg 1800w"
-             sizes="(min-width:900px) 46vw, 86vw" width="1800" height="1200"
-             alt="A black-and-white field of light and heavy film grain" fetchpriority="high" decoding="async">
+        <img src="../media/stills/w-portrait.jpg" width="660" height="500"
+             alt="A woman in a wide-brimmed hat looks past the camera, black and white, a saguaro behind her"
+             fetchpriority="high" decoding="async">
       </div>
-      <figcaption class="hero-cap label">Black &amp; White <span class="sep">—</span> Series, 2023</figcaption>
+      <figcaption class="hero-cap label">Western, Black &amp; White <span class="sep">—</span> Music video</figcaption>
     </figure>
     <div class="hero-name">
       <h1 class="name">JP Silva</h1>
@@ -46,32 +45,28 @@
   <!-- 2 · SELECTED WORK : four rooms, one frame each -->
   <div id="work" aria-label="Selected work" role="region">
 
-    <section id="room-land" class="room r-land" aria-labelledby="t-land">
+    <section id="room-forest" class="room r-forest" aria-labelledby="t-forest">
       <figure class="still">
         <div class="frame" data-reveal="still" style="aspect-ratio:4/5">
-          <img src="../media/plates/dusk-haze-800.jpg"
-               srcset="../media/plates/dusk-haze-800.jpg 800w, ../media/plates/dusk-haze.jpg 1400w"
-               sizes="(min-width:900px) 40vw, 70vw" width="1400" height="1750"
-               alt="Amber haze and drifting dust in evening light" loading="lazy" decoding="async">
+          <img src="../media/stills/fo-trees.jpg" width="492" height="960"
+               alt="Looking up through dark pines at a pale evening sky" loading="lazy" decoding="async">
         </div>
         <figcaption class="cap" data-reveal="cap" style="--d:.2s">
-          <span class="cap-title" id="t-land">Hill Country</span>
-          <span class="label">Landscape <span aria-hidden="true">·</span> Personal, 2024</span>
+          <span class="cap-title" id="t-forest">Forest, Rain</span>
+          <span class="label">Short <span aria-hidden="true">·</span> Personal</span>
         </figcaption>
       </figure>
     </section>
 
-    <section id="room-por" class="room r-por" aria-labelledby="t-por">
+    <section id="room-live" class="room r-live" aria-labelledby="t-live">
       <figure class="still">
         <div class="frame" data-reveal="still" style="aspect-ratio:2/3">
-          <img src="../media/plates/mono-leak-800.jpg"
-               srcset="../media/plates/mono-leak-800.jpg 800w, ../media/plates/mono-leak.jpg 1400w"
-               sizes="(min-width:900px) 18vw, 44vw" width="1400" height="2100"
-               alt="Black-and-white frame with a blown-out light leak" loading="lazy" decoding="async">
+          <img src="../media/stills/m-bokeh.jpg" width="490" height="960"
+               alt="Sparks and stage light blurring over a dark crowd" loading="lazy" decoding="async">
         </div>
         <figcaption class="cap" data-reveal="cap" style="--d:.2s">
-          <span class="cap-title" id="t-por">Portraits, Vol. I</span>
-          <span class="label">Photography Series, 2025</span>
+          <span class="cap-title" id="t-live">Showreel</span>
+          <span class="label">Live <span aria-hidden="true">·</span> Stage light, 2025</span>
         </figcaption>
       </figure>
     </section>
@@ -79,59 +74,63 @@
     <section id="room-film" class="room r-film grain" aria-labelledby="t-film">
       <figure class="still">
         <div class="frame" data-reveal="still">
-          <img src="../media/plates/night-halation-900.jpg"
-               srcset="../media/plates/night-halation-900.jpg 900w, ../media/plates/night-halation.jpg 1800w"
-               sizes="86vw" width="1800" height="1012"
-               alt="A dark room with one warm light blooming through dust" loading="lazy" decoding="async">
-          <video class="jp-video" muted playsinline loop autoplay preload="none" aria-hidden="true"
-                 poster="../media/loops/dust-poster.jpg">
-            <source src="../media/loops/dust.webm" type="video/webm">
-            <source src="../media/loops/dust.mp4" type="video/mp4">
+          <img src="../media/stills/fd-headlights.jpg" width="846" height="470"
+               alt="A pickup at dusk with its headlights on, friends standing in the bed" loading="lazy" decoding="async">
+          <video class="jp-video" muted playsinline loop preload="none" aria-hidden="true"
+                 poster="../media/film/fd-headlights-poster.jpg">
+            <source src="../media/film/fd-headlights.webm" type="video/webm">
+            <source src="../media/film/fd-headlights.mp4" type="video/mp4">
           </video>
         </div>
         <figcaption class="cap film-cap label" data-reveal="cap" style="--d:.2s">
-          <span id="t-film">Working Title I</span> <span class="sep">—</span> 2025 <span class="sep">—</span> Short film
+          <span id="t-film">Field at Dusk</span> <span class="sep">—</span> Music video <span class="sep">—</span> Headlights
         </figcaption>
       </figure>
     </section>
 
-    <section id="room-tour" class="room r-tour" aria-labelledby="t-tour">
+    <section id="room-road" class="room r-road" aria-labelledby="t-road">
       <figure class="still">
         <figcaption class="cap" data-reveal="cap" style="--d:.2s">
-          <span class="cap-title" id="t-tour">Tour Diary</span>
-          <span class="label">Documentary <span aria-hidden="true">·</span> Personal, 2024</span>
+          <span class="cap-title" id="t-road">Desert Highway</span>
+          <span class="label">Music video</span>
         </figcaption>
         <div class="frame" data-reveal="still" style="aspect-ratio:3/2">
-          <img src="../media/plates/leak-warm-900.jpg"
-               srcset="../media/plates/leak-warm-900.jpg 900w, ../media/plates/leak-warm.jpg 1800w"
-               sizes="(min-width:900px) 52vw, 80vw" width="1800" height="1012"
-               alt="A warm film light leak burning in from the edge of frame" loading="lazy" decoding="async">
+          <img src="../media/stills/ch-road.jpg" width="656" height="450"
+               alt="Two riders on one motorcycle down an empty desert highway, headlight on" loading="lazy" decoding="async">
         </div>
       </figure>
     </section>
 
   </div>
 
-  <!-- 3 · ABOUT -->
+  <!-- 3 · ABOUT : one paragraph, one portrait -->
   <section id="about" class="room r-about" aria-label="About JP Silva">
     <div class="about-col">
       <p class="about-p" data-reveal="cap">JP Silva is a filmmaker, producer and photographer in Austin, Texas, working across film, live music and the long road between shows. He was born in Bauru, São Paulo, moved to the United States as a teenager, and still looks for the same thing in every frame: the honest moment, not the loud one.</p>
       <p class="label origin" data-reveal="cap" style="--d:.2s">Bauru, São Paulo <span class="arrow" aria-hidden="true">→</span><span class="sr-only">to</span> Austin, Texas</p>
     </div>
+    <figure class="still about-still">
+      <div class="frame" data-reveal="still" style="aspect-ratio:4/5">
+        <img src="../media/photos/jp-portrait-4x5-800.jpg"
+             srcset="../media/photos/jp-portrait-4x5-800.jpg 800w, ../media/photos/jp-portrait-4x5.jpg 1046w"
+             sizes="(min-width:900px) 22vw, 44vw" width="1046" height="1308"
+             alt="JP Silva laughing in a sunlit field, round glasses, white T-shirt" loading="lazy" decoding="async">
+      </div>
+    </figure>
   </section>
 
-  <!-- 4 · INDEX : every work, one quiet list -->
+  <!-- 4 · INDEX : every work, one quiet list. Rows with a room link to it; the rest are in the index only. -->
   <section id="index" class="index-sec" aria-labelledby="t-index">
     <h2 id="t-index" class="label">Index <span aria-hidden="true">·</span> Selected work</h2>
     <ol class="index-list" id="index-list">
-      <li><a href="#room-film"><span class="ix-title">Working Title I</span><span class="ix-label">Selected Film</span><span class="ix-year">2025</span></a></li>
-      <li><span class="ix-row"><span class="ix-title">Live, Austin</span><span class="ix-label">Music <span aria-hidden="true">·</span> Live</span><span class="ix-year">2025</span></span></li>
-      <li><span class="ix-row"><span class="ix-title">Soundcheck</span><span class="ix-label">Music Video</span><span class="ix-year">2024</span></span></li>
-      <li><a href="#room-tour"><span class="ix-title">Tour Diary</span><span class="ix-label">Documentary <span aria-hidden="true">·</span> Personal</span><span class="ix-year">2024</span></a></li>
-      <li><a href="#room-por"><span class="ix-title">Portraits, Vol. I</span><span class="ix-label">Photography Series</span><span class="ix-year">2025</span></a></li>
-      <li><a href="#room-land"><span class="ix-title">Hill Country</span><span class="ix-label">Landscape <span aria-hidden="true">·</span> Personal</span><span class="ix-year">2024</span></a></li>
-      <li><a href="#opener"><span class="ix-title">Black &amp; White</span><span class="ix-label">Photography Series</span><span class="ix-year">2023</span></a></li>
-      <li><span class="ix-row"><span class="ix-title">Production Stills</span><span class="ix-label">Behind the Work</span><span class="ix-year">2025</span></span></li>
+      <li><a href="#room-live"><span class="ix-title">Showreel</span><span class="ix-label">Live <span aria-hidden="true">·</span> Stage light</span><span class="ix-meta">Direction, camera, edit</span></a></li>
+      <li><a href="#room-film"><span class="ix-title">Field at Dusk</span><span class="ix-label">Music video</span><span class="ix-meta">Direction, camera</span></a></li>
+      <li><a href="#opener"><span class="ix-title">Western, Black &amp; White</span><span class="ix-label">Music video</span><span class="ix-meta">Direction, camera</span></a></li>
+      <li><span class="ix-row"><span class="ix-title">Night Ride</span><span class="ix-label">Music video</span><span class="ix-meta">Camera, edit</span></span></li>
+      <li><a href="#room-road"><span class="ix-title">Desert Highway</span><span class="ix-label">Music video</span><span class="ix-meta">Camera</span></a></li>
+      <li><a href="#room-forest"><span class="ix-title">Forest, Rain</span><span class="ix-label">Short <span aria-hidden="true">·</span> Personal</span><span class="ix-meta">Direction, camera</span></a></li>
+      <li><span class="ix-row"><span class="ix-title">Prints</span><span class="ix-label">Photography <span aria-hidden="true">·</span> Exhibited, 2025</span><span class="ix-meta">Photography</span></span></li>
+      <li><span class="ix-row"><span class="ix-title">At the Sea</span><span class="ix-label">Personal</span><span class="ix-meta">Camera</span></span></li>
     </ol>
   </section>
 
@@ -148,8 +147,7 @@
 
 <footer class="credits">
   <p class="label">JP Silva <span aria-hidden="true">·</span> Austin, Texas</p>
-  <p class="note">Private concept preview. Plates are procedural stand-ins for JP's stills and footage; titles are working labels.</p>
-  <p class="note">Website design study — JP Web Design</p>
+  <p class="note">Private concept preview. Frames are drawn from JP's own footage at preview resolution; titles are working labels.</p>
 </footer>
 
 <!-- INDEX OVERLAY : white, the list again, nothing else -->
