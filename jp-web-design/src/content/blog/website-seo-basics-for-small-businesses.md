@@ -102,6 +102,6 @@ Most small businesses never finish the first four, which is why those are where 
 
 ## The honest summary
 
-This is foundation work, and most of it is done once. I build it into every site and I do not sell it as a monthly retainer, because for most small businesses there is not a retainer's worth of ongoing work in it — there is a solid setup, and then occasional maintenance.
+This is foundation work, and most of it is done once. I build it into [every site I design](/services/web-design-development) and I do not sell it as a monthly retainer, because for most small businesses there is not a retainer's worth of ongoing work in it — there is a solid setup, and then occasional maintenance.
 
 If your site is missing most of the above, that is normal and it is fixable. [Tell me what you have](/contact) and I will tell you which parts are actually worth doing for your business. If a rebuild would be the faster route, [the free homepage demo](/free-demo) shows you what that looks like before you pay for anything.

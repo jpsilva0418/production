@@ -25,15 +25,35 @@ export const hasAnalytics = Boolean(GA_ID || ADS_ID || PIXEL_ID);
 /** The conversions worth counting. Named once so reports stay comparable and
     a typo cannot invent a second event that silently splits the data. */
 export const EVENTS = {
-  demoStart: 'demo_start',          // planner opened / "Get your free demo" clicked
-  demoComplete: 'demo_complete',    // planner finished and transmitted
-  inquiry: 'inquiry_submitted',     // contact form transmitted
-  serviceInquiry: 'service_inquiry',// inquiry naming a specific service
-  projectView: 'project_view',      // portfolio project opened
+  /* Intent — a click, not yet a conversion. */
+  demoStart: 'get_free_demo_click',   // any "Get your free demo" button
+  startProject: 'start_project_click',// any "Start a project" button
+  projectView: 'project_view',        // portfolio project opened
   call: 'call_click',
   email: 'email_click',
   social: 'social_click',
+
+  /* Conversions — fired ONLY after a genuine 2xx from the endpoint. Opening
+     a form, focusing a field or failing validation fires none of these. */
+  contactSubmit: 'contact_submit',
+  demoComplete: 'free_demo_submit',
+
+  /* Which service the converted inquiry named. Fired alongside the
+     submission event, never instead of it. */
+  webDesignInquiry: 'web_design_inquiry',
+  googleAdsInquiry: 'google_ads_inquiry',
+  metaAdsInquiry: 'meta_ads_inquiry',
 } as const;
+
+/** Map a "What do you need?" answer to its conversion event. Returns null for
+    "Multiple Services" and "Not Sure", which name no single service. */
+export function serviceEvent(need: string | undefined): EventName | null {
+  if (!need) return null;
+  if (need.startsWith('Website')) return EVENTS.webDesignInquiry;
+  if (need.startsWith('Google')) return EVENTS.googleAdsInquiry;
+  if (need.startsWith('Meta')) return EVENTS.metaAdsInquiry;
+  return null;
+}
 
 export type EventName = (typeof EVENTS)[keyof typeof EVENTS];
 
@@ -54,7 +74,7 @@ export function track(event: EventName, params: Record<string, unknown> = {}): v
     window.gtag?.('event', event, params);
     /* Meta's standard events are a fixed vocabulary; everything else must go
        through trackCustom or it is silently dropped. */
-    if (event === EVENTS.inquiry || event === EVENTS.demoComplete) {
+    if (event === EVENTS.contactSubmit || event === EVENTS.demoComplete) {
       window.fbq?.('track', 'Lead', params);
     } else {
       window.fbq?.('trackCustom', event, params);

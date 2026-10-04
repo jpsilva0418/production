@@ -1,6 +1,6 @@
 ---
 title: Why running ads before fixing the landing page wastes money
-description: Advertising does not create demand out of nothing. It buys attention, and the page decides what that attention is worth. Fix the page first, for one specific reason.
+description: Advertising buys attention. The page decides what that attention is worth — which is why fixing the page first is an order of operations, not a preference.
 date: 2026-09-25
 category: Advertising
 readingTime: 6
@@ -48,9 +48,9 @@ That is a research budget, not a growth budget. Treat it that way — set an amo
 
 ## What I actually recommend
 
-If the page is in reasonable shape, start the ads and improve the page alongside them.
+If the page is in reasonable shape, start the ads and improve the page alongside them — that is how I usually sequence [a Google Ads](/services/google-ads) or [Meta Ads](/services/meta-ads) launch.
 
-If the ad would land somewhere that cannot answer the question it was clicked on, build that page first. It is usually one page, not a website.
+If the ad would land somewhere that cannot answer the question it was clicked on, build that page first. It is usually [one page, not a website](/services/web-design-development).
 
 And either way, set up conversion tracking before the first pound of spend. A campaign without it is not a campaign you can learn anything from.
 

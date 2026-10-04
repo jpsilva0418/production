@@ -1,6 +1,6 @@
 ---
 title: What a small-business website actually needs to convert
-description: Most small-business sites are not ugly. They are unclear. Here is the short list of things a visitor needs before they will call you, in the order they need them.
+description: Most small-business sites are not ugly, they are unclear. The short list of what a visitor needs before they will call you, in the order they need it.
 date: 2026-09-18
 category: Websites
 readingTime: 7
@@ -58,4 +58,4 @@ Clarity, one obvious action, specific proof, answered objections, speed, and str
 
 None of this requires a redesign in the dramatic sense. I have seen sites gain more from rewriting a headline and moving a phone number than from a complete visual rebuild — because the problem was never that it looked bad. It was that nobody could tell what it was for.
 
-If you want to see what that would look like for your business specifically, [the free homepage demo](/free-demo) is exactly that: I design the concept first, and you decide after you have seen it.
+All of this is what I mean by [a website built around how customers decide](/services/web-design-development). If you want to see what that would look like for your business specifically, [the free homepage demo](/free-demo) is exactly that: I design the concept first, and you decide after you have seen it.

@@ -10,7 +10,7 @@ import './planner.css';
 
 import { sendInquiry, mailtoFor } from '../../lib/inquiry';
 import { INTAKE_FIELDS, validateIntake } from '../../lib/intake';
-import { track, EVENTS } from '../../lib/analytics';
+import { track, EVENTS, serviceEvent } from '../../lib/analytics';
 import { EMAIL, REPLY_SLA, DEMO_TURNAROUND } from '../../data/site';
 
 const KEY = 'jpwd.planner.v1';
@@ -59,10 +59,16 @@ export default function Planner() {
   }, [a]);
 
   /* Focus the step heading, not the first input — focusing an input
-     announces the option without the question. */
+     announces the option without the question.
+
+     preventScroll matters: focusing an element makes the browser scroll it
+     into view, which on /free-demo nudged the page a few pixels off the top
+     the moment the island hydrated. The visitor is already looking at the
+     planner whenever this fires, so the announcement is wanted and the
+     scroll is not. */
   useEffect(() => {
     if (!mounted.current) return;
-    const id = requestAnimationFrame(() => headingRef.current?.focus());
+    const id = requestAnimationFrame(() => headingRef.current?.focus({ preventScroll: true }));
     return () => cancelAnimationFrame(id);
   }, [step, done]);
 
@@ -137,7 +143,11 @@ export default function Planner() {
       plan: { answers: a, recommendation: plan },
     });
     setSending(false);
-    if (res.ok) track(EVENTS.demoComplete, { need: PLANNER_NEED });
+    if (res.ok) {
+      track(EVENTS.demoComplete, { need: PLANNER_NEED });
+      const svc = serviceEvent(PLANNER_NEED);
+      if (svc) track(svc, { source: 'free-demo' });
+    }
     setSent(res.ok ? 'ok' : res.reason === 'spam' ? 'ok' : res.reason);
     setDone(true);
   };

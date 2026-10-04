@@ -91,4 +91,4 @@ Then weekly: read the search terms, add negatives, pause what does not convert, 
 
 That is the whole method. It is not complicated, but it is genuinely ongoing — which is the part most people underestimate.
 
-If you want to know whether Google Ads makes sense for your business at all, including if the honest answer is "not yet", [tell me what you do](/contact). I have [written separately about why the landing page comes first](/blog/fix-the-landing-page-before-running-ads) and [how Google compares with Meta for local businesses](/blog/google-ads-vs-meta-ads-for-local-business).
+This is [what Google Ads management actually involves](/services/google-ads) when I run it. If you want to know whether it makes sense for your business at all, including if the honest answer is "not yet", [tell me what you do](/contact). I have [written separately about why the landing page comes first](/blog/fix-the-landing-page-before-running-ads) and [how Google compares with Meta for local businesses](/blog/google-ads-vs-meta-ads-for-local-business).

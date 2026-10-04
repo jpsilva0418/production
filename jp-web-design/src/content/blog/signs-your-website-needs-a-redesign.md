@@ -81,4 +81,4 @@ If you recognised one or two of these, you probably need targeted fixes rather t
 
 If you recognised four or more — especially if the site cannot be updated at all — you are maintaining something that is working against you, and a rebuild is usually cheaper than continuing to patch it.
 
-If you want a straight answer about which of those you are, [the free homepage demo](/free-demo) is one way to see it: I design the concept first, you decide after. [Or just tell me what is wrong with it](/contact) and I will tell you honestly whether it needs rebuilding.
+If you want a straight answer about which of those you are, [the free homepage demo](/free-demo) is one way to see it: I design the concept first, you decide after. [Here is what a redesign involves](/services/web-design-development). [Or just tell me what is wrong with it](/contact) and I will tell you honestly whether it needs rebuilding.

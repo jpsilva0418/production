@@ -14,11 +14,11 @@ This question usually arrives framed as a budget decision, as though the two pla
 
 If someone's boiler fails at eleven at night, they do not need to be persuaded that boiler repair exists. They open their phone and search. The business that appears is the business that gets called. The demand already exists; the only question is who captures it.
 
-That is Google. Search advertising intercepts an intention that is already formed.
+That is [Google Ads](/services/google-ads). Search advertising intercepts an intention that is already formed.
 
 Now take a med spa launching a new treatment. Nobody is searching for it, because they do not know it exists. There is no demand to capture — it has to be created, by showing the result to someone who was not looking for it.
 
-That is Meta. Facebook and Instagram interrupt rather than answer.
+That is [Meta](/services/meta-ads) — Facebook and Instagram interrupt rather than answer.
 
 Most local businesses sit clearly on one side of that line, and that decides the starting channel.
 

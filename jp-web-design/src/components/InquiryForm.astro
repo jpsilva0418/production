@@ -126,7 +126,7 @@ const { need = '', id = 'inquiry' } = Astro.props;
 <script>
   import { sendInquiry, mailtoFor, isConfigured, type Inquiry } from '../lib/inquiry';
   import { validateIntake, needFromHint, INTAKE_FIELDS, EMPTY_INTAKE, type IntakeValues } from '../lib/intake';
-  import { track, EVENTS } from '../lib/analytics';
+  import { track, EVENTS, serviceEvent } from '../lib/analytics';
   import { EMAIL, REPLY_SLA, DEMO_TURNAROUND } from '../data/site';
 
   const form = document.querySelector<HTMLFormElement>('[data-inquiry]');
@@ -210,9 +210,12 @@ const { need = '', id = 'inquiry' } = Astro.props;
       /* A bot that filled the honeypot sees the same screen as a person, and
          nothing is transmitted. */
       if (res.ok || (!res.ok && res.reason === 'spam')) {
+        /* Only a genuine 2xx reaches here — a honeypot hit shows the same
+           screen but transmits nothing, so it must not count as a lead. */
         if (res.ok) {
-          track(EVENTS.inquiry, { need: data.need });
-          if (data.need) track(EVENTS.serviceInquiry, { label: data.need });
+          track(EVENTS.contactSubmit, { need: data.need });
+          const svc = serviceEvent(data.need);
+          if (svc) track(svc, { source: 'contact' });
         }
         form.querySelector<HTMLElement>('.iq__grid')!.hidden = true;
         form.querySelector<HTMLElement>('.iq__foot')!.hidden = true;

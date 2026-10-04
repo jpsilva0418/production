@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { SERVICES } from '../../data/services';
-import { SITE_NAME } from '../../data/site';
+import { SITE_NAME, POSITIONING } from '../../data/site';
 
 /* One page, three pillars, each linking to its own detail route. The free
    demo stays the headline offer because it is still the strongest reason a
@@ -30,8 +30,8 @@ const tints: Record<string, string> = {
 };
 ---
 <Base
-  title={`Services | ${SITE_NAME}`}
-  description="Web design and development, Google Ads and Meta Ads — built and managed by one person. Start with a free homepage demo, no obligation."
+  title="Services: Websites, Google Ads & Meta Ads"
+  description="Three services from one person: web design and development, Google Ads, and Meta Ads for Facebook and Instagram. Massachusetts-based, working nationwide."
   schema={schema}
 >
   <section class="section">
@@ -43,6 +43,7 @@ const tints: Record<string, string> = {
           Advertising brings people to you. The website decides whether they call. I do both,
           which means neither one gets blamed on the other vendor.
         </p>
+        <p class="lead svc__geo">{POSITIONING}</p>
       </div>
 
       <div class="grid g3 svc__grid">
@@ -96,8 +97,8 @@ const tints: Record<string, string> = {
           conversation costs nothing either way.
         </p>
         <div class="btn-row svc__btns">
-          <a class="btn btn--primary" href="/free-demo" data-track="demo_start" data-track-label="services">Get your free demo</a>
-          <a class="btn btn--ghost" href="/contact">Start a project</a>
+          <a class="btn btn--primary" href="/free-demo" data-track="get_free_demo_click" data-track-label="services">Get your free demo</a>
+          <a class="btn btn--ghost" href="/contact" data-track="start_project_click">Start a project</a>
         </div>
       </div>
     </div>
@@ -105,6 +106,7 @@ const tints: Record<string, string> = {
 </Base>
 
 <style>
+  .svc__geo { color: var(--ink); }
   .svc__grid { align-items: stretch; }
   .svc__pts { display: grid; gap: .4rem; margin-top: var(--s2); }
   .svc__pts li {

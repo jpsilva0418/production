@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import InquiryForm from '../components/InquiryForm.astro';
 import Social from '../components/Social.astro';
-import { SITE_NAME, EMAIL, PHONE, PHONE_URI, REPLY_SLA, DEMO_TURNAROUND } from '../data/site';
+import { SITE_NAME, EMAIL, PHONE, PHONE_URI, REPLY_SLA, DEMO_TURNAROUND, POSITIONING } from '../data/site';
 
 /* The one inquiry page. Every CTA on the site that is not the free demo
    points here, and the form on this page is the only form besides the
@@ -16,7 +16,7 @@ const schema = {
 ---
 <Base
   title={`Start a project | ${SITE_NAME}`}
-  description="Tell JP Silva about your website or advertising project. Free consultation, free homepage demo, and no obligation either way."
+  description="Tell JP Silva about your website or advertising project. Massachusetts-based, working with businesses nationwide. Free consultation, free demo, no obligation."
   schema={schema}
 >
   <section class="section">
@@ -28,6 +28,7 @@ const schema = {
           Whether it is a website, advertising, or you are not sure which you need yet &mdash;
           this is the form. I read every one myself and reply within {REPLY_SLA}.
         </p>
+        <p class="lead ct__geo">{POSITIONING}</p>
       </div>
 
       <div class="ct">
@@ -45,7 +46,7 @@ const schema = {
               business. Free, and no obligation once you have seen it. The concept usually
               comes back within {DEMO_TURNAROUND}.
             </p>
-            <a class="btn btn--primary btn--wide ct__demobtn" href="/free-demo" data-track="demo_start" data-track-label="contact">Start the free demo</a>
+            <a class="btn btn--primary btn--wide ct__demobtn" href="/free-demo" data-track="get_free_demo_click" data-track-label="contact">Start the free demo</a>
           </div>
 
           <div class="ct__block">
@@ -95,6 +96,7 @@ const schema = {
                padding-top: var(--s5); border-top: 1px solid var(--rule); }
   .ct__block--last { gap: var(--s3); }
   /* The number must never wrap mid-way across a narrow phone screen. */
+  .ct__geo { color: var(--ink); }
   .ct__tel { white-space: nowrap; }
   .ct__soc { margin-top: var(--s2); }
 </style>

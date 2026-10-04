@@ -3,7 +3,7 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Analytics from '../components/Analytics.astro';
-import { SITE_NAME, EMAIL, PHONE_URI, SOCIALS } from '../data/site';
+import { SITE_NAME, EMAIL, PHONE_URI, SOCIALS, BASE_STATE, REGIONS } from '../data/site';
 
 export interface Props {
   title: string;
@@ -17,7 +17,27 @@ export interface Props {
 }
 
 const { title, description, noindex = false, schema, ogType = 'website' } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site).href;
+/* `build.format: 'file'` emits about.html, so Astro.url.pathname arrives as
+   '/about.html'. Canonicalising to that advertises a URL the sitemap never
+   lists — every page would point Google at one address while the sitemap
+   advertised another. Normalise to the extensionless route the site is
+   actually served at, and keep the trailing slash only on the root. */
+const cleanPath =
+  Astro.url.pathname
+    .replace(/\.html$/, '')
+    .replace(/\/index$/, '/')
+    .replace(/(.)\/$/, '$1') || '/';
+/* trailingSlash is 'never' and the sitemap emits the origin with no slash, so
+   the root canonical must match it rather than ending in '/'. */
+const canonical =
+  cleanPath === '/'
+    ? new URL(Astro.site!).href.replace(/\/$/, '')
+    : new URL(cleanPath, Astro.site).href;
+const GSC_TOKEN = (import.meta.env.PUBLIC_GSC_VERIFICATION as string | undefined) ?? '';
+
+/* Pages pass the distinctive part of the title; the brand is appended here so
+   every page ends the same way and no page can forget it or say it twice. */
+const fullTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
 
 /* Sitewide entity. Deliberately minimal: no foundingDate, no
    numberOfEmployees, no award, no aggregateRating — none of it is true yet,
@@ -31,11 +51,17 @@ const org = {
   name: SITE_NAME,
   url: Astro.site?.href,
   description:
-    'Founder-led studio building conversion-focused websites and running Google and Meta advertising for businesses across the United States.',
+    'Founder-led studio building conversion-focused websites and running Google and Meta advertising. Massachusetts-based, serving Greater Boston, MetroWest and businesses nationwide.',
   founder: { '@type': 'Person', name: 'JP Silva' },
   email: EMAIL,
   telephone: PHONE_URI.replace('tel:', ''),
-  areaServed: { '@type': 'Country', name: 'United States' },
+  /* Where the business is, and where it works. No address and no
+     LocalBusiness type: both would require facts JP has not supplied. */
+  areaServed: [
+    { '@type': 'State', name: BASE_STATE },
+    ...REGIONS.map((r) => ({ '@type': 'Place', name: r })),
+    { '@type': 'Country', name: 'United States' },
+  ],
   /* Only real profiles. An empty SOCIALS array emits no sameAs at all. */
   ...(SOCIALS.length > 0 && { sameAs: SOCIALS.map((s) => s.href) }),
 };
@@ -50,13 +76,13 @@ const ogImage = new URL('/og.png', Astro.site).href;
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>{title}</title>
+  <title>{fullTitle}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonical} />
   {noindex && <meta name="robots" content="noindex, follow" />}
 
   <meta property="og:type" content={ogType} />
-  <meta property="og:title" content={title} />
+  <meta property="og:title" content={fullTitle} />
   <meta property="og:description" content={description} />
   <meta property="og:url" content={canonical} />
   <meta property="og:site_name" content={SITE_NAME} />
@@ -70,6 +96,12 @@ const ogImage = new URL('/og.png', Astro.site).href;
 
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
+  {/* Search Console ownership. Set PUBLIC_GSC_VERIFICATION to the content
+      value Google gives you under Settings → Ownership verification → HTML
+      tag (the token only, not the whole tag). Unset renders nothing — the
+      token is not invented, and a wrong one fails verification silently. */}
+  {GSC_TOKEN && <meta name="google-site-verification" content={GSC_TOKEN} />}
+
   <script type="application/ld+json" set:html={JSON.stringify(org)} />
   <Analytics />
   {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
@@ -80,6 +112,45 @@ const ogImage = new URL('/og.png', Astro.site).href;
   </script>
 </head>
 <body>
+  <script is:inline>
+    /* Scroll position, centrally. This is an Astro MPA — every navigation is
+       a real document load, so the browser already starts a fresh page at the
+       top. This is the guard for the cases where it does not: a stale offset
+       restored before first paint, or a page returning from the back/forward
+       cache with the previous document's position.
+
+       Three rules, in this order:
+         · an intentional #anchor link is left alone and scrolls to its target
+         · back and forward keep the browser's own restoration
+         · everything else starts at the top, without animating
+
+       Deliberately NOT history.scrollRestoration = 'manual', which would
+       break back/forward for the whole site to fix a forward-navigation
+       symptom. And deliberately not a scrollTo scattered through pages. */
+    (function () {
+      try {
+        var nav = performance.getEntriesByType('navigation')[0];
+        var traversal = nav && (nav.type === 'back_forward' || nav.type === 'reload');
+        if (location.hash || traversal) return;
+        var root = document.documentElement;
+        var top = function () {
+          var prev = root.style.scrollBehavior;
+          root.style.scrollBehavior = 'auto';   // never animate a correction
+          window.scrollTo(0, 0);
+          root.style.scrollBehavior = prev;
+        };
+        top();
+        /* A second pass once fonts and any island have settled: late layout
+           shifts can nudge the page a few pixels off the top. Only corrects
+           drift — if the visitor has actually started reading, leave them
+           where they are. */
+        addEventListener('load', function () {
+          if (window.scrollY > 0 && window.scrollY < 120) top();
+        }, { once: true });
+      } catch (e) {}
+    })();
+  </script>
+
   <a class="skip-link" href="#main">Skip to content</a>
   <Header />
   <main id="main">

@@ -15,9 +15,22 @@ export const EMAIL = 'jpsilva0418@gmail.com';
 export const PHONE = '(774) 214-6352';
 export const PHONE_URI = 'tel:+17742146352';
 
-/** TODO(launch): confirmed service area. Drives copy only — never an address,
-    and never LocalBusiness schema, which requires a real street address. */
-export const SERVICE_AREA = 'Businesses across the United States';
+/* ---------------------------------------------------------------- Geography
+   One canonical positioning, used deliberately rather than pasted onto every
+   page. The business is based in Massachusetts and works remotely nationwide;
+   neither half may be allowed to hide the other.
+
+   These drive copy and schema `areaServed` only. There is deliberately no
+   street address and no LocalBusiness schema: that type requires a real
+   verifiable address, and JP has not supplied one. Inventing one is the
+   fastest way to a manual action. */
+export const BASE_STATE = 'Massachusetts';
+export const REGIONS = ['Greater Boston', 'MetroWest'];
+/** The full positioning sentence. Use where it genuinely helps a reader. */
+export const POSITIONING =
+  'Massachusetts-based. Serving Greater Boston, MetroWest, and businesses nationwide.';
+/** Short form for tight spots like the footer. */
+export const SERVICE_AREA = 'Massachusetts-based, working with businesses nationwide';
 
 /* No registered entity has been supplied, so the footer shows the plain
    brand copyright. Nothing is invented, and no placeholder is published. */

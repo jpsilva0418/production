@@ -43,15 +43,19 @@ export interface Service {
   steps: { t: string; d: string }[];
   /** Maps to the inquiry form's `need` field. */
   needValue: string;
+  /** Blog post ids that support this page's intent. Informational content
+      pointing at the commercial page, not competing with it. Ids must match
+      filenames in src/content/blog. */
+  reading: string[];
 }
 
 export const SERVICES: Service[] = [
   {
     slug: 'web-design-development',
     name: 'Web Design & Development',
-    seoTitle: 'Web Design & Development for Small Businesses',
+    seoTitle: 'Web Design & Development in Massachusetts',
     seoDescription:
-      'Custom business websites, redesigns and landing pages, designed and built end to end. Start with a free homepage demo — no obligation.',
+      'Custom business websites, redesigns and landing pages, designed and built end to end. Massachusetts-based, working nationwide. Start with a free homepage demo.',
     short: 'Websites',
     blurb:
       'Custom business websites, redesigns and landing pages — designed around how your customers actually decide.',
@@ -89,13 +93,18 @@ export const SERVICES: Service[] = [
       { t: 'Launch and hand over', d: 'Domain, hosting, code, content and analytics are all in your name from day one.' },
     ],
     needValue: 'Website / Web Development',
+    reading: [
+      'what-a-small-business-website-needs-to-convert',
+      'signs-your-website-needs-a-redesign',
+      'website-seo-basics-for-small-businesses',
+    ],
   },
   {
     slug: 'google-ads',
     name: 'Google Ads',
-    seoTitle: 'Google Ads Management for Local & Service Businesses',
+    seoTitle: 'Google Ads Management in Massachusetts',
     seoDescription:
-      'Google Ads campaign setup, keyword strategy, conversion tracking and ongoing management — reaching people already searching for what you do.',
+      'Google Ads and PPC management for small and local businesses: campaign setup, keyword strategy, negative keywords, conversion tracking and ongoing optimisation.',
     short: 'Google Ads',
     blurb:
       'Search campaigns for people already looking for what you do — set up properly, tracked honestly, managed month to month.',
@@ -135,15 +144,20 @@ export const SERVICES: Service[] = [
       { t: 'Manage and report', d: 'Ongoing optimisation with reporting you can actually read.' },
     ],
     needValue: 'Google Ads',
+    reading: [
+      'how-google-ads-works-for-service-businesses',
+      'google-ads-vs-meta-ads-for-local-business',
+      'fix-the-landing-page-before-running-ads',
+    ],
   },
   {
     slug: 'meta-ads',
     name: 'Meta Ads',
     pageTitle: 'Meta Ads — Facebook & Instagram',
     navLabel: 'Meta Ads — Facebook & Instagram',
-    seoTitle: 'Meta Ads Management — Facebook & Instagram Advertising',
+    seoTitle: 'Facebook & Instagram Ads Management',
     seoDescription:
-      'Facebook and Instagram advertising managed end to end: Meta Ads Manager setup, audience strategy, creative, retargeting, conversion tracking and reporting.',
+      'Facebook and Instagram campaigns run from one Meta Ads Manager account: audience strategy, creative, retargeting, Pixel tracking and plain-English reporting.',
     short: 'Meta Ads',
     blurb:
       'Facebook and Instagram advertising for demand you have to create rather than capture — audiences, creative and tracking handled together.',
@@ -182,6 +196,10 @@ export const SERVICES: Service[] = [
       { t: 'Scale what works', d: 'Budget follows evidence, and the reporting shows you the same numbers I see.' },
     ],
     needValue: 'Meta / Facebook Ads',
+    reading: [
+      'google-ads-vs-meta-ads-for-local-business',
+      'fix-the-landing-page-before-running-ads',
+    ],
   },
 ];
 

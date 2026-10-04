@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Social from '../components/Social.astro';
-import { SITE_NAME, FOUNDER, EMAIL, PHONE, PHONE_URI, LEGAL_ENTITY, FOUNDER_PHOTO, SERVICE_AREA, REPLY_SLA } from '../data/site';
+import { SITE_NAME, FOUNDER, EMAIL, PHONE, PHONE_URI, LEGAL_ENTITY, FOUNDER_PHOTO, BASE_STATE, REPLY_SLA } from '../data/site';
 import { SERVICES } from '../data/services';
 import { PROJECTS } from '../data/projects';
 
@@ -52,8 +52,8 @@ const principles = [
 ];
 ---
 <Base
-  title={`About ${FOUNDER} | ${SITE_NAME}`}
-  description={`${FOUNDER} builds websites and runs Google and Meta advertising for small businesses. One person, start to finish — here is how I work and why.`}
+  title={`Meet ${FOUNDER}, Founder`}
+  description={`${FOUNDER} builds websites and runs Google and Meta advertising for small businesses. Massachusetts-based, working nationwide — here is how I work and why.`}
   schema={person}
 >
   <!-- ══ INTRO ═══════════════════════════════════════════════════════════ -->
@@ -68,8 +68,8 @@ const principles = [
           on the first call is the person doing the work.
         </p>
         <div class="btn-row ab__cta">
-          <a class="btn btn--primary" href="/free-demo" data-track="demo_start" data-track-label="about">Get your free demo</a>
-          <a class="btn btn--ghost" href="/contact">Start a project</a>
+          <a class="btn btn--primary" href="/free-demo" data-track="get_free_demo_click" data-track-label="about">Get your free demo</a>
+          <a class="btn btn--ghost" href="/contact" data-track="start_project_click">Start a project</a>
         </div>
       </div>
 
@@ -108,7 +108,8 @@ const principles = [
           problem &mdash; and that answer is often not the one you came in expecting.
         </p>
         <p class="body ab__p">
-          I build for businesses across the United States: home services and contractors, beauty
+          I am based in {BASE_STATE}, working with businesses around Greater Boston and MetroWest
+          and across the United States: home services and contractors, beauty
           and wellness studios, professional practices, and established companies whose sites have
           quietly stopped working. I have also built and shipped my own software, which is where
           I learned most of what I know about making something complicated feel simple.
@@ -204,7 +205,8 @@ const principles = [
       <dl class="ab__facts">
         <div><dt>Business</dt><dd>{LEGAL_ENTITY ?? SITE_NAME}</dd></div>
         <div><dt>Founder</dt><dd>{FOUNDER}</dd></div>
-        <div><dt>Working with</dt><dd>{SERVICE_AREA}</dd></div>
+        <div><dt>Based in</dt><dd>{BASE_STATE}</dd></div>
+        <div><dt>Working with</dt><dd>Greater Boston, MetroWest, and businesses nationwide</dd></div>
         <div><dt>Capacity</dt><dd>One project at a time</dd></div>
         <div><dt>Email</dt><dd><a class="tlink" href={`mailto:${EMAIL}`} data-track="email_click" data-track-label="about">{EMAIL}</a></dd></div>
         <div>
@@ -232,8 +234,8 @@ const principles = [
           I reply to every message within {REPLY_SLA} &mdash; and if I do not, email me again and say so.
         </p>
         <div class="btn-row ab__btns">
-          <a class="btn btn--primary" href="/free-demo" data-track="demo_start" data-track-label="about-close">Get your free demo</a>
-          <a class="btn btn--ghost" href="/contact">Start a project</a>
+          <a class="btn btn--primary" href="/free-demo" data-track="get_free_demo_click" data-track-label="about-close">Get your free demo</a>
+          <a class="btn btn--ghost" href="/contact" data-track="start_project_click">Start a project</a>
         </div>
       </div>
     </div>

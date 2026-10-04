@@ -90,7 +90,7 @@ const inSection = (item: (typeof nav)[number]) =>
           </li>
         ))}
       </ul>
-      <a class="btn btn--primary btn--sm dnav__cta" href="/free-demo" data-track="demo_start" data-track-label="header">Get Your Free Demo</a>
+      <a class="btn btn--primary btn--sm dnav__cta" href="/free-demo" data-track="get_free_demo_click" data-track-label="header">Get Your Free Demo</a>
     </nav>
 
     <button class="tgl" id="tgl" type="button" aria-expanded="false" aria-controls="mnav" aria-label="Open menu">
@@ -145,7 +145,7 @@ const inSection = (item: (typeof nav)[number]) =>
   </nav>
 
   <div class="mnav__foot">
-    <a class="btn btn--primary btn--wide" href="/free-demo" data-track="demo_start" data-track-label="mobile-menu">Get Your Free Demo</a>
+    <a class="btn btn--primary btn--wide" href="/free-demo" data-track="get_free_demo_click" data-track-label="mobile-menu">Get Your Free Demo</a>
     <p class="mnav__fine">Free, and no obligation.</p>
     <Social class="mnav__soc" size="sm" />
   </div>
@@ -367,6 +367,19 @@ const inSection = (item: (typeof nav)[number]) =>
 
     /* Resizing past the breakpoint must never strand a locked page. */
     mq.addEventListener('change', (e) => { if (!e.matches && !mnav.hidden) setOpen(false); });
+
+    /* Back/forward can restore this document from the bfcache exactly as it
+       was left — which, if the visitor navigated from an open menu, means a
+       visible overlay over a page whose scroll is still locked. Reset both
+       on restore. */
+    addEventListener('pageshow', (e) => {
+      if (!e.persisted) return;
+      mnav.classList.remove('in');
+      mnav.hidden = true;
+      tgl.setAttribute('aria-expanded', 'false');
+      tgl.setAttribute('aria-label', 'Open menu');
+      document.documentElement.style.overflow = '';
+    });
 
     /* Hide on scroll down, return on scroll up — never while the menu is open. */
     let last = window.scrollY;
