@@ -33,7 +33,7 @@ export interface Service {
 
 export const SERVICES: Service[] = [
   {
-    slug: 'web-development',
+    slug: 'web-design-development',
     name: 'Web Design & Development',
     short: 'Websites',
     blurb:

@@ -1,25 +1,49 @@
 ---
-/* Six items, no more. The three services live under Services rather than in
-   the bar — a nav that lists every offering stops being navigation and starts
-   being a price list. The CTA stays the free demo, because it is still the
-   offer that makes a stranger act. */
+/* ==========================================================================
+   HEADER — the site's architecture, exposed.
+
+   Desktop: six items, with Services opening a dropdown of the three service
+   pages. Nothing important is discoverable only by scrolling the homepage.
+
+   Mobile: a full-surface navigation panel, not a dropdown. Large rows,
+   separators, an accordion for Services, an explicit close control, and the
+   free-demo CTA emphasised at the bottom. The panel scrolls if it needs to
+   and is rendered above everything.
+
+   Both menus read from one `nav` array, so a route cannot exist in one and
+   not the other.
+   ========================================================================== */
 import { SITE_NAME } from '../data/site';
+import { SERVICES } from '../data/services';
 
 const nav = [
-  { href: '/',        label: 'Home' },
-  { href: '/services', label: 'Services' },
-  { href: '/work',     label: 'Work' },
-  { href: '/about',    label: 'About Me' },
-  { href: '/blog',     label: 'Blog' },
-  { href: '/contact',  label: 'Contact' },
+  { href: '/', label: 'Home' },
+  {
+    href: '/services',
+    label: 'Services',
+    children: SERVICES.map((s) => ({ href: `/services/${s.slug}`, label: s.name })),
+  },
+  { href: '/work',    label: 'Work' },
+  { href: '/about',   label: 'About Me' },
+  { href: '/blog',    label: 'Blog' },
+  { href: '/contact', label: 'Contact' },
 ];
 
-/* Mark the current section so the nav says where you are. '/' only matches
-   exactly; everything else matches its subtree, so /work/leti-silva-beauty
-   still highlights Work. */
-const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+/* '/' matches exactly; everything else matches its subtree, so
+   /work/leti-silva-beauty still marks Work as current.
+
+   `build.format: 'file'` means Astro.url.pathname arrives as '/work.html',
+   not '/work' — strip that first, or every section index silently fails to
+   mark itself current while its child pages succeed. */
+const path =
+  Astro.url.pathname
+    .replace(/\.html$/, '')
+    .replace(/\/index$/, '')
+    .replace(/\/$/, '') || '/';
 const isCurrent = (href: string) =>
   href === '/' ? path === '/' : path === href || path.startsWith(`${href}/`);
+const inSection = (item: (typeof nav)[number]) =>
+  isCurrent(item.href) || (item.children?.some((c) => isCurrent(c.href)) ?? false);
 ---
 <header class="hdr" id="hdr">
   <div class="container hdr__in">
@@ -28,22 +52,87 @@ const isCurrent = (href: string) =>
       <span class="wm__t">Silva Digital</span>
     </a>
 
-    <nav class="nav" id="nav" aria-label="Primary">
-      <ul class="nav__l">
+    <!-- ── desktop ─────────────────────────────────────────────────────── -->
+    <nav class="dnav" aria-label="Primary">
+      <ul class="dnav__l">
         {nav.map((i) => (
-          <li>
-            <a class="nav__a" href={i.href} aria-current={isCurrent(i.href) ? 'page' : undefined}>{i.label}</a>
+          <li class={i.children ? 'dnav__has' : ''}>
+            <a class="dnav__a" href={i.href} aria-current={inSection(i) ? 'page' : undefined}>
+              {i.label}
+              {i.children && (
+                <svg class="dnav__chev" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m1 1.5 5 5 5-5"/></svg>
+              )}
+            </a>
+            {i.children && (
+              <div class="dnav__drop">
+                <ul>
+                  {i.children.map((c) => (
+                    <li><a href={c.href} aria-current={isCurrent(c.href) ? 'page' : undefined}>{c.label}</a></li>
+                  ))}
+                  <li class="dnav__dall"><a href={i.href}>All services</a></li>
+                </ul>
+              </div>
+            )}
           </li>
         ))}
       </ul>
-      <a class="btn btn--primary btn--sm nav__cta" href="/#planner" data-track="demo_start" data-track-label="header">Get Your Free Demo</a>
+      <a class="btn btn--primary btn--sm dnav__cta" href="/free-demo" data-track="demo_start" data-track-label="header">Get Your Free Demo</a>
     </nav>
 
-    <button class="tgl" id="tgl" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu">
-      <span></span><span></span>
+    <button class="tgl" id="tgl" type="button" aria-expanded="false" aria-controls="mnav" aria-label="Open menu">
+      <span></span><span></span><span></span>
     </button>
   </div>
 </header>
+
+<!-- ── mobile panel ──────────────────────────────────────────────────────
+     Outside .hdr so no sticky/backdrop-filter ancestor can trap its
+     stacking context behind page content. -->
+<div class="mnav" id="mnav" hidden>
+  <div class="mnav__bar">
+    <a class="wm" href="/" aria-label={`${SITE_NAME} — home`}>
+      <span class="wm__i">JP</span>
+      <span class="wm__t">Silva Digital</span>
+    </a>
+    <button class="mnav__x" id="mclose" type="button" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
+
+  <nav class="mnav__scroll" aria-label="Mobile">
+    <ul class="mnav__l">
+      {nav.map((i) => (
+        <li class="mnav__i">
+          {i.children ? (
+            <>
+              <div class="mnav__row">
+                <a class="mnav__a" href={i.href} aria-current={isCurrent(i.href) ? 'page' : undefined}>{i.label}</a>
+                <button class="mnav__exp" type="button" aria-expanded={inSection(i) ? 'true' : 'false'}
+                        aria-controls={`sub-${i.label}`} aria-label={`Show ${i.label} pages`}>
+                  <svg viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m1 1.5 5 5 5-5"/></svg>
+                </button>
+              </div>
+              <ul class="mnav__sub" id={`sub-${i.label}`} hidden={!inSection(i)}>
+                {i.children.map((c) => (
+                  <li><a href={c.href} aria-current={isCurrent(c.href) ? 'page' : undefined}>{c.label}</a></li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <div class="mnav__row">
+              <a class="mnav__a" href={i.href} aria-current={isCurrent(i.href) ? 'page' : undefined}>{i.label}</a>
+            </div>
+          )}
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+  <div class="mnav__foot">
+    <a class="btn btn--primary btn--wide" href="/free-demo" data-track="demo_start" data-track-label="mobile-menu">Get Your Free Demo</a>
+    <p class="mnav__fine">Free, no obligation, yours to keep.</p>
+  </div>
+</div>
 
 <style>
   .hdr {
@@ -54,7 +143,6 @@ const isCurrent = (href: string) =>
     transition: border-color .2s var(--ease), transform .35s var(--ease);
   }
   .hdr.on { border-bottom-color: var(--rule); }
-  /* slips away going down, returns the moment you scroll up */
   .hdr.hide { transform: translateY(-100%); }
   .hdr__in { display: flex; align-items: center; justify-content: space-between; gap: var(--s5); min-height: var(--header-h); }
 
@@ -66,98 +154,208 @@ const isCurrent = (href: string) =>
   }
   .wm__t { font-weight: 640; letter-spacing: -.014em; font-size: 1rem; }
 
-  .nav { display: flex; align-items: center; gap: var(--s6); }
-  .nav__l { display: flex; align-items: center; gap: var(--s5); }
-  .nav__a {
-    position: relative; font-size: var(--fs-small); color: var(--graphite); text-decoration: none;
-    padding-block: var(--s2); transition: color .18s var(--ease);
+  /* ── desktop ─────────────────────────────────────────────────────────── */
+  .dnav { display: flex; align-items: center; gap: var(--s6); }
+  .dnav__l { display: flex; align-items: center; gap: var(--s5); }
+  .dnav__has { position: relative; }
+  .dnav__a {
+    position: relative; display: inline-flex; align-items: center; gap: .3rem;
+    font-size: var(--fs-small); color: var(--graphite); text-decoration: none;
+    padding-block: var(--s4); transition: color .18s var(--ease);
   }
-  .nav__a:hover { color: var(--ink); }
-  .nav__a[aria-current="page"] { color: var(--ink); font-weight: 700; }
-  .nav__a[aria-current="page"]::after {
-    content: ''; position: absolute; left: 0; right: 0; bottom: .1rem;
+  .dnav__a:hover { color: var(--ink); }
+  .dnav__a[aria-current="page"] { color: var(--ink); font-weight: 700; }
+  .dnav__a[aria-current="page"]::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: .55rem;
     height: 2px; border-radius: 2px; background: var(--redline);
   }
+  .dnav__chev { width: .6rem; height: .45rem; transition: transform .2s var(--ease); }
+  .dnav__has:hover .dnav__chev, .dnav__has:focus-within .dnav__chev { transform: rotate(180deg); }
 
+  .dnav__drop {
+    position: absolute; top: 100%; left: 50%; transform: translate(-50%, .4rem);
+    min-width: 17rem; padding: .5rem;
+    background: var(--card); border: 1px solid var(--rule); border-radius: 14px;
+    box-shadow: var(--shadow-up);
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transition: opacity .18s var(--ease), transform .18s var(--ease), visibility .18s;
+    z-index: 110;
+  }
+  .dnav__has:hover .dnav__drop, .dnav__has:focus-within .dnav__drop {
+    opacity: 1; visibility: visible; pointer-events: auto; transform: translate(-50%, 0);
+  }
+  .dnav__drop a {
+    display: block; padding: .7rem .85rem; border-radius: 10px;
+    font-size: var(--fs-small); font-weight: 600; text-decoration: none; color: var(--ink);
+    transition: background-color .15s var(--ease), color .15s var(--ease);
+  }
+  .dnav__drop a:hover { background: var(--blue-soft); color: var(--redline-dk); }
+  .dnav__drop a[aria-current="page"] { color: var(--redline); background: var(--blue-soft); }
+  .dnav__dall { margin-top: .25rem; padding-top: .35rem; border-top: 1px solid var(--rule); }
+  .dnav__dall a { color: var(--redline); font-weight: 700; }
+
+  /* ── hamburger ───────────────────────────────────────────────────────── */
   .tgl {
-    display: none; width: 2.75rem; height: 2.75rem; border: 1px solid var(--rule);
-    background: var(--card); border-radius: 12px; cursor: pointer;
-    position: relative; flex: none;
+    display: none; width: 2.9rem; height: 2.9rem; flex: none;
+    border: 1px solid var(--rule); background: var(--card); border-radius: 12px;
+    cursor: pointer; position: relative;
   }
   .tgl span {
-    position: absolute; left: 50%; width: 1.1rem; height: 2px; background: var(--ink);
+    position: absolute; left: 50%; width: 1.15rem; height: 2px; background: var(--ink);
     border-radius: 2px; transform: translateX(-50%);
-    transition: transform .3s var(--ease), opacity .2s var(--ease);
   }
-  .tgl span:nth-child(1) { top: 1.05rem; }
-  .tgl span:nth-child(2) { bottom: 1.05rem; }
-  .tgl[aria-expanded="true"] span:nth-child(1) { top: 50%; transform: translate(-50%, -50%) rotate(45deg); }
-  .tgl[aria-expanded="true"] span:nth-child(2) { bottom: 50%; transform: translate(-50%, 50%) rotate(-45deg); }
+  .tgl span:nth-child(1) { top: .95rem; }
+  .tgl span:nth-child(2) { top: 1.4rem; }
+  .tgl span:nth-child(3) { top: 1.85rem; }
+
+  /* ── mobile panel ────────────────────────────────────────────────────── */
+  .mnav {
+    position: fixed; inset: 0; z-index: 300;
+    display: flex; flex-direction: column;
+    background: var(--paper);
+    opacity: 0; transform: translateY(-.75rem);
+    transition: opacity .25s var(--ease), transform .25s var(--ease);
+  }
+  .mnav[hidden] { display: none; }
+  .mnav.in { opacity: 1; transform: none; }
+
+  .mnav__bar {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--s4);
+    padding: var(--s4) var(--gutter);
+    min-height: var(--header-h); border-bottom: 1px solid var(--rule);
+    background: var(--card); flex: none;
+  }
+  .mnav__x {
+    width: 2.9rem; height: 2.9rem; flex: none; display: grid; place-items: center;
+    border: 1px solid var(--rule); background: var(--card); border-radius: 12px;
+    cursor: pointer; color: var(--ink);
+  }
+  .mnav__x svg { width: 1.15rem; height: 1.15rem; }
+
+  .mnav__scroll {
+    flex: 1; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+    padding-inline: var(--gutter); padding-bottom: var(--s5);
+  }
+  .mnav__i { border-bottom: 1px solid var(--rule); }
+  .mnav__row { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); }
+  .mnav__a {
+    flex: 1; display: block; padding-block: 1.15rem;
+    font-size: 1.35rem; font-weight: 700; letter-spacing: -.02em;
+    color: var(--ink); text-decoration: none;
+  }
+  .mnav__a[aria-current="page"] { color: var(--redline); }
+  .mnav__exp {
+    width: 3rem; height: 3rem; flex: none; display: grid; place-items: center;
+    background: none; border: 0; cursor: pointer; color: var(--graphite);
+  }
+  .mnav__exp svg { width: .85rem; height: .6rem; transition: transform .25s var(--ease); }
+  .mnav__exp[aria-expanded="true"] svg { transform: rotate(180deg); color: var(--redline); }
+
+  .mnav__sub { padding: 0 0 var(--s4) var(--s4); display: grid; gap: .1rem; }
+  .mnav__sub[hidden] { display: none; }
+  .mnav__sub a {
+    display: block; padding: .85rem 0 .85rem var(--s4);
+    font-size: 1.02rem; font-weight: 600; color: var(--graphite); text-decoration: none;
+    border-left: 2px solid var(--rule);
+  }
+  .mnav__sub a:hover, .mnav__sub a[aria-current="page"] { color: var(--redline); border-left-color: var(--redline); }
+
+  .mnav__foot {
+    flex: none; padding: var(--s5) var(--gutter) calc(var(--s5) + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--rule); background: var(--card);
+  }
+  .mnav__fine { margin-top: var(--s3); text-align: center; font-size: var(--fs-small); color: var(--graphite); }
 
   @media (max-width: 62rem) {
-    .tgl { display: block; z-index: 2; }
-    .nav {
-      position: fixed; inset: 0; z-index: 1;
-      flex-direction: column; align-items: stretch; justify-content: center;
-      gap: var(--s6); padding: var(--s8) var(--gutter);
-      background: var(--paper);
-      opacity: 0; visibility: hidden; transform: translateY(-1rem);
-      transition: opacity .28s var(--ease), transform .28s var(--ease), visibility .28s;
-      overflow-y: auto;
-    }
-    .nav.open { opacity: 1; visibility: visible; transform: none; }
-    .nav__l { flex-direction: column; align-items: stretch; gap: 0; }
-    .nav__l li { border-bottom: 1px solid var(--rule); }
-    .nav__a {
-      display: block; padding-block: var(--s5); font-size: 1.5rem; font-weight: 700;
-      letter-spacing: -.02em; color: var(--ink);
-    }
-    .nav__a[aria-current="page"] { color: var(--redline); }
-    .nav__a[aria-current="page"]::after { display: none; }
-    .nav__cta { width: 100%; padding-block: 1.05rem; font-size: 1.05rem; }
+    .dnav { display: none; }
+    .tgl { display: block; }
+  }
+  @media (min-width: 62.0625rem) {
+    .mnav { display: none !important; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mnav, .mnav__exp svg, .dnav__drop { transition: none; }
   }
 </style>
 
 <script>
   const hdr = document.getElementById('hdr');
   const tgl = document.getElementById('tgl');
-  const nav = document.getElementById('nav');
+  const mnav = document.getElementById('mnav');
+  const mclose = document.getElementById('mclose');
 
-  if (hdr && tgl && nav) {
+  if (hdr && tgl && mnav && mclose) {
     const mq = matchMedia('(max-width: 62rem)');
+    let lastFocus: HTMLElement | null = null;
+
+    const focusables = () =>
+      Array.from(mnav.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'))
+        .filter((el) => el.offsetParent !== null);
 
     const setOpen = (open: boolean) => {
-      nav.classList.toggle('open', open);
       tgl.setAttribute('aria-expanded', String(open));
-      tgl.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-      /* Lock the page behind the overlay, and never leave it locked. */
       document.documentElement.style.overflow = open ? 'hidden' : '';
+      if (open) {
+        lastFocus = document.activeElement as HTMLElement;
+        mnav.hidden = false;
+        /* one frame so the transition has a starting state to move from */
+        requestAnimationFrame(() => {
+          mnav.classList.add('in');
+          mclose.focus();
+        });
+      } else {
+        mnav.classList.remove('in');
+        const done = () => { mnav.hidden = true; };
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) done();
+        else setTimeout(done, 250);
+        lastFocus?.focus();
+      }
     };
 
-    tgl.addEventListener('click', () => setOpen(!nav.classList.contains('open')));
+    tgl.addEventListener('click', () => setOpen(mnav.hidden));
+    mclose.addEventListener('click', () => setOpen(false));
 
-    /* Any navigation inside the overlay closes it — including same-page
-       anchors, which fire no navigation of their own. */
-    nav.addEventListener('click', (e) => {
+    /* Any navigation closes the panel, including same-page anchors which
+       fire no navigation of their own. */
+    mnav.addEventListener('click', (e) => {
       if ((e.target as HTMLElement).closest('a')) setOpen(false);
     });
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && nav.classList.contains('open')) { setOpen(false); tgl.focus(); }
+    /* Services accordion. Server-rendered open when you are inside that
+       section, so the current page is never hidden behind a collapsed row. */
+    mnav.querySelectorAll<HTMLButtonElement>('.mnav__exp').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const sub = document.getElementById(btn.getAttribute('aria-controls')!);
+        if (!sub) return;
+        const open = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!open));
+        sub.hidden = open;
+      });
     });
 
-    /* Resizing past the breakpoint must not strand a locked page. */
-    mq.addEventListener('change', (e) => { if (!e.matches) setOpen(false); });
+    document.addEventListener('keydown', (e) => {
+      if (mnav.hidden) return;
+      if (e.key === 'Escape') { setOpen(false); return; }
+      /* Keep focus inside the panel while it is covering the page. */
+      if (e.key === 'Tab') {
+        const items = focusables();
+        if (!items.length) return;
+        const first = items[0], last = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
 
-    /* Hide on scroll down, return on scroll up. Never while the menu is open. */
+    /* Resizing past the breakpoint must never strand a locked page. */
+    mq.addEventListener('change', (e) => { if (!e.matches && !mnav.hidden) setOpen(false); });
+
+    /* Hide on scroll down, return on scroll up — never while the menu is open. */
     let last = window.scrollY;
     let ticking = false;
     const onScroll = () => {
       const y = window.scrollY;
       hdr.classList.toggle('on', y > 8);
-      if (!nav.classList.contains('open')) {
-        hdr.classList.toggle('hide', y > last && y > 240);
-      }
+      if (mnav.hidden) hdr.classList.toggle('hide', y > last && y > 240);
       last = y;
       ticking = false;
     };

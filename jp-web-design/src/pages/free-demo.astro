@@ -1,0 +1,233 @@
+---
+import Base from '../layouts/Base.astro';
+import Planner from '../components/planner/Planner.jsx';
+import { SITE_NAME, DEMO_TURNAROUND, REPLY_SLA } from '../data/site';
+
+/* The canonical Website Project Planner. There is exactly one of these in the
+   codebase and it lives here — the homepage links to it rather than embedding
+   it, so the questionnaire gets a focused page with nothing competing for
+   attention and a URL that can be linked, bookmarked and advertised.
+
+   Composition is deliberately narrow and quiet: a short header, the planner
+   at full width, then the reassurance that belongs *after* someone has seen
+   the tool rather than before. No hero, no ticker, no second CTA competing
+   with the one thing this page exists to do. */
+
+const steps = [
+  { n: '01', t: 'Answer eight questions', d: 'Your trade, your goals, and what you have today. Roughly four minutes, and nothing is required beyond the answers.', meta: '≈ 4 minutes' },
+  { n: '02', t: 'Your plan appears on screen', d: 'A page structure, feature set, search priorities and a timeline range — immediately, before any email address is asked for.', meta: 'Instant, no email' },
+  { n: '03', t: 'I design your homepage', d: 'A real design concept using your services, your work and your words. Not a template with your logo dropped in.', meta: DEMO_TURNAROUND },
+  { n: '04', t: 'You decide', d: 'Love it and we build the rest. Don’t, and that is the end of it — no invoice, no follow-up sequence, no hard feelings.', meta: '$0 either way' },
+];
+
+const faqs = [
+  {
+    q: 'Is the free demo actually free?',
+    a: 'Yes, and nothing is attached to it. You answer the questions, I design a homepage concept for your business, and you look at it. If you do not want to go further, that is the end of it. I offer it because the studio is new, and real work on your own business is more convincing than any portfolio I could point you at.',
+  },
+  {
+    q: 'Do I have to give my email to see the plan?',
+    a: 'No. The plan appears on screen as soon as you finish the questions. Your details are asked for at the end only so I can send it to you and design the demo — and the plan is shown whether or not you leave them.',
+  },
+  {
+    q: 'What if I am not sure about some answers?',
+    a: 'Approximate is fine. Every question has a reasonable middle option, and nothing you pick is binding. The planner is working out which shape of site fits, not writing a contract.',
+  },
+  {
+    q: 'What if I need ads rather than a website?',
+    a: 'This planner is website-specific. For Google Ads or Meta Ads, the project form on the contact page is the faster route and the first conversation is free either way.',
+  },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: 'Get a free homepage demo',
+    description: 'Answer eight questions and receive a free, designed homepage concept for your business.',
+    totalTime: 'PT4M',
+    step: steps.map((s, i) => ({ '@type': 'HowToStep', position: i + 1, name: s.t, text: s.d })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+<Base
+  title={`Free Homepage Demo — Website Project Planner | ${SITE_NAME}`}
+  description="Answer eight questions, see your website plan on screen, and get a designed homepage concept for your business — free, with no obligation."
+  schema={schema}
+>
+  <!-- ══ HEADER ══════════════════════════════════════════════════════════ -->
+  <section class="fd__top">
+    <div class="container fd__topin">
+      <p><span class="mark mark--green"><b>§</b> Website project planner</span></p>
+      <h1 class="display fd__h">Eight questions, then your free demo</h1>
+      <p class="lead fd__lead">
+        A page structure, feature set, search priorities and a rough timeline &mdash; on screen
+        straight away, no email needed. Leave your details at the end and I turn it into a
+        designed homepage concept for your business, free.
+      </p>
+      <ul class="fd__checks">
+        <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5 8.5 15 16 5.5"/></svg>Actually free</li>
+        <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5 8.5 15 16 5.5"/></svg>No obligation</li>
+        <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5 8.5 15 16 5.5"/></svg>Yours to keep</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ══ THE PLANNER ═════════════════════════════════════════════════════ -->
+  <section class="fd__plan" id="planner" aria-labelledby="fd-planner-h">
+    <div class="container">
+      {/* The planner's own headings start at h3, so this h2 keeps the
+          document outline unbroken. Visually redundant with the page
+          header above it, hence hidden rather than rendered twice. */}
+      <h2 class="vh" id="fd-planner-h">The planner</h2>
+      <div class="fd__wrap">
+        <Planner client:load />
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ WHAT HAPPENS ════════════════════════════════════════════════════ -->
+  <section class="section" aria-labelledby="fd-how">
+    <div class="container">
+      <p><span class="mark"><b>§01</b> What happens</span></p>
+      <h2 class="h2 fd__sh" id="fd-how">From eight answers to a homepage you can look at</h2>
+      <ol class="fd__steps">
+        {steps.map((s) => (
+          <li class="fd__step">
+            <span class="fd__n">{s.n}</span>
+            <div>
+              <h3 class="h3">{s.t}</h3>
+              <p class="small">{s.d}</p>
+            </div>
+            <span class="fd__meta">{s.meta}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ══ HOW IT WORKS UNDERNEATH ═════════════════════════════════════════ -->
+  <section class="section section--panel" aria-labelledby="fd-logic">
+    <div class="container fd__cols">
+      <div>
+        <h2 class="h3" id="fd-logic">How the recommendation is made</h2>
+        <p class="small fd__p">
+          Your answers map to a site type, a page count and a feature set. Business type drives
+          the page names, service breadth drives the structure, and your primary goal decides
+          what the site is optimised around. Nothing is scored secretly, and no answer is used
+          to price you.
+        </p>
+      </div>
+      <div>
+        <h2 class="h3">What appears on screen</h2>
+        <p class="small fd__p">
+          The recommended package and why, a suggested page list in your own vocabulary, the
+          features that follow from it, search priorities, one thing worth leaving out, and an
+          estimated timeline range.
+        </p>
+      </div>
+      <div>
+        <h2 class="h3">What I do with your details</h2>
+        <p class="small fd__p">
+          Design your demo and reply within {REPLY_SLA}. There is no mailing list, no follow-up
+          sequence, and nothing is passed to anyone else.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FAQ ═════════════════════════════════════════════════════════════ -->
+  <section class="section" aria-labelledby="fd-faq">
+    <div class="container">
+      <p><span class="mark"><b>§02</b> Questions</span></p>
+      <h2 class="h2 fd__sh" id="fd-faq">Before you start</h2>
+      <div class="fd__faq">
+        {faqs.map((f) => (
+          <details class="fd__q">
+            <summary><span>{f.q}</span></summary>
+            <p class="small">{f.a}</p>
+          </details>
+        ))}
+      </div>
+
+      <div class="note fd__alt">
+        <span class="lbl">Not a website project?</span>
+        <p class="small">
+          This planner is website-specific. If you are here about Google Ads or Meta Ads, the
+          project form is the faster route &mdash; and the first conversation is free either way.
+        </p>
+        <div class="btn-row fd__altb">
+          <a class="btn btn--ghost" href="/contact">Start a project</a>
+          <a class="btn btn--ghost" href="/services">See all services</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* A quieter top than the homepage hero: this page is a tool, not a pitch. */
+  .fd__top { padding-block: clamp(2.5rem, 6vw, 4rem) clamp(2rem, 4vw, 3rem); }
+  .fd__topin { max-width: 46rem; }
+  .fd__h { margin-bottom: var(--s5); }
+  .fd__lead { margin-bottom: var(--s5); }
+  .fd__checks { display: flex; flex-wrap: wrap; gap: var(--s5); }
+  .fd__checks li { display: inline-flex; align-items: center; gap: .45rem; font-size: var(--fs-small); font-weight: 700; }
+  .fd__checks svg { width: 1rem; height: 1rem; color: var(--green-t); flex: none; }
+
+  .fd__plan { padding-bottom: var(--section-y); scroll-margin-top: calc(var(--header-h) + var(--s5)); }
+  .fd__wrap {
+    background: var(--card); border: 1px solid var(--rule); border-radius: var(--r);
+    padding: clamp(1.1rem, 3vw, 2.25rem); box-shadow: var(--shadow-up);
+  }
+
+  .fd__sh { margin-bottom: var(--s6); }
+
+  .fd__steps { border-top: 1px solid var(--rule); }
+  .fd__step {
+    display: grid; grid-template-columns: 3.5rem minmax(0, 1fr) auto; gap: var(--s5); align-items: start;
+    padding-block: var(--s5); border-bottom: 1px solid var(--rule);
+  }
+  .fd__step > div > * + * { margin-top: var(--s2); }
+  .fd__n { font-family: var(--mono); font-size: .8rem; letter-spacing: .1em; color: var(--redline); padding-top: .3rem; }
+  .fd__meta {
+    font-family: var(--mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--green-t); background: var(--green-soft); border: 1px solid var(--green-bd);
+    border-radius: 999px; padding: .4rem .7rem; white-space: nowrap;
+  }
+  @media (max-width: 48rem) {
+    .fd__step { grid-template-columns: 2.5rem minmax(0, 1fr); gap: var(--s4); }
+    .fd__meta { grid-column: 2; justify-self: start; }
+  }
+
+  .fd__cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s6); align-items: start; }
+  @media (max-width: 56rem) { .fd__cols { grid-template-columns: 1fr; gap: var(--s5); } }
+  .fd__p { margin-top: var(--s3); }
+
+  .fd__faq { border-top: 1px solid var(--rule); }
+  .fd__q { border-bottom: 1px solid var(--rule); }
+  .fd__q summary {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--s4);
+    padding-block: var(--s5); cursor: pointer; font-weight: 700; list-style: none;
+  }
+  .fd__q summary::-webkit-details-marker { display: none; }
+  .fd__q summary::after {
+    content: ''; width: .6rem; height: .6rem; flex: none;
+    border-right: 2px solid var(--redline); border-bottom: 2px solid var(--redline);
+    transform: rotate(45deg) translateY(-25%); transition: transform .25s var(--ease);
+  }
+  .fd__q[open] summary::after { transform: rotate(-135deg) translateY(-25%); }
+  .fd__q > p { padding-bottom: var(--s5); max-width: var(--measure); }
+
+  .fd__alt { margin-top: var(--s7); max-width: 52rem; }
+  .fd__altb { margin-top: var(--s4); }
+</style>

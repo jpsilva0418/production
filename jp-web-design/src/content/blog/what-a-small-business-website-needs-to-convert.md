@@ -58,4 +58,4 @@ Clarity, one obvious action, specific proof, answered objections, speed, and str
 
 None of this requires a redesign in the dramatic sense. I have seen sites gain more from rewriting a headline and moving a phone number than from a complete visual rebuild — because the problem was never that it looked bad. It was that nobody could tell what it was for.
 
-If you want to see what that would look like for your business specifically, [the free homepage demo](/#planner) is exactly that: I design the concept first, and you decide after you have seen it.
+If you want to see what that would look like for your business specifically, [the free homepage demo](/free-demo) is exactly that: I design the concept first, and you decide after you have seen it.

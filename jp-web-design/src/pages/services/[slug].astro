@@ -30,7 +30,7 @@ const schema = {
 const related = PROJECTS.filter((p) =>
   p.services.some((x) => {
     const t = x.toLowerCase();
-    if (service.slug === 'web-development') return t.includes('web') || t.includes('design') || t.includes('development');
+    if (service.slug === 'web-design-development') return t.includes('web') || t.includes('design') || t.includes('development');
     if (service.slug === 'google-ads') return t.includes('google') || t.includes('seo');
     return t.includes('meta') || t.includes('social');
   }),
@@ -124,15 +124,15 @@ const others = SERVICES.filter((s) => s.slug !== service.slug);
         <p><span class="mark"><b>§</b> Start here</span></p>
         <h2 class="h2" id="sd-cta">Tell me what you need</h2>
         <p class="lead">
-          {service.slug === 'web-development'
+          {service.slug === 'web-design-development'
             ? 'The free homepage demo is the fastest way to see what I would do with your site — a real concept for your business, before you pay anything.'
             : `The first conversation is free and there is no obligation. ${SERVICE_AREA}.`}
         </p>
       </div>
 
-      {service.slug === 'web-development' && (
+      {service.slug === 'web-design-development' && (
         <div class="btn-row sd__demo">
-          <a class="btn btn--primary" href="/#planner" data-track="demo_start" data-track-label={service.slug}>Get your free demo</a>
+          <a class="btn btn--primary" href="/free-demo" data-track="demo_start" data-track-label={service.slug}>Get your free demo</a>
           <span class="small">Or use the form below.</span>
         </div>
       )}

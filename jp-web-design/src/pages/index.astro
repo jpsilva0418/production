@@ -2,10 +2,16 @@
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import Packages from '../components/Packages.astro';
-import Planner from '../components/planner/Planner.jsx';
 import Founder from '../components/Founder.astro';
+import { getCollection } from 'astro:content';
 import { PROJECTS, STATUS_LABEL } from '../data/projects';
 import { SERVICES } from '../data/services';
+
+/* Latest two posts. The homepage previews the blog; /blog is the real index. */
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 2);
+const fmtDate = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
 /* Selected work is real now, so the spec-build plates have served their
    purpose and retired. The label system they established carries over
@@ -260,7 +266,7 @@ const check = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke
             <li set:html={check + 'The page structure I would build, and the reasoning behind it'} />
             <li set:html={check + 'Yours to look at, with no cost and no commitment'} />
           </ul>
-          <a class="btn btn--primary btn--wide" href="#planner">Start the free demo</a>
+          <a class="btn btn--primary btn--wide" href="/free-demo">Start the free demo</a>
           <p class="offer__fine">
             <!-- TODO(launch): set a turnaround JP can hold every single time. -->
             Usually back within 3–5 business days. One project at a time — if I&rsquo;m at
@@ -316,38 +322,31 @@ const check = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke
   <!-- ══ MEET JP ════════════════════════════════════════════════════════ -->
   <Founder />
 
-  <!-- ══ PLANNER ════════════════════════════════════════════════════════ -->
+  <!-- ══ PLANNER PREVIEW ══════════════════════════════════════════════
+       The planner itself lives at /free-demo. This is the door to it, not a
+       second copy — there is exactly one Website Project Planner. ══════════ -->
   <section class="sec sec--panel" id="planner" aria-labelledby="pln-h">
     <div class="container">
       <p data-anim="pop"><span class="mark mark--green" style="margin-bottom:0">Website project planner</span></p>
       <h2 class="sec__h" id="pln-h" data-split data-anim>Eight questions, then your free demo</h2>
       <p class="sec__sub" data-anim style="--d:160ms">
-        A page structure, feature set, search priorities and rough timeline — on screen
-        straight away, no email needed. Leave your details at the end and I turn it into
-        a designed homepage concept, free.
+        A page structure, feature set, search priorities and rough timeline &mdash; on screen
+        straight away, no email needed. Leave your details at the end and I turn it into a
+        designed homepage concept, free.
       </p>
 
-      <div class="pln__wrap" data-anim style="--d:120ms">
-        <Planner client:visible />
-      </div>
-
-      <div class="pln__meta">
-        <div>
-          <h3 class="h3">How the recommendation is made</h3>
-          <p class="small">
-            Your answers map to a site type, a page count and a feature set. Business type
-            drives the page names, service breadth drives the structure, and your primary
-            goal decides what the site is optimised around. Nothing is scored secretly, and
-            no answer is used to price you.
-          </p>
-        </div>
-        <div>
-          <h3 class="h3">What appears on screen</h3>
-          <p class="small">
-            The recommended package and why, a suggested page list in your own vocabulary,
-            the features that follow from it, search priorities, one thing worth leaving
-            out, and an estimated timeline range.
-          </p>
+      <div class="pln__preview" data-anim style="--d:120ms">
+        <ol class="pln__steps">
+          <li><span>01</span><b>Answer eight questions</b><i>≈ 4 minutes</i></li>
+          <li><span>02</span><b>Your plan appears on screen</b><i>Instant, no email</i></li>
+          <li><span>03</span><b>I design your homepage</b><i>3–5 business days</i></li>
+          <li><span>04</span><b>You decide</b><i>$0 either way</i></li>
+        </ol>
+        <div class="pln__go">
+          <a class="btn btn--primary" href="/free-demo" data-track="demo_start" data-track-label="home-planner">
+            Start the free demo <span class="btn__arr" aria-hidden="true">→</span>
+          </a>
+          <p class="small">Nothing is owed, and nothing is held back &mdash; the plan shows before any details are asked for.</p>
         </div>
       </div>
     </div>
@@ -417,7 +416,7 @@ const check = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke
       </div>
 
       <p><span class="night__tag" id="nightTag">BY MORNING, THE DECISION IS MADE</span></p>
-      <p><a class="night__link" href="#planner">Be the site that answers — free demo →</a></p>
+      <p><a class="night__link" href="/free-demo">Be the site that answers — free demo →</a></p>
     </div>
   </section>
 
@@ -470,6 +469,37 @@ const check = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke
     </div>
   </section>
 
+  <!-- ══ LATEST ARTICLES ══════════════════════════════════════════════ -->
+  <section class="sec" id="articles" aria-labelledby="art-h">
+    <div class="container">
+      <p data-anim="pop"><span class="mark" style="margin-bottom:0">From the blog</span></p>
+      <h2 class="sec__h" id="art-h" data-split data-anim>Notes on getting found and getting called</h2>
+      <p class="sec__sub" data-anim style="--d:160ms">
+        What I have learned building sites and running campaigns, written for business owners
+        rather than for search engines.
+      </p>
+
+      <div class="art__g">
+        {posts.map((p, i) => (
+          <a class="card art__c" href={`/blog/${p.id}`} data-anim="card" style={`--d:${i * 90}ms`}>
+            <span class="art__meta">
+              <span class="art__cat">{p.data.category}</span>
+              <time datetime={p.data.date.toISOString()}>{fmtDate(p.data.date)}</time>
+              <span>{p.data.readingTime} min read</span>
+            </span>
+            <h3 class="art__t">{p.data.title}</h3>
+            <p class="card__x">{p.data.description}</p>
+            <span class="tlink art__go">Read it <span aria-hidden="true">→</span></span>
+          </a>
+        ))}
+      </div>
+
+      <p class="art__all" data-anim>
+        <a class="btn btn--ghost" href="/blog">Read the blog</a>
+      </p>
+    </div>
+  </section>
+
   <!-- ══ CLOSE ══════════════════════════════════════════════════════════ -->
   <section class="sec close" id="start" aria-labelledby="close-h">
     <div class="container">
@@ -489,7 +519,7 @@ const check = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke
           current one back. No obligation at the end of either.
         </p>
         <div class="btn-row close__b">
-          <a class="btn close__cta" href="#planner">Get your free demo →</a>
+          <a class="btn close__cta" href="/free-demo">Get your free demo →</a>
           <a class="btn close__alt" href="/contact">Book a free consultation</a>
         </div>
         <p class="close__fine">Answer the eight planner questions · back in 3–5 business days</p>
@@ -583,6 +613,50 @@ const check = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke
     :global(.js-anim) .steps:not(.in)::before { transform: scaleX(0); }
     .steps > .card { position: relative; z-index: 1; }
   }
+
+  /* ── planner preview ─────────────────────────────────────────────────── */
+  .pln__preview {
+    display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 3rem); align-items: center; text-align: left;
+    background: var(--card); border: 1px solid var(--rule); border-radius: var(--r);
+    padding: clamp(1.4rem, 3.5vw, 2.5rem); margin-top: clamp(2rem, 4vw, 3rem);
+    box-shadow: var(--shadow-up);
+  }
+  @media (max-width: 52rem) { .pln__preview { grid-template-columns: 1fr; } }
+  .pln__steps { display: grid; gap: .1rem; }
+  .pln__steps li {
+    display: grid; grid-template-columns: 2.25rem minmax(0, 1fr) auto; gap: var(--s3);
+    align-items: center; padding-block: var(--s3); border-bottom: 1px solid var(--rule);
+  }
+  .pln__steps li:last-child { border-bottom: 0; }
+  .pln__steps span { font-family: var(--mono); font-size: .78rem; letter-spacing: .08em; color: var(--redline); }
+  .pln__steps b { font-weight: 700; font-size: var(--fs-small); }
+  .pln__steps i {
+    font-style: normal; font-family: var(--mono); font-size: .68rem; letter-spacing: .05em;
+    text-transform: uppercase; color: var(--graphite); white-space: nowrap;
+  }
+  @media (max-width: 30rem) {
+    .pln__steps li { grid-template-columns: 2rem minmax(0, 1fr); }
+    .pln__steps i { grid-column: 2; }
+  }
+  .pln__go { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s4); }
+  .pln__go .btn { width: 100%; justify-content: center; }
+
+  /* ── latest articles ─────────────────────────────────────────────────── */
+  .art__g { display: grid; gap: var(--s5); margin-top: clamp(2rem, 4vw, 3rem); text-align: left; }
+  @media (min-width: 52rem) { .art__g { grid-template-columns: repeat(2, 1fr); } }
+  .art__c { text-decoration: none; color: inherit; gap: .6rem; }
+  .art__c:hover { transform: translateY(-4px); }
+  .art__c:hover .art__t { color: var(--redline); }
+  .art__meta {
+    display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3);
+    font-family: var(--mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--graphite);
+  }
+  .art__cat { color: var(--redline); background: var(--blue-soft); border: 1px solid var(--blue-bd); border-radius: 999px; padding: .28rem .55rem; }
+  .art__t { font-size: 1.2rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.25; transition: color .18s var(--ease); }
+  .art__go { margin-top: auto; padding-top: var(--s3); }
+  .art__all { margin-top: var(--s6); }
 
   /* ── selected work ──────────────────────────────────────────────────── */
   .wrk { display: grid; gap: var(--s5); margin-top: clamp(2rem, 4vw, 3rem); }
