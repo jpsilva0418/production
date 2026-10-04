@@ -129,7 +129,11 @@ html:not(.p0) .cm::after{transform:scaleY(0)}
 @keyframes cue{0%{transform:translateY(-100%)}60%{transform:translateY(100%)}100%{transform:translateY(100%)}}
 .js-anim .cue{transition:opacity .9s ease .3s}
 .js-anim:not(.is-opened):not(.p5) .cue{opacity:0}
-@media (max-width:899px){.cue{display:none}.roles{letter-spacing:.24em}}
+@media (max-width:899px){.cue{display:none}
+  .hero-credits{flex-direction:column;align-items:stretch;gap:12px}
+  .roles{letter-spacing:.22em;white-space:nowrap;font-size:12px}
+  .place{display:flex;justify-content:space-between;align-items:baseline;gap:12px;text-align:left}
+  .place .mono+.mono{font-size:10px}}
 @media (min-width:900px){
   .band{aspect-ratio:2.39/1}
   .name .br-m{display:none}

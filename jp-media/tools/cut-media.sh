@@ -20,7 +20,7 @@ clip () { # name src start dur [vf]
   ffmpeg -v error -y -ss "$ss" -i "$src" -vf "$vf" -frames:v 1 -q:v 3 "$FILM/$name-poster.jpg"
   printf '  %-22s %5s KB mp4  %5s KB webm\n' "$name" $(( $(stat -c%s "$FILM/$name.mp4")/1024 )) $(( $(stat -c%s "$FILM/$name.webm")/1024 ))
 }
-FDC="crop=846:470:14:0"; NRC="crop=738:390:20:78"; CHC="crop=656:450:0:24"; WC="crop=660:500:0:6"
+FDC="crop=846:470:14:0"; NRC="crop=738:390:20:78"; CHC="crop=656:450:0:24"; WC="crop=636:500:0:6"
 still () { # name src time [vf]
   ffmpeg -v error -y -ss "$3" -i "$2" -vf "${4:-null}" -frames:v 1 -q:v 2 "$STILLS/$1.jpg"
 }
@@ -30,7 +30,7 @@ if [ -z "$SKIP_MONTAGE" ]; then
 echo "montage cuts (portrait 490x960)"
 clip m-hat      "$M" 0.0  1.6 "$MVF"
 clip m-truck    "$M" 1.6  1.5 "$MVF"
-clip m-concert  "$M" 4.3  1.8 "$MVF"
+clip m-concert  "$M" 5.2  0.55 "$MVF"   # crowd, arms up; a brand screen follows at 5.8 — never extend
 clip m-bts      "$M" 7.4  1.8 "$MVF"
 clip m-wing     "$M" 12.2 1.6 "$MVF"
 clip m-moto     "$M" 21.4 2.6 "$MVF"
@@ -42,9 +42,9 @@ clip m-bw       "$M" 38.3 3.0 "$MVF"
 clip m-rooftop  "$M" 44.4 3.2 "$MVF"
 # 12 s hero edit: eight cuts, hard cuts, no audio
 ffmpeg -v error -y \
- -ss 0.0 -t 1.5 -i "$M" -ss 4.3 -t 1.5 -i "$M" -ss 12.2 -t 1.4 -i "$M" -ss 21.4 -t 1.8 -i "$M" \
+ -ss 0.0 -t 1.5 -i "$M" -ss 1.6 -t 1.4 -i "$M" -ss 5.2 -t 0.55 -i "$M" -ss 12.2 -t 1.4 -i "$M" -ss 21.4 -t 1.8 -i "$M" \
  -ss 27.5 -t 1.4 -i "$M" -ss 36.8 -t 1.2 -i "$M" -ss 38.3 -t 1.6 -i "$M" -ss 44.4 -t 2.0 -i "$M" \
- -filter_complex "[0:v]$MVF,fps=30,setpts=PTS-STARTPTS[a];[1:v]$MVF,fps=30,setpts=PTS-STARTPTS[b];[2:v]$MVF,fps=30,setpts=PTS-STARTPTS[c];[3:v]$MVF,fps=30,setpts=PTS-STARTPTS[d];[4:v]$MVF,fps=30,setpts=PTS-STARTPTS[e];[5:v]$MVF,fps=30,setpts=PTS-STARTPTS[f];[6:v]$MVF,fps=30,setpts=PTS-STARTPTS[g];[7:v]$MVF,fps=30,setpts=PTS-STARTPTS[h];[a][b][c][d][e][f][g][h]concat=n=8:v=1:a=0,format=yuv420p[v]" \
+ -filter_complex "[0:v]$MVF,fps=30,setpts=PTS-STARTPTS[a];[1:v]$MVF,fps=30,setpts=PTS-STARTPTS[b];[2:v]$MVF,fps=30,setpts=PTS-STARTPTS[c];[3:v]$MVF,fps=30,setpts=PTS-STARTPTS[d];[4:v]$MVF,fps=30,setpts=PTS-STARTPTS[e];[5:v]$MVF,fps=30,setpts=PTS-STARTPTS[f];[6:v]$MVF,fps=30,setpts=PTS-STARTPTS[g];[7:v]$MVF,fps=30,setpts=PTS-STARTPTS[h];[8:v]$MVF,fps=30,setpts=PTS-STARTPTS[i];[a][b][c][d][e][f][g][h][i]concat=n=9:v=1:a=0,format=yuv420p[v]" \
  -map "[v]" -an -c:v libx264 -preset slow -crf 25 -movflags +faststart "$FILM/hero-montage.mp4"
 ffmpeg -v error -y -i "$FILM/hero-montage.mp4" -an -c:v libvpx-vp9 -b:v 0 -crf 35 -row-mt 1 "$FILM/hero-montage.webm"
 ffmpeg -v error -y -i "$FILM/hero-montage.mp4" -frames:v 1 -q:v 3 "$FILM/hero-montage-poster.jpg"
@@ -87,13 +87,13 @@ clip jp-sea       "$JP" 25.0 6.0 "crop=504:390:8:312"
 clip jp-sea-fade  "$JP" 36.0 6.0 "crop=504:390:8:312"
 
 echo "stills"
-still m-hat     "$M" 0.3  "$MVF";   still m-concert "$M" 4.68 "$MVF";  still m-wing "$M" 12.6 "$MVF"
+still m-hat     "$M" 0.3  "$MVF";   still m-concert "$M" 5.5 "$MVF";  still m-wing "$M" 12.6 "$MVF"
 still m-moto    "$M" 22.6 "$MVF";   still m-sunset  "$M" 28.0 "$MVF"; still m-bokeh "$M" 31.0 "$MVF"
 still m-studio  "$M" 32.6 "$MVF";   still m-horse   "$M" 37.2 "$MVF"; still m-bw "$M" 39.6 "$MVF"; still m-rooftop "$M" 46.4 "$MVF"
-for x in "fd-fence 3.2" "fd-flare 35.8" "fd-truck 50.6" "fd-silhouettes 24.9" "fd-headlights 1:22.2" "fd-clouds 1:23.6"; do set -- $x; still $1 "$FD" $2 "$FDC"; done
+for x in "fd-fence 3.2" "fd-flare 36.4" "fd-truck 50.6" "fd-silhouettes 24.9" "fd-headlights 1:22.2" "fd-clouds 1:23.6"; do set -- $x; still $1 "$FD" $2 "$FDC"; done
 for x in "w-aim 9.3" "w-silhouette 16.2" "w-saguaro 30.4" "w-gallop 36.6" "w-skyward 40.6" "w-portrait 57.2" "w-hat 51.4"; do set -- $x; still $1 "$W" $2 "$WC"; done
 for x in "nr-dash 6.2" "nr-silhouette 16.8" "nr-headlight 32.2"; do set -- $x; still $1 "$NR" $2 "$NRC"; done
-for x in "ch-ride 3.2" "ch-road 12.3" "ch-camera 20.9" "ch-detail 8.0"; do set -- $x; still $1 "$CH" $2 "$CHC"; done
+for x in "ch-ride 3.2" "ch-road 10.2" "ch-camera 20.9" "ch-detail 8.0"; do set -- $x; still $1 "$CH" $2 "$CHC"; done
 still fo-trees  "$FO" 12.9 "crop=492:960:4:0"; still fo-fire "$FO" 22.3 "crop=492:960:4:0"; still fo-umbrella "$FO" 3.3 "crop=492:960:4:0"
 still jp-sea    "$JP" 27.6 "crop=504:390:8:312"; still jp-sea-rail "$JP" 31.0 "crop=504:390:8:312"
 du -sh "$FILM" "$STILLS"; ls "$STILLS" | wc -l
