@@ -104,10 +104,16 @@ html.js-anim .opener.pre~main .hero-frame{visibility:visible}
 .js-anim:not(.is-opened):not(.h-hd) .hero-foot{visibility:hidden}
 .js-anim.h-jp:not(.is-skipped) .hero-jp{animation:slam .12s steps(2) both}
 .js-anim.h-silva:not(.is-skipped) .hero-silva{animation:slam .12s steps(2) both}
-.js-anim.h-hd:not(.is-skipped) .hd{animation:slam .1s steps(2) both}
+.js-anim.h-hd:not(.is-skipped):not(.is-opened) .hd{animation:slam .1s steps(2) both}
 
 /* ---- Header (fixed, stamps so it reads on paper too) ------------ */
-.hd{position:fixed;top:0;left:0;right:0;z-index:700;display:flex;justify-content:space-between;align-items:flex-start;padding:calc(10px + env(safe-area-inset-top,0px)) var(--gutter) 0;pointer-events:none}
+.hd{position:fixed;top:0;left:0;right:0;z-index:700;display:flex;justify-content:space-between;align-items:flex-start;padding:calc(10px + env(safe-area-inset-top,0px)) var(--gutter) 10px;pointer-events:none;border-bottom:1px solid transparent}
+/* once the hero is scrolled past the stamps sit on a solid black bar (so they never float over the marquee, the
+   9:16 column or the paper); scrolling down hides the bar in three hard steps, any scroll up brings it back */
+.hd.is-scrolled{background:var(--black);border-bottom-color:var(--line)}
+.hd.is-away{transform:translateY(-101%)}
+.is-opened .hd{animation:none;transition:transform .22s steps(3,end),background-color .15s steps(1,end),border-color .15s steps(1,end)}
+html.menu-open .hd{transform:none}
 .hd a{pointer-events:auto;display:inline-flex;align-items:center;min-height:44px;padding:0 10px;margin:0 -10px;font:600 13px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--paper);background:var(--black)}
 .hd-menu::before{content:"";width:8px;height:8px;background:var(--red);margin-right:10px}
 .hd a:hover{color:var(--red)}
@@ -224,8 +230,10 @@ html.menu-open{overflow:hidden}
 html:not(.js-anim) .kin-1,html:not(.js-anim) .kin-2{margin-left:0}
 
 /* ---- 5 · PORTRAITS: the drop to paper -------------------------- */
-.por{background:var(--paper);color:var(--black);position:relative;overflow:hidden;padding-top:0;padding-bottom:clamp(80px,14vh,160px)}
-.por-big{font:400 clamp(5rem,22vw,20rem)/.82 var(--display);text-transform:uppercase;letter-spacing:-.01em;white-space:nowrap;margin:-.24em 0 0 -.03em}
+/* the label drops in just under the cut to paper, whole: the top padding clears the statement's edge and the
+   small negative margin only eats Anton's internal leading, never the caps */
+.por{background:var(--paper);color:var(--black);position:relative;overflow:hidden;padding-top:clamp(28px,5vh,56px);padding-bottom:clamp(80px,14vh,160px)}
+.por-big{font:400 clamp(5rem,22vw,20rem)/.82 var(--display);text-transform:uppercase;letter-spacing:-.01em;white-space:nowrap;margin:-.04em 0 0 -.03em}
 .por-row{display:flex;flex-direction:column;gap:18px;margin:clamp(20px,4vh,40px) 0 clamp(36px,6vh,72px)}
 .kicker-dark{color:var(--black)}
 .por-intro{font:400 15px/1.45 var(--body);max-width:40ch}
@@ -355,4 +363,4 @@ html:not(.js-anim) .kin-1,html:not(.js-anim) .kin-2{margin-left:0}
 }
 
 /* at rest under reduced motion the outlined line sits on the gutter at every width */
-@media (prefers-reduced-motion:reduce){.kin-1,.kin-2{margin-left:0}}
+@media (prefers-reduced-motion:reduce){.kin-1,.kin-2{margin-left:0}.is-opened .hd{transition:none}}

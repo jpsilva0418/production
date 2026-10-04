@@ -4,7 +4,7 @@
   var JP = window.JP, d = document, root = d.documentElement, w = window;
   if (!JP || !JP.sequence) return;
 
-  /* 1 ─ Hero band geometry. Base CSS = the final band (near-native footage, right-aligned). For the intro the band is
+  /* 1 ─ Hero band geometry. Base CSS = the final band (gutter-to-gutter 2.39:1 on desktop). For the intro the band is
          scaled about an origin chosen so the scaled rectangle covers the viewport exactly centred: uniform scale, no
          distortion, and when the step lands it contracts back into its editorial frame. Layout offsets are used
          (not the transformed rect). Runs until the entrance is over. */

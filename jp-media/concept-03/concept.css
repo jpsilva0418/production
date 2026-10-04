@@ -10,12 +10,15 @@
    Scale     name clamp(4rem,10.5vw,11rem) desktop / one line at 17.5vw on phones
              h2 clamp(2.4rem,6.4vw,6.4rem) · interlude clamp(1.6rem,3.6vw,3.2rem)
              body 1.05rem/1.55 · notes 12.5px/1.5 tracking .06em
-   Hero band The real footage is 846×470, so the hero holds it in an editorial band
-             near native size: --bw min(58vw,920px) right-aligned on desktop,
-             a 100×124vw portrait crop at full width on phones (sky above, name on the
-             treeline, subline and field data on the picture). --hzf is the treeline of the
-             fd-dance frame (≈.65 of its height); --hzy is that line on the page.
-             The name rises out of --hzy; the burnt ground line continues it.
+   Hero band The real footage is 846×470 (sky ends at .56 of its height). Desktop: one
+             2.39:1 band from the left gutter to the right gutter (--bw, capped at 70svh tall),
+             the source cover-cropped with object-position 50% 18% so the sky/land edge lands at
+             --hzf = .70 of the band; the soft upscale sits behind the grade, the scrim and the
+             grain and reads as film. The name stands INSIDE the band, inset by --ix, its baseline
+             on that horizon (--hzy), rising out of the ground; subline on the treeline under it;
+             field data on the band's sky; the burnt ground rule runs behind the frame and shows
+             only in the page margins. Phones: a 100×124vw portrait crop at full width
+             (--hzf .65), name on the treeline, subline and field data on the picture.
    Entrance  "the exposure settles" (key c03, ≈3.8 s, title-sequence overlap):
              0 blown out (#F3D7AE + grain, frame scaled to cover) · 150 stops down 1→0 /1.3s ·
              700 field data types · 1300 frame contracts into the band /1.2s (long), the
@@ -30,10 +33,11 @@
   --mono:"Courier Prime","Courier New",Courier,monospace;
   --sans:"Public Sans",system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
   --gx:clamp(20px,4vw,56px);
-  --bw:min(58vw,920px); --bh:calc(var(--bw) * .5556); --hzf:.65;
-  --bt:calc(60svh - var(--bh) * var(--hzf));
+  --bw:min(calc(100vw - var(--gx) * 2),calc(70svh * 2.39)); --bh:calc(var(--bw) / 2.39); --hzf:.70;
+  --bt:max(calc(60svh - var(--bh) * var(--hzf)),calc(72px + env(safe-area-inset-top,0px)));
   --hzy:calc(var(--bt) + var(--bh) * var(--hzf));
-  --k:1.95; --ox:.78; --oy:.58;
+  --ix:calc(var(--gx) + clamp(16px,2.2vw,40px));
+  --k:1.65; --ox:.5; --oy:.44;
   --name:clamp(4rem,10.5vw,11rem);
   --grain-opacity:.08; --grain-blend:soft-light;
   color-scheme:dark;
@@ -89,30 +93,33 @@ h2{font:400 clamp(2.4rem,6.4vw,6.4rem)/.96 var(--serif);letter-spacing:-.012em;c
 
 /* ---- Hero -------------------------------------------------------------- */
 .hero{position:relative;height:100svh;min-height:600px;overflow:hidden;isolation:isolate}
-/* The band. Base = final geometry (near-native footage, right-aligned). The intro state scales it about a computed
-   origin so it covers the viewport (uniform scale, no distortion); concept.js refines --k/--ox/--oy per viewport. */
-.hero-frame{position:absolute;top:var(--bt);right:var(--gx);width:var(--bw);height:var(--bh);z-index:0;
+/* The band. Base = final geometry (gutter-to-gutter 2.39:1 on desktop, full width on phones). The intro state scales it
+   about a computed origin so it covers the viewport (uniform scale, no distortion); concept.js refines --k/--ox/--oy. */
+.hero-frame{position:absolute;top:var(--bt);left:var(--gx);width:var(--bw);height:var(--bh);z-index:0;
   transform-origin:calc(var(--ox) * 100%) calc(var(--oy) * 100%);will-change:transform}
 .js-anim.p1 .hero-frame{transition:transform 1.2s var(--ease)}
 .js-anim:not(.is-opened):not(.p3) .hero-frame{transform:scale(var(--k))}
 .is-skipped .hero-frame{transition-duration:.8s}
-.hero-frame>img,.hero-frame>video{object-position:50% 50%}
+.hero-frame>img,.hero-frame>video{object-position:50% 18%}
 /* the still thaws into motion only once the band has landed */
 .hero-frame>video.jp-video{transition:opacity 1.1s ease .55s}
 .js-anim:not(.is-opened):not(.p3) .hero-frame>video.jp-video{opacity:0}
 .hero-frame .frame-grade{background:linear-gradient(rgba(27,21,17,.10),rgba(27,21,17,.06) 50%,rgba(27,21,17,.34))}
 .hero-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:linear-gradient(90deg,rgba(27,21,17,.78),rgba(27,21,17,.34) 26%,rgba(27,21,17,0) 50%)}
-/* the ground line: the band's horizon continued across the page, under the name */
-.hero-ground{position:absolute;z-index:1;left:var(--gx);right:calc(var(--gx) + var(--bw) - 2px);top:calc(var(--hzy) + .07em);height:1px;background:var(--burnt);font-size:var(--name);
+  background:linear-gradient(90deg,rgba(27,21,17,.62),rgba(27,21,17,.3) 30%,rgba(27,21,17,0) 62%),
+             linear-gradient(rgba(27,21,17,.26),rgba(27,21,17,0) 38%)}
+/* the ground line: the band's horizon continued across the page. On desktop it runs BEHIND the frame (z -1 inside the
+   hero's stacking context) so it shows only in the margins, as if the horizon left the picture; on phones it is a short
+   burnt stroke into the picture under the name. */
+.hero-ground{position:absolute;z-index:-1;left:0;right:0;top:calc(var(--hzy) + .07em);height:1px;background:var(--burnt);font-size:var(--name);
   transform-origin:left;transition:transform .9s var(--ease) .55s}
 .js-anim:not(.is-opened):not(.p4) .hero-ground{transform:scaleX(0)}
 .fd{position:absolute;z-index:2;top:calc(78px + env(safe-area-inset-top,0px));margin:0;color:var(--dust)}
 .fd span{display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;max-width:calc(26ch + 1.5em);transition:max-width .55s steps(23,end)}
-.fd-tl{left:var(--gx)}
-.fd-tr{right:var(--gx);width:calc(10ch + .62em);text-align:left;white-space:nowrap}
+.fd-tl{left:var(--ix)}
+.fd-tr{right:calc(100% - var(--gx) - var(--bw) + var(--ix) - var(--gx));width:calc(10ch + .62em);text-align:left;white-space:nowrap}
 .fd-tr span{max-width:calc(10ch + .62em);transition-duration:.24s;transition-timing-function:steps(10,end)}
-.hero .fd-br{top:calc(var(--bt) + var(--bh) + 12px);right:var(--gx);width:var(--bw);text-align:right}
+.hero .fd-br{top:calc(var(--bt) + var(--bh) + 12px);left:var(--gx);width:var(--bw);text-align:right}
 .fd-br span{max-width:calc(30ch + 1.5em);transition-duration:.6s;transition-delay:.3s;transition-timing-function:steps(26,end)}
 .js-anim:not(.is-opened):not(.p2) .fd span{max-width:0}
 .js-anim.p2 .fd-tr span{transition-delay:.45s}
@@ -120,14 +127,14 @@ h2{font:400 clamp(2.4rem,6.4vw,6.4rem)/.96 var(--serif);letter-spacing:-.012em;c
 .js-anim.p2.is-opening .fd-tr::after{animation:c03-caret .7s steps(1) .45s infinite backwards}
 @keyframes c03-caret{0%{opacity:0}1%,50%{opacity:1}51%,100%{opacity:0}}
 @keyframes c03-blink{50%{opacity:0}}
-.hero-name-mask{position:absolute;z-index:2;left:var(--gx);right:var(--gx);top:0;height:calc(var(--hzy) + .2em);
+.hero-name-mask{position:absolute;z-index:2;left:var(--ix);right:var(--gx);top:0;height:calc(var(--hzy) + .2em);
   font-size:var(--name);display:flex;align-items:flex-end;overflow:hidden;pointer-events:none}
 .hero-name{font:400 1em/1 var(--serif);letter-spacing:-.018em;text-transform:uppercase;color:var(--bone);white-space:nowrap;
   transition:transform 1.05s var(--ease);will-change:transform}
 .hero-name .w{display:inline}
 .js-anim:not(.is-opened):not(.p4) .hero-name{transform:translateY(103%)}
-.hero-sub-mask{position:absolute;z-index:2;left:var(--gx);top:calc(var(--hzy) + 22px);max-width:calc(100% - var(--bw) - var(--gx) * 2 - 24px);overflow:hidden;padding-bottom:.3em}
-.hero-sub{font:300 1.05rem/1.4 var(--sans);color:var(--bone);max-width:30em;transition:transform .95s var(--ease)}
+.hero-sub-mask{position:absolute;z-index:2;left:var(--ix);top:calc(var(--hzy) + 22px);max-width:calc(var(--bw) - (var(--ix) - var(--gx)) * 2);overflow:hidden;padding-bottom:.3em}
+.hero-sub{font:300 1.05rem/1.4 var(--sans);color:var(--bone);max-width:30em;text-shadow:0 1px 3px rgba(15,12,10,.6);transition:transform .95s var(--ease)}
 .hero-sub .nb{white-space:nowrap}
 .js-anim:not(.is-opened):not(.p5) .hero-sub{transform:translateY(120%)}
 .roll-cue{position:absolute;z-index:2;left:var(--gx);bottom:calc(76px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;height:44px;
@@ -260,7 +267,8 @@ h2{font:400 clamp(2.4rem,6.4vw,6.4rem)/.96 var(--serif);letter-spacing:-.012em;c
    Desktop (≥ 900px): the diagonal, the pair, the split
    ============================================================ */
 @media (min-width:900px){
-  .fd{top:calc(84px + env(safe-area-inset-top,0px))}
+  .fd{top:calc(var(--bt) + 20px);text-shadow:0 1px 2px rgba(15,12,10,.55)}
+  .hero .fd-br{text-shadow:none}
   .roll-cue{bottom:calc(40px + env(safe-area-inset-bottom,0px))}
 
   .road{padding:clamp(96px,14vh,180px) 0 0}
@@ -313,18 +321,19 @@ h2{font:400 clamp(2.4rem,6.4vw,6.4rem)/.96 var(--serif);letter-spacing:-.012em;c
    Phones (< 900px): the band at full width (100×88vw crop), name on one line out of its horizon
    ============================================================ */
 @media (max-width:899px){
-  :root{--bw:100vw;--bh:124vw;--bt:calc(57svh - var(--bh) * var(--hzf));--k:2.5;--ox:.5;--oy:.52;--name:clamp(3rem,17.5vw,5.2rem)}
+  :root{--bw:100vw;--bh:124vw;--hzf:.65;--bt:calc(57svh - var(--bh) * var(--hzf));--ix:var(--gx);--k:2.5;--ox:.5;--oy:.52;--name:clamp(3rem,17.5vw,5.2rem)}
   .hero{min-height:560px}
-  .hero-frame{right:0}
+  .hero-frame{left:0;right:0}
+  .fd-tr{right:var(--gx)}
   .hero-frame>img,.hero-frame>video{object-position:50% 50%}
   .hero-scrim{background:linear-gradient(rgba(27,21,17,.46),rgba(27,21,17,.18) 34%,rgba(27,21,17,.06) 54%,rgba(27,21,17,.5) 78%,rgba(27,21,17,.62))}
   /* field data sits on the sky at the top of the band; the ground rule is a short burnt stroke into the picture */
   .fd{top:calc(var(--bt) + 14px);text-shadow:0 1px 2px rgba(15,12,10,.6)}
   .hero .fd-br{display:block;top:calc(var(--bt) + var(--bh) + 12px);right:var(--gx);width:auto;text-shadow:none}
-  .hero-ground{display:block;right:auto;width:20vw;top:calc(var(--hzy) + .08em)}
+  .hero-ground{display:block;z-index:1;left:var(--gx);right:auto;width:20vw;top:calc(var(--hzy) + .08em)}
   .hero-name-mask{height:calc(var(--hzy) + .18em)}
   .hero-sub-mask{top:calc(var(--hzy) + 18px);right:var(--gx);max-width:none}
-  .hero-sub{font-size:1rem;max-width:22em;text-shadow:0 1px 3px rgba(15,12,10,.55)}
+  .hero-sub{font-size:1rem;max-width:22em}
   .road{padding-bottom:clamp(32px,5vh,64px)}
   .site-nav a{padding:0 7px}
   .reel-shot{width:100%}

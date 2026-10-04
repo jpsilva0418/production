@@ -1,4 +1,4 @@
-/* CONCEPT 04 — SILVER · entrance, index table, phone menu, demo-safe contact (≈6 KB) */
+/* CONCEPT 04 — SILVER · entrance, index table, loop arbitration (two ambient loops + index clips), phone menu, demo-safe contact */
 (function () {
   'use strict';
   var d = document, root = d.documentElement, JP = window.JP || {};
@@ -69,38 +69,46 @@
       if (f.closest('.wk-panel')) arbitrate(v);
     });
   }
-  /* One playing loop per viewport: while an index clip is on screen AND playing, the hero cell loop (nr-dash) holds
-     on its frame; the moment the clip has no pixels on screen (or is paused: row closed, scrolled past core.js's 160px
-     margin) the hero is nudged again if it is still in view. core.js's own IO gating stays in charge of everything else. */
+  /* One playing loop per viewport: the page has two AMBIENT loops (hero cell nr-silhouette, statement frame
+     nr-headlight; never in one viewport, the index sits between them). While an index clip is on screen AND playing, the
+     ambient loop in view holds on its frame; the moment the clip has no pixels on screen (or is paused: row closed,
+     scrolled past core.js's 160px margin) the ambient loop is nudged again if it is still in view. core.js's own IO
+     gating stays in charge of everything else. */
+  var stateV = d.getElementById('state-video');
+  var ambient = [hero, stateV].filter(Boolean);
   var indexVideos = [];
   var visIO = ('IntersectionObserver' in window) ? new IntersectionObserver(function (es) {
     es.forEach(function (e) { e.target.__vis = e.isIntersecting; wake(e.target); }); settle();
   }, { threshold: [0, 0.01] }) : null;
-  function heroInView() {
-    var r = hero.getBoundingClientRect(), m = 160;
+  function inView(v) {
+    var r = v.getBoundingClientRect(), m = 160;
     return r.bottom > -m && r.top < window.innerHeight + m && r.width > 0;
   }
   function indexOn() { return indexVideos.some(function (v) { return v.__vis && !v.paused && !v.ended && v.isConnected; }); }
   function settle() {
-    if (!hero || !hero.isConnected || JP.reduced || JP.saveData) return;
-    if (indexOn()) { if (!hero.paused) hero.pause(); return; }
-    if (d.hidden || !heroInView()) return;
-    if (hero.paused) { var p = hero.play(); if (p && p.catch) p.catch(function () {}); }
-    /* the hero owns this viewport: an open row's clip that has scrolled out of sight (but is still inside core.js's
-       prefetch margin) holds too; it is nudged back the moment it is visible again */
-    indexVideos.forEach(function (v) { if (!v.__vis && !v.paused) v.pause(); });
+    if (!ambient.length || JP.reduced || JP.saveData) return;
+    var on = indexOn();
+    ambient.forEach(function (v) {
+      if (!v.isConnected) return;
+      if (on) { if (!v.paused) v.pause(); return; }
+      if (d.hidden || !inView(v)) return;
+      if (v.paused) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+    });
+    /* the ambient loop owns this viewport: an open row's clip that has scrolled out of sight (but is still inside
+       core.js's prefetch margin) holds too; it is nudged back the moment it is visible again */
+    if (!on) indexVideos.forEach(function (v) { if (!v.__vis && !v.paused) v.pause(); });
   }
   function wake(v) {
     if (v.__vis && v.paused && v.isConnected && v.classList.contains('jp-video') && v.closest('.wk-item.is-open')) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
   }
   function arbitrate(v) {
-    if (!hero || indexVideos.indexOf(v) > -1) return;
+    if (!ambient.length || indexVideos.indexOf(v) > -1) return;
     indexVideos.push(v);
     if (visIO) visIO.observe(v); else v.__vis = true;
     v.addEventListener('playing', settle);
     v.addEventListener('pause', settle);
   }
-  if (hero) hero.addEventListener('playing', function () { if (indexOn()) hero.pause(); });
+  ambient.forEach(function (v) { v.addEventListener('playing', function () { if (indexOn()) v.pause(); }); });
   function setOpen(item, open) {
     var btn = item.querySelector('.wk-row'), panel = item.querySelector('.wk-panel');
     item.classList.toggle('is-open', open);

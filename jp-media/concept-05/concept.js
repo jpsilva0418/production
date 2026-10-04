@@ -201,6 +201,21 @@
     });
   }
 
+  /* 5b ─ Header: a black bar once the hero is scrolled past; hides on scroll-down, returns on any scroll-up.
+         Only after the entrance (the count-in owns the header until then); the menu always shows it. */
+  var hd = d.querySelector('.hd');
+  if (hd) {
+    var hdAway = false, hdScrolled = false;
+    JP.onFrame(function (s) {
+      var scrolled = s.y > 24, away = hdAway;
+      if (s.dy > 2 && s.y > s.vh * 0.5) away = true;
+      else if (s.dy < -2 || s.y <= s.vh * 0.5) away = false;
+      if (isOpen) away = false;
+      if (scrolled !== hdScrolled) { hdScrolled = scrolled; hd.classList.toggle('is-scrolled', scrolled); }
+      if (away !== hdAway) { hdAway = away; hd.classList.toggle('is-away', away); }
+    });
+  }
+
   /* 6 ─ Strip: native everywhere; one "Next" control steps through and wraps. */
   var strip = d.getElementById('strip'), next = d.getElementById('mv-next');
   if (strip && next) {

@@ -36,7 +36,7 @@
 <header class="site-head" id="top">
   <a class="brand disp" href="#top" aria-label="JP Media, top of page">JP Media</a>
   <nav class="site-nav" id="site-nav" aria-label="Primary">
-    <a href="#work">Work</a><a href="#capabilities">Capabilities</a><a href="#credits">Credits</a><a href="#contact">Contact</a>
+    <a href="#work">Work</a><a href="#statement">Statement</a><a href="#credits">Credits</a><a href="#contact">Contact</a>
   </nav>
   <p class="avail mono">Available · Austin, TX</p>
   <button class="menu-btn mono" id="menu-btn" type="button" aria-expanded="false" aria-controls="menu"><span class="mb-open">Menu</span><span class="mb-close">Close</span></button>
@@ -45,8 +45,8 @@
 <div class="menu" id="menu" hidden inert role="dialog" aria-modal="true" aria-label="Menu">
   <nav class="menu-nav" aria-label="Primary, menu">
     <a href="#work"><span class="disp">Work</span><span class="mono">Index · 08</span></a>
-    <a href="#capabilities"><span class="disp">Capabilities</span><span class="mono">Six disciplines</span></a>
-    <a href="#credits"><span class="disp">Credits</span><span class="mono">Table</span></a>
+    <a href="#statement"><span class="disp">Statement</span><span class="mono">Night ride · Loop</span></a>
+    <a href="#credits"><span class="disp">Credits</span><span class="mono">Table · Unit</span></a>
     <a href="#about"><span class="disp">The House</span><span class="mono">Austin, TX</span></a>
     <a href="#contact"><span class="disp">Contact</span><span class="mono">New slate</span></a>
   </nav>
@@ -326,37 +326,34 @@
   </div>
 </section>
 
-<!-- 3 · CAPABILITIES -->
-<section class="sec" id="capabilities" aria-labelledby="cap-h">
-  <div class="sec-head mono"><h2 id="cap-h">Capabilities</h2><p>Six disciplines · One unit</p></div>
-  <ul class="caps" data-stag=".06">
-    <li class="cap" data-reveal="wipe"><i class="mono">01</i><h3 class="disp">Direction</h3><p>Narrative, music video and live performance. The idea is settled before the camera arrives.</p></li>
-    <li class="cap" data-reveal="wipe"><i class="mono">02</i><h3 class="disp">Production</h3><p>Small units that travel light, across Texas and on the road with bands. Schedules kept, sets kept quiet.</p></li>
-    <li class="cap" data-reveal="wipe"><i class="mono">03</i><h3 class="disp">Cinematography</h3><p>Handheld or locked off, available light first. Camera choices made for the cut, not the gear list.</p></li>
-    <li class="cap" data-reveal="wipe"><i class="mono">04</i><h3 class="disp">Photography</h3><p>Portraits, landscape and live work, often shot on the same days as the film. One eye across motion and stills.</p></li>
-    <li class="cap" data-reveal="wipe"><i class="mono">05</i><h3 class="disp">Edit</h3><p>Picture edit by the person who shot it. The cut keeps what the camera saw, nothing it did not.</p></li>
-    <li class="cap" data-reveal="wipe"><i class="mono">06</i><h3 class="disp">Behind the Scenes</h3><p>Documentation during production: the set, the road, the quiet between takes, from the same crew.</p></li>
-  </ul>
-</section>
-
-<!-- 4 · STATEMENT PLATE -->
+<!-- 3 · STATEMENT FRAME — the house's one cinematic beat: a full-bleed night-ride loop under the cool grade.
+     Second of the page's ambient loops (hero cell = nr-silhouette, here = nr-headlight); never shares a viewport with the first. -->
 <section class="state grain" id="statement" aria-labelledby="state-h">
   <figure class="frame state-frame" aria-hidden="true">
-    <img src="../media/stills/w-silhouette.jpg" width="680" height="512" alt="" loading="lazy" decoding="async">
+    <img src="../media/film/nr-headlight-poster.jpg" width="738" height="390" alt="" loading="lazy" decoding="async">
+    <video class="jp-video" id="state-video" muted playsinline loop autoplay preload="none" aria-hidden="true" poster="../media/film/nr-headlight-poster.jpg">
+      <source src="../media/film/nr-headlight.webm" type="video/webm">
+      <source src="../media/film/nr-headlight.mp4" type="video/mp4">
+    </video>
     <i class="frame-grade deep" aria-hidden="true"></i>
   </figure>
+  <p class="state-tag mono" aria-hidden="true"><span>Night Ride</span><span>A001 · Loop</span></p>
   <div class="state-in">
     <i class="rule" data-reveal="line" aria-hidden="true"></i>
     <h2 class="disp" id="state-h" data-reveal="wipe" style="--d:.25s">Commercial discipline.<br>Documentary instinct.</h2>
     <p class="mono" data-reveal="wipe" style="--d:.55s">Direction, production and camera for agencies, artists and brands.</p>
   </div>
-  <p class="state-cap mono" aria-hidden="true">Western · Silhouette · Still</p>
+  <p class="state-cap mono" aria-hidden="true">Music video · Night Ride · 778 × 512</p>
 </section>
 
-<!-- 5 · CREDITS -->
+<!-- 4 · CREDITS (with the unit's six disciplines as one hairline row) -->
 <section class="sec light" id="credits" aria-labelledby="cr-h">
   <div class="sec-head mono"><h2 id="cr-h">Credits</h2><p>Unit credit · Per film</p></div>
   <div class="cr mono">
+    <dl class="cr-unit" data-reveal="wipe">
+      <dt>Unit</dt>
+      <dd><ul aria-label="Disciplines of the unit"><li>Direction</li><li>Production</li><li>Cinematography</li><li>Photography</li><li>Edit</li><li>Behind the scenes</li></ul></dd>
+    </dl>
     <ul data-stag=".04">
       <li class="cr-head" data-reveal="wipe"><span>Film</span><span>Credit</span></li>
       <li data-reveal="wipe"><span>Showreel</span><span>Direction, camera, edit · 2025</span></li>
@@ -388,7 +385,7 @@
   </div>
 </section>
 
-<!-- 6 · THE HOUSE -->
+<!-- 5 · THE HOUSE -->
 <section class="sec house" id="about" aria-labelledby="ab-h">
   <div class="sec-head mono"><h2 id="ab-h">The House</h2><p>JP Media · Austin since 2025</p></div>
   <div class="house-g">
@@ -413,7 +410,7 @@
   </div>
 </section>
 
-<!-- 7 · CONTACT / NEW SLATE -->
+<!-- 6 · CONTACT / NEW SLATE -->
 <section class="sec light ct" id="contact" aria-labelledby="ct-h">
   <div class="sec-head mono"><h2 id="ct-h">Contact</h2><p>New slate · Private preview</p></div>
   <div class="ct-g">

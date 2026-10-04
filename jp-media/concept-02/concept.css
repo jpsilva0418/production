@@ -254,8 +254,10 @@ body{background:var(--bone);color:var(--ink);font:400 15px/1.55 var(--f-t)}
 /* the reel: a 9:16 frame at ≤ 22vw, the showreel behind a play control; the caption stands to its right */
 .reel{grid-column:4/13;display:grid;grid-template-columns:repeat(9,1fr);column-gap:var(--gap);margin:var(--sp) 0 0;position:relative}
 .reel::before{content:"";grid-column:1/4;grid-row:1;height:1px;background:var(--ink);align-self:start;transform-origin:left;z-index:3;pointer-events:none}
-.reel-frame{grid-column:1/4;grid-row:1;aspect-ratio:9/16;background:var(--plate-bg);box-shadow:inset 0 0 0 1px var(--rule)}
-.reel-frame img{filter:saturate(.92)}
+/* the reel frame is ink, never plate grey, and carries its own poster as a painted background: whatever the state of
+   the <img> or the <video>, the plate shows the real frame from the first paint */
+.reel-frame{grid-column:1/4;grid-row:1;aspect-ratio:9/16;background:var(--ink-plate) url("../media/stills/m-concert.jpg") 50% 50%/cover no-repeat;box-shadow:inset 0 0 0 1px var(--rule)}
+.reel-frame img{background:var(--ink-plate);filter:saturate(.92)}
 .reel-video{opacity:0;transition:opacity .7s ease;z-index:1}
 .reel.is-on .reel-video{opacity:1}
 .reel-btn{position:absolute;left:0;bottom:0;z-index:4;display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 16px 0 14px;

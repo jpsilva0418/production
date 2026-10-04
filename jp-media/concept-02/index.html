@@ -205,12 +205,13 @@
     </figcaption>
   </figure>
 
-  <!-- the reel: the full showreel, muted, behind a play control; nothing loads until it is asked for -->
+  <!-- the reel: the full showreel, muted, behind a play control; the film loads nothing until it is asked for,
+       but its poster still (a real frame from the reel, 27 KB) is fetched with the page so the plate is never an empty box -->
   <figure class="reel" id="reel" data-reveal="line">
     <div class="frame reel-frame" data-reveal="img" style="--d:.3s">
       <img src="../media/stills/m-concert.jpg" width="490" height="960"
            sizes="(min-width:900px) 22vw, 62vw"
-           alt="Showreel: a crowd in silhouette, arms raised before a lit stage" loading="lazy" fetchpriority="low" decoding="async">
+           alt="Showreel: a crowd in silhouette, arms raised before a lit stage" loading="eager" fetchpriority="low" decoding="async">
       <video class="reel-video" muted playsinline preload="none" poster="../media/stills/m-concert.jpg" aria-label="Showreel, muted, 47 seconds">
         <source src="../media/film/montage-full.mp4" type="video/mp4">
       </video>
