@@ -6,7 +6,7 @@ import { esc, pad2, runtime, ratio, img } from './partials.mjs';
 import { displayTitle } from '../data/projects.mjs';
 
 /* slot pattern: lead · pair · pair · wide · pair · pair · (repeat). A pair left alone becomes wide. */
-export const PATTERN = ['lead', 'pair', 'pair', 'wide', 'pair', 'pair'];
+export const PATTERN = ['lead', 'pa', 'pb', 'wide', 'pc', 'pd'];
 export function compose(n) {
   const out = [];
   for (let i = 0; i < n; i++) {
@@ -34,8 +34,8 @@ function item(ctx, p, i, total, slot) {
   const meta = [catLabel(ctx, p.category[0]), m.kind === 'file' ? runtime(m.duration) : null, g.label, m.kind === 'youtube' ? 'YouTube' : null].filter(Boolean);
   const fr = `FR ${pad2(p.order)}`;
   const film = m.kind === 'file' ? ` data-film="${ctx.asset(`media/films/${m.film}.webm`)}" data-film-mp4="${ctx.asset(`media/films/${m.film}.mp4`)}"` : '';
-  const sizes = slot === 'pair' ? '(min-width:900px) 46vw, 100vw' : '(min-width:900px) 92vw, 100vw';
-  return `<li class="wk-item" data-slot="${slot}" data-cats="${esc(p.category.join(' '))}" data-kind="${m.kind}"${portrait ? ' data-portrait' : ''} style="--ar:${g.w}/${g.h}">
+  const sizes = /^p/.test(slot) ? '(min-width:900px) 46vw, 100vw' : '(min-width:900px) 92vw, 100vw';
+  return `<li class="wk-item" data-slot="${slot}" data-cats="${esc(p.category.join(' '))}" data-kind="${m.kind}"${portrait ? ' data-portrait' : ''} style="--ar:${g.w}/${g.h};--arw:${(g.w / g.h).toFixed(4)}">
         <a class="wk-link" href="${ctx.href('work/' + p.slug)}">
           <div class="frame wk-frame"${film}>
             ${img(ctx, p.poster, { sizes, eager: i === 0, alt: '' })}
@@ -45,7 +45,7 @@ function item(ctx, p, i, total, slot) {
           </div>
           <div class="wk-card">
             <p class="wk-label">${esc(p.type)}</p>
-            <h2 class="wk-title">${music ? `<span class="wk-artist">${esc(p.artist)}</span><span class="vh"> — </span><span class="wk-name">${esc(p.title)}</span>` : `<span class="wk-name">${esc(displayTitle(p))}</span>`}</h2>
+            <h2 class="wk-title">${music ? `<span class="wk-artist">${esc(p.artist)}</span><span class="wk-dash"> — </span><span class="wk-name">${esc(p.title)}</span>` : `<span class="wk-name">${esc(displayTitle(p))}</span>`}</h2>
             <p class="wk-meta mono">${meta.map(esc).join('<i aria-hidden="true">·</i>')}</p>
           </div>
         </a>
@@ -73,8 +73,9 @@ export function renderWork(ctx) {
       <ul>
       ${filters}
       </ul>
-      <p class="mono wk-count" id="wk-count" aria-live="polite"><b>${pad2(total)}</b> / ${pad2(total)} pieces</p>
+      <p class="mono wk-count" id="wk-count" aria-hidden="true"><b>${pad2(total)}</b> / ${pad2(total)} pieces</p>
     </nav>
+    <p class="vh" id="wk-live" aria-live="polite"></p>
     <ol class="wk-list" id="wk-list">
       ${list.map((p, i) => item(ctx, p, i, total, slots[i])).join('\n      ')}
     </ol>

@@ -1,0 +1,82 @@
+/* ============================================================
+   JP SILVA MEDIA — shared foundation
+   Reset · motion gate · reveal grammar · media frames · grain
+   ============================================================ */
+
+:root{
+  --ease:cubic-bezier(.16,1,.3,1);          /* one "silk" easing for every transform */
+  --ease-io:cubic-bezier(.65,0,.35,1);
+  --ease-out:cubic-bezier(.22,1,.36,1);
+  --grain-url:url("../media/grain-256.png");
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;min-height:100svh;overflow-x:clip;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img,video,svg,picture,canvas{display:block;max-width:100%}
+img,video{height:auto}
+video{object-fit:cover}
+h1,h2,h3,h4,h5,p,figure,figcaption,blockquote,ul,ol,dl,dd{margin:0}
+ul,ol{padding:0;list-style:none}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid currentColor;outline-offset:4px}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ---- Motion gate --------------------------------------------------
+   Hide-states exist ONLY under html.js-anim, which the inline gate in each
+   <head> adds when JavaScript runs and motion is allowed. No JS, a failed
+   script, or prefers-reduced-motion -> the page renders finished.      */
+.js-anim [data-reveal]{
+  opacity:0;
+  transform:translateY(var(--rv-y,22px));
+  clip-path:inset(0 0 var(--rv-clip,0%) 0);
+  transition:opacity .6s ease var(--d,0s),transform .85s var(--ease) var(--d,0s),clip-path .75s var(--ease) var(--d,0s);
+}
+.js-anim [data-reveal].is-in{opacity:1;transform:none;clip-path:inset(-6% -6% -6% -6%)}
+.js-anim [data-reveal="clip"]{--rv-y:0;--rv-clip:100%}
+.js-anim [data-reveal="fade"]{--rv-y:0}
+.js-anim [data-reveal="rise"]{--rv-y:40px}
+.js-anim [data-reveal="img"]{--rv-y:0;--rv-clip:100%}
+.js-anim [data-reveal="img"] img,.js-anim [data-reveal="img"] video{transform:scale(1.08);transition:transform 1.3s var(--ease) var(--d,0s)}
+.js-anim [data-reveal="img"].is-in img,.js-anim [data-reveal="img"].is-in video{transform:none}
+/* a video that fades in on its own 'playing' event must not inherit the img rule */
+.js-anim [data-reveal="img"].is-in video.jp-video{transform:none}
+
+/* ---- Media frame ----------------------------------------------------
+   <div class="frame" style="aspect-ratio:16/9"><img …><video class="jp-video" …></video></div>
+   Poster <img> always paints first; the video fades over it only once it is
+   actually playing. On error the video removes itself and the still stands. */
+.frame{position:relative;overflow:hidden;background:#101010;isolation:isolate}
+.frame>img,.frame>picture,.frame>picture>img,.frame>video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.frame>video.jp-video{opacity:0;transition:opacity .9s ease}
+.frame>video.jp-video.is-playing{opacity:1}
+.frame>.frame-grade{position:absolute;inset:0;pointer-events:none}
+
+/* ---- Grain ------------------------------------------------------------
+   One analog layer, low opacity, stepped so it reads as film not as noise. */
+.grain-layer{position:fixed;inset:-20%;z-index:var(--grain-z,60);pointer-events:none;
+  background:var(--grain-url) repeat;background-size:256px 256px;
+  opacity:var(--grain-opacity,.06);mix-blend-mode:var(--grain-blend,overlay);
+  animation:jp-grain 1.1s steps(6) infinite}
+.grain{position:relative}
+.grain::after{content:"";position:absolute;inset:-20%;pointer-events:none;z-index:var(--grain-z,5);
+  background:var(--grain-url) repeat;background-size:256px 256px;
+  opacity:var(--grain-opacity,.07);mix-blend-mode:var(--grain-blend,overlay);
+  animation:jp-grain 1.1s steps(6) infinite}
+@keyframes jp-grain{
+  0%{transform:translate(0,0)}20%{transform:translate(-4%,3%)}40%{transform:translate(3%,-5%)}
+  60%{transform:translate(-2%,-2%)}80%{transform:translate(5%,4%)}100%{transform:translate(0,0)}}
+
+/* ---- Entrance skip hint (concepts position it) ------------------------ */
+.skip-hint{position:fixed;z-index:900;right:max(20px,env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));
+  font:500 10px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(255,255,255,.55);opacity:0;transition:opacity .5s ease .9s;pointer-events:none}
+.is-opening .skip-hint{opacity:1}
+.is-opened .skip-hint,.skip-hint[hidden]{opacity:0;transition-delay:0s}
+
+/* ---- Reduced motion: everything lands finished ------------------------- */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+  .grain-layer,.grain::after{animation:none}
+}
