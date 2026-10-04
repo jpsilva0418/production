@@ -14,7 +14,8 @@
   var SEG = T.segment || DATA.segment || 28;
   var BLOCK_MS = T.blockMs || 3500, API_MS = T.apiMs || 6000, ERR_MS = T.errMs || 4000;
   var reduced = !!(JP.reduced || (W.matchMedia && W.matchMedia('(prefers-reduced-motion: reduce)').matches));
-  var saveData = !!JP.saveData;
+  var conn = navigator.connection || {};
+  var saveData = !!(JP.saveData || conn.saveData || (conn.effectiveType && conn.effectiveType !== '4g'));
   var noAuto = reduced || saveData;
   var OWNER = 'reel';
 
@@ -46,7 +47,7 @@
   /* ---------------- UI ---------------- */
   function buildPips() {
     pipsEl.innerHTML = S.list.map(function (f, i) {
-      return '<li><button type="button" class="rl-pip" data-i="' + i + '" aria-label="' + esc(f.display) + '"><i aria-hidden="true"></i></button></li>';
+      return '<li><button type="button" class="rl-pip" data-i="' + i + '" aria-label="' + esc(f.display) + '"' + (i === S.i ? ' aria-current="true"' : '') + '><i aria-hidden="true"></i></button></li>';
     }).join('');
     ofEl.textContent = pad(S.list.length);
     if (bigOf) bigOf.textContent = '/ ' + pad(S.list.length);
@@ -129,7 +130,7 @@
     gate.hidden = false;
   }
   function hideGate() { gate.hidden = true; }
-  function hideErr() { err.hidden = true; clearTimeout(S.errT); }
+  function hideErr() { if (!E || E.kind !== 'link') err.hidden = true; clearTimeout(S.errT); }
 
   /* ---------------- engine-agnostic actions ---------------- */
   var E = null; // current engine
@@ -172,7 +173,7 @@
     function mk() {
       var v = document.createElement('video');
       v.muted = true; v.defaultMuted = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.setAttribute('muted', '');
-      v.preload = 'metadata'; v.setAttribute('aria-hidden', 'true'); v.tabIndex = -1;
+      v.preload = 'none'; v.setAttribute('aria-hidden', 'true'); v.tabIndex = -1;
       vids.appendChild(v);
       v.addEventListener('timeupdate', function () { if (v === cur) tick(); });
       v.addEventListener('ended', function () { if (v === cur && S.started) advance(); });
@@ -185,6 +186,9 @@
       if (loaded[key(v)] === i) return;
       loaded[key(v)] = i;
       var f = S.list[i];
+      try { v.pause(); } catch (e) {}
+      v.removeAttribute('src'); v.innerHTML = '';
+      v.preload = 'auto';
       v.innerHTML = '<source src="' + f.files.webm + '" type="video/webm"><source src="' + f.files.mp4 + '" type="video/mp4">';
       v.poster = f.poster;
       v.load();
@@ -203,13 +207,12 @@
       if (p && p.catch) p.catch(function () { if (v === cur && !S.userPaused) blocked(); });
     }
     function blocked() { setPlaying(false); showGate('Play film'); sec.classList.add('is-blocked'); }
-    function preloadNext() { src(other, (S.i + 1) % S.list.length); }
+    function preloadNext() { if (!saveData) src(other, (S.i + 1) % S.list.length); }
     return {
       kind: 'file',
       start: function (autoplay) {
         src(cur, S.i); seekStart(cur, S.i); cur.classList.add('is-on');
         if (autoplay) tryPlay(cur); else showGate('Play film');
-        setTimeout(preloadNext, 1200);
       },
       load: function (i, how) {
         hideGate();
@@ -219,7 +222,7 @@
         cur = to; other = from;
         var swap = function () {
           cur.classList.add('is-on'); other.classList.remove('is-on');
-          setTimeout(function () { if (other !== cur) { other.pause(); preloadNext(); } }, reduced ? 0 : 950);
+          setTimeout(function () { if (other !== cur) other.pause(); }, reduced ? 0 : 950);
         };
         if (reduced && how !== 'pick') { swap(); setPlaying(false); showGate('Play film'); return; }
         cur.addEventListener('playing', swap, { once: true });
@@ -231,7 +234,8 @@
       sound: function () { cur.muted = S.muted; other.muted = true; },
       time: function () { return cur.currentTime || 0; },
       duration: function () { return cur.duration || film().duration || 0; },
-      els: function () { return [A, B]; }
+      els: function () { return [A, B]; },
+      preloadNext: preloadNext
     };
   }
 
@@ -307,7 +311,7 @@
         if (!P || !ready) return;
         hideGate(); clearTimeout(blockT); clearTimeout(revealT);
         var f = S.list[i];
-        reveal(false);
+        reveal(false); setPlaying(false);
         if (reduced && how !== 'pick') { try { P.pauseVideo(); } catch (e) {} setPlaying(false); showGate('Play film'); return; }
         var go = function () {
           if (S.i !== i) return;
@@ -340,6 +344,10 @@
     if (!E) return;
     var t = E.time(), d = E.duration();
     if (tc) tc.textContent = tcode(t);
+    if (E.preloadNext && S.playing) {
+      var left = S.mode === 'reel' ? SEG - (t - S.segStart) : (d ? d - t : Infinity);
+      if (left < 2.5) E.preloadNext();
+    }
     if (S.mode === 'reel') {
       var el = t - S.segStart;
       var len = d ? Math.min(SEG, Math.max(1, d - S.segStart)) : SEG;
@@ -350,14 +358,23 @@
   setInterval(function () { if (S.playing) tick(); }, 200);
 
   /* ---------------- boot ---------------- */
+  /* YouTube unreachable: keep the same films (never swap in other content); each shows its poster + "Watch on YouTube" */
+  function LinkEngine() {
+    function show() {
+      var f = film();
+      hideGate(); setPlaying(false);
+      errYt.href = f.youtubeUrl;
+      errYt.setAttribute('aria-label', 'Watch ' + f.display + ' on YouTube (opens in a new tab)');
+      err.hidden = false;
+    }
+    return { kind: 'link', start: show, load: function () { show(); }, play: show, pause: function () {}, sound: function () {},
+      time: function () { return 0; }, duration: function () { return 0; } };
+  }
   function useFiles() {
-    if (E && E.kind === 'file') return;
-    S.engine = 'file'; S.list = DATA.files; S.i = 0;
-    sec.classList.remove('is-youtube'); sec.classList.add('is-file');
+    if (E) return;
+    sec.classList.add('is-offline');
     ytWrap.classList.remove('is-on');
-    buildPips(); index(0, true); setPoster(film());
-    E = FileEngine();
-    E.start(!noAuto || S.wantAfterBoot);
+    E = LinkEngine(); E.start();
   }
   var apiT = 0;
   function loadYT(autoplay) {

@@ -12,10 +12,13 @@
   var film = d.getElementById('pj-film'), video = d.getElementById('pj-video'), play = d.getElementById('pj-play');
   function pauseFilm() { if (video && !video.paused) video.pause(); }
   if (film && video && play) {
+    /* facade: poster + our control; native controls only once he has chosen to watch */
+    video.controls = false; play.hidden = false;
     play.addEventListener('click', function () {
       film.classList.add('is-started');
       video.controls = true;
       video.muted = false;
+      video.preload = 'auto';
       sound();
       var p = video.play();
       if (p && p.catch) p.catch(function () { video.muted = false; });
@@ -27,9 +30,14 @@
 
   /* ---- 2 · YouTube facade (real host only: on the preview the control is a link to YouTube) ---- */
   var yt = d.getElementById('pj-yt'), ytFrame = null;
-  var ytBtn = yt && yt.querySelector('button[data-yt]');
+  var ytBtn = yt && yt.querySelector('[data-yt]');
   if (yt && ytBtn && CFG.youtube) {
-    ytBtn.addEventListener('click', function () {
+    ytBtn.setAttribute('role', 'button');
+    ytBtn.setAttribute('aria-label', ytBtn.getAttribute('data-label') || 'Play film');
+    ytBtn.addEventListener('keydown', function (e) { if (e.key === ' ') { e.preventDefault(); ytBtn.click(); } });
+    ytBtn.addEventListener('click', function (e) {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button > 0) return;
+      e.preventDefault();
       var id = ytBtn.getAttribute('data-yt');
       var f = d.createElement('iframe');
       f.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) + '?autoplay=1&playsinline=1&rel=0&enablejsapi=1';

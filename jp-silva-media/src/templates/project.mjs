@@ -13,7 +13,7 @@ function titleCard(ctx, p, n, total) {
     ? `<span class="pj-artist">${esc(p.artist)}</span><span class="vh"> — </span><span class="pj-name">${esc(p.title)}</span>`
     : `<span class="pj-name">${esc(p.title)}</span>`;
   return `<header class="page-slate pj-slate">
-    <p class="mono"><span>Work · ${esc(catLabel(ctx, p.category[0]))} · <b class="pj-fr">FR ${pad2(n)}</b> / ${pad2(total)}</span><span><a class="pj-back" href="${ctx.href('work')}">All work</a></span></p>
+    <p class="mono pj-crumb"><a class="pj-back" href="${ctx.href('work')}"><span aria-hidden="true">←</span> Work</a><span><span aria-hidden="true"> · </span>${esc(catLabel(ctx, p.category[0]))} · <b class="pj-fr">FR ${pad2(n)}</b> / ${pad2(total)}</span></p>
     <h1 id="page-h" class="pj-h${music(p) ? ' is-music' : ''}">${title}</h1>
     <p class="pj-type mono"><i aria-hidden="true"></i>${esc(p.type)}${p.client && !p.type.includes(p.client) ? ` · ${esc(p.client)}` : ''}</p>
   </header>`;
@@ -24,16 +24,14 @@ function hero(ctx, p) {
   const name = displayTitle(p);
   if (m.kind === 'youtube') {
     const poster = img(ctx, p.poster, { sizes: '(min-width:900px) 92vw, 100vw', eager: true });
-    const control = ctx.youtube
-      ? `<button type="button" class="play pj-play" data-yt="${esc(m.id)}" aria-label="Play ${esc(name)} (loads YouTube, with sound)"><i aria-hidden="true"></i><span>Play film</span></button>`
-      : `<a class="play pj-play" href="${ytWatch(m.id)}" target="_blank" rel="noopener"><i aria-hidden="true"></i><span>Watch on YouTube <b aria-hidden="true">↗</b></span><span class="vh"> (opens in a new tab)</span></a>`;
+    /* a link to YouTube without JS (and on the preview build); project.js upgrades it to the in-page facade */
+    const control = `<a class="play pj-play pj-play--corner" href="${ytWatch(m.id)}" target="_blank" rel="noopener"${ctx.youtube ? ` data-yt="${esc(m.id)}" data-label="Play ${esc(name)} (loads YouTube, with sound)"` : ''}><i aria-hidden="true"></i><span>${ctx.youtube ? 'Play film' : 'Watch on YouTube <b aria-hidden="true">↗</b>'}</span><span class="vh"> (opens YouTube in a new tab)</span></a>`;
     return `<section class="pj-stage" aria-label="Film">
     <div class="pj-screen" style="--ar:16/9;--arn:${(16 / 9).toFixed(4)}">
       <div class="frame pj-yt" id="pj-yt" data-title="${esc(name)}">
         ${poster}
         <span class="frame-grade" aria-hidden="true"></span>
         ${control}
-        <p class="pj-screen-t mono" aria-hidden="true"><span>${esc(name)}</span><span>YouTube · 16 : 9</span></p>
       </div>
     </div>
     <p class="pj-under mono">${ctx.youtube ? `<a href="${ytWatch(m.id)}" target="_blank" rel="noopener">Watch on YouTube <span aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a>` : '<span>Plays on YouTube</span>'}<span>Channel · ${esc(m.channel)}</span></p>
@@ -44,10 +42,10 @@ function hero(ctx, p) {
     return `<section class="pj-stage" aria-label="Film">
     <div class="pj-screen${portrait ? ' is-portrait' : ''}" style="--ar:${m.w}/${m.h};--arn:${(m.w / m.h).toFixed(4)}">
       <div class="frame pj-film" id="pj-film">
-        <video id="pj-video" playsinline preload="metadata" poster="${ctx.asset(`media/films/${m.film}-poster.jpg`)}" width="${m.w}" height="${m.h}" aria-label="${esc(name)}, film">
+        <video id="pj-video" playsinline controls preload="none" poster="${ctx.asset(`media/films/${m.film}-poster.jpg`)}" width="${m.w}" height="${m.h}" aria-label="${esc(name)}, film">
           ${sources(ctx, m.film)}
         </video>
-        <button type="button" class="play pj-play" id="pj-play" aria-label="Play ${esc(name)} with sound"><i aria-hidden="true"></i><span>Play with sound</span></button>
+        <button type="button" class="play pj-play" id="pj-play" hidden aria-label="Play ${esc(name)} with sound"><i aria-hidden="true"></i><span>Play with sound</span></button>
         <p class="pj-screen-t mono" aria-hidden="true"><span>${esc(runtime(m.duration))}</span><span>${esc(ratio(m.w, m.h))}</span></p>
       </div>
     </div>
@@ -71,7 +69,9 @@ function credits(ctx, p) {
   if (p.artist) rows.push(['Artist', esc(p.artist)]);
   if (p.client) rows.push(['Client', esc(p.client)]);
   rows.push(['Type', esc(p.type)]);
-  rows.push(['Category', p.category.map(c => esc(catLabel(ctx, c))).join(' · ')]);
+  const cats = p.category.map(c => catLabel(ctx, c));
+  const tl = p.type.toLowerCase();
+  if (!cats.every(c => { const cl = c.toLowerCase(); return cl.includes(tl) || tl.includes(cl) || cl.replace(/ & .*/, '').includes(tl); })) rows.push(['Category', cats.map(esc).join(' · ')]);
   if (m.kind === 'file') { rows.push(['Runtime', runtime(m.duration)]); rows.push(['Aspect', ratio(m.w, m.h)]); }
   if (p.year) rows.push(['Year', String(p.year)]);
   for (const c of p.credits || []) rows.push([esc(c.role), c.jp ? `<span class="pj-jp"><i aria-hidden="true"></i>${esc(c.name)}</span>` : esc(c.name)]);
@@ -83,8 +83,8 @@ function credits(ctx, p) {
   return `<section class="sec pj-credits" aria-labelledby="cr-h">
     <div class="pj-cr-grid">
       <div class="pj-cr-head">
-        <p class="mono">Credits</p>
-        <h2 id="cr-h">${esc(displayTitle(p))}</h2>
+        ${(p.credits || []).length ? `<p class="mono">Credits</p>
+        <h2 id="cr-h">${esc(displayTitle(p))}</h2>` : `<h2 id="cr-h" class="mono pj-specs">Specs</h2>`}
         ${verified}
       </div>
       <div class="pj-rows">
@@ -119,14 +119,14 @@ function lightbox(ctx, p) {
   const imgs = p.gallery;
   if (!imgs.length) return '';
   const single = imgs.length < 2;
-  return `<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Frames, full screen" hidden data-items='${esc(JSON.stringify(imgs.map(g => ({ src: ctx.asset(g.src), w: g.w, h: g.h, alt: g.alt }))))}'>
+  return `<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Frames, full screen" aria-describedby="lb-cap" hidden data-items='${esc(JSON.stringify(imgs.map(g => ({ src: ctx.asset(g.src), w: g.w, h: g.h, alt: g.alt }))))}'>
     <div class="lb-top">
-      <p class="lb-count mono" aria-live="polite"><b id="lb-n">FR 01</b> / ${pad2(imgs.length)}</p>
+      <p class="lb-count mono" aria-live="polite" aria-atomic="true"><b id="lb-n">FR 01</b> / ${pad2(imgs.length)}</p>
       <button type="button" class="lb-btn lb-close" id="lb-close">Close<span aria-hidden="true">■</span></button>
     </div>
     <figure class="lb-fig">
       <div class="lb-img" id="lb-stage"><img id="lb-img" alt="" decoding="async"></div>
-      <figcaption class="lb-cap mono" id="lb-cap"></figcaption>
+      <figcaption class="lb-cap mono" id="lb-cap" aria-live="polite"></figcaption>
     </figure>
     <div class="lb-nav"${single ? ' hidden' : ''}>
       <button type="button" class="lb-btn" id="lb-prev" aria-label="Previous frame"><span aria-hidden="true">←</span>Prev</button>

@@ -57,7 +57,7 @@
     b.addEventListener('click', function () {
       var cat = b.getAttribute('data-cat');
       var url = location.pathname + location.search + (cat === 'all' ? '' : '#' + cat);
-      try { history.replaceState(null, '', url); } catch (e) { location.hash = cat === 'all' ? '' : cat; }
+      if (cat !== fromHash()) { try { history.pushState(null, '', url); } catch (e) { location.hash = cat === 'all' ? '' : cat; } }
       apply(cat);
       /* keep the filter in view when it is pinned and the list is long */
       var f = d.querySelector('.wk-filter');
@@ -68,6 +68,7 @@
     });
   });
   w.addEventListener('hashchange', function () { apply(fromHash()); });
+  w.addEventListener('popstate', function () { apply(fromHash()); });
   apply(fromHash(), { instant: true, silent: true });
 
   /* ---- hover previews: his own films only, fine pointer, motion allowed, not on Save-Data ---- */

@@ -7,7 +7,7 @@
   --ease:cubic-bezier(.16,1,.3,1);          /* one "silk" easing for every transform */
   --ease-io:cubic-bezier(.65,0,.35,1);
   --ease-out:cubic-bezier(.22,1,.36,1);
-  --grain-url:url("../media/grain-256.png");
+  --grain-url:url("../../media/grain-256.png");
 }
 
 *,*::before,*::after{box-sizing:border-box}

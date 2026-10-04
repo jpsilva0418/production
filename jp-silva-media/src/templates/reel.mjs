@@ -19,7 +19,7 @@ function entry(ctx, p, kind) {
     id: p.id,
     title: p.title,
     display: displayTitle(p),
-    artist: p.artist || p.client || null,
+    artist: p.artist || p.client || (yt ? null : ctx.site.person),
     type: p.type || null,
     href: ctx.href('work/' + p.slug),
     youtubeId: yt ? p.media.id : null,
@@ -75,7 +75,7 @@ export function reelSection(ctx) {
           <button type="button" class="rl-gate play" id="rl-gate" hidden><i aria-hidden="true"></i><span>Play film</span></button>
           <div class="rl-err" id="rl-err" hidden>
             <p class="mono">This film plays on YouTube</p>
-            <p class="rl-err-row"><a class="leader-link" id="rl-err-yt" href="#" target="_blank" rel="noopener">Watch on YouTube ↗</a><button type="button" class="rl-btn" id="rl-err-next"><i aria-hidden="true"></i>Next film</button></p>
+            <p class="rl-err-row"><a class="leader-link" id="rl-err-yt" href="#" target="_blank" rel="noopener">Watch on YouTube ↗</a><button type="button" class="rl-btn" id="rl-err-next"><i aria-hidden="true"></i>Skip to next film</button></p>
           </div>
           <p class="rl-nojs-cta"><a class="leader-link" href="${f.href}">Watch the film<i aria-hidden="true"></i></a></p>
         </div>

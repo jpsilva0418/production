@@ -40,17 +40,17 @@
 <main id="main">
 
   <header class="page-slate pj-slate">
-    <p class="mono"><span>Work · Film &amp; video · <b class="pj-fr">FR 06</b> / 13</span><span><a class="pj-back" href="../../work/index.html">All work</a></span></p>
+    <p class="mono pj-crumb"><a class="pj-back" href="../../work/index.html"><span aria-hidden="true">←</span> Work</a><span><span aria-hidden="true"> · </span>Film &amp; video · <b class="pj-fr">FR 06</b> / 13</span></p>
     <h1 id="page-h" class="pj-h"><span class="pj-name">Showreel</span></h1>
     <p class="pj-type mono"><i aria-hidden="true"></i>A cross-section of the work</p>
   </header>
   <section class="pj-stage" aria-label="Film">
     <div class="pj-screen is-portrait" style="--ar:478/960;--arn:0.4979">
       <div class="frame pj-film" id="pj-film">
-        <video id="pj-video" playsinline preload="metadata" poster="../../media/films/showreel-poster.jpg" width="478" height="960" aria-label="Showreel, film">
+        <video id="pj-video" playsinline controls preload="none" poster="../../media/films/showreel-poster.jpg" width="478" height="960" aria-label="Showreel, film">
           <source src="../../media/films/showreel.webm" type="video/webm"><source src="../../media/films/showreel.mp4" type="video/mp4">
         </video>
-        <button type="button" class="play pj-play" id="pj-play" aria-label="Play Showreel with sound"><i aria-hidden="true"></i><span>Play with sound</span></button>
+        <button type="button" class="play pj-play" id="pj-play" hidden aria-label="Play Showreel with sound"><i aria-hidden="true"></i><span>Play with sound</span></button>
         <p class="pj-screen-t mono" aria-hidden="true"><span>00:48</span><span>0.50 : 1</span></p>
       </div>
     </div>
@@ -59,8 +59,7 @@
   <section class="sec pj-credits" aria-labelledby="cr-h">
     <div class="pj-cr-grid">
       <div class="pj-cr-head">
-        <p class="mono">Credits</p>
-        <h2 id="cr-h">Showreel</h2>
+        <h2 id="cr-h" class="mono pj-specs">Specs</h2>
         
       </div>
       <div class="pj-rows">
@@ -111,14 +110,14 @@
       <a class="leader-link" href="../../inquire/index.html">Start a project like this<i aria-hidden="true"></i></a>
     </div>
   </nav>
-  <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Frames, full screen" hidden data-items='[{&quot;src&quot;:&quot;../../media/stills/m-hat.jpg&quot;,&quot;w&quot;:478,&quot;h&quot;:960,&quot;alt&quot;:&quot;Cowboy hat turning to camera in desert light&quot;},{&quot;src&quot;:&quot;../../media/stills/m-concert.jpg&quot;,&quot;w&quot;:478,&quot;h&quot;:960,&quot;alt&quot;:&quot;A crowd with arms raised against stage light&quot;},{&quot;src&quot;:&quot;../../media/stills/m-wing.jpg&quot;,&quot;w&quot;:478,&quot;h&quot;:960,&quot;alt&quot;:&quot;A plane wing over a dry landscape&quot;},{&quot;src&quot;:&quot;../../media/stills/m-moto.jpg&quot;,&quot;w&quot;:478,&quot;h&quot;:960,&quot;alt&quot;:&quot;A rider in a hat on a motorcycle, green grade&quot;},{&quot;src&quot;:&quot;../../media/stills/m-studio.jpg&quot;,&quot;w&quot;:478,&quot;h&quot;:960,&quot;alt&quot;:&quot;Two subjects in a white studio&quot;},{&quot;src&quot;:&quot;../../media/stills/m-bw.jpg&quot;,&quot;w&quot;:478,&quot;h&quot;:960,&quot;alt&quot;:&quot;A portrait in black and white&quot;},{&quot;src&quot;:&quot;../../media/stills/m-rooftop.jpg&quot;,&quot;w&quot;:478,&quot;h&quot;:960,&quot;alt&quot;:&quot;Friends on a rooftop at sunset&quot;}]'>
+  <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Frames, full screen" aria-describedby="lb-cap" hidden data-items='[{&quot;src&quot;:&quot;../../media/stills/m-hat.jpg&quot;,&quot;w&quot;:478,&quot;h&quot;:960,&quot;alt&quot;:&quot;Cowboy hat turning to camera in desert light&quot;},{&quot;src&quot;:&quot;../../media/stills/m-concert.jpg&quot;,&quot;w&quot;:478,&quot;h&quot;:960,&quot;alt&quot;:&quot;A crowd with arms raised against stage light&quot;},{&quot;src&quot;:&quot;../../media/stills/m-wing.jpg&quot;,&quot;w&quot;:478,&quot;h&quot;:960,&quot;alt&quot;:&quot;A plane wing over a dry landscape&quot;},{&quot;src&quot;:&quot;../../media/stills/m-moto.jpg&quot;,&quot;w&quot;:478,&quot;h&quot;:960,&quot;alt&quot;:&quot;A rider in a hat on a motorcycle, green grade&quot;},{&quot;src&quot;:&quot;../../media/stills/m-studio.jpg&quot;,&quot;w&quot;:478,&quot;h&quot;:960,&quot;alt&quot;:&quot;Two subjects in a white studio&quot;},{&quot;src&quot;:&quot;../../media/stills/m-bw.jpg&quot;,&quot;w&quot;:478,&quot;h&quot;:960,&quot;alt&quot;:&quot;A portrait in black and white&quot;},{&quot;src&quot;:&quot;../../media/stills/m-rooftop.jpg&quot;,&quot;w&quot;:478,&quot;h&quot;:960,&quot;alt&quot;:&quot;Friends on a rooftop at sunset&quot;}]'>
     <div class="lb-top">
-      <p class="lb-count mono" aria-live="polite"><b id="lb-n">FR 01</b> / 07</p>
+      <p class="lb-count mono" aria-live="polite" aria-atomic="true"><b id="lb-n">FR 01</b> / 07</p>
       <button type="button" class="lb-btn lb-close" id="lb-close">Close<span aria-hidden="true">■</span></button>
     </div>
     <figure class="lb-fig">
       <div class="lb-img" id="lb-stage"><img id="lb-img" alt="" decoding="async"></div>
-      <figcaption class="lb-cap mono" id="lb-cap"></figcaption>
+      <figcaption class="lb-cap mono" id="lb-cap" aria-live="polite"></figcaption>
     </figure>
     <div class="lb-nav">
       <button type="button" class="lb-btn" id="lb-prev" aria-label="Previous frame"><span aria-hidden="true">←</span>Prev</button>

@@ -40,17 +40,17 @@
 <main id="main">
 
   <header class="page-slate pj-slate">
-    <p class="mono"><span>Work · Film &amp; video · <b class="pj-fr">FR 09</b> / 13</span><span><a class="pj-back" href="../../work/index.html">All work</a></span></p>
+    <p class="mono pj-crumb"><a class="pj-back" href="../../work/index.html"><span aria-hidden="true">←</span> Work</a><span><span aria-hidden="true"> · </span>Film &amp; video · <b class="pj-fr">FR 09</b> / 13</span></p>
     <h1 id="page-h" class="pj-h"><span class="pj-name">Night Ride</span></h1>
     <p class="pj-type mono"><i aria-hidden="true"></i>Film</p>
   </header>
   <section class="pj-stage" aria-label="Film">
     <div class="pj-screen" style="--ar:734/384;--arn:1.9115">
       <div class="frame pj-film" id="pj-film">
-        <video id="pj-video" playsinline preload="metadata" poster="../../media/films/night-ride-poster.jpg" width="734" height="384" aria-label="Night Ride, film">
+        <video id="pj-video" playsinline controls preload="none" poster="../../media/films/night-ride-poster.jpg" width="734" height="384" aria-label="Night Ride, film">
           <source src="../../media/films/night-ride.webm" type="video/webm"><source src="../../media/films/night-ride.mp4" type="video/mp4">
         </video>
-        <button type="button" class="play pj-play" id="pj-play" aria-label="Play Night Ride with sound"><i aria-hidden="true"></i><span>Play with sound</span></button>
+        <button type="button" class="play pj-play" id="pj-play" hidden aria-label="Play Night Ride with sound"><i aria-hidden="true"></i><span>Play with sound</span></button>
         <p class="pj-screen-t mono" aria-hidden="true"><span>00:37</span><span>1.91 : 1</span></p>
       </div>
     </div>
@@ -59,13 +59,11 @@
   <section class="sec pj-credits" aria-labelledby="cr-h">
     <div class="pj-cr-grid">
       <div class="pj-cr-head">
-        <p class="mono">Credits</p>
-        <h2 id="cr-h">Night Ride</h2>
+        <h2 id="cr-h" class="mono pj-specs">Specs</h2>
         
       </div>
       <div class="pj-rows">
         <div class="leader-row"><span class="lr-k">Type</span><i aria-hidden="true"></i><span class="lr-v">Film</span></div>
-        <div class="leader-row"><span class="lr-k">Category</span><i aria-hidden="true"></i><span class="lr-v">Film &amp; video</span></div>
         <div class="leader-row"><span class="lr-k">Runtime</span><i aria-hidden="true"></i><span class="lr-v">00:37</span></div>
         <div class="leader-row"><span class="lr-k">Aspect</span><i aria-hidden="true"></i><span class="lr-v">1.91 : 1</span></div>
         
@@ -107,14 +105,14 @@
       <a class="leader-link" href="../../inquire/index.html">Start a project like this<i aria-hidden="true"></i></a>
     </div>
   </nav>
-  <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Frames, full screen" hidden data-items='[{&quot;src&quot;:&quot;../../media/stills/nr-dash.jpg&quot;,&quot;w&quot;:734,&quot;h&quot;:384,&quot;alt&quot;:&quot;A motorcycle dashboard at dusk&quot;},{&quot;src&quot;:&quot;../../media/stills/nr-silhouette.jpg&quot;,&quot;w&quot;:734,&quot;h&quot;:384,&quot;alt&quot;:&quot;A rider in silhouette against a dusk sky&quot;},{&quot;src&quot;:&quot;../../media/stills/nr-headlight.jpg&quot;,&quot;w&quot;:734,&quot;h&quot;:384,&quot;alt&quot;:&quot;A headlight coming down the road at night&quot;}]'>
+  <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Frames, full screen" aria-describedby="lb-cap" hidden data-items='[{&quot;src&quot;:&quot;../../media/stills/nr-dash.jpg&quot;,&quot;w&quot;:734,&quot;h&quot;:384,&quot;alt&quot;:&quot;A motorcycle dashboard at dusk&quot;},{&quot;src&quot;:&quot;../../media/stills/nr-silhouette.jpg&quot;,&quot;w&quot;:734,&quot;h&quot;:384,&quot;alt&quot;:&quot;A rider in silhouette against a dusk sky&quot;},{&quot;src&quot;:&quot;../../media/stills/nr-headlight.jpg&quot;,&quot;w&quot;:734,&quot;h&quot;:384,&quot;alt&quot;:&quot;A headlight coming down the road at night&quot;}]'>
     <div class="lb-top">
-      <p class="lb-count mono" aria-live="polite"><b id="lb-n">FR 01</b> / 03</p>
+      <p class="lb-count mono" aria-live="polite" aria-atomic="true"><b id="lb-n">FR 01</b> / 03</p>
       <button type="button" class="lb-btn lb-close" id="lb-close">Close<span aria-hidden="true">■</span></button>
     </div>
     <figure class="lb-fig">
       <div class="lb-img" id="lb-stage"><img id="lb-img" alt="" decoding="async"></div>
-      <figcaption class="lb-cap mono" id="lb-cap"></figcaption>
+      <figcaption class="lb-cap mono" id="lb-cap" aria-live="polite"></figcaption>
     </figure>
     <div class="lb-nav">
       <button type="button" class="lb-btn" id="lb-prev" aria-label="Previous frame"><span aria-hidden="true">←</span>Prev</button>

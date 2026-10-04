@@ -83,8 +83,8 @@ export function renderWork(ctx) {
   </section>
 
   <section class="wk-end" aria-label="Start a project">
-    <p class="mono">End of reel</p>
-    <p class="wk-end-t">Have something to make?</p>
+    <p class="mono">End of reel · <b>${pad2(total)}</b> / ${pad2(total)}</p>
+    <p class="wk-end-t">Start a project</p>
     <p><a class="leader-link" href="${ctx.href('inquire')}">Start a project<i aria-hidden="true"></i></a></p>
   </section>`;
 
