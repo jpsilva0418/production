@@ -40,6 +40,8 @@ declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
     fbq?: (...args: unknown[]) => void;
+    /** Meta's loader sets this itself; declared so the snippet type-checks. */
+    _fbq?: unknown;
     dataLayer?: unknown[];
   }
 }
