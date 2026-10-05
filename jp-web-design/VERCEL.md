@@ -130,3 +130,39 @@ npm run build && npm run check:links
 href resolves, every `#fragment` has a target, no placeholder or stale
 homepage-anchor href is present, the phone and email are the canonical ones,
 and no developer note reached the HTML.
+
+## Form delivery (Resend)
+
+One server-side endpoint, `api/inquiry.js`, serves both forms. It is a plain
+Vercel Function rather than an Astro server route, so the site itself stays a
+fully static build with no adapter — this file is the only server-side code
+in the project.
+
+```
+/contact   ─┐
+            ├─ sendInquiry() (src/lib/inquiry.ts) ─→ POST /api/inquiry ─→ Resend
+/free-demo ─┘   adds plan.answers + plan.recommendation
+```
+
+| Variable | Where | Notes |
+|---|---|---|
+| `RESEND_API_KEY` | Vercel, **sensitive** | sending-access only, scoped to the one domain. Server-side only; never `PUBLIC_`, never in the bundle, never logged. |
+| `INQUIRY_TO` | Vercel, encrypted | destination inbox |
+| `INQUIRY_FROM` | Vercel, encrypted | sender identity; needs the domain verified in Resend |
+| `PUBLIC_INQUIRY_ENDPOINT` | Vercel, plain | `/api/inquiry`. Public by design — a path, not a secret. |
+
+Protections, all server-side because a client-side check is a courtesy, not a
+guarantee: same-origin check, 64 KB body cap, per-field length caps, strict
+re-validation of name and email, CR/LF stripped from everything reaching a
+mail header, HTML-escaped email bodies, the existing honeypot (answered 200 so
+a bot learns nothing, and nothing is sent), 5 submissions per IP per 10
+minutes, and a 5-minute duplicate guard keyed on email + source + message
+plus a Resend `Idempotency-Key` so a retry cannot produce two emails.
+
+The rate limiter and duplicate guard are per-instance in memory. A cold
+instance starts empty, so they fail OPEN — deliberately: a missed rate-limit
+costs one extra email, a false positive costs a customer.
+
+**The honesty rule holds end to end.** The endpoint returns 2xx only when
+Resend returns a message id; a 2xx with no id is treated as a failure. On any
+failure the browser shows the email handoff, never a success state.
