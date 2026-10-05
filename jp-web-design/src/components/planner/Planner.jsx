@@ -15,6 +15,7 @@ import { revealTop, revealField } from '../../lib/stepview';
 import { EMAIL, REPLY_SLA, DEMO_TURNAROUND } from '../../data/site';
 
 const KEY = 'jpwd.planner.v1';
+const STEP_KEY = 'jpwd.planner.step.v1';
 const TOTAL = 8;
 
 /* This flow only handles website projects, and it asks its own timeline
@@ -43,6 +44,40 @@ function load() {
   } catch { return EMPTY; }
 }
 
+/* Whether a given step's own question has been answered. The gate for
+   advancing past step N, expressed once so `canAdvance` and the restore
+   below cannot drift apart. */
+function answered(step, a) {
+  switch (step) {
+    case 1: return !!a.businessType && (a.businessType !== 'other' || a.businessTypeOther.trim().length > 1);
+    case 2: return !!a.situation;
+    case 3: return !!a.goal;
+    case 4: return !!a.packageChoice && (a.packageChoice !== 'else' || a.packageChoiceOther.trim().length > 1);
+    case 5: return a.features.length > 0;
+    case 6: return !!a.timeline;
+    case 7: return !!a.wantsRecommendation;
+    default: return true;
+  }
+}
+
+/* The step to come back to.
+   Eight questions is a long way to fall. Anything that takes the page away
+   mid-flow — a mis-tapped link in the sticky header, the in-app browser's
+   own back chevron, Instagram reloading a backgrounded tab — used to return
+   the visitor to step 1 with their answers intact but invisible, which reads
+   exactly like "it threw me back to the start".
+
+   The stored step is a hint, not a command: it is clamped to the first
+   unanswered question, so a stale or tampered value can never drop someone
+   into the contact step without the plan behind it. */
+function loadStep(a) {
+  let saved = 1;
+  try { saved = parseInt(sessionStorage.getItem(STEP_KEY) || '1', 10) || 1; } catch {}
+  let furthest = 1;
+  while (furthest < TOTAL && answered(furthest, a)) furthest += 1;
+  return Math.min(Math.max(1, saved), furthest);
+}
+
 export default function Planner() {
   const [step, setStep] = useState(1);
   const [a, setA] = useState(EMPTY);
@@ -60,12 +95,33 @@ export default function Planner() {
   /* null until the first render has been seen, so arriving on the page is
      never mistaken for a step transition and nothing scrolls on load. */
   const prevStep = useRef(null);
+  /* Set when a step change is a restore rather than a transition. */
+  const skipReveal = useRef(false);
 
-  useEffect(() => { setA(load()); }, []);
+  /* Restored together, in one commit, so the step and the answers it depends
+     on are never briefly out of step with each other. */
+  useEffect(() => {
+    const restored = load();
+    const at = loadStep(restored);
+    setA(restored);
+    /* Resuming is not a Next press. The visitor has just arrived and must be
+       left exactly where the browser put them, so the one reveal this commit
+       would otherwise trigger is spent here instead. */
+    if (at !== 1) skipReveal.current = true;
+    setStep(at);
+  }, []);
+
   useEffect(() => {
     if (!mounted.current) { mounted.current = true; return; }
     try { sessionStorage.setItem(KEY, JSON.stringify(a)); } catch {}
   }, [a]);
+
+  /* The step is saved on its own, and only while the flow is unfinished.
+     Once the plan is on screen there is nothing to resume. */
+  useEffect(() => {
+    if (done) return;
+    try { sessionStorage.setItem(STEP_KEY, String(step)); } catch {}
+  }, [step, done]);
 
   /* Focus the step heading, not the first input — focusing an input
      announces the option without the question.
@@ -86,9 +142,12 @@ export default function Planner() {
        geometry and scrolls to where the previous step used to start. */
     const id = requestAnimationFrame(() => {
       headingRef.current?.focus({ preventScroll: true });
-      /* Only on a real Next/Previous. On first paint the visitor has just
-         arrived and must be left where they are. */
-      if (isTransition) revealTop(stepRef.current);
+      /* Only on a real Next/Previous. On first paint, and on the commit that
+         restores a saved step, the visitor has just arrived and must be left
+         where they are. */
+      if (!isTransition) return;
+      if (skipReveal.current) { skipReveal.current = false; return; }
+      revealTop(stepRef.current);
     });
     return () => cancelAnimationFrame(id);
   }, [step, done]);
@@ -103,18 +162,7 @@ export default function Planner() {
     });
   };
 
-  const canAdvance = useMemo(() => {
-    switch (step) {
-      case 1: return !!a.businessType && (a.businessType !== 'other' || a.businessTypeOther.trim().length > 1);
-      case 2: return !!a.situation;
-      case 3: return !!a.goal;
-      case 4: return !!a.packageChoice && (a.packageChoice !== 'else' || a.packageChoiceOther.trim().length > 1);
-      case 5: return a.features.length > 0;
-      case 6: return !!a.timeline;
-      case 7: return !!a.wantsRecommendation;
-      default: return true;
-    }
-  }, [step, a]);
+  const canAdvance = useMemo(() => answered(step, a), [step, a]);
 
   const plan = useMemo(() => {
     if (!a.businessType) return null;
@@ -176,11 +224,19 @@ export default function Planner() {
     }
     setSent(res.ok ? 'ok' : res.reason === 'spam' ? 'ok' : res.reason);
     setDone(true);
+
+    /* Delivered: the draft has done its job. Someone else picking up this
+       phone should not find a stranger's name, email and answers waiting in
+       the planner. On a failure the draft stays, because the visitor will
+       want to try again. */
+    if (res.ok) {
+      try { sessionStorage.removeItem(KEY); sessionStorage.removeItem(STEP_KEY); } catch {}
+    }
   };
 
   const restart = () => {
     setA(EMPTY); setStep(1); setDone(false); setSent(null); setErrors({});
-    try { sessionStorage.removeItem(KEY); } catch {}
+    try { sessionStorage.removeItem(KEY); sessionStorage.removeItem(STEP_KEY); } catch {}
   };
 
   const stepTitles = [

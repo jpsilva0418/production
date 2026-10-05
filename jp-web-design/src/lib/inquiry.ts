@@ -26,8 +26,14 @@
    persist-then-send, quarantine rather than drop).
    ========================================================================== */
 
+/* The site's own function, same origin, is the default. It is a path and not
+   a secret, so hard-coding the fallback is safe — and it removes a whole
+   class of production failure: if PUBLIC_INQUIRY_ENDPOINT is ever missing
+   from the build environment, the forms still post to the real backend
+   instead of silently degrading to the email handoff. Set the variable only
+   to point the forms somewhere else. */
 export const ENDPOINT: string =
-  (import.meta.env.PUBLIC_INQUIRY_ENDPOINT as string | undefined) ?? '';
+  (import.meta.env.PUBLIC_INQUIRY_ENDPOINT as string | undefined) || '/api/inquiry';
 
 export const isConfigured = ENDPOINT.length > 0;
 
@@ -51,8 +57,11 @@ export interface Inquiry {
 }
 
 export type Result =
-  | { ok: true }
-  | { ok: false; reason: 'unconfigured' | 'network' | 'server' | 'spam'; status?: number };
+  | { ok: true; id?: string }
+  /** `code` is the backend's own error word — `bad_origin`, `send_failed`,
+      `rate_limited`, `email_invalid` — so a failure can be told apart in the
+      field instead of guessed at from a status number. */
+  | { ok: false; reason: 'unconfigured' | 'network' | 'server' | 'spam'; status?: number; code?: string };
 
 /** A mailto: the UI offers whenever sending is not possible, so an inquiry is
     never lost to a misconfiguration. Built from the same payload. */
@@ -86,10 +95,27 @@ export async function sendInquiry(data: Inquiry): Promise<Result> {
     const res = await fetch(ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ ...payload, submittedAt: new Date().toISOString() }),
+      body: JSON.stringify({
+        ...payload,
+        page: typeof location !== 'undefined' ? location.pathname : undefined,
+        submittedAt: new Date().toISOString(),
+      }),
     });
-    if (!res.ok) return { ok: false, reason: 'server', status: res.status };
-    return { ok: true };
+
+    /* HTTP 2xx is not the question. The question is whether the message was
+       accepted for delivery, and only the body answers it: `id` is the real
+       provider message id, `duplicate` means the same submission was already
+       accepted moments ago, `skipped` is the honeypot. A 2xx with none of
+       those is not a send and is not reported as one. */
+    const body = (await res.json().catch(() => null)) as
+      | { ok?: boolean; id?: string; duplicate?: boolean; skipped?: string; error?: string }
+      | null;
+
+    if (!res.ok || !body?.ok) {
+      return { ok: false, reason: 'server', status: res.status, code: body?.error };
+    }
+    if (body.id || body.duplicate || body.skipped) return { ok: true, id: body.id };
+    return { ok: false, reason: 'server', status: res.status, code: 'no_message_id' };
   } catch {
     return { ok: false, reason: 'network' };
   }

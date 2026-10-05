@@ -26,6 +26,10 @@ const TO       = process.env.INQUIRY_TO   || 'jpsilva0418@gmail.com';
 const FROM     = process.env.INQUIRY_FROM || 'JP Silva Digital <hello@jpsilvadigital.com>';
 const API_KEY  = process.env.RESEND_API_KEY || '';
 
+/* The site's own registrable domain. An Origin on this domain is ours
+   whatever the subdomain, which is what makes the apex/www pair safe. */
+const SITE_DOMAIN = 'jpsilvadigital.com';
+
 /* Length caps. Applied server-side because a client-side maxlength is a
    suggestion, not a limit. A field over its cap is truncated rather than
    rejected: the lead is worth more than the tidiness of the record. */
@@ -105,6 +109,59 @@ function plannerRows(answers) {
     if (value) out.push([question, value]);
   }
   return out;
+}
+
+/* ── where the request came from ───────────────────────────────────────────
+   Instagram's, Facebook's and TikTok's in-app browsers are real Safari
+   WebKit, but they do not all send the same request headers a tab does.
+   Depending on version a same-site POST arrives with `Origin` set to the
+   page's origin, set to the literal string "null", or absent altogether.
+   The first version of this check compared `new URL(origin).host` to the
+   request host and rejected anything else, which turned both of the other
+   two cases into a 403 — a silent failure for exactly the browsers most of
+   JP's visitors arrive in.
+
+   So the question is answered honestly instead: is this request one of ours?
+
+     - an Origin on jpsilvadigital.com (apex or any subdomain) is ours
+     - an Origin equal to the host that served the request is ours, which
+       covers *.vercel.app preview URLs without naming them
+     - "null" or no Origin is not evidence of a cross-site request. This
+       endpoint reads nothing from a cookie, a session or an Authorization
+       header, so there is no ambient authority for a third-party page to
+       borrow: the CSRF that an Origin check defends against does not apply.
+       `sec-fetch-site`, which WebKit does send, is consulted when present
+       and a genuine cross-site value is still refused.
+     - anything else — a real cross-site Origin — is refused.
+
+   What actually keeps the inbox clean is downstream and unchanged: the
+   honeypot, strict re-validation, the length caps, the per-IP window and
+   the duplicate fingerprint. None of that is relaxed here. */
+function originVerdict(req) {
+  const rawHost = String(req.headers['x-forwarded-host'] || req.headers.host || '');
+  const host = rawHost.toLowerCase().split(',')[0].trim().replace(/:\d+$/, '');
+  const origin = req.headers.origin;
+  const fetchSite = String(req.headers['sec-fetch-site'] || '').toLowerCase();
+
+  if (fetchSite === 'cross-site') return { ok: false, how: 'cross_site_header' };
+
+  if (!origin || origin === 'null') return { ok: true, how: 'no_origin' };
+
+  let oh;
+  try { oh = new URL(origin).host.toLowerCase().replace(/:\d+$/, ''); }
+  catch { return { ok: false, how: 'unparseable_origin' }; }
+
+  if (oh === host) return { ok: true, how: 'origin_matches_host' };
+  if (oh === SITE_DOMAIN || oh.endsWith(`.${SITE_DOMAIN}`)) return { ok: true, how: 'site_domain' };
+  return { ok: false, how: 'foreign_origin' };
+}
+
+/* ── diagnostics ───────────────────────────────────────────────────────────
+   One line per request, in the Vercel function log. Deliberately carries no
+   API key, no header values, no name, no email address and no message text —
+   only the shape of what happened, which is what a failure needs. */
+function log(fields) {
+  try { console.log(`[inquiry] ${JSON.stringify(fields)}`); } catch {}
 }
 
 /* ── the email ──────────────────────────────────────────────────────────── */
@@ -188,39 +245,53 @@ function render(d, meta) {
 }
 
 export default async function handler(req, res) {
+  const started = Date.now();
+  let calledResend = false;
+  /* Every exit goes through here, so no request can finish unlogged. */
+  const finish = (status, error, extra = {}) => {
+    log({
+      at: new Date(started).toISOString(),
+      path: '/api/inquiry',
+      method: req.method,
+      status,
+      ...(error ? { error } : {}),
+      resend_called: calledResend,
+      ms: Date.now() - started,
+      ...extra,
+    });
+    return error === null
+      ? res.status(status).json({ ok: true, ...extra })
+      : res.status(status).json({ ok: false, error, ...extra });
+  };
+
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
-    return res.status(405).json({ ok: false, error: 'method_not_allowed' });
+    return finish(405, 'method_not_allowed');
   }
 
-  /* Same-origin only. The form posts from this site; nothing else should. */
-  const origin = req.headers.origin;
-  if (origin) {
-    const host = req.headers['x-forwarded-host'] || req.headers.host || '';
-    let ok = false;
-    try { ok = new URL(origin).host === host; } catch { ok = false; }
-    if (!ok) return res.status(403).json({ ok: false, error: 'bad_origin' });
-  }
+  const org = originVerdict(req);
+  if (!org.ok) return finish(403, 'bad_origin', { origin_check: org.how });
 
   let d = req.body;
+  if (Buffer.isBuffer(d)) d = d.toString('utf8');
   if (typeof d === 'string') {
-    if (d.length > MAX_BODY) return res.status(413).json({ ok: false, error: 'too_large' });
-    try { d = JSON.parse(d); } catch { return res.status(400).json({ ok: false, error: 'bad_json' }); }
+    if (d.length > MAX_BODY) return finish(413, 'too_large');
+    try { d = JSON.parse(d); } catch { return finish(400, 'bad_json'); }
   }
-  if (!d || typeof d !== 'object') return res.status(400).json({ ok: false, error: 'bad_body' });
+  if (!d || typeof d !== 'object') return finish(400, 'bad_body');
 
   /* Honeypot. A real visitor never sees the field, so anything in it is a
      bot — answered 200 so the bot learns nothing, and nothing is sent. */
-  if (d.trap) return res.status(200).json({ ok: true, skipped: 'trap' });
+  if (d.trap) return finish(200, null, { skipped: 'trap' });
 
   /* Strict server-side re-validation. The client validates too; that is for
      the person's benefit, not a guarantee. */
   const v = {};
   for (const [k, cap] of Object.entries(CAPS)) v[k] = clean(d[k], cap);
-  if (!v.name)  return res.status(422).json({ ok: false, error: 'name_required' });
+  if (!v.name)  return finish(422, 'name_required', { invalid: 'name' });
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email)) {
-    return res.status(422).json({ ok: false, error: 'email_invalid' });
+    return finish(422, 'email_invalid', { invalid: 'email' });
   }
   const source = d.source === 'planner' ? 'planner' : 'contact';
 
@@ -231,7 +302,7 @@ export default async function handler(req, res) {
   const stamps = hits.get(ip) || [];
   if (stamps.length >= MAX_PER_WINDOW) {
     res.setHeader('Retry-After', '600');
-    return res.status(429).json({ ok: false, error: 'rate_limited' });
+    return finish(429, 'rate_limited');
   }
 
   /* Duplicate guard: the same person sending the same thing twice inside
@@ -239,14 +310,13 @@ export default async function handler(req, res) {
      visitor's point of view their message did arrive. */
   const fingerprint = `${v.email}|${source}|${v.message.slice(0, 200)}`;
   if (recent.has(fingerprint)) {
-    return res.status(200).json({ ok: true, duplicate: true });
+    return finish(200, null, { duplicate: true });
   }
 
   if (!API_KEY) {
     /* No credential: say so plainly rather than pretend. The browser shows
        the email handoff. */
-    console.error('inquiry: RESEND_API_KEY is not set');
-    return res.status(503).json({ ok: false, error: 'not_configured' });
+    return finish(503, 'not_configured');
   }
 
   const payload = {
@@ -263,6 +333,7 @@ export default async function handler(req, res) {
   const { subject, text, html } = render(payload, meta);
 
   try {
+    calledResend = true;
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -285,17 +356,27 @@ export default async function handler(req, res) {
     const body = await r.json().catch(() => ({}));
 
     /* Accepted ONLY when Resend returns an id. A 2xx with no id is not a
-       send, and is not reported as one. */
+       send, and is not reported as one.
+
+       `upstream` is Resend's own HTTP status and `upstream_name` its error
+       name — the two facts that tell a bad credential (401) apart from an
+       unverified sender (403) apart from a rate limit (429). Neither is a
+       secret, and without them a 502 here is a dead end: that is exactly
+       how the first production failure stayed invisible. The message body
+       is deliberately not carried over or logged. */
     if (!r.ok || !body?.id) {
-      console.error('inquiry: resend rejected', r.status, body?.message || body?.name || '');
-      return res.status(502).json({ ok: false, error: 'send_failed' });
+      return finish(502, 'send_failed', {
+        upstream: r.status,
+        upstream_name: typeof body?.name === 'string' ? body.name : undefined,
+      });
     }
 
     hits.set(ip, [...stamps, now]);
     recent.set(fingerprint, now);
-    return res.status(200).json({ ok: true, id: body.id });
+    return finish(200, null, { id: body.id, source, origin_check: org.how });
   } catch (e) {
-    console.error('inquiry: transport error', e?.name || 'Error');
-    return res.status(502).json({ ok: false, error: 'send_failed' });
+    /* The error's constructor name only — never its message, which can
+       carry the URL and the request. */
+    return finish(502, 'send_failed', { transport: e?.name || 'Error' });
   }
 }
