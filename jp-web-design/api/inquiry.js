@@ -17,6 +17,7 @@
    and given it an id. Anything else is a non-2xx, and the browser shows the
    email handoff rather than a success state.
    ========================================================================== */
+import { createHash } from 'node:crypto';
 import {
   BUSINESS_TYPES, SITUATIONS, GOALS, PACKAGE_CHOICES, FEATURE_GROUPS,
   TIMELINES, RECOMMEND_CHOICES,
@@ -332,6 +333,36 @@ export default async function handler(req, res) {
   };
   const { subject, text, html } = render(payload, meta);
 
+  /* The exact bytes going to Resend, built once so the idempotency key can be
+     derived from them. */
+  const outgoing = JSON.stringify({
+    from: header(FROM),
+    to: [TO],
+    reply_to: v.email ? header(`${v.name} <${v.email}>`) : undefined,
+    subject: header(subject),
+    text,
+    html,
+  });
+
+  /* Idempotency-Key is a hash of that payload, NOT of the submission's
+     content fingerprint.
+
+     It used to be the fingerprint — email + source + the first 200 characters
+     of the message — and that was wrong in a way production found before any
+     customer did. The planner has no free-text field of its own, so its
+     message is always the same default sentence; two planner submissions from
+     one email therefore produced an identical key with genuinely different
+     payloads (different name, different answers). Resend correctly refused the
+     second with 409 invalid_idempotent_request, which this endpoint turned
+     into a 502 and the visitor saw as a failed send.
+
+     Keyed on the payload hash instead, the guarantee is the one actually
+     wanted: an identical request retried is de-duplicated by Resend, and a
+     different request is simply a different request. "Same person sent the
+     same thing twice" is already handled above by the duplicate window, which
+     answers 200 without sending. */
+  const idemKey = `inq_${createHash('sha256').update(outgoing).digest('base64url').slice(0, 48)}`;
+
   try {
     calledResend = true;
     const r = await fetch('https://api.resend.com/emails', {
@@ -339,18 +370,9 @@ export default async function handler(req, res) {
       headers: {
         Authorization: `Bearer ${API_KEY}`,
         'Content-Type': 'application/json',
-        /* Resend de-duplicates on this, so a retry of the same submission
-           cannot produce two emails. */
-        'Idempotency-Key': `inq_${Buffer.from(fingerprint).toString('base64url').slice(0, 200)}`,
+        'Idempotency-Key': idemKey,
       },
-      body: JSON.stringify({
-        from: header(FROM),
-        to: [TO],
-        reply_to: v.email ? header(`${v.name} <${v.email}>`) : undefined,
-        subject: header(subject),
-        text,
-        html,
-      }),
+      body: outgoing,
     });
 
     const body = await r.json().catch(() => ({}));

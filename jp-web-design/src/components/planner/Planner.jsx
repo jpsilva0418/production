@@ -544,8 +544,9 @@ function Result({ a, plan, sent, onRestart, headingRef, stepRef }) {
         <section className="pl__block">
           <h4>Next step <span className="pl__count">{meta.cta}</span></h4>
           <p>
-            The free demo turns this plan into a designed homepage for your business — your
-            services, your work, your words. It costs nothing and obligates nothing.
+            The free demo turns this plan into a designed homepage concept for your business —
+            your services, your work, your words. It is a private preview of the direction
+            rather than the finished website, it costs nothing, and it obligates nothing.
           </p>
         </section>
 
