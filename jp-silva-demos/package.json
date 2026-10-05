@@ -1,0 +1,8 @@
+{
+  "name": "jp-silva-demos",
+  "private": true,
+  "type": "module",
+  "description": "JP Silva Digital: client website previews at preview.jpsilvadigital.com/<client-slug>. Not public, never indexed.",
+  "engines": { "node": ">=20" },
+  "scripts": { "build": "node build.mjs" }
+}

@@ -25,6 +25,9 @@ const arg = (k, d) => { const a = process.argv.find(x => x.startsWith(`--${k}=`)
 const target = arg('target', 'web');                     // 'web' | 'preview'
 const OUT = path.resolve(ROOT, arg('out', target === 'preview' ? '.preview' : 'dist'));
 const preview = target === 'preview' || process.env.PREVIEW !== '0';   // noindex unless explicitly launched
+/* web build served from a sub-path (e.g. --base=/jp-silva-media/ on preview.jpsilvadigital.com) and its absolute URL */
+const BASE = ('/' + arg('base', '/').replace(/^\/+|\/+$/g, '') + '/').replace(/^\/\/$/, '/');
+if (arg('site-url')) site.url = arg('site-url').replace(/\/+$/, '');
 let ytMeta = {};
 try { ytMeta = JSON.parse(await fs.readFile(path.join(ROOT, 'src/data/youtube.json'), 'utf8')); } catch (e) { /* optional */ }
 
@@ -34,7 +37,7 @@ const depthOf = route => route === '' || route === '404' ? 0 : route.split('/').
 
 function makeCtx(route) {
   const depth = depthOf(route);
-  const up = target === 'preview' ? (depth ? '../'.repeat(depth) : '') : '/';
+  const up = target === 'preview' ? (depth ? '../'.repeat(depth) : '') : BASE;
   return {
     target, preview, route, site, projects, categories, sorted, ytMeta,
     year: new Date().getFullYear(),
@@ -42,7 +45,7 @@ function makeCtx(route) {
     href(to, hash) {
       const h = hash ? '#' + hash : '';
       if (target === 'preview') return up + fileFor(to) + h;
-      return (to === '' ? '/' : '/' + to) + h;
+      return (to === '' ? BASE : BASE + to) + h;
     },
     /* link to a file under public/ */
     asset: p => up + p.replace(/^\//, ''),
