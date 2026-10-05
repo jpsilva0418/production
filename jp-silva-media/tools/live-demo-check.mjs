@@ -39,7 +39,7 @@ for (const p of pages) {
   const xr = r.headers.get('x-robots-tag') || '';
   const meta = (r.text.match(/<meta name="robots" content="([^"]+)"/) || [])[1] || '';
   const title = (r.text.match(/<title>([^<]+)/) || [])[1] || '';
-  ok(r.status === 200 && /JP Silva Media/.test(title) && !/JP Silva Digital/.test(title), `demo ${p || '/'} 200 · "${title}"`);
+  ok(r.status === 200 && /JP Silva Media/.test(title) && !/JP Silva Digital/.test(title), `demo ${p || '/'} ${r.status} · "${title}"`);
   ok(/noindex/.test(xr) && /nofollow/.test(xr) && /noarchive/.test(xr), `demo ${p || '/'} X-Robots-Tag: ${xr || '(none)'}`);
   ok(meta === 'noindex,nofollow,noarchive', `demo ${p || '/'} robots meta: ${meta || '(none)'}`);
 }
@@ -64,7 +64,10 @@ for (const [name, type, opts] of [['WebKit · iPhone 13', webkit, devices['iPhon
   ok(hrefs.length > 5 && hrefs.every(h => h.startsWith('/demo/jp-silva-media')), `${name} all ${hrefs.length} internal links stay under /demo/jp-silva-media`);
   /* the READY film plays in the page (tap the poster; never leaves the site) */
   await pg.goto(DEMO + '/work/ready', { waitUntil: 'load' }); await pg.waitForTimeout(800);
-  const box = await (await pg.$('#pj-yt')).boundingBox();
+  const stage = await pg.$('#pj-yt');
+  ok(!!stage, `${name} READY page has the film stage`);
+  if (!stage) { await b.close(); continue; }
+  const box = await stage.boundingBox();
   const pages0 = ctx.pages().length;
   if (opts.hasTouch) await pg.touchscreen.tap(box.x + box.width / 2, box.y + box.height / 2); else await pg.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
   await pg.waitForTimeout(6000);
