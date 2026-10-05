@@ -25,7 +25,7 @@ pages supply only the distinctive part of the title.
 | **Meta description** (154 chars) | Websites and Google and Meta advertising for businesses across Massachusetts, Greater Boston, MetroWest and nationwide. Free homepage demo, no obligation. |
 | **H1** | “I wish our website looked like that.” |
 | **Primary CTA** | Get Your Free Demo |
-| **Canonical** | `https://www.jpsilvadigital.com` |
+| **Canonical** | `https://jpsilvadigital.com` |
 | **Indexing** | index, follow |
 | **Internal links in** | 2 (content links, excluding nav and footer) |
 | **Internal links out** | `/about`, `/blog`, `/blog/fix-the-landing-page-before-running-ads`, `/blog/google-ads-vs-meta-ads-for-local-business`, `/contact`, `/free-demo`, `/industries`, `/services` |
@@ -42,7 +42,7 @@ pages supply only the distinctive part of the title.
 | **Meta description** (153 chars) | Three services from one person: web design and development, Google Ads, and Meta Ads for Facebook and Instagram. Massachusetts-based, working nationwide. |
 | **H1** | Three things, done properly |
 | **Primary CTA** | Get Your Free Demo |
-| **Canonical** | `https://www.jpsilvadigital.com/services` |
+| **Canonical** | `https://jpsilvadigital.com/services` |
 | **Indexing** | index, follow |
 | **Internal links in** | 6 (content links, excluding nav and footer) |
 | **Internal links out** | `/contact`, `/free-demo`, `/services/google-ads`, `/services/meta-ads`, `/services/web-design-development` |
@@ -59,7 +59,7 @@ pages supply only the distinctive part of the title.
 | **Meta description** (159 chars) | Custom business websites, redesigns and landing pages, designed and built end to end. Massachusetts-based, working nationwide. Start with a free homepage demo. |
 | **H1** | Web Design & Development |
 | **Primary CTA** | Get Your Free Demo |
-| **Canonical** | `https://www.jpsilvadigital.com/services/web-design-development` |
+| **Canonical** | `https://jpsilvadigital.com/services/web-design-development` |
 | **Indexing** | index, follow |
 | **Internal links in** | 10 (content links, excluding nav and footer) |
 | **Internal links out** | `/blog/signs-your-website-needs-a-redesign`, `/blog/website-seo-basics-for-small-businesses`, `/blog/what-a-small-business-website-needs-to-convert`, `/free-demo`, `/services`, `/services/google-ads`, `/services/meta-ads`, `/work/behold-money` |
@@ -76,7 +76,7 @@ pages supply only the distinctive part of the title.
 | **Meta description** (160 chars) | Google Ads and PPC management for small and local businesses: campaign setup, keyword strategy, negative keywords, conversion tracking and ongoing optimisation. |
 | **H1** | Google Ads |
 | **Primary CTA** | Start a Google Ads project |
-| **Canonical** | `https://www.jpsilvadigital.com/services/google-ads` |
+| **Canonical** | `https://jpsilvadigital.com/services/google-ads` |
 | **Indexing** | index, follow |
 | **Internal links in** | 9 (content links, excluding nav and footer) |
 | **Internal links out** | `/blog/fix-the-landing-page-before-running-ads`, `/blog/google-ads-vs-meta-ads-for-local-business`, `/blog/how-google-ads-works-for-service-businesses`, `/services`, `/services/meta-ads`, `/services/web-design-development`, `/work/leti-silva-beauty`, `/work/vcleaning-services` |
@@ -93,7 +93,7 @@ pages supply only the distinctive part of the title.
 | **Meta description** (157 chars) | Facebook and Instagram campaigns run from one Meta Ads Manager account: audience strategy, creative, retargeting, Pixel tracking and plain-English reporting. |
 | **H1** | Meta Ads — Facebook & Instagram |
 | **Primary CTA** | Start a Meta Ads project |
-| **Canonical** | `https://www.jpsilvadigital.com/services/meta-ads` |
+| **Canonical** | `https://jpsilvadigital.com/services/meta-ads` |
 | **Indexing** | index, follow |
 | **Internal links in** | 8 (content links, excluding nav and footer) |
 | **Internal links out** | `/blog/fix-the-landing-page-before-running-ads`, `/blog/google-ads-vs-meta-ads-for-local-business`, `/services`, `/services/google-ads`, `/services/web-design-development` |
@@ -110,7 +110,7 @@ pages supply only the distinctive part of the title.
 | **Meta description** (146 chars) | Selected projects by JP Silva — a bridal makeup studio, a family cleaning company, and a personal finance app, each designed and built end to end. |
 | **H1** | Real projects, honestly labelled |
 | **Primary CTA** | Get Your Free Demo |
-| **Canonical** | `https://www.jpsilvadigital.com/work` |
+| **Canonical** | `https://jpsilvadigital.com/work` |
 | **Indexing** | index, follow |
 | **Internal links in** | 5 (content links, excluding nav and footer) |
 | **Internal links out** | `/contact`, `/free-demo`, `/work/behold-money`, `/work/leti-silva-beauty`, `/work/vcleaning-services` |
@@ -127,7 +127,7 @@ pages supply only the distinctive part of the title.
 | **Meta description** (143 chars) | Construction and home services, beauty and wellness, creative, professional services, hospitality and real estate — who this work is built for. |
 | **H1** | Who I work with |
 | **Primary CTA** | Get Your Free Demo |
-| **Canonical** | `https://www.jpsilvadigital.com/industries` |
+| **Canonical** | `https://jpsilvadigital.com/industries` |
 | **Indexing** | index, follow |
 | **Internal links in** | 2 (content links, excluding nav and footer) |
 | **Internal links out** | `/contact`, `/free-demo`, `/services/google-ads`, `/services/meta-ads`, `/services/web-design-development` |
@@ -144,7 +144,7 @@ pages supply only the distinctive part of the title.
 | **Meta description** (153 chars) | JP Silva builds websites and runs Google and Meta advertising for small businesses. Massachusetts-based, working nationwide — here is how I work and why. |
 | **H1** | I’m JP. I build the website and run the ads. |
 | **Primary CTA** | Get Your Free Demo |
-| **Canonical** | `https://www.jpsilvadigital.com/about` |
+| **Canonical** | `https://jpsilvadigital.com/about` |
 | **Indexing** | index, follow |
 | **Internal links in** | 2 (content links, excluding nav and footer) |
 | **Internal links out** | `/contact`, `/free-demo`, `/services/google-ads`, `/services/meta-ads`, `/services/web-design-development`, `/work/behold-money`, `/work/leti-silva-beauty`, `/work/vcleaning-services` |
@@ -161,7 +161,7 @@ pages supply only the distinctive part of the title.
 | **Meta description** (123 chars) | Straight answers about websites and advertising for small businesses — what actually moves the needle, written by JP Silva. |
 | **H1** | Notes on getting found and getting called |
 | **Primary CTA** | Get Your Free Demo |
-| **Canonical** | `https://www.jpsilvadigital.com/blog` |
+| **Canonical** | `https://jpsilvadigital.com/blog` |
 | **Indexing** | index, follow |
 | **Internal links in** | 8 (content links, excluding nav and footer) |
 | **Internal links out** | `/blog/fix-the-landing-page-before-running-ads`, `/blog/google-ads-vs-meta-ads-for-local-business`, `/blog/how-google-ads-works-for-service-businesses`, `/blog/signs-your-website-needs-a-redesign`, `/blog/website-seo-basics-for-small-businesses`, `/blog/what-a-small-business-website-needs-to-convert`, `/contact`, `/free-demo` |
@@ -178,7 +178,7 @@ pages supply only the distinctive part of the title.
 | **Meta description** (158 chars) | Tell JP Silva about your website or advertising project. Massachusetts-based, working with businesses nationwide. Free consultation, free demo, no obligation. |
 | **H1** | Tell me about your business |
 | **Primary CTA** | Send my inquiry |
-| **Canonical** | `https://www.jpsilvadigital.com/contact` |
+| **Canonical** | `https://jpsilvadigital.com/contact` |
 | **Indexing** | index, follow |
 | **Internal links in** | 16 (content links, excluding nav and footer) |
 | **Internal links out** | `/free-demo` |
@@ -195,7 +195,7 @@ pages supply only the distinctive part of the title.
 | **Meta description** (138 chars) | Answer eight questions, see your website plan on screen, and get a designed homepage concept for your business — free, with no obligation. |
 | **H1** | Eight questions, then your free demo |
 | **Primary CTA** | Complete the planner |
-| **Canonical** | `https://www.jpsilvadigital.com/free-demo` |
+| **Canonical** | `https://jpsilvadigital.com/free-demo` |
 | **Indexing** | index, follow |
 | **Internal links in** | 16 (content links, excluding nav and footer) |
 | **Internal links out** | `/contact`, `/services` |

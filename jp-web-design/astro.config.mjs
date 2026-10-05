@@ -3,11 +3,16 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 
-/* TODO(launch) — BLOCKS LAUNCH. The real domain, once registered. This single
-   constant drives canonical URLs, Open Graph URLs, the sitemap and all
-   structured data, so changing it here is the whole domain migration.
-   public/robots.txt carries the same host and must be changed with it. */
-export const SITE = 'https://www.jpsilvadigital.com';
+/* The production domain, registered through Vercel and live on Vercel DNS.
+
+   The APEX is canonical. www.jpsilvadigital.com 308-redirects to it — see
+   the host redirect in vercel.json — so every page has exactly one address.
+
+   This single constant drives canonical URLs, Open Graph URLs, the sitemap
+   and all structured data, so changing it here is the whole domain
+   migration. public/robots.txt carries the same host and must change with
+   it; `npm run check:links` fails the build if the two ever disagree. */
+export const SITE = 'https://jpsilvadigital.com';
 
 export default defineConfig({
   site: SITE,

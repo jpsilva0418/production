@@ -57,12 +57,28 @@ when a key is missing.
 | `PUBLIC_META_PIXEL_ID` | Meta Pixel does not load |
 | `PUBLIC_GSC_VERIFICATION` | No verification meta tag rendered |
 
-## The domain constant
+## Domains
+
+| | |
+|---|---|
+| Canonical | `https://jpsilvadigital.com` (apex) |
+| Redirects to it | `https://www.jpsilvadigital.com` — 308, via the host redirect in `vercel.json` |
+
+Both must be added to the project. The redirect is config-as-code so it holds
+regardless of dashboard state; if Vercel's own domain settings also redirect
+www, that fires first and this rule simply never matches. Do **not** configure
+the apex to redirect to www — that inverts the canonical the whole site
+advertises.
+
+The redirect is host-conditional, so `*.vercel.app` deployment URLs are
+unaffected and preview deployments keep working.
 
 `astro.config.mjs` exports `SITE`, which drives canonical URLs, Open Graph
 URLs, the sitemap and all structured data. `public/robots.txt` carries the
-same host and must change with it. Changing the domain is that one constant
-plus that one file.
+same host. Changing the domain is that one constant plus that one file —
+and `npm run check:links` fails the build if they ever disagree, or if any
+page ships a canonical, og:url, og:image, JSON-LD URL or sitemap entry on a
+different host.
 
 ## Verifying a deploy
 

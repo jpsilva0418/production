@@ -137,7 +137,79 @@ for (const [route, html] of docs) {
   }
 }
 
-/* ---------- 8. no developer notes in the shipped HTML ----------
+/* ---------- 8. the production domain, everywhere, identically ----------
+   The domain lives in exactly two authored places: SITE in astro.config.mjs
+   and the Sitemap line in public/robots.txt. Everything else derives from
+   SITE. This asserts they agree and that nothing still advertises an old or
+   wrong host — a canonical pointing at a hostname that 308-redirects is a
+   page competing with itself. */
+const ORIGIN = 'https://jpsilvadigital.com';
+/* Hosts that must never appear in shipped output: the www form (it redirects
+   to the apex, so it is never canonical) and the domain that was never the
+   production domain. */
+const WRONG_HOSTS = ['https://www.jpsilvadigital.com', 'jpsilva.digital'];
+
+const robots = existsSync(join(DIST, 'robots.txt')) ? readFileSync(join(DIST, 'robots.txt'), 'utf8') : '';
+if (!robots) fail.push('ROBOTS: robots.txt is not in the build');
+else if (!robots.includes(`Sitemap: ${ORIGIN}/sitemap-index.xml`)) {
+  fail.push(`ROBOTS DOMAIN: sitemap line is not ${ORIGIN}/sitemap-index.xml`);
+}
+
+for (const [route, html] of docs) {
+  if (/\/404$/.test(route)) continue;
+  const canonical = /<link rel="canonical" href="([^"]+)"/.exec(html)?.[1];
+  const ogUrl = /<meta property="og:url" content="([^"]+)"/.exec(html)?.[1];
+  if (!canonical) fail.push(`CANONICAL: ${route} has none`);
+  else if (!canonical.startsWith(ORIGIN)) fail.push(`CANONICAL DOMAIN: ${route} -> ${canonical}`);
+  if (!ogUrl) fail.push(`OG URL: ${route} has none`);
+  else if (!ogUrl.startsWith(ORIGIN)) fail.push(`OG DOMAIN: ${route} -> ${ogUrl}`);
+  if (canonical && ogUrl && canonical !== ogUrl) {
+    fail.push(`OG/CANONICAL MISMATCH: ${route} — ${ogUrl} vs ${canonical}`);
+  }
+  /* og:image and twitter:image are absolute, so they carry the host too. */
+  for (const m of html.matchAll(/<meta (?:property|name)="(og:image|twitter:image)" content="([^"]+)"/g)) {
+    if (!m[2].startsWith(ORIGIN)) fail.push(`${m[1].toUpperCase()} DOMAIN: ${route} -> ${m[2]}`);
+  }
+  /* Structured data: every absolute URL in every JSON-LD block. */
+  for (const m of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+    for (const u of m[1].matchAll(/https?:\/\/[^"\\\s]+/g)) {
+      const url = u[0];
+      if (/jpsilvadigital\.com|jpsilva\.digital/.test(url) && !url.startsWith(ORIGIN)) {
+        fail.push(`STRUCTURED DATA DOMAIN: ${route} -> ${url}`);
+      }
+    }
+  }
+  for (const bad of WRONG_HOSTS) {
+    if (html.includes(bad)) fail.push(`WRONG HOST IN OUTPUT: ${route} contains ${bad}`);
+  }
+}
+
+/* The sitemap is what Search Console reads; it has to match the canonicals. */
+for (const f of files.filter((x) => /sitemap.*\.xml$/.test(x))) {
+  const xml = readFileSync(f, 'utf8');
+  for (const m of xml.matchAll(/<loc>([^<]+)<\/loc>/g)) {
+    if (!m[1].startsWith(ORIGIN)) fail.push(`SITEMAP DOMAIN: ${m[1]}`);
+  }
+  for (const bad of WRONG_HOSTS) {
+    if (xml.includes(bad)) fail.push(`WRONG HOST IN SITEMAP: ${f.slice(DIST.length + 1)} contains ${bad}`);
+  }
+}
+
+/* Every canonical must be a URL the sitemap actually lists, and vice versa. */
+const sitemapUrls = new Set(
+  files.filter((x) => /sitemap-\d+\.xml$/.test(x))
+    .flatMap((f) => [...readFileSync(f, 'utf8').matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1])),
+);
+for (const [route, html] of docs) {
+  if (/\/404$/.test(route)) continue;
+  if (/noindex/.test(html)) continue;
+  const canonical = /<link rel="canonical" href="([^"]+)"/.exec(html)?.[1];
+  if (canonical && !sitemapUrls.has(canonical)) {
+    fail.push(`CANONICAL NOT IN SITEMAP: ${route} canonicalises to ${canonical}`);
+  }
+}
+
+/* ---------- 9. no developer notes in the shipped HTML ----------
    Astro strips {/* ... *\/} but passes <!-- ... --> straight through, so a
    note meant for the source can end up readable in the published page. */
 const NOTE = /<!--[^>]*?(TODO|FIXME|HACK|XXX|placeholder|FAKE|REMOVE)[\s\S]*?-->/i;

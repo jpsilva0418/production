@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://www.jpsilvadigital.com/sitemap-index.xml
+Sitemap: https://jpsilvadigital.com/sitemap-index.xml
