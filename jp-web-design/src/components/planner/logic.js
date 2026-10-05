@@ -384,16 +384,16 @@ export const PACKAGE_META = {
   starter: {
     name: 'Starter Website',
     blurb: 'A focused, professional one-page website for businesses that need a strong and credible online presence.',
-    cta: 'Request Starter Pricing',
+    cta: 'Get your free demo',
   },
   growth: {
     name: 'Business Growth Website',
     blurb: 'A strategic multi-page website built to establish trust, explain your services, generate qualified inquiries, and create a stronger SEO foundation.',
-    cta: 'Request Growth Website Pricing',
+    cta: 'Get your free demo',
   },
   custom: {
     name: 'Custom Website',
     blurb: 'A completely tailored website strategy for businesses with advanced goals, features, content, integrations, or long-term growth plans.',
-    cta: 'Discuss a Custom Project',
+    cta: 'Tell me about your project',
   },
 };

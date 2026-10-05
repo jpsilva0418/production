@@ -39,6 +39,12 @@ const related = PROJECTS.filter((p) =>
 
 const others = SERVICES.filter((s) => s.slug !== service.slug);
 
+/* The section numbers are part of the page's visual language, so they have to
+   stay contiguous. Only the website pillar carries the "already have a
+   website" section, which pushes the two after it along by one. */
+const nRelated = service.existing ? '05' : '04';
+const nReading = service.existing ? '06' : '05';
+
 /* Supporting articles, in the order the service lists them. Filtered through
    the collection so a renamed or unpublished post cannot leave a dead link. */
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
@@ -132,13 +138,38 @@ const reading = service.reading
           </li>
         ))}
       </ol>
+
+      {service.after && <p class="small sd__after">{service.after}</p>}
     </div>
   </section>
+
+  {/* Only the website pillar carries this, and only because "I already have
+      a site" is the situation most visitors are actually in. */}
+  {service.existing && (
+    <section class="section section--panel" aria-labelledby="exi-h">
+      <div class="container">
+        <p><span class="mark mark--amber"><b>§04</b> Already have a website?</span></p>
+        <h2 class="h2 sd__h" id="exi-h">Your site stays live while the new one is built</h2>
+        <p class="body sd__lede">{service.existing.lead}</p>
+        <ol class="rows sd__steps">
+          {service.existing.rows.map((r, i) => (
+            <li class="row">
+              <span class="row__n">{String(i + 1).padStart(2, '0')}</span>
+              <div class="row__b">
+                <h3 class="h3">{r.t}</h3>
+                <p class="small">{r.d}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )}
 
   {related.length > 0 && (
     <section class="section section--panel" aria-labelledby="rel-h">
       <div class="container">
-        <p><span class="mark"><b>§04</b> Related work</span></p>
+        <p><span class="mark"><b>§{nRelated}</b> Related work</span></p>
         <h2 class="h2 sd__h" id="rel-h">Where this has been built</h2>
         <div class="grid g3">
           {related.map((p) => (
@@ -156,7 +187,7 @@ const reading = service.reading
   {reading.length > 0 && (
     <section class="section" aria-labelledby="read-h">
       <div class="container">
-        <p><span class="mark"><b>§05</b> Further reading</span></p>
+        <p><span class="mark"><b>§{nReading}</b> Further reading</span></p>
         <h2 class="h2 sd__h" id="read-h">
           {service.slug === 'web-design-development'
             ? 'What makes a website work'
@@ -252,6 +283,11 @@ const reading = service.reading
     background: var(--card); border: 1px solid var(--rule); border-left: 3px solid var(--amber-t);
     border-radius: 14px; padding: var(--s5); box-shadow: var(--shadow);
   }
+  /* The lede sits between the heading and the numbered rows, so it takes the
+     same measure as body copy elsewhere rather than running the full column. */
+  .sd__lede { max-width: 62ch; margin-top: var(--s4); }
+  .sd__after { max-width: 62ch; margin-top: var(--s5); color: var(--graphite); }
+
   .sd__limits h2 { margin-bottom: var(--s4); }
   .sd__limits ul { display: grid; gap: var(--s3); }
   .sd__limits li { font-size: var(--fs-small); color: var(--graphite); padding-left: 1.1rem; position: relative; }

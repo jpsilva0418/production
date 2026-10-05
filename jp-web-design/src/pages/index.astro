@@ -22,7 +22,7 @@ const fmtDate = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', mo
 
 
 const why = [
-  ['You own everything', 'Domain, hosting, code, content, analytics — in your name from day one.'],
+  ['You own the finished site', 'Domain, content, code and analytics are yours. Keep me on to look after it, or take it with you.'],
   ['The date is fixed before we start', 'So is the scope and the price. Revision rounds are named in writing.'],
   ['One project at a time', 'Yours is not queued behind five others — and I say so when I’m at capacity.'],
   ['You don’t write your own website', 'You talk for an hour and correct a draft. That’s your whole job.'],
@@ -43,14 +43,28 @@ const faqs = [
     a: 'Yes, across the United States. Discovery happens on a call, review happens on a real URL, and nothing about the process requires being in the same room.' },
   { q: 'Do you provide SEO?',
     a: 'I build the foundation: structure, speed, correct markup, one clear topic per page, and the local setup. I do not sell monthly SEO retainers and I will not promise rankings. Anyone guaranteeing a position is either guessing or selling you advertising with a different label on it.' },
-  { q: 'Can you redesign my existing website?',
-    a: 'Yes, and it is a large share of the work. If we move platforms the page addresses change, which needs a redirect map on day one or you lose whatever search visibility you have built.' },
-  { q: 'Will I own my website?',
-    a: 'Completely, from day one. Domain, hosting account, code, content and analytics are all registered in your name. No licence, no lease, no platform fee. If you ever want to move on, nothing is held back.' },
+  { q: 'Can you help if I already have a website?',
+    a: 'Yes, and it is a large share of the work. Send me the link and I will look at what exists — pages, content, branding, domain setup, and whatever SEO foundation is visible — then tell you whether it is worth improving what you have or building a better custom version. If we rebuild, your current site stays live the whole time.' },
+  { q: 'Do you work in Wix or Squarespace?',
+    a: 'I specialise in custom-built websites rather than editing sites inside template builders, because that is what lets me design around your business instead of fitting it into someone else’s layout. If you are on a builder now, send me the link and I will give you an honest read on whether a rebuild is worth it.' },
+  { q: 'Can I keep my existing domain?',
+    a: 'Yes. You do not need a new domain just because the website was rebuilt. When you approve the new site your existing domain is connected to it and I handle the switch — the address your customers already know keeps working.' },
+  { q: 'What happens to my old website while the new one is built?',
+    a: 'It stays live and keeps doing its job. For a redesign I build the new site privately, you review it on a real URL, and nothing changes publicly until you approve it.' },
+  { q: 'Who owns the finished website?',
+    a: 'You do. The domain, the content, the code and the analytics are yours, and nothing is held back if you move on. That applies to the completed paid website — the free homepage demo is a concept to look at, not a finished site you take away.' },
   { q: 'Can you write the website content?',
     a: 'Yes, and that is the default. You talk for an hour and correct a draft. The most common reason a website project stalls for months is a client being asked to write it themselves.' },
-  { q: 'Can you maintain the website after launch?',
-    a: 'Every project includes a post-launch support window. After that there is an optional care plan — hosting, updates, backups, monitoring, and a set block of edit time each month. Optional, and declining it changes nothing else.' },
+  { q: 'Can you manage the site after launch?',
+    a: 'Every project includes a post-launch support window. After that there are two optional levels. Website Care covers hosting, deployment, keeping the site running, backups, monitoring and technical support within an agreed scope. Website Care + Content Updates adds a set number of small content changes each month. Both are optional, and declining them changes nothing else — the alternative is a straight handover.' },
+  { q: 'Do I have to pay monthly forever?',
+    a: 'No. Ongoing care is a choice, not a condition of the build. If you would rather not have it, the finished project is handed over to you with the access and documentation you need.' },
+  { q: 'What counts as a small content update?',
+    a: 'Swapping a photo, changing a paragraph, updating your hours or phone number, editing an existing service description, or changing a button or link. New pages, new functionality, new integrations, booking systems and full copy rewrites are project work rather than updates, and they are scoped separately. I do not offer unlimited changes, because an honest limit is better than a promise neither of us can hold.' },
+  { q: 'Can you help with my Google Business Profile?',
+    a: 'Yes, as part of a website project. I check whether a profile already exists, make sure the business details and categories are right, link it correctly to the new site and point out what is worth improving. Google may require you as the owner to complete verification itself, and nobody can promise map placement.' },
+  { q: 'Is ad spend included in your management service?',
+    a: 'No, and that is deliberate. You pay Google or Meta directly for the advertising budget, so you can see exactly what the platform charged. My work is the setup, management and optimisation, quoted separately. I will not promise a cost per lead or a return before a campaign has real data.' },
   { q: 'Do you build e-commerce websites?',
     a: 'Yes, under the Custom Website package. Payments, tax and shipping rules need deciding in week one — they shape the build more than the visual design does.' },
   { q: 'What do you need from me to start?',
@@ -182,7 +196,7 @@ const check = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke
           <span class="stepn">3</span>
           <h3 class="card__t">You decide</h3>
           <p class="card__x">Love it, we build the rest. Don&rsquo;t, and that&rsquo;s the end — no invoice, no follow-up sequence, no hard feelings.</p>
-          <span class="meta">$0 either way</span>
+          <span class="meta">No cost either way</span>
         </article>
       </div>
       <p class="sec__note" data-anim>
@@ -330,7 +344,7 @@ const check = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke
           <li><span>01</span><b>Answer eight questions</b><i>≈ 4 minutes</i></li>
           <li><span>02</span><b>Your plan appears on screen</b><i>Instant, no email</i></li>
           <li><span>03</span><b>I design your homepage</b><i>3–5 business days</i></li>
-          <li><span>04</span><b>You decide</b><i>$0 either way</i></li>
+          <li><span>04</span><b>You decide</b><i>No cost either way</i></li>
         </ol>
         <div class="pln__go">
           <a class="btn btn--primary" href="/free-demo" data-track="get_free_demo_click" data-track-label="home-planner">

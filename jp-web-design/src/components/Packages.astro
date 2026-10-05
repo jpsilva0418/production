@@ -1,9 +1,15 @@
 ---
 /* Three tiers exactly as specified. No dollar amounts anywhere — the scope
-   line at the top of each card is what lets a visitor self-select instead.
-   Six features shown per card, chosen because they differentiate, not
-   because they came first; the rest sit in a real <details> so every panel
-   is in the DOM at load for crawlers and screen readers alike. */
+   line at the top of each card is what lets a visitor self-select instead,
+   and a quote follows a conversation about the actual project.
+   Each card shows the handful of capabilities that differentiate it, chosen
+   for that reason and not because they came first; the rest sit in a real
+   <details> so every panel is in the DOM at load for crawlers and screen
+   readers alike.
+
+   All three are custom builds. The difference between them is depth,
+   customisation, complexity and scope — never quality. Nothing here may
+   imply a published price, an unlimited scope, or a ranking. */
 
 const packages = [
   {
@@ -16,13 +22,15 @@ const packages = [
       'One-page custom website, designed not templated',
       'Professional hero, about, services and contact sections',
       'Inquiry form, click-to-call and click-to-email',
-      'On-page SEO: title, meta description, heading structure',
+      'On-page SEO foundation: title, meta description, heading structure',
       'Image optimisation and accessibility setup',
+      'Google Business Profile reviewed and linked to the new site',
       'Domain connection and launch support',
     ],
     more: ['Mobile-responsive across all screen sizes', 'Social media links', 'One revision round'],
     not: 'Does not include individual service pages, service-area pages, or an SEO content foundation. If your main goal is generating inquiries, look at Business Growth instead.',
-    cta: 'Request Starter Pricing',
+    cta: 'Get your free demo',
+    href: '/free-demo',
     popular: false,
   },
   {
@@ -38,10 +46,12 @@ const packages = [
       'Multiple lead forms and conversion-focused page structure',
       'Keyword research, titles and metas for every page',
       'Local SEO foundation, schema, Analytics and Search Console',
+      'Google Business Profile reviewed, corrected and pointed at the site',
     ],
     more: ['Internal linking structure', 'Blog or resource section if it is genuinely needed', 'Two revision rounds', 'Post-launch support period'],
     not: null,
-    cta: 'Request Growth Website Pricing',
+    cta: 'Get your free demo',
+    href: '/free-demo',
     popular: true,
   },
   {
@@ -60,7 +70,8 @@ const packages = [
     ],
     more: ['Customer portals and membership functionality', 'Custom interactive tools and calculators', 'Content and blog strategy', 'Priority support and a project-specific revision structure'],
     not: null,
-    cta: 'Discuss a Custom Project',
+    cta: 'Tell me about your project',
+    href: '/contact',
     popular: false,
   },
 ];
@@ -87,18 +98,30 @@ const packages = [
 
       {p.not && <p class="pk__not">{p.not}</p>}
 
-      <a class={`btn ${p.popular ? 'btn--primary' : 'btn--ghost'} btn--wide pk__cta`} href="/free-demo">
+      <a class={`btn ${p.popular ? 'btn--primary' : 'btn--ghost'} btn--wide pk__cta`} href={p.href}>
         {p.cta}
       </a>
     </article>
   ))}
 </div>
 
-<p class="pk__note">
-  Every project is different. Pricing is provided after a free consultation based on your
-  goals, required pages, features, content, and timeline. The consultation costs nothing and
-  carries no obligation.
-</p>
+<div class="pk__after">
+  <p class="pk__note">
+    All three are custom builds, not templates. Every project is different, so a quote follows a
+    free consultation about your goals, the pages you need, features, content and timeline. The
+    consultation costs nothing and carries no obligation.
+  </p>
+  <p class="pk__note">
+    <strong>Already have a website?</strong> Send me the link. Your current site stays live while
+    the new one is built, useful content and page addresses carry forward where they should, and
+    your existing domain connects to the new site when you approve it — you do not need a new one.
+  </p>
+  <p class="pk__note">
+    <strong>After launch, you choose.</strong> I can keep hosting and looking after the site, or
+    the finished project is handed over to you with the access and documentation you need. There is
+    no subscription you have to stay in, and the website you paid for is yours either way.
+  </p>
+</div>
 
 <style>
   .pk { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s5); align-items: start; }
@@ -159,8 +182,7 @@ const packages = [
   .pk__cta { margin-top: auto; padding-top: 0; }
   .pk__c > .pk__cta { margin-top: var(--s5); }
 
-  .pk__note {
-    margin-top: var(--s5); font-size: var(--fs-small); color: var(--graphite);
-    max-width: 62ch;
-  }
+  .pk__after { margin-top: var(--s5); display: grid; gap: var(--s4); }
+  .pk__note { font-size: var(--fs-small); color: var(--graphite); max-width: 62ch; }
+  .pk__note strong { color: var(--ink); }
 </style>

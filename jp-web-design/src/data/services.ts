@@ -41,6 +41,14 @@ export interface Service {
   limits: string[];
   /** Detail-page process, 3–4 steps. */
   steps: { t: string; d: string }[];
+  /** Only on the website pillar: what happens when the business already has
+      a site. It is the single most common situation and it used to go
+      unanswered, which left people guessing about their domain and their
+      live site. Rendered as its own section when present. */
+  existing?: { lead: string; rows: { t: string; d: string }[] };
+  /** Only where it applies: how the work is handed over, or kept running.
+      Rendered as a short note under the steps. */
+  after?: string;
   /** Maps to the inquiry form's `need` field. */
   needValue: string;
   /** Blog post ids that support this page's intent. Informational content
@@ -62,7 +70,7 @@ export const SERVICES: Service[] = [
     problem:
       'Your site came from the same builder as three competitors’, or it has quietly stopped doing its job.',
     intro:
-      'This is the core of the business and the reason the free demo exists. I design and build the site myself — structure, copy, design, code and launch — so the person you talk to on the first call is the person who ships it.',
+      'This is the core of the business and the reason the free demo exists. I build custom websites rather than template-builder sites, which is what makes it possible to design around how your customers actually decide instead of fitting your business into someone else’s layout. I do the work myself — structure, copy, design, code and launch — so the person you talk to on the first call is the person who ships it.',
     includes: [
       'Custom design, not a template with your logo dropped in',
       'Mobile-first build that stays fast on a phone over LTE',
@@ -71,6 +79,7 @@ export const SERVICES: Service[] = [
       'Inquiry forms, click-to-call and click-to-email wired and tested',
       'On-page SEO: titles, metas, heading structure, schema, sitemap',
       'Analytics and Search Console connected before your site goes live',
+      'Google Business Profile reviewed and pointed at the new site, where you have one',
       'Domain connection, launch, and a post-launch support window',
     ],
     fitFor: [
@@ -83,15 +92,29 @@ export const SERVICES: Service[] = [
       'If your current site is working and you simply dislike how it looks, say so on the call — a redesign is sometimes the wrong purchase, and I would rather tell you that than sell you one.',
     limits: [
       'I do not sell monthly SEO retainers and I will not promise rankings.',
+      'I specialise in custom-built websites rather than editing sites inside template builders like Wix or Squarespace. Send me what you have and I will tell you honestly whether a rebuild is worth it.',
       'I take one project at a time. If I am at capacity I say so rather than leave you waiting.',
       'If a cheaper option is genuinely right for you, I will tell you that instead.',
     ],
     steps: [
-      { t: 'The free demo', d: 'Answer the planner, and I design your homepage concept for free. You decide after you have seen it.' },
+      { t: 'Tell me about the business', d: 'Answer the planner. If you already have a site, send me the link — that is the fastest way for me to understand where you are.' },
+      { t: 'The free demo', d: 'I design your homepage concept for free. It is a direction to look at, not the finished website, and you decide after you have seen it.' },
       { t: 'Scope and date', d: 'A written scope, a fixed price and a launch date, agreed before any work starts.' },
       { t: 'Build and review', d: 'You review on a real URL, not a PDF. Revision rounds are named in the proposal.' },
-      { t: 'Launch and hand over', d: 'Domain, hosting, code, content and analytics are all in your name from day one.' },
+      { t: 'Launch', d: 'Your domain is connected, the site goes live, and I handle the technical setup and the transition.' },
     ],
+    existing: {
+      lead: 'Most of the work I do is for businesses that already have a website. Nothing about that is a complication, and you do not need a new domain just because the site was rebuilt.',
+      rows: [
+        { t: 'Send me the link', d: 'That is the whole first step. I look at the pages, the content, the branding, the domain setup and whatever SEO foundation is visible from the outside.' },
+        { t: 'I tell you what I would keep', d: 'Some of what you have is probably working. Copy, photographs, services, portfolio material and important page addresses can all carry forward where they deserve to.' },
+        { t: 'Your current site stays live', d: 'For a redesign I build the new one privately while the old one keeps doing its job. Nothing goes dark while you wait.' },
+        { t: 'You approve before anything changes', d: 'You review the real new site, on a real URL, before it replaces anything.' },
+        { t: 'Your domain comes with you', d: 'When you are happy, your existing domain is connected to the new site and I handle the switch. The address your customers know does not change.' },
+      ],
+    },
+    after:
+      'After launch you choose: I can keep hosting and looking after the site, or the finished project is handed over to you with the access and documentation you need. Either way the website you paid for is yours.',
     needValue: 'Website / Web Development',
     reading: [
       'what-a-small-business-website-needs-to-convert',
@@ -186,6 +209,7 @@ export const SERVICES: Service[] = [
       'If people are already searching for exactly what you sell, Google is usually the cheaper first move and Meta is better kept for retargeting. I have written about how to tell the two apart.',
     limits: [
       'I will not promise a lead volume or a return before a campaign has data.',
+      'Ad spend is paid by you directly to Meta. It is never bundled into my fee.',
       'Accounts, pixels and audiences stay in your Business Manager, in your name.',
       'Creative needs real material — photos, video, or a plan to get them.',
     ],

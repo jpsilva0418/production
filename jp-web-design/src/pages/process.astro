@@ -9,8 +9,8 @@ const steps = [
   { n: '05', t: 'Build',      d: 'Fast, accessible, semantic. The performance budget is enforced by the build, not checked at the end.', you: 'Nothing', me: 'Build and QA' },
   { n: '06', t: 'Review',     d: 'You see it on a real URL and mark it up. Revisions run to the number named in your package.', you: '1–2 hours', me: 'Revisions' },
   { n: '07', t: 'Testing',    d: 'Keyboard, screen reader, real devices, forms end to end. Every link and every state.', you: 'Nothing', me: 'Full test pass' },
-  { n: '08', t: 'Launch',     d: 'Redirects mapped, analytics verified, Search Console connected, every account in your name.', you: 'Approve go-live', me: 'Launch' },
-  { n: '09', t: 'Support',    d: 'A defined post-launch window, then an optional care plan. Not a silence.', you: 'Optional', me: 'Support' },
+  { n: '08', t: 'Launch',     d: 'Your domain connected, redirects mapped, analytics verified, Search Console connected. I handle the technical setup and the switch.', you: 'Approve go-live', me: 'Launch' },
+  { n: '09', t: 'Your choice', d: 'A defined post-launch window, then you decide: I keep looking after the site, or the project is handed over to you. Not a silence, and not a subscription you are stuck in.', you: 'Decide', me: 'Care or handover' },
 ];
 ---
 <Base
@@ -43,6 +43,36 @@ const steps = [
           </li>
         ))}
       </ul>
+
+      <div class="note pnote">
+        <span class="lbl">If you already have a website</span>
+        <p class="small">
+          Send me the link before step one. I review what exists &mdash; pages, content, branding,
+          domain setup, the SEO foundation that is visible from outside &mdash; and tell you whether
+          it is worth improving what you have or building a better custom version. For a rebuild
+          your current site stays live the whole time, useful content and important page addresses
+          carry forward, and your existing domain connects to the new site once you approve it.
+          You do not need a new domain.
+        </p>
+      </div>
+
+      <div class="note pnote">
+        <span class="lbl">After launch: care, or handover</span>
+        <p class="small">
+          <strong>Website Care</strong> is for businesses that would rather not think about it:
+          hosting and deployment, keeping the site running, backups, monitoring and technical
+          support within an agreed scope. <strong>Website Care + Content Updates</strong> adds a
+          set number of small content changes each month &mdash; a photo swapped, a paragraph
+          changed, hours or a phone number updated, an existing service description edited, a
+          button or link changed. New pages, new functionality, new integrations and full copy
+          rewrites are project work and are scoped separately. There is no unlimited tier, because
+          an honest limit is worth more than a promise neither of us can hold.
+        </p>
+        <p class="small">
+          Prefer to run it yourself? The finished project is handed over with the access and
+          documentation you need. Either way the website you paid for is yours.
+        </p>
+      </div>
 
       <div class="note pnote">
         <span class="lbl">What I guarantee, and what I don't</span>
