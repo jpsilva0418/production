@@ -166,3 +166,42 @@ costs one extra email, a false positive costs a customer.
 **The honesty rule holds end to end.** The endpoint returns 2xx only when
 Resend returns a message id; a 2xx with no id is treated as a failure. On any
 failure the browser shows the email handoff, never a success state.
+
+## The 2026-10-05 form incident, and how it was actually diagnosed
+
+Three bugs were reported from an iPhone inside the Instagram in-app browser.
+What the evidence showed, in the order it was found:
+
+1. **Resend's own API log held no `POST /emails` at all** — not a failure, not
+   a 401, nothing. So the function was never getting through to Resend, and
+   every theory about the email itself was wrong before it started. The
+   credential stored in `RESEND_API_KEY` was not a working key; a replacement
+   (`jp-silva-digital-production-2`, sending-access, scoped to the domain) was
+   created and stored, and the first submission after the next deploy
+   succeeded. The old key is unused and can be revoked in Resend.
+
+2. **The `Origin` check rejected the browsers people actually arrive in.** It
+   compared `new URL(origin).host` to the request host. Instagram's and
+   Facebook's in-app WebKit send a same-site POST with `Origin` absent or set
+   to the literal `"null"` depending on version, and both became a 403. See
+   `originVerdict()` in `api/inquiry.js` for what replaced it and why a
+   missing Origin is not evidence of a cross-site request *for this endpoint*
+   (it reads no cookie, session or Authorization header, so there is no
+   ambient authority to borrow). Do not copy that reasoning to an endpoint
+   that does.
+
+3. **A 502 was a dead end.** Nothing in the response or the log said what
+   Resend had answered. Every exit now writes one structured line — time,
+   path, method, status, error word, whether Resend was called, Resend's own
+   status — and a failed send carries that upstream status back to the client.
+   No key, header value, name, email or message text is logged or returned.
+
+**How to test production from a session with no outbound network.** The
+Vercel MCP connector on this project cannot read runtime logs, build logs or
+protection-bypass URLs (all 403). What it *can* do is create a Vercel
+Sandbox, which has full network access from inside Vercel's own
+infrastructure: `create_sandboxes_v4` → `run_session_command` → curl the live
+endpoint, or `npm i playwright` and drive the real site in a real browser at
+an iPhone viewport with an Instagram user agent. That is how both forms were
+verified end to end, and how the message ids were obtained. Stop the sandbox
+when finished.
