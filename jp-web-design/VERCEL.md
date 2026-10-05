@@ -19,6 +19,46 @@ The project must therefore set:
 - **Production Branch:** `claude/jp-silva-digital-launch`
 - **Framework Preset:** Astro
 
+## The live project
+
+| | |
+|---|---|
+| Team | `jpsilva0418's projects` (`team_o2ROdLJK3SAYM8N1zdsXqVdZ`) |
+| Project | `jp-silva-digital` (`prj_GS6TNlkRunxA8AHclA2UmhDIS0RL`) |
+| Framework | Astro · Node 22.x |
+| Root Directory | `jp-web-design` |
+| Domains | `jpsilvadigital.com` (canonical) · `www.jpsilvadigital.com` → 308 → apex |
+
+### Two settings that are NOT in the API
+
+**1. Production Branch.** No Vercel MCP tool exposes it. The project was
+imported with the repository's default branch — `claude/construction-site-refinement-3d37yw`,
+which is the Masiello Construction site — and that is still the stored
+setting. It has to be changed by hand:
+
+> Settings → Git → Production Branch → `claude/jp-silva-digital-launch`
+
+Until that is done, a push to the construction branch would otherwise
+auto-deploy a different company's website to this project. It cannot,
+because of:
+
+**2. The Ignore Build Step guard**, which IS set:
+
+```sh
+[ "$VERCEL_GIT_COMMIT_REF" != "claude/jp-silva-digital-launch" ]
+```
+
+Vercel treats exit 0 as "skip the build". This exits 0 for every branch
+except the approved one, so only `claude/jp-silva-digital-launch` can ever
+build in this project. That is a deliberate belt-and-braces guard against
+the wrong site reaching jpsilvadigital.com.
+
+Consequence worth knowing: **no other branch will build here at all**, so
+preview deployments from other branches are skipped, and if the approved
+branch is ever renamed or merged into another branch, builds will silently
+skip until this command is updated. Change or clear
+`commandForIgnoringBuildStep` when that happens.
+
 ## Build
 
 | | |
