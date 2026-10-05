@@ -46,6 +46,8 @@ const files = [];
 (function walk(d) {
   for (const e of readdirSync(d)) {
     const p = join(d, e);
+    /* dist/demo/ holds unlisted client website previews, copied from public/ as-is: not part of this site */
+    if (p === join(DIST, 'demo')) continue;
     statSync(p).isDirectory() ? walk(p) : files.push(p);
   }
 })(DIST);

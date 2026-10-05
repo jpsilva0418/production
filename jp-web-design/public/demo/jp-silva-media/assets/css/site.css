@@ -1,0 +1,98 @@
+/* ============================================================
+   JP SILVA MEDIA — site layer over Picture Start
+   Header navigation (desktop links + Inquire), current page, footer navigation, inner-page title cards,
+   leader links, feature links, services call sheet, inquiry card title.
+   Tokens come from picture-start.css; nothing here redefines the frozen design.
+   ============================================================ */
+
+/* ---- Header: phones keep Picture Start's Index button; desktop shows the four destinations ---- */
+.head-links{display:none;margin:0;padding:0;list-style:none}
+.head-nav .head-cta{display:none}
+.head-nav a[aria-current="page"]{color:var(--bone);box-shadow:inset 0 -1px 0 var(--amber)}
+.wordmark[aria-current="page"]{color:var(--bone)}
+.wordmark{white-space:nowrap}
+@media (max-width:374px){.wordmark{letter-spacing:.12em;font-size:16px}}
+@media (min-width:900px){
+  .head-links{display:flex;align-items:center;gap:2px}
+  .head-links a{color:var(--mid);transition:color .3s ease}
+  .head-links a:hover,.head-links a[aria-current="page"]{color:var(--bone)}
+  .head-nav .head-cta{display:flex;border:1px solid var(--line-2);padding:0 16px;margin-left:10px;transition:border-color .3s ease,color .3s ease}
+  .head-nav .head-cta span{margin-left:10px;color:var(--amber)}
+  .head-nav .head-cta:hover{border-color:var(--amber)}
+  .head-nav .head-cta[aria-current="page"]{box-shadow:none;border-color:var(--amber)}
+  .menu-btn{display:none!important}
+}
+
+/* ---- Leader link: Picture Start's call to action (mono, a rule that extends on hover) ---- */
+.leader-link{display:inline-flex;align-items:center;gap:14px;min-height:44px;padding:6px 0;font:500 12px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--bone)}
+.leader-link i{display:inline-block;width:36px;height:1px;background:var(--amber);transform-origin:0 50%;transition:transform .5s var(--ease)}
+.leader-link::after{content:"";width:6px;height:6px;background:var(--amber);margin-left:-8px}
+.leader-link:hover i,.leader-link:focus-visible i{transform:scaleX(1.8)}
+
+/* ---- Features: the whole frame opens the film; a visible cue sits under the note ---- */
+.feat-link{position:absolute;inset:0;z-index:2}
+.feat-link:focus-visible{outline:2px solid var(--amber);outline-offset:-6px}
+.tc-cta{margin-top:18px;font:500 11px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--bone)}
+.tc-cta .tc-line>span{display:inline-flex;align-items:center;gap:12px}
+.tc-cta i{display:inline-block;width:28px;height:1px;background:var(--amber);transition:transform .5s var(--ease);transform-origin:0 50%}
+.feature:hover .tc-cta i,.feat-link:focus-visible~* .tc-cta i{transform:scaleX(1.7)}
+.feat-all{display:flex;justify-content:center;padding:56px var(--inset) 72px;border-top:1px solid var(--line)}
+.strip li a{display:block;color:inherit}
+.strip li a:focus-visible{outline:2px solid var(--amber);outline-offset:4px}
+
+/* ---- Services call sheet (home) ---- */
+.callsheet{border-top:1px solid var(--line)}
+.cs-list{margin:0;padding:8px var(--inset) 0;list-style:none;border-top:1px solid var(--line)}
+.cs-list li{border-bottom:1px solid var(--line)}
+.cs-list a{display:grid;grid-template-columns:2.6em minmax(0,1fr);grid-template-areas:"n t" ". l";gap:6px 12px;padding:18px 0;min-height:48px;color:var(--bone)}
+.cs-list small{grid-area:n;font:400 11px/1.9 var(--mono);letter-spacing:.14em;color:var(--mid)}
+.cs-t{grid-area:t;font:500 clamp(1.4rem,3.4vw,2.6rem)/1 var(--cond);letter-spacing:.02em;text-transform:uppercase;transition:color .3s ease}
+.cs-list i{display:none}
+.cs-l{grid-area:l;font:400 .95rem/1.5 var(--body);color:var(--mid);max-width:52ch}
+.cs-list a:hover .cs-t{color:var(--amber)}
+.cs-all{display:flex;justify-content:flex-start;padding:28px var(--inset) 88px}
+@media (min-width:900px){
+  .cs-list a{grid-template-columns:4em minmax(0,auto) minmax(40px,1fr) minmax(0,40ch);grid-template-areas:"n t i l";align-items:baseline;gap:0 22px;padding:22px 0}
+  .cs-list i{display:block;grid-area:i;height:1px;border-bottom:1px dotted var(--line-2);transform:translateY(-4px)}
+  .cs-l{text-align:right;justify-self:end}
+  .cs-all{padding:36px var(--inset) 120px}
+}
+
+/* ---- About on home: a link under the statement ---- */
+.statement-more{margin-top:1.4em}
+
+/* ---- Inquiry card (home) ---- */
+.cc-title{font:500 clamp(1.8rem,4.6vw,3.4rem)/1.02 var(--cond);letter-spacing:.02em;text-transform:uppercase;margin:-20px 0 40px;text-wrap:balance}
+
+/* ---- Footer navigation (closing credits) ---- */
+.foot-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 8px;margin-top:64px}
+.foot-nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;font:500 clamp(1.1rem,2vw,1.4rem)/1 var(--cond);letter-spacing:.16em;text-transform:uppercase;color:var(--bone);transition:color .3s ease}
+.foot-nav a:hover{color:var(--amber)}
+.foot-social{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 24px;margin:28px auto 0;padding:0;list-style:none;max-width:900px}
+.foot-social a{display:inline-flex;align-items:center;gap:10px;min-height:44px;color:var(--bone);font-size:11px}
+.foot-social a span{color:var(--mid)}
+.foot-social a:hover{color:var(--amber)}
+.foot-legal{margin-top:40px;font-size:10px;color:var(--mid)}
+.credits .roll dt{max-width:90vw;margin-left:auto;margin-right:auto}
+
+/* ---- Inner pages: Picture Start slate as the page title card ---- */
+.page-slate{min-height:clamp(300px,52svh,560px);display:flex;flex-direction:column;justify-content:flex-end;
+  padding:calc(var(--head-h) + 48px + env(safe-area-inset-top,0px)) var(--inset) 36px;border-bottom:1px solid var(--line)}
+.page-slate .mono{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.page-slate h1{font:300 clamp(2.6rem,9vw,7.4rem)/.95 var(--cond);letter-spacing:.1em;text-transform:uppercase;margin-top:14px;text-wrap:balance}
+.page-sub{margin-top:22px;max-width:56ch;font:400 clamp(1.05rem,1.4vw,1.25rem)/1.55 var(--body);color:#c9c7c1}
+.js-anim .page-slate h1{animation:slate-in 1s var(--ease) both}
+.js-anim .page-slate .mono,.js-anim .page-sub{animation:slate-fade .9s ease .25s both}
+@keyframes slate-in{from{clip-path:inset(0 0 100% 0);transform:translateY(18px)}to{clip-path:inset(-10% -2% -10% -2%);transform:none}}
+@keyframes slate-fade{from{opacity:0}to{opacity:1}}
+
+/* shared inner-page section rhythm */
+.sec{padding:72px var(--inset);border-top:1px solid var(--line)}
+@media (min-width:900px){.sec{padding:112px var(--inset)}}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:36px}
+.sec-head h2{font:300 clamp(1.8rem,4vw,3.2rem)/1 var(--cond);letter-spacing:.12em;text-transform:uppercase}
+.prose p{font:400 clamp(1.08rem,1.4vw,1.25rem)/1.6 var(--body);max-width:62ch;color:var(--bone)}
+.prose p+p{margin-top:1em;color:#c9c7c1}
+
+/* ---- Reduced motion: nothing here animates ---- */
+@media (prefers-reduced-motion:reduce){.js-anim .page-slate h1,.js-anim .page-slate .mono,.js-anim .page-sub{animation:none}}
