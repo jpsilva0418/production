@@ -11,6 +11,7 @@ import './planner.css';
 import { sendInquiry, mailtoFor } from '../../lib/inquiry';
 import { INTAKE_FIELDS, validateIntake } from '../../lib/intake';
 import { track, EVENTS, serviceEvent } from '../../lib/analytics';
+import { revealTop, revealField } from '../../lib/stepview';
 import { EMAIL, REPLY_SLA, DEMO_TURNAROUND } from '../../data/site';
 
 const KEY = 'jpwd.planner.v1';
@@ -51,6 +52,14 @@ export default function Planner() {
   const [sent, setSent] = useState(null);
   const headingRef = useRef(null);
   const mounted = useRef(false);
+  /* The canonical step container: everything a new step should show —
+     progress indicator, step number, question, then its options. Scrolling
+     is always relative to THIS, never to the top of the page, because the
+     planner does not start at the top of /free-demo. */
+  const stepRef = useRef(null);
+  /* null until the first render has been seen, so arriving on the page is
+     never mistaken for a step transition and nothing scrolls on load. */
+  const prevStep = useRef(null);
 
   useEffect(() => { setA(load()); }, []);
   useEffect(() => {
@@ -68,7 +77,19 @@ export default function Planner() {
      scroll is not. */
   useEffect(() => {
     if (!mounted.current) return;
-    const id = requestAnimationFrame(() => headingRef.current?.focus({ preventScroll: true }));
+    const key = done ? 'done' : step;
+    const isTransition = prevStep.current !== null && prevStep.current !== key;
+    prevStep.current = key;
+
+    /* One frame, so the new step has actually been laid out before its
+       position is measured. Measuring in the same tick reads the OLD
+       geometry and scrolls to where the previous step used to start. */
+    const id = requestAnimationFrame(() => {
+      headingRef.current?.focus({ preventScroll: true });
+      /* Only on a real Next/Previous. On first paint the visitor has just
+         arrived and must be left where they are. */
+      if (isTransition) revealTop(stepRef.current);
+    });
     return () => cancelAnimationFrame(id);
   }, [step, done]);
 
@@ -120,8 +141,13 @@ export default function Planner() {
     const err = validateIntake({ ...a, message: a.notes }, PLANNER_INTAKE);
     setErrors(err);
     if (Object.keys(err).length) {
+      /* Validation failed: stay on this step and show the first problem.
+         preventScroll first, then position it deliberately — a bare focus()
+         scrolls the field to wherever the browser likes, which on mobile is
+         often under the sticky header. */
       const first = document.getElementById(`f-${Object.keys(err)[0]}`);
-      first?.focus();
+      first?.focus({ preventScroll: true });
+      revealField(first);
       return;
     }
     setSending(true);
@@ -168,11 +194,16 @@ export default function Planner() {
     'Where should I send your plan and demo?',
   ];
 
-  if (done && sent) return <Result a={a} plan={plan} sent={sent} onRestart={restart} headingRef={headingRef} />;
+  if (done && sent) {
+    return (
+      <Result a={a} plan={plan} sent={sent} onRestart={restart}
+              headingRef={headingRef} stepRef={stepRef} />
+    );
+  }
 
   return (
     <div className="pl">
-      <div className="pl__main">
+      <div className="pl__main" ref={stepRef}>
         <Progress step={step} total={TOTAL} />
 
         <form className="pl__form" onSubmit={(e) => e.preventDefault()} noValidate>
@@ -399,14 +430,14 @@ function ContactStep({ a, set, errors }) {
 }
 
 /* ----------------------------------------------------------------- Result */
-function Result({ a, plan, sent, onRestart, headingRef }) {
+function Result({ a, plan, sent, onRestart, headingRef, stepRef }) {
   const meta = PACKAGE_META[plan.pkg];
   const chose = a.packageChoice;
   const disagrees = ['starter', 'growth', 'custom'].includes(chose) && chose !== plan.pkg;
 
   return (
     <div className="pl pl--result">
-      <div className="pl__main">
+      <div className="pl__main" ref={stepRef}>
         <p className="pl__rlabel">Your plan</p>
         <h3 className="pl__rtitle" tabIndex={-1} ref={headingRef}>{meta.name}</h3>
         <p className="pl__rblurb">{meta.blurb}</p>
