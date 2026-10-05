@@ -1,0 +1,27 @@
+# JP Silva Media: read-only live check of https://jpsilvadigital.com/demo/jp-silva-media (fetches pages only; deploys nothing).
+name: jpsm-live-demo-check
+on:
+  push:
+    branches: ['site/jp-silva-media']
+    paths: ['jp-silva-media/tools/live-demo-check.mjs', 'jp-silva-media/tools/live-demo-check.run', '.github/workflows/jpsm-live-demo-check.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Playwright (temp dir)
+        run: |
+          mkdir -p "$RUNNER_TEMP/pw" && cd "$RUNNER_TEMP/pw" && npm init -y >/dev/null && npm i --no-save --no-audit --no-fund playwright@1 >/dev/null
+          npx playwright install --with-deps chromium webkit >/dev/null
+      - name: Live check
+        env:
+          PLAYWRIGHT_MODULE: ${{ runner.temp }}/pw/node_modules/playwright/index.mjs
+          OUT_DIR: ${{ runner.temp }}
+        run: node jp-silva-media/tools/live-demo-check.mjs
