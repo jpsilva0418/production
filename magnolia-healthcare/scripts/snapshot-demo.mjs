@@ -108,6 +108,8 @@ const mapPath = (p) => {
 const rewrite = (html) => html
   // absolute self-URLs (canonical, Open Graph, structured data)
   .replace(new RegExp(`${ORIGIN.replace(/[.]/g, '\\.')}(/[^"'\\s<>)]*)`, 'g'), (_, p) => ORIGIN + mapPath(p))
+  // the same self-URLs URL-encoded inside share links (?u=https%3A%2F%2F…)
+  .replace(new RegExp(`${encodeURIComponent(ORIGIN).replace(/[.]/g, '\\.')}((?:%2F)[^"'&\\s<>]*)`, 'gi'), (_, p) => encodeURIComponent(ORIGIN + mapPath(decodeURIComponent(p))))
   // root-relative attributes
   .replace(/\b(href|src|poster|data-src|action|data-apply-href)="(\/[^"]*)"/g, (_, a, p) => `${a}="${mapPath(p)}"`)
   .replace(/\bsrcset="([^"]*)"/g, (_, v) => `srcset="${v.split(',').map((part) => part.trim().replace(/^(\/\S*)/, (u) => mapPath(u))).join(', ')}"`)
@@ -127,6 +129,7 @@ for (const p of pages) {
   const rel = path.relative(DIST, p);
   if (!/<meta name="robots" content="noindex,nofollow"/.test(t)) throw new Error(`missing noindex in ${rel}`);
   if (/\b(?:href|src|poster|data-src|action)="\/(?!demo\/)/.test(t)) throw new Error(`un-rewritten root path in ${rel}: ${t.match(/\b(?:href|src|poster|data-src|action)="\/(?!demo\/)[^"]*"/)[0]}`);
+  if (new RegExp(`${encodeURIComponent(ORIGIN + '/').replace(/[.]/g, '\\.')}(?!demo%2F)`, 'i').test(t)) throw new Error(`un-rewritten encoded self-URL in ${rel}`);
   if (/\/preview\//.test(t.replace(/<script[\s\S]*?<\/script>/g, ''))) throw new Error(`review link left in ${rel}`);
   await fs.writeFile(p, t);
 }
