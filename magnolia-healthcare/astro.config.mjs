@@ -10,10 +10,11 @@ const SITE = process.env.PUBLIC_SITE_URL || 'https://magnolia-healthcare-demo.ve
 export default defineConfig({
   site: SITE,
   output: 'static',
-  trailingSlash: 'never',
-  // Same build conventions as the Leti Silva Beauty foundation: page.html files so
-  // served URLs match the trailingSlash:'never' canonicals; assets in /assets.
-  build: { format: 'file', assets: 'assets', inlineStylesheets: 'auto' },
+  // Vercel (cleanUrls) serves page.html at /page, matching trailingSlash:'never'
+  // canonicals — the Leti Silva Beauty convention. A plain static host (e.g. the Render
+  // preview) needs page/index.html instead: set BUILD_FORMAT=directory there.
+  trailingSlash: process.env.BUILD_FORMAT === 'directory' ? 'ignore' : 'never',
+  build: { format: process.env.BUILD_FORMAT === 'directory' ? 'directory' : 'file', assets: 'assets', inlineStylesheets: 'auto' },
   integrations: [sitemap({ filter: (page) => !page.includes('/404') })],
   image: { responsiveStyles: true },
   prefetch: { prefetchAll: true, defaultStrategy: 'viewport' },
