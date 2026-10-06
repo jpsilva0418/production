@@ -532,10 +532,18 @@ import { SITE } from '../consts';
     status = 'sending'; errorEl.hidden = true; render();
     const company = (document.getElementById('ap-company') as HTMLInputElement).value;
     try {
-      const res = await fetch('/api/apply', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...answers, company }) });
-      const noApi = res.status === 404 || res.status === 405 || !(res.headers.get('content-type') ?? '').includes('application/json');
-      const data = noApi ? { ok: true, staged: true } : ((await res.json().catch(() => ({}))) as { ok?: boolean; staged?: boolean; reason?: string });
-      if (!noApi && (!res.ok || !data.ok)) throw new Error(data.reason ?? `http_${res.status}`);
+      // CLIENT-DEMO builds (PUBLIC_DEMO_ONLY=1) never contact any server — the applicant's data
+      // stays in this browser tab and the result is the labelled demo-mode confirmation.
+      let data: { ok?: boolean; staged?: boolean; reason?: string };
+      if (import.meta.env.PUBLIC_DEMO_ONLY === '1') {
+        await new Promise((r) => setTimeout(r, 650));
+        data = { ok: true, staged: true };
+      } else {
+        const res = await fetch('/api/apply', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...answers, company }) });
+        const noApi = res.status === 404 || res.status === 405 || !(res.headers.get('content-type') ?? '').includes('application/json');
+        data = noApi ? { ok: true, staged: true } : ((await res.json().catch(() => ({}))) as { ok?: boolean; staged?: boolean; reason?: string });
+        if (!noApi && (!res.ok || !data.ok)) throw new Error(data.reason ?? `http_${res.status}`);
+      }
       status = data.staged ? 'sent-test' : 'sent';
       clearDraft();
       form.hidden = true;

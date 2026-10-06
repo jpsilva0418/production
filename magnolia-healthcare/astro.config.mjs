@@ -17,7 +17,12 @@ export default defineConfig({
   // canonicals — the Leti Silva Beauty convention. A plain static host (e.g. the Render
   // preview) needs page/index.html instead: set BUILD_FORMAT=directory there.
   trailingSlash: process.env.BUILD_FORMAT === 'directory' ? 'ignore' : 'never',
-  build: { format: process.env.BUILD_FORMAT === 'directory' ? 'directory' : 'file', assets: 'assets', inlineStylesheets: 'auto' },
+  build: {
+    format: process.env.BUILD_FORMAT === 'directory' ? 'directory' : 'file', assets: 'assets', inlineStylesheets: 'auto',
+    // Client-demo snapshots (scripts/snapshot-demo.mjs) serve their hashed assets from a shared,
+    // append-only store, e.g. /demo/_shared — identical files across demos are stored once.
+    ...(process.env.ASSETS_PREFIX ? { assetsPrefix: process.env.ASSETS_PREFIX } : {}),
+  },
   integrations: [sitemap({ filter: (page) => !page.includes('/404') && !page.includes('/preview') })],
   image: { responsiveStyles: true },
   prefetch: { prefetchAll: true, defaultStrategy: 'viewport' },
