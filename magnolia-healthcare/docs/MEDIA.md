@@ -14,12 +14,13 @@ any other site. Before launch every row must carry a documented licence or conse
 | `src/assets/plates/supplied-clinician.jpg` | /careers | Clinician in blue scrubs with stethoscope. |
 | `public/media/hero-film.mp4/.webm`, `hero-poster.jpg` | Home prologue | Supplied clip: companion walking arm-in-arm with an older woman down a bright corridor (3–17 s, warmed slightly, 1280×720, no watermark). |
 | `public/media/cine-film.mp4/.webm`, `cine-poster.jpg` | Home cinema band | Supplied clip: caregiver helping an older woman with medication at a kitchen table (0–12 s). |
+| `src/assets/plates/personal-care.jpg` | Hospice & Palliative card (home, /services) | Supplied stock photo: a woman pointing out of a window beside an older woman in an armchair (679×452, cropped 4:3). |
 | `src/assets/plates/dementia.jpg` | Alzheimer's & Dementia Care card (home, /services) | Supplied stock photo: caregiver embracing an older woman at home, walker beside her (655×468, cropped 4:3). |
 | `src/assets/plates/companionship.jpg` | Geriatric Care card (home, /services) | Supplied stock photo: caregiver with an older couple (only 300×168 — soft when enlarged; a larger file is needed). |
 | `public/downloads/magnolia-healthcare-caregiver-application.pdf` | /careers, /apply | The client's own application form, offered for download exactly as the current site does. |
 
 **Not used:** the two iStock clips supplied as previews carry the "iStock by Getty Images"
-watermark (unlicensed comps); the group living-room photo and one other supplied photo carry a tiled dreamstime.com watermark, likewise. They can be used
+watermark (unlicensed comps); the group living-room photo and the wheelchair-by-the-fireplace photo carry a tiled dreamstime.com watermark, likewise. They can be used
 only after the licence is purchased and the clean files obtained.
 
 ## Generated placeholders (replace before launch)
