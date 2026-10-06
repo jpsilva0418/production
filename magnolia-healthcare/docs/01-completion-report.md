@@ -20,7 +20,7 @@ carries the demo badge, and sends nothing anywhere.
 `/` · `/services` · `/services/personal-care` · `/services/homemaking` · `/services/companionship` ·
 `/services/alzheimers-dementia-support` · `/mission` · `/team` · `/community` · `/blog` ·
 six `/blog/<slug>` articles · `/blog/category/{our-values,home-care,quality}` · `/contact`
-(+ `?for=care|self|team`, `&service=<slug>`) · `/careers` · `/login` · `/accessibility` · `/404` ·
+(+ `?for=care|self`, `&service=<slug>`) · `/careers` · `/apply` (caregiver application) · `/login` · `/accessibility` · `/404` ·
 `robots.txt` (disallow all) · sitemap.
 
 ## Components reused / adapted from Letty Silva Beauty
@@ -67,6 +67,32 @@ transitions with focus management · copy-link / copy-request feedback · back-t
 
 Not yet verified: real devices (founder review), iOS Safari video autoplay, Lighthouse.
 
+## Caregiver application (added after the reference form arrived)
+
+Magnolia's existing 3-page "Caregiver Application — Initial application for caregiver
+candidates" (reference PDF) was inventoried by three independent readers (all agreed) and
+rebuilt at `/apply` as a nine-step flow: Personal information → Availability → Certification &
+license → Caregiving experience → Areas of experience → Employment history → References →
+Applicant certification → Review. Every field, option, italic note and the certification
+statement are carried over verbatim; the "If no" training note appears exactly when the
+applicant answers No; Experience 1/2 and Reference 1/2 are preserved; the office-use block is
+not shown to applicants but is reproduced (blank) in the email Magnolia receives.
+
+No requirement was invented: the paper form marks nothing as required, so the web form insists
+only on name, phone, email, the two yes/no gate questions and the signed certification (typed
+name + date). Everything else is optional; the review step points out when the two positions or
+two references the form asks for were left blank. Answers persist between steps and across an
+accidental reload (session draft, cleared on submit). Inline validation (email, phone, ZIP,
+signature), focus management, progress exposed to screen readers, error state with a copy
+fallback, labelled demo-mode success. Verified end to end in headless Chromium at 390 px and
+1440 px (no overflow on any step). Careers, the consultation form, the menu and the footer now
+lead to it; the interim "express interest" path is gone.
+
+Client questions raised by the form: the form says **Magnolia Healthcare Inc.** while the
+website and directories say LLC (which legal name should the site carry?); should any fields be
+mandatory online; which inbox receives applications; is a typed name acceptable as the
+signature for this initial screening form.
+
 ## Forms implemented
 
 Consultation request (`/contact`): type → care details (support types, timing, city/ZIP) or
@@ -89,7 +115,7 @@ placeholder plates and caregiver tiles.
 
 ## Intentionally NOT implemented
 
-Signup/application flow (awaiting the reference recording) · anything behind member login ·
+Anything behind member login ·
 calendar / scheduling / portal / dispatch · pricing · testimonials, reviews, awards,
 statistics, licence numbers, insurance acceptance, service-area city lists (not on Magnolia's
 own site) · client-demo subdomain (Stage 4, after approval).
@@ -103,7 +129,7 @@ own site) · client-demo subdomain (Stage 4, after approval).
 5. Caregiver profiles Magnolia wants shown (names, roles, photos, consent).
 6. Founder portrait and any owner photography / event photos (with consent).
 7. What members see after sign-in (purpose of the Wix member area).
-8. The signup/application recording.
+8. Which fields of the caregiver application should be mandatory online (none are marked on paper).
 9. Photography / footage licensing budget vs. owner-supplied media.
 10. Which inbox should receive consultation requests when the form goes live.
 

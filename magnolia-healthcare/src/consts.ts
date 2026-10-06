@@ -57,6 +57,7 @@ export const SITE = {
     community: '/community',
     blog: '/blog',
     careers: '/careers',
+    apply: '/apply',
     login: '/login',
     accessibility: '/accessibility',
   },

@@ -96,7 +96,7 @@ Reused pattern: separate Vercel project → `rootDirectory: magnolia-healthcare`
 - **Not a blocker, but a flag**: the recordings are missing and the live site is unreachable;
   content was reconstructed from Magnolia's own page snippets. Review needed before client send.
 - Blog article bodies could not be captured → articles render an honest migration notice.
-- Signup/application flow intentionally not built (awaiting the reference recording).
+- Signup/application: the reference (Magnolia's 3-page caregiver application PDF) arrived after the initial build; the flow is now built at `/apply` (see the completion report).
 - Purpose of member login unconfirmed → entry point only.
 - The `production` GitHub repository is **public**; a dedicated private repo is a one-command
   move if preferred before the client sees the URL.

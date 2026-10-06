@@ -1,0 +1,61 @@
+---
+/** APPLY — the caregiver application (Magnolia's existing form, rebuilt). Light stage: the
+ *  consultation page is the dark "velvet table"; the application is a working document
+ *  on linen, with a sticky side rail of what to have ready and the office contact. */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ApplicationForm from '../components/ApplicationForm.astro';
+import { SITE, fmtTime } from '../consts';
+const weekday = SITE.hours.find((h) => h.open && h.close)!;
+---
+<BaseLayout
+  title="Caregiver Application — Join Our Team"
+  description="Initial application for caregiver candidates at Magnolia Healthcare: personal information, availability, certification and license, caregiving experience, employment history, references and applicant certification."
+  path="/apply">
+  <section class="ap-cov">
+    <div class="wrap ap-cov-in">
+      <p class="cov-kick fade">Caregiver application</p>
+      <h1 class="disp rv">Apply to join <span class="ital">Magnolia.</span></h1>
+      <p class="cov-sub rv" style="--d:.08s">Initial application for caregiver candidates. It takes about ten minutes; your answers are kept on this page as you go, and you can review everything before you submit.</p>
+    </div>
+  </section>
+
+  <section class="ap-stage-wrap sec--linen">
+    <div class="wrap ap-grid">
+      <aside class="ap-rail rv">
+        <div class="ap-rail-card">
+          <p class="caps-xs">Have ready</p>
+          <ul class="ap-rail-list">
+            <li>Your license or certification details, if you hold one (type, number, state, expiration)</li>
+            <li>Your two most recent or most relevant caregiving positions</li>
+            <li>Two professional references with a phone or email</li>
+          </ul>
+          <p class="caps-xs">Questions</p>
+          <p class="ap-rail-contact"><a href={`tel:${SITE.phoneE164}`}>{SITE.phone}</a><br /><a href={`mailto:${SITE.email}`} style="overflow-wrap:anywhere">{SITE.email}</a><br /><span class="dim">Monday&ndash;Friday, {fmtTime(weekday.open!)}&ndash;{fmtTime(weekday.close!)}</span></p>
+          <p class="ap-rail-note">No license yet? Magnolia Healthcare Inc. may provide information about available caregiver training opportunities and courses.</p>
+        </div>
+      </aside>
+      <div class="ap-stage rv" style="--d:.08s">
+        <ApplicationForm />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .ap-cov{padding:clamp(7.5rem,16vh,10rem) 0 clamp(2.4rem,5vh,3.6rem)}
+  .ap-cov-in{max-width:min(90vw,820px)}
+  .ap-cov h1{font-size:clamp(2.6rem,6vw,5rem);margin-bottom:1rem}
+  .ap-stage-wrap{padding:clamp(2.4rem,5vw,4rem) 0 clamp(5rem,9vw,7rem)}
+  .ap-grid{display:grid;grid-template-columns:minmax(240px,320px) minmax(0,1fr);column-gap:clamp(2rem,4vw,4rem);align-items:start}
+  .ap-rail{position:sticky;top:96px}
+  .ap-rail-card{background:var(--paper);border:1px solid var(--hair);border-radius:var(--r);padding:clamp(1.3rem,2.4vw,1.8rem)}
+  .ap-rail-card .caps-xs{display:block;margin-bottom:.7rem}
+  .ap-rail-list{list-style:none;margin:0 0 1.4rem;padding:0;display:grid;gap:.6rem}
+  .ap-rail-list li{position:relative;padding-left:1.3rem;font-size:.9rem;color:var(--ink)}
+  .ap-rail-list li::before{content:"";position:absolute;left:0;top:.75em;width:8px;height:1px;background:var(--brass)}
+  .ap-rail-contact{font-size:.92rem;line-height:1.8;margin-bottom:1.2rem}
+  .ap-rail-contact a:hover{color:var(--brass)}
+  .ap-rail-contact .dim{color:var(--ink-soft);font-size:.84rem}
+  .ap-rail-note{font-family:var(--display);font-style:italic;font-size:.95rem;color:var(--ink-soft);border-top:1px solid var(--hair);padding-top:1rem;margin:0;font-variation-settings:'opsz' 48,'SOFT' 60}
+  .ap-stage{background:var(--paper);border:1px solid var(--hair);border-radius:var(--r-lg);padding:clamp(22px,3.4vw,44px);box-shadow:var(--shadow-lg);max-width:760px}
+  @media(max-width:899px){.ap-grid{grid-template-columns:1fr;row-gap:1.4rem}.ap-rail{position:static;order:2}.ap-stage{max-width:none}}
+</style>

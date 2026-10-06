@@ -1,14 +1,14 @@
 ---
 /**
  * Consultation request — the Leti Silva Beauty multi-step inquiry system, re-purposed
- * for Magnolia: conditional steps per request type (care / joining the team / other),
+ * for Magnolia: conditional steps per request type (care / other),
  * one state object, Back never loses answers, progress + recap, review step with Edit,
  * inline validation, honest loading / error / success states, and a copy-to-clipboard
  * fallback so an answer is never lost. Posts JSON to /api/inquiry (Vercel function):
  * delivers via Resend when configured, otherwise accepts in labelled DEMO mode.
  *
- * NOTE: this is the consultation/contact flow. Magnolia's signup/application flow is
- * deliberately NOT built here — it waits for the client's reference recording.
+ * NOTE: this is the consultation/contact flow. The caregiver application lives at /apply
+ * (ApplicationForm.astro), rebuilt from Magnolia's existing application form.
  */
 import { SITE } from '../consts';
 ---
@@ -28,9 +28,9 @@ import { SITE } from '../consts';
         <div class="cf-cards">
           <label class="cf-card"><input type="radio" name="requestType" value="Care for a loved one" /><span>Care for a loved one</span></label>
           <label class="cf-card"><input type="radio" name="requestType" value="Care for myself" /><span>Care for myself</span></label>
-          <label class="cf-card"><input type="radio" name="requestType" value="Joining the Magnolia team" /><span>Joining the Magnolia team</span></label>
           <label class="cf-card"><input type="radio" name="requestType" value="Something else" /><span>Something else</span></label>
         </div>
+        <p class="cf-hint" style="margin-top:14px">Looking to join our team? <a class="cf-link" href="/apply">Complete the caregiver application</a>.</p>
       </fieldset>
 
       <!-- Step: care details -->
@@ -61,32 +61,6 @@ import { SITE } from '../consts';
             <label for="cf-zip">ZIP code</label>
             <input id="cf-zip" name="zip" type="text" inputmode="numeric" maxlength="10" autocomplete="postal-code" placeholder="80002" />
           </div>
-        </div>
-      </fieldset>
-
-      <!-- Step: joining the team (expression of interest only) -->
-      <fieldset class="cf-step" data-step="team" hidden>
-        <legend tabindex="-1">Tell us a little about you</legend>
-        <p class="cf-hint">This is an expression of interest &mdash; Magnolia&rsquo;s application comes next.</p>
-        <div class="cf-field" role="radiogroup" aria-labelledby="cf-exp-label">
-          <span class="cf-lbl" id="cf-exp-label">Caregiving experience</span>
-          <div class="cf-cards cf-cards-row">
-            <label class="cf-card"><input type="radio" name="experience" value="New to caregiving" /><span>New to caregiving</span></label>
-            <label class="cf-card"><input type="radio" name="experience" value="Some experience" /><span>Some experience</span></label>
-            <label class="cf-card"><input type="radio" name="experience" value="Experienced caregiver" /><span>Experienced caregiver</span></label>
-          </div>
-        </div>
-        <div class="cf-field" role="radiogroup" aria-labelledby="cf-avail-label">
-          <span class="cf-lbl" id="cf-avail-label">Availability</span>
-          <div class="cf-cards cf-cards-row">
-            <label class="cf-card"><input type="radio" name="availability" value="Full-time" /><span>Full-time</span></label>
-            <label class="cf-card"><input type="radio" name="availability" value="Part-time" /><span>Part-time</span></label>
-            <label class="cf-card"><input type="radio" name="availability" value="Flexible" /><span>Flexible</span></label>
-          </div>
-        </div>
-        <div class="cf-field">
-          <label for="cf-teamNotes">Anything you&rsquo;d like us to know <span class="cf-opt">optional</span></label>
-          <textarea id="cf-teamNotes" name="teamNotes" rows="4" maxlength="2000" placeholder="Where you’re based, the kind of work you’re looking for…"></textarea>
         </div>
       </fieldset>
 
@@ -208,6 +182,7 @@ import { SITE } from '../consts';
   .cf-step legend{font-family:var(--display);font-size:clamp(1.5rem,3.2vw,2rem);color:var(--ink);padding:0;margin-bottom:18px;text-wrap:balance;font-variation-settings:'opsz' 72,'SOFT' 50}
   .cf-step legend:focus{outline:none}
   .cf-hint{font-size:.9rem;color:var(--ink-soft);margin:-8px 0 18px}
+  .cf-link{color:var(--brass);text-decoration:underline;text-underline-offset:3px}
   .cf-cards{display:grid;gap:10px;margin-bottom:10px}
   .cf-cards-row{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
   .cf-cards-2{grid-template-columns:1fr 1fr}
@@ -260,17 +235,15 @@ import { SITE } from '../consts';
 </style>
 
 <script>
-  type StepKey = 'type' | 'care' | 'team' | 'other' | 'contact' | 'notes' | 'review';
+  type StepKey = 'type' | 'care' | 'other' | 'contact' | 'notes' | 'review';
   const answers: Record<string, string> = {
-    requestType: '', careTypes: '', timing: '', city: '', zip: '',
-    experience: '', availability: '', teamNotes: '', otherText: '',
+    requestType: '', careTypes: '', timing: '', city: '', zip: '', otherText: '',
     fullName: '', phone: '', email: '', preferredContact: '', notes: '', heardAbout: '',
   };
-  const STEP_LABELS: Record<StepKey, string> = { type: 'Request', care: 'The care', team: 'About you', other: 'Details', contact: 'Contact', notes: 'Notes', review: 'Review' };
+  const STEP_LABELS: Record<StepKey, string> = { type: 'Request', care: 'The care', other: 'Details', contact: 'Contact', notes: 'Notes', review: 'Review' };
   const REVIEW_GROUPS: [StepKey, string, [string, string][]][] = [
     ['type', 'Request', [['requestType', 'How we can help']]],
     ['care', 'The care', [['careTypes', 'Support considered'], ['timing', 'Ideal start'], ['city', 'City'], ['zip', 'ZIP']]],
-    ['team', 'About you', [['experience', 'Experience'], ['availability', 'Availability'], ['teamNotes', 'Notes']]],
     ['other', 'Details', [['otherText', 'Looking for']]],
     ['contact', 'Contact', [['fullName', 'Name'], ['phone', 'Phone'], ['email', 'Email'], ['preferredContact', 'Reach you by']]],
     ['notes', 'Notes', [['notes', 'Notes'], ['heardAbout', 'Heard about us']]],
@@ -278,10 +251,11 @@ import { SITE } from '../consts';
   const TYPE_PATHS: Record<string, StepKey[]> = {
     'Care for a loved one': ['type', 'care', 'contact', 'notes', 'review'],
     'Care for myself': ['type', 'care', 'contact', 'notes', 'review'],
-    'Joining the Magnolia team': ['type', 'team', 'contact', 'review'],
     'Something else': ['type', 'other', 'contact', 'review'],
   };
-  const LOCKED: Record<string, string> = { care: 'Care for a loved one', self: 'Care for myself', team: 'Joining the Magnolia team' };
+  const LOCKED: Record<string, string> = { care: 'Care for a loved one', self: 'Care for myself' };
+  // The old ?for=team entry point now leads to the real caregiver application.
+  if ((new URLSearchParams(location.search).get('for') ?? '').toLowerCase() === 'team') location.replace('/apply');
   const SERVICE_PRESELECT: Record<string, string> = {
     'personal-care': 'Personal Care', 'homemaking': 'Homemaking', 'companionship': 'Companionship', 'alzheimers-dementia-support': 'Alzheimer’s & Dementia Support',
   };
@@ -310,7 +284,6 @@ import { SITE } from '../consts';
     switch (key) {
       case 'type': return !!answers.requestType;
       case 'care': return !!answers.careTypes;
-      case 'team': return !!answers.experience;
       case 'other': return !!answers.otherText.trim();
       case 'contact': return !!answers.fullName.trim() && phoneOk(answers.phone) && emailOk(answers.email);
       default: return true;
@@ -362,7 +335,7 @@ import { SITE } from '../consts';
       group.appendChild(dl); reviewEl.appendChild(group);
     }
   }
-  const TYPE_SCOPED = ['careTypes', 'timing', 'city', 'zip', 'experience', 'availability', 'teamNotes', 'otherText'];
+  const TYPE_SCOPED = ['careTypes', 'timing', 'city', 'zip', 'otherText'];
   function resetTypeScoped() {
     TYPE_SCOPED.forEach((key) => { answers[key] = ''; form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(`[name="${key}"]`).forEach((c) => { if (c instanceof HTMLInputElement && (c.type === 'radio' || c.type === 'checkbox')) c.checked = false; else c.value = ''; }); });
   }

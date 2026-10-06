@@ -42,9 +42,10 @@ src/
   styles/tokens.css    Magnolia design tokens (colour, type, rhythm, radii)
   styles/magnolia.css  shared grammar ported from Letty Silva Beauty (reveals, buttons, menu, footer…)
   layouts/BaseLayout   HTML shell, SEO, header/footer, shared runtime (menu, reveals, films)
-  components/          Prologue (cinematic hero), ConsultForm, Plate, BlogCard, Header, Footer…
-  pages/               / services mission team community blog contact careers login accessibility 404
+  components/          Prologue (cinematic hero), ConsultForm, ApplicationForm, Plate, BlogCard, Header, Footer…
+  pages/               / services mission team community blog contact careers apply login accessibility 404
 api/inquiry.js         Vercel function: consultation requests (Resend when configured, else demo mode)
+api/apply.js           Vercel function: caregiver applications (same contract)
 scripts/media/         generators for the temporary hero film and placeholder plates
 docs/                  assessment, media inventory, completion report
 ```

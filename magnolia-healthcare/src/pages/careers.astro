@@ -1,7 +1,6 @@
 ---
-/** CAREERS — Magnolia's existing "apply now" invitation, staged. INTERIM: the full
- *  signup/application experience waits for the client's reference recording; until
- *  then this page collects an expression of interest through the consultation flow. */
+/** CAREERS — Magnolia's existing "apply now" invitation, staged, leading into the
+ *  rebuilt caregiver application at /apply. */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Plate from '../components/Plate.astro';
 import { SITE } from '../consts';
@@ -14,7 +13,7 @@ import { SITE } from '../consts';
         <h1 class="disp rv">Meaningful work, <span class="ital">tailored to you.</span></h1>
         <p class="cov-sub rv" style="--d:.08s">Join our expanding team and make a significant difference in the lives of our clients, helping them maintain their safety and independence at home.</p>
         <div class="cov-cta fade" style="--d:.16s">
-          <a class="btn btn--solid" href="/contact?for=team">Express interest</a>
+          <a class="btn btn--solid" href="/apply">Apply now</a>
           <a class="tlk" href={`tel:${SITE.phoneE164}`}>Call {SITE.phone}</a>
         </div>
       </div>
@@ -32,11 +31,11 @@ import { SITE } from '../consts';
   <section class="sec sec--tight">
     <div class="wrap">
       <div class="note-card rv">
-        <span class="plaque">Interim &mdash; founder review</span>
-        <p class="note-copy" style="margin-top:1.2rem">The caregiver application experience is intentionally not built yet.</p>
+        <span class="caps">The application</span>
+        <p class="note-copy" style="margin-top:1.2rem">An initial application for caregiver candidates &mdash; about ten minutes.</p>
         <span class="note-rule" aria-hidden="true"></span>
-        <p class="note-body">It will be redesigned step by step from Magnolia&rsquo;s existing signup/application once that reference is supplied &mdash; preserving every legitimate field and requirement. Until then, this page collects an expression of interest only.</p>
-        <div class="note-act"><a class="btn btn--solid" href="/contact?for=team">Express interest</a></div>
+        <p class="note-body">Personal information, availability, certification and license, caregiving experience, employment history, two professional references, and your signed certification. Your answers stay on the page as you move between steps, and you review everything before you submit.</p>
+        <div class="note-act"><a class="btn btn--solid" href="/apply">Start the application</a></div>
       </div>
     </div>
   </section>

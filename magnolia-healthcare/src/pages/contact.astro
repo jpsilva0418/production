@@ -45,7 +45,6 @@ const weekday = SITE.hours.find((h) => h.open && h.close)!;
       var frames = {
         care: { kick: 'Request a consultation', line: 'A conversation, not a sales call. Tell us a little about who needs support and we’ll take it from there.' },
         self: { kick: 'Request a consultation', line: 'Tell us a little about the support you’re considering, and we’ll take it from there.' },
-        team: { kick: 'Join our team', line: 'Tailored schedules, meaningful work, and continuous professional development. Tell us a little about you.' },
       };
       var f = frames[raw]; if (!f) return;
       var k = document.getElementById('iqKick'), l = document.getElementById('iqLine');
