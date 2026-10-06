@@ -413,9 +413,13 @@ import { SITE } from '../consts';
     status = 'sending'; errorEl.hidden = true; render();
     const company = (document.getElementById('cf-company') as HTMLInputElement).value;
     try {
+      // DEMO MODE: on a host without the /api function (any static preview host) the
+      // request is accepted locally and labelled "demo mode — NOT sent anywhere".
+      // Only a real /api/inquiry (Vercel) can ever report a genuine send.
       const res = await fetch('/api/inquiry', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...answers, company }) });
-      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; staged?: boolean; reason?: string };
-      if (!res.ok || !data.ok) throw new Error(data.reason ?? `http_${res.status}`);
+      const noApi = res.status === 404 || res.status === 405 || !(res.headers.get('content-type') ?? '').includes('application/json');
+      const data = noApi ? { ok: true, staged: true } : ((await res.json().catch(() => ({}))) as { ok?: boolean; staged?: boolean; reason?: string });
+      if (!noApi && (!res.ok || !data.ok)) throw new Error(data.reason ?? `http_${res.status}`);
       status = data.staged ? 'sent-test' : 'sent';
       form.hidden = true;
       (document.getElementById('cfTestStrip') as HTMLElement).hidden = status !== 'sent-test';
