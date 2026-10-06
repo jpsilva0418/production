@@ -69,11 +69,28 @@ date, read time, views/comments/likes; post page with share (Facebook, X, Linked
 
 ## 8. Existing visual identity
 
-White ground · sage green (#7FA06A-ish) curved band and bars · dark forest green banner and
-buttons · gold accents (logo arc, icons, card hairlines, lotus line art) · light high-contrast
-serif headings in caps · humanist sans body · gold-outlined cards · halftone/dotted video overlay
-· the curved band under the hero · the magnolia flower and lotus line-art motifs · scrubs in
-sage / pink / blue with a small gold embroidered logo.
+**Green is subtle.** The site is predominantly white and airy; green appears as pale panels, one
+curved band, one careers band, one deep banner. Sampled from the owner's own screenshots and
+recordings (relationships matter more than exact values):
+
+| Role | Sampled | Where |
+|---|---|---|
+| Canvas | `#FEFEFE` / pale grey `#F3F3F3` | header, cards area, consultation form |
+| Pale sage panel | `#EAEDE8` | "Our Mission" panel |
+| Curved band | `#B1C09D` | the wave under the hero |
+| Menu accent | `#B9C7A8` | active menu item, avatar |
+| Careers band | `#7FA45E` | "Join our team" banner |
+| Deep forest green | `#122E1F` | the one "Let's talk" consultation banner (light-green heading, white body, gold icons), Send button |
+| Gold | `#B9975B`-ish | logo ring and "HEALTHCARE", card hairlines, icons, lotus line art |
+| Type | charcoal/dark neutral | thin light serif headings (often caps), humanist sans body |
+
+Recurring motifs: the large clean centred logo · the curved/wave section transition · gold
+hairline card frames · a halftone-dot overlay on the hero video · the magnolia flower and lotus
+line art · large emotional care photography · team imagery in sage / pink / blue scrubs with a
+small gold embroidered logo · generous whitespace · a soft, compassionate atmosphere.
+
+Concept 01 is deliberately the deeper, cinematic interpretation of this palette (the founder's
+chosen direction); concepts 02–06 sit close to the site's own light tonal balance.
 
 ## 9. Existing functionality
 
