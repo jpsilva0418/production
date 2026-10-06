@@ -18,7 +18,7 @@ export default defineConfig({
   // preview) needs page/index.html instead: set BUILD_FORMAT=directory there.
   trailingSlash: process.env.BUILD_FORMAT === 'directory' ? 'ignore' : 'never',
   build: { format: process.env.BUILD_FORMAT === 'directory' ? 'directory' : 'file', assets: 'assets', inlineStylesheets: 'auto' },
-  integrations: [sitemap({ filter: (page) => !page.includes('/404') })],
+  integrations: [sitemap({ filter: (page) => !page.includes('/404') && !page.includes('/preview') })],
   image: { responsiveStyles: true },
   prefetch: { prefetchAll: true, defaultStrategy: 'viewport' },
 });

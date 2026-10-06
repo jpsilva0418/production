@@ -14,8 +14,12 @@ interface Props extends SeoInput {
   jsonLd?: unknown;
   headerLight?: boolean;
   headerPrologue?: boolean;
+  /** `chrome={false}` renders no site header/footer — a design-preview page supplies its own. */
+  chrome?: boolean;
+  /** Extra class on <body> (design previews scope their tokens on it). */
+  bodyClass?: string;
 }
-const { jsonLd, headerLight = false, headerPrologue = false, ...seo } = Astro.props;
+const { jsonLd, headerLight = false, headerPrologue = false, chrome = true, bodyClass, ...seo } = Astro.props;
 const ld = jsonLd ?? localBusinessJsonLd();
 const current = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
@@ -26,11 +30,11 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
     <script is:inline>document.documentElement.classList.add('js')</script>
     <script is:inline type="application/ld+json" set:html={JSON.stringify(ld)} />
   </head>
-  <body>
+  <body class={bodyClass}>
     <a href="#main" class="skip-link">Skip to content</a>
-    <Header light={headerLight} prologue={headerPrologue} current={current} />
+    {chrome && <Header light={headerLight} prologue={headerPrologue} current={current} />}
     <main id="main"><slot /></main>
-    <Footer />
+    {chrome && <Footer />}
     <ScrollToTop />
     <!-- Informational demo badge: this is a design demo, never Magnolia's live site. -->
     <div class="demo-flag" aria-hidden="true">Design demo &middot; not the live website</div>

@@ -1,0 +1,40 @@
+---
+/** DESIGN REVIEW INDEX — development-only surface listing the six homepage evolutions. */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { CONCEPTS } from '../../components/preview/concepts';
+---
+<BaseLayout title="Design review — six evolutions" description="Internal design review of six homepage concepts." path="/preview" chrome={false} bodyClass="preview">
+  <section class="rv-ix">
+    <div class="wrap">
+      <p class="caps rv">Design review · internal</p>
+      <h1 class="disp rv" style="--d:.06s">Six evolutions of the Magnolia website.</h1>
+      <p class="ital rv-ix-sub rv" style="--d:.1s">Same brand, same pages, same content — six ways of taking it to another level. 01 is the direction already in the preview, kept and completed; 02–06 explore how else Magnolia could be elevated. Keys 1–6 switch concepts on any preview; H hides the selector; 0 returns here.</p>
+      <ol class="rv-ix-list" data-stag=".07">
+        {CONCEPTS.map((c) => (
+          <li class="rv"><a class="card rv-ix-card" href={`/preview/${c.id}`}>
+            <span class="rv-ix-n">{c.id}</span>
+            <span class="rv-ix-body"><strong>{c.title}</strong><span>{c.line}</span></span>
+            <span class="arrow-link">Open <span class="arr" aria-hidden="true">&rarr;</span></span>
+          </a></li>
+        ))}
+      </ol>
+      <p class="rv-ix-foot">Content source: <code>docs/03-preservation-map.md</code>. Every concept carries the current site's navigation, hero copy, mission statement, six specialized-care items, four how-we-help items, three testimonials, the consultation banner, Magnolia Moments, Join Our Team and the footer.</p>
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .rv-ix{padding:clamp(5rem,12vh,8rem) 0 clamp(4rem,8vh,6rem);min-height:100svh}
+  .rv-ix .caps{display:block;margin-bottom:1.2rem}
+  .rv-ix h1{font-size:clamp(2.4rem,5vw,4.4rem);max-width:14em}
+  .rv-ix-sub{display:block;margin:1.2rem 0 clamp(2.4rem,4vw,3.6rem);max-width:40em;color:var(--ink-soft);font-size:1.12rem}
+  .rv-ix-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(1rem,2vw,1.6rem)}
+  .rv-ix-card{display:grid;grid-template-columns:auto 1fr;gap:1.2rem 1.4rem;padding:clamp(1.4rem,2.6vw,2rem);color:var(--ink)}
+  .rv-ix-n{font-family:var(--display);font-style:italic;font-size:2.4rem;line-height:1;color:var(--brass)}
+  .rv-ix-body{display:grid;gap:.4rem}
+  .rv-ix-body strong{font-family:var(--display);font-weight:400;font-size:1.5rem}
+  .rv-ix-body span{font-size:.95rem;color:var(--ink-soft);max-width:36em}
+  .rv-ix-card .arrow-link{grid-column:2}
+  .rv-ix-foot{margin-top:clamp(2.4rem,4vw,3.6rem);font-size:.85rem;color:var(--ink-soft);max-width:60em}
+  .rv-ix-foot code{font-size:.8em}
+  @media(max-width:719px){.rv-ix-list{grid-template-columns:1fr}}
+</style>

@@ -1,0 +1,45 @@
+---
+/** DESIGN-REVIEW SELECTOR — development-only. Lets the founder switch between the six
+ *  homepage concepts (links + keys 1–6, H hides it, 0 opens the index). It is rendered
+ *  only by pages under /preview and must never ship on the client website. */
+import { CONCEPTS } from './concepts';
+interface Props { current: number }
+const { current } = Astro.props;
+const c = CONCEPTS[current - 1];
+---
+<nav class="cb" id="conceptBar" aria-label="Design review: switch concept">
+  <a class="cb-ix" href="/preview" title="Concept index (0)">Review</a>
+  <ol class="cb-list">
+    {CONCEPTS.map((k) => <li><a href={`/preview/${k.id}`} aria-current={k.n === current ? 'page' : undefined} title={k.title}>{k.id}</a></li>)}
+  </ol>
+  <span class="cb-name">{c ? `${c.id} · ${c.title}` : ''}</span>
+  <button class="cb-hide" id="conceptHide" type="button" title="Hide (H)" aria-label="Hide concept bar">&times;</button>
+</nav>
+<style is:global>
+  .cb{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:90;display:flex;align-items:center;gap:10px;padding:6px 8px 6px 12px;background:rgba(20,22,21,.9);color:#EDE8E0;border-radius:999px;backdrop-filter:blur(8px);font-family:var(--utility);font-size:.68rem;letter-spacing:.06em;box-shadow:0 12px 32px -14px rgba(0,0,0,.6);max-width:calc(100vw - 24px)}
+  .cb.cb--hidden{display:none}
+  .cb-ix{font-weight:700;text-transform:uppercase;letter-spacing:.2em;font-size:.56rem;color:#CDB48C;padding-right:8px;border-right:1px solid rgba(255,255,255,.18)}
+  .cb-list{list-style:none;display:flex;gap:4px;margin:0;padding:0}
+  .cb-list a{display:grid;place-items:center;min-width:34px;height:34px;border-radius:999px;font-weight:700;color:#EDE8E0;transition:background .2s}
+  .cb-list a:hover{background:rgba(255,255,255,.12)}
+  .cb-list a[aria-current="page"]{background:#CDB48C;color:#141615}
+  .cb-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px;color:rgba(237,232,224,.8)}
+  .cb-hide{background:none;border:0;color:rgba(237,232,224,.7);font-size:1.1rem;width:34px;height:34px;border-radius:999px;cursor:pointer}
+  .cb-hide:hover{background:rgba(255,255,255,.12)}
+  @media(max-width:640px){.cb{bottom:8px;gap:6px;padding:5px 6px 5px 10px}.cb-name{display:none}.cb-list a{min-width:32px;height:32px}}
+  /* the demo badge moves up so the two never overlap */
+  body.preview .demo-flag{bottom:58px}
+  @media(max-width:640px){body.preview .demo-flag{bottom:54px}}
+</style>
+<script>
+  const bar = document.getElementById('conceptBar');
+  document.getElementById('conceptHide')?.addEventListener('click', () => bar?.classList.add('cb--hidden'));
+  addEventListener('keydown', (e) => {
+    const t = e.target as HTMLElement | null;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key >= '1' && e.key <= '6') location.href = `/preview/0${e.key}`;
+    else if (e.key === '0') location.href = '/preview';
+    else if (e.key.toLowerCase() === 'h') bar?.classList.toggle('cb--hidden');
+  });
+</script>
