@@ -1,13 +1,13 @@
 ---
-/** DESIGN-REVIEW SELECTOR — development-only. Lets the founder switch between the six
- *  homepage concepts (links + keys 1–6, H hides it, 0 opens the index). It is rendered
+/** DESIGN-REVIEW SELECTOR — development-only. Lets the founder switch between the
+ *  homepage concepts (links + keys 1–7, H hides it, 0 opens the index). It is rendered
  *  only by pages under /preview and must never ship on the client website. */
 import { CONCEPTS } from './concepts';
 interface Props { current: number }
 const { current } = Astro.props;
 const c = CONCEPTS[current - 1];
 ---
-<nav class="cb" id="conceptBar" aria-label="Design review: switch concept">
+<nav class="cb" id="conceptBar" aria-label="Design review: switch concept" data-n={CONCEPTS.length}>
   <a class="cb-ix" href="/preview" title="Concept index (0)">Review</a>
   <ol class="cb-list">
     {CONCEPTS.map((k) => <li><a href={`/preview/${k.id}`} aria-current={k.n === current ? 'page' : undefined} title={k.title}>{k.id}</a></li>)}
@@ -27,6 +27,7 @@ const c = CONCEPTS[current - 1];
   .cb-hide{background:none;border:0;color:rgba(237,232,224,.7);font-size:1.1rem;width:34px;height:34px;border-radius:999px;cursor:pointer}
   .cb-hide:hover{background:rgba(255,255,255,.12)}
   @media(max-width:640px){.cb{bottom:8px;gap:6px;padding:5px 6px 5px 10px}.cb-name{display:none}.cb-list a{min-width:32px;height:32px}}
+  @media(max-width:420px){.cb{gap:4px;padding:4px 4px 4px 9px}.cb-ix{font-size:.5rem;letter-spacing:.12em;padding-right:6px}.cb-list{gap:2px}.cb-list a{min-width:30px;height:30px;font-size:.64rem}.cb-hide{width:30px;height:30px}}
   /* the demo badge moves up so the two never overlap */
   body.preview .demo-flag{bottom:58px}
   @media(max-width:640px){body.preview .demo-flag{bottom:54px}}
@@ -38,7 +39,7 @@ const c = CONCEPTS[current - 1];
     const t = e.target as HTMLElement | null;
     if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
     if (e.metaKey || e.ctrlKey || e.altKey) return;
-    if (e.key >= '1' && e.key <= '6') location.href = `/preview/0${e.key}`;
+    if (e.key >= '1' && e.key <= (bar?.dataset.n ?? '6')) location.href = `/preview/0${e.key}`;
     else if (e.key === '0') location.href = '/preview';
     else if (e.key.toLowerCase() === 'h') bar?.classList.toggle('cb--hidden');
   });

@@ -60,3 +60,44 @@ CTAs; 05 and 06 add touch sequences/carousels with keyboard support.
 WhatsApp / chat destinations (the floating buttons). 4. The logo file (SVG). 5. Whether
 "Care up to 24 hours a day" and "Free, no commitment" may be shown. 6. The full "Art Class"
 post. 7. Preferred legal spelling ("Magnolia Healthcare, Inc." vs "Magnolia Healthcare Inc.").
+
+---
+
+# Preview 07 · Family, at Home — Evolved (01 opening + best of 01 and 05)
+
+`/preview/07` — added after the founder's review. Previews 01 and 05 are unchanged.
+
+**Kept from 01:** the veil title card lifting into the corridor film, its timing, the cream
+serif "Care that feels like family, at home." with the blush italic, the site's headline as the
+eyebrow, the consultation + services pair, the bottom caps line and scroll cue
+(`src/components/preview/c07/Hero.astro`, a copy of 01's hero). Also from 01: the "Chapter i."
+editorial kickers, the sticky chapter rail and headline for the people chapter, "Why choose
+us?" as a chapter slate, the 3 × 2 gold-hairline care cards on desktop, the shared header with
+its visible desktop navigation, the "All posts" tile, the applications-email line, the longer
+reveal travel.
+
+**Polished in the opening:** her logo's gold ring draws itself around the mark during the
+veil, with a gold rule under the wordmark. The scrim is her deep green `#122E1F` and lighter
+through the middle, so the corridor's daylight comes through. Her curved sage band peeks at
+the foot of the hero at rest.
+
+**Taken from 05 and improved:** the pinned film with chapters rising over it on her curved
+sage band (the curve now eases from deep to flat as each chapter rises); the mission's four
+sentences unfolding one by one beside the hug photograph; the swipeable care sequence with
+dots and arrows (phones and tablets only); abstract brand plates in place of placeholder
+photos; How we help as stacked rows beside a sticky heading; the three client quotes in
+sequence; the kitchen film pinned under the consultation chapter; the light Join our team
+strip with her careers-green rule; the chapter rail (dots, labels on hover) and the mobile
+progress bar; the light pale-sage menu.
+
+**Moved toward her real identity:** palette sampled from her screenshots — warm white and
+ivory canvases, pale sage `#EAEDE8`, the curve `#B1C09D`, charcoal `#2C302C` type, her logo
+gold `#B4843A` / `#B89A6A` as rings and hairlines, a darker gold `#7E6130` for small text (AA).
+Deep green appears only in the opening and her own consultation banner. The How we help
+ledger, the footer and the menu, all dark in 01, are now light. Order follows her site:
+mission, then the team photograph (founder in white), then Why choose us / Specialized care.
+
+**Verification:** `astro check` 0 errors; build 19 pages; Playwright at 390×844, 430×932,
+360×780 and 1440×900 — no horizontal overflow, one h1, no console/page/HTTP errors, every
+reveal completes; reduced motion renders a finished, unpinned page with no film loading;
+the mobile menu opens with focus on Close and Escape returns focus to Menu.

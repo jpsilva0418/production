@@ -1,0 +1,141 @@
+---
+/** CONCEPT 07 HERO — Preview 01's opening, kept: the veil title card lifts into the
+ *  corridor film; cream serif "Care that feels like family, at home." with the blush
+ *  italic; the site's own headline as the eyebrow; the consultation + services pair.
+ *  Polished, not replaced:
+ *   · her logo's gold ring draws itself around the mark while the veil holds;
+ *   · the scrim is her deep green (#122E1F, sampled from her consultation banner) and
+ *     lighter through the middle, so the bright corridor glows instead of going murky;
+ *   · the hero is pinned (Preview 05's move): the first chapter rises over it on her
+ *     curved sage band, which already peeks at the hero's foot at rest.
+ *  Base state of every animation is the finished frame; reduced motion = still poster. */
+import Mark from '../../Mark.astro';
+import { SITE, HERO, MEDIA } from '../../../lib/magnolia-content';
+---
+<section class="plg" id="c7Hero" data-pin data-chapter="hero" data-tone="film" aria-label="Magnolia Healthcare — home care agency, anywhere in Massachusetts">
+  <div class="plg-media" aria-hidden="true">
+    <video class="plg-film" id="c7Film" muted loop playsinline preload="none" poster={MEDIA.heroFilm.poster} disablepictureinpicture tabindex="-1">
+      <source data-src={MEDIA.heroFilm.webm} type="video/webm" />
+      <source data-src={MEDIA.heroFilm.mp4} type="video/mp4" />
+    </video>
+  </div>
+  <div class="plg-scrim" aria-hidden="true"></div>
+  <i class="grain" aria-hidden="true"></i>
+
+  <!-- the veil: title card that lifts — the mark inside her gold ring -->
+  <div class="plg-veil" aria-hidden="true">
+    <div class="plg-veil-c">
+      <span class="plg-ring">
+        <svg class="plg-ring-svg" viewBox="0 0 100 100" fill="none"><path d="M27 89.84A46 46 0 1 1 73 89.84" pathLength="1" /></svg>
+        <Mark class="plg-veil-mark" />
+      </span>
+      <span class="plg-veil-name">Magnolia</span>
+      <span class="plg-veil-rule"></span>
+      <span class="plg-veil-sub">Healthcare</span>
+    </div>
+  </div>
+
+  <div class="plg-c">
+    <p class="plg-eyebrow a1">{HERO.headline} <b>&middot;</b> {HERO.sub} <b>&middot;</b> {HERO.area}</p>
+    <h1 class="plg-h">
+      <span class="lo"><span class="li">Care that feels</span></span>
+      <span class="lo"><span class="li">like family,</span></span>
+      <span class="lo"><span class="li ital">at home.</span></span>
+    </h1>
+    <p class="plg-it a3">A higher standard of care &mdash; one built on compassion, excellence, and respect for every individual.</p>
+    <div class="plg-ctas a4">
+      <a class="btn btn--ivory" href={HERO.ctaHref}>{HERO.cta}</a>
+      <a class="btn btn--ghost" href={SITE.links.services}>Explore our services</a>
+    </div>
+    <p class="plg-loc a4">{SITE.legalName} &middot; {HERO.sub} &middot; {SITE.serviceArea.region}</p>
+  </div>
+  <div class="plg-cue" aria-hidden="true"><span>Scroll</span><i class="ln"></i></div>
+</section>
+
+<style>
+  .plg{--peek:56px;position:sticky;top:var(--pin-top,0px);z-index:0;min-height:100vh;min-height:100svh;background:var(--leaf);overflow:hidden;display:grid;place-items:center;text-align:center;color:var(--ivory)}
+  .plg.is-covered{visibility:hidden}
+  .plg-media{position:absolute;inset:0;opacity:0;animation:fadeIn 1.6s ease 1.15s forwards}
+  .plg-media video{width:100%;height:100%;object-fit:cover;object-position:50% 50%;filter:saturate(.94);transform:scale(1.06);animation:plgKb 9s ease-in-out 1.15s infinite alternate}
+  @keyframes plgKb{from{transform:scale(1.06)}to{transform:scale(1.01)}}
+  /* her deep green, lighter through the middle: the corridor's daylight comes through, the type stays legible */
+  .plg-scrim{position:absolute;inset:0;opacity:0;animation:fadeIn 1.6s ease 1.15s forwards;
+    background:linear-gradient(rgba(18,46,31,.72),rgba(18,46,31,.5) 34%,rgba(18,46,31,.52) 64%,rgba(18,46,31,.8)),
+      radial-gradient(70% 46% at 50% 50%,rgba(18,46,31,.2) 0%,rgba(18,46,31,0) 70%),
+      radial-gradient(120% 90% at 50% 50%,rgba(18,46,31,0) 52%,rgba(18,46,31,.32) 100%)}
+  .plg-c{position:relative;z-index:2;padding:clamp(6.5rem,14vh,8rem) 6vw calc(var(--peek) + clamp(6rem,13vh,8rem));width:100%;max-width:980px}
+  .plg-eyebrow{font-family:var(--utility);font-weight:600;font-size:clamp(.6rem,1.6vw,.72rem);letter-spacing:.28em;text-transform:uppercase;color:#F1ECE3;margin-bottom:clamp(1.4rem,3vh,2.2rem);text-shadow:0 1px 14px rgba(18,46,31,.45)}
+  .plg-eyebrow b{color:var(--gold-lt);font-weight:600}
+  .plg-h{font-family:var(--display);font-weight:300;font-size:clamp(2.6rem,7.4vw,6.4rem);line-height:1.02;letter-spacing:-.015em;color:var(--ivory);margin:0;
+    font-variation-settings:'opsz' 144,'SOFT' 60;text-shadow:0 2px 40px rgba(18,46,31,.55)}
+  .plg-h .lo{display:block;overflow:hidden;padding-block:.04em}
+  .plg-h .li{display:block;transform:translateY(112%)}
+  .plg-h .ital{font-style:italic;font-weight:300;color:var(--petal)}
+  .plg-h .lo:nth-child(1) .li{animation:riseIn 1.05s var(--ease) 2.1s both}
+  .plg-h .lo:nth-child(2) .li{animation:riseIn 1.05s var(--ease) 2.24s both}
+  .plg-h .lo:nth-child(3) .li{animation:riseIn 1.05s var(--ease) 2.38s both}
+  .plg-it{font-family:var(--display);font-style:italic;font-size:clamp(1.08rem,1.8vw,1.42rem);line-height:1.55;color:rgba(252,251,248,.92);max-width:34em;margin:clamp(1.4rem,2.8vh,2.2rem) auto 0;
+    font-variation-settings:'opsz' 48,'SOFT' 70;text-shadow:0 1px 18px rgba(18,46,31,.5);opacity:0;animation:fadeUp .9s ease 2.8s both}
+  .plg-ctas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:clamp(1.8rem,3.6vh,2.6rem);opacity:0;animation:fadeUp .9s ease 3s both}
+  .plg-loc{font-family:var(--utility);font-weight:600;color:var(--gold-lt);font-size:.6rem;letter-spacing:.26em;text-transform:uppercase;margin-top:clamp(1.6rem,3vh,2.2rem);text-shadow:0 1px 12px rgba(18,46,31,.5);opacity:0;animation:fadeUp .9s ease 3.15s both}
+  /* THE VEIL — base state GONE (reduced motion = finished page); animates FROM opaque deep green */
+  .plg-veil{position:absolute;inset:0;z-index:4;display:grid;place-items:center;background:var(--leaf);opacity:0;visibility:hidden;pointer-events:none;animation:veil 2s var(--ease) .95s 1 both}
+  @keyframes veil{from{opacity:1;visibility:visible}70%{opacity:1}to{opacity:0;visibility:hidden}}
+  .plg-veil-c{display:flex;flex-direction:column;align-items:center;opacity:0;animation:veilCard 2.5s var(--ease) .1s 1 both}
+  @keyframes veilCard{from{opacity:0;transform:translateY(12px) scale(.985)}22%{opacity:1;transform:none}78%{opacity:1}to{opacity:0;transform:scale(1.01)}}
+  .plg-ring{position:relative;display:grid;place-items:center;width:clamp(96px,13vw,138px);aspect-ratio:1;margin-bottom:.9rem}
+  .plg-ring-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .plg-ring-svg path{stroke:var(--gold-lt);stroke-width:.9;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:ringDraw 1.25s var(--ease) .35s both}
+  @keyframes ringDraw{to{stroke-dashoffset:0}}
+  .plg-veil :global(.plg-veil-mark){width:52%;height:auto;color:var(--gold-lt);transform:translateY(-4%)}
+  .plg-veil-name{font-family:var(--display);font-weight:300;font-size:clamp(2.4rem,6vw,4.4rem);line-height:1;color:var(--ivory);letter-spacing:.02em;font-variation-settings:'opsz' 144,'SOFT' 50}
+  .plg-veil-rule{display:block;width:clamp(56px,8vw,88px);height:1px;background:var(--gold-lt);opacity:.7;margin:.9rem 0 .1rem;transform:scaleX(0);animation:ruleIn .9s var(--ease) .9s both}
+  @keyframes ruleIn{to{transform:scaleX(1)}}
+  .plg-veil-sub{font-family:var(--utility);font-weight:600;font-size:clamp(.6rem,1.3vw,.76rem);letter-spacing:.42em;text-indent:.42em;text-transform:uppercase;color:var(--gold-lt);margin-top:.7rem}
+  .plg-cue{position:absolute;bottom:calc(var(--peek) + clamp(.6rem,1.6vh,1rem));left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:.8rem;opacity:0;animation:fadeIn 1s ease 3.4s both}
+  .plg-cue span{font-family:var(--utility);font-weight:600;text-transform:uppercase;letter-spacing:.42em;text-indent:.42em;font-size:.55rem;color:var(--gold-lt)}
+  .plg-cue .ln{width:1px;height:32px;background:linear-gradient(var(--gold-lt),rgba(217,195,154,0));transform-origin:top;animation:cuePulse 2.8s ease-in-out 3.8s infinite}
+  @keyframes cuePulse{0%,100%{transform:scaleY(.35);opacity:.5}50%{transform:scaleY(1);opacity:1}}
+  @media(max-width:640px){
+    .plg{--peek:38px}
+    .plg-c{padding-top:6.6rem;padding-bottom:calc(var(--peek) + 5.6rem)}
+    .plg-h{font-size:clamp(2.35rem,11.5vw,3.2rem)}
+    .plg-ctas{flex-direction:column;align-items:center}
+    .plg-ctas .btn{min-width:264px}
+    .plg-cue{display:none}
+  }
+  @media(max-height:700px) and (max-width:640px){.plg-c{padding-top:5.6rem}.plg-it{font-size:1rem}.plg-loc{margin-top:1.2rem}}
+  @media (prefers-reduced-motion:reduce){
+    .plg{position:relative;top:auto!important;visibility:visible!important}
+    .plg-media,.plg-scrim,.plg-it,.plg-ctas,.plg-loc,.plg-cue{opacity:1!important;animation:none!important}
+    .plg-media video{transform:none!important;animation:none!important}
+    .plg-h .li{transform:none!important;animation:none!important}
+    .plg-veil,.plg-veil-c{animation:none!important}
+    .plg-cue .ln{animation:none!important}
+  }
+</style>
+<script>
+  // Film: promoted once the veil has lifted (the poster carries the first paint); never
+  // under reduced motion or Save-Data. Pin: on a phone shorter than the hero content, the
+  // hero scrolls until its foot reaches the screen's foot, then holds (top = vh − height).
+  const v = document.getElementById('c7Film') as HTMLVideoElement | null;
+  const hero = document.getElementById('c7Hero');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true;
+  if (v) {
+    if (reduced || saveData) {
+      v.querySelectorAll('source').forEach((s) => s.remove());
+    } else {
+      setTimeout(() => {
+        v.querySelectorAll('source').forEach((s) => { const src = (s as HTMLSourceElement).dataset.src; if (src) (s as HTMLSourceElement).src = src; });
+        v.load();
+        v.play().catch(() => {});
+      }, 900);
+    }
+  }
+  if (hero && !reduced) {
+    const pin = () => { hero.style.setProperty('--pin-top', `${Math.min(0, innerHeight - hero.offsetHeight)}px`); };
+    pin();
+    addEventListener('resize', pin);
+  }
+</script>

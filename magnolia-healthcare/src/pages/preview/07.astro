@@ -1,0 +1,564 @@
+---
+/** CONCEPT 07 · FAMILY, AT HOME — EVOLVED. The best of 01 and 05, rebalanced to the
+ *  client's own light palette.
+ *  · Opening: Preview 01's veil → corridor film, cream serif, blush italic — kept, with her
+ *    gold logo ring drawn into the veil and her deep green as the scrim (c07/Hero.astro).
+ *  · Structure: Preview 05's pinned film with chapters rising over it, the top edge of each
+ *    chapter being her curved sage band — which now flattens gently as the chapter rises.
+ *  · Order: her site's own — mission, then the team photograph (founder in white), then
+ *    "Why choose us?" / Specialized care, How we help, What our clients say, the
+ *    consultation banner, then Magnolia Moments and Join our team.
+ *  · Palette (sampled from her screenshots, docs/03-preservation-map.md §8): warm white and
+ *    ivory canvases, pale sage #EAEDE8 panels, the sage curve #B1C09D, charcoal #2C302C type,
+ *    her logo gold as hairlines, deep green #122E1F only for the opening and her banner.
+ *  Every string is verbatim from src/lib/magnolia-content.ts and the content collections. */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/preview/c07/Hero.astro';
+import Mark from '../../components/Mark.astro';
+import Plate from '../../components/Plate.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import ConceptBar from '../../components/preview/ConceptBar.astro';
+import { getCollection } from 'astro:content';
+import { getPublishedPosts } from '../../lib/blog';
+import { HERO, MISSION, SECTION_LABELS, BANNER, CAREERS, FOUNDER, MEDIA, SITE, TESTIMONIALS, TBC } from '../../lib/magnolia-content';
+
+const all = (await getCollection('services')).filter((s) => !s.data.draft).sort((a, b) => a.data.order - b.data.order);
+const specialized = all.filter((s) => s.data.kind === 'specialized');
+const support = all.filter((s) => s.data.kind === 'support');
+const posts = (await getPublishedPosts()).slice(0, 2);
+const supplied = new Set<string>(Object.values(MEDIA.plates));
+const roman = ['i', 'ii', 'iii', 'iv', 'v', 'vi'];
+const chapters = [
+  { id: 'mission', label: 'Mission' },
+  { id: 'people', label: 'People' },
+  { id: 'care', label: 'Care' },
+  { id: 'voices', label: 'Voices' },
+  { id: 'begin', label: 'Begin' },
+];
+const ring = 'M27 89.84A46 46 0 1 1 73 89.84';
+---
+<BaseLayout headerLight headerPrologue title="Concept 07 · Family, at Home — Evolved" description="Design review concept 07 — Preview 01's opening with the best of 01 and 05 after it, in Magnolia's own light palette." path="/preview/07" bodyClass="preview c07">
+
+  <div class="c7-prog" id="c7Prog" aria-hidden="true"></div>
+  <nav class="c7-rail" id="c7Rail" aria-label="Chapters">
+    {chapters.map((c, i) => <a href={`#${c.id}`} data-rail={c.id}><i aria-hidden="true"></i><span><b>{roman[i]}.</b> {c.label}</span></a>)}
+  </nav>
+
+  <!-- ① THE OPENING · Preview 01's veil → corridor film (pinned) -->
+  <Hero />
+
+  <!-- ② CHAPTER I · OUR MISSION — rises over the film on her curved sage band -->
+  <section class="c7-ch c7-ch--first" id="mission" data-chapter="mission" data-tone="light" data-curve>
+    <div class="c7-light" aria-hidden="true"><i class="lx-shaft"></i></div>
+    <div class="wrap c7-mis">
+      <div class="c7-mis-t">
+        <p class="chap-rn rv">Chapter i.</p>
+        <h2 class="disp c7-mis-h rv" style="--d:.06s">Our <span class="ital">mission.</span></h2>
+        <p class="kick rv" style="--d:.1s">{MISSION.eyebrow}</p>
+        {MISSION.sentences.map((s, i) => <p class={`c7-mis-s rv${i === 0 ? ' c7-mis-s--lead' : ''}`} style={`--d:${(0.16 + i * 0.12).toFixed(2)}s`}>{s}</p>)}
+        <div class="c7-mis-foot fade" style="--d:.62s">
+          <ul class="c7-vals" aria-label="Our values">{MISSION.values.map((v, i) => <li><b>{roman[i]}.</b> {v}</li>)}</ul>
+          <a class="tlk" href={SITE.links.mission}>Read our mission</a>
+        </div>
+      </div>
+      <figure class="c7-mis-f">
+        <div class="ph ph--framed rv-im" style="--d:.2s"><Plate id={MEDIA.plates.hug} alt="A caregiver embracing an older woman in her kitchen" class="lv lv--rise" sizes="(max-width:899px) 90vw, 520px" widths={[480, 624]} /><i class="grain" aria-hidden="true"></i></div>
+        <figcaption class="fade" style="--d:.3s">Seeing the person beyond their needs</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ③ CHAPTER II · THE PEOPLE — her team photograph, straight after the mission as on her site; the founder in white -->
+  <section class="c7-ch c7-ch--sage" id="people" data-chapter="people" data-tone="light" data-curve>
+    <div class="wrap chap">
+      <div class="chap-l rv">
+        <p class="chap-rn">Chapter ii.</p>
+        <h2 class="disp chap-t">The people<br />behind <span class="ital">the care.</span></h2>
+        <p class="chap-line">Thoughtfully selected, trained, and committed to every home.</p>
+        <a class="tlk" href={SITE.links.careers}>{SECTION_LABELS.team}</a>
+      </div>
+      <div class="c7-ppl" data-plx-host>
+        <div class="c7-team rv-im">
+          <div class="c7-team-in plx" data-plx="0.05"><Plate id={MEDIA.plates.team5} alt="The Magnolia Healthcare team of five in front of the Magnolia sign; the founder, in white, at the centre" sizes="(max-width:899px) 92vw, 760px" widths={[480, 652]} /></div>
+          <i class="grain" aria-hidden="true"></i>
+        </div>
+        <p class="c7-team-cap fade">The Magnolia team &middot; supplied photograph</p>
+        <figure class="c7-fdr">
+          <div class="ph ph--framed rv-im" style="--d:.12s"><Plate id={FOUNDER.plate} alt="The founder of Magnolia Healthcare" class="lv lv--breathe" sizes="(max-width:599px) 128px, 188px" widths={[280, 420]} /><i class="grain" aria-hidden="true"></i></div>
+          <figcaption class="fade" style="--d:.2s"><span class="caps-xs">{FOUNDER.label}</span><span class="c7-tbc">{TBC}</span><em>{FOUNDER.note}</em></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <div class="chapslate chapslate--linen fade" role="presentation"><span class="cs-t">{SECTION_LABELS.why}</span></div>
+
+  <!-- ④ CHAPTER III · CARE — the six specialized-care cards (a swipeable sequence on a phone, a 3 × 2 grid on desktop), then How we help -->
+  <section class="c7-care" id="care" data-chapter="care" data-tone="light">
+    <div class="wrap c7-care-h">
+      <div>
+        <p class="chap-rn rv">Chapter iii.</p>
+        <p class="kick rv" style="--d:.04s">{SECTION_LABELS.specialized}</p>
+        <h2 class="disp rv" style="--d:.08s">Care shaped around<br />the <span class="ital">person.</span></h2>
+      </div>
+      <p class="ital c7-care-line rv" style="--d:.12s">Six kinds of specialized support, each delivered at home with compassion, excellence, and respect.</p>
+    </div>
+    <div class="c7-seq">
+      <ul class="c7-trk fade" id="c7Trk" tabindex="0" aria-label="Specialized care — six kinds of care">
+        {specialized.map((s, i) => (
+          <li class="c7-pn" style={`--i:${i}`}>
+            {supplied.has(s.data.plate) ? (
+              <div class="ph c7-pn-ph"><Plate id={s.data.plate} alt="" sizes="(max-width:899px) 82vw, 400px" widths={[448, 640]} /></div>
+            ) : (
+              <div class="c7-pn-ab" aria-hidden="true">
+                <span class="c7-pn-ring"><svg viewBox="0 0 100 100" fill="none"><path d={ring} /></svg><Mark /></span>
+                <span class="c7-pn-num">{s.data.numeral}</span>
+              </div>
+            )}
+            <div class="c7-pn-b">
+              <span class="caps-xs">No. {s.data.numeral}</span>
+              <h3>{s.data.title}</h3>
+              <p>{s.data.summary}</p>
+              <a class="arrow-link" href={`/services#${s.id}`} aria-label={`${s.data.title} — learn more`}>Learn more <span class="arr" aria-hidden="true">&rarr;</span></a>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <div class="c7-ctl">
+        <div class="c7-dots" role="group" aria-label="Go to card">
+          {specialized.map((s, i) => <button type="button" class="c7-dot" data-go={i} aria-label={`Card ${i + 1} of ${specialized.length}: ${s.data.title}`} aria-current={i === 0 ? 'true' : undefined}><i></i></button>)}
+        </div>
+        <div class="c7-arrows">
+          <button type="button" class="c7-arr" id="c7Prev" aria-label="Previous card">&larr;</button>
+          <button type="button" class="c7-arr" id="c7Next" aria-label="Next card">&rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap c7-how">
+      <div class="c7-how-l rv">
+        <p class="kick">{SECTION_LABELS.how}</p>
+        <h2 class="disp c7-how-h">Around every person, <span class="ital">a team.</span></h2>
+        <div class="c7-how-cta">
+          <a class="btn btn--solid" href={HERO.ctaHref}>{HERO.cta}</a>
+          <a class="tlk" href={SITE.links.services}>All of our care</a>
+        </div>
+      </div>
+      <ol class="c7-rows" data-stag=".1">
+        {support.map((s, i) => <li class="fade"><span class="c7-row-n">{roman[i]}.</span><div><h3>{s.data.title}</h3><p>{s.data.summary}</p></div></li>)}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ⑤ CHAPTER IV · WHAT OUR CLIENTS SAY — the three quotes, one after another -->
+  <section class="c7-voices" id="voices" data-chapter="voices" data-tone="light">
+    <div class="wrap">
+      <header class="c7-vh">
+        <p class="chap-rn rv">Chapter iv.</p>
+        <h2 class="disp rv" style="--d:.06s">What our clients <span class="ital">say.</span></h2>
+      </header>
+      <div class="c7-qs" data-stag=".2">
+        {TESTIMONIALS.map((t) => (
+          <figure class="c7-q fade">
+            <span class="c7-q-m" aria-hidden="true">&ldquo;</span>
+            <blockquote><p>{t.quote}</p></blockquote>
+            <figcaption><span class="caps-xs">{t.name}</span></figcaption>
+          </figure>
+        ))}
+      </div>
+      <p class="c7-q-note fade">Client words as published on Magnolia&rsquo;s current website.</p>
+    </div>
+  </section>
+
+  <!-- ⑥ the kitchen film, pinned — the consultation chapter rises over it -->
+  <div class="c7-band" data-pin data-chapter="voices" data-tone="film" role="presentation">
+    <video data-film muted loop playsinline preload="none" poster={MEDIA.cineFilm.poster} disablepictureinpicture tabindex="-1" aria-hidden="true">
+      <source data-src={MEDIA.cineFilm.webm} type="video/webm" />
+      <source data-src={MEDIA.cineFilm.mp4} type="video/mp4" />
+    </video>
+    <i class="grain" aria-hidden="true"></i>
+    <p class="c7-band-cap">Care, at home <b>&middot;</b> {HERO.area}</p>
+  </div>
+
+  <!-- ⑦ CHAPTER V · BEGIN — her deep-green consultation banner: the one controlled dark moment after the opening -->
+  <section class="c7-ch c7-ch--dk" id="begin" data-chapter="begin" data-tone="dark" data-curve aria-labelledby="c7BegH">
+    <div class="c7-light" aria-hidden="true"><i class="lx-dusk"></i></div>
+    <div class="wrap-text c7-beg">
+      <span class="c7-seal fade" aria-hidden="true"><svg viewBox="0 0 100 100" fill="none"><path d={ring} /></svg><Mark /></span>
+      <p class="caps-xs fade" style="--d:.04s">Chapter v. &middot; {BANNER.eyebrow}</p>
+      <h2 class="c7-beg-h rv" id="c7BegH" style="--d:.08s">{BANNER.heading}</h2>
+      <p class="c7-beg-b fade" style="--d:.14s">{BANNER.body}</p>
+      <ul class="c7-pts fade" style="--d:.2s">{BANNER.points.map((p) => <li>{p}</li>)}</ul>
+      <div class="c7-beg-cta fade" style="--d:.26s">
+        <a class="btn btn--ivory" href={BANNER.ctaHref}>{BANNER.cta}</a>
+        <a class="tlk tlk--lt" href={`mailto:${SITE.email}`}>Or email {SITE.email}</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑧ after the resolution · Magnolia Moments and Join our team, back on her light ground -->
+  <div class="c7-ch c7-after" data-chapter="begin" data-tone="light" data-curve>
+    {posts.length > 0 && (
+      <section class="wrap c7-mom" aria-labelledby="c7MomH">
+        <header class="c7-mom-h">
+          <div><p class="caps rv">The blog</p><h2 class="disp rv" id="c7MomH" style="--d:.06s">{SECTION_LABELS.blog}</h2></div>
+        </header>
+        <div class="c7-mom-g" data-stag=".1">
+          {posts.map((p) => <div class="rv"><BlogCard post={p} headingLevel="h3" /></div>)}
+          <div class="rv"><a class="c7-all" href={SITE.links.blog}><span class="caps-xs">{SECTION_LABELS.blog}</span><span class="c7-all-t">All <span class="ital">posts.</span></span><span class="arrow-link">Open the blog <span class="arr" aria-hidden="true">&rarr;</span></span></a></div>
+        </div>
+      </section>
+    )}
+    <section class="c7-join" aria-labelledby="c7JoinH">
+      <div class="wrap c7-join-in">
+        <div class="c7-join-t">
+          <p class="caps rv">{CAREERS.banner}</p>
+          <h2 class="disp rv" id="c7JoinH" style="--d:.06s">{CAREERS.heading}</h2>
+          <p class="fade" style="--d:.12s">{CAREERS.body}</p>
+          <div class="c7-join-a fade" style="--d:.18s">
+            <a class="btn btn--solid" href={CAREERS.apply}>Apply online</a>
+            <a class="tlk" href={CAREERS.pdf} download>{CAREERS.download}</a>
+          </div>
+          <p class="c7-join-mail fade" style="--d:.22s">Completed applications go to <a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+        </div>
+        <div class="ph ph--framed c7-join-ph rv-im"><Plate id={MEDIA.plates.team4} alt="Four Magnolia caregivers in scrubs" class="lv lv--breathe" sizes="(max-width:899px) 80vw, 380px" widths={[480, 640]} /><i class="grain" aria-hidden="true"></i></div>
+      </div>
+    </section>
+  </div>
+
+  <ConceptBar current={7} />
+</BaseLayout>
+
+<style is:global>
+  /* ---- her palette (docs/03-preservation-map.md §8): light canvases, pale sage, charcoal, gold hairlines ---- */
+  body.c07{--ivory:#FCFBF8;--linen:#F4F3EF;--paper:#FFFFFF;--blush:#F7EEEA;--sage-band:#EAEDE8;--sage:#B1C09D;--moss:#7FA45E;
+    --leaf:#122E1F;--leaf-2:#1B3D2B;--leaf-deep:#0C2016;--ink:#2C302C;--ink-soft:#5A605A;
+    --brass:#7E6130;--gold:#B89A6A;--gold-ring:#B4843A;--gold-lt:#D9C39A;--petal:#E9CFC7;--petal-deep:#C98B80;
+    --hair:rgba(126,97,48,.2);--hair-strong:rgba(126,97,48,.4);--hairdk:rgba(217,195,154,.22);--hairdk-strong:rgba(217,195,154,.42);
+    --gut:max(20px,calc((100vw - var(--wrap)) / 2));--peek:56px;background:var(--ivory);color:var(--ink-soft)}
+  @media(max-width:599px){body.c07{--wrap:calc(100vw - 40px)}}
+  @media(max-width:640px){body.c07{--peek:38px}}
+  body.c07 main{position:relative}
+  /* 01's reveals, with a touch more travel and patience */
+  body.c07 .rv{transform:translateY(30px);transition-duration:.9s,1.05s,.7s}
+  body.c07 .rv.in{transform:none}
+  body.c07 .rv-im img,body.c07 .rv-im video{transform:scale(1.1);transition-duration:1.5s}
+  body.c07 .rv-im.in img,body.c07 .rv-im.in video{transform:none}
+  /* the shared header, re-voiced to her canvas once it sticks */
+  body.c07 .hd--stuck{background:rgba(252,251,248,.92);box-shadow:0 1px 0 var(--hair),0 18px 40px -30px rgba(44,48,44,.3)}
+  /* the full-screen menu, re-voiced light: her pale sage, charcoal type, gold numerals */
+  body.c07 .menu{background:var(--sage-band);color:var(--ink)}
+  body.c07 .menu-top .hd-logo,body.c07 .menu-top .hd-logo .wm-name{color:var(--ink)}
+  body.c07 .menu-top .hd-logo .wm-sub,body.c07 .menu-list .mrn,body.c07 .menu-sub a,body.c07 .menu-foot{color:var(--brass)}
+  body.c07 .menu-list .mlb{color:var(--ink);font-weight:300}
+  body.c07 .menu-list .mnote{color:var(--ink-soft)}
+  body.c07 .menu-list a{border-bottom-color:var(--hair)}
+  body.c07 .menu-list li:first-child a{border-top-color:var(--hair)}
+  body.c07 .menu-list a:hover .mlb,body.c07 .menu-list a:focus-visible .mlb,body.c07 .menu-sub a:hover,body.c07 .menu-sub a:focus-visible{color:var(--leaf)}
+  body.c07 .menu-close{color:var(--ink)}
+  body.c07 .menu-close .x{color:var(--brass)}
+  body.c07 .menu-foot{border-top-color:var(--hair)}
+  body.c07 .menu .btn--ivory{background:var(--leaf);color:var(--ivory);border-color:var(--leaf)}
+  body.c07 .menu .btn--ivory::after{background:var(--leaf-2)}
+  /* the shared footer, re-voiced light: her pale grey ground, charcoal type, gold hairlines */
+  body.c07 .foot{background:var(--linen);color:var(--ink-soft);border-top:1px solid var(--hair)}
+  body.c07 .foot .lx-dusk{display:none}
+  body.c07 .foot-brand .mark{color:var(--gold-ring)}
+  body.c07 .foot-brand .foot-name{color:var(--ink);font-weight:300}
+  body.c07 .foot-brand .foot-sub,body.c07 .foot-h,body.c07 .foot-contact .k,body.c07 .foot-bar{color:var(--brass)}
+  body.c07 .foot-brand p{color:var(--ink-soft)}
+  body.c07 .foot-nav a,body.c07 .foot-contact a{color:var(--ink)}
+  body.c07 .foot-nav a:hover,body.c07 .foot-nav a:focus-visible,body.c07 .foot-contact a:hover{color:var(--leaf)}
+  body.c07 .foot .tbc{color:var(--ink-soft)}
+  body.c07 .foot-bar{border-top-color:var(--hair)}
+  body.c07 .foot-bar a:hover{color:var(--ink)}
+  body.c07 .bcard-title{font-weight:350}
+  body.c07 .chap-rn{color:var(--brass)}
+</style>
+
+<style>
+  /* ===== mobile progress bar + desktop chapter rail ===== */
+  .c7-prog{position:fixed;top:0;left:0;right:0;height:2px;z-index:72;background:var(--gold-ring);transform:scaleX(0);transform-origin:left;pointer-events:none;display:none}
+  .c7-rail{position:fixed;left:clamp(14px,2vw,28px);top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:12px;color:var(--ink);opacity:0;transition:opacity .5s ease}
+  .c7-rail.on{opacity:1}
+  .c7-rail:not(.on){pointer-events:none}
+  .c7-rail[data-tone="film"],.c7-rail[data-tone="dark"]{color:var(--ivory)}
+  .c7-rail a{display:flex;align-items:center;gap:.8rem;min-height:30px;color:inherit;font-family:var(--utility);font-weight:600;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase}
+  .c7-rail a i{display:block;width:7px;height:7px;border-radius:50%;border:1px solid currentColor;transition:transform .35s var(--ease),background .35s}
+  .c7-rail a span{opacity:0;transform:translateX(-6px);transition:opacity .35s,transform .45s var(--ease);padding:.5em .85em .45em;border-radius:999px;background:rgba(252,251,248,.9);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  .c7-rail[data-tone="film"] a span,.c7-rail[data-tone="dark"] a span{background:rgba(18,46,31,.55)}
+  .c7-rail a span b{font-family:var(--display);font-style:italic;font-weight:400;font-size:.8rem;letter-spacing:0;text-transform:none;margin-right:.2em}
+  .c7-rail a:hover span,.c7-rail a:focus-visible span{opacity:1;transform:none}
+  .c7-rail a[aria-current="true"] i{background:currentColor;transform:scale(1.4)}
+  @media(min-width:1180px){.c7-rail{display:flex}}
+  @media(max-width:1023px){.c7-prog{display:block}}
+
+  /* ===== chapter cards · her curved sage band as the top edge; the curve eases flatter as the card rises (--cv, set by the script) ===== */
+  .c7-ch{--cv:44px;--lip:12px;--c-bg:var(--ivory);position:relative;z-index:1;isolation:isolate;padding-block:var(--pad)}
+  .c7-ch::before,.c7-ch::after{content:"";position:absolute;left:0;right:0;border-radius:50% 50% 0 0/var(--cv) var(--cv) 0 0;pointer-events:none}
+  .c7-ch::before{top:calc(-1 * var(--lip));height:160px;background:var(--sage);z-index:-2}
+  .c7-ch::after{top:0;bottom:0;background:var(--c-bg);z-index:-1;box-shadow:0 -26px 60px -34px rgba(44,48,44,.42)}
+  .c7-light{position:absolute;inset:0;overflow:hidden;border-radius:50% 50% 0 0/var(--cv) var(--cv) 0 0;pointer-events:none;z-index:-1}
+  .c7-ch--first{margin-top:calc(-1 * var(--peek))}
+  .c7-ch--sage{--c-bg:var(--sage-band);--lip:0px}
+  .c7-ch--sage::after{box-shadow:none}
+  .c7-ch--dk{--c-bg:var(--leaf);color:rgba(252,251,248,.86)}
+  .c7-ch--dk::after{box-shadow:0 -26px 60px -30px rgba(0,0,0,.5)}
+  .c7-after{--lip:8px;padding-top:0;padding-bottom:0;margin-top:-1px}
+
+  /* ===== I · mission · the four sentences unfold beside her most human photograph ===== */
+  .c7-mis{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:clamp(2.4rem,6vw,6.5rem);align-items:center;position:relative}
+  .c7-mis-h{font-size:clamp(2.6rem,5.2vw,4.8rem);font-weight:300;margin:0 0 clamp(1rem,1.8vw,1.4rem)}
+  .c7-mis .kick{margin-bottom:clamp(1.6rem,2.8vw,2.4rem)}
+  .c7-mis-s{font-family:var(--display);font-weight:300;font-size:clamp(1.12rem,1.5vw,1.42rem);line-height:1.5;color:var(--ink);max-width:25em;margin:0 0 1.1em;font-variation-settings:'opsz' 48,'SOFT' 50}
+  .c7-mis-s--lead{font-size:clamp(1.5rem,2.4vw,2.2rem);line-height:1.3;max-width:19em;font-variation-settings:'opsz' 96,'SOFT' 60}
+  .c7-mis-foot{display:flex;align-items:center;justify-content:space-between;gap:1.2rem 2rem;flex-wrap:wrap;margin-top:clamp(1.6rem,2.6vw,2.2rem);padding-top:1.2rem;border-top:1px solid var(--hair)}
+  .c7-vals{list-style:none;display:flex;gap:.6rem 2rem;flex-wrap:wrap;margin:0;padding:0;font-family:var(--utility);font-weight:600;font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
+  .c7-vals b{font-family:var(--display);font-style:italic;font-weight:400;font-size:.95rem;letter-spacing:0;text-transform:none;color:var(--brass);margin-right:.3em}
+  .c7-mis-f{margin:0}
+  .c7-mis-f .ph{aspect-ratio:4/4.6}
+  .c7-mis-f figcaption{margin-top:1.4rem;text-align:center;font-family:var(--display);font-style:italic;font-size:1rem;color:var(--ink-soft)}
+  @media(max-width:899px){.c7-mis{grid-template-columns:1fr;gap:2.6rem}.c7-mis-f{width:min(520px,100%);margin-inline:auto}.c7-mis-f .ph{aspect-ratio:4/3.4}}
+
+  /* ===== II · people · the team photograph with gentle depth; the founder framed in front ===== */
+  .c7-ppl{position:relative;display:flex;flex-direction:column}
+  .c7-team{position:relative;aspect-ratio:652/452;border-radius:var(--r);overflow:hidden;background:var(--linen);box-shadow:0 30px 60px -40px rgba(44,48,44,.45)}
+  .c7-team-in{position:absolute;left:0;right:0;top:-6%;height:112%}
+  .c7-team-in :global(img){width:100%;height:100%;object-fit:cover;object-position:50% 40%}
+  .c7-team-cap{margin:1rem 0 0;text-align:right;font-family:var(--utility);font-weight:600;font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:var(--brass)}
+  .c7-fdr{margin:-5.2rem 0 0 clamp(1rem,3vw,2.4rem);position:relative;z-index:2;display:grid;grid-template-columns:188px minmax(0,1fr);gap:clamp(1.2rem,2.4vw,2rem);align-items:end}
+  .c7-fdr .ph{aspect-ratio:4/5;box-shadow:0 26px 50px -26px rgba(44,48,44,.5);background:var(--paper)}
+  .c7-fdr figcaption{display:grid;gap:.35rem;padding-bottom:.4rem}
+  .c7-fdr .caps-xs{color:var(--brass)}
+  .c7-tbc{font-family:var(--display);font-size:1.3rem;font-weight:350;color:var(--ink);line-height:1.2}
+  .c7-fdr em{font-family:var(--display);font-style:italic;font-size:.98rem;line-height:1.5;color:var(--ink-soft);max-width:26em}
+  @media(max-width:599px){.c7-fdr{grid-template-columns:128px minmax(0,1fr);margin:-2.6rem 0 0 .8rem;gap:1rem}.c7-tbc{font-size:1.1rem}.c7-fdr em{font-size:.92rem}.c7-team-cap{order:3;text-align:left;margin-top:1.4rem}}
+
+  /* ===== III · care ===== */
+  .c7-care{position:relative;z-index:1;background:var(--linen);padding:clamp(8px,2vw,24px) 0 var(--pad)}
+  .c7-care-h{display:flex;align-items:flex-end;justify-content:space-between;gap:1.5rem 3rem;flex-wrap:wrap;margin-bottom:clamp(2.2rem,4.4vw,3.6rem)}
+  .c7-care-h>div{flex:1 1 420px}
+  .c7-care-h .kick{margin-bottom:1.2rem}
+  .c7-care-h .disp{font-size:clamp(2.2rem,4.4vw,4rem);font-weight:300}
+  .c7-care-line{margin:0;max-width:24em;font-size:1.1rem;color:var(--ink-soft);font-variation-settings:'opsz' 48,'SOFT' 60}
+  .c7-seq{position:relative}
+  .c7-trk{list-style:none;margin:0;display:flex;gap:16px;padding:8px var(--gut) 18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gut);scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+  .c7-trk::-webkit-scrollbar{display:none}
+  .c7-trk:focus-visible{outline:2px solid var(--brass);outline-offset:-2px}
+  .c7-pn{flex:0 0 min(360px,82vw);scroll-snap-align:start;display:flex;flex-direction:column;background:var(--paper);border:1px solid rgba(184,154,106,.5);border-radius:var(--r);overflow:hidden;position:relative;transition:box-shadow .45s var(--ease),border-color .45s var(--ease)}
+  .c7-pn::after{content:"";position:absolute;inset:6px;border:1px solid rgba(184,154,106,.22);border-radius:calc(var(--r) - 4px);pointer-events:none}
+  .c7-pn:hover{box-shadow:0 26px 50px -32px rgba(44,48,44,.42);border-color:var(--gold)}
+  .c7-pn-ph{aspect-ratio:4/3;border-radius:0}
+  .c7-pn-ph :global(img){transition:transform 1s var(--ease)}
+  .c7-pn:hover .c7-pn-ph :global(img){transform:scale(1.045)}
+  .c7-pn-ab{aspect-ratio:4/3;display:grid;place-items:center;position:relative;background:radial-gradient(120% 95% at 28% 18%,#F7F8F4 0%,var(--sage-band) 58%,#DEE4D6 100%)}
+  .c7-pn-ring{position:relative;width:96px;aspect-ratio:1;display:grid;place-items:center}
+  .c7-pn-ring svg,.c7-seal svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .c7-pn-ring path{stroke:var(--gold);stroke-width:1;stroke-linecap:round}
+  .c7-pn-ring :global(.mark){width:50%;height:auto;color:#8FA37A;transform:translateY(-4%)}
+  .c7-pn-num{position:absolute;right:1.1rem;bottom:.1rem;font-family:var(--display);font-style:italic;font-weight:300;font-size:5rem;line-height:1;color:rgba(127,164,94,.2)}
+  .c7-pn-b{padding:1.35rem 1.45rem 1.55rem;display:flex;flex-direction:column;gap:.5rem;flex:1}
+  .c7-pn-b .caps-xs{color:var(--brass)}
+  .c7-pn-b h3{font-size:1.38rem;line-height:1.16;font-weight:350;color:var(--ink)}
+  .c7-pn-b p{font-size:.95rem;color:var(--ink-soft);flex:1}
+  .c7-pn-b .arrow-link{margin-top:.5rem;font-size:.98rem;align-self:flex-start;min-height:44px;align-items:center}
+  .c7-ctl{width:var(--wrap);margin:.2rem auto 0;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+  .c7-dots{display:flex}
+  .c7-dot{width:40px;height:44px;display:grid;place-items:center;background:none;border:0;cursor:pointer;padding:0}
+  .c7-dot i{display:block;width:7px;height:7px;border-radius:50%;border:1px solid var(--ink);transition:transform .35s var(--ease),background .35s}
+  .c7-dot[aria-current="true"] i{background:var(--ink);transform:scale(1.35)}
+  .c7-arrows{display:flex;gap:.5rem}
+  .c7-arr{width:46px;height:46px;border-radius:50%;border:1px solid var(--hair-strong);background:var(--paper);color:var(--ink);cursor:pointer;font-size:1.05rem;display:grid;place-items:center;transition:background .35s,color .35s,border-color .35s}
+  .c7-arr:hover,.c7-arr:focus-visible{background:var(--leaf);border-color:var(--leaf);color:var(--ivory)}
+  .c7-arr[disabled]{opacity:.35;cursor:default}
+  .c7-arr[disabled]:hover{background:var(--paper);color:var(--ink);border-color:var(--hair-strong)}
+  @media(max-width:400px){.c7-dot{width:32px}.c7-arrows{gap:.4rem}.c7-arr{width:44px;height:44px}}
+  /* desktop: an even 3 × 2 grid that rises card by card */
+  @media(min-width:900px){
+    .c7-trk{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1rem,2vw,1.6rem);width:var(--wrap);margin-inline:auto;padding:0;overflow:visible}
+    .c7-pn{flex:none}
+    .c7-ctl{display:none}
+    .c7-trk.fade{opacity:1;transform:none}
+    .c7-trk.fade .c7-pn{opacity:0;transform:translateY(28px);transition:opacity .7s ease calc(var(--i) * .08s),transform .95s var(--ease) calc(var(--i) * .08s),box-shadow .45s var(--ease),border-color .45s var(--ease)}
+    .c7-trk.fade.in .c7-pn{opacity:1;transform:none}
+  }
+  .c7-how{margin-top:clamp(4.5rem,9vw,7.5rem);display:grid;grid-template-columns:minmax(240px,380px) 1fr;gap:clamp(2.4rem,6vw,6rem);align-items:start}
+  .c7-how-l{position:sticky;top:110px}
+  .c7-how-l .kick{margin-bottom:1.2rem}
+  .c7-how-h{font-size:clamp(2rem,3.6vw,3.2rem);font-weight:300;margin:0 0 1.8rem;max-width:9em}
+  .c7-how-cta{display:flex;align-items:center;gap:1rem 1.8rem;flex-wrap:wrap}
+  .c7-rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair)}
+  .c7-rows li{display:grid;grid-template-columns:2.6em 1fr;gap:.4rem 1rem;padding:clamp(1.3rem,2.4vw,1.9rem) 0;border-bottom:1px solid var(--hair)}
+  .c7-row-n{font-family:var(--display);font-style:italic;font-size:1.12rem;color:var(--brass);padding-top:.2em}
+  .c7-rows h3{font-size:clamp(1.3rem,1.9vw,1.62rem);font-weight:350;color:var(--ink);margin-bottom:.4rem}
+  .c7-rows p{font-size:.98rem;max-width:44em;color:var(--ink-soft)}
+  @media(max-width:899px){.c7-how{grid-template-columns:1fr;gap:2rem}.c7-how-l{position:static}}
+
+  /* ===== IV · voices ===== */
+  .c7-voices{position:relative;z-index:1;background:var(--ivory);padding-block:var(--pad) calc(var(--pad) + 2rem)}
+  .c7-vh{text-align:center;margin-bottom:clamp(2.6rem,5vw,4.2rem)}
+  .c7-vh .chap-rn{justify-content:center}
+  .c7-vh .chap-rn::before{content:"";width:clamp(44px,5vw,68px);height:1px;background:var(--hair-strong)}
+  .c7-vh .disp{font-size:clamp(2.2rem,4.6vw,4.2rem);font-weight:300}
+  .c7-qs{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.4rem,3vw,2.8rem)}
+  .c7-q{position:relative;margin:0;padding:clamp(1.8rem,2.8vw,2.4rem) 0 0;border-top:1px solid var(--hair-strong);display:flex;flex-direction:column}
+  .c7-q-m{position:absolute;top:.5rem;left:-.1rem;font-family:var(--display);font-size:4.4rem;line-height:1;color:var(--sage)}
+  .c7-q blockquote{margin:1.7rem 0 1.2rem;flex:1}
+  .c7-q blockquote p{font-family:var(--display);font-style:italic;font-weight:300;font-size:clamp(1.16rem,1.55vw,1.36rem);line-height:1.5;color:var(--ink);font-variation-settings:'opsz' 48,'SOFT' 60}
+  .c7-q figcaption .caps-xs{color:var(--brass)}
+  .c7-q-note{margin-top:2.2rem;text-align:center;font-size:.85rem;font-style:italic;color:var(--ink-soft)}
+  @media(max-width:899px){.c7-qs{grid-template-columns:1fr;gap:2.2rem}}
+
+  /* ===== the kitchen film, pinned ===== */
+  .c7-band{position:sticky;top:0;z-index:0;height:100vh;height:100svh;overflow:hidden;background:var(--leaf-deep)}
+  .c7-band.is-covered{visibility:hidden}
+  .c7-band video{width:100%;height:100%;object-fit:cover;object-position:50% 50%;filter:saturate(.95)}
+  @media(max-aspect-ratio:3/4){.c7-band video{object-position:30% 50%}}
+  .c7-band::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(44,48,44,.16),rgba(44,48,44,0) 40%,rgba(18,46,31,.42)),radial-gradient(100% 80% at 50% 45%,rgba(44,48,44,0) 55%,rgba(44,48,44,.3) 100%)}
+  .c7-band-cap{position:absolute;left:0;right:0;bottom:clamp(96px,15vh,132px);z-index:2;text-align:center;padding:0 20px;font-family:var(--utility);font-weight:600;font-size:.6rem;letter-spacing:.3em;text-indent:.3em;text-transform:uppercase;color:var(--ivory);text-shadow:0 1px 18px rgba(18,46,31,.6)}
+  .c7-band-cap b{color:var(--gold-lt);font-weight:600}
+
+  /* ===== V · begin · her deep-green banner ===== */
+  .c7-beg{text-align:center;padding-block:clamp(.5rem,2vh,1.5rem);position:relative}
+  .c7-seal{position:relative;display:grid;place-items:center;width:84px;aspect-ratio:1;margin:0 auto 1.6rem}
+  .c7-seal path{stroke:var(--gold-lt);stroke-width:1;stroke-linecap:round}
+  .c7-seal :global(.mark){width:48%;height:auto;color:var(--gold-lt);transform:translateY(-4%)}
+  .c7-beg .caps-xs{display:block;color:var(--gold-lt);margin-bottom:1.3rem}
+  .c7-beg-h{font-size:clamp(2.2rem,5vw,4.4rem);line-height:1.08;font-weight:300;color:var(--sage);margin:0 0 1.4rem;font-variation-settings:'opsz' 144,'SOFT' 60}
+  .c7-beg-b{font-family:var(--display);font-style:italic;font-size:clamp(1.08rem,1.6vw,1.32rem);line-height:1.6;color:rgba(252,251,248,.9);max-width:30em;margin:0 auto;font-variation-settings:'opsz' 48,'SOFT' 60}
+  .c7-pts{list-style:none;display:flex;justify-content:center;gap:.8rem 2.6rem;flex-wrap:wrap;margin:clamp(1.8rem,3vh,2.4rem) 0 0;padding:0;font-family:var(--utility);font-weight:600;font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-lt)}
+  .c7-pts li{display:inline-flex;align-items:center;gap:.8rem}
+  .c7-pts li::before{content:"";width:6px;height:6px;transform:rotate(45deg);background:var(--gold-lt)}
+  .c7-beg-cta{display:flex;justify-content:center;align-items:center;gap:1.2rem 2.2rem;flex-wrap:wrap;margin-top:clamp(2rem,4vh,3rem)}
+  .c7-beg-cta .tlk{max-width:100%;overflow-wrap:anywhere;line-height:1.6}
+
+  /* ===== after · Magnolia Moments + Join our team ===== */
+  .c7-mom{padding-top:var(--pad)}
+  .c7-mom-h{margin-bottom:clamp(2rem,3.6vw,3rem)}
+  .c7-mom-h .caps{display:block;margin-bottom:.6rem}
+  .c7-mom-h .disp{font-size:clamp(2rem,3.6vw,3.2rem);font-weight:300}
+  .c7-mom-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1rem,2vw,1.6rem)}
+  .c7-mom-g>div{display:flex}
+  .c7-mom-g>div>:global(*){flex:1}
+  .c7-all{display:flex;flex-direction:column;justify-content:space-between;gap:2rem;padding:clamp(1.6rem,2.6vw,2.2rem);background:var(--sage-band);color:var(--ink);border:1px solid rgba(184,154,106,.4);border-radius:var(--r);min-height:300px;transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+  .c7-all:hover,.c7-all:focus-visible{transform:translateY(-3px);box-shadow:var(--shadow)}
+  .c7-all .caps-xs{color:var(--brass)}
+  .c7-all-t{font-family:var(--display);font-weight:300;font-size:clamp(2.4rem,4vw,3.4rem);line-height:1;color:var(--ink)}
+  @media(max-width:899px){.c7-mom-g{grid-template-columns:1fr 1fr}.c7-mom-g>div:last-child{grid-column:1/-1}.c7-all{min-height:0;flex-direction:row;align-items:center;flex-wrap:wrap}}
+  @media(max-width:599px){.c7-mom-g{grid-template-columns:1fr}}
+  .c7-join{margin-top:var(--pad);background:var(--sage-band);padding-block:clamp(60px,8vw,104px);position:relative}
+  .c7-join::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:var(--moss)}
+  .c7-join-in{display:grid;grid-template-columns:1fr minmax(240px,400px);gap:clamp(2.4rem,6vw,6rem);align-items:center}
+  .c7-join-t .caps{display:block;margin-bottom:.8rem}
+  .c7-join-t .disp{font-size:clamp(1.9rem,3.6vw,3.2rem);font-weight:300;margin-bottom:1.2rem;max-width:14em}
+  .c7-join-t>p{max-width:36em}
+  .c7-join-a{display:flex;align-items:center;gap:1.2rem 2rem;flex-wrap:wrap;margin-top:1.8rem}
+  .c7-join-a .tlk{max-width:100%;line-height:1.6}
+  .c7-join-mail{margin-top:1.4rem;font-size:.86rem;overflow-wrap:anywhere}
+  .c7-join-mail a{color:var(--brass);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--hair-strong)}
+  .c7-join-ph{aspect-ratio:1/1}
+  @media(max-width:899px){.c7-join-in{grid-template-columns:1fr}.c7-join-ph{width:min(380px,100%);order:-1}}
+
+  /* ===== reduced motion · no pinning, no easing curve, everything already in place ===== */
+  @media (prefers-reduced-motion:reduce){
+    .c7-band{position:relative;visibility:visible!important;height:70vh;height:70svh}
+    .c7-trk .c7-pn{opacity:1!important;transform:none!important}
+    .c7-prog,.c7-rail,.c7-rail a i,.c7-rail a span,.c7-pn,.c7-dot i,.c7-arr{transition:none}
+    .c7-rail a span{opacity:1;transform:none}
+    .c7-team-in{transform:none!important}
+  }
+</style>
+
+<script>
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const small = matchMedia('(max-width:640px)');
+  const pins = Array.from(document.querySelectorAll<HTMLElement>('[data-pin]'));
+  const curves = Array.from(document.querySelectorAll<HTMLElement>('[data-curve]'));
+  const prog = document.getElementById('c7Prog');
+  const rail = document.getElementById('c7Rail');
+  // the next real element after a pinned surface (a component's <script> may sit between)
+  const after = (el: HTMLElement) => { let n = el.nextElementSibling; while (n && (n.tagName === 'SCRIPT' || n.tagName === 'STYLE')) n = n.nextElementSibling; return n as HTMLElement | null; };
+
+  let ticking = false;
+  const frame = () => {
+    ticking = false;
+    const y = scrollY, vh = innerHeight;
+    if (prog) { const max = document.documentElement.scrollHeight - vh; prog.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`; }
+    if (rail) { const foot = document.querySelector('.foot'); const fTop = foot ? foot.getBoundingClientRect().top : Infinity; rail.classList.toggle('on', y > vh * 0.6 && fTop > vh * 0.7); }
+    if (reduced) return;
+    // a pinned film pauses and hides once the next chapter fully covers it
+    pins.forEach((pin) => {
+      const next = after(pin);
+      const covered = !!next && next.getBoundingClientRect().top <= 0;
+      if (pin.classList.contains('is-covered') === covered) return;
+      pin.classList.toggle('is-covered', covered);
+      const v = pin.querySelector('video');
+      if (v) { if (covered) v.pause(); else if (v.currentSrc) v.play().catch(() => {}); }
+    });
+    // her curved band: deep as a chapter enters, easing flatter as it rises into place
+    const deep = small.matches ? 34 : 70, flat = small.matches ? 16 : 26;
+    curves.forEach((c) => {
+      const t = c.getBoundingClientRect().top;
+      if (t > vh + 80 || t < -vh) return;
+      const p = Math.min(1, Math.max(0, 1 - t / vh));
+      c.style.setProperty('--cv', `${(deep - (deep - flat) * p).toFixed(1)}px`);
+    });
+  };
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }, { passive: true });
+  addEventListener('resize', frame);
+  frame();
+
+  // chapter rail: whichever chapter crosses the upper part of the screen is current
+  if (rail && 'IntersectionObserver' in window) {
+    const marks = Array.from(document.querySelectorAll<HTMLElement>('[data-chapter]'));
+    const cio = new IntersectionObserver((es) => {
+      es.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const el = e.target as HTMLElement;
+        rail.dataset.tone = el.dataset.tone ?? 'light';
+        rail.querySelectorAll<HTMLElement>('[data-rail]').forEach((a) => { if (a.dataset.rail === el.dataset.chapter) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
+      });
+    }, { rootMargin: '-14% 0px -80% 0px', threshold: 0 });
+    marks.forEach((m) => cio.observe(m));
+  }
+
+  // the care sequence (phones and tablets): prev / next / dots over a native scroll-snap track
+  const trk = document.getElementById('c7Trk');
+  if (trk) {
+    const panels = Array.from(trk.children) as HTMLElement[];
+    const dots = Array.from(document.querySelectorAll<HTMLButtonElement>('.c7-dot'));
+    const prev = document.getElementById('c7Prev') as HTMLButtonElement | null;
+    const next = document.getElementById('c7Next') as HTMLButtonElement | null;
+    const pad = () => parseFloat(getComputedStyle(trk).paddingLeft) || 0;
+    let cur = 0;
+    const paint = () => {
+      dots.forEach((d, i) => { if (i === cur) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current'); });
+      if (prev) prev.disabled = cur === 0;
+      if (next) next.disabled = cur === panels.length - 1;
+    };
+    const go = (n: number) => {
+      cur = Math.max(0, Math.min(panels.length - 1, n));
+      trk.scrollTo({ left: panels[cur].offsetLeft - pad(), behavior: reduced ? 'auto' : 'smooth' });
+      paint();
+    };
+    prev?.addEventListener('click', () => go(cur - 1));
+    next?.addEventListener('click', () => go(cur + 1));
+    dots.forEach((d) => d.addEventListener('click', () => go(parseInt(d.dataset.go ?? '0', 10))));
+    let t: ReturnType<typeof setTimeout> | undefined;
+    trk.addEventListener('scroll', () => {
+      clearTimeout(t);
+      t = setTimeout(() => {
+        const x = trk.scrollLeft + pad();
+        let best = 0, dist = Infinity;
+        panels.forEach((p, i) => { const d = Math.abs(p.offsetLeft - x); if (d < dist) { dist = d; best = i; } });
+        if (best !== cur) { cur = best; paint(); }
+      }, 80);
+    }, { passive: true });
+    // the track is only a scroller below 900px; on the desktop grid it is not a tab stop
+    const wide = matchMedia('(min-width:900px)');
+    const setTab = () => { trk.tabIndex = wide.matches ? -1 : 0; };
+    wide.addEventListener('change', setTab);
+    setTab();
+    paint();
+  }
+</script>
