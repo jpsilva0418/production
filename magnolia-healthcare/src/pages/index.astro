@@ -1,195 +1,178 @@
 ---
-/** HOME — the conversion surface. Narrative: cinematic prologue → "a family, not a
- *  service" (value proposition + values) → the four services → cinema band → why
- *  Magnolia (trust ledger, all from existing claims) → mission chapter → caregivers →
- *  community → consultation finale → latest articles → grand footer. Every claim is
- *  traceable to Magnolia's current site (docs/00-assessment.md). */
+/** HOME — the conversion surface. Narrative: cinematic prologue (the current site's own
+ *  headline) → Chapter I · the mission (verbatim) → Specialized care (the six cards on
+ *  the current site) → cinema band (a supplied clip) → Chapter II · How we help (the
+ *  four cards on the current site) → What our clients say (the three testimonials the
+ *  current site carries) → consultation finale (the supplied banner copy) → Magnolia
+ *  Moments → grand footer. Every claim is traceable to Magnolia Healthcare, Inc.'s
+ *  own supplied materials (docs/00-assessment.md). */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Prologue from '../components/Prologue.astro';
 import Plate from '../components/Plate.astro';
 import BlogCard from '../components/BlogCard.astro';
 import { getCollection } from 'astro:content';
-import { getPublishedPosts } from '../lib/blog';
-import { SITE } from '../consts';
+import { getPublishedPosts, BLOG_NAME } from '../lib/blog';
+import { SITE, TESTIMONIALS } from '../consts';
 
-const services = (await getCollection('services')).filter((s) => !s.data.draft).sort((a, b) => a.data.order - b.data.order);
+const all = (await getCollection('services')).filter((s) => !s.data.draft).sort((a, b) => a.data.order - b.data.order);
+const specialized = all.filter((s) => s.data.kind === 'specialized');
+const support = all.filter((s) => s.data.kind === 'support');
 const posts = (await getPublishedPosts()).slice(0, 3);
+const numerals = ['i.', 'ii.', 'iii.', 'iv.', 'v.', 'vi.'];
 ---
 <BaseLayout
   headerLight
   headerPrologue
-  title="Non-Medical Home Care in Arvada & the Denver Metro"
+  title="Home Care Agency in Massachusetts — Because Every Life Matters"
   description={SITE.description}
   path="/">
 
   <!-- ① CINEMATIC PROLOGUE -->
   <Prologue />
 
-  <!-- ② CHAPTER I · A FAMILY, NOT A SERVICE -->
-  <section class="sec lit" id="family">
+  <!-- ② CHAPTER I · OUR MISSION (verbatim from the current site) -->
+  <section class="sec lit" id="mission">
     <i class="lx-shaft" aria-hidden="true"></i>
     <div class="wrap chap">
       <div class="chap-l rv">
         <p class="chap-rn">Chapter i.</p>
-        <h2 class="disp chap-t">More than a provider.<br /><span class="ital">A family.</span></h2>
-        <p class="chap-line">Our main goal is to make daily life easier and happier &mdash; in the comfort of your own home.</p>
+        <h2 class="disp chap-t">Our <span class="ital">mission.</span></h2>
+        <p class="chap-line">Dedicated professionals at your service.</p>
         <a class="tlk" href={SITE.links.mission}>Read our mission</a>
       </div>
       <div class="fam-r">
         <div class="fam-copy">
-          <p class="lede rv">At Magnolia Healthcare, we&rsquo;re more than just a service provider &mdash; we&rsquo;re a family.</p>
+          <p class="lede rv">Our mission is to provide a higher standard of care &mdash; one built on compassion, excellence, and respect for every individual.</p>
           <div class="fam-body rv" style="--d:.08s">
-            <p>Magnolia Healthcare is a locally owned, Colorado-licensed provider of non-medical home care. We help older adults, people with disabilities, and families feel supported at home through personal care, homemaking, companionship, and individualized dementia support.</p>
-            <p>Our main goal is to make daily life easier and happier for elderly, blind, and disabled individuals in the comfort of their own homes &mdash; providing a helping hand so every client can maintain their independence.</p>
+            <p>We believe caring for someone means seeing the person beyond their needs and creating an environment where they feel safe, valued, and understood. Our caregivers are thoughtfully selected, trained, and committed to bringing warmth, dignity, and genuine human connection into every home.</p>
+            <p>We are committed to delivering exceptional care, maintaining the highest standards, and being a trusted partner to every client and family we serve.</p>
           </div>
           <ul class="values rv" style="--d:.14s" data-stag=".06">
-            <li class="fade"><span class="v-n">i.</span><span class="v-t">Respect &amp; Dignity</span><span class="v-d">Clients are unique individuals who deserve to be treated with respect and dignity.</span></li>
-            <li class="fade"><span class="v-n">ii.</span><span class="v-t">Compassion &amp; Empathy</span><span class="v-d">We understand the emotional and physical challenges clients face, and support them with kindness and understanding.</span></li>
-            <li class="fade"><span class="v-n">iii.</span><span class="v-t">Honesty &amp; Integrity</span><span class="v-d">Transparency, and trust built with clients, employees, and the wider community.</span></li>
+            <li class="fade"><span class="v-n">i.</span><span class="v-t">Compassion</span><span class="v-d">Seeing the person beyond their needs.</span></li>
+            <li class="fade"><span class="v-n">ii.</span><span class="v-t">Excellence</span><span class="v-d">Delivering exceptional care and maintaining the highest standards.</span></li>
+            <li class="fade"><span class="v-n">iii.</span><span class="v-t">Respect</span><span class="v-d">Warmth, dignity, and genuine human connection in every home.</span></li>
           </ul>
         </div>
         <figure class="fam-fig">
-          <div class="ph ph--framed rv-im"><Plate id="supplied-team" alt="Four Magnolia Healthcare caregivers in branded scrubs, smiling together" class="lv lv--rise" sizes="(max-width:899px) 90vw, 520px" widths={[480, 640]} /><i class="grain" aria-hidden="true"></i></div>
+          <div class="ph ph--framed rv-im"><Plate id="supplied-team-5" alt="The Magnolia Healthcare team in front of the Magnolia Healthcare sign" class="lv lv--rise" sizes="(max-width:899px) 90vw, 520px" widths={[480, 652]} /><i class="grain" aria-hidden="true"></i></div>
           <figcaption class="fade" style="--d:.18s">The Magnolia team &middot; supplied imagery</figcaption>
         </figure>
       </div>
     </div>
   </section>
 
-  <div class="chapslate chapslate--linen fade" role="presentation"><span class="cs-t">Our Services</span></div>
+  <div class="chapslate chapslate--linen fade" role="presentation"><span class="cs-t">Why choose us?</span></div>
 
-  <!-- ③ THE SERVICES -->
+  <!-- ③ SPECIALIZED CARE (the six cards on the current site) -->
   <section class="sec sec--linen ghostwrap" id="services">
-    <span class="ghost-w" aria-hidden="true">at home</span>
+    <span class="ghost-w" aria-hidden="true">care</span>
     <div class="wrap" style="position:relative;z-index:1">
       <div class="svc-head">
         <div>
-          <p class="kick" style="margin-bottom:1.4rem">Four kinds of care</p>
-          <h2 class="disp rv">Help with the day,<br />the way you want it.</h2>
+          <p class="kick" style="margin-bottom:1.4rem">Specialized care</p>
+          <h2 class="disp rv">Care shaped around<br />the person.</h2>
         </div>
-        <p class="ital svc-head-line rv" style="--d:.08s">Every care plan is built around the client&rsquo;s routines, preferences, culture, and goals for independence.</p>
+        <p class="ital svc-head-line rv" style="--d:.08s">Six kinds of specialized support, each delivered at home with compassion, excellence, and respect.</p>
       </div>
       <div class="svc-grid" data-stag=".07">
-        {services.map((s) => (
-          <a class="svc card rv" href={`/services/${s.id}`} aria-label={`${s.data.title} — learn about this service`}>
+        {specialized.map((s) => (
+          <a class="svc card rv" href={`/services#${s.id}`} aria-label={`${s.data.title} — learn about this care`}>
             <div class="ph svc-ph"><Plate id={s.data.plate} alt="" sizes="(max-width:599px) 92vw, (max-width:1023px) 46vw, 300px" widths={[400, 640, 900]} /></div>
             <div class="svc-body">
               <span class="caps-xs">No. {s.data.numeral}</span>
               <h3>{s.data.title}</h3>
-              <p>{s.data.short}</p>
+              <p>{s.data.summary}</p>
               <span class="arrow-link">Learn more <span class="arr" aria-hidden="true">&rarr;</span></span>
             </div>
           </a>
         ))}
       </div>
       <div class="svc-cta fade">
-        <a class="btn btn--solid" href={SITE.links.consultCare}>Request a consultation</a>
-        <a class="tlk" href="/services">All services, in detail</a>
+        <a class="btn btn--solid" href={SITE.links.consultCare}>Free consultation</a>
+        <a class="tlk" href={SITE.links.services}>All of our care, in detail</a>
       </div>
     </div>
   </section>
 
-  <!-- ④ CINEMA BAND -->
+  <!-- ④ CINEMA BAND — a supplied clip -->
   <div class="cine">
     <div class="wrap">
-      <div class="cine-fr"><Plate id="cine" alt="" class="lv" sizes="100vw" widths={[768, 1280, 1920, 2400]} /><i class="grain" aria-hidden="true"></i><i class="lx-warm" aria-hidden="true"></i></div>
-      <p class="cine-cap">Care, at home &mdash; Arvada &amp; the Denver Metro</p>
+      <div class="cine-fr">
+        <video data-film muted loop playsinline preload="none" poster="/media/cine-poster.jpg" disablepictureinpicture tabindex="-1" aria-hidden="true">
+          <source data-src="/media/cine-film.webm" type="video/webm" />
+          <source data-src="/media/cine-film.mp4" type="video/mp4" />
+        </video>
+        <i class="grain" aria-hidden="true"></i><i class="lx-warm" aria-hidden="true"></i>
+      </div>
+      <p class="cine-cap">Care, at home &mdash; {SITE.serviceArea.label}</p>
     </div>
   </div>
 
-  <!-- ⑤ CHAPTER II · WHY MAGNOLIA (trust ledger — existing claims only) -->
-  <section class="sec sec--dk lit" id="why">
+  <!-- ⑤ CHAPTER II · HOW WE HELP (the four cards on the current site) -->
+  <section class="sec sec--dk lit" id="how">
     <i class="lx-dusk" aria-hidden="true"></i>
     <div class="wrap chap" style="position:relative;z-index:1">
       <div class="chap-l rv">
         <p class="chap-rn">Chapter ii.</p>
-        <h2 class="disp chap-t">Why families<br />choose Magnolia.</h2>
-        <p class="chap-line">Locally owned. Colorado-licensed. Built on respect, compassion and honesty since 2023.</p>
-        <a class="tlk tlk--lt" href={SITE.links.team}>Meet our caregivers</a>
+        <h2 class="disp chap-t">How we<br />help.</h2>
+        <p class="chap-line">Reliable support and compassionate care, around the clock.</p>
+        <a class="tlk tlk--lt" href={SITE.links.services}>Our services</a>
       </div>
       <div>
-        <p class="why-quote rv">&ldquo;A helping hand, so every client can maintain their independence at home.&rdquo;</p>
+        <p class="why-quote rv">&ldquo;Warmth, dignity, and genuine human connection in every home.&rdquo;</p>
         <ul class="ledger" data-stag=".06">
-          <li class="fade"><span class="l-n">i.</span><div><span class="l-t">Carefully selected caregivers</span><span class="l-d">Each member of our team is carefully selected and goes through extensive training to meet the unique needs of our clients.</span></div></li>
-          <li class="fade"><span class="l-n">ii.</span><div><span class="l-t">State &amp; federal background checks</span><span class="l-d">Our caregivers have undergone thorough state and federal background checks for the safety and well-being of every client.</span></div></li>
-          <li class="fade"><span class="l-n">iii.</span><div><span class="l-t">Ongoing training &amp; development</span><span class="l-d">Staff receive ongoing training and development so they have the knowledge and skills to provide the highest level of care.</span></div></li>
-          <li class="fade"><span class="l-n">iv.</span><div><span class="l-t">Individualized care plans</span><span class="l-d">Every plan is built around the client&rsquo;s routines, preferences, culture, and goals for independence.</span></div></li>
-          <li class="fade"><span class="l-n">v.</span><div><span class="l-t">Locally owned, Colorado-licensed</span><span class="l-d">Founded in {SITE.founded} by {SITE.founder} and based in {SITE.address.locality}, serving the Denver Metro.</span></div></li>
+          {support.map((s, i) => (
+            <li class="fade"><span class="l-n">{numerals[i]}</span><div><span class="l-t">{s.data.title}</span><span class="l-d">{s.data.summary}</span></div></li>
+          ))}
         </ul>
         <div class="why-cta fade">
-          <a class="btn btn--ivory" href={SITE.links.consultCare}>Request a consultation</a>
-          <a class="tlk tlk--lt" href={`tel:${SITE.phoneE164}`}>Or call {SITE.phone}</a>
+          <a class="btn btn--ivory" href={SITE.links.consultCare}>Free consultation</a>
+          <a class="tlk tlk--lt" href={`mailto:${SITE.email}`}>Or email {SITE.email}</a>
         </div>
       </div>
     </div>
   </section>
 
-  <div class="chapslate fade" role="presentation"><span class="cs-t">Our Mission</span></div>
+  <div class="chapslate fade" role="presentation"><span class="cs-t">What our clients say</span></div>
 
-  <!-- ⑥ CHAPTER III · THE MISSION (editorial gateway to /mission) -->
-  <section class="sec" id="mission">
-    <div class="wrap mis-grid">
-      <figure class="mis-fig">
-        <a class="mis-link" href={SITE.links.mission} aria-label="Read the Magnolia mission">
-          <div class="ph ph--framed rv-im mis-ph"><Plate id="founder" alt="" sizes="(max-width:899px) 86vw, 440px" widths={[480, 720, 960]} /><i class="grain" aria-hidden="true"></i></div>
-        </a>
-        <figcaption class="fade" style="--d:.16s">{SITE.founder} &middot; Founder &middot; <em>portrait to follow</em></figcaption>
-      </figure>
-      <div class="mis-copy">
-        <p class="caps rv">The mission</p>
-        <h2 class="disp rv" style="--d:.06s">Exceptional non-medical care, <span class="ital">with heart.</span></h2>
-        <p class="lede rv" style="--d:.1s">Founded by Madina Sorensen, Magnolia Healthcare&rsquo;s mission is to provide exceptional non-medical personal care and home services to its clients.</p>
-        <p class="rv" style="--d:.14s">Madina started Magnolia with a genuine desire to make a difference in the lives of individuals who require non-medical home care, drawing on a background in healthcare and special education for those with unique needs. Since 2023 the agency has grown steadily, expanding services and reaching more clients in need.</p>
-        <a class="arrow-link fade" style="--d:.2s" href={SITE.links.mission}>Our mission &amp; values <span class="arr" aria-hidden="true">&rarr;</span></a>
+  <!-- ⑥ TESTIMONIALS (the current site's carousel, as a quiet triptych) -->
+  <section class="sec sec--tight" id="voices">
+    <div class="wrap">
+      <div class="tst-grid" data-stag=".08">
+        {TESTIMONIALS.map((t) => (
+          <figure class="tst card rv">
+            <span class="tst-q" aria-hidden="true">&ldquo;</span>
+            <blockquote><p>{t.quote}</p></blockquote>
+            <figcaption><span class="caps-xs">{t.name}</span></figcaption>
+          </figure>
+        ))}
       </div>
+      <p class="tst-note fade">Client words as published on Magnolia&rsquo;s current website.</p>
     </div>
   </section>
 
-  <!-- ⑦ THE CAREGIVERS + COMMUNITY — the human element -->
-  <section class="sec sec--blush sec--tight" id="people">
-    <div class="wrap two-up" data-stag=".08">
-      <article class="panel card rv">
-        <span class="caps-xs">Our caregivers</span>
-        <h3>Selected with care. Trained to meet unique needs.</h3>
-        <p>Our team of dedicated caregivers is committed to providing the highest quality home care. Each member is carefully selected, extensively trained, and has undergone thorough state and federal background checks.</p>
-        <div class="panel-act">
-          <a class="tlk" href={SITE.links.team}>Meet the team</a>
-          <a class="tlk" href={SITE.links.careers}>Join our team</a>
-        </div>
-      </article>
-      <article class="panel card rv">
-        <span class="caps-xs">Community</span>
-        <h3>Connection, relationships, and mutual support.</h3>
-        <p>Magnolia actively engages with and supports the local community through events that promote social connection, relationships, and support networks &mdash; and welcomes everyone to the Magnolia Healthcare Family.</p>
-        <div class="panel-act">
-          <a class="tlk" href={SITE.links.community}>Our community</a>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <!-- ⑧ FINALE · THE CONSULTATION -->
+  <!-- ⑦ FINALE · THE CONSULTATION (the supplied banner copy) -->
   <section class="finale lit">
     <div class="finale-media" aria-hidden="true"><Plate id="cine-light" alt="" class="lv lv--breathe" sizes="100vw" widths={[768, 1280, 1920, 2400]} /></div>
     <i class="lx-dusk" aria-hidden="true"></i>
     <div class="finale-c">
-      <span class="caps-xs fade">The next step</span>
+      <span class="caps-xs fade">Care starts here</span>
       <h2 class="rv">Let&rsquo;s talk about the care your family needs.</h2>
-      <p class="finale-line fade" style="--d:.06s">A conversation, not a sales call. Tell us a little about who needs support and we&rsquo;ll take it from there.</p>
+      <p class="finale-line fade" style="--d:.06s">Tell us a little about your loved one. We&rsquo;ll reach out to set up a free consultation and find the caregiver who fits them best.</p>
       <div class="finale-cta fade" style="--d:.1s">
-        <a class="btn btn--ivory" href={SITE.links.consultCare}>Request a consultation</a>
-        <a class="tlk tlk--lt" href={`tel:${SITE.phoneE164}`}>Call {SITE.phone}</a>
+        <a class="btn btn--ivory" href={SITE.links.consultCare}>Free consultation</a>
+        <a class="tlk tlk--lt" href={`mailto:${SITE.email}`}>Email {SITE.email}</a>
       </div>
     </div>
   </section>
 
-  <!-- ⑨ FROM THE BLOG -->
+  <!-- ⑧ MAGNOLIA MOMENTS -->
   {posts.length > 0 && (
     <section class="sec sec--tight" id="journal">
       <div class="wrap">
         <div class="jr-head">
-          <div><p class="caps rv">From the blog</p><h2 class="disp rv" style="--d:.06s">Notes from the Magnolia team.</h2></div>
-          <a class="tlk fade" href="/blog">All articles</a>
+          <div><p class="caps rv">The blog</p><h2 class="disp rv" style="--d:.06s">{BLOG_NAME}</h2></div>
+          <a class="tlk fade" href={SITE.links.blog}>All posts</a>
         </div>
         <div class="jr-grid" data-stag=".07">
           {posts.map((p) => <div class="rv"><BlogCard post={p} headingLevel="h3" /></div>)}
@@ -231,6 +214,18 @@ const posts = (await getPublishedPosts()).slice(0, 3);
   .svc-body .arrow-link{margin-top:.6rem;font-size:.98rem}
   .svc-cta{margin-top:clamp(2.6rem,4.5vw,3.8rem);display:flex;align-items:center;gap:2rem;flex-wrap:wrap}
   @media(max-width:1023px){.svc-grid{grid-template-columns:1fr 1fr}}
+  .svc-grid{grid-template-columns:repeat(3,1fr)}
+  .cine-fr video{width:100%;height:100%;object-fit:cover}
+
+  /* TESTIMONIALS */
+  .tst-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2vw,1.6rem)}
+  .tst{position:relative;margin:0;padding:clamp(1.8rem,3vw,2.6rem) clamp(1.5rem,2.6vw,2.2rem) clamp(1.6rem,2.6vw,2.2rem);display:flex;flex-direction:column}
+  .tst-q{position:absolute;top:.4rem;left:1.1rem;font-family:var(--display);font-size:4.2rem;line-height:1;color:var(--petal-deep);opacity:.55}
+  .tst blockquote{margin:0 0 1.4rem;flex:1}
+  .tst blockquote p{font-family:var(--display);font-style:italic;font-size:clamp(1.08rem,1.5vw,1.26rem);line-height:1.5;color:var(--ink);font-variation-settings:'opsz' 48,'SOFT' 60}
+  .tst figcaption .caps-xs{color:var(--brass)}
+  .tst-note{margin-top:1.6rem;text-align:center;font-size:.82rem;color:var(--ink-soft);font-style:italic}
+  @media(max-width:899px){.tst-grid{grid-template-columns:1fr}}
   @media(max-width:599px){.svc-grid{grid-template-columns:1fr}}
 
   /* WHY */

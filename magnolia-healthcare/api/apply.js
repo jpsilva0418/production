@@ -17,6 +17,10 @@ const SECTIONS = [
   ['Applicant certification', [['certify', 'Certification acknowledged', 10], ['signature', 'Applicant signature (typed)', 120], ['signDate', 'Date', 40]]],
 ];
 const FIELDS = SECTIONS.flatMap(([, f]) => f);
+// The statement the applicant agrees to — reproduced verbatim from the paper form so the
+// office record says exactly what was certified.
+const STATEMENT = 'I certify that the information provided in this application is true and complete to the best of my knowledge. I understand that this application is part of the initial screening process and does not by itself create a service agreement or guarantee an assignment.';
+const OFFICE_TEXT = 'FOR MAGNOLIA HEALTHCARE INC. USE ONLY\nDate received: ____________   Reviewed by: ____________\nApplication status: [ ] Approved to proceed   [ ] Not selected   [ ] Follow-up needed';
 const clean = (v, max) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
 const esc = (s) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c] ?? c);
 const recent = new Map();
@@ -41,7 +45,8 @@ export default async function handler(req, res) {
   const record = {};
   for (const [key, , cap] of FIELDS) record[key] = clean(body[key], cap);
   if (!record.fullName || !record.email || !record.phone) return res.status(422).send(JSON.stringify({ ok: false, reason: 'missing_contact' }));
-  if (record.certify !== 'Yes' || !record.signature) return res.status(422).send(JSON.stringify({ ok: false, reason: 'missing_certification' }));
+  if (!['Yes', 'No'].includes(record.hasCert) || !['Yes', 'No'].includes(record.hasExperience)) return res.status(422).send(JSON.stringify({ ok: false, reason: 'missing_gate' }));
+  if (record.certify !== 'Yes' || !record.signature || !record.signDate) return res.status(422).send(JSON.stringify({ ok: false, reason: 'missing_certification' }));
 
   const { RESEND_API_KEY, INQUIRY_TO_EMAIL, INQUIRY_FROM_EMAIL } = process.env;
   if (!RESEND_API_KEY || !INQUIRY_TO_EMAIL) {
@@ -52,16 +57,27 @@ export default async function handler(req, res) {
   const html = `<h2 style="font-family:Georgia,serif">Caregiver application — Magnolia Healthcare website</h2>` +
     SECTIONS.map(([title, fields]) => {
       const rows = fields.filter(([k]) => record[k]).map(([k, label]) => cell(label, record[k])).join('');
-      return rows ? `<h3 style="font-family:Georgia,serif;margin-top:22px">${esc(title)}</h3><table cellpadding="6" style="border-collapse:collapse;font-family:sans-serif;font-size:14px;width:100%">${rows}</table>` : '';
+      const statement = title === 'Applicant certification' ? `<p style="font-family:Georgia,serif;font-size:14px;font-style:italic">“${esc(STATEMENT)}”</p>` : '';
+      return rows ? `<h3 style="font-family:Georgia,serif;margin-top:22px">${esc(title)}</h3>${statement}<table cellpadding="6" style="border-collapse:collapse;font-family:sans-serif;font-size:14px;width:100%">${rows}</table>` : '';
     }).join('') +
     `<h3 style="font-family:Georgia,serif;margin-top:28px;border-top:1px solid #ccc;padding-top:12px">For Magnolia Healthcare Inc. use only</h3>` +
     `<p style="font-family:sans-serif;font-size:14px">Date received: ____________ &nbsp; Reviewed by: ____________<br>Application status: ☐ Approved to proceed &nbsp; ☐ Not selected &nbsp; ☐ Follow-up needed</p>`;
-  const text = SECTIONS.map(([title, fields]) => { const rows = fields.filter(([k]) => record[k]).map(([k, label]) => `${label}: ${record[k]}`); return rows.length ? `${title.toUpperCase()}\n${rows.join('\n')}` : ''; }).filter(Boolean).join('\n\n');
-  const r = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: { authorization: `Bearer ${RESEND_API_KEY}`, 'content-type': 'application/json' },
-    body: JSON.stringify({ from: INQUIRY_FROM_EMAIL || 'Magnolia Healthcare Website <onboarding@resend.dev>', to: INQUIRY_TO_EMAIL, reply_to: record.email, subject: `Caregiver application — ${record.fullName}`, html, text }),
-  });
-  if (!r.ok) { console.error('[apply] Resend rejected the email', r.status, await r.text()); return res.status(502).send(JSON.stringify({ ok: false, reason: 'delivery_failed' })); }
+  const text = SECTIONS.map(([title, fields]) => {
+    const rows = fields.filter(([k]) => record[k]).map(([k, label]) => `${label}: ${record[k]}`);
+    if (!rows.length) return '';
+    return `${title.toUpperCase()}\n${title === 'Applicant certification' ? `"${STATEMENT}"\n` : ''}${rows.join('\n')}`;
+  }).filter(Boolean).join('\n\n') + `\n\n${OFFICE_TEXT}`;
+  try {
+    const r = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { authorization: `Bearer ${RESEND_API_KEY}`, 'content-type': 'application/json' },
+      body: JSON.stringify({ from: INQUIRY_FROM_EMAIL || 'Magnolia Healthcare Website <onboarding@resend.dev>', to: INQUIRY_TO_EMAIL, reply_to: record.email, subject: `Caregiver application — ${record.fullName}`, html, text }),
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!r.ok) { console.error('[apply] Resend rejected the email', r.status, await r.text().catch(() => '')); return res.status(502).send(JSON.stringify({ ok: false, reason: 'delivery_failed' })); }
+  } catch (err) {
+    console.error('[apply] delivery threw', err);
+    return res.status(502).send(JSON.stringify({ ok: false, reason: 'delivery_failed' }));
+  }
   return res.status(200).send(JSON.stringify({ ok: true }));
 }

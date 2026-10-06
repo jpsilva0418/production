@@ -1,40 +1,39 @@
 ---
-/** CONTACT / CONSULTATION — the Leti Silva Beauty "velvet table" split: sticky editorial
- *  panel (ways to reach Magnolia) beside the consultation form on a raised paper stage. */
+/** CONSULTATION — the current site's "Care starts here" page (banner + form), restaged
+ *  on the Leti Silva Beauty "velvet table" split: sticky editorial panel (the banner copy
+ *  and ways to reach Magnolia) beside the consultation form on a raised paper stage. */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ConsultForm from '../components/ConsultForm.astro';
-import { SITE, fmtTime } from '../consts';
-const weekday = SITE.hours.find((h) => h.open && h.close)!;
+import { SITE, TBC } from '../consts';
 ---
 <BaseLayout
-  title="Request a Consultation"
-  description="Tell Magnolia Healthcare a little about who needs support — personal care, homemaking, companionship, or dementia support — and we’ll take it from there. Call 720-661-9498, Monday–Friday 8:30 a.m.–5:30 p.m."
-  path="/contact"
+  title="Free Consultation — Let’s Talk About the Care Your Family Needs"
+  description="Tell us a little about your loved one. We’ll reach out to set up a free consultation and find the caregiver who fits them best. Magnolia Healthcare, Inc. — anywhere in Massachusetts."
+  path="/consultation"
   headerLight>
   <section class="iq" id="iqSection" aria-label="Request a consultation">
     <div class="iq-l ghostwrap">
       <span class="ghost-w" aria-hidden="true">hello</span>
       <div class="iq-lc">
-        <p class="iq-kick fade" id="iqKick">Request a consultation</p>
-        <h1 class="disp iq-t rv">Let&rsquo;s talk.</h1>
-        <p class="iq-line rv" id="iqLine" style="--d:.08s">A conversation, not a sales call. Tell us a little about who needs support and we&rsquo;ll take it from there.</p>
+        <p class="iq-kick fade" id="iqKick">Free consultation</p>
+        <h1 class="disp iq-t rv">Let&rsquo;s talk about the care your family needs.</h1>
+        <p class="iq-line rv" id="iqLine" style="--d:.08s">Tell us a little about your loved one. We&rsquo;ll reach out to set up a free consultation and find the caregiver who fits them best.</p>
         <dl class="iq-ways rv" style="--d:.14s">
-          <div><dt>Call</dt><dd><a href={`tel:${SITE.phoneE164}`}>{SITE.phone}</a></dd></div>
           <div><dt>Email</dt><dd><a href={`mailto:${SITE.email}`}>{SITE.email}</a></dd></div>
-          <div><dt>Visit</dt><dd>{SITE.address.street}<br />{SITE.address.locality}, {SITE.address.region} {SITE.address.postalCode}</dd></div>
-          <div><dt>Hours</dt><dd>Monday&ndash;Friday, {fmtTime(weekday.open!)}&ndash;{fmtTime(weekday.close!)}<br /><span class="dim">{SITE.hoursNote}</span></dd></div>
-          <div><dt>Fax</dt><dd>{SITE.fax}</dd></div>
+          <div><dt>Call</dt><dd>{SITE.phone ? <a href={`tel:${SITE.phoneE164}`}>{SITE.phone}</a> : <span class="dim">{TBC}</span>}</dd></div>
+          <div><dt>Area</dt><dd>{SITE.serviceArea.label}</dd></div>
+          <div><dt>Cost</dt><dd>The consultation is free.</dd></div>
         </dl>
       </div>
     </div>
     <div class="iq-r lit">
       <i class="lx-dusk" aria-hidden="true"></i>
       <div class="iq-form-head">
-        <span class="caps-xs rv">Step one</span>
+        <span class="caps-xs rv">Care starts here</span>
         <h2 class="rv" style="--d:.06s">Your request</h2>
       </div>
       <div class="cf-stage rv" style="--d:.1s"><ConsultForm /></div>
-      <p class="iq-assure fade" style="--d:.16s">Read personally <i aria-hidden="true">&middot;</i> No marketing list <i aria-hidden="true">&middot;</i> Office hours Mon&ndash;Fri</p>
+      <p class="iq-assure fade" style="--d:.16s">Free consultation <i aria-hidden="true">&middot;</i> No marketing list <i aria-hidden="true">&middot;</i> {SITE.serviceArea.label}</p>
     </div>
   </section>
   <script is:inline>
@@ -43,8 +42,8 @@ const weekday = SITE.hours.find((h) => h.open && h.close)!;
     (function () {
       var raw = (new URLSearchParams(location.search).get('for') || '').trim().toLowerCase();
       var frames = {
-        care: { kick: 'Request a consultation', line: 'A conversation, not a sales call. Tell us a little about who needs support and we’ll take it from there.' },
-        self: { kick: 'Request a consultation', line: 'Tell us a little about the support you’re considering, and we’ll take it from there.' },
+        care: { kick: 'Free consultation', line: 'Tell us a little about your loved one. We’ll reach out to set up a free consultation and find the caregiver who fits them best.' },
+        self: { kick: 'Free consultation', line: 'Tell us a little about the support you’re considering. We’ll reach out to set up a free consultation.' },
       };
       var f = frames[raw]; if (!f) return;
       var k = document.getElementById('iqKick'), l = document.getElementById('iqLine');
@@ -60,7 +59,7 @@ const weekday = SITE.hours.find((h) => h.open && h.close)!;
   .iq-lc{position:relative;z-index:1}
   .iq-kick{display:flex;align-items:center;gap:1.3rem;font-family:var(--utility);font-weight:600;text-transform:uppercase;letter-spacing:.22em;font-size:.62rem;color:var(--gold-lt);margin:0 0 clamp(1.4rem,3vh,2.2rem)}
   .iq-kick::before{content:"";width:48px;height:1px;background:var(--hairdk-strong)}
-  .iq-t{font-size:clamp(3.2rem,6.4vw,6rem);color:var(--ivory);margin-bottom:clamp(1rem,2.4vh,1.6rem)}
+  .iq-t{font-size:clamp(2.2rem,4.6vw,4rem)!important;font-size:clamp(3.2rem,6.4vw,6rem);color:var(--ivory);margin-bottom:clamp(1rem,2.4vh,1.6rem)}
   .iq-line{font-family:var(--display);font-style:italic;font-size:clamp(1.12rem,1.6vw,1.4rem);color:rgba(248,244,238,.85);max-width:22em;margin:0 0 clamp(2rem,4.5vh,3rem);font-variation-settings:'opsz' 48,'SOFT' 60}
   .iq-ways{margin:0;border-top:1px solid var(--hairdk)}
   .iq-ways div{display:grid;grid-template-columns:5.5em 1fr;gap:1rem;padding:.95em 0;border-bottom:1px solid var(--hairdk);font-size:.95rem}

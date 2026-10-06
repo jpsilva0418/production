@@ -1,30 +1,9 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 
 export type Post = CollectionEntry<'posts'>;
-export type CategoryKey = Post['data']['category'];
-
-/** Category hubs. Magnolia's current blog has no categories of its own; these
- *  three group the six existing articles by their subject and are easy to
- *  rename or remove if the client prefers a flat journal. */
-export const CATEGORIES: Record<CategoryKey, { name: string; blurb: string; intro: string }> = {
-  'our-values': {
-    name: 'Our Values',
-    blurb: 'What guides every visit — respect, compassion, honesty.',
-    intro: 'Articles about the values Magnolia Healthcare is built on: putting clients first, building trust, and taking responsibility for the care we give.',
-  },
-  'home-care': {
-    name: 'Home Care',
-    blurb: 'Why non-medical care at home matters.',
-    intro: 'Plain-language articles about non-medical home care — what it is, who it helps, and how it supports independence at home.',
-  },
-  'quality': {
-    name: 'Quality & Accountability',
-    blurb: 'How we keep improving.',
-    intro: 'How Magnolia Healthcare approaches quality, accountability, and continuous improvement in home care.',
-  },
-};
-
-export const CATEGORY_KEYS = Object.keys(CATEGORIES) as CategoryKey[];
+/** Magnolia's blog is titled "Magnolia Moments" on the current site and has no
+ *  categories — the hub is a single flat journal. */
+export const BLOG_NAME = 'Magnolia Moments';
 
 export async function getPublishedPosts(): Promise<Post[]> {
   return (await getCollection('posts'))
@@ -39,7 +18,7 @@ export function readingTime(body: string | undefined): number {
 
 export function relatedPosts(post: Post, all: Post[], count = 3): Post[] {
   const score = (p: Post) =>
-    (p.data.category === post.data.category ? 2 : 0) + p.data.tags.filter((t) => post.data.tags.includes(t)).length;
+    p.data.tags.filter((t) => post.data.tags.includes(t)).length;
   return all
     .filter((p) => p.id !== post.id)
     .map((p) => ({ p, s: score(p) }))

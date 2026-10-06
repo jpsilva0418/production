@@ -21,9 +21,9 @@ export function resolveSeo(input: SeoInput = {}) {
 
 export const BUSINESS_ID = `${SITE.url}/#business`;
 
-const DAY = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-
-/** LocalBusiness structured data — only facts from consts.ts (owner-verifiable). */
+/** LocalBusiness structured data — only facts established by Magnolia's own supplied
+ *  materials. Phone, street address, hours and founder are NOT emitted until Magnolia
+ *  confirms them (consts.ts keeps them null). */
 export function localBusinessJsonLd() {
   return {
     '@context': 'https://schema.org',
@@ -33,23 +33,12 @@ export function localBusinessJsonLd() {
     legalName: SITE.legalName,
     description: SITE.description,
     url: SITE.url,
-    telephone: SITE.phoneE164,
     email: SITE.email,
-    foundingDate: String(SITE.founded),
-    founder: { '@type': 'Person', name: SITE.founder },
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: SITE.address.street,
-      addressLocality: SITE.address.locality,
-      addressRegion: SITE.address.region,
-      postalCode: SITE.address.postalCode,
-      addressCountry: SITE.address.country,
-    },
-    geo: { '@type': 'GeoCoordinates', latitude: SITE.geo.latitude, longitude: SITE.geo.longitude },
-    openingHoursSpecification: SITE.hours
-      .filter((h) => h.open && h.close)
-      .map((h) => ({ '@type': 'OpeningHoursSpecification', dayOfWeek: DAY[DAY.indexOf(h.day)], opens: h.open, closes: h.close })),
-    areaServed: SITE.serviceArea.regions.map((r) => ({ '@type': 'AdministrativeArea', name: r })),
+    ...(SITE.phoneE164 ? { telephone: SITE.phoneE164 } : {}),
+    ...(SITE.address
+      ? { address: { '@type': 'PostalAddress', streetAddress: SITE.address.street, addressLocality: SITE.address.locality, addressRegion: SITE.address.region, postalCode: SITE.address.postalCode, addressCountry: 'US' } }
+      : { address: { '@type': 'PostalAddress', addressRegion: SITE.serviceArea.regionCode, addressCountry: 'US' } }),
+    areaServed: { '@type': 'State', name: SITE.serviceArea.region },
   };
 }
 

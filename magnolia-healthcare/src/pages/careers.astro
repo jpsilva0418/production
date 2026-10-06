@@ -1,59 +1,68 @@
 ---
-/** CAREERS — Magnolia's existing "apply now" invitation, staged, leading into the
- *  rebuilt caregiver application at /apply. */
+/** CAREERS — the current site's "Join Our Team" page, word for word, leading into the
+ *  rebuilt caregiver application at /apply. The downloadable form is Magnolia's own
+ *  supplied application PDF, kept as the current site offers it. */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Plate from '../components/Plate.astro';
 import { SITE } from '../consts';
 ---
-<BaseLayout title="Join Our Team — Caregiver Careers" description="Tailored schedules, meaningful work, and continuous professional development. Join Magnolia Healthcare’s expanding team and make a significant difference in the lives of our clients." path="/careers">
+<BaseLayout title="Join Our Team — Careers" description="Interested in joining our team? We’d love to hear from you! Please complete our application and email the completed form to us. We look forward to learning more about you and your experience." path="/careers">
   <section class="cv-cov">
     <div class="wrap cv-grid">
       <div>
         <p class="cov-kick fade">Join our team</p>
-        <h1 class="disp rv">Meaningful work, <span class="ital">tailored to you.</span></h1>
-        <p class="cov-sub rv" style="--d:.08s">Join our expanding team and make a significant difference in the lives of our clients, helping them maintain their safety and independence at home.</p>
+        <h1 class="disp rv">Interested in <span class="ital">joining our team?</span></h1>
+        <p class="cov-sub rv" style="--d:.08s">We&rsquo;d love to hear from you! Please complete our application and email the completed form to us. We look forward to learning more about you and your experience.</p>
         <div class="cov-cta fade" style="--d:.16s">
-          <a class="btn btn--solid" href="/apply">Apply now</a>
-          <a class="tlk" href={`tel:${SITE.phoneE164}`}>Call {SITE.phone}</a>
+          <a class="btn btn--solid" href={SITE.links.apply}>Apply online</a>
+          <a class="tlk" href="/downloads/magnolia-healthcare-caregiver-application.pdf" download>Download the application form</a>
         </div>
       </div>
-      <figure class="cv-fig"><div class="ph ph--framed rv-im"><Plate id="supplied-clinician" alt="A Magnolia Healthcare clinician in scrubs with a stethoscope" class="lv lv--breathe" sizes="(max-width:899px) 86vw, 40vw" widths={[480, 720, 1000]} loading="eager" /><i class="grain" aria-hidden="true"></i></div></figure>
+      <figure class="cv-fig"><div class="ph ph--framed rv-im"><Plate id="supplied-clinician" alt="A Magnolia Healthcare clinician in scrubs with a stethoscope" class="lv lv--breathe" sizes="(max-width:899px) 86vw, 40vw" widths={[480, 720, 1000]} loading="eager" /><i class="grain" aria-hidden="true"></i></div><figcaption class="caps-xs">Supplied imagery</figcaption></figure>
     </div>
   </section>
 
   <section class="sec sec--linen sec--tight">
     <div class="wrap cv-cols" data-stag=".08">
-      <article class="card cv-col rv"><span class="caps-xs">What Magnolia offers</span><ul class="cv-list"><li>Tailored schedules</li><li>Meaningful work</li><li>Continuous professional development</li><li>Ongoing training and development</li></ul></article>
-      <article class="card cv-col rv"><span class="caps-xs">What every caregiver brings</span><ul class="cv-list"><li>Carefully selected to meet clients&rsquo; unique needs</li><li>Extensive training</li><li>Thorough state and federal background checks</li><li>Respect, compassion, and honesty</li></ul></article>
+      <article class="card cv-col rv">
+        <span class="caps-xs">Apply online</span>
+        <h2>The application, as a guided form.</h2>
+        <p>Our initial application for caregiver candidates, rebuilt step by step: personal information, availability, certification and license, caregiving experience, employment history, two professional references, and your signed certification. Your answers stay on the page as you move between steps, and you review everything before you submit.</p>
+        <div class="cv-act"><a class="btn btn--solid" href={SITE.links.apply}>Start the application</a></div>
+      </article>
+      <article class="card cv-col rv">
+        <span class="caps-xs">Download our application form</span>
+        <h2>Prefer paper?</h2>
+        <p>Please download our application form, complete it, and email the completed application to: <a class="cv-mail" href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+        <div class="cv-act"><a class="btn btn--line" href="/downloads/magnolia-healthcare-caregiver-application.pdf" download>Download <span aria-hidden="true">&rsaquo;</span></a></div>
+      </article>
     </div>
   </section>
 
   <section class="sec sec--tight">
     <div class="wrap">
-      <div class="note-card rv">
-        <span class="caps">The application</span>
-        <p class="note-copy" style="margin-top:1.2rem">An initial application for caregiver candidates &mdash; about ten minutes.</p>
-        <span class="note-rule" aria-hidden="true"></span>
-        <p class="note-body">Personal information, availability, certification and license, caregiving experience, employment history, two professional references, and your signed certification. Your answers stay on the page as you move between steps, and you review everything before you submit.</p>
-        <div class="note-act"><a class="btn btn--solid" href="/apply">Start the application</a></div>
-      </div>
+      <figure class="cv-team rv-im"><div class="ph ph--framed"><Plate id="supplied-team" alt="Four Magnolia Healthcare caregivers in branded scrubs" class="lv" sizes="(max-width:899px) 92vw, 640px" widths={[480, 640]} /><i class="grain" aria-hidden="true"></i></div><figcaption class="caps-xs">The Magnolia team &middot; supplied imagery</figcaption></figure>
     </div>
   </section>
 </BaseLayout>
+
 <style>
-  .cv-cov{padding:clamp(7.5rem,16vh,10rem) 0 clamp(3rem,6vh,4.5rem)}
+  .cv-cov{padding:clamp(8.5rem,18vh,12rem) 0 clamp(3.6rem,8vh,5.5rem)}
   .cv-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);column-gap:clamp(2.4rem,6vw,6rem);align-items:center}
   .cv-grid h1{font-size:clamp(2.6rem,5.6vw,5rem);margin-bottom:1.2rem}
-  .cv-fig{margin:0;width:min(420px,100%);justify-self:center}
+  .cv-fig{margin:0}
   .cv-fig .ph{aspect-ratio:4/5}
-  @media(max-width:899px){.cv-grid{grid-template-columns:1fr;row-gap:2rem}.cv-fig{order:-1;width:min(340px,80%)}}
+  .cv-fig figcaption{margin-top:1rem;text-align:center;display:block}
   .cv-cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1rem,2vw,1.6rem)}
-  .cv-col{padding:clamp(1.6rem,2.8vw,2.2rem)}
+  .cv-col{padding:clamp(1.6rem,3vw,2.6rem)}
   .cv-col .caps-xs{display:block;margin-bottom:1rem}
-  .cv-list{list-style:none;margin:0;padding:0;display:grid;gap:.6rem}
-  .cv-list li{position:relative;padding-left:1.4rem;color:var(--ink)}
-  .cv-list li::before{content:"";position:absolute;left:0;top:.75em;width:9px;height:1px;background:var(--brass)}
+  .cv-col h2{font-size:clamp(1.4rem,2.1vw,1.8rem);margin-bottom:.9rem}
+  .cv-col p{max-width:36em}
+  .cv-mail{text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+  .cv-act{margin-top:1.6rem}
+  .cv-team{margin:0;width:min(640px,100%);margin-inline:auto}
+  .cv-team .ph{aspect-ratio:640/654}
+  .cv-team figcaption{margin-top:1.2rem;text-align:center;display:block}
+  @media(max-width:899px){.cv-grid{grid-template-columns:1fr;row-gap:2rem}.cv-fig{order:-1;width:min(420px,100%);margin-inline:auto}}
   @media(max-width:719px){.cv-cols{grid-template-columns:1fr}}
-  .note-body{max-width:34em;margin:0 auto clamp(1.8rem,3.4vw,2.6rem)}
-  .note-act{display:flex;justify-content:center}
 </style>

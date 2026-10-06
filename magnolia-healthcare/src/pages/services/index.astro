@@ -1,17 +1,21 @@
 ---
-/** SERVICES — the four services Magnolia actually offers, staged as editorial rows
- *  (the Leti Silva Beauty services-page system). No pricing: the current site has none. */
+/** SERVICES — the care Magnolia Healthcare, Inc. describes on its current site: the six
+ *  "Specialized Care" cards and the four "How We Help" cards, staged as editorial rows
+ *  (the Leti Silva Beauty services-page system). Each description is the site's own
+ *  sentence. No pricing: the current site publishes none. */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Plate from '../../components/Plate.astro';
 import { getCollection } from 'astro:content';
 import { SITE } from '../../consts';
 import { localBusinessJsonLd, breadcrumbJsonLd } from '../../lib/seo';
-const services = (await getCollection('services')).filter((s) => !s.data.draft).sort((a, b) => a.data.order - b.data.order);
+const all = (await getCollection('services')).filter((s) => !s.data.draft).sort((a, b) => a.data.order - b.data.order);
+const specialized = all.filter((s) => s.data.kind === 'specialized');
+const support = all.filter((s) => s.data.kind === 'support');
 const jsonLd = [localBusinessJsonLd(), breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Services', path: '/services' }])];
 ---
 <BaseLayout
-  title="Services — Personal Care, Homemaking, Companionship & Dementia Support"
-  description="Non-medical home care in Arvada and the Denver Metro: personal care, homemaking, companionship, and individualized Alzheimer’s and dementia support. Every care plan is built around the client’s routines, preferences, culture, and goals for independence."
+  title="Services — Specialized Care & How We Help"
+  description="Hospice & palliative, Alzheimer’s & dementia care, rehabilitation support, geriatric care, Parkinson’s, ALS & multiple sclerosis — with 24/7 caregiver support, case management, nursing support and chat support. Magnolia Healthcare, Inc., anywhere in Massachusetts."
   path="/services"
   jsonLd={jsonLd}>
 
@@ -19,35 +23,46 @@ const jsonLd = [localBusinessJsonLd(), breadcrumbJsonLd([{ name: 'Home', path: '
     <span class="ghost-w" aria-hidden="true">care</span>
     <div class="cov-c">
       <p class="cov-kick fade">Our services</p>
-      <h1 class="disp rv">Four kinds of care, <span class="ital">at home.</span></h1>
-      <p class="cov-sub rv" style="--d:.08s">Our team of trusted providers offers personal care and homemaking services to support clients with daily living &mdash; hygiene, cooking, mobility, errands &mdash; along with companionship and individualized dementia support.</p>
+      <h1 class="disp rv">Specialized care, <span class="ital">at home.</span></h1>
+      <p class="cov-sub rv" style="--d:.08s">Our caregivers are thoughtfully selected, trained, and committed to bringing warmth, dignity, and genuine human connection into every home.</p>
       <div class="cov-cta fade" style="--d:.16s">
-        <a class="btn btn--solid" href={SITE.links.consultCare}>Request a consultation</a>
-        <a class="tlk" href={`tel:${SITE.phoneE164}`}>Call {SITE.phone}</a>
+        <a class="btn btn--solid" href={SITE.links.consultCare}>Free consultation</a>
+        <a class="tlk" href="#how">How we help</a>
       </div>
     </div>
   </section>
 
-  <div class="chapslate fade" role="presentation"><span class="cs-t">The services</span></div>
+  <div class="chapslate fade" role="presentation"><span class="cs-t">Specialized care</span></div>
 
   <section class="sec lit" style="padding-top:clamp(40px,6vw,80px)">
     <i class="lx-shaft" aria-hidden="true"></i>
     <div class="wrap svc-rows">
-      {services.map((s) => (
+      {specialized.map((s) => (
         <article class="svc" id={s.id}>
           <figure class="svc-fig"><div class="ph ph--framed rv-im"><Plate id={s.data.plate} alt="" class="lv" sizes="(max-width:899px) 90vw, 46vw" /><i class="grain" aria-hidden="true"></i></div></figure>
           <div class="svc-copy">
             <span class="caps-xs rv">No. {s.data.numeral}</span>
-            <h2 class="rv" style="--d:.06s"><a href={`/services/${s.id}`}>{s.data.title}</a></h2>
+            <h2 class="rv" style="--d:.06s">{s.data.title}</h2>
             <p class="svc-sum rv" style="--d:.1s">{s.data.summary}</p>
-            <ul class="svc-inc rv" style="--d:.14s">
-              {s.data.includes.map((i) => <li>{i}</li>)}
-            </ul>
             <div class="svc-act fade" style="--d:.2s">
-              <a class="btn btn--solid" href={`${SITE.links.consultCare}&service=${s.id}`}>Ask about {s.data.title.replace('Alzheimer’s & ', '')}</a>
-              <a class="tlk" href={`/services/${s.id}`}>Read about this service</a>
+              <a class="btn btn--solid" href={`${SITE.links.consultCare}&service=${s.id}`}>Ask about this care</a>
             </div>
           </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <div class="chapslate chapslate--dk fade" role="presentation" id="how"><span class="cs-t">How we help</span></div>
+
+  <section class="sec sec--dk lit">
+    <i class="lx-dusk" aria-hidden="true"></i>
+    <div class="wrap how-grid" data-stag=".08" style="position:relative;z-index:1">
+      {support.map((s) => (
+        <article class="how rv" id={s.id}>
+          <span class="caps-xs">No. {s.data.numeral}</span>
+          <h2>{s.data.title}</h2>
+          <p>{s.data.summary}</p>
         </article>
       ))}
     </div>
@@ -57,25 +72,11 @@ const jsonLd = [localBusinessJsonLd(), breadcrumbJsonLd([{ name: 'Home', path: '
     <div class="wrap">
       <div class="note-card rv">
         <span class="note-mono" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 64 64" fill="currentColor"><path d="M32 6c5.6 6.4 7.8 13.4 6.4 20.8C36.2 30.3 34 32.2 32 33.4c-2-1.2-4.2-3.1-6.4-6.6C24.2 19.4 26.4 12.4 32 6Z"/><path d="M55.4 18.6c-1.2 8.4-5 14.6-11.6 18.4-3.6 2.1-6.5 2.4-8.8 2-0.1-2.4.6-5.3 2.9-8.8 4.1-6.4 10.2-10.3 17.5-11.6Z" opacity=".8"/><path d="M8.6 18.6c7.3 1.3 13.4 5.2 17.5 11.6 2.3 3.5 3 6.4 2.9 8.8-2.3.4-5.2.1-8.8-2C13.6 33.2 9.8 27 8.6 18.6Z" opacity=".8"/><circle cx="32" cy="36.6" r="2.6"/></svg></span>
-        <span class="caps">Every plan is personal</span>
-        <p class="note-copy">Every care plan is built around the client&rsquo;s routines, preferences, culture, and goals for independence &mdash; and reviewed as needs change.</p>
+        <span class="caps">Care starts here</span>
+        <p class="note-copy">Let&rsquo;s talk about the care your family needs.</p>
         <span class="note-rule" aria-hidden="true"></span>
-        <a class="btn btn--solid" href={SITE.links.consultCare}>Start with a conversation</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec sec--dk lit addr">
-    <i class="lx-dusk" aria-hidden="true"></i>
-    <div class="wrap addr-in">
-      <span class="caps-xs fade">Office &amp; service area</span>
-      <h2 class="disp rv">Arvada, Colorado</h2>
-      <p class="addr-lines rv" style="--d:.07s">{SITE.address.street}<br /><span class="dim">{SITE.address.locality}, {SITE.address.region} {SITE.address.postalCode}</span></p>
-      <p class="addr-towns rv" style="--d:.1s">Non-medical home care across {SITE.serviceArea.label}. Office hours Monday&ndash;Friday, 8:30 a.m.&ndash;5:30 p.m. {SITE.hoursNote}</p>
-      <span class="addr-rule" aria-hidden="true"></span>
-      <div class="addr-cta fade" style="--d:.16s">
-        <a class="btn btn--ivory" href={SITE.links.consultCare}>Request a consultation</a>
-        <a class="tlk tlk--lt" href={`tel:${SITE.phoneE164}`}>Call {SITE.phone}</a>
+        <p class="note-body">Tell us a little about your loved one. We&rsquo;ll reach out to set up a free consultation and find the caregiver who fits them best. {SITE.serviceArea.label}.</p>
+        <a class="btn btn--solid" href={SITE.links.consultCare}>Free consultation</a>
       </div>
     </div>
   </section>
@@ -102,12 +103,12 @@ const jsonLd = [localBusinessJsonLd(), breadcrumbJsonLd([{ name: 'Home', path: '
     .svc:nth-child(even) .svc-fig,.svc:nth-child(even) .svc-copy{order:0}
     .svc-fig .ph{aspect-ratio:4/3}
   }
-  .addr-in{text-align:center;max-width:760px;margin-inline:auto;position:relative;z-index:1}
-  .addr-in .caps-xs{display:block;margin-bottom:1.4rem}
-  .addr-in h2{font-size:clamp(2.4rem,4.4vw,4rem);margin-bottom:clamp(1.6rem,3vw,2.4rem)}
-  .addr-lines{font-family:var(--utility);font-weight:600;text-transform:uppercase;letter-spacing:.22em;font-size:.66rem;line-height:2.4;color:var(--ivory);margin:0 0 1.4rem}
-  .addr-lines .dim{color:var(--gold-lt)}
-  .addr-towns{font-family:var(--display);font-style:italic;font-size:1.1rem;color:rgba(248,244,238,.8);max-width:30em;margin:0 auto 2rem;font-variation-settings:'opsz' 48,'SOFT' 60}
-  .addr-rule{display:block;width:56px;height:1px;background:var(--gold-lt);opacity:.6;margin:0 auto 2rem}
-  .addr-cta{display:flex;justify-content:center;align-items:center;gap:2.2rem;flex-wrap:wrap}
+  .how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(1.4rem,2.6vw,2.4rem)}
+  .how{border-top:1px solid var(--hairdk);padding-top:1.4rem}
+  .how .caps-xs{display:block;color:var(--gold-lt);margin-bottom:.9rem}
+  .how h2{font-size:clamp(1.4rem,2vw,1.8rem);color:var(--ivory);margin-bottom:.8rem}
+  .how p{color:rgba(248,244,238,.8);font-size:.95rem}
+  .note-body{max-width:34em;margin:0 auto clamp(1.8rem,3.4vw,2.6rem)}
+  @media(max-width:1023px){.how-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:599px){.how-grid{grid-template-columns:1fr}}
 </style>

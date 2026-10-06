@@ -3,10 +3,11 @@
  * Caregiver application — Magnolia's existing 3-page paper application (reference PDF,
  * "Initial application for caregiver candidates"), rebuilt as a multi-step flow on the Leti
  * Silva Beauty form system. EVERY field, option, note and the certification statement is
- * carried over verbatim; nothing is added or removed. The paper form marks nothing as
- * required, so the web form only insists on what processing genuinely needs (name, phone,
- * email, the two yes/no gate questions, and the signed certification) — everything else
- * is labelled optional and the review step points out what was left blank.
+ * carried over verbatim; nothing is removed. One optional field is ADDED — a write-in for
+ * "Other" under certification type — so that answer is not lost. The paper form marks
+ * nothing as required, so the web form only insists on what processing genuinely needs
+ * (name, phone, email, the two yes/no gate questions, and the signed certification) —
+ * everything else is labelled optional and the review step points out what was left blank.
  *
  * Interaction principles ported: one state object, Back never loses answers (and a
  * session draft survives an accidental reload), progress + recap, review with Edit,
@@ -18,11 +19,12 @@ import { SITE } from '../consts';
 ---
 <section class="ap-section">
   <noscript>
-    <p class="ap-noscript">This application needs JavaScript. You can also call <a href={`tel:${SITE.phoneE164}`}>{SITE.phone}</a> or email <a href={`mailto:${SITE.email}`}>{SITE.email}</a> to request the application form.</p>
+    <p class="ap-noscript">This application needs JavaScript. You can also <a href="/downloads/magnolia-healthcare-caregiver-application.pdf" download>download the application form</a> and email it to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
   </noscript>
 
   <form id="apForm" class="ap-form" novalidate>
     <ol class="ap-prog" id="apProg" aria-label="Progress"></ol>
+    <p class="ap-prog-now" id="apProgNow" aria-live="polite"></p>
     <p class="ap-draft" id="apDraft" hidden>Your draft was restored from this browser session. <button type="button" id="apDraftClear">Start over</button></p>
     <dl class="ap-recap" id="apRecap" hidden></dl>
 
@@ -32,18 +34,18 @@ import { SITE } from '../consts';
       <div class="ap-field">
         <label for="ap-fullName">Full legal name <span class="ap-req">required</span></label>
         <input id="ap-fullName" name="fullName" type="text" maxlength="120" autocomplete="name" required aria-describedby="ap-fullName-err" />
-        <p class="ap-err" id="ap-fullName-err" hidden>Please enter your full legal name.</p>
+        <p class="ap-err" id="ap-fullName-err" role="alert" hidden>Please enter your full legal name.</p>
       </div>
       <div class="ap-two">
         <div class="ap-field">
           <label for="ap-phone">Phone <span class="ap-req">required</span></label>
           <input id="ap-phone" name="phone" type="tel" maxlength="40" autocomplete="tel" inputmode="tel" required aria-describedby="ap-phone-err" />
-          <p class="ap-err" id="ap-phone-err" hidden>Please enter a phone number we can call.</p>
+          <p class="ap-err" id="ap-phone-err" role="alert" hidden>Please enter a phone number we can call.</p>
         </div>
         <div class="ap-field">
           <label for="ap-email">Email <span class="ap-req">required</span></label>
           <input id="ap-email" name="email" type="email" maxlength="160" autocomplete="email" inputmode="email" required aria-describedby="ap-email-err" />
-          <p class="ap-err" id="ap-email-err" hidden>That email address doesn&rsquo;t look complete.</p>
+          <p class="ap-err" id="ap-email-err" role="alert" hidden>That email address doesn&rsquo;t look complete.</p>
         </div>
       </div>
       <div class="ap-field">
@@ -52,8 +54,8 @@ import { SITE } from '../consts';
       </div>
       <div class="ap-three">
         <div class="ap-field"><label for="ap-city">City</label><input id="ap-city" name="city" type="text" maxlength="80" autocomplete="address-level2" /></div>
-        <div class="ap-field"><label for="ap-state">State</label><input id="ap-state" name="state" type="text" maxlength="40" autocomplete="address-level1" placeholder="CO" /></div>
-        <div class="ap-field"><label for="ap-zip">ZIP</label><input id="ap-zip" name="zip" type="text" maxlength="10" inputmode="numeric" autocomplete="postal-code" aria-describedby="ap-zip-err" /><p class="ap-err" id="ap-zip-err" hidden>ZIP codes are 5 digits (or 5+4).</p></div>
+        <div class="ap-field"><label for="ap-state">State</label><input id="ap-state" name="state" type="text" maxlength="40" autocomplete="address-level1" placeholder="MA" /></div>
+        <div class="ap-field"><label for="ap-zip">ZIP</label><input id="ap-zip" name="zip" type="text" maxlength="10" autocomplete="postal-code" /></div>
       </div>
     </fieldset>
 
@@ -81,21 +83,22 @@ import { SITE } from '../consts';
     <!-- 3 · PROFESSIONAL CERTIFICATION & LICENSE -->
     <fieldset class="ap-step" data-step="license" hidden>
       <legend tabindex="-1">Professional certification &amp; license</legend>
-      <div class="ap-field" role="radiogroup" aria-labelledby="ap-hasCert-label">
+      <div class="ap-field" role="radiogroup" aria-labelledby="ap-hasCert-label" aria-required="true" aria-describedby="ap-hasCert-err">
         <span class="ap-lbl" id="ap-hasCert-label">Are you a CNA, HHA, or do you hold any other healthcare-related license or certification? <span class="ap-req">required</span></span>
         <div class="ap-cards ap-cards-row">
           <label class="ap-card"><input type="radio" name="hasCert" value="Yes" /><span>Yes</span></label>
           <label class="ap-card"><input type="radio" name="hasCert" value="No" /><span>No</span></label>
         </div>
+        <p class="ap-err" id="ap-hasCert-err" role="alert" hidden>Please choose Yes or No.</p>
       </div>
       <div id="apCertYes" hidden>
         <p class="ap-hint">If yes, please provide:</p>
-        <div class="ap-field" role="radiogroup" aria-labelledby="ap-certType-label">
-          <span class="ap-lbl" id="ap-certType-label">Type</span>
+        <div class="ap-field" role="group" aria-labelledby="ap-certType-label">
+          <span class="ap-lbl" id="ap-certType-label">Type <span class="ap-req">check all that apply</span></span>
           <div class="ap-cards ap-cards-row">
-            <label class="ap-card"><input type="radio" name="certType" value="CNA" /><span>CNA</span></label>
-            <label class="ap-card"><input type="radio" name="certType" value="HHA" /><span>HHA</span></label>
-            <label class="ap-card"><input type="radio" name="certType" value="Other" /><span>Other</span></label>
+            <label class="ap-card"><input type="checkbox" name="certType" value="CNA" /><span>CNA</span></label>
+            <label class="ap-card"><input type="checkbox" name="certType" value="HHA" /><span>HHA</span></label>
+            <label class="ap-card"><input type="checkbox" name="certType" value="Other" /><span>Other</span></label>
           </div>
         </div>
         <div class="ap-field" id="apCertOther" hidden>
@@ -104,24 +107,26 @@ import { SITE } from '../consts';
         </div>
         <div class="ap-two">
           <div class="ap-field"><label for="ap-certNumber">License / certification number</label><input id="ap-certNumber" name="certNumber" type="text" maxlength="80" autocomplete="off" /></div>
-          <div class="ap-field"><label for="ap-certState">State</label><input id="ap-certState" name="certState" type="text" maxlength="40" placeholder="CO" /></div>
+          <div class="ap-field"><label for="ap-certState">State</label><input id="ap-certState" name="certState" type="text" maxlength="40" placeholder="MA" /></div>
         </div>
         <div class="ap-field ap-half"><label for="ap-certExpiry">Expiration date</label><input id="ap-certExpiry" name="certExpiry" type="date" /></div>
       </div>
-      <p class="ap-note" id="apCertNo" hidden><em>If no:</em> Magnolia Healthcare Inc. may provide information about available caregiver training opportunities and courses.</p>
+      <p class="ap-note" id="apCertNo" role="status" hidden><em>If no:</em> Magnolia Healthcare Inc. may provide information about available caregiver training opportunities and courses.</p>
     </fieldset>
 
     <!-- 4 · CAREGIVING EXPERIENCE -->
     <fieldset class="ap-step" data-step="experience" hidden>
       <legend tabindex="-1">Caregiving experience</legend>
-      <div class="ap-field" role="radiogroup" aria-labelledby="ap-hasExp-label">
+      <div class="ap-field" role="radiogroup" aria-labelledby="ap-hasExp-label" aria-required="true" aria-describedby="ap-hasExperience-err">
         <span class="ap-lbl" id="ap-hasExp-label">Do you have previous caregiving experience? <span class="ap-req">required</span></span>
         <div class="ap-cards ap-cards-row">
           <label class="ap-card"><input type="radio" name="hasExperience" value="Yes" /><span>Yes</span></label>
           <label class="ap-card"><input type="radio" name="hasExperience" value="No" /><span>No</span></label>
         </div>
+        <p class="ap-err" id="ap-hasExperience-err" role="alert" hidden>Please choose Yes or No.</p>
       </div>
-      <div id="apExpYes" hidden>
+      <!-- Years / where you have worked are NOT gated on paper: they stay visible and are never cleared. -->
+      <div id="apExpYes">
         <div class="ap-field ap-half">
           <label for="ap-years">Years of caregiving experience</label>
           <input id="ap-years" name="years" type="number" min="0" max="70" step="0.5" inputmode="decimal" />
@@ -198,17 +203,19 @@ import { SITE } from '../consts';
     <fieldset class="ap-step" data-step="certification" hidden>
       <legend tabindex="-1">Applicant certification</legend>
       <p class="ap-statement">I certify that the information provided in this application is true and complete to the best of my knowledge. I understand that this application is part of the initial screening process and does not by itself create a service agreement or guarantee an assignment.</p>
-      <label class="ap-check"><input type="checkbox" name="certify" value="Yes" /><span>I have read and agree to the statement above. <span class="ap-req">required</span></span></label>
+      <label class="ap-check"><input type="checkbox" name="certify" value="Yes" required aria-describedby="ap-certify-err" /><span>I have read and agree to the statement above. <span class="ap-req">required</span></span></label>
+      <p class="ap-err" id="ap-certify-err" role="alert" hidden style="margin:-10px 0 14px">Please confirm the statement to continue.</p>
       <div class="ap-two">
         <div class="ap-field">
           <label for="ap-signature">Applicant signature <span class="ap-req">required</span></label>
           <input id="ap-signature" name="signature" type="text" maxlength="120" autocomplete="off" placeholder="Type your full legal name" class="ap-sig" aria-describedby="ap-signature-err ap-signature-hint" />
           <p class="ap-hint-sm" id="ap-signature-hint">Typing your name acts as your signature on this initial application.</p>
-          <p class="ap-err" id="ap-signature-err" hidden>Please type your full name as your signature.</p>
+          <p class="ap-err" id="ap-signature-err" role="alert" hidden>Please type your full name as your signature.</p>
         </div>
         <div class="ap-field">
           <label for="ap-signDate">Date <span class="ap-req">required</span></label>
-          <input id="ap-signDate" name="signDate" type="date" />
+          <input id="ap-signDate" name="signDate" type="date" required aria-describedby="ap-signDate-err" />
+          <p class="ap-err" id="ap-signDate-err" role="alert" hidden>Please enter today&rsquo;s date.</p>
         </div>
       </div>
       <div aria-hidden="true" class="ap-hp"><label for="ap-company">Company</label><input id="ap-company" name="company" type="text" tabindex="-1" autocomplete="off" /></div>
@@ -222,8 +229,8 @@ import { SITE } from '../consts';
     </fieldset>
 
     <div class="ap-error" id="apError" role="alert" hidden>
-      <strong>We couldn&rsquo;t send that just now.</strong> Your answers are safe on this page &mdash; please try again in a moment,
-      or call <a href={`tel:${SITE.phoneE164}`}>{SITE.phone}</a>. You can also tap <em>Copy my application</em> and paste it into an email to
+      <strong>We couldn&rsquo;t send that just now.</strong> Your answers are safe on this page &mdash; please try again in a moment.
+      You can also tap <em>Copy my application</em> and paste it into an email to
       <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
       <div class="ap-err-actions"><button type="button" class="btn btn--line" id="apCopy">Copy my application</button></div>
       <span class="ap-err-code" id="apErrCode"></span>
@@ -231,7 +238,7 @@ import { SITE } from '../consts';
 
     <div class="ap-nav">
       <button type="button" class="btn btn--line" id="apBack" hidden>Back</button>
-      <button type="submit" class="btn btn--solid" id="apNext" disabled>Continue</button>
+      <button type="submit" class="btn btn--solid" id="apNext" aria-disabled="true">Continue</button>
     </div>
   </form>
 
@@ -239,10 +246,10 @@ import { SITE } from '../consts';
     <p class="ap-test-strip" id="apTestStrip" hidden><strong>Demo mode</strong> &mdash; this application was NOT sent anywhere.</p>
     <span class="caps-xs">Received</span>
     <h2 tabindex="-1" id="apThanksHead">Thank you &mdash; your application is with Magnolia.</h2>
-    <p>This is the initial application in Magnolia&rsquo;s screening process. The team reviews every application and will contact you using the details you provided. Questions? Call <a href={`tel:${SITE.phoneE164}`}>{SITE.phone}</a> during office hours.</p>
+    <p>This is the initial application in Magnolia&rsquo;s screening process. The team reviews every application and will contact you using the details you provided. Questions? Email <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
     <div class="ap-thanks-cta">
       <a class="btn btn--solid" href="/">Back to the site</a>
-      <a class="btn btn--line" href="/team">About our caregivers</a>
+      <a class="btn btn--line" href="/mission">Our mission</a>
     </div>
   </div>
 </section>
@@ -259,9 +266,10 @@ import { SITE } from '../consts';
   .ap-prog li.done .bar,.ap-prog li.now .bar{background:var(--leaf)}
   .ap-prog .lbl{font-family:var(--utility);font-weight:600;font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
   .ap-prog li.now .lbl{color:var(--leaf)}
-  @media(max-width:640px){.ap-prog .lbl{display:none}.ap-prog li.now .lbl{display:block}}
+  .ap-prog-now{display:none;font-family:var(--utility);font-weight:600;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--leaf);margin:-12px 0 18px}
+  @media(max-width:640px){.ap-prog .lbl{display:none}.ap-prog-now{display:block}}
   .ap-draft{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem 1rem;font-size:.82rem;color:var(--ink-soft);background:var(--blush);border-radius:var(--r-sm);padding:10px 14px;margin:0 0 18px}
-  .ap-draft button{background:none;border:0;cursor:pointer;font:inherit;font-weight:600;color:var(--brass);text-decoration:underline;text-underline-offset:3px;padding:6px 0;min-height:36px}
+  .ap-draft button{background:none;border:0;cursor:pointer;font:inherit;font-weight:600;color:var(--brass);text-decoration:underline;text-underline-offset:3px;padding:10px 12px;min-height:44px;min-width:44px}
   .ap-recap{display:flex;flex-wrap:wrap;gap:6px 20px;background:var(--linen);border:1px solid var(--hair);border-radius:var(--r-sm);padding:10px 16px;margin:0 0 22px;font-size:.82rem}
   .ap-recap div{display:flex;gap:6px}
   .ap-recap dt{color:var(--ink-soft)}
@@ -307,7 +315,7 @@ import { SITE } from '../consts';
   .ap-rev-group{background:var(--linen);border:1px solid var(--hair);border-radius:var(--r-sm);padding:16px 18px}
   .ap-rev-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:8px}
   .ap-rev-head h3{font-size:1.05rem}
-  .ap-rev-edit{background:none;border:0;cursor:pointer;font-family:var(--utility);font-weight:600;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--brass);text-decoration:underline;text-underline-offset:3px;padding:6px;min-height:36px}
+  .ap-rev-edit{background:none;border:0;cursor:pointer;font-family:var(--utility);font-weight:600;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--brass);text-decoration:underline;text-underline-offset:3px;padding:10px 12px;min-height:44px;min-width:44px}
   .ap-rev-group dl{margin:0;display:grid;gap:5px}
   .ap-rev-group dl div{display:flex;flex-wrap:wrap;gap:4px 8px;font-size:.9rem}
   .ap-rev-group dt{color:var(--ink-soft)}
@@ -315,11 +323,13 @@ import { SITE } from '../consts';
   .ap-rev-group dd{margin:0;font-weight:600;color:var(--ink);overflow-wrap:anywhere}
   .ap-rev-empty{font-size:.86rem;color:var(--ink-soft);font-style:italic}
   .ap-consent{font-size:.82rem;color:var(--ink-soft)}
-  .ap-nav{display:flex;justify-content:space-between;gap:12px;margin-top:22px}
+  .ap-nav{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:22px}
   .ap-nav .btn{min-width:140px}
   .ap-nav #apNext{margin-left:auto}
+  .ap-nav .btn[aria-disabled="true"]{opacity:.62}
+  @media(max-width:560px){.ap-nav .btn{flex:1 1 100%;min-width:0}.ap-nav #apNext{order:-1}}
   .ap-error{margin-top:20px;border:1px solid var(--brass);background:#fff;border-radius:var(--r-sm);padding:16px 18px;font-size:.92rem}
-  .ap-error a{text-decoration:underline}
+  .ap-error a{text-decoration:underline;overflow-wrap:anywhere}
   .ap-err-actions{margin-top:12px}
   .ap-err-code{display:block;margin-top:8px;font-family:var(--utility);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
   .ap-thanks{text-align:center}
@@ -327,7 +337,7 @@ import { SITE } from '../consts';
   .ap-thanks h2{font-size:clamp(1.5rem,3.4vw,2.1rem);margin-bottom:12px}
   .ap-thanks h2:focus{outline:none}
   .ap-thanks p{max-width:46ch;margin:0 auto}
-  .ap-thanks p a{text-decoration:underline}
+  .ap-thanks p a{text-decoration:underline;overflow-wrap:anywhere}
   .ap-thanks-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:26px}
   .ap-test-strip{background:var(--leaf-deep);color:var(--ivory);padding:10px 16px;border-radius:var(--r-sm);font-size:.82rem;margin:0 0 22px;letter-spacing:.04em}
 </style>
@@ -336,11 +346,13 @@ import { SITE } from '../consts';
   type StepKey = 'personal' | 'availability' | 'license' | 'experience' | 'areas' | 'history' | 'references' | 'certification' | 'review';
   const STEPS: StepKey[] = ['personal', 'availability', 'license', 'experience', 'areas', 'history', 'references', 'certification', 'review'];
   const STEP_LABELS: Record<StepKey, string> = { personal: 'You', availability: 'Availability', license: 'License', experience: 'Experience', areas: 'Areas', history: 'History', references: 'References', certification: 'Certify', review: 'Review' };
-  const MULTI = ['days', 'times', 'workedAt', 'areas'];
+  const MULTI = ['days', 'times', 'certType', 'workedAt', 'areas'];
   const KEYS = ['fullName', 'phone', 'email', 'address', 'city', 'state', 'zip', 'days', 'times', 'hasCert', 'certType', 'certTypeOther', 'certNumber', 'certState', 'certExpiry',
     'hasExperience', 'years', 'workedAt', 'areas', 'areasOther', 'emp1Employer', 'emp1Position', 'emp1Dates', 'emp1Supervisor', 'emp2Employer', 'emp2Position', 'emp2Dates', 'emp2Supervisor',
     'ref1Name', 'ref1Contact', 'ref2Name', 'ref2Contact', 'certify', 'signature', 'signDate'];
   const answers: Record<string, string> = Object.fromEntries(KEYS.map((k) => [k, '']));
+  const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
+  const phoneOk = (v: string) => v.replace(/\D/g, '').length >= 7;
   const REVIEW_GROUPS: [StepKey, string, [string, string][]][] = [
     ['personal', 'Personal information', [['fullName', 'Full legal name'], ['phone', 'Phone'], ['email', 'Email'], ['address', 'Address'], ['city', 'City'], ['state', 'State'], ['zip', 'ZIP']]],
     ['availability', 'Availability', [['days', 'Days available'], ['times', 'Preferred time']]],
@@ -353,7 +365,14 @@ import { SITE } from '../consts';
   ];
   /** Sections the paper form asks for ("please provide / please list") that are not blocking online — the review step flags them if empty. */
   const EXPECTED: [StepKey, string, string[]][] = [['history', 'No positions listed — the application asks for your two most recent or most relevant caregiving positions.', ['emp1Employer', 'emp1Position']], ['references', 'No references listed — the application asks for two professional references.', ['ref1Name', 'ref2Name']]];
-  const DRAFT_KEY = 'mh-apply-draft-v1';
+  const DRAFT_KEY = 'mh-apply-draft-v2';
+  /** Required fields per step, with the inline error that explains each. */
+  const REQUIRED: Partial<Record<StepKey, [string, (v: string) => boolean][]>> = {
+    personal: [['fullName', (v) => !!v.trim()], ['phone', phoneOk], ['email', emailOk]],
+    license: [['hasCert', (v) => !!v]],
+    experience: [['hasExperience', (v) => !!v]],
+    certification: [['certify', (v) => v === 'Yes'], ['signature', (v) => !!v.trim()], ['signDate', (v) => !!v]],
+  };
 
   const form = document.getElementById('apForm') as HTMLFormElement;
   const progEl = document.getElementById('apProg') as HTMLOListElement;
@@ -367,32 +386,23 @@ import { SITE } from '../consts';
   const stepEls = new Map<StepKey, HTMLFieldSetElement>();
   form.querySelectorAll<HTMLFieldSetElement>('fieldset[data-step]').forEach((el) => stepEls.set(el.dataset.step as StepKey, el));
   let stepIndex = 0;
+  let returnToReview = false;
+  let dirty = false; // nothing is saved to the session until the applicant types something
   let status: 'idle' | 'sending' | 'sent' | 'sent-test' | 'error' = 'idle';
   const track = (event: string, p: Record<string, unknown> = {}) => { ((window as unknown as { dataLayer?: unknown[] }).dataLayer ??= []).push({ event, ...p }); };
 
-  const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
-  const phoneOk = (v: string) => v.replace(/\D/g, '').length >= 7;
-  const zipOk = (v: string) => !v.trim() || /^\d{5}(-\d{4})?$/.test(v.trim());
-  const gate = (key: StepKey): boolean => {
-    switch (key) {
-      case 'personal': return !!answers.fullName.trim() && phoneOk(answers.phone) && emailOk(answers.email) && zipOk(answers.zip);
-      case 'license': return !!answers.hasCert;
-      case 'experience': return !!answers.hasExperience;
-      case 'certification': return answers.certify === 'Yes' && !!answers.signature.trim() && !!answers.signDate;
-      default: return true;
-    }
-  };
+  const gate = (key: StepKey): boolean => (REQUIRED[key] ?? []).every(([k, ok]) => ok(answers[k]));
   const syncMulti = (name: string) => { answers[name] = Array.from(form.querySelectorAll<HTMLInputElement>(`input[name="${name}"]:checked`)).map((c) => c.value).join(', '); };
   const el = (tag: string, cls: string, text?: string) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined) n.textContent = text; return n; };
 
   /* conditional blocks: if yes / if no (the paper form's own logic) */
   function syncConditionals() {
-    const certYes = document.getElementById('apCertYes') as HTMLElement, certNo = document.getElementById('apCertNo') as HTMLElement, certOther = document.getElementById('apCertOther') as HTMLElement, expYes = document.getElementById('apExpYes') as HTMLElement;
-    certYes.hidden = answers.hasCert !== 'Yes'; certNo.hidden = answers.hasCert !== 'No'; certOther.hidden = answers.certType !== 'Other'; expYes.hidden = answers.hasExperience !== 'Yes';
-    // answers that no longer apply are cleared so they can never ride along
+    const certYes = document.getElementById('apCertYes') as HTMLElement, certNo = document.getElementById('apCertNo') as HTMLElement, certOther = document.getElementById('apCertOther') as HTMLElement;
+    const otherType = answers.certType.split(', ').includes('Other');
+    certYes.hidden = answers.hasCert !== 'Yes'; certNo.hidden = answers.hasCert !== 'No'; certOther.hidden = !otherType;
+    // "If yes, please provide" details that no longer apply are cleared so they can never ride along
     if (answers.hasCert !== 'Yes') ['certType', 'certTypeOther', 'certNumber', 'certState', 'certExpiry'].forEach(clearField);
-    if (answers.certType !== 'Other') clearField('certTypeOther');
-    if (answers.hasExperience !== 'Yes') ['years', 'workedAt'].forEach(clearField);
+    if (!otherType) clearField('certTypeOther');
   }
   function clearField(key: string) {
     if (!answers[key]) return;
@@ -410,11 +420,12 @@ import { SITE } from '../consts';
       li.appendChild(el('span', 'sr-only', `Step ${i + 1} of ${STEPS.length}: ${STEP_LABELS[key]}${i === stepIndex ? ' (current)' : ''}`));
       progEl.appendChild(li);
     });
+    (document.getElementById('apProgNow') as HTMLElement).textContent = `Step ${stepIndex + 1} of ${STEPS.length} · ${STEP_LABELS[STEPS[stepIndex]]}`;
   }
   function renderRecap(current: StepKey) {
     const pairs: [string, string][] = [];
     if (answers.fullName.trim()) pairs.push(['Applicant', answers.fullName.trim()]);
-    if (answers.hasCert) pairs.push(['License', answers.hasCert === 'Yes' ? (answers.certType === 'Other' ? answers.certTypeOther || 'Other' : answers.certType || 'Yes') : 'None yet']);
+    if (answers.hasCert) pairs.push(['License', answers.hasCert === 'Yes' ? (answers.certType.replace('Other', answers.certTypeOther.trim() || 'Other') || 'Yes') : 'None yet']);
     if (answers.hasExperience) pairs.push(['Experience', answers.hasExperience === 'Yes' ? (answers.years ? `${answers.years} yrs` : 'Yes') : 'New to caregiving']);
     const show = stepIndex > 0 && current !== 'review' && pairs.length > 0;
     recapEl.hidden = !show; if (!show) return;
@@ -431,7 +442,7 @@ import { SITE } from '../consts';
       const group = el('div', 'ap-rev-group');
       const head = el('div', 'ap-rev-head'); head.appendChild(el('h3', '', heading));
       const edit = el('button', 'ap-rev-edit', 'Edit') as HTMLButtonElement; edit.type = 'button'; edit.setAttribute('aria-label', `Edit ${heading.toLowerCase()}`);
-      edit.addEventListener('click', () => { stepIndex = STEPS.indexOf(stepKey); render(true); });
+      edit.addEventListener('click', () => { returnToReview = true; stepIndex = STEPS.indexOf(stepKey); render(true); });
       head.appendChild(edit); group.appendChild(head);
       if (empty && expected) group.appendChild(el('p', 'ap-rev-empty', expected[1]));
       if (rows.length) {
@@ -442,14 +453,20 @@ import { SITE } from '../consts';
       reviewEl.appendChild(group);
     }
   }
-  function showErrors(show: boolean) {
-    const checks: [string, string, (v: string) => boolean][] = [['fullName', 'fullName', (v) => !!v.trim()], ['phone', 'phone', phoneOk], ['email', 'email', emailOk], ['zip', 'zip', zipOk], ['signature', 'signature', (v) => !!v.trim()]];
-    for (const [id, key, ok] of checks) {
-      const input = document.getElementById(`ap-${id}`) as HTMLInputElement | null; const err = document.getElementById(`ap-${id}-err`) as HTMLElement | null;
-      if (!input || !err) continue;
+  /** Shows (or clears) the inline errors of ONE step — or of one field when `only` is given. Returns the first invalid control. */
+  function showErrors(show: boolean, step: StepKey, only?: string): HTMLElement | null {
+    let first: HTMLElement | null = null;
+    for (const [key, ok] of REQUIRED[step] ?? []) {
+      if (only && key !== only) continue;
+      const err = document.getElementById(`ap-${key}-err`) as HTMLElement | null; if (!err) continue;
       const bad = show && !ok(answers[key]);
-      err.hidden = !bad; input.setAttribute('aria-invalid', String(bad));
+      err.hidden = !bad;
+      const input = document.getElementById(`ap-${key}`) as HTMLInputElement | null;
+      if (input) input.setAttribute('aria-invalid', String(bad));
+      const control = input ?? form.querySelector<HTMLElement>(`[name="${key}"]`);
+      if (bad && !first) first = control;
     }
+    return first;
   }
   function render(focus = false) {
     const current = STEPS[stepIndex];
@@ -457,15 +474,17 @@ import { SITE } from '../consts';
     syncConditionals(); renderProgress(); renderRecap(current);
     if (current === 'review') renderReview();
     backBtn.hidden = stepIndex === 0;
-    nextBtn.textContent = current === 'review' ? (status === 'sending' ? 'Sending…' : 'Submit application') : 'Continue';
-    nextBtn.disabled = status === 'sending' || !gate(current);
+    nextBtn.textContent = current === 'review' ? (status === 'sending' ? 'Sending…' : 'Submit application') : returnToReview ? 'Back to review' : 'Continue';
+    // Continue stays focusable: an incomplete step explains itself on activation instead of going silent.
+    nextBtn.setAttribute('aria-disabled', String(status === 'sending' || !gate(current)));
+    form.setAttribute('aria-busy', String(status === 'sending'));
     if (focus) { stepEls.get(current)?.querySelector('legend')?.focus(); (document.querySelector('.ap-section') as HTMLElement).scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); }
     saveDraft();
     track('apply_step_viewed', { step: current, step_number: stepIndex + 1, steps_total: STEPS.length });
   }
 
   /* session draft — survives an accidental reload, never leaves this browser tab, cleared on submit */
-  function saveDraft() { try { sessionStorage.setItem(DRAFT_KEY, JSON.stringify({ answers, stepIndex })); } catch { /* storage unavailable: fine */ } }
+  function saveDraft() { if (!dirty) return; try { sessionStorage.setItem(DRAFT_KEY, JSON.stringify({ answers, stepIndex })); } catch { /* storage unavailable: fine */ } }
   function loadDraft(): boolean {
     try {
       const raw = sessionStorage.getItem(DRAFT_KEY); if (!raw) return false;
@@ -480,7 +499,7 @@ import { SITE } from '../consts';
           else c.value = answers[k];
         });
       }
-      return KEYS.some((k) => answers[k]);
+      return KEYS.some((k) => k !== 'signDate' && answers[k]);
     } catch { return false; }
   }
   function clearDraft() { try { sessionStorage.removeItem(DRAFT_KEY); } catch { /* ignore */ } }
@@ -491,20 +510,22 @@ import { SITE } from '../consts';
     if (MULTI.includes(t.name)) syncMulti(t.name);
     else if (t.name in answers) answers[t.name] = (t instanceof HTMLInputElement && t.type === 'checkbox') ? (t.checked ? t.value : '') : t.value;
     else return;
+    dirty = true;
     if (['hasCert', 'certType', 'hasExperience'].includes(t.name)) syncConditionals();
-    if (['fullName', 'phone', 'email', 'zip', 'signature'].includes(t.name)) showErrors(false);
-    nextBtn.disabled = status === 'sending' || !gate(STEPS[stepIndex]);
+    showErrors(false, STEPS[stepIndex], t.name);
+    nextBtn.setAttribute('aria-disabled', String(status === 'sending' || !gate(STEPS[stepIndex])));
     saveDraft();
   });
-  ['fullName', 'phone', 'email', 'zip', 'signature'].forEach((id) => { (document.getElementById(`ap-${id}`) as HTMLInputElement).addEventListener('blur', () => { if (answers[id]) showErrors(true); }); });
+  // Inline validation when a text field loses focus (never while typing) — that field only.
+  ['fullName', 'phone', 'email', 'signature', 'signDate'].forEach((id) => { (document.getElementById(`ap-${id}`) as HTMLInputElement).addEventListener('blur', () => { if (answers[id]) showErrors(true, STEPS[stepIndex], id); }); });
   backBtn.addEventListener('click', () => { if (stepIndex > 0) { stepIndex -= 1; render(true); } });
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const current = STEPS[stepIndex];
-    if (!gate(current)) { showErrors(true); return; }
+    if (!gate(current)) { const first = showErrors(true, current); first?.focus(); return; }
     if (status === 'sending') return;
     track('apply_step_completed', { step: current, step_number: stepIndex + 1 });
-    if (current !== 'review') { stepIndex += 1; render(true); return; }
+    if (current !== 'review') { stepIndex = returnToReview ? STEPS.indexOf('review') : stepIndex + 1; returnToReview = false; render(true); return; }
     void send();
   });
   async function send() {
@@ -527,6 +548,7 @@ import { SITE } from '../consts';
       const reason = err instanceof Error && err.message ? err.message : 'network';
       (document.getElementById('apErrCode') as HTMLElement).textContent = `Error code: ${reason}`;
       errorEl.hidden = false; render();
+      errorEl.setAttribute('tabindex', '-1'); errorEl.focus();
       track('apply_error', { message: reason });
     }
   }
@@ -547,7 +569,8 @@ import { SITE } from '../consts';
     setTimeout(() => { copyBtn.textContent = 'Copy my application'; }, 2600);
   });
   (document.getElementById('apDraftClear') as HTMLButtonElement).addEventListener('click', () => {
-    clearDraft(); for (const k of KEYS) clearField(k); stepIndex = 0; draftEl.hidden = true; render(true);
+    clearDraft(); for (const k of KEYS) clearField(k); stepIndex = 0; returnToReview = false; dirty = false; draftEl.hidden = true;
+    signDate.value = todayStr; answers.signDate = todayStr; render(true);
   });
 
   // date defaults to today (editable), in the visitor's local calendar
@@ -555,6 +578,7 @@ import { SITE } from '../consts';
   const today = new Date(); const pad = (n: number) => String(n).padStart(2, '0');
   const todayStr = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
   const restored = loadDraft();
+  dirty = restored;
   if (!answers.signDate) { signDate.value = todayStr; answers.signDate = todayStr; }
   draftEl.hidden = !restored;
   form.classList.add('ready');

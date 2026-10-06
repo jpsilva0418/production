@@ -4,8 +4,7 @@
  *  on linen, with a sticky side rail of what to have ready and the office contact. */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ApplicationForm from '../components/ApplicationForm.astro';
-import { SITE, fmtTime } from '../consts';
-const weekday = SITE.hours.find((h) => h.open && h.close)!;
+import { SITE } from '../consts';
 ---
 <BaseLayout
   title="Caregiver Application — Join Our Team"
@@ -30,7 +29,9 @@ const weekday = SITE.hours.find((h) => h.open && h.close)!;
             <li>Two professional references with a phone or email</li>
           </ul>
           <p class="caps-xs">Questions</p>
-          <p class="ap-rail-contact"><a href={`tel:${SITE.phoneE164}`}>{SITE.phone}</a><br /><a href={`mailto:${SITE.email}`} style="overflow-wrap:anywhere">{SITE.email}</a><br /><span class="dim">Monday&ndash;Friday, {fmtTime(weekday.open!)}&ndash;{fmtTime(weekday.close!)}</span></p>
+          <p class="ap-rail-contact"><a href={`mailto:${SITE.email}`} style="overflow-wrap:anywhere">{SITE.email}</a></p>
+          <p class="caps-xs">Prefer paper?</p>
+          <p class="ap-rail-contact"><a href="/downloads/magnolia-healthcare-caregiver-application.pdf" download>Download the application form</a> and email the completed form to us.</p>
           <p class="ap-rail-note">No license yet? Magnolia Healthcare Inc. may provide information about available caregiver training opportunities and courses.</p>
         </div>
       </aside>

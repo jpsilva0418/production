@@ -1,7 +1,9 @@
 ---
 /** THE PROLOGUE — Magnolia's cinematic home opening, adapted from the Leti Silva Beauty
  *  prologue system: a leaf-green veil carries the mark + name, then lifts to reveal the
- *  film (ambient "morning light", under a leaf scrim so the typography stays legible).
+ *  film (one of Magnolia's own supplied clips — a companion walking arm-in-arm with an
+ *  older woman — under a leaf scrim so the typography stays legible). The headline is
+ *  the current site's own: "Because every life matters" / "Home care agency".
  *  Engineering rules kept from the foundation: the poster is painted at t=0 (LCP),
  *  every animation is pure CSS whose base state equals the FINISHED state, the film is
  *  promoted only after the veil (preload=none; mp4 + webm; never under reduced motion
@@ -9,7 +11,7 @@
 import Mark from './Mark.astro';
 import { SITE } from '../consts';
 ---
-<section class="plg" aria-label="Magnolia Healthcare — non-medical home care in Arvada and the Denver Metro">
+<section class="plg" aria-label="Magnolia Healthcare — home care agency, anywhere in Massachusetts">
   <div class="plg-media" aria-hidden="true">
     <video class="plg-film" id="plgFilm" muted loop playsinline preload="none" poster="/media/hero-poster.jpg" disablepictureinpicture tabindex="-1">
       <source data-src="/media/hero-film.webm" type="video/webm" />
@@ -26,18 +28,18 @@ import { SITE } from '../consts';
   </div>
 
   <div class="plg-c">
-    <p class="plg-eyebrow a1">Non-medical home care <b>&middot;</b> {SITE.serviceArea.label}</p>
+    <p class="plg-eyebrow a1">{SITE.tagline} <b>&middot;</b> {SITE.serviceArea.label}</p>
     <h1 class="plg-h">
-      <span class="lo"><span class="li">Care that feels</span></span>
-      <span class="lo"><span class="li">like family,</span></span>
-      <span class="lo"><span class="li ital">at home.</span></span>
+      <span class="lo"><span class="li">Because</span></span>
+      <span class="lo"><span class="li">every life</span></span>
+      <span class="lo"><span class="li ital">matters.</span></span>
     </h1>
-    <p class="plg-it a3">Personal care, homemaking, companionship and dementia support &mdash; delivered with respect, compassion and honesty, in the comfort of your own home.</p>
+    <p class="plg-it a3">A higher standard of care &mdash; one built on compassion, excellence, and respect for every individual, in the comfort of home.</p>
     <div class="plg-ctas a4">
-      <a class="btn btn--ivory" href={SITE.links.consultCare}>Request a consultation</a>
-      <a class="btn btn--ghost" href="/services">Explore our services</a>
+      <a class="btn btn--ivory" href={SITE.links.consultCare}>Free consultation</a>
+      <a class="btn btn--ghost" href={SITE.links.services}>Our specialized care</a>
     </div>
-    <p class="plg-loc a4">Locally owned &middot; Colorado-licensed &middot; Founded {SITE.founded}</p>
+    <p class="plg-loc a4">Magnolia Healthcare, Inc. &middot; Home care agency &middot; Massachusetts</p>
   </div>
   <div class="plg-cue" aria-hidden="true"><span>Scroll</span><i class="ln"></i></div>
 </section>

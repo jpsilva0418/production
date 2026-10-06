@@ -4,15 +4,17 @@
    brass hairlines. Letty Silva Beauty is the quality benchmark for the *system* —
    the palette, type and shape language here are Magnolia's own.
 
-   CONFIRM: Magnolia's actual logo artwork and exact brand colours could not be
-   viewed in this environment (see docs/00-assessment.md). Every colour is a token,
-   so re-tuning to the real brand is a one-file change. */
+   Magnolia Healthcare, Inc.'s current site (seen in the supplied recordings) is white
+   with sage-green bands, a dark forest-green consultation banner, gold accents and a
+   painted white magnolia in a gold ring. The tokens below keep that family — deep leaf
+   green, sage, gold/brass, ivory — tuned for AA contrast. Every colour is a token, so
+   re-tuning to the official brand file is a one-file change. */
 :root{
   /* grounds */
   --ivory:#F8F4EE; --linen:#F1EAE1; --paper:#FFFDFB; --blush:#F5E7E2;
   /* the anchor: magnolia-leaf green (dark sections, primary buttons, headings on light) */
   --leaf:#1E3F36; --leaf-2:#27503F; --leaf-deep:#152E27;
-  --moss:#5E7D6B; --sage:#9DB3A6;                 /* large text / decorative only */
+  --moss:#5E7D6B; --sage:#8FA77E; --sage-band:#DCE5D3; /* the current site's sage — large text / bands only */
   /* the accent: blush petal (surfaces, hover warmth) */
   --petal:#E9CFC7; --petal-deep:#C98B80;
   /* hairlines & engraved caps */

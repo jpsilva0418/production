@@ -1,104 +1,105 @@
 ---
-/** OUR MISSION — Magnolia's existing About/Mission content restaged as an editorial
+/** OUR MISSION — the current site's "Our Mission" statement, restaged as an editorial
  *  story (the Leti Silva Beauty About-page system: title card, "the story" with drop cap
- *  and pull quote, cinema band, sticky values chapter). Facts are the current site's;
- *  nothing is paraphrased into a new claim. */
+ *  and pull quote, cinema band, sticky values chapter). The statement is the client's
+ *  own, verbatim; nothing is paraphrased into a new claim. The founder's portrait is
+ *  the woman at the centre of the supplied team photo — her name and biography are
+ *  supplied by Magnolia, never guessed. */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Plate from '../components/Plate.astro';
-import { SITE } from '../consts';
+import { SITE, TBC } from '../consts';
 ---
 <BaseLayout
-  title="Our Mission — More Than a Provider, a Family"
-  description="Founded by Madina Sorensen, Magnolia Healthcare’s mission is to provide exceptional non-medical personal care and home services — making daily life easier and happier for elderly, blind, and disabled individuals in the comfort of their own homes."
+  title="Our Mission — Dedicated Professionals at Your Service"
+  description="Our mission is to provide a higher standard of care — one built on compassion, excellence, and respect for every individual. Magnolia Healthcare, Inc., a Massachusetts home care agency."
   path="/mission">
 
   <!-- TITLE CARD -->
   <section class="acov">
     <div class="acov-l">
       <p class="cov-kick fade">Our mission</p>
-      <h1 class="disp rv">More than a provider.<br /><span class="ital">A family.</span></h1>
-      <p class="cov-sub rv" style="--d:.1s">Our main goal is to make daily life easier and happier for elderly, blind, and disabled individuals in the comfort of their own homes.</p>
+      <h1 class="disp rv">Dedicated professionals<br /><span class="ital">at your service.</span></h1>
+      <p class="cov-sub rv" style="--d:.1s">Our mission is to provide a higher standard of care &mdash; one built on compassion, excellence, and respect for every individual.</p>
       <div class="cov-cta fade" style="--d:.2s">
-        <a class="btn btn--solid" href={SITE.links.consultCare}>Request a consultation</a>
-        <a class="tlk" href="/services">Our services</a>
+        <a class="btn btn--solid" href={SITE.links.consultCare}>Free consultation</a>
+        <a class="tlk" href={SITE.links.services}>Our services</a>
       </div>
     </div>
     <div class="acov-r">
       <figure class="portrait rv">
-        <div class="portrait-fr"><Plate id="founder" alt="" class="lv lv--breathe" sizes="(max-width:899px) 76vw, 380px" widths={[480, 720, 960]} loading="eager" fetchpriority="high" /><i class="grain" aria-hidden="true"></i></div>
-        <figcaption><span class="caps-xs">{SITE.founder} &middot; Founder</span><em>Portrait placeholder &mdash; the real photograph will be supplied by Magnolia.</em></figcaption>
+        <div class="portrait-fr"><Plate id="founder" alt="The founder of Magnolia Healthcare, Inc." class="lv lv--breathe" sizes="(max-width:899px) 76vw, 380px" widths={[480, 560]} loading="eager" fetchpriority="high" /><i class="grain" aria-hidden="true"></i></div>
+        <figcaption><span class="caps-xs">Founder &middot; {SITE.founder ?? TBC}</span><em>From the supplied team photograph. Name and biography to be supplied by Magnolia.</em></figcaption>
       </figure>
     </div>
   </section>
 
-  <div class="chapslate fade" role="presentation"><span class="cs-t">The story</span></div>
+  <div class="chapslate fade" role="presentation"><span class="cs-t">The mission</span></div>
 
-  <!-- THE STORY -->
+  <!-- THE STORY (verbatim mission statement) -->
   <section class="sec lit">
     <i class="lx-shaft" aria-hidden="true"></i>
     <div class="wrap">
       <div class="story">
         <span class="caps-xs story-k rv">Why Magnolia exists</span>
-        <p class="drop rv" style="--d:.07s">Founded by Madina Sorensen, Magnolia Healthcare Agency&rsquo;s mission is to provide exceptional non-medical personal care and home services to its clients.</p>
-        <p class="rv">Madina started the business with a genuine desire to make a difference in the lives of individuals who require non-medical home care, drawing on a background in healthcare and special education for those with unique needs.</p>
-        <div class="story-pull rv"><p>&ldquo;At Magnolia Healthcare, we&rsquo;re more than just a service provider &mdash; we&rsquo;re a family.&rdquo;</p></div>
-        <p class="rv">Our main goal is to make daily life easier and happier for elderly, blind, and disabled individuals in the comfort of their own homes, providing a helping hand to ensure clients can maintain their independence.</p>
-        <p class="rv">The agency was established in {SITE.founded}, and since then has grown steadily, expanding services and reaching more clients in need &mdash; a locally owned, Colorado-licensed provider of non-medical home care serving Arvada and the Denver Metro.</p>
+        <p class="drop rv" style="--d:.07s">Our mission is to provide a higher standard of care &mdash; one built on compassion, excellence, and respect for every individual.</p>
+        <p class="rv">We believe caring for someone means seeing the person beyond their needs and creating an environment where they feel safe, valued, and understood.</p>
+        <div class="story-pull rv"><p>&ldquo;Because every life matters.&rdquo;</p></div>
+        <p class="rv">Our caregivers are thoughtfully selected, trained, and committed to bringing warmth, dignity, and genuine human connection into every home.</p>
+        <p class="rv">We are committed to delivering exceptional care, maintaining the highest standards, and being a trusted partner to every client and family we serve.</p>
       </div>
     </div>
   </section>
 
-  <!-- CINEMA BAND -->
-  <div class="cine">
+  <!-- THE TEAM -->
+  <section class="sec sec--linen sec--tight">
     <div class="wrap">
-      <div class="cine-fr"><Plate id="cine-light" alt="" class="lv" sizes="100vw" widths={[768, 1280, 1920, 2400]} /><i class="grain" aria-hidden="true"></i><i class="lx-warm" aria-hidden="true"></i></div>
-      <p class="cine-cap">A helping hand &mdash; independence, at home</p>
+      <figure class="tm-hero rv-im"><div class="ph ph--framed"><Plate id="supplied-team-5" alt="The Magnolia Healthcare team" class="lv" sizes="(max-width:899px) 92vw, 760px" widths={[480, 652]} /><i class="grain" aria-hidden="true"></i></div><figcaption class="caps-xs">The Magnolia team &middot; supplied imagery &middot; names and roles to be confirmed by Magnolia</figcaption></figure>
     </div>
-  </div>
+  </section>
 
-  <div class="chapslate chapslate--dk fade" role="presentation"><span class="cs-t">Our values</span></div>
+  <div class="chapslate chapslate--dk fade" role="presentation"><span class="cs-t">What guides us</span></div>
 
-  <!-- THE VALUES · sticky chapter -->
+  <!-- THE VALUES · sticky chapter (the three words of the mission statement) -->
   <section class="sec sec--dk lit">
     <i class="lx-dusk" aria-hidden="true"></i>
     <div class="wrap chap" style="position:relative;z-index:1">
       <div class="chap-l rv">
         <p class="chap-rn">What guides us</p>
-        <h2 class="disp chap-t">Our core values.</h2>
-        <p class="chap-line">Three commitments that shape every visit, every plan, and every relationship.</p>
-        <a class="tlk tlk--lt" href={SITE.links.team}>Meet our caregivers</a>
+        <h2 class="disp chap-t">A higher standard of care.</h2>
+        <p class="chap-line">Three words from our mission that shape every visit and every relationship.</p>
+        <a class="tlk tlk--lt" href={SITE.links.careers}>Join our team</a>
       </div>
       <div class="vals" data-stag=".1">
         <article class="val rv">
           <span class="val-n">i.</span>
-          <h3>Respect &amp; Dignity</h3>
-          <p>We believe that our clients are unique individuals who deserve to be treated with respect and dignity.</p>
+          <h3>Compassion</h3>
+          <p>Caring for someone means seeing the person beyond their needs and creating an environment where they feel safe, valued, and understood.</p>
         </article>
         <article class="val rv">
           <span class="val-n">ii.</span>
-          <h3>Compassion &amp; Empathy</h3>
-          <p>We approach our work with genuine compassion and empathy. We understand the emotional and physical challenges our clients face, and we provide support with kindness and understanding.</p>
+          <h3>Excellence</h3>
+          <p>We are committed to delivering exceptional care and maintaining the highest standards.</p>
         </article>
         <article class="val rv">
           <span class="val-n">iii.</span>
-          <h3>Honesty &amp; Integrity</h3>
-          <p>We believe in transparency and building trust with our clients, employees, and the wider community.</p>
+          <h3>Respect</h3>
+          <p>Our caregivers bring warmth, dignity, and genuine human connection into every home.</p>
         </article>
       </div>
     </div>
   </section>
 
-  <!-- THE PLAN -->
+  <!-- THE NEXT STEP -->
   <section class="sec">
     <div class="wrap">
       <div class="note-card rv">
-        <span class="caps">How care is shaped</span>
-        <p class="note-copy">Every care plan is built around the client&rsquo;s routines, preferences, culture, and goals for independence.</p>
+        <span class="caps">Care starts here</span>
+        <p class="note-copy">Let&rsquo;s talk about the care your family needs.</p>
         <span class="note-rule" aria-hidden="true"></span>
-        <p class="note-body">Care begins with a conversation about who needs support and what a good day looks like. From there, a plan is shaped around the person &mdash; and delivered by caregivers who are carefully selected, extensively trained, and background-checked.</p>
+        <p class="note-body">Tell us a little about your loved one. We&rsquo;ll reach out to set up a free consultation and find the caregiver who fits them best.</p>
         <div class="note-act">
-          <a class="btn btn--solid" href={SITE.links.consultCare}>Request a consultation</a>
-          <a class="tlk" href="/services">Explore the services</a>
+          <a class="btn btn--solid" href={SITE.links.consultCare}>Free consultation</a>
+          <a class="tlk" href={SITE.links.services}>Explore our care</a>
         </div>
       </div>
     </div>
@@ -129,6 +130,9 @@ import { SITE } from '../consts';
   .story-pull{margin:clamp(2.8rem,5vw,4rem) 0;padding:clamp(1.8rem,3.4vw,2.6rem) 0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);text-align:center}
   .story-pull p{font-family:var(--display);font-style:italic;font-size:clamp(1.4rem,2.3vw,1.9rem);line-height:1.5;color:var(--leaf);max-width:20em;margin-inline:auto;font-variation-settings:'opsz' 72,'SOFT' 60}
   .story-pull+p{margin-top:0}
+  .tm-hero{margin:0;width:min(760px,100%);margin-inline:auto}
+  .tm-hero .ph{aspect-ratio:652/452}
+  .tm-hero figcaption{margin-top:1.2rem;text-align:center;display:block}
   .vals{display:grid;gap:clamp(1.6rem,3vw,2.6rem)}
   .val{border-top:1px solid var(--hairdk);padding-top:1.4rem;display:grid;grid-template-columns:2.4em 1fr;column-gap:.6rem}
   .val-n{font-family:var(--display);font-style:italic;color:var(--gold-lt);font-size:1.1rem;padding-top:.3rem}

@@ -10,13 +10,9 @@ const FIELDS = [
   ['requestType', 'Request type', 80],
   ['careTypes', 'Support considered', 200],
   ['timing', 'Ideal start', 80],
-  ['city', 'City', 80],
-  ['zip', 'ZIP', 10],
-  ['experience', 'Caregiving experience', 80],
-  ['availability', 'Availability', 80],
-  ['teamNotes', 'Notes (team)', 2000],
   ['otherText', 'Looking for', 2000],
-  ['fullName', 'Name', 120],
+  ['firstName', 'First name', 80],
+  ['lastName', 'Last name', 80],
   ['phone', 'Phone', 40],
   ['email', 'Email', 160],
   ['preferredContact', 'Preferred contact', 40],
@@ -47,7 +43,8 @@ export default async function handler(req, res) {
 
   const record = {};
   for (const [key, , cap] of FIELDS) record[key] = clean(body[key], cap);
-  if (!record.fullName || !record.email || !record.phone) return res.status(422).send(JSON.stringify({ ok: false, reason: 'missing_contact' }));
+  // Magnolia's current form requires only an email address; a first name is needed to reply.
+  if (!record.firstName || !record.email) return res.status(422).send(JSON.stringify({ ok: false, reason: 'missing_contact' }));
 
   const { RESEND_API_KEY, INQUIRY_TO_EMAIL, INQUIRY_FROM_EMAIL } = process.env;
   if (!RESEND_API_KEY || !INQUIRY_TO_EMAIL) {
@@ -56,15 +53,21 @@ export default async function handler(req, res) {
   }
 
   const rows = FIELDS.filter(([key]) => record[key]);
-  const subject = `Consultation request — ${record.fullName}, ${record.requestType || 'General'}`;
+  const subject = `Consultation request — ${[record.firstName, record.lastName].filter(Boolean).join(' ')}, ${record.requestType || 'General'}`;
   const html = `<h2 style="font-family:Georgia,serif">New request — Magnolia Healthcare website</h2><table cellpadding="6" style="border-collapse:collapse;font-family:sans-serif;font-size:14px">` +
     rows.map(([key, label]) => `<tr><td style="color:#4A5450;vertical-align:top"><strong>${esc(label)}</strong></td><td style="white-space:pre-wrap">${esc(record[key])}</td></tr>`).join('') + `</table>`;
   const text = rows.map(([key, label]) => `${label}: ${record[key]}`).join('\n');
-  const r = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: { authorization: `Bearer ${RESEND_API_KEY}`, 'content-type': 'application/json' },
-    body: JSON.stringify({ from: INQUIRY_FROM_EMAIL || 'Magnolia Healthcare Website <onboarding@resend.dev>', to: INQUIRY_TO_EMAIL, reply_to: record.email, subject, html, text }),
-  });
-  if (!r.ok) { console.error('[inquiry] Resend rejected the email', r.status, await r.text()); return res.status(502).send(JSON.stringify({ ok: false, reason: 'delivery_failed' })); }
+  try {
+    const r = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { authorization: `Bearer ${RESEND_API_KEY}`, 'content-type': 'application/json' },
+      body: JSON.stringify({ from: INQUIRY_FROM_EMAIL || 'Magnolia Healthcare Website <onboarding@resend.dev>', to: INQUIRY_TO_EMAIL, reply_to: record.email, subject, html, text }),
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!r.ok) { console.error('[inquiry] Resend rejected the email', r.status, await r.text().catch(() => '')); return res.status(502).send(JSON.stringify({ ok: false, reason: 'delivery_failed' })); }
+  } catch (err) {
+    console.error('[inquiry] delivery threw', err);
+    return res.status(502).send(JSON.stringify({ ok: false, reason: 'delivery_failed' }));
+  }
   return res.status(200).send(JSON.stringify({ ok: true }));
 }

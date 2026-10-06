@@ -1,37 +1,33 @@
 ---
-/** BLOG HUB — the Leti Silva Beauty blog system (featured article, category pills,
- *  client-side search, latest grid, polished empty state) carrying Magnolia's six
- *  existing articles. */
+/** BLOG HUB — "Magnolia Moments": the Leti Silva Beauty blog system (featured post,
+ *  client-side search, latest grid, polished empty state) carrying the posts on
+ *  Magnolia's current blog. The current blog has no categories, so none are modelled. */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlogCard from '../../components/BlogCard.astro';
 import Plate from '../../components/Plate.astro';
-import { CATEGORIES, CATEGORY_KEYS, fmtDate, getPublishedPosts } from '../../lib/blog';
+import { BLOG_NAME, fmtDate, getPublishedPosts } from '../../lib/blog';
 import { breadcrumbJsonLd, localBusinessJsonLd } from '../../lib/seo';
 const posts = await getPublishedPosts();
 const featured = posts.find((p) => p.data.featured) ?? posts[0];
 const rest = posts.filter((p) => p !== featured);
-const searchStr = (p: (typeof posts)[number]) => [p.data.title, p.data.description, CATEGORIES[p.data.category].name, ...p.data.tags].join(' ').toLowerCase();
-const jsonLd = [localBusinessJsonLd(), breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Blog', path: '/blog' }])];
+const searchStr = (p: (typeof posts)[number]) => [p.data.title, p.data.description, ...p.data.tags].join(' ').toLowerCase();
+const jsonLd = [localBusinessJsonLd(), breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: BLOG_NAME, path: '/blog' }])];
 ---
-<BaseLayout title="Blog — Notes from the Magnolia Team" description="Articles from Magnolia Healthcare on home care, our values, trust, quality and accountability." path="/blog" jsonLd={jsonLd}>
+<BaseLayout title="Magnolia Moments — The Magnolia Healthcare Blog" description="Magnolia Moments: warmth, companionship and the small, good days shared by the Magnolia Healthcare, Inc. team and the people they care for." path="/blog" jsonLd={jsonLd}>
   <section class="cov cov--c ghostwrap">
     <span class="ghost-w" aria-hidden="true">notes</span>
     <div class="cov-c">
       <p class="cov-kick cov-kick--c fade">The blog</p>
-      <h1 class="disp rv">Notes from the <span class="ital">Magnolia team.</span></h1>
-      <p class="cov-sub rv" style="--d:.08s">Plain-language articles on non-medical home care, the values we work by, and how we keep improving.</p>
+      <h1 class="disp rv">Magnolia <span class="ital">Moments.</span></h1>
+      <p class="cov-sub rv" style="--d:.08s">Some moments are simply meant to make us smile &mdash; warmth, companionship, and the small, good days we share.</p>
     </div>
   </section>
 
   <section class="bg-controls" aria-label="Browse articles">
     <div class="wrap">
-      <nav class="pills rv" aria-label="Categories">
-        <a class="pill pill-on" href="/blog" aria-current="page">All</a>
-        {CATEGORY_KEYS.map((key) => <a class="pill" href={`/blog/category/${key}`}>{CATEGORIES[key].name}</a>)}
-      </nav>
       <div class="bg-search rv" style="--d:.06s">
-        <label class="sr-only" for="blogSearch">Search articles</label>
-        <input id="blogSearch" type="search" placeholder="Search articles&hellip;" autocomplete="off" />
+        <label class="sr-only" for="blogSearch">Search posts</label>
+        <input id="blogSearch" type="search" placeholder="Search posts&hellip;" autocomplete="off" />
         <p id="searchCount" class="bg-count" role="status" aria-live="polite"></p>
       </div>
     </div>
@@ -48,8 +44,8 @@ const jsonLd = [localBusinessJsonLd(), breadcrumbJsonLd([{ name: 'Home', path: '
             <p class="caps-xs">Featured</p>
             <h2><a href={`/blog/${featured.id}`}>{featured.data.title}</a></h2>
             <p class="bg-feat-desc">{featured.data.description}</p>
-            <p class="bg-feat-meta">{CATEGORIES[featured.data.category].name} &middot; {fmtDate(featured.data.pubDate)}</p>
-            <a class="btn btn--line" href={`/blog/${featured.id}`}>Read the article</a>
+            <p class="bg-feat-meta">{BLOG_NAME} &middot; {fmtDate(featured.data.pubDate)}</p>
+            <a class="btn btn--line" href={`/blog/${featured.id}`}>Read the post</a>
           </div>
         </article>
       </div>
@@ -58,13 +54,13 @@ const jsonLd = [localBusinessJsonLd(), breadcrumbJsonLd([{ name: 'Home', path: '
 
   <section class="bg-latest" aria-label="All articles">
     <div class="wrap">
-      <h2 class="bg-h2 rv">All articles</h2>
+      <h2 class="bg-h2 rv">More moments</h2>
       <div class="bg-grid" id="blogGrid" data-stag=".06">
         {rest.map((post) => <div class="rv"><BlogCard post={post} headingLevel="h3" /></div>)}
       </div>
       <div id="noResults" class="bg-empty" hidden>
         <p class="ital">Nothing matches that search.</p>
-        <p>Try a broader word, or <a href="/contact">ask us directly</a>.</p>
+        <p>Try a broader word, or <a href="/consultation">ask us directly</a>.</p>
       </div>
     </div>
   </section>
@@ -127,7 +123,7 @@ const jsonLd = [localBusinessJsonLd(), breadcrumbJsonLd([{ name: 'Home', path: '
       }
       if (featSection && featCard) featSection.hidden = featCard.hidden;
       empty.hidden = shown > 0;
-      count.textContent = q ? `${shown} article${shown === 1 ? '' : 's'} found` : '';
+      count.textContent = q ? `${shown} post${shown === 1 ? '' : 's'} found` : '';
     });
   }
 </script>

@@ -1,23 +1,23 @@
 ---
-/** MEMBER SIGN IN — the current site exposes member login/sign-up (community groups).
- *  What members see after signing in is being confirmed with Magnolia, so this demo
- *  keeps a branded entry point only: no authentication, no credentials collected, no
- *  invented portal. */
+/** LOG IN — the current site's menu carries a Wix "Log in / Sign up" control (email,
+ *  password, Google, Facebook). What members see after signing in was not captured, so
+ *  this demo keeps a branded entry point only: no authentication, no credentials
+ *  collected, no invented portal. */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Mark from '../components/Mark.astro';
 import { SITE } from '../consts';
 ---
-<BaseLayout title="Member Sign In" description="Member sign in for the Magnolia Healthcare community." path="/login" headerLight>
+<BaseLayout title="Log In" description="Log in to the Magnolia Healthcare website." path="/login" headerLight>
   <section class="li lit">
     <i class="lx-dusk" aria-hidden="true"></i>
     <div class="li-card rv">
       <Mark class="li-mark" />
-      <span class="caps">Members</span>
-      <h1>Sign in to the Magnolia community.</h1>
-      <p>Magnolia&rsquo;s current website offers member sign-in and sign-up for its community groups. This demo keeps the entry point; what members see after signing in is being confirmed with Magnolia before it is redesigned.</p>
+      <span class="caps">Log in</span>
+      <h1>Log in to Magnolia Healthcare.</h1>
+      <p>Magnolia&rsquo;s current website offers a log in and sign up. This demo keeps the entry point; what members see after logging in is being confirmed with Magnolia before it is redesigned.</p>
       <div class="li-act">
         <a class="btn btn--solid" href={SITE.currentSite} target="_blank" rel="noopener noreferrer">Continue on the current site</a>
-        <a class="tlk" href={SITE.links.community}>About the community</a>
+        <a class="tlk" href={SITE.links.consult}>Free consultation</a>
       </div>
       <p class="li-note">No account details are collected on this page.</p>
     </div>

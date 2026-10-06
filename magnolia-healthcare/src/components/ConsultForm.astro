@@ -15,7 +15,7 @@ import { SITE } from '../consts';
 <section class="cf-section">
   <div class="cf-wrap">
     <noscript>
-      <p class="cf-noscript">This form needs JavaScript. You can also call <a href={`tel:${SITE.phoneE164}`}>{SITE.phone}</a> or email <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+      <p class="cf-noscript">This form needs JavaScript. You can also email <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
     </noscript>
 
     <form id="cfForm" class="cf-form" novalidate>
@@ -38,10 +38,13 @@ import { SITE } from '../consts';
         <legend tabindex="-1">What kind of support are you considering?</legend>
         <p class="cf-hint">Choose everything that might apply &mdash; we&rsquo;ll talk it through together.</p>
         <div class="cf-cards cf-cards-2" role="group" aria-label="Types of support">
-          <label class="cf-card"><input type="checkbox" name="careTypes" value="Personal Care" /><span>Personal Care</span></label>
-          <label class="cf-card"><input type="checkbox" name="careTypes" value="Homemaking" /><span>Homemaking</span></label>
-          <label class="cf-card"><input type="checkbox" name="careTypes" value="Companionship" /><span>Companionship</span></label>
-          <label class="cf-card"><input type="checkbox" name="careTypes" value="Alzheimer’s & Dementia Support" /><span>Alzheimer&rsquo;s &amp; Dementia Support</span></label>
+          <label class="cf-card"><input type="checkbox" name="careTypes" value="Hospice & Palliative" /><span>Hospice &amp; Palliative</span></label>
+          <label class="cf-card"><input type="checkbox" name="careTypes" value="Alzheimer’s & Dementia Care" /><span>Alzheimer&rsquo;s &amp; Dementia Care</span></label>
+          <label class="cf-card"><input type="checkbox" name="careTypes" value="Rehabilitation Support" /><span>Rehabilitation Support</span></label>
+          <label class="cf-card"><input type="checkbox" name="careTypes" value="Geriatric Care" /><span>Geriatric Care</span></label>
+          <label class="cf-card"><input type="checkbox" name="careTypes" value="Parkinson’s" /><span>Parkinson&rsquo;s</span></label>
+          <label class="cf-card"><input type="checkbox" name="careTypes" value="ALS & Multiple Sclerosis" /><span>ALS &amp; Multiple Sclerosis</span></label>
+          <label class="cf-card"><input type="checkbox" name="careTypes" value="24/7 Caregiver Support" /><span>24/7 Caregiver Support</span></label>
           <label class="cf-card"><input type="checkbox" name="careTypes" value="Not sure yet" /><span>Not sure yet</span></label>
         </div>
         <div class="cf-field" role="radiogroup" aria-labelledby="cf-timing-label">
@@ -50,16 +53,6 @@ import { SITE } from '../consts';
             <label class="cf-card"><input type="radio" name="timing" value="As soon as possible" /><span>As soon as possible</span></label>
             <label class="cf-card"><input type="radio" name="timing" value="Within the next month" /><span>Within the next month</span></label>
             <label class="cf-card"><input type="radio" name="timing" value="Just exploring for now" /><span>Just exploring</span></label>
-          </div>
-        </div>
-        <div class="cf-two">
-          <div class="cf-field">
-            <label for="cf-city">City where care is needed</label>
-            <input id="cf-city" name="city" type="text" maxlength="80" autocomplete="address-level2" placeholder="Arvada" />
-          </div>
-          <div class="cf-field">
-            <label for="cf-zip">ZIP code</label>
-            <input id="cf-zip" name="zip" type="text" inputmode="numeric" maxlength="10" autocomplete="postal-code" placeholder="80002" />
           </div>
         </div>
       </fieldset>
@@ -76,16 +69,22 @@ import { SITE } from '../consts';
       <!-- Step: contact -->
       <fieldset class="cf-step" data-step="contact" hidden>
         <legend tabindex="-1">How can we reach you?</legend>
-        <div class="cf-field">
-          <label for="cf-name">Your name <span class="cf-req">required</span></label>
-          <input id="cf-name" name="fullName" type="text" maxlength="120" autocomplete="name" required aria-describedby="cf-name-err" />
-          <p class="cf-err" id="cf-name-err" hidden>Please enter your name.</p>
+        <div class="cf-two">
+          <div class="cf-field">
+            <label for="cf-name">First name <span class="cf-req">required</span></label>
+            <input id="cf-name" name="firstName" type="text" maxlength="80" autocomplete="given-name" required aria-describedby="cf-name-err" />
+            <p class="cf-err" id="cf-name-err" hidden>Please enter your first name.</p>
+          </div>
+          <div class="cf-field">
+            <label for="cf-lastName">Last name</label>
+            <input id="cf-lastName" name="lastName" type="text" maxlength="80" autocomplete="family-name" />
+          </div>
         </div>
         <div class="cf-two">
           <div class="cf-field">
-            <label for="cf-phone">Phone <span class="cf-req">required</span></label>
-            <input id="cf-phone" name="phone" type="tel" maxlength="40" autocomplete="tel" inputmode="tel" required aria-describedby="cf-phone-err" />
-            <p class="cf-err" id="cf-phone-err" hidden>Please enter a phone number we can call.</p>
+            <label for="cf-phone">Phone</label>
+            <input id="cf-phone" name="phone" type="tel" maxlength="40" autocomplete="tel" inputmode="tel" aria-describedby="cf-phone-err" />
+            <p class="cf-err" id="cf-phone-err" hidden>That phone number doesn&rsquo;t look complete.</p>
           </div>
           <div class="cf-field">
             <label for="cf-email">Email <span class="cf-req">required</span></label>
@@ -118,7 +117,7 @@ import { SITE } from '../consts';
             <option value="">Choose one (optional)</option>
             <option>Google</option>
             <option>Referral from a friend or family</option>
-            <option>Community event</option>
+            <option>Social media</option>
             <option>Healthcare professional</option>
             <option>Other</option>
           </select>
@@ -133,8 +132,8 @@ import { SITE } from '../consts';
       </fieldset>
 
       <div class="cf-error" id="cfError" role="alert" hidden>
-        <strong>We couldn&rsquo;t send that just now.</strong> Your answers are safe on this page &mdash; please try again in a moment,
-        or call <a href={`tel:${SITE.phoneE164}`}>{SITE.phone}</a>. You can also tap <em>Copy my request</em> and paste it into an email to
+        <strong>We couldn&rsquo;t send that just now.</strong> Your answers are safe on this page &mdash; please try again in a moment.
+        You can also tap <em>Copy my request</em> and paste it into an email to
         <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
         <div class="cf-err-actions"><button type="button" class="btn btn--line" id="cfCopy">Copy my request</button></div>
         <span class="cf-err-code" id="cfErrCode"></span>
@@ -150,7 +149,7 @@ import { SITE } from '../consts';
       <p class="cf-test-strip" id="cfTestStrip" hidden><strong>Demo mode</strong> &mdash; this request was NOT sent anywhere.</p>
       <span class="caps-xs">Received</span>
       <h2 tabindex="-1" id="cfThanksHead">Thank you &mdash; your request is with Magnolia.</h2>
-      <p>We read every request personally and will reach out using the contact method you chose. If it&rsquo;s urgent, call <a href={`tel:${SITE.phoneE164}`}>{SITE.phone}</a> during office hours.</p>
+      <p>We&rsquo;ll reach out to set up a free consultation and find the caregiver who fits best. You can also reach us any time at <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
       <div class="cf-thanks-cta">
         <a class="btn btn--solid" href="/">Back to the site</a>
         <a class="btn btn--line" href="/services">Explore our services</a>
@@ -237,15 +236,15 @@ import { SITE } from '../consts';
 <script>
   type StepKey = 'type' | 'care' | 'other' | 'contact' | 'notes' | 'review';
   const answers: Record<string, string> = {
-    requestType: '', careTypes: '', timing: '', city: '', zip: '', otherText: '',
-    fullName: '', phone: '', email: '', preferredContact: '', notes: '', heardAbout: '',
+    requestType: '', careTypes: '', timing: '', otherText: '',
+    firstName: '', lastName: '', phone: '', email: '', preferredContact: '', notes: '', heardAbout: '',
   };
   const STEP_LABELS: Record<StepKey, string> = { type: 'Request', care: 'The care', other: 'Details', contact: 'Contact', notes: 'Notes', review: 'Review' };
   const REVIEW_GROUPS: [StepKey, string, [string, string][]][] = [
     ['type', 'Request', [['requestType', 'How we can help']]],
-    ['care', 'The care', [['careTypes', 'Support considered'], ['timing', 'Ideal start'], ['city', 'City'], ['zip', 'ZIP']]],
+    ['care', 'The care', [['careTypes', 'Support considered'], ['timing', 'Ideal start']]],
     ['other', 'Details', [['otherText', 'Looking for']]],
-    ['contact', 'Contact', [['fullName', 'Name'], ['phone', 'Phone'], ['email', 'Email'], ['preferredContact', 'Reach you by']]],
+    ['contact', 'Contact', [['firstName', 'First name'], ['lastName', 'Last name'], ['phone', 'Phone'], ['email', 'Email'], ['preferredContact', 'Reach you by']]],
     ['notes', 'Notes', [['notes', 'Notes'], ['heardAbout', 'Heard about us']]],
   ];
   const TYPE_PATHS: Record<string, StepKey[]> = {
@@ -257,7 +256,8 @@ import { SITE } from '../consts';
   // The old ?for=team entry point now leads to the real caregiver application.
   if ((new URLSearchParams(location.search).get('for') ?? '').toLowerCase() === 'team') location.replace('/apply');
   const SERVICE_PRESELECT: Record<string, string> = {
-    'personal-care': 'Personal Care', 'homemaking': 'Homemaking', 'companionship': 'Companionship', 'alzheimers-dementia-support': 'Alzheimer’s & Dementia Support',
+    'hospice-palliative': 'Hospice & Palliative', 'alzheimers-dementia': 'Alzheimer’s & Dementia Care', 'rehabilitation-support': 'Rehabilitation Support',
+    'geriatric-care': 'Geriatric Care', 'parkinsons': 'Parkinson’s', 'als-multiple-sclerosis': 'ALS & Multiple Sclerosis', 'caregiver-support-24-7': '24/7 Caregiver Support',
   };
 
   const form = document.getElementById('cfForm') as HTMLFormElement;
@@ -279,13 +279,14 @@ import { SITE } from '../consts';
 
   const path = (): StepKey[] => { const full = TYPE_PATHS[answers.requestType] ?? TYPE_PATHS['Care for a loved one']; return lockedType ? full.slice(1) : full; };
   const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
-  const phoneOk = (v: string) => v.replace(/\D/g, '').length >= 7;
+  // Phone is optional (as on Magnolia's current form); when given it must look like a number.
+  const phoneOk = (v: string) => !v.trim() || v.replace(/\D/g, '').length >= 7;
   const gate = (key: StepKey): boolean => {
     switch (key) {
       case 'type': return !!answers.requestType;
       case 'care': return !!answers.careTypes;
       case 'other': return !!answers.otherText.trim();
-      case 'contact': return !!answers.fullName.trim() && phoneOk(answers.phone) && emailOk(answers.email);
+      case 'contact': return !!answers.firstName.trim() && phoneOk(answers.phone) && emailOk(answers.email);
       default: return true;
     }
   };
@@ -335,13 +336,13 @@ import { SITE } from '../consts';
       group.appendChild(dl); reviewEl.appendChild(group);
     }
   }
-  const TYPE_SCOPED = ['careTypes', 'timing', 'city', 'zip', 'otherText'];
+  const TYPE_SCOPED = ['careTypes', 'timing', 'otherText'];
   function resetTypeScoped() {
     TYPE_SCOPED.forEach((key) => { answers[key] = ''; form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(`[name="${key}"]`).forEach((c) => { if (c instanceof HTMLInputElement && (c.type === 'radio' || c.type === 'checkbox')) c.checked = false; else c.value = ''; }); });
   }
   function showContactErrors(show: boolean) {
     const map: [string, (v: string) => boolean][] = [['name', (v) => !!v.trim()], ['phone', phoneOk], ['email', emailOk]];
-    const key: Record<string, string> = { name: 'fullName', phone: 'phone', email: 'email' };
+    const key: Record<string, string> = { name: 'firstName', phone: 'phone', email: 'email' };
     for (const [id, ok] of map) {
       const input = document.getElementById(`cf-${id}`) as HTMLInputElement; const err = document.getElementById(`cf-${id}-err`) as HTMLElement;
       const bad = show && !ok(answers[key[id]]);
@@ -367,11 +368,11 @@ import { SITE } from '../consts';
     else if (!t.name || !(t.name in answers)) return;
     else answers[t.name] = t.value;
     if (t.name === 'requestType') { resetTypeScoped(); render(); return; }
-    if (['fullName', 'phone', 'email'].includes(t.name)) showContactErrors(false);
+    if (['firstName', 'phone', 'email'].includes(t.name)) showContactErrors(false);
     nextBtn.disabled = status === 'sending' || !gate(path()[stepIndex]);
   });
   // Inline validation when a contact field loses focus (never while typing).
-  ['name', 'phone', 'email'].forEach((id) => { (document.getElementById(`cf-${id}`) as HTMLInputElement).addEventListener('blur', () => { if (answers[id === 'name' ? 'fullName' : id]) showContactErrors(true); }); });
+  ['name', 'phone', 'email'].forEach((id) => { (document.getElementById(`cf-${id}`) as HTMLInputElement).addEventListener('blur', () => { if (answers[id === 'name' ? 'firstName' : id]) showContactErrors(true); }); });
   backBtn.addEventListener('click', () => { if (stepIndex > 0) { stepIndex -= 1; render(true); } });
   form.addEventListener('submit', (e) => {
     e.preventDefault();

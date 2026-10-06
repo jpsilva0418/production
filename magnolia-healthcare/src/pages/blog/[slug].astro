@@ -8,7 +8,7 @@ import BlogCta from '../../components/BlogCta.astro';
 import Plate from '../../components/Plate.astro';
 import { getCollection, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
-import { CATEGORIES, fmtDate, getPublishedPosts, readingTime, relatedPosts } from '../../lib/blog';
+import { BLOG_NAME, fmtDate, getPublishedPosts, readingTime, relatedPosts } from '../../lib/blog';
 import { articleJsonLd, breadcrumbJsonLd } from '../../lib/seo';
 import { SITE } from '../../consts';
 
@@ -19,14 +19,13 @@ export async function getStaticPaths() {
 interface Props { post: CollectionEntry<'posts'> }
 const { post } = Astro.props;
 const { Content } = await render(post);
-const cat = CATEGORIES[post.data.category];
 const path = `/blog/${post.id}`;
 const related = relatedPosts(post, await getPublishedPosts());
 const shareUrl = new URL(path, SITE.url).href;
 const enc = encodeURIComponent;
 const jsonLd = [
   articleJsonLd({ title: post.data.title, description: post.data.description, path, pubDate: post.data.pubDate, updated: post.data.updated }),
-  breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Blog', path: '/blog' }, { name: cat.name, path: `/blog/category/${post.data.category}` }, { name: post.data.title, path }]),
+  breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: BLOG_NAME, path: '/blog' }, { name: post.data.title, path }]),
 ];
 ---
 <BaseLayout title={post.data.title} description={post.data.description} path={path} type="article" jsonLd={jsonLd}>
@@ -34,7 +33,7 @@ const jsonLd = [
     <header class="art-head">
       <div class="wrap-text">
         <nav class="crumbs fade" aria-label="Breadcrumb">
-          <ol><li><a href="/">Home</a></li><li><a href="/blog">Blog</a></li><li><a href={`/blog/category/${post.data.category}`}>{cat.name}</a></li><li><span aria-current="page">{post.data.title}</span></li></ol>
+          <ol><li><a href="/">Home</a></li><li><a href="/blog">{BLOG_NAME}</a></li><li><span aria-current="page">{post.data.title}</span></li></ol>
         </nav>
         <h1 class="rv">{post.data.title}</h1>
         <p class="art-meta rv" style="--d:.06s">By <a href={SITE.links.mission}>{SITE.name}</a> <span aria-hidden="true">&middot;</span> {fmtDate(post.data.pubDate)}{!post.data.migrate && <><span aria-hidden="true">&middot;</span> {readingTime(post.body)} min read</>}</p>
@@ -47,7 +46,7 @@ const jsonLd = [
       {post.data.migrate ? (
         <div class="migrate rv" style="--d:.06s" role="note">
           <span class="plaque">Content migration pending</span>
-          <p>This article exists on Magnolia&rsquo;s current website. Its full text will be migrated here word-for-word &mdash; nothing has been rewritten or invented for this demo.</p>
+          <p>Only the opening of this post was captured from Magnolia&rsquo;s current website. Its full text and photographs will be migrated here word-for-word &mdash; nothing has been rewritten or invented for this demo.</p>
           {post.data.sourceUrl && <a class="arrow-link" href={post.data.sourceUrl} target="_blank" rel="noopener noreferrer">Read it on the current site <span class="arr" aria-hidden="true">&rarr;</span></a>}
         </div>
       ) : (
