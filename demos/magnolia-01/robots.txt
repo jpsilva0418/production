@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+# Design demo: every page is noindex,nofollow. No sitemap is published.

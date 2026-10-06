@@ -1,0 +1,49 @@
+{
+  "$comment": "Every client demo JP Silva Digital keeps alive. Demos are permanent until explicitly retired. One slug = one frozen snapshot folder = one host. Never reuse a slug or a domain.",
+  "domainPattern": "<slug>.demo.jpsilvadigital.com",
+  "dnsZone": "jpsilvadigital.com (Vercel DNS, ns1/ns2.vercel-dns.com)",
+  "demos": [
+    {
+      "slug": "magnolia-01",
+      "client": "Magnolia Healthcare, Inc.",
+      "title": "Concept 01 · Family, at Home",
+      "status": "live",
+      "snapshot": "demos/magnolia-01/",
+      "builtWith": "magnolia-healthcare/scripts/snapshot-demo.mjs magnolia-01 01",
+      "host": { "type": "render-static", "service": "magnolia-01-demo", "url": "https://magnolia-01-demo.onrender.com" },
+      "customDomain": { "name": "magnolia-01.demo.jpsilvadigital.com", "status": "pending — needs a Vercel project (see demos/README.md)" }
+    },
+    {
+      "slug": "magnolia-05",
+      "client": "Magnolia Healthcare, Inc.",
+      "title": "Concept 05 · Immersive Storytelling",
+      "status": "live",
+      "snapshot": "demos/magnolia-05/",
+      "builtWith": "magnolia-healthcare/scripts/snapshot-demo.mjs magnolia-05 05",
+      "host": { "type": "render-static", "service": "magnolia-05-demo", "url": "https://magnolia-05-demo.onrender.com" },
+      "customDomain": { "name": "magnolia-05.demo.jpsilvadigital.com", "status": "pending — needs a Vercel project (see demos/README.md)" }
+    },
+    {
+      "slug": "magnolia-07",
+      "client": "Magnolia Healthcare, Inc.",
+      "title": "Concept 07 · Family, at Home — Evolved",
+      "status": "live",
+      "snapshot": "demos/magnolia-07/",
+      "builtWith": "magnolia-healthcare/scripts/snapshot-demo.mjs magnolia-07 07",
+      "host": { "type": "render-static", "service": "magnolia-07-demo", "url": "https://magnolia-07-demo.onrender.com" },
+      "customDomain": { "name": "magnolia-07.demo.jpsilvadigital.com", "status": "pending — needs a Vercel project (see demos/README.md)" }
+    },
+    {
+      "slug": "jp-silva-media",
+      "client": "JP Silva Media",
+      "title": "JP Silva Media (Picture Start)",
+      "status": "live — not migrated",
+      "snapshot": "jp-web-design/public/demo/jp-silva-media/ on branch claude/jp-silva-digital-launch",
+      "host": { "type": "vercel-path", "project": "jp-silva-digital (the production company site)", "url": "https://jpsilvadigital.com/demo/jp-silva-media" },
+      "customDomain": { "name": "jp-silva-media.demo.jpsilvadigital.com", "status": "proposed only — the existing URL stays; see demos/README.md § JP Silva Media" }
+    }
+  ],
+  "internal": [
+    { "name": "Magnolia design review (all concepts + selector)", "url": "https://magnolia-healthcare-demo.onrender.com/preview", "note": "Private review environment. Never send to clients." }
+  ]
+}
