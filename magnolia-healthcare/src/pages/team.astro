@@ -5,7 +5,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Plate from '../components/Plate.astro';
 import { SITE } from '../consts';
-const placeholders = ['team-1', 'team-2', 'team-3'];
+const placeholders = ['supplied-clinician', 'team-2', 'team-3'];
 ---
 <BaseLayout
   title="Our Caregivers — Selected, Trained, Trusted"
@@ -57,14 +57,15 @@ const placeholders = ['team-1', 'team-2', 'team-3'];
         <div><p class="caps rv">The caregiving team</p><h2 class="disp rv" style="--d:.06s">The people behind the care.</h2></div>
         <p class="ital tm-note rv" style="--d:.1s">The current website does not name individual caregivers. These tiles are placeholders for the profiles Magnolia chooses to share &mdash; names, roles and photographs will be supplied by Magnolia, never invented.</p>
       </div>
+      <figure class="tm-hero rv-im"><div class="ph"><Plate id="supplied-team" alt="Four Magnolia Healthcare caregivers in branded scrubs" sizes="(max-width:899px) 92vw, 640px" widths={[480, 640]} /></div><figcaption class="caps-xs">Supplied imagery &middot; names and roles to be confirmed by Magnolia</figcaption></figure>
       <div class="tm-grid" data-stag=".08">
         {placeholders.map((p, i) => (
           <article class="tm card rv" aria-label={`Caregiver profile placeholder ${i + 1}`}>
             <div class="ph tm-ph"><Plate id={p} alt="" sizes="(max-width:599px) 92vw, 300px" widths={[400, 640, 900]} /></div>
             <div class="tm-body">
-              <span class="plaque">Placeholder</span>
+              <span class="plaque">{p.startsWith('supplied') ? 'Supplied photo' : 'Placeholder'}</span>
               <h3>Caregiver profile</h3>
-              <p>Name, role and photograph to be provided by Magnolia Healthcare.</p>
+              <p>Name and role to be provided by Magnolia Healthcare.</p>
             </div>
           </article>
         ))}
@@ -108,6 +109,9 @@ const placeholders = ['team-1', 'team-2', 'team-3'];
   .tm-head .caps{display:block;margin-bottom:.6rem}
   .tm-head .disp{font-size:clamp(2rem,3.6vw,3.2rem)}
   .tm-note{margin:0;max-width:30em;font-size:1.02rem;color:var(--ink-soft);font-variation-settings:'opsz' 48,'SOFT' 60}
+  .tm-hero{margin:0 auto clamp(2rem,3.6vw,3rem);width:min(640px,100%)}
+  .tm-hero .ph{aspect-ratio:1/1}
+  .tm-hero figcaption{display:block;margin-top:.8rem;text-align:center}
   .tm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2vw,1.6rem)}
   .tm{overflow:hidden}
   .tm-ph{aspect-ratio:4/5;border-radius:var(--r) var(--r) 0 0}

@@ -5,7 +5,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Plate from '../components/Plate.astro';
 import { SITE } from '../consts';
-const tiles = ['community', 'office', 'mission', 'companionship', 'home', 'homemaking', 'personal-care'];
+const tiles = ['supplied-team', 'office', 'mission', 'companionship', 'home', 'homemaking', 'personal-care'];
 ---
 <BaseLayout
   title="Community — Connection, Relationships & Mutual Support"
@@ -52,7 +52,7 @@ const tiles = ['community', 'office', 'mission', 'companionship', 'home', 'homem
         {tiles.map((t, i) => (
           <figure class:list={['gl-tile', 'rv-im', 'sheen', { 'gl-tile--tall': i === 0 || i === 3 }]}>
             <div class="ph"><Plate id={t} alt="" sizes="(max-width:599px) 92vw, (max-width:1023px) 46vw, 400px" widths={[480, 800, 1200]} /><i class="shn" aria-hidden="true"></i></div>
-            <figcaption class="caps-xs">Placeholder {String(i + 1).padStart(2, '0')} &middot; community photograph</figcaption>
+            <figcaption class="caps-xs">{t.startsWith('supplied') ? `Supplied photo ${String(i + 1).padStart(2, '0')}` : `Placeholder ${String(i + 1).padStart(2, '0')} · community photograph`}</figcaption>
           </figure>
         ))}
       </div>
