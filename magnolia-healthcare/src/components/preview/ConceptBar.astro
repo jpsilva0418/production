@@ -6,15 +6,17 @@ import { CONCEPTS } from './concepts';
 interface Props { current: number }
 const { current } = Astro.props;
 const c = CONCEPTS[current - 1];
+/* Client-demo snapshots (DEMO_CONCEPT set, see scripts/snapshot-demo.mjs) never carry the review bar. */
+const clientDemo = !!(import.meta.env.DEMO_CONCEPT || process.env.DEMO_CONCEPT);
 ---
-<nav class="cb" id="conceptBar" aria-label="Design review: switch concept" data-n={CONCEPTS.length}>
+{!clientDemo && <nav class="cb" id="conceptBar" aria-label="Design review: switch concept" data-n={CONCEPTS.length}>
   <a class="cb-ix" href="/preview" title="Concept index (0)">Review</a>
   <ol class="cb-list">
     {CONCEPTS.map((k) => <li><a href={`/preview/${k.id}`} aria-current={k.n === current ? 'page' : undefined} title={k.title}>{k.id}</a></li>)}
   </ol>
   <span class="cb-name">{c ? `${c.id} · ${c.title}` : ''}</span>
   <button class="cb-hide" id="conceptHide" type="button" title="Hide (H)" aria-label="Hide concept bar">&times;</button>
-</nav>
+</nav>}
 <style is:global>
   .cb{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:90;display:flex;align-items:center;gap:10px;padding:6px 8px 6px 12px;background:rgba(20,22,21,.9);color:#EDE8E0;border-radius:999px;backdrop-filter:blur(8px);font-family:var(--utility);font-size:.68rem;letter-spacing:.06em;box-shadow:0 12px 32px -14px rgba(0,0,0,.6);max-width:calc(100vw - 24px)}
   .cb.cb--hidden{display:none}
@@ -29,13 +31,14 @@ const c = CONCEPTS[current - 1];
   @media(max-width:640px){.cb{bottom:8px;gap:6px;padding:5px 6px 5px 10px}.cb-name{display:none}.cb-list a{min-width:32px;height:32px}}
   @media(max-width:420px){.cb{gap:4px;padding:4px 4px 4px 9px}.cb-ix{font-size:.5rem;letter-spacing:.12em;padding-right:6px}.cb-list{gap:2px}.cb-list a{min-width:30px;height:30px;font-size:.64rem}.cb-hide{width:30px;height:30px}}
   /* the demo badge moves up so the two never overlap */
-  body.preview .demo-flag{bottom:58px}
-  @media(max-width:640px){body.preview .demo-flag{bottom:54px}}
+  body.preview:has(#conceptBar) .demo-flag{bottom:58px}
+  @media(max-width:640px){body.preview:has(#conceptBar) .demo-flag{bottom:54px}}
 </style>
 <script>
   const bar = document.getElementById('conceptBar');
   document.getElementById('conceptHide')?.addEventListener('click', () => bar?.classList.add('cb--hidden'));
-  addEventListener('keydown', (e) => {
+  // the shortcuts exist only where the bar exists (never in a client-demo snapshot)
+  if (bar) addEventListener('keydown', (e) => {
     const t = e.target as HTMLElement | null;
     if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
     if (e.metaKey || e.ctrlKey || e.altKey) return;
