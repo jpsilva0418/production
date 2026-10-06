@@ -1,0 +1,44 @@
+---
+/** Article card — the Leti Silva Beauty card system (hub, category pages, related
+ *  grids; data-search feeds the client-side filter), restyled for Magnolia. */
+import Plate from './Plate.astro';
+import { CATEGORIES, fmtDate, readingTime, type Post } from '../lib/blog';
+interface Props { post: Post; headingLevel?: 'h2' | 'h3' }
+const { post, headingLevel: H = 'h2' } = Astro.props;
+const cat = CATEGORIES[post.data.category];
+const url = `/blog/${post.id}`;
+const search = [post.data.title, post.data.description, cat.name, ...post.data.tags].join(' ').toLowerCase();
+---
+<article class="bcard card" data-search={search}>
+  <a class="bcard-media" href={url} tabindex="-1" aria-hidden="true">
+    <div class="ph"><Plate id={post.data.plate} alt="" sizes="(max-width:560px) 92vw, (max-width:980px) 45vw, 380px" widths={[400, 640, 900]} /></div>
+  </a>
+  <div class="bcard-body">
+    <p class="bcard-meta">
+      <a class="bcard-cat" href={`/blog/category/${post.data.category}`}>{cat.name}</a>
+      <span aria-hidden="true">&middot;</span>
+      <span>{post.data.migrate ? 'On the current site' : `${readingTime(post.body)} min read`}</span>
+    </p>
+    <H class="bcard-title"><a href={url}>{post.data.title}</a></H>
+    <p class="bcard-desc">{post.data.description}</p>
+    <p class="bcard-date">{fmtDate(post.data.pubDate)}</p>
+  </div>
+</article>
+<style is:global>
+  .bcard{display:flex;flex-direction:column;overflow:hidden}
+  .bcard[hidden]{display:none!important}
+  .bcard-media{display:block}
+  .bcard-media .ph{aspect-ratio:3/2;border-radius:var(--r) var(--r) 0 0}
+  .bcard-media img{transition:transform .9s var(--ease)}
+  .bcard:hover .bcard-media img{transform:scale(1.04)}
+  .bcard-body{padding:1.3rem 1.5rem 1.6rem;display:flex;flex-direction:column;flex:1}
+  .bcard-meta{font-family:var(--utility);font-weight:600;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);display:flex;gap:9px;margin-bottom:.7rem}
+  .bcard-cat{color:var(--brass)}
+  .bcard-cat:hover{text-decoration:underline;text-underline-offset:3px}
+  .bcard-title{font-size:1.32rem;line-height:1.22;margin-bottom:.55rem}
+  .bcard-title a{transition:color .3s}
+  .bcard-title a:hover{color:var(--brass)}
+  .bcard-desc{font-size:.92rem;color:var(--ink-soft);flex:1}
+  .bcard-date{font-family:var(--utility);font-size:.7rem;letter-spacing:.08em;color:var(--ink-soft);margin-top:1rem}
+  @media(prefers-reduced-motion:reduce){.bcard-media img{transition:none}}
+</style>

@@ -1,0 +1,52 @@
+---
+/** Grand footer — ported from the Leti Silva Beauty .foot block, restructured for a
+ *  care organisation: brand + mission line, navigation, contact (NAP), hours. */
+import Mark from './Mark.astro';
+import { SITE, fmtTime } from '../consts';
+const weekday = SITE.hours.find((h) => h.open && h.close)!;
+const year = new Date().getUTCFullYear();
+---
+<footer class="foot">
+  <i class="lx-dusk" aria-hidden="true"></i>
+  <div class="foot-in">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <Mark />
+        <div class="foot-name">Magnolia</div>
+        <div class="foot-sub">Healthcare</div>
+        <p>More than a service provider &mdash; a family. Non-medical home care that helps people live with dignity and independence in the comfort of their own homes.</p>
+      </div>
+      <div>
+        <p class="foot-h">Explore</p>
+        <ul class="foot-nav">
+          {SITE.nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+          <li><a href={SITE.links.careers}>Join our team</a></li>
+          <li><a href={SITE.links.login}>Member sign in</a></li>
+          <li><a href={SITE.links.accessibility}>Accessibility statement</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="foot-h">Office hours</p>
+        <ul class="foot-contact">
+          <li><span class="k">Monday – Friday</span>{fmtTime(weekday.open!)} – {fmtTime(weekday.close!)}</li>
+          <li><span class="k">Saturday – Sunday</span>Closed</li>
+          <li><span class="k">Holidays</span>{SITE.hoursNote}</li>
+        </ul>
+      </div>
+      <div>
+        <p class="foot-h">Contact</p>
+        <ul class="foot-contact">
+          <li><span class="k">Visit</span>{SITE.address.street}<br />{SITE.address.locality}, {SITE.address.region} {SITE.address.postalCode}</li>
+          <li><span class="k">Call</span><a href={`tel:${SITE.phoneE164}`}>{SITE.phone}</a></li>
+          <li><span class="k">Fax</span>{SITE.fax}</li>
+          <li><span class="k">Email</span><a href={`mailto:${SITE.email}`} style="overflow-wrap:anywhere">{SITE.email}</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bar">
+      <span>&copy; {year} {SITE.legalName}</span>
+      <span>Locally owned &middot; Colorado-licensed &middot; Non-medical home care</span>
+      <span><a href={SITE.links.accessibility}>Accessibility</a> &middot; <a href={SITE.currentSite} target="_blank" rel="noopener noreferrer">Current website</a></span>
+    </div>
+  </div>
+</footer>

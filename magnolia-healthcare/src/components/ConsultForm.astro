@@ -1,0 +1,457 @@
+---
+/**
+ * Consultation request — the Leti Silva Beauty multi-step inquiry system, re-purposed
+ * for Magnolia: conditional steps per request type (care / joining the team / other),
+ * one state object, Back never loses answers, progress + recap, review step with Edit,
+ * inline validation, honest loading / error / success states, and a copy-to-clipboard
+ * fallback so an answer is never lost. Posts JSON to /api/inquiry (Vercel function):
+ * delivers via Resend when configured, otherwise accepts in labelled DEMO mode.
+ *
+ * NOTE: this is the consultation/contact flow. Magnolia's signup/application flow is
+ * deliberately NOT built here — it waits for the client's reference recording.
+ */
+import { SITE } from '../consts';
+---
+<section class="cf-section">
+  <div class="cf-wrap">
+    <noscript>
+      <p class="cf-noscript">This form needs JavaScript. You can also call <a href={`tel:${SITE.phoneE164}`}>{SITE.phone}</a> or email <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+    </noscript>
+
+    <form id="cfForm" class="cf-form" novalidate>
+      <ol class="cf-prog" id="cfProg" aria-label="Progress"></ol>
+      <dl class="cf-recap" id="cfRecap" hidden></dl>
+
+      <!-- Step: request type -->
+      <fieldset class="cf-step" data-step="type">
+        <legend tabindex="-1">How can we help?</legend>
+        <div class="cf-cards">
+          <label class="cf-card"><input type="radio" name="requestType" value="Care for a loved one" /><span>Care for a loved one</span></label>
+          <label class="cf-card"><input type="radio" name="requestType" value="Care for myself" /><span>Care for myself</span></label>
+          <label class="cf-card"><input type="radio" name="requestType" value="Joining the Magnolia team" /><span>Joining the Magnolia team</span></label>
+          <label class="cf-card"><input type="radio" name="requestType" value="Something else" /><span>Something else</span></label>
+        </div>
+      </fieldset>
+
+      <!-- Step: care details -->
+      <fieldset class="cf-step" data-step="care" hidden>
+        <legend tabindex="-1">What kind of support are you considering?</legend>
+        <p class="cf-hint">Choose everything that might apply &mdash; we&rsquo;ll talk it through together.</p>
+        <div class="cf-cards cf-cards-2" role="group" aria-label="Types of support">
+          <label class="cf-card"><input type="checkbox" name="careTypes" value="Personal Care" /><span>Personal Care</span></label>
+          <label class="cf-card"><input type="checkbox" name="careTypes" value="Homemaking" /><span>Homemaking</span></label>
+          <label class="cf-card"><input type="checkbox" name="careTypes" value="Companionship" /><span>Companionship</span></label>
+          <label class="cf-card"><input type="checkbox" name="careTypes" value="Alzheimer’s & Dementia Support" /><span>Alzheimer&rsquo;s &amp; Dementia Support</span></label>
+          <label class="cf-card"><input type="checkbox" name="careTypes" value="Not sure yet" /><span>Not sure yet</span></label>
+        </div>
+        <div class="cf-field" role="radiogroup" aria-labelledby="cf-timing-label">
+          <span class="cf-lbl" id="cf-timing-label">When would care ideally begin?</span>
+          <div class="cf-cards cf-cards-row">
+            <label class="cf-card"><input type="radio" name="timing" value="As soon as possible" /><span>As soon as possible</span></label>
+            <label class="cf-card"><input type="radio" name="timing" value="Within the next month" /><span>Within the next month</span></label>
+            <label class="cf-card"><input type="radio" name="timing" value="Just exploring for now" /><span>Just exploring</span></label>
+          </div>
+        </div>
+        <div class="cf-two">
+          <div class="cf-field">
+            <label for="cf-city">City where care is needed</label>
+            <input id="cf-city" name="city" type="text" maxlength="80" autocomplete="address-level2" placeholder="Arvada" />
+          </div>
+          <div class="cf-field">
+            <label for="cf-zip">ZIP code</label>
+            <input id="cf-zip" name="zip" type="text" inputmode="numeric" maxlength="10" autocomplete="postal-code" placeholder="80002" />
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Step: joining the team (expression of interest only) -->
+      <fieldset class="cf-step" data-step="team" hidden>
+        <legend tabindex="-1">Tell us a little about you</legend>
+        <p class="cf-hint">This is an expression of interest &mdash; Magnolia&rsquo;s application comes next.</p>
+        <div class="cf-field" role="radiogroup" aria-labelledby="cf-exp-label">
+          <span class="cf-lbl" id="cf-exp-label">Caregiving experience</span>
+          <div class="cf-cards cf-cards-row">
+            <label class="cf-card"><input type="radio" name="experience" value="New to caregiving" /><span>New to caregiving</span></label>
+            <label class="cf-card"><input type="radio" name="experience" value="Some experience" /><span>Some experience</span></label>
+            <label class="cf-card"><input type="radio" name="experience" value="Experienced caregiver" /><span>Experienced caregiver</span></label>
+          </div>
+        </div>
+        <div class="cf-field" role="radiogroup" aria-labelledby="cf-avail-label">
+          <span class="cf-lbl" id="cf-avail-label">Availability</span>
+          <div class="cf-cards cf-cards-row">
+            <label class="cf-card"><input type="radio" name="availability" value="Full-time" /><span>Full-time</span></label>
+            <label class="cf-card"><input type="radio" name="availability" value="Part-time" /><span>Part-time</span></label>
+            <label class="cf-card"><input type="radio" name="availability" value="Flexible" /><span>Flexible</span></label>
+          </div>
+        </div>
+        <div class="cf-field">
+          <label for="cf-teamNotes">Anything you&rsquo;d like us to know <span class="cf-opt">optional</span></label>
+          <textarea id="cf-teamNotes" name="teamNotes" rows="4" maxlength="2000" placeholder="Where you’re based, the kind of work you’re looking for…"></textarea>
+        </div>
+      </fieldset>
+
+      <!-- Step: other -->
+      <fieldset class="cf-step" data-step="other" hidden>
+        <legend tabindex="-1">Tell us what you&rsquo;re looking for</legend>
+        <div class="cf-field">
+          <label for="cf-otherText" class="sr-only">Tell us what you're looking for</label>
+          <textarea id="cf-otherText" name="otherText" rows="5" maxlength="2000" placeholder="Share as much or as little as you like."></textarea>
+        </div>
+      </fieldset>
+
+      <!-- Step: contact -->
+      <fieldset class="cf-step" data-step="contact" hidden>
+        <legend tabindex="-1">How can we reach you?</legend>
+        <div class="cf-field">
+          <label for="cf-name">Your name <span class="cf-req">required</span></label>
+          <input id="cf-name" name="fullName" type="text" maxlength="120" autocomplete="name" required aria-describedby="cf-name-err" />
+          <p class="cf-err" id="cf-name-err" hidden>Please enter your name.</p>
+        </div>
+        <div class="cf-two">
+          <div class="cf-field">
+            <label for="cf-phone">Phone <span class="cf-req">required</span></label>
+            <input id="cf-phone" name="phone" type="tel" maxlength="40" autocomplete="tel" inputmode="tel" required aria-describedby="cf-phone-err" />
+            <p class="cf-err" id="cf-phone-err" hidden>Please enter a phone number we can call.</p>
+          </div>
+          <div class="cf-field">
+            <label for="cf-email">Email <span class="cf-req">required</span></label>
+            <input id="cf-email" name="email" type="email" maxlength="160" autocomplete="email" inputmode="email" required aria-describedby="cf-email-err" />
+            <p class="cf-err" id="cf-email-err" hidden>That email address doesn&rsquo;t look complete.</p>
+          </div>
+        </div>
+        <div class="cf-field" role="radiogroup" aria-labelledby="cf-pref-label">
+          <span class="cf-lbl" id="cf-pref-label">Best way to reach you</span>
+          <div class="cf-cards cf-cards-row">
+            <label class="cf-card"><input type="radio" name="preferredContact" value="Phone call" /><span>Phone call</span></label>
+            <label class="cf-card"><input type="radio" name="preferredContact" value="Text message" /><span>Text message</span></label>
+            <label class="cf-card"><input type="radio" name="preferredContact" value="Email" /><span>Email</span></label>
+          </div>
+        </div>
+        <div aria-hidden="true" class="cf-hp"><label for="cf-company">Company</label><input id="cf-company" name="company" type="text" tabindex="-1" autocomplete="off" /></div>
+      </fieldset>
+
+      <!-- Step: notes -->
+      <fieldset class="cf-step" data-step="notes" hidden>
+        <legend tabindex="-1">Anything else you&rsquo;d like to share?</legend>
+        <p class="cf-hint">Everything here is optional.</p>
+        <div class="cf-field">
+          <label for="cf-notes">Notes</label>
+          <textarea id="cf-notes" name="notes" rows="4" maxlength="2000" placeholder="Routines, preferences, languages spoken, questions for us…"></textarea>
+        </div>
+        <div class="cf-field">
+          <label for="cf-heard">How did you hear about Magnolia?</label>
+          <select id="cf-heard" name="heardAbout">
+            <option value="">Choose one (optional)</option>
+            <option>Google</option>
+            <option>Referral from a friend or family</option>
+            <option>Community event</option>
+            <option>Healthcare professional</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </fieldset>
+
+      <!-- Step: review -->
+      <fieldset class="cf-step" data-step="review" hidden>
+        <legend tabindex="-1">Review your request</legend>
+        <div id="cfReview" class="cf-review"></div>
+        <p class="cf-consent">By sending this request you agree to be contacted about it &mdash; nothing else, no marketing list.</p>
+      </fieldset>
+
+      <div class="cf-error" id="cfError" role="alert" hidden>
+        <strong>We couldn&rsquo;t send that just now.</strong> Your answers are safe on this page &mdash; please try again in a moment,
+        or call <a href={`tel:${SITE.phoneE164}`}>{SITE.phone}</a>. You can also tap <em>Copy my request</em> and paste it into an email to
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+        <div class="cf-err-actions"><button type="button" class="btn btn--line" id="cfCopy">Copy my request</button></div>
+        <span class="cf-err-code" id="cfErrCode"></span>
+      </div>
+
+      <div class="cf-nav">
+        <button type="button" class="btn btn--line" id="cfBack" hidden>Back</button>
+        <button type="submit" class="btn btn--solid" id="cfNext" disabled>Continue</button>
+      </div>
+    </form>
+
+    <div class="cf-thanks" id="cfThanks" hidden>
+      <p class="cf-test-strip" id="cfTestStrip" hidden><strong>Demo mode</strong> &mdash; this request was NOT sent anywhere.</p>
+      <span class="caps-xs">Received</span>
+      <h2 tabindex="-1" id="cfThanksHead">Thank you &mdash; your request is with Magnolia.</h2>
+      <p>We read every request personally and will reach out using the contact method you chose. If it&rsquo;s urgent, call <a href={`tel:${SITE.phoneE164}`}>{SITE.phone}</a> during office hours.</p>
+      <div class="cf-thanks-cta">
+        <a class="btn btn--solid" href="/">Back to the site</a>
+        <a class="btn btn--line" href="/services">Explore our services</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .cf-section{padding:0}
+  .cf-section [hidden]{display:none!important}
+  .cf-noscript{background:var(--paper);border:1px solid var(--hair);padding:22px;border-radius:var(--r);text-align:center}
+  .cf-noscript a{text-decoration:underline}
+  .cf-form{visibility:hidden}
+  .cf-form.ready{visibility:visible}
+  .cf-prog{list-style:none;display:flex;gap:8px;margin:0 0 26px;padding:0}
+  .cf-prog li{flex:1;min-width:0}
+  .cf-prog .bar{display:block;height:3px;background:var(--hair);margin-bottom:8px;border-radius:2px;transition:background .3s}
+  .cf-prog li.done .bar,.cf-prog li.now .bar{background:var(--leaf)}
+  .cf-prog .lbl{font-family:var(--utility);font-weight:600;font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+  .cf-prog li.now .lbl{color:var(--leaf)}
+  @media(max-width:560px){.cf-prog .lbl{display:none}.cf-prog li.now .lbl{display:block}}
+  .cf-recap{display:flex;flex-wrap:wrap;gap:6px 20px;background:var(--linen);border:1px solid var(--hair);border-radius:var(--r-sm);padding:10px 16px;margin:0 0 22px;font-size:.82rem}
+  .cf-recap div{display:flex;gap:6px}
+  .cf-recap dt{color:var(--ink-soft)}
+  .cf-recap dt::after{content:':'}
+  .cf-recap dd{margin:0;font-weight:600;color:var(--ink)}
+  .cf-step{border:0;padding:0;margin:0;min-inline-size:auto}
+  .cf-step legend{font-family:var(--display);font-size:clamp(1.5rem,3.2vw,2rem);color:var(--ink);padding:0;margin-bottom:18px;text-wrap:balance;font-variation-settings:'opsz' 72,'SOFT' 50}
+  .cf-step legend:focus{outline:none}
+  .cf-hint{font-size:.9rem;color:var(--ink-soft);margin:-8px 0 18px}
+  .cf-cards{display:grid;gap:10px;margin-bottom:10px}
+  .cf-cards-row{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+  .cf-cards-2{grid-template-columns:1fr 1fr}
+  @media(max-width:520px){.cf-cards-2{grid-template-columns:1fr}}
+  .cf-card{position:relative;display:flex;align-items:center;min-height:52px;padding:13px 16px;background:var(--paper);border:1px solid var(--hair-strong);border-radius:var(--r-sm);cursor:pointer;transition:border-color .2s,background .2s,box-shadow .2s}
+  .cf-card:hover{border-color:var(--leaf)}
+  .cf-card input{position:absolute;opacity:0;pointer-events:none}
+  .cf-card span{font-size:.95rem;color:var(--ink)}
+  .cf-card:has(input:checked){border-color:var(--leaf);background:#fff;box-shadow:inset 0 0 0 1px var(--leaf)}
+  .cf-card:has(input:checked) span{font-weight:600}
+  .cf-card:has(input:checked)::after{content:"";margin-left:auto;width:8px;height:8px;border-radius:50%;background:var(--leaf);flex:none}
+  .cf-card:has(input:focus-visible){outline:2px solid var(--brass);outline-offset:3px}
+  .cf-field{margin-bottom:18px}
+  .cf-two{display:grid;gap:0 16px}
+  @media(min-width:560px){.cf-two{grid-template-columns:1fr 1fr}}
+  .cf-field label,.cf-lbl{display:block;font-family:var(--utility);font-weight:600;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px}
+  .cf-req{font-weight:500;letter-spacing:.08em;color:var(--brass);text-transform:lowercase}
+  .cf-opt{font-weight:500;letter-spacing:.08em;color:var(--ink-soft);text-transform:lowercase}
+  .cf-field input:not([type="radio"]):not([type="checkbox"]),.cf-field select,.cf-field textarea{width:100%;min-height:48px;padding:12px 14px;background:#fff;border:1px solid var(--hair-strong);border-radius:var(--r-sm);color:var(--ink);font:inherit;font-size:1rem;transition:border-color .2s}
+  .cf-field textarea{resize:vertical;min-height:0}
+  .cf-field input[aria-invalid="true"]{border-color:#B2473D}
+  .cf-err{font-size:.82rem;color:#9A3A31;margin-top:6px}
+  .cf-hp{position:absolute;left:-9999px;top:auto}
+  .cf-review{display:grid;gap:14px;margin-bottom:18px}
+  .cf-rev-group{background:var(--linen);border:1px solid var(--hair);border-radius:var(--r-sm);padding:16px 18px}
+  .cf-rev-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:8px}
+  .cf-rev-head h3{font-size:1.05rem}
+  .cf-rev-edit{background:none;border:0;cursor:pointer;font-family:var(--utility);font-weight:600;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--brass);text-decoration:underline;text-underline-offset:3px;padding:6px;min-height:36px}
+  .cf-rev-group dl{margin:0;display:grid;gap:5px}
+  .cf-rev-group dl div{display:flex;flex-wrap:wrap;gap:4px 8px;font-size:.9rem}
+  .cf-rev-group dt{color:var(--ink-soft)}
+  .cf-rev-group dt::after{content:':'}
+  .cf-rev-group dd{margin:0;font-weight:600;color:var(--ink);overflow-wrap:anywhere}
+  .cf-consent{font-size:.82rem;color:var(--ink-soft)}
+  .cf-nav{display:flex;justify-content:space-between;gap:12px;margin-top:22px}
+  .cf-nav .btn{min-width:140px}
+  .cf-nav #cfNext{margin-left:auto}
+  .cf-error{margin-top:20px;border:1px solid var(--brass);background:#fff;border-radius:var(--r-sm);padding:16px 18px;font-size:.92rem}
+  .cf-error a{text-decoration:underline}
+  .cf-err-actions{margin-top:12px}
+  .cf-err-code{display:block;margin-top:8px;font-family:var(--utility);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+  .cf-thanks{text-align:center}
+  .cf-thanks .caps-xs{display:block;margin-bottom:.8rem}
+  .cf-thanks h2{font-size:clamp(1.5rem,3.4vw,2.1rem);margin-bottom:12px}
+  .cf-thanks h2:focus{outline:none}
+  .cf-thanks p{max-width:44ch;margin:0 auto}
+  .cf-thanks p a{text-decoration:underline}
+  .cf-thanks-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+  .cf-test-strip{background:var(--leaf-deep);color:var(--ivory);padding:10px 16px;border-radius:var(--r-sm);font-size:.82rem;margin:0 0 22px;letter-spacing:.04em}
+</style>
+
+<script>
+  type StepKey = 'type' | 'care' | 'team' | 'other' | 'contact' | 'notes' | 'review';
+  const answers: Record<string, string> = {
+    requestType: '', careTypes: '', timing: '', city: '', zip: '',
+    experience: '', availability: '', teamNotes: '', otherText: '',
+    fullName: '', phone: '', email: '', preferredContact: '', notes: '', heardAbout: '',
+  };
+  const STEP_LABELS: Record<StepKey, string> = { type: 'Request', care: 'The care', team: 'About you', other: 'Details', contact: 'Contact', notes: 'Notes', review: 'Review' };
+  const REVIEW_GROUPS: [StepKey, string, [string, string][]][] = [
+    ['type', 'Request', [['requestType', 'How we can help']]],
+    ['care', 'The care', [['careTypes', 'Support considered'], ['timing', 'Ideal start'], ['city', 'City'], ['zip', 'ZIP']]],
+    ['team', 'About you', [['experience', 'Experience'], ['availability', 'Availability'], ['teamNotes', 'Notes']]],
+    ['other', 'Details', [['otherText', 'Looking for']]],
+    ['contact', 'Contact', [['fullName', 'Name'], ['phone', 'Phone'], ['email', 'Email'], ['preferredContact', 'Reach you by']]],
+    ['notes', 'Notes', [['notes', 'Notes'], ['heardAbout', 'Heard about us']]],
+  ];
+  const TYPE_PATHS: Record<string, StepKey[]> = {
+    'Care for a loved one': ['type', 'care', 'contact', 'notes', 'review'],
+    'Care for myself': ['type', 'care', 'contact', 'notes', 'review'],
+    'Joining the Magnolia team': ['type', 'team', 'contact', 'review'],
+    'Something else': ['type', 'other', 'contact', 'review'],
+  };
+  const LOCKED: Record<string, string> = { care: 'Care for a loved one', self: 'Care for myself', team: 'Joining the Magnolia team' };
+  const SERVICE_PRESELECT: Record<string, string> = {
+    'personal-care': 'Personal Care', 'homemaking': 'Homemaking', 'companionship': 'Companionship', 'alzheimers-dementia-support': 'Alzheimer’s & Dementia Support',
+  };
+
+  const form = document.getElementById('cfForm') as HTMLFormElement;
+  const progEl = document.getElementById('cfProg') as HTMLOListElement;
+  const recapEl = document.getElementById('cfRecap') as HTMLElement;
+  const reviewEl = document.getElementById('cfReview') as HTMLElement;
+  const errorEl = document.getElementById('cfError') as HTMLElement;
+  const backBtn = document.getElementById('cfBack') as HTMLButtonElement;
+  const nextBtn = document.getElementById('cfNext') as HTMLButtonElement;
+  const thanksEl = document.getElementById('cfThanks') as HTMLElement;
+  const stepEls = new Map<StepKey, HTMLFieldSetElement>();
+  form.querySelectorAll<HTMLFieldSetElement>('fieldset[data-step]').forEach((el) => stepEls.set(el.dataset.step as StepKey, el));
+
+  const params = new URLSearchParams(location.search);
+  const lockedType = LOCKED[(params.get('for') ?? '').trim().toLowerCase()] ?? '';
+  let stepIndex = 0;
+  let status: 'idle' | 'sending' | 'sent' | 'sent-test' | 'error' = 'idle';
+  const track = (event: string, p: Record<string, unknown> = {}) => { ((window as unknown as { dataLayer?: unknown[] }).dataLayer ??= []).push({ event, ...p }); };
+
+  const path = (): StepKey[] => { const full = TYPE_PATHS[answers.requestType] ?? TYPE_PATHS['Care for a loved one']; return lockedType ? full.slice(1) : full; };
+  const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
+  const phoneOk = (v: string) => v.replace(/\D/g, '').length >= 7;
+  const gate = (key: StepKey): boolean => {
+    switch (key) {
+      case 'type': return !!answers.requestType;
+      case 'care': return !!answers.careTypes;
+      case 'team': return !!answers.experience;
+      case 'other': return !!answers.otherText.trim();
+      case 'contact': return !!answers.fullName.trim() && phoneOk(answers.phone) && emailOk(answers.email);
+      default: return true;
+    }
+  };
+  const syncCareTypes = () => { answers.careTypes = Array.from(form.querySelectorAll<HTMLInputElement>('input[name="careTypes"]:checked')).map((c) => c.value).join(', '); };
+
+  const el = (tag: string, cls: string, text?: string) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined) n.textContent = text; return n; };
+  function renderProgress(steps: StepKey[]) {
+    progEl.textContent = '';
+    steps.forEach((key, i) => {
+      const li = el('li', i < stepIndex ? 'done' : i === stepIndex ? 'now' : '');
+      if (i === stepIndex) li.setAttribute('aria-current', 'step');
+      li.appendChild(el('span', 'bar'));
+      const lbl = el('span', 'lbl', STEP_LABELS[key]); lbl.setAttribute('aria-hidden', 'true'); li.appendChild(lbl);
+      li.appendChild(el('span', 'sr-only', `Step ${i + 1} of ${steps.length}: ${STEP_LABELS[key]}${i === stepIndex ? ' (current)' : ''}`));
+      progEl.appendChild(li);
+    });
+  }
+  function renderRecap(current: StepKey) {
+    const pairs: [string, string][] = [];
+    if (answers.requestType) pairs.push(['Request', answers.requestType]);
+    if (answers.careTypes) pairs.push(['Support', answers.careTypes]);
+    if (answers.timing) pairs.push(['Start', answers.timing]);
+    const show = stepIndex > 0 && current !== 'review' && pairs.length > 0;
+    recapEl.hidden = !show;
+    if (!show) return;
+    recapEl.textContent = '';
+    pairs.forEach(([k, v]) => { const row = document.createElement('div'); row.appendChild(el('dt', '', k)); row.appendChild(el('dd', '', v)); recapEl.appendChild(row); });
+  }
+  function renderReview(steps: StepKey[]) {
+    reviewEl.textContent = '';
+    for (const [stepKey, heading, fields] of REVIEW_GROUPS) {
+      const lockedGroup = !!lockedType && stepKey === 'type';
+      if (!steps.includes(stepKey) && !lockedGroup) continue;
+      const rows = fields.filter(([k]) => answers[k].trim());
+      if (rows.length === 0 && stepKey !== 'type') continue;
+      const group = el('div', 'cf-rev-group');
+      const head = el('div', 'cf-rev-head');
+      head.appendChild(el('h3', '', heading));
+      if (!lockedGroup) {
+        const edit = el('button', 'cf-rev-edit', 'Edit') as HTMLButtonElement; edit.type = 'button'; edit.setAttribute('aria-label', `Edit ${heading.toLowerCase()}`);
+        edit.addEventListener('click', () => { stepIndex = path().indexOf(stepKey); render(true); });
+        head.appendChild(edit);
+      }
+      group.appendChild(head);
+      const dl = document.createElement('dl');
+      rows.forEach(([k, label]) => { const row = document.createElement('div'); row.appendChild(el('dt', '', label)); row.appendChild(el('dd', '', answers[k].trim())); dl.appendChild(row); });
+      group.appendChild(dl); reviewEl.appendChild(group);
+    }
+  }
+  const TYPE_SCOPED = ['careTypes', 'timing', 'city', 'zip', 'experience', 'availability', 'teamNotes', 'otherText'];
+  function resetTypeScoped() {
+    TYPE_SCOPED.forEach((key) => { answers[key] = ''; form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(`[name="${key}"]`).forEach((c) => { if (c instanceof HTMLInputElement && (c.type === 'radio' || c.type === 'checkbox')) c.checked = false; else c.value = ''; }); });
+  }
+  function showContactErrors(show: boolean) {
+    const map: [string, (v: string) => boolean][] = [['name', (v) => !!v.trim()], ['phone', phoneOk], ['email', emailOk]];
+    const key: Record<string, string> = { name: 'fullName', phone: 'phone', email: 'email' };
+    for (const [id, ok] of map) {
+      const input = document.getElementById(`cf-${id}`) as HTMLInputElement; const err = document.getElementById(`cf-${id}-err`) as HTMLElement;
+      const bad = show && !ok(answers[key[id]]);
+      err.hidden = !bad; input.setAttribute('aria-invalid', String(bad));
+    }
+  }
+  function render(focus = false) {
+    const steps = path();
+    if (stepIndex >= steps.length) stepIndex = steps.length - 1;
+    const current = steps[stepIndex];
+    stepEls.forEach((elm, key) => { elm.hidden = key !== current; });
+    renderProgress(steps); renderRecap(current);
+    if (current === 'review') renderReview(steps);
+    backBtn.hidden = stepIndex === 0;
+    nextBtn.textContent = current === 'review' ? (status === 'sending' ? 'Sending…' : 'Send request') : 'Continue';
+    nextBtn.disabled = status === 'sending' || !gate(current);
+    if (focus) stepEls.get(current)?.querySelector('legend')?.focus();
+    track('step_viewed', { step: current, step_number: stepIndex + 1, steps_total: steps.length });
+  }
+  form.addEventListener('input', (e) => {
+    const t = e.target as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+    if (t.name === 'careTypes') { syncCareTypes(); }
+    else if (!t.name || !(t.name in answers)) return;
+    else answers[t.name] = t.value;
+    if (t.name === 'requestType') { resetTypeScoped(); render(); return; }
+    if (['fullName', 'phone', 'email'].includes(t.name)) showContactErrors(false);
+    nextBtn.disabled = status === 'sending' || !gate(path()[stepIndex]);
+  });
+  // Inline validation when a contact field loses focus (never while typing).
+  ['name', 'phone', 'email'].forEach((id) => { (document.getElementById(`cf-${id}`) as HTMLInputElement).addEventListener('blur', () => { if (answers[id === 'name' ? 'fullName' : id]) showContactErrors(true); }); });
+  backBtn.addEventListener('click', () => { if (stepIndex > 0) { stepIndex -= 1; render(true); } });
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const steps = path(); const current = steps[stepIndex];
+    if (current === 'contact' && !gate(current)) { showContactErrors(true); return; }
+    if (status === 'sending' || !gate(current)) return;
+    track('step_completed', { step: current, step_number: stepIndex + 1 });
+    if (current !== 'review') { stepIndex += 1; render(true); return; }
+    void send();
+  });
+  async function send() {
+    status = 'sending'; errorEl.hidden = true; render();
+    const company = (document.getElementById('cf-company') as HTMLInputElement).value;
+    try {
+      const res = await fetch('/api/inquiry', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...answers, company }) });
+      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; staged?: boolean; reason?: string };
+      if (!res.ok || !data.ok) throw new Error(data.reason ?? `http_${res.status}`);
+      status = data.staged ? 'sent-test' : 'sent';
+      form.hidden = true;
+      (document.getElementById('cfTestStrip') as HTMLElement).hidden = status !== 'sent-test';
+      thanksEl.hidden = false;
+      (document.getElementById('cfThanksHead') as HTMLElement).focus();
+      track('form_submitted', { request_type: answers.requestType, staged: status === 'sent-test' });
+    } catch (err) {
+      status = 'error';
+      const reason = err instanceof Error && err.message ? err.message : 'network';
+      (document.getElementById('cfErrCode') as HTMLElement).textContent = `Error code: ${reason}`;
+      errorEl.hidden = false; render();
+      track('form_error', { request_type: answers.requestType, message: reason });
+    }
+  }
+  function buildSummary(): string {
+    const lines: string[] = ['Consultation request — Magnolia Healthcare', ''];
+    for (const [, heading, fields] of REVIEW_GROUPS) {
+      const rows = fields.filter(([k]) => answers[k].trim()); if (rows.length === 0) continue;
+      lines.push(heading.toUpperCase()); rows.forEach(([k, label]) => lines.push(`  ${label}: ${answers[k].trim()}`)); lines.push('');
+    }
+    return lines.join('\n').trim();
+  }
+  const copyBtn = document.getElementById('cfCopy') as HTMLButtonElement | null;
+  copyBtn?.addEventListener('click', async () => {
+    const text = buildSummary(); let ok = false;
+    try { await navigator.clipboard.writeText(text); ok = true; }
+    catch { const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.focus(); ta.select(); try { ok = document.execCommand('copy'); } catch { ok = false; } ta.remove(); }
+    copyBtn.textContent = ok ? 'Copied ✓' : 'Select all & copy';
+    setTimeout(() => { copyBtn.textContent = 'Copy my request'; }, 2600);
+  });
+
+  if (lockedType) { answers.requestType = lockedType; const r = form.querySelector<HTMLInputElement>(`input[name="requestType"][value="${lockedType}"]`); if (r) r.checked = true; }
+  const preset = SERVICE_PRESELECT[(params.get('service') ?? '').trim().toLowerCase()];
+  if (preset && (lockedType === 'Care for a loved one' || lockedType === 'Care for myself')) {
+    const c = form.querySelector<HTMLInputElement>(`input[name="careTypes"][value="${preset}"]`); if (c) { c.checked = true; syncCareTypes(); }
+  }
+  form.classList.add('ready');
+  render();
+</script>

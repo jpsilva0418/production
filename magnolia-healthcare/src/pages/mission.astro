@@ -1,0 +1,139 @@
+---
+/** OUR MISSION — Magnolia's existing About/Mission content restaged as an editorial
+ *  story (the Leti Silva Beauty About-page system: title card, "the story" with drop cap
+ *  and pull quote, cinema band, sticky values chapter). Facts are the current site's;
+ *  nothing is paraphrased into a new claim. */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Plate from '../components/Plate.astro';
+import { SITE } from '../consts';
+---
+<BaseLayout
+  title="Our Mission — More Than a Provider, a Family"
+  description="Founded by Madina Sorensen, Magnolia Healthcare’s mission is to provide exceptional non-medical personal care and home services — making daily life easier and happier for elderly, blind, and disabled individuals in the comfort of their own homes."
+  path="/mission">
+
+  <!-- TITLE CARD -->
+  <section class="acov">
+    <div class="acov-l">
+      <p class="cov-kick fade">Our mission</p>
+      <h1 class="disp rv">More than a provider.<br /><span class="ital">A family.</span></h1>
+      <p class="cov-sub rv" style="--d:.1s">Our main goal is to make daily life easier and happier for elderly, blind, and disabled individuals in the comfort of their own homes.</p>
+      <div class="cov-cta fade" style="--d:.2s">
+        <a class="btn btn--solid" href={SITE.links.consultCare}>Request a consultation</a>
+        <a class="tlk" href="/services">Our services</a>
+      </div>
+    </div>
+    <div class="acov-r">
+      <figure class="portrait rv">
+        <div class="portrait-fr"><Plate id="founder" alt="" class="lv lv--breathe" sizes="(max-width:899px) 76vw, 380px" widths={[480, 720, 960]} loading="eager" fetchpriority="high" /><i class="grain" aria-hidden="true"></i></div>
+        <figcaption><span class="caps-xs">{SITE.founder} &middot; Founder</span><em>Portrait placeholder &mdash; the real photograph will be supplied by Magnolia.</em></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <div class="chapslate fade" role="presentation"><span class="cs-t">The story</span></div>
+
+  <!-- THE STORY -->
+  <section class="sec lit">
+    <i class="lx-shaft" aria-hidden="true"></i>
+    <div class="wrap">
+      <div class="story">
+        <span class="caps-xs story-k rv">Why Magnolia exists</span>
+        <p class="drop rv" style="--d:.07s">Founded by Madina Sorensen, Magnolia Healthcare Agency&rsquo;s mission is to provide exceptional non-medical personal care and home services to its clients.</p>
+        <p class="rv">Madina started the business with a genuine desire to make a difference in the lives of individuals who require non-medical home care, drawing on a background in healthcare and special education for those with unique needs.</p>
+        <div class="story-pull rv"><p>&ldquo;At Magnolia Healthcare, we&rsquo;re more than just a service provider &mdash; we&rsquo;re a family.&rdquo;</p></div>
+        <p class="rv">Our main goal is to make daily life easier and happier for elderly, blind, and disabled individuals in the comfort of their own homes, providing a helping hand to ensure clients can maintain their independence.</p>
+        <p class="rv">The agency was established in {SITE.founded}, and since then has grown steadily, expanding services and reaching more clients in need &mdash; a locally owned, Colorado-licensed provider of non-medical home care serving Arvada and the Denver Metro.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CINEMA BAND -->
+  <div class="cine">
+    <div class="wrap">
+      <div class="cine-fr"><Plate id="cine-light" alt="" class="lv" sizes="100vw" widths={[768, 1280, 1920, 2400]} /><i class="grain" aria-hidden="true"></i><i class="lx-warm" aria-hidden="true"></i></div>
+      <p class="cine-cap">A helping hand &mdash; independence, at home</p>
+    </div>
+  </div>
+
+  <div class="chapslate chapslate--dk fade" role="presentation"><span class="cs-t">Our values</span></div>
+
+  <!-- THE VALUES · sticky chapter -->
+  <section class="sec sec--dk lit">
+    <i class="lx-dusk" aria-hidden="true"></i>
+    <div class="wrap chap" style="position:relative;z-index:1">
+      <div class="chap-l rv">
+        <p class="chap-rn">What guides us</p>
+        <h2 class="disp chap-t">Our core values.</h2>
+        <p class="chap-line">Three commitments that shape every visit, every plan, and every relationship.</p>
+        <a class="tlk tlk--lt" href={SITE.links.team}>Meet our caregivers</a>
+      </div>
+      <div class="vals" data-stag=".1">
+        <article class="val rv">
+          <span class="val-n">i.</span>
+          <h3>Respect &amp; Dignity</h3>
+          <p>We believe that our clients are unique individuals who deserve to be treated with respect and dignity.</p>
+        </article>
+        <article class="val rv">
+          <span class="val-n">ii.</span>
+          <h3>Compassion &amp; Empathy</h3>
+          <p>We approach our work with genuine compassion and empathy. We understand the emotional and physical challenges our clients face, and we provide support with kindness and understanding.</p>
+        </article>
+        <article class="val rv">
+          <span class="val-n">iii.</span>
+          <h3>Honesty &amp; Integrity</h3>
+          <p>We believe in transparency and building trust with our clients, employees, and the wider community.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE PLAN -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="note-card rv">
+        <span class="caps">How care is shaped</span>
+        <p class="note-copy">Every care plan is built around the client&rsquo;s routines, preferences, culture, and goals for independence.</p>
+        <span class="note-rule" aria-hidden="true"></span>
+        <p class="note-body">Care begins with a conversation about who needs support and what a good day looks like. From there, a plan is shaped around the person &mdash; and delivered by caregivers who are carefully selected, extensively trained, and background-checked.</p>
+        <div class="note-act">
+          <a class="btn btn--solid" href={SITE.links.consultCare}>Request a consultation</a>
+          <a class="tlk" href="/services">Explore the services</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .acov{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);min-height:92svh}
+  .acov-l{display:flex;flex-direction:column;justify-content:center;padding:clamp(7rem,16vh,10rem) clamp(1.6rem,5vw,5.5rem) clamp(3.6rem,8vh,6rem) max(5vw,(100vw - var(--wrap))/2)}
+  .acov-l h1{font-size:clamp(2.8rem,6.4vw,5.8rem);margin-bottom:clamp(1.2rem,2.4vh,1.8rem)}
+  .acov-r{position:relative;display:grid;place-items:center;align-content:center;padding:clamp(3rem,7vh,5.5rem) clamp(1.8rem,4vw,4rem);background:var(--linen)}
+  .portrait{position:relative;width:min(380px,78%);margin:0}
+  .portrait-fr{position:relative;aspect-ratio:4/5;border-radius:999px 999px var(--r) var(--r);overflow:hidden;outline:1px solid var(--brass);outline-offset:11px;box-shadow:var(--shadow-lg)}
+  .portrait-fr :global(img){width:100%;height:100%;object-fit:cover}
+  .portrait figcaption{margin-top:1.8rem;text-align:center}
+  .portrait figcaption .caps-xs{display:block}
+  .portrait figcaption em{display:block;font-family:var(--display);font-style:italic;font-size:.95rem;color:var(--ink-soft);margin-top:.3rem;font-variation-settings:'opsz' 48,'SOFT' 60}
+  @media(max-width:899px){
+    .acov{grid-template-columns:1fr;min-height:0}
+    .acov-r{order:-1;padding:clamp(6.5rem,18vw,8rem) 5vw clamp(2rem,5vw,3rem)}
+    .acov-l{padding:clamp(3rem,9vw,4.5rem) 5vw clamp(3.4rem,10vw,5rem)}
+  }
+  .story{max-width:640px;margin-inline:auto}
+  .story-k{text-align:center;display:block;margin-bottom:clamp(2.4rem,4.5vw,3.6rem)}
+  .story p{font-size:clamp(1.12rem,1.5vw,1.26rem);line-height:1.9;color:var(--ink-soft);margin:0}
+  .story p+p{margin-top:1.5em}
+  .story .drop::first-letter{font-family:var(--display);float:left;font-size:4.4em;line-height:.8;padding:.06em .12em 0 0;color:var(--leaf);font-variation-settings:'opsz' 144,'SOFT' 50}
+  .story-pull{margin:clamp(2.8rem,5vw,4rem) 0;padding:clamp(1.8rem,3.4vw,2.6rem) 0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);text-align:center}
+  .story-pull p{font-family:var(--display);font-style:italic;font-size:clamp(1.4rem,2.3vw,1.9rem);line-height:1.5;color:var(--leaf);max-width:20em;margin-inline:auto;font-variation-settings:'opsz' 72,'SOFT' 60}
+  .story-pull+p{margin-top:0}
+  .vals{display:grid;gap:clamp(1.6rem,3vw,2.6rem)}
+  .val{border-top:1px solid var(--hairdk);padding-top:1.4rem;display:grid;grid-template-columns:2.4em 1fr;column-gap:.6rem}
+  .val-n{font-family:var(--display);font-style:italic;color:var(--gold-lt);font-size:1.1rem;padding-top:.3rem}
+  .val h3{font-size:clamp(1.5rem,2.2vw,2rem);margin-bottom:.7rem;grid-column:2}
+  .val p{grid-column:2;max-width:34em;color:rgba(248,244,238,.8)}
+  .note-body{max-width:34em;margin:0 auto clamp(1.8rem,3.4vw,2.6rem)}
+  .note-act{display:flex;justify-content:center;align-items:center;gap:2rem;flex-wrap:wrap}
+</style>

@@ -1,0 +1,115 @@
+---
+/** ARTICLE — the Leti Silva Beauty article template (breadcrumb, meta, hero, body,
+ *  share, conversion band, related). Articles whose full text could not be captured
+ *  render an honest migration notice; nothing is invented. */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import BlogCta from '../../components/BlogCta.astro';
+import Plate from '../../components/Plate.astro';
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import { CATEGORIES, fmtDate, getPublishedPosts, readingTime, relatedPosts } from '../../lib/blog';
+import { articleJsonLd, breadcrumbJsonLd } from '../../lib/seo';
+import { SITE } from '../../consts';
+
+export async function getStaticPaths() {
+  const posts = (await getCollection('posts')).filter((p) => !p.data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+interface Props { post: CollectionEntry<'posts'> }
+const { post } = Astro.props;
+const { Content } = await render(post);
+const cat = CATEGORIES[post.data.category];
+const path = `/blog/${post.id}`;
+const related = relatedPosts(post, await getPublishedPosts());
+const shareUrl = new URL(path, SITE.url).href;
+const enc = encodeURIComponent;
+const jsonLd = [
+  articleJsonLd({ title: post.data.title, description: post.data.description, path, pubDate: post.data.pubDate, updated: post.data.updated }),
+  breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Blog', path: '/blog' }, { name: cat.name, path: `/blog/category/${post.data.category}` }, { name: post.data.title, path }]),
+];
+---
+<BaseLayout title={post.data.title} description={post.data.description} path={path} type="article" jsonLd={jsonLd}>
+  <article class="art">
+    <header class="art-head">
+      <div class="wrap-text">
+        <nav class="crumbs fade" aria-label="Breadcrumb">
+          <ol><li><a href="/">Home</a></li><li><a href="/blog">Blog</a></li><li><a href={`/blog/category/${post.data.category}`}>{cat.name}</a></li><li><span aria-current="page">{post.data.title}</span></li></ol>
+        </nav>
+        <h1 class="rv">{post.data.title}</h1>
+        <p class="art-meta rv" style="--d:.06s">By <a href={SITE.links.mission}>{SITE.name}</a> <span aria-hidden="true">&middot;</span> {fmtDate(post.data.pubDate)}{!post.data.migrate && <><span aria-hidden="true">&middot;</span> {readingTime(post.body)} min read</>}</p>
+      </div>
+      <div class="wrap-text art-hero rv-im" style="--d:.1s"><div class="ph"><Plate id={post.data.plate} alt="" sizes="(max-width:760px) 94vw, 720px" widths={[640, 960, 1440]} loading="eager" fetchpriority="high" /></div></div>
+    </header>
+
+    <div class="wrap-text">
+      <p class="art-lede rv">{post.data.description}</p>
+      {post.data.migrate ? (
+        <div class="migrate rv" style="--d:.06s" role="note">
+          <span class="plaque">Content migration pending</span>
+          <p>This article exists on Magnolia&rsquo;s current website. Its full text will be migrated here word-for-word &mdash; nothing has been rewritten or invented for this demo.</p>
+          {post.data.sourceUrl && <a class="arrow-link" href={post.data.sourceUrl} target="_blank" rel="noopener noreferrer">Read it on the current site <span class="arr" aria-hidden="true">&rarr;</span></a>}
+        </div>
+      ) : (
+        <div class="art-body rv" style="--d:.06s"><Content /></div>
+      )}
+
+      <div class="art-share" aria-label="Share this article">
+        <span class="caps-xs">Share</span>
+        <a href={`https://www.facebook.com/sharer/sharer.php?u=${enc(shareUrl)}`} target="_blank" rel="noopener noreferrer">Facebook</a>
+        <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${enc(shareUrl)}`} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href={`mailto:?subject=${enc(post.data.title)}&body=${enc(shareUrl)}`}>Email</a>
+        <button type="button" id="copyLink" data-url={shareUrl}>Copy link</button>
+      </div>
+
+      <BlogCta />
+    </div>
+
+    {related.length > 0 && (
+      <section class="art-related">
+        <div class="wrap">
+          <h2 class="art-rel-h">Keep reading</h2>
+          <div class="art-rel-grid" data-stag=".07">{related.map((p) => <div class="rv"><BlogCard post={p} headingLevel="h3" /></div>)}</div>
+          <p class="art-back"><a class="btn btn--line" href="/blog">&#8592; All articles</a></p>
+        </div>
+      </section>
+    )}
+  </article>
+</BaseLayout>
+
+<style>
+  .art-head{padding:clamp(7.5rem,15vh,9.5rem) 0 0;text-align:center}
+  .art-head h1{font-size:clamp(1.9rem,4.6vw,3.1rem);margin:.8rem auto 1rem;max-width:22ch}
+  .crumbs ol{list-style:none;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:0 0 1.2rem;padding:0;font-family:var(--utility);font-weight:600;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+  .crumbs li{max-width:34ch;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .crumbs li+li::before{content:"\203A";margin-right:8px;color:var(--brass)}
+  .crumbs a:hover{color:var(--brass)}
+  .art-meta{font-size:.82rem;color:var(--ink-soft);margin-bottom:2rem}
+  .art-meta a{text-decoration:underline;text-underline-offset:3px}
+  .art-hero .ph{aspect-ratio:3/2;border-radius:var(--r-lg)}
+  .art-lede{font-family:var(--display);font-style:italic;font-size:clamp(1.15rem,1.7vw,1.4rem);line-height:1.6;color:var(--ink);margin:2.2rem 0 1.6rem;font-variation-settings:'opsz' 48,'SOFT' 60}
+  .migrate{background:var(--paper);border:1px solid var(--hair);border-radius:var(--r);padding:clamp(1.4rem,3vw,2rem);margin:0 0 1rem}
+  .migrate .plaque{margin-bottom:1rem}
+  .migrate p{margin-bottom:1rem;max-width:40em}
+  .art-body :global(h2){font-size:clamp(1.4rem,3vw,1.75rem);margin:2.2rem 0 .8rem}
+  .art-body :global(p){margin:0 0 1.1em}
+  .art-body :global(a){color:var(--brass);text-decoration:underline;text-underline-offset:3px}
+  .art-share{display:flex;flex-wrap:wrap;align-items:center;gap:.8rem 1.2rem;margin:2rem 0 .6rem;padding:1rem 0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+  .art-share a,.art-share button{font-family:var(--utility);font-weight:600;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);background:none;border:0;cursor:pointer;padding:8px 2px;min-height:40px;transition:color .3s}
+  .art-share a:hover,.art-share button:hover{color:var(--brass)}
+  .art-related{background:var(--linen);border-top:1px solid var(--hair);padding:clamp(3.4rem,6vw,5rem) 0 clamp(4rem,7vw,6rem);margin-top:1.4rem}
+  .art-rel-h{font-size:clamp(1.5rem,3.2vw,2rem);margin-bottom:1.6rem}
+  .art-rel-grid{display:grid;gap:clamp(1rem,2vw,1.6rem)}
+  .art-rel-grid>div{display:flex}
+  .art-rel-grid>div>:global(*){flex:1}
+  @media(min-width:640px){.art-rel-grid{grid-template-columns:1fr 1fr}}
+  @media(min-width:980px){.art-rel-grid{grid-template-columns:1fr 1fr 1fr}}
+  .art-back{text-align:center;margin-top:2.2rem}
+</style>
+<script>
+  const btn = document.getElementById('copyLink');
+  btn?.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText((btn as HTMLElement).dataset.url ?? location.href); btn.textContent = 'Copied!'; setTimeout(() => { btn.textContent = 'Copy link'; }, 2000); }
+    catch { btn.textContent = location.href; }
+  });
+</script>

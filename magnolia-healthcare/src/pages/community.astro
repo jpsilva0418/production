@@ -1,0 +1,99 @@
+---
+/** COMMUNITY — Magnolia's "Community" page and "Magnolia Healthcare Family" group,
+ *  reinterpreted for healthcare in place of a beauty portfolio: people, connection,
+ *  events. Photo tiles are placeholders for Magnolia's real event photography. */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Plate from '../components/Plate.astro';
+import { SITE } from '../consts';
+const tiles = ['community', 'office', 'mission', 'companionship', 'home', 'homemaking', 'personal-care'];
+---
+<BaseLayout
+  title="Community — Connection, Relationships & Mutual Support"
+  description="Magnolia Healthcare actively engages with and supports the local community through events that promote social connections, relationships, and support networks."
+  path="/community">
+
+  <section class="cov ghostwrap">
+    <span class="ghost-w" aria-hidden="true">together</span>
+    <div class="cov-c">
+      <p class="cov-kick fade">Community</p>
+      <h1 class="disp rv">Connection is <span class="ital">part of care.</span></h1>
+      <p class="cov-sub rv" style="--d:.08s">Magnolia actively engages with and supports the local community through events aimed at promoting social connections, relationships, and support networks.</p>
+      <div class="cov-cta fade" style="--d:.16s">
+        <a class="btn btn--solid" href={`${SITE.currentSite}/community`} target="_blank" rel="noopener noreferrer">Community on the current site</a>
+        <a class="tlk" href={SITE.links.consult}>Get in touch</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE FAMILY GROUP -->
+  <section class="sec sec--linen sec--tight">
+    <div class="wrap">
+      <div class="note-card rv">
+        <span class="caps">The Magnolia Healthcare Family</span>
+        <p class="note-copy">&ldquo;A space for us to connect and share with each other.&rdquo;</p>
+        <span class="note-rule" aria-hidden="true"></span>
+        <p class="note-body">Magnolia&rsquo;s current website hosts a public community group where clients, families and caregivers can connect. This demo keeps the entry point; the group itself continues to live on the current site until Magnolia decides how it should carry over.</p>
+        <div class="note-act">
+          <a class="btn btn--solid" href={`${SITE.currentSite}/groups`} target="_blank" rel="noopener noreferrer">Visit the group</a>
+          <a class="tlk" href={SITE.links.login}>Member sign in</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOMENTS — placeholder gallery -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="gl-head">
+        <div><p class="caps rv">Moments</p><h2 class="disp rv" style="--d:.06s">Events, people, and the neighbourhoods we serve.</h2></div>
+        <p class="ital gl-note rv" style="--d:.1s">Placeholders for Magnolia&rsquo;s own community and event photography &mdash; with permission from everyone pictured.</p>
+      </div>
+      <div class="gl-grid" data-stag=".06">
+        {tiles.map((t, i) => (
+          <figure class:list={['gl-tile', 'rv-im', 'sheen', { 'gl-tile--tall': i === 0 || i === 3 }]}>
+            <div class="ph"><Plate id={t} alt="" sizes="(max-width:599px) 92vw, (max-width:1023px) 46vw, 400px" widths={[480, 800, 1200]} /><i class="shn" aria-hidden="true"></i></div>
+            <figcaption class="caps-xs">Placeholder {String(i + 1).padStart(2, '0')} &middot; community photograph</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- THE OWNER'S COMMITMENT -->
+  <section class="sec sec--dk lit">
+    <i class="lx-dusk" aria-hidden="true"></i>
+    <div class="wrap chap" style="position:relative;z-index:1">
+      <div class="chap-l rv">
+        <p class="chap-rn">A commitment</p>
+        <h2 class="disp chap-t">Nurturing relationships.</h2>
+        <a class="tlk tlk--lt" href={SITE.links.mission}>Our mission</a>
+      </div>
+      <div>
+        <p class="cm-quote rv">The owner is committed to organizing community events aimed at promoting engagement, nurturing relationships, and emphasizing the value of mutual support.</p>
+        <div class="cm-cta fade">
+          <a class="btn btn--ivory" href={SITE.links.consult}>Get in touch</a>
+          <a class="tlk tlk--lt" href={SITE.links.careers}>Join our team</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .note-body{max-width:34em;margin:0 auto clamp(1.8rem,3.4vw,2.6rem)}
+  .note-act{display:flex;justify-content:center;align-items:center;gap:2rem;flex-wrap:wrap}
+  .gl-head{display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;flex-wrap:wrap;margin-bottom:clamp(2rem,3.6vw,3rem)}
+  .gl-head .caps{display:block;margin-bottom:.6rem}
+  .gl-head .disp{font-size:clamp(2rem,3.6vw,3.2rem);max-width:16em}
+  .gl-note{margin:0;max-width:26em;font-size:1.02rem;color:var(--ink-soft);font-variation-settings:'opsz' 48,'SOFT' 60}
+  .gl-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:minmax(200px,auto);gap:clamp(1rem,2vw,1.6rem)}
+  .gl-tile{margin:0}
+  .gl-tile .ph{aspect-ratio:4/3;height:100%}
+  .gl-tile--tall{grid-row:span 2}
+  .gl-tile--tall .ph{aspect-ratio:auto;min-height:100%}
+  .gl-tile figcaption{margin-top:.8rem;display:block}
+  @media(max-width:1023px){.gl-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:599px){.gl-grid{grid-template-columns:1fr}.gl-tile--tall{grid-row:auto}.gl-tile--tall .ph{aspect-ratio:4/3}}
+  .cm-quote{font-family:var(--display);font-size:clamp(1.5rem,2.6vw,2.3rem);line-height:1.35;color:var(--ivory);max-width:22em;margin:0 0 2rem;font-variation-settings:'opsz' 96,'SOFT' 60}
+  .cm-cta{display:flex;align-items:center;gap:2rem;flex-wrap:wrap}
+</style>

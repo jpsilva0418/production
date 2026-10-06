@@ -1,0 +1,24 @@
+---
+/** Conversion band at the end of every article. */
+import { SITE } from '../consts';
+---
+<aside class="bcta lit" aria-label="Talk to Magnolia Healthcare">
+  <i class="lx-dusk" aria-hidden="true"></i>
+  <div class="bcta-c">
+    <span class="caps-xs">Talk to us</span>
+    <h2>Thinking about care for someone you love?</h2>
+    <p>Tell us a little about who needs support. A conversation, not a sales call.</p>
+    <div class="bcta-btns">
+      <a class="btn btn--ivory" href={SITE.links.consultCare}>Request a consultation</a>
+      <a class="btn btn--ghost" href="/services">Our services</a>
+    </div>
+  </div>
+</aside>
+<style>
+  .bcta{position:relative;overflow:hidden;background:var(--leaf);color:var(--ivory);padding:clamp(2.4rem,5vw,4rem);text-align:center;margin:3rem 0;border-radius:var(--r-lg)}
+  .bcta-c{position:relative;z-index:1}
+  .bcta .caps-xs{color:var(--gold-lt);display:block;margin-bottom:1rem}
+  .bcta h2{color:var(--ivory);font-size:clamp(1.5rem,3vw,2.2rem);margin-bottom:.8rem}
+  .bcta p{max-width:36em;margin:0 auto 1.8rem;color:rgba(248,244,238,.8);font-family:var(--display);font-style:italic;font-variation-settings:'opsz' 48,'SOFT' 60}
+  .bcta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+</style>

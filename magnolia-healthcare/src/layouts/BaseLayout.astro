@@ -1,0 +1,158 @@
+---
+import '@fontsource-variable/fraunces';
+import '@fontsource-variable/fraunces/wght-italic.css';
+import '@fontsource-variable/figtree';
+import '../styles/tokens.css';
+import '../styles/magnolia.css';
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ScrollToTop from '../components/ScrollToTop.astro';
+import { localBusinessJsonLd } from '../lib/seo';
+import type { SeoInput } from '../lib/seo';
+interface Props extends SeoInput {
+  jsonLd?: unknown;
+  headerLight?: boolean;
+  headerPrologue?: boolean;
+}
+const { jsonLd, headerLight = false, headerPrologue = false, ...seo } = Astro.props;
+const ld = jsonLd ?? localBusinessJsonLd();
+const current = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead {...seo} />
+    <script is:inline>document.documentElement.classList.add('js')</script>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(ld)} />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <Header light={headerLight} prologue={headerPrologue} current={current} />
+    <main id="main"><slot /></main>
+    <Footer />
+    <ScrollToTop />
+    <!-- Informational demo badge: this is a design demo, never Magnolia's live site. -->
+    <div class="demo-flag" aria-hidden="true">Design demo &middot; not the live website</div>
+    <script>
+      // ============ Shared runtime — ported from the Leti Silva Beauty V2 system ============
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* ---- full-screen menu (inert + aria-hidden when closed, focus managed, trapped) ---- */
+      const menu = document.getElementById('menu');
+      const openBtn = document.getElementById('menuOpen');
+      const closeBtn = document.getElementById('menuClose');
+      if (menu && openBtn && closeBtn) {
+        const setMenu = (open: boolean) => {
+          menu.classList.toggle('open', open);
+          document.body.classList.toggle('menu-open', open);
+          menu.setAttribute('aria-hidden', String(!open));
+          (menu as HTMLElement & { inert: boolean }).inert = !open;
+          openBtn.setAttribute('aria-expanded', String(open));
+          if (open) closeBtn.focus(); else openBtn.focus();
+        };
+        openBtn.addEventListener('click', () => setMenu(true));
+        closeBtn.addEventListener('click', () => setMenu(false));
+        menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menu.classList.contains('open')) setMenu(false); });
+        menu.addEventListener('keydown', (e) => {
+          if (e.key !== 'Tab' || !menu.classList.contains('open')) return;
+          const f = menu.querySelectorAll<HTMLElement>('a[href]:not([tabindex="-1"]), button');
+          const first = f[0], last = f[f.length - 1];
+          if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+          else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        });
+      }
+
+      /* ---- header: compact translucent bar after the hero; hides on fast scroll down, returns on scroll up ---- */
+      const hd = document.getElementById('siteHeader');
+      if (hd) {
+        // The prologue fade-in must play exactly once: once it ends (or after a safety
+        // timeout), drop the class so un-sticking at the top never restarts it.
+        const settle = () => hd.classList.remove('hd--plg');
+        if (hd.classList.contains('hd--plg')) { hd.addEventListener('animationend', settle, { once: true }); setTimeout(settle, 4200); }
+        let lastY = scrollY, ticking = false;
+        const frame = () => {
+          ticking = false;
+          const y = scrollY;
+          const stuck = y > 120;
+          hd.classList.toggle('hd--stuck', stuck);
+          hd.classList.toggle('hd--hide', stuck && y > lastY && y - lastY > 6 && y > 400);
+          lastY = y;
+        };
+        addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }, { passive: true });
+        frame();
+      }
+
+      /* ---- stagger helper ---- */
+      document.querySelectorAll('[data-stag]').forEach((s) => {
+        const step = parseFloat(s.getAttribute('data-stag') ?? '') || 0.08;
+        Array.prototype.forEach.call(s.children, (c: HTMLElement, i: number) => { c.style.setProperty('--d', (i * step).toFixed(2) + 's'); });
+      });
+
+      /* ---- reveals ---- */
+      const toReveal = document.querySelectorAll('.rv,.rv-im,.fade,.sheen');
+      if (reduced || !('IntersectionObserver' in window)) {
+        toReveal.forEach((el) => el.classList.add('in'));
+      } else {
+        const io = new IntersectionObserver((es) => {
+          es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+        }, { threshold: 0, rootMargin: '0px 0px -8% 0px' });
+        toReveal.forEach((el) => io.observe(el));
+        // Elements leapt over by an instant jump (anchor links, back/forward restore) still reveal.
+        addEventListener('load', () => { setTimeout(() => {
+          toReveal.forEach((el) => { const r = el.getBoundingClientRect(); if (r.top < innerHeight && r.bottom > 0) el.classList.add('in'); });
+        }, 400); });
+      }
+
+      /* ---- ghost words ---- */
+      const ghosts = document.querySelectorAll('.ghost-w');
+      if (ghosts.length && 'IntersectionObserver' in window && !reduced) {
+        const gio = new IntersectionObserver((es) => { es.forEach((e) => e.target.classList.toggle('in', e.isIntersecting)); }, { threshold: 0.2 });
+        ghosts.forEach((g) => gio.observe(g));
+      }
+
+      /* ---- gentle parallax pairs (desktop only) ---- */
+      const plxHosts = document.querySelectorAll('[data-plx-host]');
+      const wide = matchMedia('(min-width:900px)');
+      let plxTicking = false;
+      const plxFrame = () => {
+        plxTicking = false;
+        if (reduced || !wide.matches) return;
+        const vh = innerHeight;
+        plxHosts.forEach((host) => {
+          const r = host.getBoundingClientRect();
+          if (r.bottom < -120 || r.top > vh + 120) return;
+          const off = r.top + r.height / 2 - vh / 2;
+          host.querySelectorAll<HTMLElement>('.plx').forEach((el) => {
+            const f = parseFloat(el.getAttribute('data-plx') ?? '') || 0.06;
+            el.style.transform = `translate3d(0,${(off * f).toFixed(1)}px,0)`;
+          });
+        });
+      };
+      if (plxHosts.length && !reduced) {
+        addEventListener('scroll', () => { if (!plxTicking) { plxTicking = true; requestAnimationFrame(plxFrame); } }, { passive: true });
+        plxFrame();
+      }
+
+      /* ---- lazy films: poster until near viewport, pause off-screen, never under reduced motion / Save-Data ---- */
+      const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true;
+      document.querySelectorAll<HTMLVideoElement>('video[data-film]').forEach((video) => {
+        if (reduced || saveData) { video.querySelectorAll('source').forEach((s) => s.remove()); video.removeAttribute('autoplay'); return; }
+        if (!('IntersectionObserver' in window)) return;
+        let loaded = false;
+        new IntersectionObserver((entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) {
+              if (!loaded) {
+                video.querySelectorAll('source').forEach((s) => { const src = (s as HTMLSourceElement).dataset.src; if (src) (s as HTMLSourceElement).src = src; });
+                video.load(); loaded = true;
+              }
+              video.play().catch(() => {});
+            } else video.pause();
+          }
+        }, { rootMargin: '240px 0px' }).observe(video);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,59 @@
+---
+/** Site header + full-screen menu — the Leti Silva Beauty header/menu system,
+ *  re-voiced for Magnolia with a visible desktop nav (wayfinding matters more on a
+ *  multi-page care site than on a boutique one), a phone number, and a
+ *  consultation CTA. Variants: `light` over filmed/dark heroes, `prologue` fades
+ *  in after the home title card. Menu logic lives in BaseLayout's shared runtime. */
+import Mark from './Mark.astro';
+import { SITE } from '../consts';
+interface Props { light?: boolean; prologue?: boolean; current?: string }
+const { light = false, prologue = false, current = '' } = Astro.props;
+const isCurrent = (href: string) => current === href || (href !== '/' && current.startsWith(href + '/'));
+const primary = SITE.nav.filter((n) => n.href !== '/contact');
+const numerals = ['i.', 'ii.', 'iii.', 'iv.', 'v.', 'vi.'];
+---
+<header class:list={['hd', { 'hd--lt': light, 'hd--plg': prologue }]} id="siteHeader">
+  <div class="hd-in">
+    <a class="hd-logo" href="/" aria-label={`${SITE.name} — home`}>
+      <Mark />
+      <span class="wm" aria-hidden="true"><span class="wm-name">Magnolia</span><span class="wm-sub">Healthcare</span></span>
+    </a>
+    <nav class="hd-nav" aria-label="Primary">
+      {primary.map((n) => <a href={n.href} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a>)}
+    </nav>
+    <div class="hd-tools">
+      <a class="hd-phone" href={`tel:${SITE.phoneE164}`} aria-label={`Call ${SITE.phone}`}>{SITE.phone}</a>
+      <a class="btn btn--solid hd-cta" href={SITE.links.consult}>Request a consultation</a>
+      <button class="menu-btn" id="menuOpen" aria-expanded="false" aria-controls="menu">Menu <span class="bars" aria-hidden="true"><i></i><i></i></span></button>
+    </div>
+  </div>
+</header>
+<nav class="menu" id="menu" aria-label="Main menu" aria-hidden="true" inert>
+  <div class="menu-top">
+    <a class="hd-logo" href="/" aria-label={`${SITE.name} — home`} tabindex="-1">
+      <Mark />
+      <span class="wm" aria-hidden="true"><span class="wm-name">Magnolia</span><span class="wm-sub">Healthcare</span></span>
+    </a>
+    <button class="menu-close" id="menuClose">Close <span class="x" aria-hidden="true">&times;</span></button>
+  </div>
+  <div class="menu-body">
+    <ul class="menu-list">
+      {SITE.nav.map((n, i) => (
+        <li><a href={n.href} aria-current={isCurrent(n.href) ? 'page' : undefined}><span class="mrn">{numerals[i]}</span><span class="mlb">{n.label}</span><span class="mnote">{n.note}</span></a></li>
+      ))}
+    </ul>
+    <div class="menu-sub">
+      <a href={SITE.links.careers}>Join our team</a>
+      <a href={SITE.links.login}>Member sign in</a>
+      <a href={SITE.links.accessibility}>Accessibility</a>
+      <a href={`tel:${SITE.phoneE164}`}>Call {SITE.phone}</a>
+    </div>
+    <div class="menu-cta">
+      <a class="btn btn--ivory" href={SITE.links.consult}>Request a consultation</a>
+    </div>
+  </div>
+  <div class="menu-foot">
+    <span>{SITE.address.locality}, Colorado</span>
+    <span>Non-medical home care · {SITE.serviceArea.label}</span>
+  </div>
+</nav>

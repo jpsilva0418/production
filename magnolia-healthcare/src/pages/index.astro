@@ -1,0 +1,289 @@
+---
+/** HOME — the conversion surface. Narrative: cinematic prologue → "a family, not a
+ *  service" (value proposition + values) → the four services → cinema band → why
+ *  Magnolia (trust ledger, all from existing claims) → mission chapter → caregivers →
+ *  community → consultation finale → latest articles → grand footer. Every claim is
+ *  traceable to Magnolia's current site (docs/00-assessment.md). */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Prologue from '../components/Prologue.astro';
+import Plate from '../components/Plate.astro';
+import BlogCard from '../components/BlogCard.astro';
+import { getCollection } from 'astro:content';
+import { getPublishedPosts } from '../lib/blog';
+import { SITE } from '../consts';
+
+const services = (await getCollection('services')).filter((s) => !s.data.draft).sort((a, b) => a.data.order - b.data.order);
+const posts = (await getPublishedPosts()).slice(0, 3);
+---
+<BaseLayout
+  headerLight
+  headerPrologue
+  title="Non-Medical Home Care in Arvada & the Denver Metro"
+  description={SITE.description}
+  path="/">
+
+  <!-- ① CINEMATIC PROLOGUE -->
+  <Prologue />
+
+  <!-- ② CHAPTER I · A FAMILY, NOT A SERVICE -->
+  <section class="sec lit" id="family">
+    <i class="lx-shaft" aria-hidden="true"></i>
+    <div class="wrap chap">
+      <div class="chap-l rv">
+        <p class="chap-rn">Chapter i.</p>
+        <h2 class="disp chap-t">More than a provider.<br /><span class="ital">A family.</span></h2>
+        <p class="chap-line">Our main goal is to make daily life easier and happier &mdash; in the comfort of your own home.</p>
+        <a class="tlk" href={SITE.links.mission}>Read our mission</a>
+      </div>
+      <div class="fam-r">
+        <div class="fam-copy">
+          <p class="lede rv">At Magnolia Healthcare, we&rsquo;re more than just a service provider &mdash; we&rsquo;re a family.</p>
+          <div class="fam-body rv" style="--d:.08s">
+            <p>Magnolia Healthcare is a locally owned, Colorado-licensed provider of non-medical home care. We help older adults, people with disabilities, and families feel supported at home through personal care, homemaking, companionship, and individualized dementia support.</p>
+            <p>Our main goal is to make daily life easier and happier for elderly, blind, and disabled individuals in the comfort of their own homes &mdash; providing a helping hand so every client can maintain their independence.</p>
+          </div>
+          <ul class="values rv" style="--d:.14s" data-stag=".06">
+            <li class="fade"><span class="v-n">i.</span><span class="v-t">Respect &amp; Dignity</span><span class="v-d">Clients are unique individuals who deserve to be treated with respect and dignity.</span></li>
+            <li class="fade"><span class="v-n">ii.</span><span class="v-t">Compassion &amp; Empathy</span><span class="v-d">We understand the emotional and physical challenges clients face, and support them with kindness and understanding.</span></li>
+            <li class="fade"><span class="v-n">iii.</span><span class="v-t">Honesty &amp; Integrity</span><span class="v-d">Transparency, and trust built with clients, employees, and the wider community.</span></li>
+          </ul>
+        </div>
+        <figure class="fam-fig">
+          <div class="ph ph--framed rv-im"><Plate id="home" alt="" class="lv lv--rise" sizes="(max-width:899px) 90vw, 520px" /><i class="grain" aria-hidden="true"></i></div>
+          <figcaption class="fade" style="--d:.18s">Care at home &middot; {SITE.serviceArea.label}</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <div class="chapslate chapslate--linen fade" role="presentation"><span class="cs-t">Our Services</span></div>
+
+  <!-- ③ THE SERVICES -->
+  <section class="sec sec--linen ghostwrap" id="services">
+    <span class="ghost-w" aria-hidden="true">at home</span>
+    <div class="wrap" style="position:relative;z-index:1">
+      <div class="svc-head">
+        <div>
+          <p class="kick" style="margin-bottom:1.4rem">Four kinds of care</p>
+          <h2 class="disp rv">Help with the day,<br />the way you want it.</h2>
+        </div>
+        <p class="ital svc-head-line rv" style="--d:.08s">Every care plan is built around the client&rsquo;s routines, preferences, culture, and goals for independence.</p>
+      </div>
+      <div class="svc-grid" data-stag=".07">
+        {services.map((s) => (
+          <a class="svc card rv" href={`/services/${s.id}`} aria-label={`${s.data.title} — learn about this service`}>
+            <div class="ph svc-ph"><Plate id={s.data.plate} alt="" sizes="(max-width:599px) 92vw, (max-width:1023px) 46vw, 300px" widths={[400, 640, 900]} /></div>
+            <div class="svc-body">
+              <span class="caps-xs">No. {s.data.numeral}</span>
+              <h3>{s.data.title}</h3>
+              <p>{s.data.short}</p>
+              <span class="arrow-link">Learn more <span class="arr" aria-hidden="true">&rarr;</span></span>
+            </div>
+          </a>
+        ))}
+      </div>
+      <div class="svc-cta fade">
+        <a class="btn btn--solid" href={SITE.links.consultCare}>Request a consultation</a>
+        <a class="tlk" href="/services">All services, in detail</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ④ CINEMA BAND -->
+  <div class="cine">
+    <div class="wrap">
+      <div class="cine-fr"><Plate id="cine" alt="" class="lv" sizes="100vw" widths={[768, 1280, 1920, 2400]} /><i class="grain" aria-hidden="true"></i><i class="lx-warm" aria-hidden="true"></i></div>
+      <p class="cine-cap">Care, at home &mdash; Arvada &amp; the Denver Metro</p>
+    </div>
+  </div>
+
+  <!-- ⑤ CHAPTER II · WHY MAGNOLIA (trust ledger — existing claims only) -->
+  <section class="sec sec--dk lit" id="why">
+    <i class="lx-dusk" aria-hidden="true"></i>
+    <div class="wrap chap" style="position:relative;z-index:1">
+      <div class="chap-l rv">
+        <p class="chap-rn">Chapter ii.</p>
+        <h2 class="disp chap-t">Why families<br />choose Magnolia.</h2>
+        <p class="chap-line">Locally owned. Colorado-licensed. Built on respect, compassion and honesty since 2023.</p>
+        <a class="tlk tlk--lt" href={SITE.links.team}>Meet our caregivers</a>
+      </div>
+      <div>
+        <p class="why-quote rv">&ldquo;A helping hand, so every client can maintain their independence at home.&rdquo;</p>
+        <ul class="ledger" data-stag=".06">
+          <li class="fade"><span class="l-n">i.</span><div><span class="l-t">Carefully selected caregivers</span><span class="l-d">Each member of our team is carefully selected and goes through extensive training to meet the unique needs of our clients.</span></div></li>
+          <li class="fade"><span class="l-n">ii.</span><div><span class="l-t">State &amp; federal background checks</span><span class="l-d">Our caregivers have undergone thorough state and federal background checks for the safety and well-being of every client.</span></div></li>
+          <li class="fade"><span class="l-n">iii.</span><div><span class="l-t">Ongoing training &amp; development</span><span class="l-d">Staff receive ongoing training and development so they have the knowledge and skills to provide the highest level of care.</span></div></li>
+          <li class="fade"><span class="l-n">iv.</span><div><span class="l-t">Individualized care plans</span><span class="l-d">Every plan is built around the client&rsquo;s routines, preferences, culture, and goals for independence.</span></div></li>
+          <li class="fade"><span class="l-n">v.</span><div><span class="l-t">Locally owned, Colorado-licensed</span><span class="l-d">Founded in {SITE.founded} by {SITE.founder} and based in {SITE.address.locality}, serving the Denver Metro.</span></div></li>
+        </ul>
+        <div class="why-cta fade">
+          <a class="btn btn--ivory" href={SITE.links.consultCare}>Request a consultation</a>
+          <a class="tlk tlk--lt" href={`tel:${SITE.phoneE164}`}>Or call {SITE.phone}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="chapslate fade" role="presentation"><span class="cs-t">Our Mission</span></div>
+
+  <!-- ⑥ CHAPTER III · THE MISSION (editorial gateway to /mission) -->
+  <section class="sec" id="mission">
+    <div class="wrap mis-grid">
+      <figure class="mis-fig">
+        <a class="mis-link" href={SITE.links.mission} aria-label="Read the Magnolia mission">
+          <div class="ph ph--framed rv-im mis-ph"><Plate id="founder" alt="" sizes="(max-width:899px) 86vw, 440px" widths={[480, 720, 960]} /><i class="grain" aria-hidden="true"></i></div>
+        </a>
+        <figcaption class="fade" style="--d:.16s">{SITE.founder} &middot; Founder &middot; <em>portrait to follow</em></figcaption>
+      </figure>
+      <div class="mis-copy">
+        <p class="caps rv">The mission</p>
+        <h2 class="disp rv" style="--d:.06s">Exceptional non-medical care, <span class="ital">with heart.</span></h2>
+        <p class="lede rv" style="--d:.1s">Founded by Madina Sorensen, Magnolia Healthcare&rsquo;s mission is to provide exceptional non-medical personal care and home services to its clients.</p>
+        <p class="rv" style="--d:.14s">Madina started Magnolia with a genuine desire to make a difference in the lives of individuals who require non-medical home care, drawing on a background in healthcare and special education for those with unique needs. Since 2023 the agency has grown steadily, expanding services and reaching more clients in need.</p>
+        <a class="arrow-link fade" style="--d:.2s" href={SITE.links.mission}>Our mission &amp; values <span class="arr" aria-hidden="true">&rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑦ THE CAREGIVERS + COMMUNITY — the human element -->
+  <section class="sec sec--blush sec--tight" id="people">
+    <div class="wrap two-up" data-stag=".08">
+      <article class="panel card rv">
+        <span class="caps-xs">Our caregivers</span>
+        <h3>Selected with care. Trained to meet unique needs.</h3>
+        <p>Our team of dedicated caregivers is committed to providing the highest quality home care. Each member is carefully selected, extensively trained, and has undergone thorough state and federal background checks.</p>
+        <div class="panel-act">
+          <a class="tlk" href={SITE.links.team}>Meet the team</a>
+          <a class="tlk" href={SITE.links.careers}>Join our team</a>
+        </div>
+      </article>
+      <article class="panel card rv">
+        <span class="caps-xs">Community</span>
+        <h3>Connection, relationships, and mutual support.</h3>
+        <p>Magnolia actively engages with and supports the local community through events that promote social connection, relationships, and support networks &mdash; and welcomes everyone to the Magnolia Healthcare Family.</p>
+        <div class="panel-act">
+          <a class="tlk" href={SITE.links.community}>Our community</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ⑧ FINALE · THE CONSULTATION -->
+  <section class="finale lit">
+    <div class="finale-media" aria-hidden="true"><Plate id="cine-light" alt="" class="lv lv--breathe" sizes="100vw" widths={[768, 1280, 1920, 2400]} /></div>
+    <i class="lx-dusk" aria-hidden="true"></i>
+    <div class="finale-c">
+      <span class="caps-xs fade">The next step</span>
+      <h2 class="rv">Let&rsquo;s talk about the care your family needs.</h2>
+      <p class="finale-line fade" style="--d:.06s">A conversation, not a sales call. Tell us a little about who needs support and we&rsquo;ll take it from there.</p>
+      <div class="finale-cta fade" style="--d:.1s">
+        <a class="btn btn--ivory" href={SITE.links.consultCare}>Request a consultation</a>
+        <a class="tlk tlk--lt" href={`tel:${SITE.phoneE164}`}>Call {SITE.phone}</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑨ FROM THE BLOG -->
+  {posts.length > 0 && (
+    <section class="sec sec--tight" id="journal">
+      <div class="wrap">
+        <div class="jr-head">
+          <div><p class="caps rv">From the blog</p><h2 class="disp rv" style="--d:.06s">Notes from the Magnolia team.</h2></div>
+          <a class="tlk fade" href="/blog">All articles</a>
+        </div>
+        <div class="jr-grid" data-stag=".07">
+          {posts.map((p) => <div class="rv"><BlogCard post={p} headingLevel="h3" /></div>)}
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  /* CHAPTER I */
+  .fam-r{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);column-gap:clamp(2.4rem,5vw,5.5rem);align-items:start}
+  .fam-copy .lede{margin:0 0 clamp(1.4rem,2.6vw,2.2rem);max-width:24em;font-family:var(--display);font-variation-settings:'opsz' 48,'SOFT' 50}
+  .fam-body{max-width:34em}
+  .fam-body p+p{margin-top:1.1em}
+  .values{list-style:none;margin:clamp(2rem,3.6vw,3rem) 0 0;padding:0;border-top:1px solid var(--hair)}
+  .values li{display:grid;grid-template-columns:2.2em 1fr;column-gap:.4rem;padding:1.05rem 0;border-bottom:1px solid var(--hair)}
+  .v-n{font-family:var(--display);font-style:italic;color:var(--brass);font-size:1.02rem}
+  .v-t{display:block;grid-column:2;font-family:var(--display);font-size:1.22rem;color:var(--ink);font-variation-settings:'opsz' 48,'SOFT' 40}
+  .v-d{display:block;grid-column:2;font-size:.92rem;color:var(--ink-soft);margin-top:.3rem;max-width:42em}
+  .v-n{grid-row:1}
+  .fam-fig{margin:0}
+  .fam-fig .ph{aspect-ratio:3/3.7}
+  .fam-fig figcaption{margin-top:1.4rem;text-align:center;font-family:var(--utility);font-weight:600;text-transform:uppercase;letter-spacing:.22em;font-size:.56rem;color:var(--brass)}
+  @media(max-width:899px){.fam-r{grid-template-columns:1fr;row-gap:2.4rem}.fam-fig{order:-1}.fam-fig .ph{aspect-ratio:4/3}}
+
+  /* SERVICES */
+  .svc-head{display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;flex-wrap:wrap;margin-bottom:clamp(2.6rem,5vw,4.4rem)}
+  .svc-head .disp{font-size:clamp(2.2rem,4.4vw,4rem)}
+  .svc-head-line{margin:0;max-width:24em;font-size:1.12rem;color:var(--ink-soft);font-variation-settings:'opsz' 48,'SOFT' 60}
+  .svc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(1rem,2vw,1.6rem)}
+  .svc{display:flex;flex-direction:column;overflow:hidden;color:var(--ink)}
+  .svc-ph{aspect-ratio:4/3;border-radius:var(--r) var(--r) 0 0}
+  .svc-ph img{transition:transform .9s var(--ease)}
+  .svc:hover .svc-ph img{transform:scale(1.04)}
+  .svc-body{padding:1.4rem 1.5rem 1.6rem;display:flex;flex-direction:column;flex:1;gap:.55rem}
+  .svc-body h3{font-size:1.38rem;line-height:1.15}
+  .svc-body p{font-size:.92rem;color:var(--ink-soft);flex:1}
+  .svc-body .arrow-link{margin-top:.6rem;font-size:.98rem}
+  .svc-cta{margin-top:clamp(2.6rem,4.5vw,3.8rem);display:flex;align-items:center;gap:2rem;flex-wrap:wrap}
+  @media(max-width:1023px){.svc-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:599px){.svc-grid{grid-template-columns:1fr}}
+
+  /* WHY */
+  .why-quote{font-family:var(--display);font-size:clamp(1.7rem,3vw,2.6rem);line-height:1.28;letter-spacing:-.005em;color:var(--ivory);max-width:17em;margin:0 0 clamp(2rem,3.6vw,3rem);font-variation-settings:'opsz' 96,'SOFT' 60}
+  .ledger{list-style:none;margin:0;padding:0;border-top:1px solid var(--hairdk)}
+  .ledger li{display:flex;gap:clamp(1rem,2vw,1.6rem);padding:clamp(1rem,1.8vw,1.4rem) 0;border-bottom:1px solid var(--hairdk)}
+  .l-n{flex:0 0 2em;font-family:var(--display);font-style:italic;color:var(--gold-lt);font-size:1.02rem}
+  .l-t{display:block;font-family:var(--display);font-size:1.2rem;color:var(--ivory);font-variation-settings:'opsz' 48,'SOFT' 40}
+  .l-d{display:block;font-size:.92rem;color:rgba(248,244,238,.74);margin-top:.3rem;max-width:44em}
+  .why-cta{display:flex;align-items:center;gap:2rem;flex-wrap:wrap;margin-top:clamp(2rem,3.6vw,3rem)}
+
+  /* MISSION */
+  .mis-grid{display:grid;grid-template-columns:minmax(260px,440px) 1fr;column-gap:clamp(3rem,7vw,7rem);align-items:center}
+  .mis-fig{margin:0}
+  .mis-ph{aspect-ratio:4/5}
+  .mis-link{display:block}
+  .mis-link:focus-visible{outline:1px solid var(--brass);outline-offset:8px;border-radius:var(--r)}
+  .mis-fig figcaption{margin-top:1.4rem;text-align:center;font-family:var(--utility);font-weight:600;text-transform:uppercase;letter-spacing:.22em;font-size:.56rem;color:var(--brass)}
+  .mis-fig figcaption em{font-style:normal;color:var(--ink-soft);font-weight:500;letter-spacing:.14em}
+  .mis-copy .caps{display:block;margin-bottom:1.2rem}
+  .mis-copy .disp{font-size:clamp(2.2rem,4.2vw,3.8rem);margin-bottom:1.4rem}
+  .mis-copy .lede{margin-bottom:1.2rem;max-width:26em;font-family:var(--display);font-variation-settings:'opsz' 48,'SOFT' 50}
+  .mis-copy p{max-width:36em}
+  .mis-copy .arrow-link{margin-top:1.8rem}
+  @media(max-width:899px){.mis-grid{grid-template-columns:1fr;row-gap:2.4rem}.mis-fig{width:min(420px,100%);margin-inline:auto}}
+
+  /* PEOPLE */
+  .two-up{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1rem,2vw,1.6rem)}
+  .panel{padding:clamp(1.6rem,3vw,2.6rem)}
+  .panel .caps-xs{display:block;margin-bottom:1rem}
+  .panel h3{font-size:clamp(1.4rem,2.1vw,1.8rem);margin-bottom:.9rem;max-width:18em}
+  .panel p{max-width:36em}
+  .panel-act{display:flex;gap:1.8rem;flex-wrap:wrap;margin-top:1.6rem}
+  @media(max-width:719px){.two-up{grid-template-columns:1fr}}
+
+  /* FINALE */
+  .finale{position:relative;min-height:80svh;display:grid;place-items:center;text-align:center;overflow:hidden;background:var(--leaf);color:var(--ivory)}
+  .finale-media{position:absolute;inset:0}
+  .finale-media :global(img){width:100%;height:100%;object-fit:cover}
+  .finale-media::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(21,46,39,.72),rgba(21,46,39,.5) 45%,rgba(21,46,39,.8)),radial-gradient(110% 85% at 50% 50%,rgba(21,46,39,0) 45%,rgba(21,46,39,.45) 100%)}
+  .finale-c{position:relative;z-index:1;padding:clamp(6rem,14vh,9rem) 6vw;max-width:860px}
+  .finale-c .caps-xs{color:var(--gold-lt);display:block;margin-bottom:1.6rem}
+  .finale-c h2{font-size:clamp(2.2rem,5vw,4.4rem);line-height:1.08;color:var(--ivory);margin:0 0 1.4rem;font-variation-settings:'opsz' 144,'SOFT' 60}
+  .finale-line{font-family:var(--display);font-style:italic;font-size:clamp(1.08rem,1.6vw,1.32rem);color:rgba(248,244,238,.85);max-width:30em;margin:0 auto clamp(2rem,4vh,3rem);font-variation-settings:'opsz' 48,'SOFT' 60}
+  .finale-cta{display:flex;justify-content:center;align-items:center;gap:2.2rem;flex-wrap:wrap}
+
+  /* JOURNAL */
+  .jr-head{display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;flex-wrap:wrap;margin-bottom:clamp(2rem,3.6vw,3rem)}
+  .jr-head .caps{display:block;margin-bottom:.6rem}
+  .jr-head .disp{font-size:clamp(1.9rem,3.4vw,3rem)}
+  .jr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2vw,1.6rem)}
+  .jr-grid>div{display:flex}
+  .jr-grid>div>:global(*){flex:1}
+  @media(max-width:899px){.jr-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:599px){.jr-grid{grid-template-columns:1fr}}
+</style>

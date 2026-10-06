@@ -1,0 +1,103 @@
+---
+/** SERVICE DETAIL — one page per real service. Facts come from the services
+ *  collection only (what the current site says each service includes). */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Plate from '../../components/Plate.astro';
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import { SITE } from '../../consts';
+import { localBusinessJsonLd, serviceJsonLd, breadcrumbJsonLd } from '../../lib/seo';
+
+export async function getStaticPaths() {
+  const all = (await getCollection('services')).filter((s) => !s.data.draft);
+  return all.map((service) => ({ params: { slug: service.id }, props: { service } }));
+}
+interface Props { service: CollectionEntry<'services'> }
+const { service } = Astro.props;
+const { Content } = await render(service);
+const others = (await getCollection('services')).filter((s) => s.id !== service.id && !s.data.draft).sort((a, b) => a.data.order - b.data.order);
+const path = `/services/${service.id}`;
+const jsonLd = [
+  localBusinessJsonLd(),
+  serviceJsonLd({ name: service.data.title, description: service.data.summary, path, serviceType: service.data.serviceType }),
+  breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Services', path: '/services' }, { name: service.data.title, path }]),
+];
+---
+<BaseLayout title={`${service.data.title} — Non-Medical Home Care`} description={service.data.summary} path={path} jsonLd={jsonLd}>
+  <section class="sd-cov">
+    <div class="wrap sd-grid">
+      <div class="sd-l">
+        <nav class="crumbs fade" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/services">Services</a></li><li><span aria-current="page">{service.data.title}</span></li></ol></nav>
+        <span class="caps-xs rv">No. {service.data.numeral}</span>
+        <h1 class="disp rv" style="--d:.06s">{service.data.title}</h1>
+        <p class="cov-sub rv" style="--d:.1s">{service.data.short}</p>
+        <div class="cov-cta fade" style="--d:.16s">
+          <a class="btn btn--solid" href={`${SITE.links.consultCare}&service=${service.id}`}>Request a consultation</a>
+          <a class="tlk" href={`tel:${SITE.phoneE164}`}>Call {SITE.phone}</a>
+        </div>
+      </div>
+      <figure class="sd-fig"><div class="ph ph--framed rv-im"><Plate id={service.data.plate} alt="" class="lv lv--breathe" sizes="(max-width:899px) 90vw, 44vw" loading="eager" fetchpriority="high" /><i class="grain" aria-hidden="true"></i></div></figure>
+    </div>
+  </section>
+
+  <section class="sec sec--tight">
+    <div class="wrap sd-body">
+      <div class="sd-main">
+        <p class="lede rv">{service.data.summary}</p>
+        <div class="prose rv" style="--d:.08s"><Content /></div>
+      </div>
+      <aside class="sd-side rv" style="--d:.12s">
+        <p class="caps-xs">What&rsquo;s included</p>
+        <ul class="sd-inc">{service.data.includes.map((i) => <li>{i}</li>)}</ul>
+        <p class="sd-note">Every care plan is built around the client&rsquo;s routines, preferences, culture, and goals for independence.</p>
+        <a class="btn btn--solid" href={`${SITE.links.consultCare}&service=${service.id}`}>Ask about this service</a>
+      </aside>
+    </div>
+  </section>
+
+  <section class="sec sec--linen sec--tight">
+    <div class="wrap">
+      <p class="kick">Also at Magnolia</p>
+      <div class="sd-others" data-stag=".07">
+        {others.map((o) => (
+          <a class="card sd-other rv" href={`/services/${o.id}`}>
+            <span class="caps-xs">No. {o.data.numeral}</span>
+            <h3>{o.data.title}</h3>
+            <p>{o.data.short}</p>
+            <span class="arrow-link">Learn more <span class="arr" aria-hidden="true">&rarr;</span></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .sd-cov{padding:clamp(7.5rem,16vh,10rem) 0 clamp(3rem,6vh,4.5rem)}
+  .sd-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);column-gap:clamp(2.4rem,6vw,6rem);align-items:center}
+  .crumbs ol{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:0 0 1.6rem;padding:0;font-family:var(--utility);font-weight:600;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+  .crumbs li+li::before{content:"\203A";margin-right:8px;color:var(--brass)}
+  .crumbs a:hover{color:var(--brass)}
+  .sd-l .caps-xs{display:block;margin-bottom:1rem}
+  .sd-l h1{font-size:clamp(2.6rem,5.6vw,5rem);margin-bottom:1.2rem}
+  .sd-fig{margin:0}
+  .sd-fig .ph{aspect-ratio:4/3.4}
+  @media(max-width:899px){.sd-grid{grid-template-columns:1fr;row-gap:2rem}.sd-fig{order:-1}.sd-fig .ph{aspect-ratio:4/3}}
+  .sd-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,340px);column-gap:clamp(2.4rem,6vw,6rem);align-items:start}
+  .sd-main .lede{margin-bottom:1.4rem;max-width:30em;font-family:var(--display);font-variation-settings:'opsz' 48,'SOFT' 50}
+  .prose p{max-width:36em;margin-bottom:1em}
+  .sd-side{background:var(--paper);border:1px solid var(--hair);border-radius:var(--r);padding:clamp(1.4rem,2.6vw,2rem);position:sticky;top:110px}
+  .sd-side .caps-xs{display:block;margin-bottom:1rem}
+  .sd-inc{list-style:none;margin:0 0 1.4rem;padding:0;display:grid;gap:.5rem}
+  .sd-inc li{position:relative;padding-left:1.4rem;font-size:.95rem;color:var(--ink)}
+  .sd-inc li::before{content:"";position:absolute;left:0;top:.72em;width:9px;height:1px;background:var(--brass)}
+  .sd-note{font-family:var(--display);font-style:italic;font-size:1rem;color:var(--ink-soft);margin-bottom:1.4rem;font-variation-settings:'opsz' 48,'SOFT' 60}
+  .sd-side .btn{width:100%}
+  @media(max-width:899px){.sd-body{grid-template-columns:1fr;row-gap:2rem}.sd-side{position:static}}
+  .sd-others{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2vw,1.6rem)}
+  .sd-other{display:flex;flex-direction:column;gap:.5rem;padding:1.5rem 1.6rem 1.7rem;color:var(--ink)}
+  .sd-other h3{font-size:1.3rem}
+  .sd-other p{font-size:.9rem;color:var(--ink-soft);flex:1}
+  .sd-other .arrow-link{margin-top:.6rem;font-size:.95rem}
+  @media(max-width:719px){.sd-others{grid-template-columns:1fr}}
+</style>

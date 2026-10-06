@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../consts';
+---
+<BaseLayout title="Page not found" noindex={true}>
+  <section class="nf">
+    <div class="wrap nf-in">
+      <span class="caps">404</span>
+      <h1 class="disp">We couldn&rsquo;t find that page.</h1>
+      <p class="ital">It may have moved, or the link may be incomplete.</p>
+      <div class="nf-act">
+        <a class="btn btn--solid" href="/">Return home</a>
+        <a class="tlk" href={SITE.links.consult}>Contact us</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .nf{padding:clamp(9rem,22vh,14rem) 0 clamp(6rem,12vh,9rem)}
+  .nf-in{text-align:center;max-width:620px}
+  .nf .caps{display:block;margin-bottom:1rem}
+  .nf h1{font-size:clamp(2rem,4.6vw,3.6rem);margin-bottom:1rem}
+  .nf .ital{font-size:1.15rem;color:var(--ink-soft);margin-bottom:2rem}
+  .nf-act{display:flex;justify-content:center;align-items:center;gap:2rem;flex-wrap:wrap}
+</style>

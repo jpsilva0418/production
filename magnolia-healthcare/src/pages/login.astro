@@ -1,0 +1,35 @@
+---
+/** MEMBER SIGN IN — the current site exposes member login/sign-up (community groups).
+ *  What members see after signing in is being confirmed with Magnolia, so this demo
+ *  keeps a branded entry point only: no authentication, no credentials collected, no
+ *  invented portal. */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Mark from '../components/Mark.astro';
+import { SITE } from '../consts';
+---
+<BaseLayout title="Member Sign In" description="Member sign in for the Magnolia Healthcare community." path="/login" headerLight>
+  <section class="li lit">
+    <i class="lx-dusk" aria-hidden="true"></i>
+    <div class="li-card rv">
+      <Mark class="li-mark" />
+      <span class="caps">Members</span>
+      <h1>Sign in to the Magnolia community.</h1>
+      <p>Magnolia&rsquo;s current website offers member sign-in and sign-up for its community groups. This demo keeps the entry point; what members see after signing in is being confirmed with Magnolia before it is redesigned.</p>
+      <div class="li-act">
+        <a class="btn btn--solid" href={SITE.currentSite} target="_blank" rel="noopener noreferrer">Continue on the current site</a>
+        <a class="tlk" href={SITE.links.community}>About the community</a>
+      </div>
+      <p class="li-note">No account details are collected on this page.</p>
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .li{position:relative;min-height:100svh;display:grid;place-items:center;background:var(--leaf);padding:clamp(7rem,16vh,9rem) 5vw clamp(4rem,9vh,6rem);overflow:hidden}
+  .li-card{position:relative;z-index:1;width:min(560px,100%);background:var(--paper);border-radius:var(--r-lg);padding:clamp(2.2rem,5vw,3.6rem);text-align:center;box-shadow:var(--shadow-lg)}
+  .li :global(.li-mark){width:52px;height:52px;color:var(--leaf);margin:0 auto 1rem}
+  .li-card .caps{display:block;margin-bottom:.8rem}
+  .li-card h1{font-size:clamp(1.7rem,3.4vw,2.4rem);margin-bottom:1rem}
+  .li-card p{max-width:40ch;margin:0 auto}
+  .li-act{display:flex;flex-direction:column;align-items:center;gap:1.4rem;margin:1.8rem 0 1.4rem}
+  .li-note{font-family:var(--utility);font-weight:600;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft)}
+</style>

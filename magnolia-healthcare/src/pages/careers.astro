@@ -1,0 +1,60 @@
+---
+/** CAREERS — Magnolia's existing "apply now" invitation, staged. INTERIM: the full
+ *  signup/application experience waits for the client's reference recording; until
+ *  then this page collects an expression of interest through the consultation flow. */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Plate from '../components/Plate.astro';
+import { SITE } from '../consts';
+---
+<BaseLayout title="Join Our Team — Caregiver Careers" description="Tailored schedules, meaningful work, and continuous professional development. Join Magnolia Healthcare’s expanding team and make a significant difference in the lives of our clients." path="/careers">
+  <section class="cv-cov">
+    <div class="wrap cv-grid">
+      <div>
+        <p class="cov-kick fade">Join our team</p>
+        <h1 class="disp rv">Meaningful work, <span class="ital">tailored to you.</span></h1>
+        <p class="cov-sub rv" style="--d:.08s">Join our expanding team and make a significant difference in the lives of our clients, helping them maintain their safety and independence at home.</p>
+        <div class="cov-cta fade" style="--d:.16s">
+          <a class="btn btn--solid" href="/contact?for=team">Express interest</a>
+          <a class="tlk" href={`tel:${SITE.phoneE164}`}>Call {SITE.phone}</a>
+        </div>
+      </div>
+      <figure class="cv-fig"><div class="ph ph--framed rv-im"><Plate id="team-2" alt="" class="lv lv--breathe" sizes="(max-width:899px) 86vw, 40vw" widths={[480, 720, 960]} loading="eager" /><i class="grain" aria-hidden="true"></i></div></figure>
+    </div>
+  </section>
+
+  <section class="sec sec--linen sec--tight">
+    <div class="wrap cv-cols" data-stag=".08">
+      <article class="card cv-col rv"><span class="caps-xs">What Magnolia offers</span><ul class="cv-list"><li>Tailored schedules</li><li>Meaningful work</li><li>Continuous professional development</li><li>Ongoing training and development</li></ul></article>
+      <article class="card cv-col rv"><span class="caps-xs">What every caregiver brings</span><ul class="cv-list"><li>Carefully selected to meet clients&rsquo; unique needs</li><li>Extensive training</li><li>Thorough state and federal background checks</li><li>Respect, compassion, and honesty</li></ul></article>
+    </div>
+  </section>
+
+  <section class="sec sec--tight">
+    <div class="wrap">
+      <div class="note-card rv">
+        <span class="plaque">Interim &mdash; founder review</span>
+        <p class="note-copy" style="margin-top:1.2rem">The caregiver application experience is intentionally not built yet.</p>
+        <span class="note-rule" aria-hidden="true"></span>
+        <p class="note-body">It will be redesigned step by step from Magnolia&rsquo;s existing signup/application once that reference is supplied &mdash; preserving every legitimate field and requirement. Until then, this page collects an expression of interest only.</p>
+        <div class="note-act"><a class="btn btn--solid" href="/contact?for=team">Express interest</a></div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .cv-cov{padding:clamp(7.5rem,16vh,10rem) 0 clamp(3rem,6vh,4.5rem)}
+  .cv-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);column-gap:clamp(2.4rem,6vw,6rem);align-items:center}
+  .cv-grid h1{font-size:clamp(2.6rem,5.6vw,5rem);margin-bottom:1.2rem}
+  .cv-fig{margin:0;width:min(420px,100%);justify-self:center}
+  .cv-fig .ph{aspect-ratio:4/5}
+  @media(max-width:899px){.cv-grid{grid-template-columns:1fr;row-gap:2rem}.cv-fig{order:-1;width:min(340px,80%)}}
+  .cv-cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1rem,2vw,1.6rem)}
+  .cv-col{padding:clamp(1.6rem,2.8vw,2.2rem)}
+  .cv-col .caps-xs{display:block;margin-bottom:1rem}
+  .cv-list{list-style:none;margin:0;padding:0;display:grid;gap:.6rem}
+  .cv-list li{position:relative;padding-left:1.4rem;color:var(--ink)}
+  .cv-list li::before{content:"";position:absolute;left:0;top:.75em;width:9px;height:1px;background:var(--brass)}
+  @media(max-width:719px){.cv-cols{grid-template-columns:1fr}}
+  .note-body{max-width:34em;margin:0 auto clamp(1.8rem,3.4vw,2.6rem)}
+  .note-act{display:flex;justify-content:center}
+</style>

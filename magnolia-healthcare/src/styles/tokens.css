@@ -1,0 +1,55 @@
+/* ============ MAGNOLIA HEALTHCARE — design tokens ============
+   Warm, established, human. Identity rooted in the magnolia itself: ivory petal
+   grounds, a deep magnolia-leaf green as the anchor, a restrained blush-petal accent,
+   brass hairlines. Letty Silva Beauty is the quality benchmark for the *system* —
+   the palette, type and shape language here are Magnolia's own.
+
+   CONFIRM: Magnolia's actual logo artwork and exact brand colours could not be
+   viewed in this environment (see docs/00-assessment.md). Every colour is a token,
+   so re-tuning to the real brand is a one-file change. */
+:root{
+  /* grounds */
+  --ivory:#F8F4EE; --linen:#F1EAE1; --paper:#FFFDFB; --blush:#F5E7E2;
+  /* the anchor: magnolia-leaf green (dark sections, primary buttons, headings on light) */
+  --leaf:#1E3F36; --leaf-2:#27503F; --leaf-deep:#152E27;
+  --moss:#5E7D6B; --sage:#9DB3A6;                 /* large text / decorative only */
+  /* the accent: blush petal (surfaces, hover warmth) */
+  --petal:#E9CFC7; --petal-deep:#C98B80;
+  /* hairlines & engraved caps */
+  --brass:#8A6A3C;                                 /* 4.6:1 on ivory — AA for small caps */
+  --gold-lt:#CDB48C;                               /* 5.7:1 on leaf  — dark-ground accent */
+  /* ink */
+  --ink:#1C2421; --ink-soft:#4A5450;
+  --hair:rgba(30,63,54,.16); --hair-strong:rgba(30,63,54,.32);
+  --hairdk:rgba(205,180,140,.22); --hairdk-strong:rgba(205,180,140,.42);
+  /* type roles */
+  --display:'Fraunces Variable','Iowan Old Style',Georgia,'Times New Roman',serif;
+  --utility:'Figtree Variable','Avenir Next','Segoe UI',system-ui,-apple-system,sans-serif;
+  /* rhythm */
+  --wrap:min(90vw,1280px); --wrap-text:720px;
+  --pad:clamp(88px,12vw,160px);
+  --ease:cubic-bezier(.16,1,.3,1);
+  /* shape — gentle radii: warm and human, never clinical, never pill-soup */
+  --r-sm:5px; --r:12px; --r-lg:20px;
+  --shadow-lg:0 50px 90px -46px rgba(21,46,39,.38);
+  --shadow:0 24px 48px -30px rgba(21,46,39,.32);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html,body{overflow-x:clip}
+body{margin:0;background:var(--ivory);color:var(--ink-soft);font-family:var(--utility);
+  font-size:1.06rem;line-height:1.72;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4{font-family:var(--display);font-weight:400;color:var(--ink);line-height:1.08;
+  text-wrap:balance;margin:0;font-variation-settings:'opsz' 144,'SOFT' 40}
+h3,h4{font-variation-settings:'opsz' 48,'SOFT' 30}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+img,video{max-width:100%;display:block}
+button{font:inherit}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{
+  outline:2px solid var(--brass);outline-offset:3px}
+.skip-link{position:absolute;left:-9999px;top:0;background:var(--leaf);color:var(--ivory);padding:10px 16px;z-index:200;border-radius:0 0 var(--r-sm) 0}
+.skip-link:focus{left:8px;top:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.wrap{width:var(--wrap);margin-inline:auto}
+.wrap-text{width:min(90vw,var(--wrap-text));margin-inline:auto}

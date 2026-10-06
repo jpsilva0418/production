@@ -1,0 +1,133 @@
+---
+/** BLOG HUB — the Leti Silva Beauty blog system (featured article, category pills,
+ *  client-side search, latest grid, polished empty state) carrying Magnolia's six
+ *  existing articles. */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import Plate from '../../components/Plate.astro';
+import { CATEGORIES, CATEGORY_KEYS, fmtDate, getPublishedPosts } from '../../lib/blog';
+import { breadcrumbJsonLd, localBusinessJsonLd } from '../../lib/seo';
+const posts = await getPublishedPosts();
+const featured = posts.find((p) => p.data.featured) ?? posts[0];
+const rest = posts.filter((p) => p !== featured);
+const searchStr = (p: (typeof posts)[number]) => [p.data.title, p.data.description, CATEGORIES[p.data.category].name, ...p.data.tags].join(' ').toLowerCase();
+const jsonLd = [localBusinessJsonLd(), breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Blog', path: '/blog' }])];
+---
+<BaseLayout title="Blog — Notes from the Magnolia Team" description="Articles from Magnolia Healthcare on home care, our values, trust, quality and accountability." path="/blog" jsonLd={jsonLd}>
+  <section class="cov cov--c ghostwrap">
+    <span class="ghost-w" aria-hidden="true">notes</span>
+    <div class="cov-c">
+      <p class="cov-kick cov-kick--c fade">The blog</p>
+      <h1 class="disp rv">Notes from the <span class="ital">Magnolia team.</span></h1>
+      <p class="cov-sub rv" style="--d:.08s">Plain-language articles on non-medical home care, the values we work by, and how we keep improving.</p>
+    </div>
+  </section>
+
+  <section class="bg-controls" aria-label="Browse articles">
+    <div class="wrap">
+      <nav class="pills rv" aria-label="Categories">
+        <a class="pill pill-on" href="/blog" aria-current="page">All</a>
+        {CATEGORY_KEYS.map((key) => <a class="pill" href={`/blog/category/${key}`}>{CATEGORIES[key].name}</a>)}
+      </nav>
+      <div class="bg-search rv" style="--d:.06s">
+        <label class="sr-only" for="blogSearch">Search articles</label>
+        <input id="blogSearch" type="search" placeholder="Search articles&hellip;" autocomplete="off" />
+        <p id="searchCount" class="bg-count" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+  {featured && (
+    <section class="bg-featured" aria-label="Featured article">
+      <div class="wrap">
+        <article class="bg-feat card rv" data-search={searchStr(featured)}>
+          <a class="bg-feat-media" href={`/blog/${featured.id}`} tabindex="-1" aria-hidden="true">
+            <div class="ph"><Plate id={featured.data.plate} alt="" sizes="(max-width:899px) 92vw, 640px" widths={[640, 960, 1280]} loading="eager" /></div>
+          </a>
+          <div class="bg-feat-body">
+            <p class="caps-xs">Featured</p>
+            <h2><a href={`/blog/${featured.id}`}>{featured.data.title}</a></h2>
+            <p class="bg-feat-desc">{featured.data.description}</p>
+            <p class="bg-feat-meta">{CATEGORIES[featured.data.category].name} &middot; {fmtDate(featured.data.pubDate)}</p>
+            <a class="btn btn--line" href={`/blog/${featured.id}`}>Read the article</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  )}
+
+  <section class="bg-latest" aria-label="All articles">
+    <div class="wrap">
+      <h2 class="bg-h2 rv">All articles</h2>
+      <div class="bg-grid" id="blogGrid" data-stag=".06">
+        {rest.map((post) => <div class="rv"><BlogCard post={post} headingLevel="h3" /></div>)}
+      </div>
+      <div id="noResults" class="bg-empty" hidden>
+        <p class="ital">Nothing matches that search.</p>
+        <p>Try a broader word, or <a href="/contact">ask us directly</a>.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .cov--c{text-align:center}
+  .cov--c .cov-c{max-width:min(90vw,760px)}
+  .cov--c .cov-sub{margin-inline:auto}
+  .cov-kick--c{justify-content:center}
+  .cov-kick--c::before{display:none}
+  .bg-controls .wrap{display:flex;flex-direction:column;gap:1.2rem;align-items:center;padding-bottom:.5rem}
+  .pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+  .pill{font-family:var(--utility);font-weight:600;font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;padding:11px 16px;border:1px solid var(--hair-strong);border-radius:999px;background:var(--paper);color:var(--ink-soft);transition:border-color .2s,color .2s,background .2s;min-height:40px;display:inline-flex;align-items:center}
+  .pill:hover{border-color:var(--leaf);color:var(--leaf)}
+  .pill-on{border-color:var(--leaf);background:var(--leaf);color:var(--ivory)}
+  .pill-on:hover{color:var(--ivory)}
+  .bg-search{width:min(440px,100%)}
+  .bg-search input{width:100%;min-height:48px;padding:12px 18px;background:var(--paper);border:1px solid var(--hair-strong);border-radius:var(--r-sm);color:var(--ink);font:inherit;font-size:.95rem}
+  .bg-count{font-size:.78rem;color:var(--ink-soft);margin-top:8px;text-align:center;min-height:1.2em}
+  .bg-featured{padding:2.2rem 0 .6rem}
+  .bg-feat{display:grid;overflow:hidden}
+  @media(min-width:900px){.bg-feat{grid-template-columns:1.15fr 1fr;align-items:center}}
+  .bg-feat-media .ph{aspect-ratio:3/2;height:100%;border-radius:0}
+  .bg-feat-body{padding:clamp(1.6rem,4vw,3rem)}
+  .bg-feat-body .caps-xs{display:block;margin-bottom:.8rem}
+  .bg-feat h2{font-size:clamp(1.5rem,3vw,2.1rem);margin-bottom:.8rem}
+  .bg-feat h2 a:hover{color:var(--brass)}
+  .bg-feat-desc{color:var(--ink-soft);margin-bottom:1rem}
+  .bg-feat-meta{font-family:var(--utility);font-weight:600;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:1.6rem}
+  .bg-latest{padding:2.6rem 0 clamp(5rem,9vw,7rem)}
+  .bg-h2{font-size:clamp(1.5rem,3.2vw,2.1rem);margin-bottom:1.6rem}
+  .bg-grid{display:grid;gap:clamp(1rem,2vw,1.6rem)}
+  .bg-grid>div{display:flex}
+  .bg-grid>div>:global(*){flex:1}
+  @media(min-width:640px){.bg-grid{grid-template-columns:1fr 1fr}}
+  @media(min-width:980px){.bg-grid{grid-template-columns:1fr 1fr 1fr}}
+  .bg-empty{text-align:center;padding:2rem 0 0;color:var(--ink-soft)}
+  .bg-empty .ital{font-size:1.3rem;color:var(--ink);margin-bottom:.4rem}
+  .bg-empty a{color:var(--brass);text-decoration:underline;text-underline-offset:3px}
+  .bg-featured[hidden],.bg-feat[hidden],.bg-grid>div[hidden]{display:none!important}
+</style>
+<script>
+  const input = document.getElementById('blogSearch') as HTMLInputElement | null;
+  const count = document.getElementById('searchCount');
+  const empty = document.getElementById('noResults');
+  if (input && count && empty) {
+    const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-search]'));
+    const featSection = document.querySelector<HTMLElement>('.bg-featured');
+    const featCard = document.querySelector<HTMLElement>('.bg-feat');
+    input.addEventListener('input', () => {
+      const q = input.value.trim().toLowerCase();
+      let shown = 0;
+      for (const card of cards) {
+        const hit = !q || (card.dataset.search ?? '').includes(q);
+        card.hidden = !hit;
+        const wrap = card.parentElement;
+        if (wrap && wrap.parentElement?.id === 'blogGrid') wrap.hidden = !hit;
+        if (hit) shown += 1;
+      }
+      if (featSection && featCard) featSection.hidden = featCard.hidden;
+      empty.hidden = shown > 0;
+      count.textContent = q ? `${shown} article${shown === 1 ? '' : 's'} found` : '';
+    });
+  }
+</script>

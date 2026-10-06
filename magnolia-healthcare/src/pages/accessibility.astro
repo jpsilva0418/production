@@ -1,0 +1,38 @@
+---
+/** ACCESSIBILITY STATEMENT — Magnolia's existing statement, preserved. Conformance
+ *  level and contact details are the current site's; the demo's own accessibility
+ *  work is listed separately and plainly. */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../consts';
+---
+<BaseLayout title="Accessibility Statement" description="Magnolia Healthcare takes measures to ensure accessibility, including accessibility as part of its mission statement. The website is partially conformant with WCAG 2.1 level AA." path="/accessibility">
+  <section class="cov">
+    <div class="cov-c">
+      <p class="cov-kick fade">Accessibility</p>
+      <h1 class="disp rv">Accessibility statement.</h1>
+      <p class="cov-sub rv" style="--d:.08s">Magnolia Healthcare takes measures to ensure accessibility &mdash; including accessibility as part of our mission statement.</p>
+    </div>
+  </section>
+  <section class="sec sec--tight">
+    <div class="wrap-text prose">
+      <h2 class="rv">Conformance status</h2>
+      <p class="rv">The current Magnolia Healthcare website is partially conformant with the Web Content Accessibility Guidelines (WCAG) 2.1 level AA. Partially conformant means that some parts of the content do not fully conform to the accessibility standard.</p>
+      <h2 class="rv">Feedback</h2>
+      <p class="rv">We welcome your feedback on the accessibility of this website. Please let us know if you encounter accessibility barriers:</p>
+      <ul class="rv">
+        <li>Phone: <a href={`tel:${SITE.phoneE164}`}>{SITE.phone}</a></li>
+        <li>E-mail: <a href={`mailto:${SITE.accessibilityEmail}`}>{SITE.accessibilityEmail}</a></li>
+        <li>Visitor address: {SITE.address.street}, {SITE.address.locality}, {SITE.address.region} {SITE.address.postalCode}</li>
+      </ul>
+      <p class="rv">We try to respond to feedback within 24&ndash;48 hours.</p>
+      <h2 class="rv">About this demo</h2>
+      <p class="rv">This redesigned demo was built to WCAG 2.1 AA practices: semantic landmarks, one heading per page level, labelled controls, visible focus, colour contrast checked for every text pairing, 44px minimum touch targets, keyboard-operable menu and forms, and full respect for <em>prefers-reduced-motion</em> (every animation resolves to a complete static page). A formal audit should be performed before launch.</p>
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .prose h2{font-size:clamp(1.5rem,2.6vw,2rem);margin:2.2rem 0 .8rem}
+  .prose p{margin-bottom:1em}
+  .prose ul{margin:0 0 1em;padding-left:1.2em}
+  .prose a{color:var(--brass);text-decoration:underline;text-underline-offset:3px}
+</style>

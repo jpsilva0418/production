@@ -1,0 +1,20 @@
+---
+---
+<button id="toTop" aria-label="Back to top">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 13V3M3.5 7.5 8 3l4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<style>
+  #toTop{position:fixed;right:18px;bottom:18px;z-index:40;width:46px;height:46px;border-radius:50%;background:var(--leaf);color:var(--ivory);
+    border:1px solid var(--leaf);display:grid;place-items:center;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .35s,transform .35s var(--ease);
+    box-shadow:0 10px 24px -12px rgba(21,46,39,.55)}
+  #toTop.show{opacity:.92;pointer-events:auto}
+  #toTop:hover{opacity:1;transform:translateY(-2px)}
+  @media(prefers-reduced-motion:reduce){#toTop{transition:none}}
+</style>
+<script>
+  const tt = document.getElementById('toTop');
+  if (tt) {
+    addEventListener('scroll', () => tt.classList.toggle('show', scrollY > 700), { passive: true });
+    tt.addEventListener('click', () => scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }));
+  }
+</script>
