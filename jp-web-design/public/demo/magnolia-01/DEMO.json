@@ -1,0 +1,17 @@
+{
+  "slug": "magnolia-01",
+  "url": "https://jpsilvadigital.com/demo/magnolia-01",
+  "client": "Magnolia Healthcare, Inc.",
+  "concept": "01",
+  "sourceRepo": "jpsilva0418/production",
+  "sourceDir": "magnolia-healthcare",
+  "sourceCommit": "523e6e05f3d4a026a09b01cb8e4be8f496113e53",
+  "sourceDirty": false,
+  "builtAt": "2026-10-06T17:02:46.535Z",
+  "pages": 21,
+  "shared": {
+    "assets": "/demo/_shared/assets/",
+    "media": "/demo/_shared/magnolia/"
+  },
+  "note": "Unlisted design demo — not the live website. noindex. Forms are demo-only: nothing is sent anywhere."
+}
