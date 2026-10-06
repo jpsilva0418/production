@@ -72,7 +72,13 @@ const pages = [];
 const walk = async (d) => { for (const e of await fs.readdir(d, { withFileTypes: true })) { const p = path.join(d, e.name); if (e.isDirectory()) await walk(p); else if (e.name.endsWith('.html')) pages.push(p); } };
 await walk(DIST);
 for (const p of pages) {
-  const t = await fs.readFile(p, 'utf8');
+  let t = await fs.readFile(p, 'utf8');
+  // Astro's redirect stubs (old URLs → new pages) carry no robots tag of their own: add it
+  if (/http-equiv="refresh"/.test(t) && !/<meta name="robots" content="noindex,nofollow"/.test(t)) {
+    t = t.replace(/<meta name="robots" content="[^"]*">/i, '');
+    t = t.replace(/<title>/i, '<meta name="robots" content="noindex,nofollow"><title>');
+    await fs.writeFile(p, t);
+  }
   if (/href="\/preview/.test(t)) throw new Error(`review link left in ${path.relative(DIST, p)}`);
   if (!/<meta name="robots" content="noindex,nofollow"/.test(t)) throw new Error(`missing noindex in ${path.relative(DIST, p)}`);
 }
