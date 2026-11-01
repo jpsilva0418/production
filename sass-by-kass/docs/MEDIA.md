@@ -20,7 +20,7 @@ recordings were cropped to 9:16, scaled to 720×1280, stripped of audio and give
 |---|---|---|---|
 | kass-portrait.jpg | 941×1260 | Kassandra, black blazer, hands in hair | Home ch. i, About title card |
 | kass-laptop.jpg | 969×1295 | Kassandra holding a laptop | About "In motion" strip |
-| kass-card.jpg | 1013×1400 | "Meet your hairstylist" social graphic (text baked in) | reference only — personal details are hers to publish |
+| docs/reference/kass-card.jpg | 1013×1400 | "Meet your hairstylist" social graphic (text baked in) | reference only, kept out of src/ so no build ever emits it — personal details are hers to publish |
 | glam-blonde.jpg | 1051×1400 | Blonde glam waves, dark backdrop | Home work tiles, Follow strip, Extensions card, Work/Color |
 | balayage-back.jpg | 1081×1400 | Blonde lived-in color from behind | Color card, Work/Color |
 | brunette-dimension.jpg | 1058×1400 | Brunette lob with fine highlights | Home work tiles, Follow strip, Work/Color |

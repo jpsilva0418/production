@@ -35,7 +35,7 @@ film() { # film <upload-id> <name> <poster-seconds>
 # ---- Kass ----
 photo 9868bac5 kass-portrait      # black blazer, hands in hair (About / home intro)
 photo 73326243 kass-laptop        # black blazer with laptop (booking page)
-photo 177e2cba kass-card          # "Meet your hairstylist" social graphic (reference; text baked in)
+# 177e2cba "Meet your hairstylist" card: reference only, kept in docs/reference (personal details are hers to publish)
 # ---- her work · colour ----
 photo 93bfe7bd glam-blonde        # blonde glam waves, dark backdrop
 photo 6a3f9f1c balayage-back      # blonde lived-in colour from behind, salon
