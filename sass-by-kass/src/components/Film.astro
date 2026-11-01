@@ -1,0 +1,23 @@
+---
+/** A lazy, muted, looping vertical clip in a 9:16 frame with its poster as first paint.
+ *  Loads only near the viewport, pauses off-screen, and under reduced motion or
+ *  Save-Data stays a still poster (BaseLayout runtime). Never any audio. */
+import type { Film } from '../lib/content';
+interface Props { film: Film; class?: string; label?: string; sizes?: string }
+const { film, class: cls, label } = Astro.props;
+---
+<div class:list={['film', cls]} data-film-tile>
+  <video data-film muted loop playsinline preload="none" poster={film.poster} disablepictureinpicture tabindex="-1" aria-label={film.alt}>
+    <source data-src={film.webm} type="video/webm" />
+    <source data-src={film.mp4} type="video/mp4" />
+  </video>
+  <i class="grain" aria-hidden="true"></i>
+  {label && <span class="film-lbl" aria-hidden="true">{label}</span>}
+</div>
+<style is:global>
+  .film{position:relative;overflow:hidden;border-radius:var(--r);background:var(--leaf-deep);aspect-ratio:9/16}
+  .film video{width:100%;height:100%;object-fit:cover;object-position:50% 40%}
+  .film::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(rgba(10,22,44,0) 60%,rgba(10,22,44,.34))}
+  .film-lbl{position:absolute;left:14px;bottom:12px;z-index:2;font-family:var(--utility);font-weight:600;font-size:.56rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ivory);display:inline-flex;align-items:center;gap:.6em}
+  .film-lbl::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ivory);opacity:.9;box-shadow:0 0 0 3px rgba(255,255,255,.18)}
+</style>

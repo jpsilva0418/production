@@ -1,0 +1,87 @@
+---
+/** WORK — the portfolio. Three groups (Color · Bridal · Occasions), each an editorial
+ *  masonry of her photographs and clips at their natural proportions: no two tiles need
+ *  the same shape. Clips are lazy, muted and poster-first (Film.astro). A sticky
+ *  sub-navigation keeps the groups one tap away on a phone. */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import WorkTile from '../components/WorkTile.astro';
+import { SITE, PORTFOLIO } from '../lib/content';
+import { businessJsonLd, breadcrumbJsonLd } from '../lib/seo';
+const jsonLd = [businessJsonLd(), breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Work', path: '/work' }])];
+const count = PORTFOLIO.reduce((n, g) => n + g.items.length, 0);
+---
+<BaseLayout
+  title="The Work — Color, Extensions & Bridal Hair"
+  description={`A portfolio of Kass’s work: lived-in color, hand-tied extensions, bridal and occasion styling — on real clients, in real light. ${SITE.name}, ${SITE.area.label}.`}
+  path="/work"
+  jsonLd={jsonLd}>
+
+  <section class="cov ghostwrap">
+    <span class="ghost-w" aria-hidden="true">work</span>
+    <div class="cov-c">
+      <p class="cov-kick fade">The work</p>
+      <h1 class="disp rv">Real hair, <span class="ital">real light.</span></h1>
+      <p class="cov-sub rv" style="--d:.08s">Color, extensions, bridal and the nights in between — {count} favorites, photographs and clips. Tap a group to jump to it.</p>
+      <div class="cov-cta fade" style="--d:.16s">
+        <a class="btn btn--solid" href={SITE.booking} target="_blank" rel="noopener noreferrer">Book an appointment</a>
+        <a class="tlk" href={SITE.instagram.url} target="_blank" rel="noopener noreferrer">More on Instagram</a>
+      </div>
+    </div>
+  </section>
+
+  <nav class="wk-nav" aria-label="Portfolio groups"><div class="wrap wk-nav-in">{PORTFOLIO.map((g) => <a href={`#${g.id}`}>{g.title}</a>)}</div></nav>
+
+  {PORTFOLIO.map((g, gi) => (
+    <section class:list={['sec wk-sec', { 'sec--linen': gi % 2 === 1 }]} id={g.id} aria-labelledby={`wk-${g.id}`}>
+      <div class="wrap">
+        <header class="wk-h">
+          <p class="caps rv">{String(gi + 1).padStart(2, '0')} &middot; {g.title}</p>
+          <h2 class="disp rv" id={`wk-${g.id}`} style="--d:.06s">{g.title}<span class="ital">.</span></h2>
+          <p class="wk-line fade" style="--d:.1s">{g.line}</p>
+        </header>
+        <div class="wk-grid">
+          {g.items.map((item) => <WorkTile item={item} sizes="(max-width:599px) 46vw, (max-width:1023px) 31vw, 400px" widths={[480, 800, 1200]} label={item.kind === 'film' ? 'Reel' : undefined} />)}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="sec sec--tight">
+    <div class="wrap">
+      <div class="note-card rv">
+        <span class="caps">Like what you see?</span>
+        <p class="note-copy">Book online in a minute, or text Kass with a question first.</p>
+        <span class="note-rule" aria-hidden="true"></span>
+        <div class="note-act">
+          <a class="btn btn--solid" href={SITE.booking} target="_blank" rel="noopener noreferrer">Book an appointment</a>
+          <a class="tlk" href={SITE.links.bridal}>Bridal enquiry</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .wk-nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--ivory) 92%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+  .wk-nav-in{display:flex;gap:clamp(1.2rem,3vw,2.6rem);overflow-x:auto;scrollbar-width:none}
+  .wk-nav-in::-webkit-scrollbar{display:none}
+  .wk-nav a{display:inline-flex;align-items:center;min-height:52px;font-family:var(--utility);font-weight:600;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);white-space:nowrap;position:relative}
+  .wk-nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--leaf);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease)}
+  .wk-nav a:hover::after,.wk-nav a:focus-visible::after{transform:scaleX(1)}
+  .wk-sec{scroll-margin-top:52px}
+  .wk-h{display:grid;grid-template-columns:1fr auto;gap:.4rem 3rem;align-items:end;margin-bottom:clamp(1.6rem,3vw,2.6rem)}
+  .wk-h .caps{grid-column:1/-1;display:block}
+  .wk-h .disp{font-size:clamp(2.2rem,4.4vw,4rem);font-weight:300}
+  .wk-line{max-width:28em;font-family:var(--display);font-style:italic;font-size:1.06rem;color:var(--ink-soft);font-variation-settings:'opsz' 48,'SOFT' 60}
+  @media(max-width:699px){.wk-h{grid-template-columns:1fr}}
+  /* masonry: natural proportions, no two tiles the same shape */
+  .wk-grid{columns:3;column-gap:clamp(10px,1.6vw,20px)}
+  .wk-grid :global(.tile){break-inside:avoid;margin-bottom:clamp(10px,1.6vw,20px)}
+  .wk-grid :global(.tile-ph){aspect-ratio:4/5}
+  .wk-grid :global(.tile--wide .tile-ph){aspect-ratio:4/3}
+  .wk-grid :global(.tile--big .tile-ph){aspect-ratio:3/4}
+  .wk-grid :global(.tile .ph img){object-position:50% 25%}
+  @media(max-width:1023px){.wk-grid{columns:2}}
+  @media(max-width:599px){.wk-grid{column-gap:10px}.wk-grid :global(.tile){margin-bottom:10px}.wk-grid :global(.film-lbl){left:10px;bottom:9px;font-size:.5rem}}
+  .note-act{display:flex;justify-content:center;align-items:center;gap:2rem;flex-wrap:wrap}
+</style>

@@ -1,0 +1,59 @@
+/* ============ SASS BY KASS — design tokens ============
+   Modern, confident, personal. The token ROLES are fixed; three blue palettes fill them
+   (src/styles/palettes.css) so the whole site re-skins from one body class:
+     --leaf       the anchor blue: dark chapters, primary buttons, headings' deep tone
+     --leaf-2/-deep  its hover and deepest shades
+     --moss / --sage / --sage-band  mid, light and band tints of the same blue
+     --petal / --petal-deep  the soft accent surface and its deeper tone
+     --brass      hairline + small-caps accent on light grounds (AA for small caps)
+     --gold-lt    the same accent on dark grounds
+     --ivory / --linen / --paper / --blush  canvases, from page ground to card
+     --ink / --ink-soft  text
+   Names are historical roles from the shared system; no colour is a literal. The default
+   values below are Direction A (deep navy); palettes.css overrides them per direction. */
+:root{
+  /* grounds */
+  --ivory:#F7F7F5; --linen:#EDEFF2; --paper:#FFFFFF; --blush:#E9EEF5;
+  /* the anchor */
+  --leaf:#0F1F3D; --leaf-2:#17305C; --leaf-deep:#0A162C;
+  --moss:#3E5B8A; --sage:#9FB3CF; --sage-band:#E2E8F1;
+  /* the soft accent */
+  --petal:#D9E2EE; --petal-deep:#8FA6C4;
+  /* hairlines & engraved caps */
+  --brass:#5F6E88;
+  --gold-lt:#C9D3E2;
+  /* ink */
+  --ink:#121A2B; --ink-soft:#46506A;
+  --hair:rgba(15,31,61,.16); --hair-strong:rgba(15,31,61,.32);
+  --hairdk:rgba(201,211,226,.22); --hairdk-strong:rgba(201,211,226,.42);
+  /* type roles */
+  --display:'Fraunces Variable','Iowan Old Style',Georgia,'Times New Roman',serif;
+  --utility:'Figtree Variable','Avenir Next','Segoe UI',system-ui,-apple-system,sans-serif;
+  /* rhythm */
+  --wrap:min(90vw,1280px); --wrap-text:720px;
+  --pad:clamp(88px,12vw,160px);
+  --ease:cubic-bezier(.16,1,.3,1);
+  /* shape */
+  --r-sm:5px; --r:12px; --r-lg:20px;
+  --shadow-lg:0 50px 90px -46px rgba(10,22,44,.38);
+  --shadow:0 24px 48px -30px rgba(10,22,44,.32);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html,body{overflow-x:clip}
+body{margin:0;background:var(--ivory);color:var(--ink-soft);font-family:var(--utility);
+  font-size:1.06rem;line-height:1.72;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4{font-family:var(--display);font-weight:400;color:var(--ink);line-height:1.08;
+  text-wrap:balance;margin:0;font-variation-settings:'opsz' 144,'SOFT' 40}
+h3,h4{font-variation-settings:'opsz' 48,'SOFT' 30}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+img,video{max-width:100%;display:block}
+button{font:inherit}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{
+  outline:2px solid var(--brass);outline-offset:3px}
+.skip-link{position:absolute;left:-9999px;top:0;background:var(--leaf);color:var(--ivory);padding:10px 16px;z-index:200;border-radius:0 0 var(--r-sm) 0}
+.skip-link:focus{left:8px;top:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.wrap{width:var(--wrap);margin-inline:auto}
+.wrap-text{width:min(90vw,var(--wrap-text));margin-inline:auto}

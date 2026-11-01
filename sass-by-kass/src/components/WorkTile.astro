@@ -1,0 +1,19 @@
+---
+/** One portfolio tile — a framed photograph or a Film — for the home selection and the
+ *  /work mosaic. `span` drives the desktop grid (see the page styles). */
+import Plate from './Plate.astro';
+import Film from './Film.astro';
+import type { WorkItem } from '../lib/content';
+interface Props { item: WorkItem; sizes?: string; widths?: number[]; label?: string }
+const { item, sizes = '(max-width:899px) 82vw, 33vw', widths = [480, 800, 1200], label } = Astro.props;
+const span = item.span ? `tile--${item.span}` : '';
+---
+{item.kind === 'film'
+  ? <div class:list={['tile tile--film rv-im', span]}><Film film={item.film} label={label ?? 'Reel'} /></div>
+  : <div class:list={['tile rv-im', span]}><div class="ph tile-ph"><Plate id={item.plate} alt={item.alt} sizes={sizes} widths={widths} /><i class="grain" aria-hidden="true"></i></div></div>}
+<style is:global>
+  .tile{position:relative;min-width:0}
+  .tile-ph{aspect-ratio:4/5;border-radius:var(--r)}
+  .tile-ph img{transition:transform 1.1s var(--ease)}
+  .tile:hover .tile-ph img{transform:scale(1.04)}
+</style>

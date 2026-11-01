@@ -1,0 +1,77 @@
+// Vercel Serverless Function — enquiry handler (bridal / extensions / other).
+// Honeypot, per-instance nuisance throttle, required-contact validation, and honest
+// modes — never a false success:
+//   1. RESEND_API_KEY + INQUIRY_TO_EMAIL set -> deliver via Resend (reply_to = requester, when given)
+//   2. not configured (the DEMO)             -> accept and discard, { ok, staged: true }
+// The demo never sends anything anywhere unless the secrets are deliberately set.
+
+const FIELDS = [
+  ['requestType', 'Enquiry', 80],
+  ['weddingDate', 'Wedding date', 40],
+  ['weddingPlace', 'Getting ready at', 120],
+  ['partySize', 'How many', 40],
+  ['bridalStyles', 'Styles', 200],
+  ['extGoal', 'Hoping for', 120],
+  ['extHair', 'Their hair', 1000],
+  ['timing', 'Timing', 80],
+  ['otherText', 'Looking for', 2000],
+  ['firstName', 'First name', 80],
+  ['lastName', 'Last name', 80],
+  ['phone', 'Phone', 40],
+  ['email', 'Email', 160],
+  ['preferredContact', 'Preferred contact', 40],
+  ['notes', 'Notes', 2000],
+  ['heardAbout', 'Found via', 80],
+];
+const clean = (v, max) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
+const esc = (s) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c] ?? c);
+const recent = new Map();
+function rateLimited(ip, windowMs = 60_000, max = 5) {
+  const now = Date.now();
+  const hits = (recent.get(ip) ?? []).filter((t) => now - t < windowMs);
+  hits.push(now); recent.set(ip, hits);
+  if (recent.size > 5000) recent.clear();
+  return hits.length > max;
+}
+
+export default async function handler(req, res) {
+  res.setHeader('content-type', 'application/json');
+  if (req.method !== 'POST') { res.setHeader('allow', 'POST'); return res.status(405).send(JSON.stringify({ ok: false, reason: 'method_not_allowed' })); }
+  let body = req.body;
+  if (typeof body === 'string') { try { body = JSON.parse(body); } catch { body = null; } }
+  if (!body || typeof body !== 'object') return res.status(400).send(JSON.stringify({ ok: false, reason: 'bad_json' }));
+
+  if (clean(body.company, 200)) return res.status(200).send(JSON.stringify({ ok: true })); // honeypot
+  const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
+  if (rateLimited(ip)) return res.status(429).send(JSON.stringify({ ok: false, reason: 'rate_limited' }));
+
+  const record = {};
+  for (const [key, , cap] of FIELDS) record[key] = clean(body[key], cap);
+  // A first name and a phone number are needed to reply (most clients prefer a text).
+  if (!record.firstName || record.phone.replace(/\D/g, '').length < 7) return res.status(422).send(JSON.stringify({ ok: false, reason: 'missing_contact' }));
+
+  const { RESEND_API_KEY, INQUIRY_TO_EMAIL, INQUIRY_FROM_EMAIL } = process.env;
+  if (!RESEND_API_KEY || !INQUIRY_TO_EMAIL) {
+    console.warn('[inquiry] delivery not configured — accepted in demo mode (nothing sent).');
+    return res.status(200).send(JSON.stringify({ ok: true, staged: true }));
+  }
+
+  const rows = FIELDS.filter(([key]) => record[key]);
+  const subject = `Enquiry — ${[record.firstName, record.lastName].filter(Boolean).join(' ')}, ${record.requestType || 'General'}`;
+  const html = `<h2 style="font-family:Georgia,serif">New enquiry — Sass by Kass website</h2><table cellpadding="6" style="border-collapse:collapse;font-family:sans-serif;font-size:14px">` +
+    rows.map(([key, label]) => `<tr><td style="color:#46506A;vertical-align:top"><strong>${esc(label)}</strong></td><td style="white-space:pre-wrap">${esc(record[key])}</td></tr>`).join('') + `</table>`;
+  const text = rows.map(([key, label]) => `${label}: ${record[key]}`).join('\n');
+  try {
+    const r = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { authorization: `Bearer ${RESEND_API_KEY}`, 'content-type': 'application/json' },
+      body: JSON.stringify({ from: INQUIRY_FROM_EMAIL || 'Sass by Kass Website <onboarding@resend.dev>', to: INQUIRY_TO_EMAIL, ...(record.email ? { reply_to: record.email } : {}), subject, html, text }),
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!r.ok) { console.error('[inquiry] Resend rejected the email', r.status, await r.text().catch(() => '')); return res.status(502).send(JSON.stringify({ ok: false, reason: 'delivery_failed' })); }
+  } catch (err) {
+    console.error('[inquiry] delivery threw', err);
+    return res.status(502).send(JSON.stringify({ ok: false, reason: 'delivery_failed' }));
+  }
+  return res.status(200).send(JSON.stringify({ ok: true }));
+}

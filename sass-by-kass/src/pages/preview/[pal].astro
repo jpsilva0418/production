@@ -1,0 +1,17 @@
+---
+/** DESIGN REVIEW — the home page in one of the three blue directions. Visiting a
+ *  direction remembers it, so every other page follows. Review build only: a
+ *  client-demo build (DEMO_PALETTE set) has no /preview routes at all. */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Home from '../../components/Home.astro';
+import { PALETTES, LOCKED_PALETTE } from '../../lib/palette';
+import { SITE } from '../../consts';
+export function getStaticPaths() {
+  if (LOCKED_PALETTE) return [];
+  return PALETTES.map((p) => ({ params: { pal: p.id }, props: { palette: p } }));
+}
+const { palette } = Astro.props;
+---
+<BaseLayout headerLight headerPrologue palette={palette.id} title={`Blue direction ${palette.id.toUpperCase()} · ${palette.name}`} description={`Design review — ${SITE.name} in blue direction ${palette.id.toUpperCase()}: ${palette.line}`} path={`/preview/${palette.id}`}>
+  <Home />
+</BaseLayout>

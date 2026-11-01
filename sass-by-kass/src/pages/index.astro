@@ -1,0 +1,10 @@
+---
+/** HOME. The three blue directions under review live at /preview/a, /preview/b and
+ *  /preview/c; this route renders the same page in the remembered (or default) direction. */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Home from '../components/Home.astro';
+import { SITE } from '../consts';
+---
+<BaseLayout headerLight headerPrologue title={`${SITE.role} — hand-tied extensions, dimensional color & bridal`} description={SITE.description} path="/">
+  <Home />
+</BaseLayout>

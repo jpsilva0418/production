@@ -1,0 +1,152 @@
+---
+/** MEET KASS — the stylist behind the chair: title card with her portrait, the story,
+ *  a strip of her work in motion, the three specialties as a sticky chapter, and the
+ *  next step. Facts only from her supplied materials; personal details she shares
+ *  on social media (family, faith, age) are deliberately left to her to add. */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Plate from '../components/Plate.astro';
+import Film from '../components/Film.astro';
+import { SITE, SMS, INTRO, MEDIA } from '../lib/content';
+import { businessJsonLd, breadcrumbJsonLd } from '../lib/seo';
+const jsonLd = [businessJsonLd(), breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Meet Kass', path: '/about' }])];
+---
+<BaseLayout
+  title="Meet Kass — Massachusetts Hair Stylist"
+  description={`Kassandra — Kass — is a Massachusetts hair stylist who lives in color, extensions and bridal. The story behind ${SITE.name}.`}
+  path="/about"
+  jsonLd={jsonLd}>
+
+  <!-- TITLE CARD -->
+  <section class="acov">
+    <div class="acov-l">
+      <p class="cov-kick fade">Meet Kass</p>
+      <h1 class="disp rv">{INTRO.heading[0]}<br /><span class="ital">{INTRO.heading[1]}</span></h1>
+      <p class="cov-sub rv" style="--d:.1s">{INTRO.lead}</p>
+      <div class="cov-cta fade" style="--d:.2s">
+        <a class="btn btn--solid" href={SITE.booking} target="_blank" rel="noopener noreferrer">Book an appointment</a>
+        <a class="tlk" href={SITE.links.work}>See the work</a>
+      </div>
+    </div>
+    <div class="acov-r">
+      <figure class="portrait rv">
+        <div class="portrait-fr"><Plate id={MEDIA.plates.portrait} alt="Kassandra in a black blazer, hands in her hair" class="lv lv--breathe" sizes="(max-width:899px) 76vw, 380px" widths={[480, 800, 941]} loading="eager" fetchpriority="high" /><i class="grain" aria-hidden="true"></i></div>
+        <figcaption><span class="caps-xs">{SITE.owner} &middot; {SITE.role}</span><em>Hand-tied extensions, dimensional color and bridal hair.</em></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <div class="chapslate fade" role="presentation"><span class="cs-t">The story</span></div>
+
+  <!-- THE STORY -->
+  <section class="sec lit">
+    <i class="lx-shaft" aria-hidden="true"></i>
+    <div class="wrap">
+      <div class="story">
+        <span class="caps-xs story-k rv">Behind the chair</span>
+        <p class="drop rv" style="--d:.07s">{INTRO.sentences[0]}</p>
+        <p class="rv">{INTRO.sentences[1]}</p>
+        <div class="story-pull rv"><p>&ldquo;Come for the hair, stay for the chat.&rdquo;</p></div>
+        <p class="rv">Most of the people in Kass’s chair found her the way you probably did — through a friend’s hair, or a reel at midnight. The website exists so the next step is easy: see the work, pick a service, book a time. The yapping is included.</p>
+        <p class="rv">Based in {SITE.area.label}. Now booking brides.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- IN MOTION · three of her clips and the laptop portrait -->
+  <section class="sec sec--linen sec--tight">
+    <div class="wrap">
+      <p class="caps rv" style="display:block;text-align:center;margin-bottom:clamp(1.6rem,3vw,2.4rem)">In motion</p>
+      <div class="ab-strip" data-stag=".1">
+        <div class="rv-im"><Film film={MEDIA.reelBlonde} label="Color" /></div>
+        <div class="rv-im ab-strip-ph"><div class="ph ph--framed"><Plate id={MEDIA.plates.laptop} alt="Kassandra holding a laptop, black blazer" class="lv" sizes="(max-width:899px) 44vw, 320px" widths={[480, 800]} /><i class="grain" aria-hidden="true"></i></div></div>
+        <div class="rv-im"><Film film={MEDIA.cineFilm} label="Styling" /></div>
+        <div class="rv-im"><Film film={MEDIA.reelBride} label="Bridal" /></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="chapslate chapslate--dk fade" role="presentation"><span class="cs-t">What she does best</span></div>
+
+  <!-- THE SPECIALTIES · sticky chapter -->
+  <section class="sec sec--dk lit">
+    <i class="lx-dusk" aria-hidden="true"></i>
+    <div class="wrap chap" style="position:relative;z-index:1">
+      <div class="chap-l rv">
+        <p class="chap-rn">Three specialties</p>
+        <h2 class="disp chap-t">Extensions, color, <span class="ital">bridal.</span></h2>
+        <p class="chap-line">The three things Kass is known for — and the plan that fits the hair you already have.</p>
+        <a class="tlk tlk--lt" href={SITE.links.services}>All services</a>
+      </div>
+      <div class="vals" data-stag=".1">
+        <article class="val rv">
+          <span class="val-n">i.</span>
+          <h3>Hand-tied extensions</h3>
+          <p>Length and fullness that move like your own hair — flat, light and nearly invisible, with a care routine you can actually keep.</p>
+        </article>
+        <article class="val rv">
+          <span class="val-n">ii.</span>
+          <h3>Dimensional color</h3>
+          <p>Lived-in blondes and brunettes blended by hand, so the color has depth and the grow-out stays soft.</p>
+        </article>
+        <article class="val rv">
+          <span class="val-n">iii.</span>
+          <h3>Bridal hair</h3>
+          <p>Polished, timeless styling that lasts from the first look to the last dance — for the bride and everyone getting ready with her.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE NEXT STEP -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="note-card rv">
+        <span class="caps">Ready when you are</span>
+        <p class="note-copy">Let’s make your hair the easy part.</p>
+        <span class="note-rule" aria-hidden="true"></span>
+        <p class="note-body">Book online in a minute, or text Kass with a question first. Brides and extension clients: start with the enquiry.</p>
+        <div class="note-act">
+          <a class="btn btn--solid" href={SITE.booking} target="_blank" rel="noopener noreferrer">Book an appointment</a>
+          <a class="tlk" href={SMS}>Text Kass</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .acov{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);min-height:92svh}
+  .acov-l{display:flex;flex-direction:column;justify-content:center;padding:clamp(7rem,16vh,10rem) clamp(1.6rem,5vw,5.5rem) clamp(3.6rem,8vh,6rem) max(5vw,(100vw - var(--wrap))/2)}
+  .acov-l h1{font-size:clamp(2.8rem,6.4vw,5.8rem);margin-bottom:clamp(1.2rem,2.4vh,1.8rem)}
+  .acov-r{position:relative;display:grid;place-items:center;align-content:center;padding:clamp(3rem,7vh,5.5rem) clamp(1.8rem,4vw,4rem);background:var(--linen)}
+  .portrait{position:relative;width:min(380px,78%);margin:0}
+  .portrait-fr{position:relative;aspect-ratio:4/5;border-radius:999px 999px var(--r) var(--r);overflow:hidden;outline:1px solid var(--brass);outline-offset:11px;box-shadow:var(--shadow-lg)}
+  .portrait-fr :global(img){width:100%;height:100%;object-fit:cover;object-position:50% 15%}
+  .portrait figcaption{margin-top:1.8rem;text-align:center}
+  .portrait figcaption .caps-xs{display:block}
+  .portrait figcaption em{display:block;font-family:var(--display);font-style:italic;font-size:.95rem;color:var(--ink-soft);margin-top:.3rem;font-variation-settings:'opsz' 48,'SOFT' 60}
+  @media(max-width:899px){
+    .acov{grid-template-columns:1fr;min-height:0}
+    .acov-r{order:-1;padding:clamp(6.5rem,18vw,8rem) 5vw clamp(2rem,5vw,3rem)}
+    .acov-l{padding:clamp(3rem,9vw,4.5rem) 5vw clamp(3.4rem,10vw,5rem)}
+  }
+  .story{max-width:640px;margin-inline:auto}
+  .story-k{text-align:center;display:block;margin-bottom:clamp(2.4rem,4.5vw,3.6rem)}
+  .story p{font-size:clamp(1.12rem,1.5vw,1.26rem);line-height:1.9;color:var(--ink-soft);margin:0}
+  .story p+p{margin-top:1.5em}
+  .story .drop::first-letter{font-family:var(--display);float:left;font-size:4.4em;line-height:.8;padding:.06em .12em 0 0;color:var(--leaf);font-variation-settings:'opsz' 144,'SOFT' 50}
+  .story-pull{margin:clamp(2.8rem,5vw,4rem) 0;padding:clamp(1.8rem,3.4vw,2.6rem) 0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);text-align:center}
+  .story-pull p{font-family:var(--display);font-style:italic;font-size:clamp(1.4rem,2.3vw,1.9rem);line-height:1.5;color:var(--leaf);max-width:20em;margin-inline:auto;font-variation-settings:'opsz' 72,'SOFT' 60}
+  .story-pull+p{margin-top:0}
+  .ab-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(.8rem,1.6vw,1.4rem);align-items:center}
+  .ab-strip-ph .ph{aspect-ratio:4/5}
+  .ab-strip-ph .ph :global(img){object-position:50% 15%}
+  @media(max-width:899px){.ab-strip{grid-template-columns:1fr 1fr}}
+  .vals{display:grid;gap:clamp(1.6rem,3vw,2.6rem)}
+  .val{border-top:1px solid var(--hairdk);padding-top:1.4rem;display:grid;grid-template-columns:2.4em 1fr;column-gap:.6rem}
+  .val-n{font-family:var(--display);font-style:italic;color:var(--gold-lt);font-size:1.1rem;padding-top:.3rem}
+  .val h3{font-size:clamp(1.5rem,2.2vw,2rem);margin-bottom:.7rem;grid-column:2}
+  .val p{grid-column:2;max-width:34em;color:color-mix(in srgb,var(--ivory) 80%,transparent)}
+  .note-body{max-width:34em;margin:0 auto clamp(1.8rem,3.4vw,2.6rem)}
+  .note-act{display:flex;justify-content:center;align-items:center;gap:2rem;flex-wrap:wrap}
+</style>

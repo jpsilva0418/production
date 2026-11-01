@@ -1,0 +1,47 @@
+/* ============ THE THREE BLUE DIRECTIONS ============
+   Same structure, same content, same type; only the token values change. Each is tuned
+   so small caps (--brass on --ivory) and body text keep AA contrast, and so the dark
+   chapters (--leaf) read as that direction's blue rather than a generic navy.
+
+   A · DEEP NAVY / LUXURY       rich navy, white, cool neutrals, a silver accent — editorial
+   B · MODERN ROYAL / COBALT    a fashion-forward cobalt, crisp white, cool grey — energetic
+   C · SOFT BLUE / EDITORIAL    dusty ice-blue, warm white, muted navy text — refined, feminine */
+
+/* ---- A · deep navy ---- (also the :root default in tokens.css) */
+body.pal-a{
+  --ivory:#F7F7F5; --linen:#EDEFF2; --paper:#FFFFFF; --blush:#E9EEF5;
+  --leaf:#0F1F3D; --leaf-2:#17305C; --leaf-deep:#0A162C;
+  --moss:#3E5B8A; --sage:#9FB3CF; --sage-band:#E2E8F1;
+  --petal:#D9E2EE; --petal-deep:#8FA6C4;
+  --brass:#5F6E88; --gold-lt:#C9D3E2;
+  --ink:#121A2B; --ink-soft:#46506A;
+  --hair:rgba(15,31,61,.16); --hair-strong:rgba(15,31,61,.32);
+  --hairdk:rgba(201,211,226,.22); --hairdk-strong:rgba(201,211,226,.42);
+  --shadow-lg:0 50px 90px -46px rgba(10,22,44,.38); --shadow:0 24px 48px -30px rgba(10,22,44,.32);
+}
+
+/* ---- B · modern royal / cobalt ---- */
+body.pal-b{
+  --ivory:#FAFAFC; --linen:#EEF0F5; --paper:#FFFFFF; --blush:#E8ECFA;
+  --leaf:#1E3BD0; --leaf-2:#2B4BE6; --leaf-deep:#14289A;
+  --moss:#4F6AE3; --sage:#AEBCF4; --sage-band:#E4E9FA;
+  --petal:#DCE3F8; --petal-deep:#8EA0E6;
+  --brass:#5B6480; --gold-lt:#D5DCF6;
+  --ink:#0E1326; --ink-soft:#4A5168;
+  --hair:rgba(30,59,208,.16); --hair-strong:rgba(30,59,208,.34);
+  --hairdk:rgba(213,220,246,.24); --hairdk-strong:rgba(213,220,246,.46);
+  --shadow-lg:0 50px 90px -46px rgba(20,40,154,.36); --shadow:0 24px 48px -30px rgba(20,40,154,.3);
+}
+
+/* ---- C · soft blue / beauty editorial ---- */
+body.pal-c{
+  --ivory:#FBF9F6; --linen:#F2EFEA; --paper:#FFFFFF; --blush:#EAF0F6;
+  --leaf:#34507A; --leaf-2:#436394; --leaf-deep:#2A4268;
+  --moss:#7F97B8; --sage:#B9CCE0; --sage-band:#E4ECF4;
+  --petal:#DCE7F1; --petal-deep:#93AECB;
+  --brass:#6A7688; --gold-lt:#D3DFEC;
+  --ink:#22314A; --ink-soft:#56637A;
+  --hair:rgba(43,65,102,.16); --hair-strong:rgba(43,65,102,.32);
+  --hairdk:rgba(211,223,236,.24); --hairdk-strong:rgba(211,223,236,.46);
+  --shadow-lg:0 50px 90px -46px rgba(30,47,77,.34); --shadow:0 24px 48px -30px rgba(30,47,77,.28);
+}

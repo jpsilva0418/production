@@ -1,0 +1,460 @@
+---
+/** HOME — one page, five chapters, rendered by / and by /preview/<direction>.
+ *  Opening → i. Meet Kass → ii. The work (mixed photo/film, a swipe on phones) →
+ *  iii. Signature services + how booking works → the second film, pinned →
+ *  iv. Book (the one dark chapter) → Follow along + Now booking brides.
+ *  Structure and choreography come from the shared system; every word and image is hers. */
+import Hero from './Hero.astro';
+import Mark from './Mark.astro';
+import Plate from './Plate.astro';
+import Film from './Film.astro';
+import WorkTile from './WorkTile.astro';
+import { getCollection } from 'astro:content';
+import { SITE, TEL, INTRO, WORK, SECTION_LABELS, SERVICES_INTRO, HOW, BAND, BOOK, FOLLOW, BRIDAL, FEATURED, MEDIA } from '../lib/content';
+
+const services = (await getCollection('services')).filter((s) => !s.data.draft).sort((a, b) => a.data.order - b.data.order);
+const roman = ['i', 'ii', 'iii', 'iv', 'v', 'vi'];
+const chapters = [
+  { id: 'meet', label: 'Kass' },
+  { id: 'work', label: 'Work' },
+  { id: 'services', label: 'Services' },
+  { id: 'book', label: 'Book' },
+];
+const ring = 'M27 89.84A46 46 0 1 1 73 89.84';
+---
+<div class="c7-prog" id="c7Prog" aria-hidden="true"></div>
+<nav class="c7-rail" id="c7Rail" aria-label="Chapters">
+  {chapters.map((c, i) => <a href={`#${c.id}`} data-rail={c.id}><i aria-hidden="true"></i><span><b>{roman[i]}.</b> {c.label}</span></a>)}
+</nav>
+
+<!-- ① THE OPENING -->
+<Hero />
+
+<!-- ② CHAPTER I · MEET KASS -->
+<section class="c7-ch c7-ch--first" id="meet" data-chapter="meet" data-tone="light" data-curve>
+  <div class="c7-light" aria-hidden="true"><i class="lx-shaft"></i></div>
+  <div class="wrap c7-mis">
+    <div class="c7-mis-t">
+      <p class="chap-rn rv">Chapter i.</p>
+      <h2 class="disp c7-mis-h rv" style="--d:.06s">{INTRO.heading[0]} <span class="ital">{INTRO.heading[1]}</span></h2>
+      <p class="kick rv" style="--d:.1s">{INTRO.eyebrow}</p>
+      <p class="c7-mis-s c7-mis-s--lead rv" style="--d:.16s">{INTRO.lead}</p>
+      {INTRO.sentences.map((s, i) => <p class="c7-mis-s rv" style={`--d:${(0.28 + i * 0.12).toFixed(2)}s`}>{s}</p>)}
+      <div class="c7-mis-foot fade" style="--d:.62s">
+        <ul class="c7-vals" aria-label="Specialties">{INTRO.values.map((v, i) => <li><b>{roman[i]}.</b> {v}</li>)}</ul>
+        <a class="tlk" href={SITE.links.about}>More about Kass</a>
+      </div>
+    </div>
+    <figure class="c7-mis-f">
+      <div class="ph ph--framed rv-im" style="--d:.2s"><Plate id={MEDIA.plates.portrait} alt="Kassandra in a black blazer, hands in her hair" class="lv lv--rise" sizes="(max-width:899px) 90vw, 520px" widths={[480, 800, 941]} /><i class="grain" aria-hidden="true"></i></div>
+      <figcaption class="fade" style="--d:.3s">{INTRO.caption}</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ③ CHAPTER II · THE WORK — mixed photographs and clips; a swipe sequence on phones, a 3 × 2 grid on desktop -->
+<section class="c7-ch c7-ch--sage c7-work" id="work" data-chapter="work" data-tone="light" data-curve>
+  <div class="wrap c7-care-h">
+    <div>
+      <p class="chap-rn rv">Chapter ii.</p>
+      <p class="kick rv" style="--d:.04s">{SECTION_LABELS.work}</p>
+      <h2 class="disp rv" style="--d:.08s">{WORK.heading[0]}<br /><span class="ital">{WORK.heading[1]}</span></h2>
+    </div>
+    <p class="ital c7-care-line rv" style="--d:.12s">{WORK.line}</p>
+  </div>
+  <div class="c7-seq">
+    <ul class="c7-trk c7-trk--work fade" id="c7Trk" tabindex="0" aria-label="A selection of Kass’s work">
+      {FEATURED.map((item, i) => <li class="c7-pn c7-pn--tile" style={`--i:${i}`}><WorkTile item={item} sizes="(max-width:899px) 82vw, 400px" widths={[480, 800]} /></li>)}
+    </ul>
+    <div class="c7-ctl">
+      <div class="c7-dots" role="group" aria-label="Go to item">
+        {FEATURED.map((_, i) => <button type="button" class="c7-dot" data-go={i} aria-label={`Item ${i + 1} of ${FEATURED.length}`} aria-current={i === 0 ? 'true' : undefined}><i></i></button>)}
+      </div>
+      <div class="c7-arrows">
+        <button type="button" class="c7-arr" id="c7Prev" aria-label="Previous">&larr;</button>
+        <button type="button" class="c7-arr" id="c7Next" aria-label="Next">&rarr;</button>
+      </div>
+    </div>
+  </div>
+  <div class="wrap c7-work-foot fade"><a class="btn btn--line" href={SITE.links.work}>{WORK.all}</a><a class="tlk" href={SITE.instagram.url} target="_blank" rel="noopener noreferrer">More on Instagram {SITE.instagram.handle}</a></div>
+</section>
+
+<div class="chapslate chapslate--linen fade" role="presentation"><span class="cs-t">{SECTION_LABELS.services}</span></div>
+
+<!-- ④ CHAPTER III · SIGNATURE SERVICES, then how booking works -->
+<section class="c7-care" id="services" data-chapter="services" data-tone="light">
+  <div class="wrap c7-care-h">
+    <div>
+      <p class="chap-rn rv">Chapter iii.</p>
+      <p class="kick rv" style="--d:.04s">{SECTION_LABELS.services}</p>
+      <h2 class="disp rv" style="--d:.08s">{SERVICES_INTRO.heading[0]}<br /><span class="ital">{SERVICES_INTRO.heading[1]}</span></h2>
+    </div>
+    <p class="ital c7-care-line rv" style="--d:.12s">{SERVICES_INTRO.line}</p>
+  </div>
+  <div class="wrap c7-svc fade" data-stag=".08">
+    {services.map((s) => (
+      <article class="c7-pn c7-pn--svc">
+        <div class="ph c7-pn-ph"><Plate id={s.data.plate} alt="" sizes="(max-width:899px) 82vw, 320px" widths={[480, 800]} /></div>
+        <div class="c7-pn-b">
+          <span class="caps-xs">No. {s.data.numeral}</span>
+          <h3>{s.data.title}</h3>
+          <p>{s.data.short}</p>
+          <a class="arrow-link" href={`${SITE.links.services}#${s.id}`} aria-label={`${s.data.title} — details`}>Details <span class="arr" aria-hidden="true">&rarr;</span></a>
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <div class="wrap c7-how">
+    <div class="c7-how-l rv">
+      <p class="kick">{SECTION_LABELS.how}</p>
+      <h2 class="disp c7-how-h">Three ways <span class="ital">to start.</span></h2>
+      <div class="c7-how-cta">
+        <a class="btn btn--solid" href={SITE.booking} target="_blank" rel="noopener noreferrer">Book an appointment</a>
+        <a class="tlk" href={SITE.links.services}>All services</a>
+      </div>
+    </div>
+    <ol class="c7-rows" data-stag=".1">
+      {HOW.map((h, i) => <li class="fade"><span class="c7-row-n">{roman[i]}.</span><div><h3>{h.title}</h3><p>{h.body}</p><a class="arrow-link" href={h.href} {...('external' in h && h.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{h.cta} <span class="arr" aria-hidden="true">&rarr;</span></a></div></li>)}
+    </ol>
+  </div>
+</section>
+
+<!-- ⑤ the second film, pinned — the booking chapter rises over it -->
+<div class="c7-band" data-pin data-chapter="services" data-tone="film" role="presentation" style={`--poster:url(${MEDIA.cineFilm.poster})`}>
+  <div class="c7-band-amb" aria-hidden="true"></div>
+  <div class="c7-band-fr">
+    <video data-film muted loop playsinline preload="none" poster={MEDIA.cineFilm.poster} disablepictureinpicture tabindex="-1" aria-hidden="true">
+      <source data-src={MEDIA.cineFilm.webm} type="video/webm" />
+      <source data-src={MEDIA.cineFilm.mp4} type="video/mp4" />
+    </video>
+  </div>
+  <i class="grain" aria-hidden="true"></i>
+  <p class="c7-band-cap" set:html={BAND.caption} />
+</div>
+
+<!-- ⑥ CHAPTER IV · BOOK — the one controlled dark moment after the opening -->
+<section class="c7-ch c7-ch--dk" id="book" data-chapter="book" data-tone="dark" data-curve aria-labelledby="c7BookH">
+  <div class="c7-light" aria-hidden="true"><i class="lx-dusk"></i></div>
+  <div class="wrap-text c7-beg">
+    <span class="c7-seal fade" aria-hidden="true"><svg viewBox="0 0 100 100" fill="none"><path d={ring} /></svg><Mark /></span>
+    <p class="caps-xs fade" style="--d:.04s">Chapter iv. &middot; {BOOK.eyebrow}</p>
+    <h2 class="c7-beg-h rv" id="c7BookH" style="--d:.08s">{BOOK.heading}</h2>
+    <p class="c7-beg-b fade" style="--d:.14s">{BOOK.body}</p>
+    <ul class="c7-pts fade" style="--d:.2s">{BOOK.points.map((p) => <li>{p}</li>)}</ul>
+    <div class="c7-beg-cta fade" style="--d:.26s">
+      <a class="btn btn--ivory" href={BOOK.ctaHref} target="_blank" rel="noopener noreferrer">{BOOK.cta}</a>
+      <a class="tlk tlk--lt" href={BOOK.altHref}>{BOOK.alt} &middot; {SITE.phone}</a>
+    </div>
+  </div>
+</section>
+
+<!-- ⑦ after the resolution · Follow along and Now booking brides, back on the light ground -->
+<div class="c7-ch c7-after" data-chapter="book" data-tone="light" data-curve>
+  <section class="wrap c7-mom" aria-labelledby="c7FolH">
+    <header class="c7-mom-h">
+      <div><p class="caps rv">{SECTION_LABELS.follow}</p><h2 class="disp rv" id="c7FolH" style="--d:.06s">{FOLLOW.heading}</h2></div>
+      <p class="c7-mom-line fade" style="--d:.1s">{FOLLOW.body}</p>
+    </header>
+    <div class="c7-mom-g" data-stag=".1">
+      {FOLLOW.tiles.map((t) => <div class="rv"><a class="ph c7-ig" href={FOLLOW.href} target="_blank" rel="noopener noreferrer" aria-label={`Open ${SITE.instagram.handle} on Instagram`}><Plate id={t} alt="" sizes="(max-width:599px) 90vw, 30vw" widths={[480, 800]} /><i class="grain" aria-hidden="true"></i></a></div>)}
+      <div class="rv"><a class="c7-all" href={FOLLOW.href} target="_blank" rel="noopener noreferrer"><span class="caps-xs">Instagram</span><span class="c7-all-t">{FOLLOW.heading}</span><span class="arrow-link">{FOLLOW.cta} <span class="arr" aria-hidden="true">&rarr;</span></span></a></div>
+    </div>
+  </section>
+  <section class="c7-join" aria-labelledby="c7BrH">
+    <div class="wrap c7-join-in">
+      <div class="c7-join-t">
+        <p class="caps rv">{BRIDAL.banner}</p>
+        <h2 class="disp rv" id="c7BrH" style="--d:.06s">{BRIDAL.heading}</h2>
+        <p class="fade" style="--d:.12s">{BRIDAL.body}</p>
+        <div class="c7-join-a fade" style="--d:.18s">
+          <a class="btn btn--solid" href={BRIDAL.ctaHref}>{BRIDAL.cta}</a>
+          <a class="tlk" href={BRIDAL.altHref}>{BRIDAL.alt}</a>
+        </div>
+        <p class="c7-join-mail fade" style="--d:.22s">Or call <a href={TEL}>{SITE.phone}</a></p>
+      </div>
+      <div class="c7-join-media rv-im">
+        <div class="ph ph--framed c7-join-ph"><Plate id={BRIDAL.plate} alt="A bride in a beaded gown looking back over her shoulder, polished waves" class="lv lv--breathe" sizes="(max-width:899px) 80vw, 380px" widths={[480, 800]} /><i class="grain" aria-hidden="true"></i></div>
+        <div class="c7-join-film"><Film film={MEDIA.reelBride} label="Getting ready" /></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<style is:global>
+  body{--gut:max(20px,calc((100vw - var(--wrap)) / 2));--peek:56px}
+  @media(max-width:599px){body{--wrap:calc(100vw - 40px)}}
+  @media(max-width:640px){body{--peek:38px}}
+  main{position:relative}
+  .rv{transform:translateY(30px);transition-duration:.9s,1.05s,.7s}
+  .rv.in{transform:none}
+  .rv-im img,.rv-im video{transform:scale(1.1);transition-duration:1.5s}
+  .rv-im.in img,.rv-im.in video{transform:none}
+  .chap-rn{color:var(--brass)}
+</style>
+
+<style>
+  /* ===== mobile progress bar + desktop chapter rail ===== */
+  .c7-prog{position:fixed;top:0;left:0;right:0;height:2px;z-index:72;background:var(--moss);transform:scaleX(0);transform-origin:left;pointer-events:none;display:none}
+  .c7-rail{position:fixed;left:clamp(14px,2vw,28px);top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:12px;color:var(--ink);opacity:0;transition:opacity .5s ease}
+  .c7-rail.on{opacity:1}
+  .c7-rail:not(.on){pointer-events:none}
+  .c7-rail[data-tone="film"],.c7-rail[data-tone="dark"]{color:var(--ivory)}
+  .c7-rail a{display:flex;align-items:center;gap:.8rem;min-height:30px;color:inherit;font-family:var(--utility);font-weight:600;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase}
+  .c7-rail a i{display:block;width:7px;height:7px;border-radius:50%;border:1px solid currentColor;transition:transform .35s var(--ease),background .35s}
+  .c7-rail a span{opacity:0;transform:translateX(-6px);transition:opacity .35s,transform .45s var(--ease);padding:.5em .85em .45em;border-radius:999px;background:color-mix(in srgb,var(--ivory) 90%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  .c7-rail[data-tone="film"] a span,.c7-rail[data-tone="dark"] a span{background:color-mix(in srgb,var(--leaf-deep) 55%,transparent)}
+  .c7-rail a span b{font-family:var(--display);font-style:italic;font-weight:400;font-size:.8rem;letter-spacing:0;text-transform:none;margin-right:.2em}
+  .c7-rail a:hover span,.c7-rail a:focus-visible span{opacity:1;transform:none}
+  .c7-rail a[aria-current="true"] i{background:currentColor;transform:scale(1.4)}
+  @media(min-width:1180px){.c7-rail{display:flex}}
+  @media(max-width:1023px){.c7-prog{display:block}}
+
+  /* ===== chapter cards · a curved band as the top edge; the curve eases flatter as the card rises ===== */
+  .c7-ch{--cv:44px;--lip:12px;--c-bg:var(--ivory);position:relative;z-index:1;isolation:isolate;padding-block:var(--pad)}
+  .c7-ch::before,.c7-ch::after{content:"";position:absolute;left:0;right:0;border-radius:50% 50% 0 0/var(--cv) var(--cv) 0 0;pointer-events:none}
+  .c7-ch::before{top:calc(-1 * var(--lip));height:160px;background:var(--sage);z-index:-2}
+  .c7-ch::after{top:0;bottom:0;background:var(--c-bg);z-index:-1;box-shadow:0 -26px 60px -34px rgba(10,22,44,.42)}
+  .c7-light{position:absolute;inset:0;overflow:hidden;border-radius:50% 50% 0 0/var(--cv) var(--cv) 0 0;pointer-events:none;z-index:-1}
+  .c7-ch--first{margin-top:calc(-1 * var(--peek))}
+  .c7-ch--sage{--c-bg:var(--sage-band);--lip:0px}
+  .c7-ch--sage::after{box-shadow:none}
+  .c7-ch--dk{--c-bg:var(--leaf);color:color-mix(in srgb,var(--ivory) 86%,transparent)}
+  .c7-ch--dk::after{box-shadow:0 -26px 60px -30px rgba(0,0,0,.5)}
+  .c7-after{--lip:8px;padding-top:0;padding-bottom:0;margin-top:-1px}
+
+  /* ===== I · meet Kass ===== */
+  .c7-mis{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:clamp(2.4rem,6vw,6.5rem);align-items:center;position:relative}
+  .c7-mis-h{font-size:clamp(2.6rem,5.2vw,4.8rem);font-weight:300;margin:0 0 clamp(1rem,1.8vw,1.4rem)}
+  .c7-mis .kick{margin-bottom:clamp(1.6rem,2.8vw,2.4rem)}
+  .c7-mis-s{font-family:var(--display);font-weight:300;font-size:clamp(1.12rem,1.5vw,1.42rem);line-height:1.5;color:var(--ink);max-width:25em;margin:0 0 1.1em;font-variation-settings:'opsz' 48,'SOFT' 50}
+  .c7-mis-s--lead{font-size:clamp(1.5rem,2.4vw,2.2rem);line-height:1.3;max-width:19em;font-variation-settings:'opsz' 96,'SOFT' 60}
+  .c7-mis-foot{display:flex;align-items:center;justify-content:space-between;gap:1.2rem 2rem;flex-wrap:wrap;margin-top:clamp(1.6rem,2.6vw,2.2rem);padding-top:1.2rem;border-top:1px solid var(--hair)}
+  .c7-vals{list-style:none;display:flex;gap:.6rem 2rem;flex-wrap:wrap;margin:0;padding:0;font-family:var(--utility);font-weight:600;font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
+  .c7-vals b{font-family:var(--display);font-style:italic;font-weight:400;font-size:.95rem;letter-spacing:0;text-transform:none;color:var(--brass);margin-right:.3em}
+  .c7-mis-f{margin:0}
+  .c7-mis-f .ph{aspect-ratio:4/5}
+  .c7-mis-f .ph :global(img){object-position:50% 20%}
+  .c7-mis-f figcaption{margin-top:1.4rem;text-align:center;font-family:var(--display);font-style:italic;font-size:1rem;color:var(--ink-soft)}
+  @media(max-width:899px){.c7-mis{grid-template-columns:1fr;gap:2.6rem}.c7-mis-f{width:min(520px,100%);margin-inline:auto}.c7-mis-f .ph{aspect-ratio:4/4.4}}
+
+  /* ===== II · the work ===== */
+  .c7-work{padding-bottom:calc(var(--pad) * .8)}
+  .c7-care-h{display:flex;align-items:flex-end;justify-content:space-between;gap:1.5rem 3rem;flex-wrap:wrap;margin-bottom:clamp(2.2rem,4.4vw,3.6rem)}
+  .c7-care-h>div{flex:1 1 420px}
+  .c7-care-h .kick{margin-bottom:1.2rem}
+  .c7-care-h .disp{font-size:clamp(2.2rem,4.4vw,4rem);font-weight:300}
+  .c7-care-line{margin:0;max-width:24em;font-size:1.1rem;color:var(--ink-soft);font-variation-settings:'opsz' 48,'SOFT' 60}
+  .c7-seq{position:relative}
+  .c7-trk{list-style:none;margin:0;display:flex;gap:16px;padding:8px var(--gut) 18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gut);scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+  .c7-trk::-webkit-scrollbar{display:none}
+  .c7-trk:focus-visible{outline:2px solid var(--brass);outline-offset:-2px}
+  .c7-pn{flex:0 0 min(360px,82vw);scroll-snap-align:start;display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--hair);border-radius:var(--r);overflow:hidden;position:relative;transition:box-shadow .45s var(--ease),border-color .45s var(--ease)}
+  .c7-pn:hover{box-shadow:0 26px 50px -32px rgba(10,22,44,.42);border-color:var(--hair-strong)}
+  .c7-pn--tile{flex-basis:min(320px,76vw);background:none;border:0;border-radius:var(--r);overflow:visible}
+  .c7-pn--tile :global(.tile-ph),.c7-pn--tile :global(.film){aspect-ratio:4/5;border-radius:var(--r);box-shadow:0 30px 60px -40px rgba(10,22,44,.5)}
+  .c7-pn--tile :global(.tile--film .film){aspect-ratio:4/5}
+  .c7-work-foot{display:flex;align-items:center;gap:1.2rem 2.4rem;flex-wrap:wrap;margin-top:clamp(1.6rem,3vw,2.6rem)}
+  .c7-ctl{width:var(--wrap);margin:.2rem auto 0;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+  .c7-dots{display:flex}
+  .c7-dot{width:40px;height:44px;display:grid;place-items:center;background:none;border:0;cursor:pointer;padding:0}
+  .c7-dot i{display:block;width:7px;height:7px;border-radius:50%;border:1px solid var(--ink);transition:transform .35s var(--ease),background .35s}
+  .c7-dot[aria-current="true"] i{background:var(--ink);transform:scale(1.35)}
+  .c7-arrows{display:flex;gap:.5rem}
+  .c7-arr{width:46px;height:46px;border-radius:50%;border:1px solid var(--hair-strong);background:var(--paper);color:var(--ink);cursor:pointer;font-size:1.05rem;display:grid;place-items:center;transition:background .35s,color .35s,border-color .35s}
+  .c7-arr:hover,.c7-arr:focus-visible{background:var(--leaf);border-color:var(--leaf);color:var(--ivory)}
+  .c7-arr[disabled]{opacity:.35;cursor:default}
+  .c7-arr[disabled]:hover{background:var(--paper);color:var(--ink);border-color:var(--hair-strong)}
+  @media(max-width:400px){.c7-dot{width:32px}.c7-arrows{gap:.4rem}.c7-arr{width:44px;height:44px}}
+  @media(min-width:900px){
+    .c7-trk{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1rem,2vw,1.6rem);width:var(--wrap);margin-inline:auto;padding:0;overflow:visible}
+    .c7-pn{flex:none}
+    .c7-ctl{display:none}
+    .c7-trk.fade{opacity:1;transform:none}
+    .c7-trk.fade .c7-pn{opacity:0;transform:translateY(28px);transition:opacity .7s ease calc(var(--i) * .08s),transform .95s var(--ease) calc(var(--i) * .08s),box-shadow .45s var(--ease),border-color .45s var(--ease)}
+    .c7-trk.fade.in .c7-pn{opacity:1;transform:none}
+  }
+
+  /* ===== III · services ===== */
+  .c7-care{position:relative;z-index:1;background:var(--linen);padding:clamp(8px,2vw,24px) 0 var(--pad)}
+  .c7-svc{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(1rem,2vw,1.6rem)}
+  .c7-pn--svc{flex:none}
+  .c7-pn::after{content:"";position:absolute;inset:6px;border:1px solid var(--hair);border-radius:calc(var(--r) - 4px);pointer-events:none}
+  .c7-pn--tile::after{display:none}
+  .c7-pn-ph{aspect-ratio:1/1;border-radius:0}
+  .c7-pn-ph :global(img){transition:transform 1s var(--ease);object-position:50% 22%}
+  .c7-pn:hover .c7-pn-ph :global(img){transform:scale(1.045)}
+  .c7-pn-b{padding:1.35rem 1.45rem 1.55rem;display:flex;flex-direction:column;gap:.5rem;flex:1}
+  .c7-pn-b .caps-xs{color:var(--brass)}
+  .c7-pn-b h3{font-size:1.38rem;line-height:1.16;font-weight:350;color:var(--ink)}
+  .c7-pn-b p{font-size:.95rem;color:var(--ink-soft);flex:1}
+  .c7-pn-b .arrow-link{margin-top:.5rem;font-size:.98rem;align-self:flex-start;min-height:44px;align-items:center}
+  @media(max-width:1023px){.c7-svc{grid-template-columns:1fr 1fr}}
+  @media(max-width:559px){.c7-svc{grid-template-columns:1fr}.c7-pn-ph{aspect-ratio:4/3}}
+  .c7-how{margin-top:clamp(4.5rem,9vw,7.5rem);display:grid;grid-template-columns:minmax(240px,380px) 1fr;gap:clamp(2.4rem,6vw,6rem);align-items:start}
+  .c7-how-l{position:sticky;top:110px}
+  .c7-how-l .kick{margin-bottom:1.2rem}
+  .c7-how-h{font-size:clamp(2rem,3.6vw,3.2rem);font-weight:300;margin:0 0 1.8rem;max-width:9em}
+  .c7-how-cta{display:flex;align-items:center;gap:1rem 1.8rem;flex-wrap:wrap}
+  .c7-rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair)}
+  .c7-rows li{display:grid;grid-template-columns:2.6em 1fr;gap:.4rem 1rem;padding:clamp(1.3rem,2.4vw,1.9rem) 0;border-bottom:1px solid var(--hair)}
+  .c7-row-n{font-family:var(--display);font-style:italic;font-size:1.12rem;color:var(--brass);padding-top:.2em}
+  .c7-rows h3{font-size:clamp(1.3rem,1.9vw,1.62rem);font-weight:350;color:var(--ink);margin-bottom:.4rem}
+  .c7-rows p{font-size:.98rem;max-width:44em;color:var(--ink-soft);margin-bottom:.6rem}
+  @media(max-width:899px){.c7-how{grid-template-columns:1fr;gap:2rem}.c7-how-l{position:static}}
+
+  /* ===== the second film, pinned · vertical clip framed on wide screens, full-bleed on phones ===== */
+  .c7-band{position:sticky;top:0;z-index:0;height:100vh;height:100svh;overflow:hidden;background:var(--leaf-deep);display:grid;place-items:center}
+  .c7-band.is-covered{visibility:hidden}
+  .c7-band-amb{position:absolute;inset:-8%;background:var(--poster) center/cover no-repeat;filter:blur(46px) saturate(.9);transform:scale(1.1)}
+  .c7-band-amb::after{content:"";position:absolute;inset:0;background:color-mix(in srgb,var(--leaf-deep) 70%,transparent)}
+  .c7-band-fr{position:relative;height:88svh;aspect-ratio:9/16;border-radius:var(--r-lg);overflow:hidden;box-shadow:0 60px 120px -50px rgba(0,0,0,.7),0 0 0 1px color-mix(in srgb,var(--gold-lt) 30%,transparent)}
+  .c7-band video{width:100%;height:100%;object-fit:cover;object-position:50% 40%;filter:saturate(.95)}
+  .c7-band::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(rgba(0,0,0,.12),rgba(0,0,0,0) 40%,color-mix(in srgb,var(--leaf-deep) 45%,transparent))}
+  .c7-band-cap{position:absolute;left:0;right:0;bottom:clamp(96px,15vh,132px);z-index:2;text-align:center;padding:0 20px;font-family:var(--utility);font-weight:600;font-size:.6rem;letter-spacing:.3em;text-indent:.3em;text-transform:uppercase;color:var(--ivory);text-shadow:0 1px 18px rgba(0,0,0,.6)}
+  .c7-band-cap :global(b){color:var(--gold-lt);font-weight:600}
+  @media(max-width:899px){.c7-band-amb{display:none}.c7-band-fr{position:absolute;inset:0;height:auto;aspect-ratio:auto;border-radius:0;box-shadow:none}.c7-band video{object-position:50% 30%}}
+
+  /* ===== IV · book ===== */
+  .c7-beg{text-align:center;padding-block:clamp(.5rem,2vh,1.5rem);position:relative}
+  .c7-seal{position:relative;display:grid;place-items:center;width:84px;aspect-ratio:1;margin:0 auto 1.6rem}
+  .c7-seal svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .c7-seal path{stroke:var(--gold-lt);stroke-width:1;stroke-linecap:round}
+  .c7-seal :global(.mark){width:48%;height:auto;color:var(--gold-lt)}
+  .c7-beg .caps-xs{display:block;color:var(--gold-lt);margin-bottom:1.3rem}
+  .c7-beg-h{font-size:clamp(2.2rem,5vw,4.4rem);line-height:1.08;font-weight:300;color:var(--ivory);margin:0 0 1.4rem;font-variation-settings:'opsz' 144,'SOFT' 60}
+  .c7-beg-b{font-family:var(--display);font-style:italic;font-size:clamp(1.08rem,1.6vw,1.32rem);line-height:1.6;color:color-mix(in srgb,var(--ivory) 90%,transparent);max-width:30em;margin:0 auto;font-variation-settings:'opsz' 48,'SOFT' 60}
+  .c7-pts{list-style:none;display:flex;justify-content:center;gap:.8rem 2.6rem;flex-wrap:wrap;margin:clamp(1.8rem,3vh,2.4rem) 0 0;padding:0;font-family:var(--utility);font-weight:600;font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-lt)}
+  .c7-pts li{display:inline-flex;align-items:center;gap:.8rem}
+  .c7-pts li::before{content:"";width:6px;height:6px;transform:rotate(45deg);background:var(--gold-lt)}
+  .c7-beg-cta{display:flex;justify-content:center;align-items:center;gap:1.2rem 2.2rem;flex-wrap:wrap;margin-top:clamp(2rem,4vh,3rem)}
+  .c7-beg-cta .tlk{max-width:100%;overflow-wrap:anywhere;line-height:1.6}
+
+  /* ===== after · follow along + brides ===== */
+  .c7-mom{padding-top:var(--pad)}
+  .c7-mom-h{margin-bottom:clamp(2rem,3.6vw,3rem);display:flex;align-items:flex-end;justify-content:space-between;gap:1rem 3rem;flex-wrap:wrap}
+  .c7-mom-h .caps{display:block;margin-bottom:.6rem}
+  .c7-mom-h .disp{font-size:clamp(2rem,3.6vw,3.2rem);font-weight:300}
+  .c7-mom-line{max-width:26em;font-family:var(--display);font-style:italic;font-size:1.06rem;color:var(--ink-soft)}
+  .c7-mom-g{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(1rem,2vw,1.6rem)}
+  .c7-mom-g>div{display:flex}
+  .c7-mom-g>div>:global(*){flex:1}
+  .c7-ig{aspect-ratio:4/5;display:block}
+  .c7-ig :global(img){transition:transform 1s var(--ease)}
+  .c7-ig:hover :global(img){transform:scale(1.04)}
+  .c7-all{display:flex;flex-direction:column;justify-content:space-between;gap:2rem;padding:clamp(1.6rem,2.6vw,2.2rem);background:var(--sage-band);color:var(--ink);border:1px solid var(--hair);border-radius:var(--r);min-height:300px;transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+  .c7-all:hover,.c7-all:focus-visible{transform:translateY(-3px);box-shadow:var(--shadow)}
+  .c7-all .caps-xs{color:var(--brass)}
+  .c7-all-t{font-family:var(--display);font-weight:300;font-size:clamp(1.8rem,2.6vw,2.4rem);line-height:1.05;color:var(--ink);overflow-wrap:anywhere}
+  @media(max-width:899px){.c7-mom-g{grid-template-columns:1fr 1fr 1fr}.c7-mom-g>div:last-child{grid-column:1/-1}.c7-all{min-height:0;flex-direction:row;align-items:center;flex-wrap:wrap}}
+  @media(max-width:599px){.c7-mom-g{grid-template-columns:1fr 1fr}.c7-mom-g>div:nth-child(3){display:none}}
+  .c7-join{margin-top:var(--pad);background:var(--sage-band);padding-block:clamp(60px,8vw,104px);position:relative}
+  .c7-join::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:var(--moss)}
+  .c7-join-in{display:grid;grid-template-columns:1fr minmax(260px,460px);gap:clamp(2.4rem,6vw,6rem);align-items:center}
+  .c7-join-t .caps{display:block;margin-bottom:.8rem}
+  .c7-join-t .disp{font-size:clamp(1.9rem,3.6vw,3.2rem);font-weight:300;margin-bottom:1.2rem;max-width:14em}
+  .c7-join-t>p{max-width:36em}
+  .c7-join-a{display:flex;align-items:center;gap:1.2rem 2rem;flex-wrap:wrap;margin-top:1.8rem}
+  .c7-join-mail{margin-top:1.4rem;font-size:.86rem}
+  .c7-join-mail a{color:var(--brass);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--hair-strong)}
+  .c7-join-media{position:relative;padding-right:22%;padding-bottom:12%}
+  .c7-join-ph{aspect-ratio:4/5}
+  .c7-join-film{position:absolute;right:0;bottom:0;width:42%;box-shadow:var(--shadow-lg);border-radius:var(--r);overflow:hidden;outline:6px solid var(--sage-band)}
+  @media(max-width:899px){.c7-join-in{grid-template-columns:1fr}.c7-join-media{width:min(420px,100%);order:-1}}
+
+  @media (prefers-reduced-motion:reduce){
+    .c7-band{position:relative;visibility:visible!important;height:70vh;height:70svh}
+    .c7-trk .c7-pn{opacity:1!important;transform:none!important}
+    .c7-prog,.c7-rail,.c7-rail a i,.c7-rail a span,.c7-pn,.c7-dot i,.c7-arr{transition:none}
+    .c7-rail a span{opacity:1;transform:none}
+  }
+</style>
+
+<script>
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const small = matchMedia('(max-width:640px)');
+  const pins = Array.from(document.querySelectorAll<HTMLElement>('[data-pin]'));
+  const curves = Array.from(document.querySelectorAll<HTMLElement>('[data-curve]'));
+  const prog = document.getElementById('c7Prog');
+  const rail = document.getElementById('c7Rail');
+  const after = (el: HTMLElement) => { let n = el.nextElementSibling; while (n && (n.tagName === 'SCRIPT' || n.tagName === 'STYLE')) n = n.nextElementSibling; return n as HTMLElement | null; };
+
+  let ticking = false;
+  const frame = () => {
+    ticking = false;
+    const y = scrollY, vh = innerHeight;
+    if (prog) { const max = document.documentElement.scrollHeight - vh; prog.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`; }
+    if (rail) { const foot = document.querySelector('.foot'); const fTop = foot ? foot.getBoundingClientRect().top : Infinity; rail.classList.toggle('on', y > vh * 0.6 && fTop > vh * 0.7); }
+    if (reduced) return;
+    pins.forEach((pin) => {
+      const next = after(pin);
+      const covered = !!next && next.getBoundingClientRect().top <= 0;
+      if (pin.classList.contains('is-covered') === covered) return;
+      pin.classList.toggle('is-covered', covered);
+      const v = pin.querySelector('video');
+      if (v) { if (covered) v.pause(); else if (v.currentSrc) v.play().catch(() => {}); }
+    });
+    const deep = small.matches ? 34 : 70, flat = small.matches ? 16 : 26;
+    curves.forEach((c) => {
+      const t = c.getBoundingClientRect().top;
+      if (t > vh + 80 || t < -vh) return;
+      const p = Math.min(1, Math.max(0, 1 - t / vh));
+      c.style.setProperty('--cv', `${(deep - (deep - flat) * p).toFixed(1)}px`);
+    });
+  };
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }, { passive: true });
+  addEventListener('resize', frame);
+  frame();
+
+  if (rail && 'IntersectionObserver' in window) {
+    const marks = Array.from(document.querySelectorAll<HTMLElement>('[data-chapter]'));
+    const cio = new IntersectionObserver((es) => {
+      es.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const el = e.target as HTMLElement;
+        rail.dataset.tone = el.dataset.tone ?? 'light';
+        rail.querySelectorAll<HTMLElement>('[data-rail]').forEach((a) => { if (a.dataset.rail === el.dataset.chapter) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
+      });
+    }, { rootMargin: '-14% 0px -80% 0px', threshold: 0 });
+    marks.forEach((m) => cio.observe(m));
+  }
+
+  // the work sequence (phones and tablets): prev / next / dots over a native scroll-snap track
+  const trk = document.getElementById('c7Trk');
+  if (trk) {
+    const panels = Array.from(trk.children) as HTMLElement[];
+    const dots = Array.from(document.querySelectorAll<HTMLButtonElement>('.c7-dot'));
+    const prev = document.getElementById('c7Prev') as HTMLButtonElement | null;
+    const next = document.getElementById('c7Next') as HTMLButtonElement | null;
+    const pad = () => parseFloat(getComputedStyle(trk).paddingLeft) || 0;
+    let cur = 0;
+    const paint = () => {
+      dots.forEach((d, i) => { if (i === cur) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current'); });
+      if (prev) prev.disabled = cur === 0;
+      if (next) next.disabled = cur === panels.length - 1;
+    };
+    const go = (n: number) => {
+      cur = Math.max(0, Math.min(panels.length - 1, n));
+      trk.scrollTo({ left: panels[cur].offsetLeft - pad(), behavior: reduced ? 'auto' : 'smooth' });
+      paint();
+    };
+    prev?.addEventListener('click', () => go(cur - 1));
+    next?.addEventListener('click', () => go(cur + 1));
+    dots.forEach((d) => d.addEventListener('click', () => go(parseInt(d.dataset.go ?? '0', 10))));
+    let t: ReturnType<typeof setTimeout> | undefined;
+    trk.addEventListener('scroll', () => {
+      clearTimeout(t);
+      t = setTimeout(() => {
+        const x = trk.scrollLeft + pad();
+        let best = 0, dist = Infinity;
+        panels.forEach((p, i) => { const d = Math.abs(p.offsetLeft - x); if (d < dist) { dist = d; best = i; } });
+        if (best !== cur) { cur = best; paint(); }
+      }, 80);
+    }, { passive: true });
+    const wide = matchMedia('(min-width:900px)');
+    const setTab = () => { trk.tabIndex = wide.matches ? -1 : 0; };
+    wide.addEventListener('change', setTab);
+    setTab();
+    paint();
+  }
+</script>
