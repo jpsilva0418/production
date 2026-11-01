@@ -109,6 +109,8 @@ const rewrite = (html) => html
   // root-relative attributes
   .replace(/\b(href|src|poster|data-src|action|data-apply-href)="(\/[^"]*)"/g, (_, a, p) => `${a}="${mapPath(p)}"`)
   .replace(/\bsrcset="([^"]*)"/g, (_, v) => `srcset="${v.split(',').map((part) => part.trim().replace(/^(\/\S*)/, (u) => mapPath(u))).join(', ')}"`)
+  // CSS url() in inline style attributes (e.g. --poster:url(/media/…) on the film bands)
+  .replace(/url\((['"]?)(\/[^)'"]+)\1\)/g, (_, q, p) => `url(${q}${mapPath(p)}${q})`)
   // Astro redirect stubs: meta refresh target
   .replace(/content="(\d+);url=(\/[^"]*)"/g, (_, s, p) => `content="${s};url=${mapPath(p)}"`);
 
@@ -124,6 +126,7 @@ for (const p of pages) {
   // ---- safety scan ----
   const rel = path.relative(DIST, p);
   if (!/<meta name="robots" content="noindex,nofollow(,noarchive)?"/.test(t)) throw new Error(`missing noindex in ${rel}`);
+  if (/url\((['"]?)\/(?!demo\/)/.test(t)) throw new Error(`un-rewritten CSS url() in ${rel}`);
   if (/\b(?:href|src|poster|data-src|action)="\/(?!demo\/)/.test(t)) throw new Error(`un-rewritten root path in ${rel}: ${t.match(/\b(?:href|src|poster|data-src|action)="\/(?!demo\/)[^"]*"/)[0]}`);
   if (new RegExp(`${encodeURIComponent(ORIGIN + '/').replace(/[.]/g, '\\.')}(?!demo%2F)`, 'i').test(t)) throw new Error(`un-rewritten encoded self-URL in ${rel}`);
   if (/\/preview\//.test(t.replace(/<script[\s\S]*?<\/script>/g, ''))) throw new Error(`review link left in ${rel}`);
