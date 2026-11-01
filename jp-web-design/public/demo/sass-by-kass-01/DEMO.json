@@ -1,0 +1,17 @@
+{
+  "slug": "sass-by-kass-01",
+  "url": "https://jpsilvadigital.com/demo/sass-by-kass-01",
+  "client": "Sass by Kass",
+  "direction": "a",
+  "sourceRepo": "jpsilva0418/production",
+  "sourceDir": "sass-by-kass",
+  "sourceCommit": "979526fbc749601009c54f88a92721e330c251ca",
+  "sourceDirty": false,
+  "builtAt": "2026-11-01T04:54:31.389Z",
+  "pages": 9,
+  "shared": {
+    "assets": "/demo/_shared/assets/",
+    "media": "/demo/_shared/sass-by-kass/"
+  },
+  "note": "Unlisted design demo — not the live website. noindex. Forms are demo-only: nothing is sent anywhere."
+}
