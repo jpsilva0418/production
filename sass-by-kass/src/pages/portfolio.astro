@@ -1,30 +1,30 @@
 ---
-/** WORK — the portfolio. Three groups (Color · Bridal · Occasions), each an editorial
+/** PORTFOLIO — bridal first. Four groups (Bridal · Getting ready · Occasions · In the salon), each an editorial
  *  masonry of her photographs and clips at their natural proportions: no two tiles need
  *  the same shape. Clips are lazy, muted and poster-first (Film.astro). A sticky
  *  sub-navigation keeps the groups one tap away on a phone. */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WorkTile from '../components/WorkTile.astro';
-import { SITE, PORTFOLIO } from '../lib/content';
+import { SITE, PORTFOLIO, ext } from '../lib/content';
 import { businessJsonLd, breadcrumbJsonLd } from '../lib/seo';
-const jsonLd = [businessJsonLd(), breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Work', path: '/work' }])];
+const jsonLd = [businessJsonLd(), breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Portfolio', path: '/portfolio' }])];
 const count = PORTFOLIO.reduce((n, g) => n + g.items.length, 0);
 ---
 <BaseLayout
-  title="The Work — Color, Extensions & Bridal Hair"
-  description={`A portfolio of Kass’s work: lived-in color, hand-tied extensions, bridal and occasion styling — on real clients, in real light. ${SITE.name}, ${SITE.area.label}.`}
-  path="/work"
+  title="Portfolio — Bridal Hair, Wedding Mornings & Salon Work"
+  description={`Kass’s bridal portfolio — brides, bridal parties and wedding mornings — plus her in-salon color and extensions, on real clients in real light. ${SITE.name}, ${SITE.area.label}.`}
+  path="/portfolio"
   jsonLd={jsonLd}>
 
   <section class="cov ghostwrap">
-    <span class="ghost-w" aria-hidden="true">work</span>
+    <span class="ghost-w" aria-hidden="true">brides</span>
     <div class="cov-c">
-      <p class="cov-kick fade">The work</p>
-      <h1 class="disp rv">Real hair, <span class="ital">real light.</span></h1>
-      <p class="cov-sub rv" style="--d:.08s">Color, extensions, bridal and the nights in between — {count} favorites, photographs and clips. Tap a group to jump to it.</p>
+      <p class="cov-kick fade">Portfolio</p>
+      <h1 class="disp rv">Real brides, <span class="ital">real light.</span></h1>
+      <p class="cov-sub rv" style="--d:.08s">Weddings first, then the salon — {count} favorites, photographs and clips. Tap a group to jump to it.</p>
       <div class="cov-cta fade" style="--d:.16s">
-        <a class="btn btn--solid" href={SITE.booking} target="_blank" rel="noopener noreferrer">Book an appointment</a>
-        <a class="tlk" href={SITE.instagram.url} target="_blank" rel="noopener noreferrer">More on Instagram</a>
+        <a class="btn btn--solid" href={SITE.bridal} {...ext(SITE.bridal)}>Bridal inquiry</a>
+        <a class="tlk" href={SITE.booking} {...ext(SITE.booking)}>Book in-salon</a>
       </div>
     </div>
   </section>
@@ -50,11 +50,11 @@ const count = PORTFOLIO.reduce((n, g) => n + g.items.length, 0);
     <div class="wrap">
       <div class="note-card rv">
         <span class="caps">Like what you see?</span>
-        <p class="note-copy">Book online in a minute, or text Kass with a question first.</p>
+        <p class="note-copy">Getting married? Start a bridal inquiry. Booking for yourself? Choose a salon time.</p>
         <span class="note-rule" aria-hidden="true"></span>
         <div class="note-act">
-          <a class="btn btn--solid" href={SITE.booking} target="_blank" rel="noopener noreferrer">Book an appointment</a>
-          <a class="tlk" href={SITE.links.bridal}>Bridal enquiry</a>
+          <a class="btn btn--solid" href={SITE.bridal} {...ext(SITE.bridal)}>Bridal inquiry</a>
+          <a class="tlk" href={SITE.booking} {...ext(SITE.booking)}>Book in-salon</a>
         </div>
       </div>
     </div>

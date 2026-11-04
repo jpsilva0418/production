@@ -6,10 +6,10 @@ points:
   - Lived-in blonde and dimensional brunette
   - Face-framing brightness
   - Toning and gloss to finish
-order: 2
-numeral: "II"
+order: 3
+numeral: "III"
 plate: balayage-back
 film: reelBlonde
-cta: book
+path: salon
 serviceType: Hair color, balayage and highlights
 ---

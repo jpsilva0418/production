@@ -9,7 +9,7 @@ points:
 order: 4
 numeral: "IV"
 plate: boat
-film: heroFilm
-cta: book
+film: reelBrunette
+path: salon
 serviceType: Event hair styling
 ---

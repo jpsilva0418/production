@@ -1,58 +1,55 @@
 ---
-/** BOOK — every way in, on one page. A sticky dark panel with the real booking path
- *  (GlossGenius), call, text and Instagram; beside it the enquiry form for brides and
- *  first-time extension clients (the multi-step system, re-purposed). */
+/** BOOK / INQUIRE — the two destinations side by side, no form in between. Bridal opens her
+ *  HoneyBook inquiry (her email until the link is supplied); salon opens GlossGenius. The
+ *  sticky dark panel keeps every other way to reach her. */
 import BaseLayout from '../layouts/BaseLayout.astro';
-import EnquiryForm from '../components/EnquiryForm.astro';
-import { SITE, TEL, SMS } from '../consts';
+import Plate from '../components/Plate.astro';
+import { SITE, TEL, SMS, ext, PATHS } from '../lib/content';
 ---
 <BaseLayout
-  title="Book — Online Booking, Call or Text, Bridal & Extension Enquiries"
-  description={`Book Kass online in a minute, call or text ${SITE.phone}, or start a bridal or extensions enquiry. ${SITE.name}, ${SITE.area.label}.`}
+  title="Book / Inquire — Bridal Inquiries & In-Salon Booking"
+  description={`Getting married? Start a bridal inquiry with Kass. Booking for yourself? Choose an in-salon time online. Or text ${SITE.phone}. ${SITE.name}, ${SITE.area.label}.`}
   path="/book"
   headerLight>
-  <section class="iq" id="iqSection" aria-label="Book an appointment">
+  <section class="iq" aria-label="Book or inquire">
     <div class="iq-l ghostwrap">
       <span class="ghost-w" aria-hidden="true">hello</span>
       <div class="iq-lc">
-        <p class="iq-kick fade" id="iqKick">Book</p>
-        <h1 class="disp iq-t rv">Let&rsquo;s get you <span class="ital">on the books.</span></h1>
-        <p class="iq-line rv" id="iqLine" style="--d:.08s">Most appointments book online in a minute. Weddings and first-time extensions start with the enquiry beside this, so the plan is right before anything goes on the calendar.</p>
-        <div class="iq-cta rv" style="--d:.1s">
-          <a class="btn btn--ivory" href={SITE.booking} target="_blank" rel="noopener noreferrer">Book online now</a>
-          <a class="btn btn--ghost" href="#enquiry">Bridal &amp; extension enquiry</a>
-        </div>
+        <p class="iq-kick fade">Book / Inquire</p>
+        <h1 class="disp iq-t rv">Wedding, <span class="ital">or salon?</span></h1>
+        <p class="iq-line rv" style="--d:.08s">Two different bookings, two direct links. Weddings start with an inquiry so the date and plan are right; salon appointments book straight onto her calendar.</p>
         <dl class="iq-ways rv" style="--d:.14s">
-          <div><dt>Call</dt><dd><a href={TEL}>{SITE.phone}</a></dd></div>
           <div><dt>Text</dt><dd><a href={SMS}>{SITE.phone}</a> <span class="dim">&mdash; questions welcome</span></dd></div>
-          <div><dt>Instagram</dt><dd><a href={SITE.instagram.url} target="_blank" rel="noopener noreferrer">{SITE.instagram.handle}</a></dd></div>
+          <div><dt>Call</dt><dd><a href={TEL}>{SITE.phone}</a></dd></div>
+          <div><dt>Email</dt><dd><a href={`mailto:${SITE.email}`}>{SITE.email}</a></dd></div>
+          <div><dt>Instagram</dt><dd><a href={SITE.instagram.url} {...ext(SITE.instagram.url)}>{SITE.instagram.handle}</a></dd></div>
           <div><dt>Where</dt><dd>{SITE.area.label}</dd></div>
         </dl>
       </div>
     </div>
-    <div class="iq-r lit" id="enquiry">
+    <div class="iq-r lit">
       <i class="lx-dusk" aria-hidden="true"></i>
-      <div class="iq-form-head">
-        <span class="caps-xs rv">Brides &amp; extensions</span>
-        <h2 class="rv" style="--d:.06s">Your enquiry</h2>
+      <div class="bk-paths">
+        {PATHS.map((p, i) => (
+          <article class:list={['bk-path fade', `bk-path--${p.key}`]} style={`--d:${(0.1 + i * 0.1).toFixed(2)}s`}>
+            <div class="ph bk-ph"><Plate id={p.plate} alt="" sizes="(max-width:899px) 90vw, 560px" widths={[480, 800]} /><i class="grain" aria-hidden="true"></i></div>
+            <div class="bk-b">
+              <span class="caps-xs">{['i', 'ii'][i]}. {p.kicker}</span>
+              <h2>{p.title}</h2>
+              <p>{p.body}</p>
+              <a class:list={['btn', i === 0 ? 'btn--solid' : 'btn--line']} href={p.href} {...ext(p.href)}>{p.cta}</a>
+              <span class="bk-note">{p.note}</span>
+            </div>
+          </article>
+        ))}
       </div>
-      <div class="cf-stage fade" style="--d:.1s"><EnquiryForm /></div>
-      <p class="iq-assure fade" style="--d:.16s">No marketing list <i aria-hidden="true">&middot;</i> Kass replies personally <i aria-hidden="true">&middot;</i> {SITE.area.label}</p>
+      <dl class="iq-ways bk-contact">
+        <div><dt>Text</dt><dd><a href={SMS}>{SITE.phone}</a></dd></div>
+        <div><dt>Email</dt><dd><a href={`mailto:${SITE.email}`}>{SITE.email}</a></dd></div>
+        <div><dt>Instagram</dt><dd><a href={SITE.instagram.url} {...ext(SITE.instagram.url)}>{SITE.instagram.handle}</a></dd></div>
+      </dl>
     </div>
   </section>
-  <script is:inline>
-    // The framing follows the ?for= parameter the form also reads. Neutral wording renders without JS.
-    (function () {
-      var raw = (new URLSearchParams(location.search).get('for') || '').trim().toLowerCase();
-      var frames = {
-        bridal: { kick: 'Bridal enquiry', line: 'Tell Kass about the day — the date, where you’re getting ready and how many of you there are — and she’ll come back with availability and a plan.' },
-        extensions: { kick: 'Extensions enquiry', line: 'Tell Kass a little about your hair and what you’re hoping for. Hand-tied extensions start with a consultation and color match, so the plan is right before install.' },
-      };
-      var f = frames[raw]; if (!f) return;
-      var k = document.getElementById('iqKick'), l = document.getElementById('iqLine');
-      if (k) k.textContent = f.kick; if (l) l.textContent = f.line;
-    })();
-  </script>
 </BaseLayout>
 <style>
   .iq{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);background:var(--leaf)}
@@ -63,27 +60,33 @@ import { SITE, TEL, SMS } from '../consts';
   .iq-kick{display:flex;align-items:center;gap:1.3rem;font-family:var(--utility);font-weight:600;text-transform:uppercase;letter-spacing:.22em;font-size:.62rem;color:var(--gold-lt);margin:0 0 clamp(1.2rem,2.6vh,2rem)}
   .iq-kick::before{content:"";width:48px;height:1px;background:var(--hairdk-strong)}
   .iq-t{font-size:clamp(2.4rem,4.8vw,4.4rem)!important;color:var(--ivory);margin-bottom:clamp(1rem,2.2vh,1.5rem)}
-  .iq-line{font-family:var(--display);font-style:italic;font-size:clamp(1.06rem,1.4vw,1.28rem);color:color-mix(in srgb,var(--ivory) 85%,transparent);max-width:26em;margin:0 0 clamp(1.6rem,3.4vh,2.4rem);font-variation-settings:'opsz' 48,'SOFT' 60}
-  .iq-cta{display:flex;gap:.8rem 1rem;flex-wrap:wrap;margin-bottom:clamp(1.6rem,3.4vh,2.4rem)}
+  .iq-t .ital{color:var(--gold-lt)}
+  .iq-line{font-family:var(--display);font-style:italic;font-size:clamp(1.06rem,1.4vw,1.28rem);color:color-mix(in srgb,var(--ivory) 85%,transparent);max-width:26em;margin:0 0 clamp(1.6rem,3.4vh,2.4rem)}
   .iq-ways{margin:0;border-top:1px solid var(--hairdk)}
-  .iq-ways div{display:grid;grid-template-columns:5.5em 1fr;gap:1rem;padding:.85em 0;border-bottom:1px solid var(--hairdk);font-size:.95rem}
+  .iq-ways div{display:grid;grid-template-columns:5.5em 1fr;gap:1rem;padding:.8em 0;border-bottom:1px solid var(--hairdk);font-size:.95rem}
   .iq-ways dt{font-family:var(--utility);font-weight:600;text-transform:uppercase;letter-spacing:.2em;font-size:.58rem;color:var(--gold-lt);padding-top:.35em}
   .iq-ways dd{margin:0;color:color-mix(in srgb,var(--ivory) 90%,transparent);overflow-wrap:anywhere}
   .iq-ways dd a:hover{color:var(--gold-lt)}
   .iq-ways .dim{color:color-mix(in srgb,var(--ivory) 60%,transparent);font-size:.85rem}
-  .iq-r{position:relative;background:linear-gradient(rgba(0,0,0,.18),rgba(0,0,0,.18)),var(--leaf);padding:clamp(7rem,15vh,9rem) max(5vw,(100vw - var(--wrap))/2) clamp(4rem,9vh,6rem) clamp(1.6rem,4.5vw,4.5rem);scroll-margin-top:0}
-  .iq-form-head{position:relative;z-index:1;margin-bottom:clamp(1.8rem,3.4vw,2.6rem)}
-  .iq-form-head .caps-xs{color:var(--gold-lt);display:block;margin-bottom:.8rem}
-  .iq-form-head h2{font-size:clamp(1.8rem,2.6vw,2.4rem);color:var(--ivory)}
-  .cf-stage{position:relative;z-index:1;max-width:660px;background:var(--paper);border:1px solid var(--hair);border-radius:var(--r-lg);padding:clamp(22px,3.4vw,44px);box-shadow:0 100px 170px -60px rgba(0,0,0,.8),0 34px 70px -34px rgba(0,0,0,.5)}
-  .iq-assure{margin:clamp(1.6rem,3vw,2.2rem) 0 0;max-width:660px;position:relative;z-index:1;text-align:center;font-family:var(--utility);font-weight:600;text-transform:uppercase;letter-spacing:.22em;font-size:.56rem;line-height:2.3;color:var(--gold-lt)}
-  .iq-assure i{font-style:normal;opacity:.7;padding:0 .6em}
+  .iq-r{position:relative;background:linear-gradient(rgba(0,0,0,.16),rgba(0,0,0,.16)),var(--leaf);padding:clamp(7rem,15vh,9rem) max(5vw,(100vw - var(--wrap))/2) clamp(4rem,9vh,6rem) clamp(1.6rem,4.5vw,4.5rem)}
+  .bk-paths{position:relative;z-index:1;display:grid;gap:clamp(1.2rem,2.4vw,1.8rem);max-width:640px}
+  .bk-path{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);background:var(--paper);border-radius:var(--r-lg);overflow:hidden;box-shadow:0 60px 110px -50px rgba(0,0,0,.7)}
+  .bk-ph{border-radius:0;min-height:100%;aspect-ratio:auto}
+  .bk-ph :global(img){object-position:50% 28%}
+  .bk-b{padding:clamp(1.3rem,2.4vw,2rem);display:flex;flex-direction:column;align-items:flex-start;gap:.65rem}
+  .bk-b h2{font-size:clamp(1.5rem,2.2vw,1.9rem);line-height:1.1;color:var(--ink)}
+  .bk-b p{font-size:.95rem}
+  .bk-b .btn{margin-top:.4rem}
+  .bk-note{font-size:.76rem;color:var(--ink-soft)}
   @media(max-height:760px) and (min-width:900px){.iq-l{padding-top:6rem}.iq-line{display:none}}
   @media(max-width:899px){
     .iq{grid-template-columns:1fr}
     .iq-l{position:relative;top:auto;height:auto;min-height:0;padding:clamp(6.5rem,16vh,8rem) 5vw clamp(3rem,9vw,4rem)}
-    .iq-r{padding:clamp(3rem,8vw,4rem) 5vw clamp(4rem,10vw,5.5rem)}
-    .cf-stage,.iq-assure{margin-inline:auto}
+    .iq-r{padding:clamp(2.4rem,7vw,3.4rem) 5vw clamp(4rem,10vw,5.5rem)}
+    .bk-paths{margin-inline:auto}
   }
-  @media(max-width:640px){.iq-cta{flex-direction:column}.iq-cta .btn{width:100%}}
+  @media(max-width:560px){.bk-path{grid-template-columns:1fr}.bk-ph{aspect-ratio:16/10}.bk-b .btn{width:100%}}
+  /* phones: a compact title, then the two choices, then the contact list */
+  @media(max-width:899px){.iq-l .iq-ways{display:none}.iq-l{padding-bottom:0}.bk-contact{display:block}}
+  .bk-contact{display:none;position:relative;z-index:1;margin-top:2rem;max-width:640px;margin-inline:auto}
 </style>

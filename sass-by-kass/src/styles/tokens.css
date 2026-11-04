@@ -12,20 +12,15 @@
    Names are historical roles from the shared system; no colour is a literal. The default
    values below are Direction A (deep navy); palettes.css overrides them per direction. */
 :root{
-  /* grounds */
-  --ivory:#F7F7F5; --linen:#EDEFF2; --paper:#FFFFFF; --blush:#E9EEF5;
-  /* the anchor */
-  --leaf:#0F1F3D; --leaf-2:#17305C; --leaf-deep:#0A162C;
-  --moss:#3E5B8A; --sage:#9FB3CF; --sage-band:#E2E8F1;
-  /* the soft accent */
-  --petal:#D9E2EE; --petal-deep:#8FA6C4;
-  /* hairlines & engraved caps */
-  --brass:#5F6E88;
-  --gold-lt:#C9D3E2;
-  /* ink */
-  --ink:#121A2B; --ink-soft:#46506A;
-  --hair:rgba(15,31,61,.16); --hair-strong:rgba(15,31,61,.32);
-  --hairdk:rgba(201,211,226,.22); --hairdk-strong:rgba(201,211,226,.42);
+  /* default values = Direction A (the approved direction; palettes.css repeats them on body.pal-a) */
+  --ivory:#FBF8F3; --linen:#F3EDE3; --paper:#FFFFFF; --blush:#EEF3F8;
+  --leaf:#2E446D; --leaf-2:#3A5585; --leaf-deep:#1F3152;
+  --moss:#5F7FA8; --sage:#A3C5DF; --sage-band:#E6EFF6;
+  --petal:#EADAC1; --petal-deep:#C9B38E;
+  --brass:#5A6C88; --gold-lt:#EADAC1;
+  --ink:#1B2740; --ink-soft:#4C5872;
+  --hair:rgba(46,68,109,.16); --hair-strong:rgba(46,68,109,.32);
+  --hairdk:rgba(234,218,193,.22); --hairdk-strong:rgba(234,218,193,.42);
   /* type roles */
   --display:'Fraunces Variable','Iowan Old Style',Georgia,'Times New Roman',serif;
   --utility:'Figtree Variable','Avenir Next','Segoe UI',system-ui,-apple-system,sans-serif;

@@ -89,14 +89,14 @@ await fs.rm(path.join(DIST, 'assets'), { recursive: true, force: true });
 // the client's own media (films, posters, PDF, icon)
 const tmpMedia = path.join(DIST, '.client-media');
 await fs.mkdir(tmpMedia, { recursive: true });
-for (const f of ['media', 'downloads', 'fonts', 'favicon.svg']) if (existsSync(path.join(DIST, f))) await fs.rename(path.join(DIST, f), path.join(tmpMedia, f));
+for (const f of ['media', 'downloads', 'fonts', 'brand', 'favicon.svg', 'favicon.png', 'apple-touch-icon.png']) if (existsSync(path.join(DIST, f))) await fs.rename(path.join(DIST, f), path.join(tmpMedia, f));
 const sharedMedia = await store(tmpMedia, path.join(LIB, '_shared', CLIENT_KEY));
 await fs.rm(tmpMedia, { recursive: true, force: true });
 
 // ---- 3 · rewrite every root path in the pages to live under /demo/<slug> ----
 const mapPath = (p) => {
   if (p.startsWith('//') || p.startsWith('/demo/')) return p;
-  if (/^\/(media|downloads|fonts)\//.test(p) || p === '/favicon.svg') return `${SHARED}/${CLIENT_KEY}${p}`;
+  if (/^\/(media|downloads|fonts|brand)\//.test(p) || ['/favicon.svg', '/favicon.png', '/apple-touch-icon.png'].includes(p)) return `${SHARED}/${CLIENT_KEY}${p}`;
   if (p === '/') return BASE;
   if (p.startsWith('/#') || p.startsWith('/?')) return BASE + p.slice(1);
   return BASE + p;

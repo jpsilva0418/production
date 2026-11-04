@@ -9,7 +9,7 @@ const SITE = process.env.PUBLIC_SITE_URL || 'https://sass-by-kass-demo.vercel.ap
 export default defineConfig({
   site: SITE,
   output: 'static',
-  redirects: { '/contact': '/book', '/consultation': '/book', '/portfolio': '/work', '/gallery': '/work' },
+  redirects: { '/contact': '/book', '/consultation': '/book', '/work': '/portfolio', '/gallery': '/portfolio', '/bridal': '/services', '/testimonials': '/reviews' },
   // Vercel (cleanUrls) serves page.html at /page, matching trailingSlash:'never' canonicals.
   // A plain static host needs page/index.html instead: set BUILD_FORMAT=directory there.
   trailingSlash: process.env.BUILD_FORMAT === 'directory' ? 'ignore' : 'never',

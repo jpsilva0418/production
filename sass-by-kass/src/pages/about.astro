@@ -6,31 +6,31 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Plate from '../components/Plate.astro';
 import Film from '../components/Film.astro';
-import { SITE, SMS, INTRO, MEDIA } from '../lib/content';
+import { SITE, SMS, ext, INTRO, MEDIA } from '../lib/content';
 import { businessJsonLd, breadcrumbJsonLd } from '../lib/seo';
-const jsonLd = [businessJsonLd(), breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Meet Kass', path: '/about' }])];
+const jsonLd = [businessJsonLd(), breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'About Kass', path: '/about' }])];
 ---
 <BaseLayout
-  title="Meet Kass — Massachusetts Hair Stylist"
-  description={`Kassandra — Kass — is a Massachusetts hair stylist who lives in color, extensions and bridal. The story behind ${SITE.name}.`}
+  title="About Kass — Bridal and Hair Artistry"
+  description={`Kassandra — Kass — is a Massachusetts bridal and hair artist: wedding hair first, extensions and color in the salon. The story behind ${SITE.name}.`}
   path="/about"
   jsonLd={jsonLd}>
 
   <!-- TITLE CARD -->
   <section class="acov">
     <div class="acov-l">
-      <p class="cov-kick fade">Meet Kass</p>
+      <p class="cov-kick fade">About Kass</p>
       <h1 class="disp rv">{INTRO.heading[0]}<br /><span class="ital">{INTRO.heading[1]}</span></h1>
       <p class="cov-sub rv" style="--d:.1s">{INTRO.lead}</p>
       <div class="cov-cta fade" style="--d:.2s">
-        <a class="btn btn--solid" href={SITE.booking} target="_blank" rel="noopener noreferrer">Book an appointment</a>
-        <a class="tlk" href={SITE.links.work}>See the work</a>
+        <a class="btn btn--solid" href={SITE.bridal} {...ext(SITE.bridal)}>Bridal inquiry</a>
+        <a class="tlk" href={SITE.links.portfolio}>View portfolio</a>
       </div>
     </div>
     <div class="acov-r">
       <figure class="portrait rv">
         <div class="portrait-fr"><Plate id={MEDIA.plates.portrait} alt="Kassandra in a black blazer, hands in her hair" class="lv lv--breathe" sizes="(max-width:899px) 76vw, 380px" widths={[480, 800, 941]} loading="eager" fetchpriority="high" /><i class="grain" aria-hidden="true"></i></div>
-        <figcaption><span class="caps-xs">{SITE.owner} &middot; {SITE.role}</span><em>Hand-tied extensions, dimensional color and bridal hair.</em></figcaption>
+        <figcaption><span class="caps-xs">{SITE.owner} &middot; {SITE.role}</span><em>Bridal hair, hand-tied extensions and dimensional color.</em></figcaption>
       </figure>
     </div>
   </section>
@@ -46,7 +46,7 @@ const jsonLd = [businessJsonLd(), breadcrumbJsonLd([{ name: 'Home', path: '/' },
         <p class="drop rv" style="--d:.07s">{INTRO.sentences[0]}</p>
         <p class="rv">{INTRO.sentences[1]}</p>
         <div class="story-pull rv"><p>&ldquo;Come for the hair, stay for the chat.&rdquo;</p></div>
-        <p class="rv">Most of the people in Kass’s chair found her the way you probably did — through a friend’s hair, or a reel at midnight. The website exists so the next step is easy: see the work, pick a service, book a time. The yapping is included.</p>
+        <p class="rv">Most of the people in Kass’s chair found her the way you probably did — through a friend’s hair, or a reel at midnight. The website exists so the next step is easy: see the work, choose wedding or salon, and book. The yapping is included.</p>
         <p class="rv">Based in {SITE.area.label}. Now booking brides.</p>
       </div>
     </div>
@@ -57,10 +57,10 @@ const jsonLd = [businessJsonLd(), breadcrumbJsonLd([{ name: 'Home', path: '/' },
     <div class="wrap">
       <p class="caps rv" style="display:block;text-align:center;margin-bottom:clamp(1.6rem,3vw,2.4rem)">In motion</p>
       <div class="ab-strip" data-stag=".1">
-        <div class="rv-im"><Film film={MEDIA.reelBlonde} label="Color" /></div>
-        <div class="rv-im ab-strip-ph"><div class="ph ph--framed"><Plate id={MEDIA.plates.laptop} alt="Kassandra holding a laptop, black blazer" class="lv" sizes="(max-width:899px) 44vw, 320px" widths={[480, 800]} /><i class="grain" aria-hidden="true"></i></div></div>
+        <div class="rv-im"><Film film={MEDIA.heroFilm} label="Bridal" /></div>
+        <div class="rv-im ab-strip-ph"><div class="ph ph--framed"><Plate id={MEDIA.plates.portrait2} alt="Kassandra holding a laptop, black blazer" class="lv" sizes="(max-width:899px) 44vw, 320px" widths={[480, 800]} /><i class="grain" aria-hidden="true"></i></div></div>
         <div class="rv-im"><Film film={MEDIA.cineFilm} label="Styling" /></div>
-        <div class="rv-im"><Film film={MEDIA.reelBride} label="Bridal" /></div>
+        <div class="rv-im"><Film film={MEDIA.reelBlonde} label="Color" /></div>
       </div>
     </div>
   </section>
@@ -73,25 +73,25 @@ const jsonLd = [businessJsonLd(), breadcrumbJsonLd([{ name: 'Home', path: '/' },
     <div class="wrap chap" style="position:relative;z-index:1">
       <div class="chap-l rv">
         <p class="chap-rn">Three specialties</p>
-        <h2 class="disp chap-t">Extensions, color, <span class="ital">bridal.</span></h2>
+        <h2 class="disp chap-t">Bridal, extensions, <span class="ital">color.</span></h2>
         <p class="chap-line">The three things Kass is known for — and the plan that fits the hair you already have.</p>
         <a class="tlk tlk--lt" href={SITE.links.services}>All services</a>
       </div>
       <div class="vals" data-stag=".1">
         <article class="val rv">
           <span class="val-n">i.</span>
+          <h3>Bridal hair</h3>
+          <p>Polished, timeless styling that lasts from the first look to the last dance — for the bride and everyone getting ready with her.</p>
+        </article>
+        <article class="val rv">
+          <span class="val-n">ii.</span>
           <h3>Hand-tied extensions</h3>
           <p>Length and fullness that move like your own hair — flat, light and nearly invisible, with a care routine you can actually keep.</p>
         </article>
         <article class="val rv">
-          <span class="val-n">ii.</span>
+          <span class="val-n">iii.</span>
           <h3>Dimensional color</h3>
           <p>Lived-in blondes and brunettes blended by hand, so the color has depth and the grow-out stays soft.</p>
-        </article>
-        <article class="val rv">
-          <span class="val-n">iii.</span>
-          <h3>Bridal hair</h3>
-          <p>Polished, timeless styling that lasts from the first look to the last dance — for the bride and everyone getting ready with her.</p>
         </article>
       </div>
     </div>
@@ -102,12 +102,11 @@ const jsonLd = [businessJsonLd(), breadcrumbJsonLd([{ name: 'Home', path: '/' },
     <div class="wrap">
       <div class="note-card rv">
         <span class="caps">Ready when you are</span>
-        <p class="note-copy">Let’s make your hair the easy part.</p>
+        <p class="note-copy">Getting married? Start a bridal inquiry. Booking for yourself? Choose a salon time.</p>
         <span class="note-rule" aria-hidden="true"></span>
-        <p class="note-body">Book online in a minute, or text Kass with a question first. Brides and extension clients: start with the enquiry.</p>
         <div class="note-act">
-          <a class="btn btn--solid" href={SITE.booking} target="_blank" rel="noopener noreferrer">Book an appointment</a>
-          <a class="tlk" href={SMS}>Text Kass</a>
+          <a class="btn btn--solid" href={SITE.bridal} {...ext(SITE.bridal)}>Bridal inquiry</a>
+          <a class="btn btn--line" href={SITE.booking} {...ext(SITE.booking)}>Book in-salon</a>
         </div>
       </div>
     </div>

@@ -32,6 +32,8 @@ export function businessJsonLd() {
     description: SITE.description,
     url: SITE.url,
     telephone: SITE.phoneE164,
+    email: SITE.email,
+    slogan: SITE.tagline,
     image: new URL('/media/og-default.jpg', SITE.url).href,
     sameAs: [SITE.instagram.url, SITE.booking],
     address: { '@type': 'PostalAddress', addressRegion: SITE.area.regionCode, addressCountry: 'US' },

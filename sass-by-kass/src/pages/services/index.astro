@@ -1,96 +1,89 @@
 ---
-/** SERVICES — the four things Kass does, as editorial rows: a photograph with one of her
- *  clips set into its corner, the description, what's included, and the right next step
- *  (straight to GlossGenius, or the enquiry for brides and first-time extensions).
- *  No pricing: none was supplied; GlossGenius carries prices and availability. */
+/** BRIDAL SERVICES — weddings first, then the salon. Editorial rows: a photograph with one
+ *  of her clips set into its corner, the description, what's included, and the one right
+ *  next step (HoneyBook for bridal, GlossGenius for salon). No pricing: none was supplied;
+ *  the booking pages carry prices and availability. */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Plate from '../../components/Plate.astro';
 import Film from '../../components/Film.astro';
 import { getCollection } from 'astro:content';
-import { SITE, SMS, HOW, MEDIA } from '../../lib/content';
+import { SITE, SMS, ext, PATHS, MEDIA } from '../../lib/content';
 import { businessJsonLd, breadcrumbJsonLd, serviceJsonLd } from '../../lib/seo';
 const services = (await getCollection('services')).filter((s) => !s.data.draft).sort((a, b) => a.data.order - b.data.order);
+const bridal = services.filter((s) => s.data.path === 'bridal');
+const salon = services.filter((s) => s.data.path === 'salon');
 const jsonLd = [
   businessJsonLd(),
-  breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Services', path: '/services' }]),
+  breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Bridal Services', path: '/services' }]),
   ...services.map((s) => serviceJsonLd({ name: s.data.title, description: s.data.summary, path: `/services#${s.id}`, serviceType: s.data.serviceType })),
 ];
-const roman = ['i', 'ii', 'iii'];
+const dest = (p: 'bridal' | 'salon') => (p === 'bridal' ? { href: SITE.bridal, label: 'Bridal inquiry' } : { href: SITE.booking, label: 'Book in-salon' });
+const groups = [
+  { id: 'weddings', label: 'Bridal & wedding hair', items: bridal },
+  { id: 'salon', label: 'In-salon services', items: salon },
+];
 ---
 <BaseLayout
-  title="Services — Hand-Tied Extensions, Dimensional Color, Bridal & Styling"
-  description={`Hand-tied extensions, dimensional color, bridal hair and occasion styling by Kassandra. Book online or start an enquiry. ${SITE.name}, ${SITE.area.label}.`}
+  title="Bridal Services — Wedding Hair, Extensions & Color"
+  description={`Bridal and wedding hair for brides and their parties, plus hand-tied extensions, dimensional color and styling in the salon. ${SITE.name}, ${SITE.area.label}.`}
   path="/services"
   jsonLd={jsonLd}>
 
   <section class="cov ghostwrap">
-    <span class="ghost-w" aria-hidden="true">hair</span>
+    <span class="ghost-w" aria-hidden="true">bridal</span>
     <div class="cov-c">
-      <p class="cov-kick fade">Services</p>
-      <h1 class="disp rv">Four things, <span class="ital">done properly.</span></h1>
-      <p class="cov-sub rv" style="--d:.08s">Hand-tied extensions, dimensional color, bridal hair and styling for the occasions in between — with a plan that fits the hair you already have. Prices and availability live on the booking page.</p>
+      <p class="cov-kick fade">Bridal Services</p>
+      <h1 class="disp rv">Weddings first, <span class="ital">then the salon.</span></h1>
+      <p class="cov-sub rv" style="--d:.08s">Bridal hair for the bride and everyone getting ready with her — and, in the salon, hand-tied extensions, dimensional color and styling. Each has its own direct way to book.</p>
       <div class="cov-cta fade" style="--d:.16s">
-        <a class="btn btn--solid" href={SITE.booking} target="_blank" rel="noopener noreferrer">Book an appointment</a>
-        <a class="tlk" href="#how">How booking works</a>
+        <a class="btn btn--solid" href={SITE.bridal} {...ext(SITE.bridal)}>Bridal inquiry</a>
+        <a class="btn btn--line" href={SITE.booking} {...ext(SITE.booking)}>Book in-salon</a>
       </div>
     </div>
   </section>
 
-  <div class="chapslate fade" role="presentation"><span class="cs-t">Signature services</span></div>
+  {groups.map((g, gi) => (
+    <>
+      <div class:list={['chapslate fade', { 'chapslate--linen': gi === 1 }]} role="presentation" id={g.id}><span class="cs-t">{g.label}</span></div>
+      <section class:list={['sec lit', { 'sec--linen': gi === 1 }]} style="padding-top:clamp(40px,6vw,80px)">
+        {gi === 0 && <i class="lx-shaft" aria-hidden="true"></i>}
+        <div class="wrap svc-rows">
+          {g.items.map((s) => (
+            <article class="svc" id={s.id}>
+              <figure class="svc-fig">
+                <div class="ph ph--framed rv-im svc-ph"><Plate id={s.data.plate} alt="" class="lv" sizes="(max-width:899px) 90vw, 46vw" /><i class="grain" aria-hidden="true"></i></div>
+                {s.data.film && <div class="svc-film fade" style="--d:.2s"><Film film={MEDIA[s.data.film]} label="Reel" /></div>}
+              </figure>
+              <div class="svc-copy">
+                <span class="caps-xs rv">{g.label} &middot; No. {s.data.numeral}</span>
+                <h2 class="rv" style="--d:.06s">{s.data.title}</h2>
+                <p class="svc-sum rv" style="--d:.1s">{s.data.summary}</p>
+                {s.data.points.length > 0 && <ul class="svc-inc rv" style="--d:.14s">{s.data.points.map((p) => <li>{p}</li>)}</ul>}
+                <div class="svc-act fade" style="--d:.2s">
+                  <a class="btn btn--solid" href={dest(s.data.path).href} {...ext(dest(s.data.path).href)}>{dest(s.data.path).label}</a>
+                  <a class="tlk" href={SMS}>Text with a question</a>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    </>
+  ))}
 
-  <section class="sec lit" style="padding-top:clamp(40px,6vw,80px)">
-    <i class="lx-shaft" aria-hidden="true"></i>
-    <div class="wrap svc-rows">
-      {services.map((s) => (
-        <article class="svc" id={s.id}>
-          <figure class="svc-fig">
-            <div class="ph ph--framed rv-im svc-ph"><Plate id={s.data.plate} alt="" class="lv" sizes="(max-width:899px) 90vw, 46vw" /><i class="grain" aria-hidden="true"></i></div>
-            {s.data.film && <div class="svc-film fade" style="--d:.2s"><Film film={MEDIA[s.data.film]} label="Reel" /></div>}
-          </figure>
-          <div class="svc-copy">
-            <span class="caps-xs rv">No. {s.data.numeral}</span>
-            <h2 class="rv" style="--d:.06s">{s.data.title}</h2>
-            <p class="svc-sum rv" style="--d:.1s">{s.data.summary}</p>
-            {s.data.points.length > 0 && <ul class="svc-inc rv" style="--d:.14s">{s.data.points.map((p) => <li>{p}</li>)}</ul>}
-            <div class="svc-act fade" style="--d:.2s">
-              {s.data.cta === 'enquiry'
-                ? <a class="btn btn--solid" href={`${SITE.links.book}?for=${s.data.enquiryKey}`}>Start an enquiry</a>
-                : <a class="btn btn--solid" href={SITE.booking} target="_blank" rel="noopener noreferrer">Book online</a>}
-              <a class="tlk" href={SMS}>Text with a question</a>
-            </div>
-          </div>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <div class="chapslate chapslate--dk fade" role="presentation" id="how"><span class="cs-t">How booking works</span></div>
+  <div class="chapslate chapslate--dk fade" role="presentation" id="how"><span class="cs-t">Two ways to book</span></div>
 
   <section class="sec sec--dk lit">
     <i class="lx-dusk" aria-hidden="true"></i>
     <div class="wrap how-grid" data-stag=".08" style="position:relative;z-index:1">
-      {HOW.map((h, i) => (
+      {PATHS.map((p, i) => (
         <article class="how rv">
-          <span class="caps-xs">{roman[i]}.</span>
-          <h2>{h.title}</h2>
-          <p>{h.body}</p>
-          <a class="arrow-link" href={h.href} {...('external' in h && h.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{h.cta} <span class="arr" aria-hidden="true">&rarr;</span></a>
+          <span class="caps-xs">{['i', 'ii'][i]}. {p.kicker}</span>
+          <h2>{p.title}</h2>
+          <p>{p.body}</p>
+          <a class="arrow-link" href={p.href} {...ext(p.href)}>{p.cta} <span class="arr" aria-hidden="true">&rarr;</span></a>
         </article>
       ))}
-    </div>
-  </section>
-
-  <section class="sec sec--linen sec--tight">
-    <div class="wrap">
-      <div class="note-card rv">
-        <span class="caps">Not sure what to book?</span>
-        <p class="note-copy">Text Kass a photo of your hair and what you’re hoping for — she’ll point you to the right appointment.</p>
-        <span class="note-rule" aria-hidden="true"></span>
-        <div class="note-act">
-          <a class="btn btn--solid" href={SMS}>Text {SITE.phone}</a>
-          <a class="tlk" href={SITE.booking} target="_blank" rel="noopener noreferrer">Open online booking</a>
-        </div>
-      </div>
     </div>
   </section>
 </BaseLayout>
@@ -102,6 +95,7 @@ const roman = ['i', 'ii', 'iii'];
   .svc-ph{aspect-ratio:4/4.6}
   .svc-ph :global(img){object-position:50% 22%}
   .svc-film{position:absolute;right:0;bottom:0;width:38%;border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-lg);outline:6px solid var(--ivory)}
+  .sec--linen .svc-film{outline-color:var(--linen)}
   .svc:nth-child(even) .svc-fig{order:2;padding-right:0;padding-left:18%}
   .svc:nth-child(even) .svc-film{right:auto;left:0}
   .svc:nth-child(even) .svc-copy{order:1}
@@ -120,11 +114,10 @@ const roman = ['i', 'ii', 'iii'];
     .svc-fig{width:min(520px,100%)}
     .svc-ph{aspect-ratio:4/4.4}
   }
-  .how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.4rem,2.6vw,2.4rem)}
+  .how-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(1.4rem,2.6vw,2.4rem)}
   .how{border-top:1px solid var(--hairdk);padding-top:1.4rem}
   .how .caps-xs{display:block;color:var(--gold-lt);margin-bottom:.9rem}
   .how h2{font-size:clamp(1.4rem,2vw,1.8rem);color:var(--ivory);margin-bottom:.8rem}
-  .how p{color:color-mix(in srgb,var(--ivory) 80%,transparent);font-size:.95rem;margin-bottom:.8rem}
-  .note-act{display:flex;justify-content:center;align-items:center;gap:2rem;flex-wrap:wrap}
+  .how p{color:color-mix(in srgb,var(--ivory) 80%,transparent);font-size:.95rem;margin-bottom:.8rem;max-width:34em}
   @media(max-width:899px){.how-grid{grid-template-columns:1fr}}
 </style>

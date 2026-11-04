@@ -1,40 +1,37 @@
 ---
-/** Site header + full-screen menu. Desktop: wordmark, three sections, her phone and a
- *  "Book" button to her live GlossGenius page. Phone: wordmark + MENU; the menu carries
- *  Book, Call, Text and Instagram so every way to reach her is one tap away.
+/** Site header + full-screen menu. Her SBK logo on the left (cream-script version over the
+ *  film, navy-script version once the bar sticks), the five destinations on desktop, and the
+ *  two booking actions. On phones: logo + MENU. The menu carries Home, About Kass, Bridal
+ *  Services, Portfolio, Reviews, Book / Inquire and both booking buttons.
  *  Variants: `light` over filmed/dark heroes, `prologue` fades in after the title card.
- *  Menu logic lives in BaseLayout's shared runtime. */
-import Mark from './Mark.astro';
-import { SITE, TEL, SMS } from '../consts';
+ *  Menu logic (scroll lock, focus, close-on-navigate) lives in BaseLayout's runtime. */
+import Logo from './Logo.astro';
+import { SITE, TEL, SMS, ext } from '../consts';
 interface Props { light?: boolean; prologue?: boolean; current?: string }
 const { light = false, prologue = false, current = '' } = Astro.props;
 const isCurrent = (href: string) => current === href || (href !== '/' && current.startsWith(href + '/'));
 const primary = SITE.nav.filter((n) => n.href !== SITE.links.book);
 const numerals = ['i.', 'ii.', 'iii.', 'iv.', 'v.', 'vi.'];
 ---
-<header class:list={['hd', { 'hd--lt': light, 'hd--plg': prologue }]} id="siteHeader">
+<header class:list={['hd', { 'hd--lt': light, 'hd--plg': prologue, 'hd--home': prologue }]} id="siteHeader">
   <div class="hd-in">
-    <a class="hd-logo" href="/" aria-label={`${SITE.name} — home`}>
-      <Mark />
-      <span class="wm" aria-hidden="true"><span class="wm-name">Sass <i>by</i> Kass</span><span class="wm-sub">{SITE.tagline}</span></span>
+    <a class="hd-logo" href="/" aria-label={`${SITE.name} — ${SITE.tagline} — home`}>
+      <Logo tone="dark" class="hd-mark hd-mark--dk" eager={!prologue} />
+      <Logo tone="light" class="hd-mark hd-mark--lt" eager={!prologue} />
     </a>
     <nav class="hd-nav" aria-label="Primary">
       {primary.map((n) => <a href={n.href} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a>)}
     </nav>
     <div class="hd-tools">
-      <a class="hd-phone" href={TEL}>{SITE.phone}</a>
-      <a class="btn btn--solid hd-cta" href={SITE.booking} target="_blank" rel="noopener noreferrer">Book</a>
-      <button class="menu-btn" id="menuOpen" aria-expanded="false" aria-controls="menu">Menu <span class="bars" aria-hidden="true"><i></i><i></i></span></button>
+      <a class="btn btn--solid hd-cta" href={SITE.bridal} {...ext(SITE.bridal)}>Bridal inquiry</a>
+      <button class="menu-btn" id="menuOpen" type="button" aria-expanded="false" aria-controls="menu">Menu <span class="bars" aria-hidden="true"><i></i><i></i></span></button>
     </div>
   </div>
 </header>
 <nav class="menu" id="menu" aria-label="Main menu" aria-hidden="true" inert>
   <div class="menu-top">
-    <a class="hd-logo" href="/" aria-label={`${SITE.name} — home`} tabindex="-1">
-      <Mark />
-      <span class="wm" aria-hidden="true"><span class="wm-name">Sass <i>by</i> Kass</span><span class="wm-sub">{SITE.tagline}</span></span>
-    </a>
-    <button class="menu-close" id="menuClose">Close <span class="x" aria-hidden="true">&times;</span></button>
+    <a class="hd-logo" href="/" aria-label={`${SITE.name} — home`} tabindex="-1"><Logo tone="dark" class="hd-mark" /></a>
+    <button class="menu-close" id="menuClose" type="button">Close <span class="x" aria-hidden="true">&times;</span></button>
   </div>
   <div class="menu-body">
     <ul class="menu-list">
@@ -43,14 +40,14 @@ const numerals = ['i.', 'ii.', 'iii.', 'iv.', 'v.', 'vi.'];
         <li><a href={n.href} aria-current={isCurrent(n.href) ? 'page' : undefined}><span class="mrn">{numerals[i + 1]}</span><span class="mlb">{n.label}</span><span class="mnote">{n.note}</span></a></li>
       ))}
     </ul>
-    <div class="menu-sub">
-      <a href={TEL}>Call {SITE.phone}</a>
-      <a href={SMS}>Text Kass</a>
-      <a href={SITE.instagram.url} target="_blank" rel="noopener noreferrer">Instagram {SITE.instagram.handle}</a>
-    </div>
     <div class="menu-cta">
-      <a class="btn btn--ivory" href={SITE.booking} target="_blank" rel="noopener noreferrer">Book an appointment</a>
-      <a class="btn btn--ghost" href={SITE.links.bridal}>Bridal enquiry</a>
+      <a class="btn btn--ivory" href={SITE.bridal} {...ext(SITE.bridal)}>Bridal inquiry</a>
+      <a class="btn btn--ghost" href={SITE.booking} {...ext(SITE.booking)}>Book in-salon</a>
+    </div>
+    <div class="menu-sub">
+      <a href={SITE.instagram.url} {...ext(SITE.instagram.url)}>Instagram {SITE.instagram.handle}</a>
+      <a href={SMS}>Text {SITE.phone}</a>
+      <a href={TEL}>Call</a>
     </div>
   </div>
   <div class="menu-foot">
@@ -59,5 +56,20 @@ const numerals = ['i.', 'ii.', 'iii.', 'iv.', 'v.', 'vi.'];
   </div>
 </nav>
 <style is:global>
-  .hd-logo .wm-name i{font-style:italic;font-weight:300;font-size:.78em;letter-spacing:.02em;margin:0 .08em;opacity:.85}
+  .hd-logo{padding-block:4px}
+  .hd-mark{display:block;height:44px;width:auto}
+  .hd-mark--lt{display:none}
+  .hd:not(.hd--lt) .hd-mark--dk{display:none}
+  .hd:not(.hd--lt) .hd-mark--lt{display:block}
+  .hd--stuck .hd-mark--dk{display:none}
+  .hd--stuck .hd-mark--lt{display:block}
+  .hd--stuck .hd-mark{height:38px}
+  .menu-top .hd-mark{height:44px}
+  /* home: the hero already shows the full logo, so the header's copy waits until the bar sticks */
+  .hd--home:not(.hd--stuck) .hd-logo{opacity:0;pointer-events:none}
+  .hd--home .hd-logo{transition:opacity .4s ease}
+  @media(max-width:560px){.hd-mark{height:38px}.hd--stuck .hd-mark{height:34px}}
+  /* show the Bridal inquiry button on phones too: it is the lead action */
+  @media(max-width:560px){.hd-cta{display:inline-flex;padding:.85em 1.1em .8em;min-height:40px;font-size:.58rem;letter-spacing:.12em}.menu-btn{font-size:0;gap:0}.menu-btn .bars{margin-left:0}}
+  @media(max-width:359px){.hd-cta{display:none}}
 </style>

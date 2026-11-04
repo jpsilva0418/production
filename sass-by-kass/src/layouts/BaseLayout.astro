@@ -19,9 +19,11 @@ interface Props extends SeoInput {
   headerPrologue?: boolean;
   /** A /preview/<id> page sets the direction and remembers it for every other page. */
   palette?: PaletteId;
+  /** Images the first frame needs (hero logo, poster): fetched before anything else. */
+  preload?: string[];
   bodyClass?: string;
 }
-const { jsonLd, headerLight = false, headerPrologue = false, palette, bodyClass, ...seo } = Astro.props;
+const { jsonLd, headerLight = false, headerPrologue = false, palette, bodyClass, preload = [], ...seo } = Astro.props;
 const ld = jsonLd ?? businessJsonLd();
 const current = Astro.url.pathname.replace(/\/$/, '') || '/';
 /* Client-demo build: locked palette, no review script. Review build: the page's own
@@ -36,6 +38,7 @@ const paletteScript = locked ? '' : palette
 <html lang="en">
   <head>
     <BaseHead {...seo} />
+    {preload.length ? preload.map((href) => <link rel="preload" as="image" href={href} fetchpriority="high" />) : <link rel="preload" as="image" href="/brand/sbk-logo-light-sm.webp" type="image/webp" fetchpriority="high" />}
     <script is:inline>document.documentElement.classList.add('js')</script>
     <script is:inline type="application/ld+json" set:html={JSON.stringify(ld)} />
   </head>
@@ -58,17 +61,34 @@ const paletteScript = locked ? '' : palette
       const openBtn = document.getElementById('menuOpen');
       const closeBtn = document.getElementById('menuClose');
       if (menu && openBtn && closeBtn) {
-        const setMenu = (open: boolean) => {
+        // iOS ignores overflow:hidden on <body>, so the page is pinned in place while the menu
+        // is open and returned to the same spot when it closes — never scrolled underneath.
+        let lockY = 0;
+        const lock = (on: boolean) => {
+          const b = document.body.style;
+          if (on) { lockY = scrollY; b.position = 'fixed'; b.top = `-${lockY}px`; b.left = '0'; b.right = '0'; b.width = '100%'; }
+          else { b.position = ''; b.top = ''; b.left = ''; b.right = ''; b.width = ''; document.documentElement.style.scrollBehavior = 'auto'; scrollTo(0, lockY); document.documentElement.style.scrollBehavior = ''; }
+        };
+        const setMenu = (open: boolean, restoreFocus = true) => {
+          if (open === menu.classList.contains('open')) return;
+          lock(open);
           menu.classList.toggle('open', open);
           document.body.classList.toggle('menu-open', open);
           menu.setAttribute('aria-hidden', String(!open));
           (menu as HTMLElement & { inert: boolean }).inert = !open;
           openBtn.setAttribute('aria-expanded', String(open));
-          if (open) closeBtn.focus(); else openBtn.focus();
+          if (open) closeBtn.focus(); else if (restoreFocus) openBtn.focus({ preventScroll: true });
         };
         openBtn.addEventListener('click', () => setMenu(true));
         closeBtn.addEventListener('click', () => setMenu(false));
-        menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+        // a menu link closes the menu; one that leaves this page opens its target at the top
+        menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => {
+          const samePage = a.pathname === location.pathname && a.origin === location.origin;
+          if (!samePage && a.origin === location.origin) lockY = 0;
+          setMenu(false, false);
+        }));
+        // back/forward cache: never come back to a page with its menu still open
+        addEventListener('pageshow', (e) => { if ((e as PageTransitionEvent).persisted && menu.classList.contains('open')) setMenu(false, false); });
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menu.classList.contains('open')) setMenu(false); });
         menu.addEventListener('keydown', (e) => {
           if (e.key !== 'Tab' || !menu.classList.contains('open')) return;

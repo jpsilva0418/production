@@ -1,9 +1,8 @@
 ---
-/** Grand footer: brand + one line, navigation, every way to reach Kass, and the two
- *  booking paths. Only supplied facts appear — no address or hours, because none were
- *  supplied; GlossGenius carries availability. */
-import Mark from './Mark.astro';
-import { SITE, TEL, SMS } from '../consts';
+/** Restrained footer: logo + one line, the destinations, both booking paths and every way to
+ *  reach Kass. Only supplied facts — no address or hours (none supplied). */
+import Logo from './Logo.astro';
+import { SITE, TEL, SMS, ext } from '../consts';
 import { FOOTER } from '../lib/content';
 const year = new Date().getUTCFullYear();
 ---
@@ -12,9 +11,7 @@ const year = new Date().getUTCFullYear();
   <div class="foot-in">
     <div class="foot-grid">
       <div class="foot-brand">
-        <Mark />
-        <div class="foot-name">Sass <i>by</i> Kass</div>
-        <div class="foot-sub">{SITE.tagline}</div>
+        <Logo tone="dark" class="foot-logo" label={`${SITE.name} — ${SITE.tagline}`} />
         <p>{FOOTER.line}</p>
       </div>
       <div>
@@ -22,33 +19,32 @@ const year = new Date().getUTCFullYear();
         <ul class="foot-nav">
           <li><a href="/">Home</a></li>
           {SITE.nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
-          <li><a href={SITE.links.bridal}>Bridal enquiry</a></li>
-        </ul>
-      </div>
-      <div>
-        <p class="foot-h">Reach Kass</p>
-        <ul class="foot-contact">
-          <li><span class="k">Call</span><a href={TEL}>{SITE.phone}</a></li>
-          <li><span class="k">Text</span><a href={SMS}>{SITE.phone}</a></li>
-          <li><span class="k">Instagram</span><a href={SITE.instagram.url} target="_blank" rel="noopener noreferrer">{SITE.instagram.handle}</a></li>
         </ul>
       </div>
       <div>
         <p class="foot-h">Book</p>
         <ul class="foot-contact">
-          <li><span class="k">Online booking</span><a href={SITE.booking} target="_blank" rel="noopener noreferrer">sassbykass.glossgenius.com</a></li>
-          <li><span class="k">Brides &amp; extensions</span><a href={SITE.links.enquiry}>Start an enquiry</a></li>
+          <li><span class="k">Weddings</span><a href={SITE.bridal} {...ext(SITE.bridal)}>Bridal inquiry</a></li>
+          <li><span class="k">In-salon</span><a href={SITE.booking} {...ext(SITE.booking)}>Book on GlossGenius</a></li>
           <li><span class="k">Where</span>{SITE.area.label}</li>
+        </ul>
+      </div>
+      <div>
+        <p class="foot-h">Reach Kass</p>
+        <ul class="foot-contact">
+          <li><span class="k">Instagram</span><a href={SITE.instagram.url} {...ext(SITE.instagram.url)}>{SITE.instagram.handle}</a></li>
+          <li><span class="k">Text or call</span><a href={SMS}>{SITE.phone}</a></li>
+          <li><span class="k">Email</span><a href={`mailto:${SITE.email}`} style="overflow-wrap:anywhere">{SITE.email}</a></li>
         </ul>
       </div>
     </div>
     <div class="foot-bar">
       <span>&copy; {year} {SITE.name}</span>
       <span>{SITE.tagline} &middot; {SITE.area.label}</span>
-      <span><a href={SITE.instagram.url} target="_blank" rel="noopener noreferrer">Instagram</a></span>
+      <span><a href={TEL}>{SITE.phone}</a></span>
     </div>
   </div>
 </footer>
 <style>
-  .foot-name i{font-style:italic;font-weight:300;font-size:.72em;margin:0 .06em;opacity:.85}
+  .foot-brand :global(.foot-logo){display:block;width:min(240px,70%);height:auto;margin-bottom:1.4rem}
 </style>

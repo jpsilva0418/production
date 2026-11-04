@@ -5,12 +5,11 @@ summary: Timeless, polished bridal styling that lasts from the first look to the
 points:
   - Brides, bridal parties and family
   - Classic updos, soft waves and half-up styles
-  - Now booking brides
-order: 3
-numeral: "III"
+  - Booked with a contract and deposit
+order: 1
+numeral: "I"
 plate: bride-veil
-film: reelBride
-cta: enquiry
-enquiryKey: bridal
+film: heroFilm
+path: bridal
 serviceType: Bridal and wedding hair styling
 ---

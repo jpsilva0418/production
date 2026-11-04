@@ -4,7 +4,7 @@ import { glob } from 'astro/loaders';
 
 /** Kass's services — only the ones her supplied materials support (Instagram bio and
  *  highlights, her card, her photos and clips). No pricing is modelled: none was supplied;
- *  every card points at her live GlossGenius booking for prices and availability. */
+ *  every card points at the right live booking path (HoneyBook or GlossGenius). */
 const services = defineCollection({
   loader: glob({ pattern: '**/[^_]*.md', base: './src/content/services' }),
   schema: z.object({
@@ -15,10 +15,9 @@ const services = defineCollection({
     order: z.number().default(99),
     numeral: z.string(),
     plate: z.string(),                 // photo id (src/assets/plates)
-    film: z.enum(['heroFilm', 'cineFilm', 'reelBlonde', 'reelBride']).optional(),
-    /** `book` → straight to GlossGenius; `enquiry` → the enquiry form with this service pre-selected. */
-    cta: z.enum(['book', 'enquiry']).default('book'),
-    enquiryKey: z.enum(['bridal', 'extensions']).optional(),
+    film: z.enum(['heroFilm', 'cineFilm', 'reelBlonde', 'reelBrunette']).optional(),
+    /** Which destination books it: `bridal` → her HoneyBook inquiry, `salon` → GlossGenius. */
+    path: z.enum(['bridal', 'salon']).default('salon'),
     serviceType: z.string(),
     draft: z.boolean().default(false),
   }),

@@ -1,0 +1,13 @@
+---
+/** Her SBK logo — "SBK / Sass By Kass / Bridal and Hair Artistry" — keyed to a transparent
+ *  raster from the client-supplied artwork (public/brand/). Two inks:
+ *   · `dark`  — for navy/dark grounds: powder-blue letters, cream script (her navy version)
+ *   · `light` — for light grounds: powder-blue letters, navy script (her cream version)
+ *  Every placement goes through this one component, so her original SVG/PNG export is a
+ *  one-file swap when it arrives. */
+interface Props { tone?: 'dark' | 'light'; size?: 'sm' | 'md' | 'lg'; class?: string; eager?: boolean; label?: string }
+const { tone = 'dark', size = 'sm', class: cls, eager = false, label } = Astro.props;
+const file = `/brand/sbk-logo${tone === 'light' ? '-light' : ''}${size === 'lg' ? '' : `-${size}`}.webp`;
+const [w, h] = size === 'sm' ? [587, 240] : size === 'md' ? [640, 262] : [1106, 452];
+---
+<img class:list={['sbk', cls]} src={file} width={w} height={h} alt={label ?? ''} aria-hidden={label ? undefined : 'true'} loading={eager ? 'eager' : 'lazy'} decoding="async" fetchpriority={eager ? 'high' : undefined} />

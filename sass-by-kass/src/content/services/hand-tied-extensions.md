@@ -6,11 +6,10 @@ points:
   - Consultation and color match before anything is installed
   - Move-up appointments as your hair grows
   - A simple care routine explained before you leave
-order: 1
-numeral: "I"
+order: 2
+numeral: "II"
 plate: glam-blonde
 film: cineFilm
-cta: enquiry
-enquiryKey: extensions
+path: salon
 serviceType: Hand-tied hair extensions
 ---

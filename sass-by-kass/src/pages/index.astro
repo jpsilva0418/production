@@ -5,6 +5,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Home from '../components/Home.astro';
 import { SITE } from '../consts';
 ---
-<BaseLayout headerLight headerPrologue title={`${SITE.role} — hand-tied extensions, dimensional color & bridal`} description={SITE.description} path="/">
+<BaseLayout headerLight headerPrologue preload={['/brand/sbk-logo-md.webp']} title={`${SITE.tagline} — Massachusetts wedding hair`} description={SITE.description} path="/">
   <Home />
 </BaseLayout>
