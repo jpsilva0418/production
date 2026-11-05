@@ -15,13 +15,16 @@ import { SITE, HERO, ext } from '../lib/content';
   /* Signature reveal gate: runs before the hero paints. Plays once per browsing session; never under
      reduced motion; without JS the static approved hero shows (animation is opt-in via this class). */
   (function(){try{var d=document.documentElement;if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-    if(sessionStorage.getItem('sbk-intro-v1'))return;sessionStorage.setItem('sbk-intro-v1','1');d.classList.add('sbk-intro');}catch(e){}})();
+    if(sessionStorage.getItem('sbk-intro-v2'))return;sessionStorage.setItem('sbk-intro-v2','1');d.classList.add('sbk-intro');}catch(e){}})();
 </script>
 <section class="plg" id="hero" data-pin data-chapter="hero" data-tone="film" aria-label={`${SITE.name} — ${SITE.tagline}`}>
   <div class="plg-ground" aria-hidden="true"><i class="plg-light"></i><i class="plg-weave"></i><i class="grain"></i></div>
   <div class="plg-frame" aria-hidden="true"></div>
   <div class="plg-c">
-    <h1 class="plg-logo"><svg class="plg-arc" viewBox="0 0 200 200" aria-hidden="true" focusable="false"><circle class="a1" cx="100" cy="100" r="96" pathLength="100"/><circle class="a2" cx="100" cy="100" r="90" pathLength="100"/></svg><Logo tone="dark" size="lg" eager label={`${SITE.name} — ${SITE.tagline}`} /></h1>
+    <div class="plg-mark">
+      <svg class="plg-arc" viewBox="0 0 200 200" aria-hidden="true" focusable="false"><circle class="a1" cx="100" cy="100" r="96" pathLength="100"/><circle class="a2" cx="100" cy="100" r="89" pathLength="100"/></svg>
+      <h1 class="plg-logo"><Logo tone="dark" size="lg" eager label={`${SITE.name} — ${SITE.tagline}`} /></h1>
+    </div>
     <span class="plg-rule" aria-hidden="true"></span>
     <div class="plg-ctas">
       <a class="btn btn--ivory" href={HERO.ctaHref}>{HERO.cta}</a>
@@ -59,28 +62,42 @@ import { SITE, HERO, ext } from '../lib/content';
   .plg-cue span{font-family:var(--utility);font-weight:600;text-transform:uppercase;letter-spacing:.36em;text-indent:.36em;font-size:.62rem}
   .plg-cue .ln{width:1px;height:26px;background:linear-gradient(currentColor,transparent);transform-origin:top}
   .plg-cue:hover,.plg-cue:focus-visible{color:var(--ivory)}
-  /* SBK signature reveal: one real logo element; an arc draws around it, the logo resolves into its
-     final place (opacity, a whisper of scale and focus — transforms only, so no layout shift), the arc
-     dissolves, then the rule and buttons arrive. ~1.4 s total. The logo starts partly visible: never blank. */
-  .plg-logo{position:relative}
-  .plg-arc{position:absolute;left:50%;top:50%;width:min(430px,70vw);aspect-ratio:1;transform:translate(-50%,-50%) rotate(-104deg);overflow:visible;pointer-events:none;opacity:0;fill:none;stroke:var(--gold-lt);stroke-width:.5;vector-effect:non-scaling-stroke}
-  .plg-arc circle{stroke-dasharray:100 100;stroke-dashoffset:100;vector-effect:non-scaling-stroke}
-  .plg-arc .a1{stroke-opacity:.55}.plg-arc .a2{stroke-opacity:.28}
+  /* SBK signature reveal (~1.7 s, first visit per session only).
+     ROOT-CAUSE RULE (Nov 2026 glitch): the logo <img> is never animated. An earlier version animated
+     `filter: blur() drop-shadow()` on the image and held the end state (fill-mode both); on iPhone
+     WebKit that left a solid white box over the logo once the animation finished. Now:
+       · only the wrapper (h1) moves, and only with opacity + transform (compositor-safe);
+       · the image keeps its static, approved drop-shadow and is untouched by any animation;
+       · every animation uses fill-mode `backwards`, so when it ends the element simply returns to its
+         static approved styles; no animated end-state is ever held.
+     Sequence: a powder-blue arc and a fainter champagne arc draw in opposite directions around the
+     mark while the ring eases a quarter-turn; the logo rises into focus at its final place; the ring
+     opens outward and dissolves into the hero; then the rule, buttons and cue arrive. */
+  .plg-mark{position:relative;display:grid;place-items:center}
+  .plg-arc{position:absolute;left:50%;top:50%;width:min(430px,70vw);aspect-ratio:1;transform:translate(-50%,-50%) rotate(-100deg);overflow:visible;pointer-events:none;opacity:0;fill:none;stroke-width:.6}
+  .plg-arc circle{stroke-dasharray:100 100;stroke-dashoffset:100;vector-effect:non-scaling-stroke;transform-box:fill-box;transform-origin:center}
+  .plg-arc .a1{stroke:var(--sage);stroke-opacity:.8}
+  .plg-arc .a2{stroke:var(--gold-lt);stroke-opacity:.42;transform:scale(-1,1)}
   @media (prefers-reduced-motion:no-preference){
     .plg-light{animation:plgBreathe 9s ease-in-out infinite alternate}
-    .plg-cue .ln{animation:cuePulse 2.8s ease-in-out 1.6s infinite}
-    :global(.sbk-intro) .plg-arc{animation:plgArcLife 1.45s var(--ease) both}
-    :global(.sbk-intro) .plg-arc .a1{animation:plgDraw1 .95s cubic-bezier(.65,0,.35,1) both}
-    :global(.sbk-intro) .plg-arc .a2{animation:plgDraw2 1s cubic-bezier(.65,0,.35,1) .08s both}
-    :global(.sbk-intro) .plg-logo :global(img){animation:plgLogo 1.05s cubic-bezier(.22,.8,.24,1) .12s both}
-    :global(.sbk-intro) .plg-rule{animation:plgRule .55s var(--ease) .8s both}
-    :global(.sbk-intro) .plg-ctas{animation:fadeUp .6s var(--ease) .88s both}
-    :global(.sbk-intro) .plg-cue{animation:fadeIn .6s ease 1.05s both}
+    .plg-cue .ln{animation:cuePulse 2.8s ease-in-out 1.8s infinite}
+    :global(.sbk-intro) .plg-arc{animation:plgRing 1.75s cubic-bezier(.45,0,.2,1) backwards}
+    :global(.sbk-intro) .plg-arc .a1{animation:plgDraw1 1.75s cubic-bezier(.6,0,.3,1) backwards}
+    :global(.sbk-intro) .plg-arc .a2{animation:plgDraw2 1.75s cubic-bezier(.6,0,.3,1) .1s backwards}
+    :global(.sbk-intro) .plg-logo{animation:plgRise 1.05s cubic-bezier(.16,1,.3,1) .3s backwards}
+    :global(.sbk-intro) .plg-rule{animation:plgRule .6s var(--ease) 1s backwards}
+    :global(.sbk-intro) .plg-ctas{animation:fadeUp .65s var(--ease) 1.08s backwards}
+    :global(.sbk-intro) .plg-cue{animation:fadeIn .6s ease 1.3s backwards}
   }
-  @keyframes plgDraw1{to{stroke-dashoffset:18}}
-  @keyframes plgDraw2{to{stroke-dashoffset:30}}
-  @keyframes plgArcLife{0%{opacity:1;transform:translate(-50%,-50%) rotate(-104deg) scale(.97)}62%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) rotate(-96deg) scale(1.05)}}
-  @keyframes plgLogo{from{opacity:.22;transform:scale(.955);filter:blur(4px) drop-shadow(0 18px 40px rgba(0,0,0,0))}to{opacity:1;transform:none;filter:blur(0) drop-shadow(0 18px 40px rgba(0,0,0,.22))}}
+  /* arcs draw to ~300° and ~260° by 55%, hold, then the ring opens and fades */
+  @keyframes plgDraw1{0%{stroke-dashoffset:100}55%,100%{stroke-dashoffset:16}}
+  @keyframes plgDraw2{0%{stroke-dashoffset:100}55%,100%{stroke-dashoffset:28}}
+  @keyframes plgRing{0%{opacity:1;transform:translate(-50%,-50%) rotate(-150deg) scale(.94)}
+    55%{opacity:1;transform:translate(-50%,-50%) rotate(-100deg) scale(1)}
+    100%{opacity:0;transform:translate(-50%,-50%) rotate(-88deg) scale(1.14)}}
+  @keyframes plgRise{from{opacity:.18;transform:translateY(10px) scale(.92)}to{opacity:1;transform:none}}
+  @keyframes plgBreathe{from{opacity:.75;transform:scale(1)}to{opacity:1;transform:scale(1.06)}}
+  @keyframes plgRule{from{transform:scaleX(0)}to{transform:scaleX(1)}}
   @keyframes cuePulse{0%,100%{transform:scaleY(.35);opacity:.5}50%{transform:scaleY(1);opacity:1}}
   @media(max-width:640px){
     .plg{--peek:38px}
