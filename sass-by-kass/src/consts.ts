@@ -65,4 +65,7 @@ export const TEL = `tel:${SITE.phoneE164}`;
 export const SMS = `sms:${SITE.phoneE164}`;
 /** Attributes for a link that leaves the site (HoneyBook, GlossGenius, Instagram). A mailto
  *  fallback opens the visitor's mail app and needs no new tab. */
-export const ext = (href: string) => (href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {});
+/** External links open in the SAME tab (founder decision, Nov 2026): a plain https anchor is the
+ *  smoothest one-tap handoff, especially inside Instagram's in-app browser, where target=_blank
+ *  forces a new-window handoff. No window.open, no redirects, no app-scheme tricks. */
+export const ext = (href: string) => (href.startsWith('http') ? { rel: 'external' } : {});
