@@ -12,6 +12,6 @@ export function getStaticPaths() {
 }
 const { palette } = Astro.props;
 ---
-<BaseLayout headerLight headerPrologue preload={['/brand/sbk-logo-md.webp']} palette={palette.id} title={`Blue direction ${palette.id.toUpperCase()} · ${palette.name}`} description={`Design review — ${SITE.name} in blue direction ${palette.id.toUpperCase()}: ${palette.line}`} path={`/preview/${palette.id}`}>
+<BaseLayout headerLight headerPrologue preload={['/brand/sbk-logo.webp']} palette={palette.id} title={`Blue direction ${palette.id.toUpperCase()} · ${palette.name}`} description={`Design review — ${SITE.name} in blue direction ${palette.id.toUpperCase()}: ${palette.line}`} path={`/preview/${palette.id}`}>
   <Home />
 </BaseLayout>

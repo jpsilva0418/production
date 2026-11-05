@@ -115,7 +115,7 @@
 .hd--lt .hd-cta{background:var(--ivory);color:var(--leaf);border-color:var(--ivory)}
 .hd--lt .hd-cta::after{background:var(--petal)}
 /* prologue variant · fades in after the title card */
-.hd--plg{opacity:0;animation:fadeIn 1s ease 2.6s both}
+.hd--plg{opacity:0;animation:fadeIn .6s ease .1s both}
 /* stuck · compact translucent bar once the page scrolls (JS adds .hd--stuck) */
 .hd--stuck{position:fixed;background:color-mix(in srgb,var(--ivory) 90%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
   box-shadow:0 1px 0 var(--hair),0 18px 40px -30px rgba(10,22,44,.35);animation:none;opacity:1}

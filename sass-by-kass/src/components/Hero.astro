@@ -1,97 +1,77 @@
 ---
-/** HERO — static and logo-led (handoff v2): her SBK logo, a bridal headline, the two booking
- *  actions (Bridal Inquiry → the on-site form, Book In-Salon → GlossGenius) and a "Meet Kass"
- *  cue. No opening film and no title card, so nothing waits on media: the first paint is the
- *  finished opening.
- *   · desktop: logo + headline left, a real bridal photograph in the tall frame right;
- *   · phones: the same photograph as a soft, tinted backdrop behind the logo.
- *  Still pinned, so About Kass rises over it on the curved band, as approved. A light entrance
- *  (fade/rise, under 1 s) runs only when motion is allowed. */
+/** HERO — her official SBK logo is the centrepiece (client correction, Nov 2026). Exactly:
+ *    SBK logo · Bridal Inquiry (on-site form) · Book In-Salon (GlossGenius) · Meet Kass ↓
+ *  No photograph, no video, no headline or paragraph: the logo already says "Bridal and Hair
+ *  Artistry". The ground is art-directed from her palette so the logo reads as a printed card:
+ *   · deep-navy field with a soft powder-blue light behind the logo and a darker vignette;
+ *   · a fine champagne double frame inset from the edges (stationery, not decoration);
+ *   · a faint linen weave + grain for paper-like texture;
+ *   · one restrained motion: the light breathes slowly (off under reduced motion).
+ *  Everything is CSS: nothing to download, so logo and buttons are there at first paint. */
 import Logo from './Logo.astro';
-import { Image } from 'astro:assets';
-import type { ImageMetadata } from 'astro';
 import { SITE, HERO, ext } from '../lib/content';
-const plates = import.meta.glob<{ default: ImageMetadata }>('../assets/plates/*.jpg', { eager: true });
-const photo = plates['../assets/plates/bride-veil.jpg'].default;
 ---
 <section class="plg" id="hero" data-pin data-chapter="hero" data-tone="film" aria-label={`${SITE.name} — ${SITE.tagline}`}>
-  <div class="plg-bg" aria-hidden="true">
-    <Image src={photo} alt="" widths={[480, 800, 1200]} sizes="100vw" loading="eager" fetchpriority="high" class="plg-bg-img" />
-  </div>
-  <div class="plg-grid">
-    <div class="plg-c">
-      <h1 class="plg-logo"><Logo tone="dark" size="md" eager label={`${SITE.name} — ${SITE.tagline}`} /></h1>
-      <p class="plg-eyebrow">{HERO.eyebrow.map((e, i) => <>{i > 0 && <b>&middot;</b>}{e}</>)}</p>
-      <p class="plg-h">
-        {HERO.lines.map((l) => <span class="lo"><span class="li">{l}</span></span>)}
-        <span class="lo"><span class="li ital">{HERO.italic}</span></span>
-      </p>
-      <p class="plg-it">{HERO.sub}</p>
-      <div class="plg-ctas">
-        <a class="btn btn--ivory" href={HERO.ctaHref}>{HERO.cta}</a>
-        <a class="btn btn--ghost" href={HERO.salonHref} {...ext(HERO.salonHref)}>{HERO.salon}</a>
-      </div>
+  <div class="plg-ground" aria-hidden="true"><i class="plg-light"></i><i class="plg-weave"></i><i class="grain"></i></div>
+  <div class="plg-frame" aria-hidden="true"></div>
+  <div class="plg-c">
+    <h1 class="plg-logo"><Logo tone="dark" size="lg" eager label={`${SITE.name} — ${SITE.tagline}`} /></h1>
+    <span class="plg-rule" aria-hidden="true"></span>
+    <div class="plg-ctas">
+      <a class="btn btn--ivory" href={HERO.ctaHref}>{HERO.cta}</a>
+      <a class="btn btn--ghost" href={HERO.salonHref} {...ext(HERO.salonHref)}>{HERO.salon}</a>
     </div>
-    <figure class="plg-frame" aria-hidden="true">
-      <Image src={photo} alt="" widths={[480, 800, 1059]} sizes="(max-width:899px) 1px, 40vw" loading="eager" class="plg-photo" />
-      <div class="plg-scrim"></div>
-      <i class="grain"></i>
-    </figure>
   </div>
   <a class="plg-cue" href="#about"><span>{HERO.cue}</span><i class="ln" aria-hidden="true"></i></a>
 </section>
 
 <style>
-  .plg{--peek:56px;position:sticky;top:var(--pin-top,0px);z-index:0;min-height:100vh;min-height:100svh;background:var(--leaf-deep);overflow:hidden;display:grid;color:var(--ivory)}
+  .plg{--peek:56px;--inset:clamp(14px,2.4vw,30px);position:sticky;top:var(--pin-top,0px);z-index:0;min-height:100vh;min-height:100svh;overflow:hidden;display:grid;place-items:center;color:var(--ivory);
+    background:radial-gradient(120% 90% at 50% 42%,var(--leaf) 0%,var(--leaf) 38%,var(--leaf-deep) 100%)}
   .plg.is-covered{visibility:hidden}
-  .plg-bg{position:absolute;inset:0}
-  .plg-bg :global(.plg-bg-img){width:100%;height:100%;object-fit:cover;object-position:50% 30%;filter:blur(36px) saturate(.85);transform:scale(1.15)}
-  .plg-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,var(--leaf-deep) 0%,color-mix(in srgb,var(--leaf) 84%,transparent) 55%,color-mix(in srgb,var(--leaf-deep) 72%,transparent) 100%)}
-  .plg-grid{position:relative;z-index:2;width:var(--wrap);margin-inline:auto;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);align-items:center;gap:clamp(2rem,5vw,5rem);padding:clamp(6.5rem,13vh,8rem) 0 calc(var(--peek) + clamp(4rem,9vh,6rem));min-height:100svh}
-  .plg-c{max-width:640px;min-width:0}
-  .plg-logo{margin:0 0 clamp(1.4rem,3vh,2.2rem);line-height:0}
-  .plg-logo :global(img){width:min(440px,100%);height:auto}
-  .plg-eyebrow{font-family:var(--utility);font-weight:600;font-size:clamp(.6rem,1.4vw,.7rem);letter-spacing:.28em;text-transform:uppercase;color:var(--ivory);margin-bottom:clamp(1rem,2.4vh,1.6rem);opacity:.92}
-  .plg-eyebrow b{color:var(--gold-lt);font-weight:600;padding:0 .7em}
-  .plg-h{font-family:var(--display);font-weight:300;font-size:clamp(2.2rem,4.6vw,4.4rem);line-height:1.02;letter-spacing:-.015em;color:var(--ivory);margin:0;font-variation-settings:'opsz' 144,'SOFT' 60;text-shadow:0 2px 40px rgba(0,0,0,.35)}
-  .plg-h .lo{display:block;overflow:hidden;padding-block:.04em}
-  .plg-h .li{display:block}
-  .plg-h .ital{font-style:italic;font-weight:300;color:var(--gold-lt)}
-  .plg-it{font-family:var(--display);font-style:italic;font-size:clamp(1.04rem,1.5vw,1.3rem);line-height:1.55;color:color-mix(in srgb,var(--ivory) 90%,transparent);max-width:30em;margin:clamp(1.2rem,2.4vh,1.8rem) 0 0;font-variation-settings:'opsz' 48,'SOFT' 70}
-  .plg-ctas{display:flex;flex-wrap:wrap;gap:14px;margin-top:clamp(1.6rem,3.2vh,2.4rem)}
-  .plg-frame{position:relative;margin:0;justify-self:end;height:min(78svh,760px);aspect-ratio:3/4;max-width:100%;border-radius:var(--r-lg);overflow:hidden;background:var(--leaf-deep);box-shadow:0 60px 120px -50px rgba(0,0,0,.7),0 0 0 1px color-mix(in srgb,var(--gold-lt) 35%,transparent)}
-  .plg-frame :global(.plg-photo){position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
-  .plg-scrim{position:absolute;inset:0;background:linear-gradient(transparent 60%,color-mix(in srgb,var(--leaf-deep) 45%,transparent))}
-  .plg-cue{position:absolute;bottom:calc(var(--peek) + clamp(.6rem,1.6vh,1rem));left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:.7rem;min-height:44px;padding:4px 12px;color:var(--gold-lt)}
-  .plg-cue span{font-family:var(--utility);font-weight:600;text-transform:uppercase;letter-spacing:.36em;text-indent:.36em;font-size:.6rem}
-  .plg-cue .ln{width:1px;height:28px;background:linear-gradient(currentColor,transparent);transform-origin:top}
+  .plg-ground{position:absolute;inset:0;pointer-events:none}
+  /* powder-blue light behind the logo, a touch of champagne low in the field */
+  .plg-light{position:absolute;inset:-20%;background:
+      radial-gradient(38% 30% at 50% 40%,color-mix(in srgb,var(--sage) 24%,transparent) 0%,transparent 70%),
+      radial-gradient(60% 40% at 50% 100%,color-mix(in srgb,var(--gold-lt) 9%,transparent) 0%,transparent 70%)}
+  /* a fine linen weave: two hairline grids at 45°, barely there */
+  .plg-weave{position:absolute;inset:0;opacity:.07;background:
+      repeating-linear-gradient(45deg,var(--gold-lt) 0 1px,transparent 1px 7px),
+      repeating-linear-gradient(-45deg,var(--sage) 0 1px,transparent 1px 7px);
+      mask-image:radial-gradient(80% 70% at 50% 45%,#000 30%,transparent 85%);-webkit-mask-image:radial-gradient(80% 70% at 50% 45%,#000 30%,transparent 85%)}
+  .plg-ground .grain{opacity:.06}
+  /* stationery frame: two champagne hairlines inset from the edges */
+  .plg-frame{position:absolute;inset:calc(var(--inset) + 70px) var(--inset) calc(var(--inset) + var(--peek)) var(--inset);border:1px solid color-mix(in srgb,var(--gold-lt) 38%,transparent);border-radius:calc(var(--r-lg) + 6px);pointer-events:none}
+  .plg-frame::after{content:"";position:absolute;inset:7px;border:1px solid color-mix(in srgb,var(--gold-lt) 16%,transparent);border-radius:var(--r-lg)}
+  .plg-c{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;padding:clamp(7rem,15vh,9rem) 24px calc(var(--peek) + clamp(6rem,14vh,8rem));width:100%}
+  .plg-logo{margin:0;line-height:0}
+  .plg-logo :global(img){width:min(640px,78vw);height:auto;filter:drop-shadow(0 18px 40px rgba(0,0,0,.22))}
+  .plg-rule{display:block;width:clamp(56px,7vw,84px);height:1px;background:var(--gold-lt);opacity:.65;margin:clamp(1.8rem,4.4vh,2.8rem) 0}
+  .plg-ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
+  .plg-ctas .btn{min-width:210px}
+  .plg-cue{position:absolute;bottom:calc(var(--peek) + clamp(1.2rem,3vh,2rem));left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:.6rem;min-height:44px;padding:6px 14px;color:var(--gold-lt)}
+  .plg-cue span{font-family:var(--utility);font-weight:600;text-transform:uppercase;letter-spacing:.36em;text-indent:.36em;font-size:.62rem}
+  .plg-cue .ln{width:1px;height:26px;background:linear-gradient(currentColor,transparent);transform-origin:top}
   .plg-cue:hover,.plg-cue:focus-visible{color:var(--ivory)}
   @media (prefers-reduced-motion:no-preference){
-    .plg-c>*{animation:fadeUp .8s var(--ease) both}
-    .plg-c>:nth-child(2){animation-delay:.08s}.plg-c>:nth-child(3){animation-delay:.14s}.plg-c>:nth-child(4){animation-delay:.22s}.plg-c>:nth-child(5){animation-delay:.3s}
-    .plg-frame{animation:fadeIn 1s ease .1s both}
+    .plg-light{animation:plgBreathe 9s ease-in-out infinite alternate}
+    .plg-logo{animation:fadeIn .9s ease both}
+    .plg-rule{animation:plgRule .9s var(--ease) .25s both}
+    .plg-ctas{animation:fadeUp .8s var(--ease) .3s both}
     .plg-cue .ln{animation:cuePulse 2.8s ease-in-out 1.2s infinite}
   }
+  @keyframes plgBreathe{from{opacity:.75;transform:scale(1)}to{opacity:1;transform:scale(1.06)}}
+  @keyframes plgRule{from{transform:scaleX(0)}to{transform:scaleX(1)}}
   @keyframes cuePulse{0%,100%{transform:scaleY(.35);opacity:.5}50%{transform:scaleY(1);opacity:1}}
-
-  /* ---- phones & tablets: logo-led, the photograph as a soft backdrop ---- */
-  @media(max-width:899px){
-    .plg-frame{display:none}
-    .plg-bg :global(.plg-bg-img){filter:saturate(.9);transform:none}
-    .plg-bg::after{background:linear-gradient(color-mix(in srgb,var(--leaf-deep) 80%,transparent),color-mix(in srgb,var(--leaf-deep) 58%,transparent) 40%,color-mix(in srgb,var(--leaf-deep) 70%,transparent) 70%,var(--leaf-deep))}
-    .plg-grid{display:block;width:100%;padding:0;min-height:100svh}
-    .plg-c{max-width:none;width:100%;min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:6rem max(20px,6vw) calc(var(--peek) + 5.2rem)}
-    .plg-logo :global(img){width:min(340px,82vw)}
-    .plg-it{margin-inline:auto}
-    .plg-ctas{justify-content:center}
-  }
   @media(max-width:640px){
     .plg{--peek:38px}
-    .plg-h{font-size:clamp(1.9rem,9.4vw,2.7rem)}
-    .plg-ctas{flex-direction:column;align-items:stretch;width:100%;max-width:330px}
-    .plg-eyebrow b{padding:0 .45em}
+    .plg-frame{inset:calc(var(--inset) + 62px) var(--inset) calc(var(--inset) + var(--peek)) var(--inset)}
+    .plg-c{padding:6.4rem 32px calc(var(--peek) + 6.4rem)}
+    .plg-logo :global(img){width:min(420px,80vw)}
+    .plg-ctas{flex-direction:column;align-items:stretch;width:100%;max-width:300px}
+    .plg-ctas .btn{min-width:0}
   }
-  @media(max-height:700px) and (max-width:640px){.plg-c{padding-top:5.2rem}.plg-logo :global(img){width:min(260px,70vw)}.plg-it{font-size:.98rem}}
+  @media(max-height:640px){.plg-c{padding-top:5.6rem;padding-bottom:calc(var(--peek) + 5rem)}.plg-rule{margin:1.2rem 0}}
   @media (prefers-reduced-motion:reduce){.plg{position:relative;top:auto!important;visibility:visible!important}}
 </style>
 <script>

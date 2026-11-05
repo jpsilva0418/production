@@ -103,7 +103,7 @@ const paletteScript = locked ? '' : palette
       const hd = document.getElementById('siteHeader');
       if (hd) {
         const settle = () => hd.classList.remove('hd--plg');
-        if (hd.classList.contains('hd--plg')) { hd.addEventListener('animationend', settle, { once: true }); setTimeout(settle, 4200); }
+        if (hd.classList.contains('hd--plg')) { hd.addEventListener('animationend', settle, { once: true }); setTimeout(settle, 1200); }
         let lastY = scrollY, ticking = false;
         const frame = () => {
           ticking = false;
