@@ -12,17 +12,21 @@ import Logo from './Logo.astro';
 import { SITE, HERO, ext } from '../lib/content';
 ---
 <script is:inline>
-  /* Signature reveal gate: runs before the hero paints. Plays once per browsing session; never under
-     reduced motion; without JS the static approved hero shows (animation is opt-in via this class). */
-  (function(){try{var d=document.documentElement;if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-    if(sessionStorage.getItem('sbk-intro-v2'))return;sessionStorage.setItem('sbk-intro-v2','1');d.classList.add('sbk-intro');}catch(e){}})();
+  /* Signature entrance gate. Runs before the hero is parsed, so the first paint is already the intro's
+     opening state (no flash of the final hero followed by a jump). Plays once per browsing session,
+     never under reduced motion, never without JS. Failsafe: if the entrance script below has not taken
+     over within 2.5 s (script error, very slow parse), the class is removed and the static approved
+     hero shows: nothing can stay hidden. */
+  (function(){try{var d=document.documentElement;if(!window.matchMedia||matchMedia('(prefers-reduced-motion: reduce)').matches||!document.body.animate)return;
+    if(sessionStorage.getItem('sbk-intro-v3'))return;sessionStorage.setItem('sbk-intro-v3','1');d.classList.add('sbk-intro');
+    setTimeout(function(){if(!d.classList.contains('sbk-intro-run'))d.classList.remove('sbk-intro');},2500);}catch(e){}})();
 </script>
 <section class="plg" id="hero" data-pin data-chapter="hero" data-tone="film" aria-label={`${SITE.name} — ${SITE.tagline}`}>
   <div class="plg-ground" aria-hidden="true"><i class="plg-light"></i><i class="plg-weave"></i><i class="grain"></i></div>
   <div class="plg-frame" aria-hidden="true"></div>
   <div class="plg-c">
     <div class="plg-mark">
-      <svg class="plg-arc" viewBox="0 0 200 200" aria-hidden="true" focusable="false"><circle class="a1" cx="100" cy="100" r="96" pathLength="100"/><circle class="a2" cx="100" cy="100" r="89" pathLength="100"/></svg>
+      <svg class="plg-arc" viewBox="0 0 200 200" aria-hidden="true" focusable="false"><circle class="a1" cx="100" cy="100" r="99" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="100"/><circle class="a2" cx="100" cy="100" r="94" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="100"/></svg>
       <h1 class="plg-logo"><Logo tone="dark" size="lg" eager label={`${SITE.name} — ${SITE.tagline}`} /></h1>
     </div>
     <span class="plg-rule" aria-hidden="true"></span>
@@ -33,6 +37,52 @@ import { SITE, HERO, ext } from '../lib/content';
   </div>
   <a class="plg-cue" href="#about"><span>{HERO.cue}</span><i class="ln" aria-hidden="true"></i></a>
 </section>
+<script is:inline>
+  /* SBK signature entrance: one continuous logo (shared-element / FLIP).
+     The logo is never duplicated or swapped. Its final place is the hero's own responsive layout,
+     measured here; the wrapper starts at the screen centre (inverted transform) and plays back to
+     "none", so the end position is the layout itself, not hard-coded coordinates.
+       0.00–1.15 s  A  arc draws and widens; the logo is revealed inside it (circular clip) at centre
+       1.15–1.35 s     hold: the full official logo inside its ring
+       1.35–2.25 s  C  the same logo travels and settles into its hero position; the ring opens and fades
+       1.55–2.75 s  D  header, frame, texture, rule, buttons and cue assemble around it
+     Total ≈ 2.75 s. Buttons are opacity-only and remain clickable throughout. */
+  (function(){var d=document.documentElement;if(!d.classList.contains('sbk-intro'))return;d.classList.add('sbk-intro-run');
+    var q=function(x){return document.querySelector(x)};
+    var hero=q('#hero'),mark=q('.plg-mark'),logo=q('.plg-logo'),ring=q('.plg-arc'),a1=q('.plg-arc .a1'),a2=q('.plg-arc .a2');
+    var done=function(){d.classList.remove('sbk-intro','sbk-intro-run');anims.forEach(function(a){a.cancel()});};
+    var anims=[];
+    try{
+      var r=logo.getBoundingClientRect(),W=r.width,H=r.height,vh=(window.visualViewport?visualViewport.height:innerHeight);
+      var dx=innerWidth/2-(r.left+W/2),dy=vh/2-(r.top+H/2),s0=Math.min(1.1,(innerWidth*0.86)/W);
+      var R=Math.hypot(W,H)/2+2,RING=0.55*W*1.0, big=Math.max(W,H)*1.2;
+      var ease='cubic-bezier(.45,.05,.25,1)',glide='cubic-bezier(.65,0,.2,1)';
+      var A=function(el,kf,o){if(!el)return;var a=el.animate(kf,Object.assign({fill:'both'},o));anims.push(a);return a;};
+      // PHASE A + C: the wrapper (ring + logo together) sits at centre, then glides home
+      var from='translate('+dx+'px,'+dy+'px) scale('+s0+')';
+      A(mark,[{transform:from},{transform:from,offset:1.35/2.25},{transform:'none'}],{duration:2250,easing:glide});
+      // logo revealed inside the widening ring (clip-path on the h1 wrapper, never the image)
+      A(logo,[{clipPath:'circle('+(0.07*W)+'px at 50% 50%)',opacity:.55},{clipPath:'circle('+R+'px at 50% 50%)',opacity:1,offset:1.15/2.25},{clipPath:'circle('+R+'px at 50% 50%)',offset:1.35/2.25},{clipPath:'circle('+big+'px at 50% 50%)'}],{duration:2250,easing:ease});
+      // the ring's edge rides the reveal edge, then opens and dissolves
+      var k=(0.07*W)/RING, grow=Math.min(1.28,(innerWidth*0.98)/(2*R*s0)); // the opening ring never exceeds the screen width
+      A(ring,[{opacity:1,transform:'rotate(-120deg) scale('+k+')'},{opacity:1,transform:'rotate(-90deg) scale('+(R/RING)+')',offset:1.15/2.25},{opacity:1,transform:'rotate(-88deg) scale('+(R/RING)+')',offset:1.35/2.25},{opacity:0,transform:'rotate(-80deg) scale('+(R/RING*grow)+')'}],{duration:2250,easing:ease});
+      A(a1,[{strokeDashoffset:100},{strokeDashoffset:9,offset:.5},{strokeDashoffset:9}],{duration:2250,easing:ease});
+      A(a2,[{strokeDashoffset:100},{strokeDashoffset:30,offset:.55},{strokeDashoffset:30}],{duration:2250,delay:80,easing:ease});
+      // PHASE D: the approved hero assembles around the settled logo
+      // implicit end keyframe: each element fades to its own approved computed value
+      var fade=function(el,delay,dur,y){A(el,[y?{opacity:0,transform:'translateY('+y+'px)',offset:0}:{opacity:0,offset:0}],{duration:dur,delay:delay,easing:'cubic-bezier(.22,.8,.24,1)'});};
+      fade(q('#siteHeader'),1550,700);fade(q('.plg-frame'),1550,800);fade(q('.plg-weave'),1500,900);
+      A(q('.plg-rule'),[{opacity:0,transform:'scaleX(0)',offset:0}],{duration:550,delay:1900,easing:'cubic-bezier(.22,.8,.24,1)'});
+      fade(q('.plg-ctas'),1980,650,16);fade(q('.plg-cue'),2250,500);
+      // hand the page back to its static styles in one frame, once everything has finished
+      Promise.all(anims.map(function(a){return a.finished})).then(done,done);
+      // the user scrolling or tapping mid-entrance finishes it immediately (never in the way)
+      var skip=function(){anims.forEach(function(a){try{a.finish()}catch(e){}})};
+      addEventListener('wheel',skip,{once:true,passive:true});addEventListener('touchmove',skip,{once:true,passive:true});addEventListener('keydown',skip,{once:true});
+      addEventListener('pagehide',done,{once:true});
+    }catch(e){done();}
+  })();
+</script>
 
 <style>
   .plg{--peek:56px;--inset:clamp(14px,2.4vw,30px);position:sticky;top:var(--pin-top,0px);z-index:0;min-height:100vh;min-height:100svh;overflow:hidden;display:grid;place-items:center;color:var(--ivory);
@@ -62,40 +112,26 @@ import { SITE, HERO, ext } from '../lib/content';
   .plg-cue span{font-family:var(--utility);font-weight:600;text-transform:uppercase;letter-spacing:.36em;text-indent:.36em;font-size:.62rem}
   .plg-cue .ln{width:1px;height:26px;background:linear-gradient(currentColor,transparent);transform-origin:top}
   .plg-cue:hover,.plg-cue:focus-visible{color:var(--ivory)}
-  /* SBK signature reveal (~1.7 s, first visit per session only).
-     ROOT-CAUSE RULE (Nov 2026 glitch): the logo <img> is never animated. An earlier version animated
-     `filter: blur() drop-shadow()` on the image and held the end state (fill-mode both); on iPhone
-     WebKit that left a solid white box over the logo once the animation finished. Now:
-       · only the wrapper (h1) moves, and only with opacity + transform (compositor-safe);
-       · the image keeps its static, approved drop-shadow and is untouched by any animation;
-       · every animation uses fill-mode `backwards`, so when it ends the element simply returns to its
-         static approved styles; no animated end-state is ever held.
-     Sequence: a powder-blue arc and a fainter champagne arc draw in opposite directions around the
-     mark while the ring eases a quarter-turn; the logo rises into focus at its final place; the ring
-     opens outward and dissolves into the hero; then the rule, buttons and cue arrive. */
+  /* SBK signature entrance — see the script at the end of this file for the timeline.
+     Root-cause rules carried from the Nov 2026 white-box glitch (iPhone WebKit painted an opaque box
+     where an animated, fill-held `filter` sat on the logo <img>):
+       · the logo <img> itself is never animated and never gets a new filter; only wrappers move;
+       · wrappers use only transform, opacity and clip-path;
+       · no animated end state is kept: when the entrance ends, every animation is cancelled in the
+         same frame the pre-state class is removed, so the page is left on its plain static styles. */
   .plg-mark{position:relative;display:grid;place-items:center}
-  .plg-arc{position:absolute;left:50%;top:50%;width:min(430px,70vw);aspect-ratio:1;transform:translate(-50%,-50%) rotate(-100deg);overflow:visible;pointer-events:none;opacity:0;fill:none;stroke-width:.6}
-  .plg-arc circle{stroke-dasharray:100 100;stroke-dashoffset:100;vector-effect:non-scaling-stroke;transform-box:fill-box;transform-origin:center}
-  .plg-arc .a1{stroke:var(--sage);stroke-opacity:.8}
-  .plg-arc .a2{stroke:var(--gold-lt);stroke-opacity:.42;transform:scale(-1,1)}
+  .plg-arc{position:absolute;left:50%;top:50%;width:110%;aspect-ratio:1;translate:-50% -50%;overflow:visible;pointer-events:none;opacity:0;fill:none;stroke-width:1}
+  .plg-arc circle{vector-effect:non-scaling-stroke;transform-box:fill-box;transform-origin:center}
+  .plg-arc .a1{stroke:var(--sage);stroke-opacity:.85;stroke-linecap:round}
+  .plg-arc .a2{stroke:var(--gold-lt);stroke-opacity:.35;transform:scale(-1,1)}
+  /* opening state, painted before the entrance script runs (removed by the script or the failsafe).
+     Only the logo needs a CSS pre-state; everything else is faded by the script towards its own
+     computed (approved) value, so no target opacity is ever hard-coded. */
+  :global(html.sbk-intro) .plg-logo{clip-path:circle(0px at 50% 50%)}
   @media (prefers-reduced-motion:no-preference){
     .plg-light{animation:plgBreathe 9s ease-in-out infinite alternate}
-    .plg-cue .ln{animation:cuePulse 2.8s ease-in-out 1.8s infinite}
-    :global(.sbk-intro) .plg-arc{animation:plgRing 1.75s cubic-bezier(.45,0,.2,1) backwards}
-    :global(.sbk-intro) .plg-arc .a1{animation:plgDraw1 1.75s cubic-bezier(.6,0,.3,1) backwards}
-    :global(.sbk-intro) .plg-arc .a2{animation:plgDraw2 1.75s cubic-bezier(.6,0,.3,1) .1s backwards}
-    :global(.sbk-intro) .plg-logo{animation:plgRise 1.05s cubic-bezier(.16,1,.3,1) .3s backwards}
-    :global(.sbk-intro) .plg-rule{animation:plgRule .6s var(--ease) 1s backwards}
-    :global(.sbk-intro) .plg-ctas{animation:fadeUp .65s var(--ease) 1.08s backwards}
-    :global(.sbk-intro) .plg-cue{animation:fadeIn .6s ease 1.3s backwards}
+    .plg-cue .ln{animation:cuePulse 2.8s ease-in-out 3s infinite}
   }
-  /* arcs draw to ~300° and ~260° by 55%, hold, then the ring opens and fades */
-  @keyframes plgDraw1{0%{stroke-dashoffset:100}55%,100%{stroke-dashoffset:16}}
-  @keyframes plgDraw2{0%{stroke-dashoffset:100}55%,100%{stroke-dashoffset:28}}
-  @keyframes plgRing{0%{opacity:1;transform:translate(-50%,-50%) rotate(-150deg) scale(.94)}
-    55%{opacity:1;transform:translate(-50%,-50%) rotate(-100deg) scale(1)}
-    100%{opacity:0;transform:translate(-50%,-50%) rotate(-88deg) scale(1.14)}}
-  @keyframes plgRise{from{opacity:.18;transform:translateY(10px) scale(.92)}to{opacity:1;transform:none}}
   @keyframes plgBreathe{from{opacity:.75;transform:scale(1)}to{opacity:1;transform:scale(1.06)}}
   @keyframes plgRule{from{transform:scaleX(0)}to{transform:scaleX(1)}}
   @keyframes cuePulse{0%,100%{transform:scaleY(.35);opacity:.5}50%{transform:scaleY(1);opacity:1}}
