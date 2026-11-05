@@ -1,0 +1,466 @@
+---
+/**
+ * BRIDAL INQUIRY — the multi-step inquiry system (from the approved 01 build), now bridal-only:
+ *   1 · The day        date (optional / "not set yet"), where you're getting ready, party size, styles
+ *   2 · Bridal details who needs hair, package interest (free text — no invented packages), trial
+ *   3 · Your contact   full name + email required, phone optional, message, inspiration links
+ *   4 · Review & send  every answer with Edit; one "Send Bridal Inquiry"
+ * Behaviour contract (handoff v2, Nov 2026): every control that is not the step action is
+ * type="button"; Enter never submits the page or leaves it; after Next/Back the new step's top is
+ * scrolled into view below the sticky header; a failed step stays put and focuses its first
+ * invalid field; answers persist in sessionStorage until a confirmed send or "Start over"; one
+ * send at a time with a real sending state; success only after the server accepts; a failure keeps
+ * every answer and says what to do.
+ * Delivery: POST /api/inquiry (Vercel function; delivers via Resend only when configured). Demo
+ * builds (PUBLIC_DEMO_ONLY=1) never contact a server and say so plainly.
+ */
+import { SITE } from '../consts';
+---
+<section class="cf-section" id="bridalForm" aria-label="Bridal inquiry form">
+  <noscript>
+    <p class="cf-noscript">This form needs JavaScript. You can email your bridal inquiry to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+  </noscript>
+
+  <form id="cfForm" class="cf-form" novalidate>
+    <ol class="cf-prog" id="cfProg" aria-label="Progress"></ol>
+
+    <!-- 1 · The day -->
+    <fieldset class="cf-step" data-step="day">
+      <legend tabindex="-1">Tell Kass about the day</legend>
+      <div class="cf-two">
+        <div class="cf-field">
+          <label for="cf-weddingDate">Wedding date <span class="cf-opt">optional</span></label>
+          <input id="cf-weddingDate" name="weddingDate" type="date" />
+          <label class="cf-check"><input type="checkbox" name="dateUnknown" value="Date not set yet" /><span>Date not set yet</span></label>
+        </div>
+        <div class="cf-field">
+          <label for="cf-weddingPlace">Where you’re getting ready <span class="cf-opt">optional</span></label>
+          <input id="cf-weddingPlace" name="weddingPlace" type="text" maxlength="120" placeholder="Town or venue" autocomplete="off" />
+        </div>
+      </div>
+      <div class="cf-field" role="radiogroup" aria-labelledby="cf-party-label" aria-describedby="cf-party-err">
+        <span class="cf-lbl" id="cf-party-label">How many of you need hair? <span class="cf-req">required</span></span>
+        <div class="cf-cards cf-cards-2">
+          <label class="cf-card"><input type="radio" name="partySize" value="Just me" /><span>Just me</span></label>
+          <label class="cf-card"><input type="radio" name="partySize" value="2–4 people" /><span>2&ndash;4</span></label>
+          <label class="cf-card"><input type="radio" name="partySize" value="5 or more" /><span>5 or more</span></label>
+          <label class="cf-card"><input type="radio" name="partySize" value="Not sure yet" /><span>Not sure yet</span></label>
+        </div>
+        <p class="cf-err" id="cf-party-err" hidden>Please choose one — “Not sure yet” is fine.</p>
+      </div>
+      <div class="cf-field" role="group" aria-labelledby="cf-styles-label">
+        <span class="cf-lbl" id="cf-styles-label">Styles you’re drawn to <span class="cf-opt">optional</span></span>
+        <div class="cf-cards cf-cards-2">
+          <label class="cf-card"><input type="checkbox" name="bridalStyles" value="Updo" /><span>Updo</span></label>
+          <label class="cf-card"><input type="checkbox" name="bridalStyles" value="Soft waves" /><span>Soft waves</span></label>
+          <label class="cf-card"><input type="checkbox" name="bridalStyles" value="Half-up" /><span>Half-up</span></label>
+          <label class="cf-card"><input type="checkbox" name="bridalStyles" value="Open to ideas" /><span>Open to ideas</span></label>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- 2 · Bridal details -->
+    <fieldset class="cf-step" data-step="details" hidden>
+      <legend tabindex="-1">Who’s getting ready?</legend>
+      <div class="cf-field" role="group" aria-labelledby="cf-who-label">
+        <span class="cf-lbl" id="cf-who-label">Hair for <span class="cf-opt">choose any</span></span>
+        <div class="cf-cards cf-cards-2">
+          <label class="cf-card"><input type="checkbox" name="hairFor" value="Bride" /><span>Bride</span></label>
+          <label class="cf-card"><input type="checkbox" name="hairFor" value="Bridesmaids" /><span>Bridesmaids</span></label>
+          <label class="cf-card"><input type="checkbox" name="hairFor" value="Mothers / family" /><span>Mothers / family</span></label>
+          <label class="cf-card"><input type="checkbox" name="hairFor" value="Flower girls" /><span>Flower girls</span></label>
+        </div>
+      </div>
+      <div class="cf-field">
+        <label for="cf-package">Which bridal services or package are you interested in? <span class="cf-opt">optional</span></label>
+        <textarea id="cf-package" name="packageInterest" rows="3" maxlength="1000" placeholder="Anything you have in mind — or “Not sure yet”."></textarea>
+      </div>
+      <div class="cf-field" role="radiogroup" aria-labelledby="cf-trial-label">
+        <span class="cf-lbl" id="cf-trial-label">Would you like a trial? <span class="cf-opt">optional</span></span>
+        <div class="cf-cards cf-cards-3">
+          <label class="cf-card"><input type="radio" name="trial" value="Yes" /><span>Yes</span></label>
+          <label class="cf-card"><input type="radio" name="trial" value="No" /><span>No</span></label>
+          <label class="cf-card"><input type="radio" name="trial" value="Not sure yet" /><span>Not sure</span></label>
+        </div>
+      </div>
+      <div class="cf-field">
+        <label for="cf-dayNotes">Anything else about the day? <span class="cf-opt">optional</span></label>
+        <textarea id="cf-dayNotes" name="dayNotes" rows="3" maxlength="1500" placeholder="Ceremony time, travel, veil or accessories, hair history…"></textarea>
+      </div>
+    </fieldset>
+
+    <!-- 3 · Your contact -->
+    <fieldset class="cf-step" data-step="contact" hidden>
+      <legend tabindex="-1">How can Kass reach you?</legend>
+      <div class="cf-field">
+        <label for="cf-name">Full name <span class="cf-req">required</span></label>
+        <input id="cf-name" name="fullName" type="text" maxlength="120" autocomplete="name" required aria-describedby="cf-name-err" />
+        <p class="cf-err" id="cf-name-err" hidden>Please enter your name.</p>
+      </div>
+      <div class="cf-two">
+        <div class="cf-field">
+          <label for="cf-email">Email <span class="cf-req">required</span></label>
+          <input id="cf-email" name="email" type="email" maxlength="160" autocomplete="email" inputmode="email" required aria-describedby="cf-email-err" />
+          <p class="cf-err" id="cf-email-err" hidden>Please enter an email address Kass can reply to.</p>
+        </div>
+        <div class="cf-field">
+          <label for="cf-phone">Phone <span class="cf-opt">optional</span></label>
+          <input id="cf-phone" name="phone" type="tel" maxlength="40" autocomplete="tel" inputmode="tel" aria-describedby="cf-phone-err" />
+          <p class="cf-err" id="cf-phone-err" hidden>That phone number doesn’t look complete.</p>
+        </div>
+      </div>
+      <div class="cf-field">
+        <label for="cf-message">Message <span class="cf-opt">optional</span></label>
+        <textarea id="cf-message" name="message" rows="3" maxlength="2000" placeholder="Questions for Kass, how you found her…"></textarea>
+      </div>
+      <div class="cf-field">
+        <label for="cf-links">Inspiration links <span class="cf-opt">optional</span></label>
+        <textarea id="cf-links" name="inspiration" rows="2" maxlength="1000" placeholder="Pinterest or Instagram links, one per line"></textarea>
+      </div>
+      <div aria-hidden="true" class="cf-hp"><label for="cf-company">Company</label><input id="cf-company" name="company" type="text" tabindex="-1" autocomplete="off" /></div>
+    </fieldset>
+
+    <!-- 4 · Review & send -->
+    <fieldset class="cf-step" data-step="review" hidden>
+      <legend tabindex="-1">Review your bridal inquiry</legend>
+      <div id="cfReview" class="cf-review"></div>
+      <p class="cf-consent">Sending this inquiry doesn’t book your date or take any payment. Kass replies by email to talk through your package, then sends your contract and deposit details.</p>
+    </fieldset>
+
+    <div class="cf-error" id="cfError" role="alert" hidden>
+      <strong>Your inquiry didn’t send.</strong> Your answers are still here — please try again in a moment, or email them to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+      <div class="cf-err-actions"><button type="button" class="btn btn--line" id="cfCopy">Copy my answers</button></div>
+      <span class="cf-err-code" id="cfErrCode"></span>
+    </div>
+
+    <div class="cf-nav">
+      <button type="button" class="btn btn--line" id="cfBack" hidden>Back</button>
+      <button type="submit" class="btn btn--solid" id="cfNext">Continue</button>
+    </div>
+    <p class="cf-reset"><button type="button" class="cf-reset-btn" id="cfReset" hidden>Start over</button></p>
+  </form>
+
+  <div class="cf-thanks" id="cfThanks" hidden>
+    <p class="cf-test-strip" id="cfTestStrip" hidden><strong>Demo mode</strong> &mdash; this inquiry was NOT sent to Kass. On her live website it would be.</p>
+    <span class="caps-xs">Inquiry received</span>
+    <h2 tabindex="-1" id="cfThanksHead">Thank you &mdash; Kass has your bridal inquiry.</h2>
+    <p id="cfThanksBody">She’ll reply by email to check her availability for your date, talk through your package, and send your contract and deposit details. Your date isn’t booked until then.</p>
+    <div class="cf-thanks-cta">
+      <a class="btn btn--solid" href={SITE.links.portfolio}>View her bridal work</a>
+      <a class="btn btn--line" href="/">Back to the site</a>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .cf-section{padding:0;min-width:0}
+  .cf-section [hidden]{display:none!important}
+  .cf-noscript{background:var(--paper);border:1px solid var(--hair);padding:22px;border-radius:var(--r);text-align:center}
+  .cf-noscript a{text-decoration:underline}
+  .cf-form{visibility:hidden;min-width:0}
+  .cf-form.ready{visibility:visible}
+  .cf-form *,.cf-form *::before,.cf-form *::after{box-sizing:border-box}
+  .cf-prog{list-style:none;display:flex;gap:8px;margin:0 0 26px;padding:0;min-width:0}
+  .cf-prog li{flex:1 1 0;min-width:0}
+  .cf-prog .bar{display:block;height:3px;background:var(--hair);margin-bottom:8px;border-radius:2px;transition:background .3s}
+  .cf-prog li.done .bar,.cf-prog li.now .bar{background:var(--leaf)}
+  .cf-prog .lbl{font-family:var(--utility);font-weight:600;font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+  .cf-prog li.now .lbl{color:var(--leaf)}
+  @media(max-width:560px){.cf-prog .lbl{display:none}.cf-prog li.now .lbl{display:block;overflow:visible}}
+  .cf-step{border:0;padding:0;margin:0;min-width:0;min-inline-size:0;max-width:100%;scroll-margin-top:96px}
+  .cf-step legend{font-family:var(--display);font-size:clamp(1.45rem,3.2vw,2rem);color:var(--ink);padding:0;margin-bottom:18px;text-wrap:balance;max-width:100%;font-variation-settings:'opsz' 72,'SOFT' 50}
+  .cf-step legend:focus{outline:none}
+  .cf-hint{font-size:.9rem;color:var(--ink-soft);margin:-8px 0 18px}
+  /* grids: zero-minimum tracks so no control's intrinsic width can widen the card */
+  .cf-cards{display:grid;gap:10px;margin-bottom:10px;grid-template-columns:minmax(0,1fr)}
+  .cf-cards-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cf-cards-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  @media(max-width:339px){.cf-cards-2,.cf-cards-3{grid-template-columns:minmax(0,1fr)}}
+  .cf-card{position:relative;display:flex;align-items:center;gap:8px;min-width:0;min-height:52px;padding:12px 14px;background:var(--paper);border:1px solid var(--hair-strong);border-radius:var(--r-sm);cursor:pointer;transition:border-color .2s,background .2s,box-shadow .2s}
+  .cf-card:hover{border-color:var(--leaf)}
+  .cf-card input{position:absolute;opacity:0;pointer-events:none}
+  .cf-card span{font-size:.95rem;color:var(--ink);min-width:0;overflow-wrap:anywhere}
+  .cf-card:has(input:checked){border-color:var(--leaf);background:#fff;box-shadow:inset 0 0 0 1px var(--leaf)}
+  .cf-card:has(input:checked) span{font-weight:600}
+  .cf-card:has(input:checked)::after{content:"";margin-left:auto;width:8px;height:8px;border-radius:50%;background:var(--leaf);flex:none}
+  .cf-card:has(input:focus-visible){outline:2px solid var(--brass);outline-offset:3px}
+  .cf-field{margin-bottom:18px;min-width:0;max-width:100%}
+  .cf-two{display:grid;gap:0 16px;grid-template-columns:minmax(0,1fr)}
+  @media(min-width:600px){.cf-two{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  .cf-field>label,.cf-lbl{display:block;font-family:var(--utility);font-weight:600;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px;overflow-wrap:anywhere}
+  .cf-req{font-weight:500;letter-spacing:.08em;color:var(--brass);text-transform:lowercase}
+  .cf-opt{font-weight:500;letter-spacing:.08em;color:var(--ink-soft);text-transform:lowercase}
+  .cf-field input:not([type="radio"]):not([type="checkbox"]),.cf-field select,.cf-field textarea{display:block;width:100%;min-width:0;max-width:100%;min-height:48px;margin:0;padding:12px 14px;background:#fff;border:1px solid var(--hair-strong);border-radius:var(--r-sm);color:var(--ink);font:inherit;font-size:1rem;line-height:1.4;transition:border-color .2s}
+  /* iOS Safari draws type=date with an intrinsic width that ignores width:100%: drop the native
+     chrome so it sizes like every other field, and keep its value left-aligned */
+  .cf-field input[type="date"]{-webkit-appearance:none;appearance:none;text-align:left}
+  .cf-field input[type="date"]::-webkit-date-and-time-value{text-align:left;margin:0}
+  .cf-field input[type="date"]::-webkit-datetime-edit{padding:0}
+  .cf-field textarea{resize:vertical;min-height:0}
+  .cf-field input[aria-invalid="true"],.cf-field textarea[aria-invalid="true"]{border-color:#B2473D}
+  .cf-field[data-invalid] .cf-card{border-color:#B2473D}
+  .cf-check{display:inline-flex!important;align-items:center;gap:8px;margin-top:10px;font-family:var(--utility);font-size:.88rem;color:var(--ink);cursor:pointer;text-transform:none;letter-spacing:0;font-weight:500}
+  .cf-check input{width:18px;height:18px;accent-color:var(--leaf);margin:0}
+  .cf-err{font-size:.82rem;color:#9A3A31;margin-top:6px}
+  .cf-hp{position:absolute;left:-9999px;top:auto}
+  .cf-review{display:grid;gap:14px;margin-bottom:18px;min-width:0}
+  .cf-rev-group{background:var(--linen);border:1px solid var(--hair);border-radius:var(--r-sm);padding:16px 18px;min-width:0}
+  .cf-rev-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:8px}
+  .cf-rev-head h3{font-size:1.05rem}
+  .cf-rev-edit{background:none;border:0;cursor:pointer;font-family:var(--utility);font-weight:600;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--brass);text-decoration:underline;text-underline-offset:3px;padding:6px;min-height:36px}
+  .cf-rev-group dl{margin:0;display:grid;gap:5px}
+  .cf-rev-group dl div{display:flex;flex-wrap:wrap;gap:4px 8px;font-size:.9rem;min-width:0}
+  .cf-rev-group dt{color:var(--ink-soft)}
+  .cf-rev-group dt::after{content:':'}
+  .cf-rev-group dd{margin:0;font-weight:600;color:var(--ink);overflow-wrap:anywhere;white-space:pre-line;min-width:0}
+  .cf-consent{font-size:.86rem;color:var(--ink-soft)}
+  .cf-nav{display:flex;justify-content:space-between;gap:12px;margin-top:22px;flex-wrap:wrap}
+  .cf-nav .btn{min-width:min(140px,100%)}
+  .cf-nav #cfNext{margin-left:auto}
+  @media(max-width:400px){.cf-nav .btn{flex:1 1 0;padding-inline:1em}}
+  .cf-reset{margin:14px 0 0;text-align:right}
+  .cf-reset-btn{background:none;border:0;padding:6px;cursor:pointer;font-family:var(--utility);font-size:.78rem;color:var(--ink-soft);text-decoration:underline;text-underline-offset:3px}
+  .cf-error{margin-top:20px;border:1px solid #B2473D;background:#fff;border-radius:var(--r-sm);padding:16px 18px;font-size:.92rem}
+  .cf-error a{text-decoration:underline;overflow-wrap:anywhere}
+  .cf-err-actions{margin-top:12px}
+  .cf-err-code{display:block;margin-top:8px;font-family:var(--utility);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+  .cf-thanks{text-align:center;scroll-margin-top:96px}
+  .cf-thanks .caps-xs{display:block;margin-bottom:.8rem}
+  .cf-thanks h2{font-size:clamp(1.5rem,3.4vw,2.1rem);margin-bottom:12px}
+  .cf-thanks h2:focus{outline:none}
+  .cf-thanks p{max-width:46ch;margin:0 auto}
+  .cf-thanks-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+  .cf-test-strip{background:var(--leaf-deep);color:var(--ivory);padding:10px 16px;border-radius:var(--r-sm);font-size:.84rem;margin:0 auto 22px!important;letter-spacing:.02em;max-width:none!important}
+</style>
+
+<script>
+  type StepKey = 'day' | 'details' | 'contact' | 'review';
+  const STEPS: StepKey[] = ['day', 'details', 'contact', 'review'];
+  const LABELS: Record<StepKey, string> = { day: 'The day', details: 'Bridal details', contact: 'Your contact', review: 'Review & send' };
+  const FIELDS = ['weddingDate', 'dateUnknown', 'weddingPlace', 'partySize', 'bridalStyles', 'hairFor', 'packageInterest', 'trial', 'dayNotes', 'fullName', 'email', 'phone', 'message', 'inspiration'] as const;
+  type Field = (typeof FIELDS)[number];
+  const MULTI: Field[] = ['bridalStyles', 'hairFor'];
+  const REVIEW: [StepKey, [Field, string][]][] = [
+    ['day', [['weddingDate', 'Wedding date'], ['dateUnknown', 'Date'], ['weddingPlace', 'Getting ready at'], ['partySize', 'How many need hair'], ['bridalStyles', 'Styles']]],
+    ['details', [['hairFor', 'Hair for'], ['packageInterest', 'Package interest'], ['trial', 'Trial'], ['dayNotes', 'About the day']]],
+    ['contact', [['fullName', 'Name'], ['email', 'Email'], ['phone', 'Phone'], ['message', 'Message'], ['inspiration', 'Inspiration']]],
+  ];
+  const KEY = 'sbk-bridal-inquiry-v1';
+  const answers = Object.fromEntries(FIELDS.map((f) => [f, ''])) as Record<Field, string>;
+
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const form = $<HTMLFormElement>('cfForm'), progEl = $<HTMLOListElement>('cfProg'), reviewEl = $('cfReview');
+  const errorEl = $('cfError'), backBtn = $<HTMLButtonElement>('cfBack'), nextBtn = $<HTMLButtonElement>('cfNext');
+  const resetBtn = $<HTMLButtonElement>('cfReset'), thanksEl = $('cfThanks');
+  const stepEls = new Map<StepKey, HTMLFieldSetElement>();
+  form.querySelectorAll<HTMLFieldSetElement>('fieldset[data-step]').forEach((el) => stepEls.set(el.dataset.step as StepKey, el));
+  let step = 0;
+  let status: 'idle' | 'sending' | 'sent' | 'error' = 'idle';
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const track = (event: string, p: Record<string, unknown> = {}) => { ((window as unknown as { dataLayer?: unknown[] }).dataLayer ??= []).push({ event, ...p }); };
+
+  // ---- persistence (session only; never after a confirmed send) ----
+  const save = () => { try { sessionStorage.setItem(KEY, JSON.stringify({ answers, step })); } catch {} };
+  const clearSaved = () => { try { sessionStorage.removeItem(KEY); } catch {} };
+  const restore = () => {
+    try {
+      const raw = sessionStorage.getItem(KEY); if (!raw) return;
+      const s = JSON.parse(raw) as { answers: Partial<Record<Field, string>>; step: number };
+      for (const f of FIELDS) if (typeof s.answers?.[f] === 'string') answers[f] = s.answers[f] as string;
+      step = Math.min(Math.max(0, s.step | 0), STEPS.length - 1);
+      // write the restored answers back into the controls
+      for (const f of FIELDS) {
+        const els = form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>(`[name="${f}"]`);
+        els.forEach((el) => {
+          if (el instanceof HTMLInputElement && (el.type === 'radio' || el.type === 'checkbox')) el.checked = MULTI.includes(f) ? answers[f].split(', ').includes(el.value) : answers[f] === el.value;
+          else el.value = answers[f];
+        });
+      }
+    } catch {}
+  };
+
+  // ---- validation ----
+  const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
+  const phoneOk = (v: string) => !v.trim() || v.replace(/\D/g, '').length >= 7;
+  /** returns the invalid fields of a step, in visual order */
+  const invalid = (key: StepKey): { id: string; err: string }[] => {
+    const bad: { id: string; err: string }[] = [];
+    if (key === 'day' && !answers.partySize) bad.push({ id: 'cf-party-label', err: 'cf-party-err' });
+    if (key === 'contact') {
+      if (!answers.fullName.trim()) bad.push({ id: 'cf-name', err: 'cf-name-err' });
+      if (!emailOk(answers.email)) bad.push({ id: 'cf-email', err: 'cf-email-err' });
+      if (!phoneOk(answers.phone)) bad.push({ id: 'cf-phone', err: 'cf-phone-err' });
+    }
+    return bad;
+  };
+  const ALL_ERRS = ['cf-party-err', 'cf-name-err', 'cf-email-err', 'cf-phone-err'];
+  const showErrors = (bad: { id: string; err: string }[]) => {
+    ALL_ERRS.forEach((e) => { $(e).hidden = true; });
+    form.querySelectorAll('[aria-invalid="true"]').forEach((el) => el.setAttribute('aria-invalid', 'false'));
+    form.querySelectorAll('[data-invalid]').forEach((el) => el.removeAttribute('data-invalid'));
+    for (const b of bad) {
+      $(b.err).hidden = false;
+      const el = $(b.id);
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.setAttribute('aria-invalid', 'true');
+      else el.closest('.cf-field')?.setAttribute('data-invalid', '');
+    }
+  };
+
+  // ---- scrolling: the top of the step sits just below the sticky header ----
+  // the header slides back in whenever the page scrolls up, so always leave room for its compact
+  // (stuck) height — never measure it mid-transition
+  const headerH = () => { const h = document.getElementById('siteHeader'); return h ? Math.max(64, Math.min(h.getBoundingClientRect().height, 96)) : 0; };
+  const scrollToEl = (el: Element) => { const y = el.getBoundingClientRect().top + scrollY - headerH() - 16; scrollTo({ top: Math.max(0, y), behavior: reduced ? 'auto' : 'smooth' }); };
+
+  // ---- rendering ----
+  const el = (tag: string, cls: string, text?: string) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined) n.textContent = text; return n; };
+  function renderProgress() {
+    progEl.textContent = '';
+    STEPS.forEach((key, i) => {
+      const li = el('li', i < step ? 'done' : i === step ? 'now' : '');
+      if (i === step) li.setAttribute('aria-current', 'step');
+      li.appendChild(el('span', 'bar'));
+      const lbl = el('span', 'lbl', LABELS[key]); lbl.setAttribute('aria-hidden', 'true'); li.appendChild(lbl);
+      li.appendChild(el('span', 'sr-only', `Step ${i + 1} of ${STEPS.length}: ${LABELS[key]}${i === step ? ' (current)' : ''}`));
+      progEl.appendChild(li);
+    });
+  }
+  function renderReview() {
+    reviewEl.textContent = '';
+    for (const [key, fields] of REVIEW) {
+      const rows = fields.filter(([f]) => answers[f].trim());
+      const group = el('div', 'cf-rev-group'); const head = el('div', 'cf-rev-head');
+      head.appendChild(el('h3', '', LABELS[key]));
+      const edit = el('button', 'cf-rev-edit', 'Edit') as HTMLButtonElement; edit.type = 'button'; edit.setAttribute('aria-label', `Edit ${LABELS[key].toLowerCase()}`);
+      edit.addEventListener('click', () => go(STEPS.indexOf(key)));
+      head.appendChild(edit); group.appendChild(head);
+      const dl = document.createElement('dl');
+      if (!rows.length) { const d = document.createElement('div'); d.appendChild(el('dd', '', 'Nothing added')); dl.appendChild(d); }
+      rows.forEach(([f, label]) => { const d = document.createElement('div'); d.appendChild(el('dt', '', label)); d.appendChild(el('dd', '', answers[f].trim())); dl.appendChild(d); });
+      group.appendChild(dl); reviewEl.appendChild(group);
+    }
+  }
+  function render() {
+    const key = STEPS[step];
+    stepEls.forEach((elm, k) => { elm.hidden = k !== key; });
+    renderProgress();
+    if (key === 'review') renderReview();
+    backBtn.hidden = step === 0;
+    nextBtn.textContent = key === 'review' ? (status === 'sending' ? 'Sending…' : 'Send Bridal Inquiry') : 'Continue';
+    nextBtn.disabled = status === 'sending';
+    nextBtn.setAttribute('aria-busy', String(status === 'sending'));
+    resetBtn.hidden = !FIELDS.some((f) => answers[f]);
+  }
+  /** move to a step: render, then bring its top into view and focus its heading */
+  function go(n: number) {
+    step = Math.max(0, Math.min(STEPS.length - 1, n));
+    showErrors([]); errorEl.hidden = true; render(); save();
+    const fs = stepEls.get(STEPS[step])!;
+    requestAnimationFrame(() => { scrollToEl(fs); fs.querySelector('legend')?.focus({ preventScroll: true }); });
+    track('step_viewed', { step: STEPS[step], step_number: step + 1 });
+  }
+
+  // ---- input ----
+  form.addEventListener('input', (e) => {
+    const t = e.target as HTMLInputElement | HTMLTextAreaElement;
+    const name = t.name as Field;
+    if (!FIELDS.includes(name)) return;
+    if (MULTI.includes(name)) answers[name] = Array.from(form.querySelectorAll<HTMLInputElement>(`input[name="${name}"]:checked`)).map((c) => c.value).join(', ');
+    else if (t instanceof HTMLInputElement && t.type === 'checkbox') answers[name] = t.checked ? t.value : '';
+    else answers[name] = t.value;
+    if (name === 'dateUnknown' && answers.dateUnknown) { answers.weddingDate = ''; ($<HTMLInputElement>('cf-weddingDate')).value = ''; }
+    if (name === 'weddingDate' && answers.weddingDate) { answers.dateUnknown = ''; form.querySelector<HTMLInputElement>('input[name="dateUnknown"]')!.checked = false; }
+    resetBtn.hidden = false; save();
+  });
+  // Errors only ever appear on blur and only ever clear while typing — so nothing below a field moves
+  // at the moment someone taps Back or Continue (a layout shift there would swallow the tap).
+  const FIELD_ERR: Record<string, [string, (v: string) => boolean, Field]> = {
+    'cf-name': ['cf-name-err', (v) => !!v.trim(), 'fullName'], 'cf-email': ['cf-email-err', emailOk, 'email'], 'cf-phone': ['cf-phone-err', phoneOk, 'phone'],
+  };
+  Object.entries(FIELD_ERR).forEach(([id, [err, ok, f]]) => {
+    const input = $<HTMLInputElement>(id);
+    input.addEventListener('blur', () => { if (answers[f] && !ok(answers[f])) { $(err).hidden = false; input.setAttribute('aria-invalid', 'true'); } });
+    input.addEventListener('input', () => { if (!$(err).hidden && ok(answers[f])) { $(err).hidden = true; input.setAttribute('aria-invalid', 'false'); } });
+  });
+  form.addEventListener('change', (e) => { if ((e.target as HTMLInputElement).name === 'partySize') { $('cf-party-err').hidden = true; form.querySelector('[data-invalid]')?.removeAttribute('data-invalid'); } });
+  // Enter in a single-line field moves forward through the step instead of submitting the page
+  form.addEventListener('keydown', (e) => {
+    const t = e.target as HTMLElement;
+    if (e.key === 'Enter' && t instanceof HTMLInputElement && t.type !== 'checkbox' && t.type !== 'radio') { e.preventDefault(); nextBtn.click(); }
+  });
+
+  backBtn.addEventListener('click', () => { if (step > 0) go(step - 1); });
+  resetBtn.addEventListener('click', () => {
+    form.reset(); FIELDS.forEach((f) => { answers[f] = ''; }); clearSaved(); status = 'idle'; go(0);
+  });
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (status === 'sending') return;
+    const key = STEPS[step];
+    const bad = invalid(key);
+    if (bad.length) {
+      showErrors(bad);
+      const first = $(bad[0].id);
+      requestAnimationFrame(() => { scrollToEl(first.closest('.cf-field') ?? first); (first.tagName === 'INPUT' ? first : first.closest('.cf-field')?.querySelector<HTMLInputElement>('input'))?.focus({ preventScroll: true }); });
+      track('step_invalid', { step: key, fields: bad.map((b) => b.id) });
+      return;
+    }
+    if (key !== 'review') { go(step + 1); return; }
+    void send();
+  });
+
+  async function send() {
+    status = 'sending'; errorEl.hidden = true; render();
+    const company = ($<HTMLInputElement>('cf-company')).value;
+    try {
+      let staged = false;
+      if (import.meta.env.PUBLIC_DEMO_ONLY === '1') {
+        // DEMO: never contacts any server; the thank-you screen says so plainly.
+        await new Promise((r) => setTimeout(r, 700)); staged = true;
+      } else {
+        const res = await fetch('/api/inquiry', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...answers, company }) });
+        const isJson = (res.headers.get('content-type') ?? '').includes('application/json');
+        const data = isJson ? ((await res.json().catch(() => ({}))) as { ok?: boolean; staged?: boolean; reason?: string }) : {};
+        // A host without the function (static preview) answers 404/405/HTML: that is NOT a send.
+        if (!isJson) throw new Error(`no_endpoint_${res.status}`);
+        if (!res.ok || !data.ok) throw new Error(data.reason ?? `http_${res.status}`);
+        staged = !!data.staged;
+      }
+      status = 'sent'; clearSaved();
+      form.hidden = true;
+      $('cfTestStrip').hidden = !staged;
+      if (staged) $('cfThanksBody').textContent = 'This is a demo, so nothing was sent. On the live site, Kass would receive these answers and reply by email about your package, contract and deposit.';
+      thanksEl.hidden = false;
+      requestAnimationFrame(() => { scrollToEl(thanksEl); $('cfThanksHead').focus({ preventScroll: true }); });
+      track('form_submitted', { staged });
+    } catch (err) {
+      status = 'error';
+      const reason = err instanceof Error && err.message ? err.message : 'network';
+      $('cfErrCode').textContent = `Error code: ${reason}`;
+      errorEl.hidden = false; render();
+      requestAnimationFrame(() => scrollToEl(errorEl));
+      track('form_error', { message: reason });
+    }
+  }
+
+  function summary(): string {
+    const lines = ['Bridal inquiry — Sass by Kass', ''];
+    for (const [key, fields] of REVIEW) {
+      const rows = fields.filter(([f]) => answers[f].trim()); if (!rows.length) continue;
+      lines.push(LABELS[key].toUpperCase()); rows.forEach(([f, l]) => lines.push(`  ${l}: ${answers[f].trim()}`)); lines.push('');
+    }
+    return lines.join('\n').trim();
+  }
+  const copyBtn = $<HTMLButtonElement>('cfCopy');
+  copyBtn.addEventListener('click', async () => {
+    const text = summary(); let ok = false;
+    try { await navigator.clipboard.writeText(text); ok = true; }
+    catch { const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); try { ok = document.execCommand('copy'); } catch { ok = false; } ta.remove(); }
+    copyBtn.textContent = ok ? 'Copied ✓' : 'Select all & copy';
+    setTimeout(() => { copyBtn.textContent = 'Copy my answers'; }, 2600);
+  });
+
+  restore();
+  form.classList.add('ready');
+  render();
+</script>

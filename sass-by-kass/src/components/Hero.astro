@@ -1,61 +1,54 @@
 ---
-/** HERO — the bridal opening. Her SBK logo is the title card: it is on screen from the first
- *  painted frame (no fade-in from nothing), holds for a beat, then lifts to reveal the bridal
- *  film. Behind the film, its poster is a plain image that paints immediately, so a slow
- *  connection still shows a finished opening — logo, poster, headline, both buttons.
- *   · phones: full-screen film under a tinted scrim, logo + headline over it;
- *   · desktop: logo + headline left, the vertical film in a tall 9:16 frame right.
- *  Pinned (the first chapter rises over it). Every animation's base state is the finished
- *  frame; reduced motion = still poster, no veil. */
+/** HERO — static and logo-led (handoff v2): her SBK logo, a bridal headline, the two booking
+ *  actions (Bridal Inquiry → the on-site form, Book In-Salon → GlossGenius) and a "Meet Kass"
+ *  cue. No opening film and no title card, so nothing waits on media: the first paint is the
+ *  finished opening.
+ *   · desktop: logo + headline left, a real bridal photograph in the tall frame right;
+ *   · phones: the same photograph as a soft, tinted backdrop behind the logo.
+ *  Still pinned, so About Kass rises over it on the curved band, as approved. A light entrance
+ *  (fade/rise, under 1 s) runs only when motion is allowed. */
 import Logo from './Logo.astro';
-import { SITE, HERO, MEDIA, ext } from '../lib/content';
-const film = MEDIA.heroFilm;
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { SITE, HERO, ext } from '../lib/content';
+const plates = import.meta.glob<{ default: ImageMetadata }>('../assets/plates/*.jpg', { eager: true });
+const photo = plates['../assets/plates/bride-veil.jpg'].default;
 ---
-<section class="plg" id="hero" data-pin data-chapter="hero" data-tone="film" aria-label={`${SITE.name} — ${SITE.tagline}`} style={`--poster:url(${film.poster})`}>
-  <div class="plg-amb" aria-hidden="true"></div>
+<section class="plg" id="hero" data-pin data-chapter="hero" data-tone="film" aria-label={`${SITE.name} — ${SITE.tagline}`}>
+  <div class="plg-bg" aria-hidden="true">
+    <Image src={photo} alt="" widths={[480, 800, 1200]} sizes="100vw" loading="eager" fetchpriority="high" class="plg-bg-img" />
+  </div>
   <div class="plg-grid">
     <div class="plg-c">
       <h1 class="plg-logo"><Logo tone="dark" size="md" eager label={`${SITE.name} — ${SITE.tagline}`} /></h1>
-      <p class="plg-eyebrow a1">{HERO.eyebrow.map((e, i) => <>{i > 0 && <b>&middot;</b>}{e}</>)}</p>
+      <p class="plg-eyebrow">{HERO.eyebrow.map((e, i) => <>{i > 0 && <b>&middot;</b>}{e}</>)}</p>
       <p class="plg-h">
         {HERO.lines.map((l) => <span class="lo"><span class="li">{l}</span></span>)}
         <span class="lo"><span class="li ital">{HERO.italic}</span></span>
       </p>
       <p class="plg-it">{HERO.sub}</p>
       <div class="plg-ctas">
-        <a class="btn btn--ivory" href={HERO.ctaHref} {...ext(HERO.ctaHref)}>{HERO.cta}</a>
-        <a class="btn btn--ghost" href={HERO.secondaryHref}>{HERO.secondary}</a>
+        <a class="btn btn--ivory" href={HERO.ctaHref}>{HERO.cta}</a>
+        <a class="btn btn--ghost" href={HERO.salonHref} {...ext(HERO.salonHref)}>{HERO.salon}</a>
       </div>
-      <p class="plg-loc"><a href={HERO.salonHref} {...ext(HERO.salonHref)}>{HERO.salon} <span aria-hidden="true">&rarr;</span></a></p>
     </div>
-    <div class="plg-frame" aria-hidden="true">
-      <img class="plg-poster" src={film.poster} alt="" width="720" height="1280" fetchpriority="low" decoding="async" />
-      <video class="plg-film" id="heroFilm" muted loop playsinline preload="none" poster={film.poster} disablepictureinpicture tabindex="-1">
-        <source data-src={film.webm} type="video/webm" />
-        <source data-src={film.mp4} type="video/mp4" />
-      </video>
+    <figure class="plg-frame" aria-hidden="true">
+      <Image src={photo} alt="" widths={[480, 800, 1059]} sizes="(max-width:899px) 1px, 40vw" loading="eager" class="plg-photo" />
       <div class="plg-scrim"></div>
       <i class="grain"></i>
-    </div>
+    </figure>
   </div>
-
-  <!-- the title card: her logo, visible from the first frame, then lifting -->
-  <div class="plg-veil" aria-hidden="true">
-    <div class="plg-veil-c">
-      <Logo tone="dark" size="md" class="plg-veil-logo" eager />
-      <span class="plg-veil-rule"></span>
-    </div>
-  </div>
-  <div class="plg-cue" aria-hidden="true"><span>Scroll</span><i class="ln"></i></div>
+  <a class="plg-cue" href="#about"><span>{HERO.cue}</span><i class="ln" aria-hidden="true"></i></a>
 </section>
 
 <style>
   .plg{--peek:56px;position:sticky;top:var(--pin-top,0px);z-index:0;min-height:100vh;min-height:100svh;background:var(--leaf-deep);overflow:hidden;display:grid;color:var(--ivory)}
   .plg.is-covered{visibility:hidden}
-  .plg-amb{position:absolute;inset:-8%;background:var(--poster) center/cover no-repeat;filter:blur(42px) saturate(.9);transform:scale(1.1)}
-  .plg-amb::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,var(--leaf-deep) 0%,color-mix(in srgb,var(--leaf) 80%,transparent) 55%,color-mix(in srgb,var(--leaf-deep) 66%,transparent) 100%)}
+  .plg-bg{position:absolute;inset:0}
+  .plg-bg :global(.plg-bg-img){width:100%;height:100%;object-fit:cover;object-position:50% 30%;filter:blur(36px) saturate(.85);transform:scale(1.15)}
+  .plg-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,var(--leaf-deep) 0%,color-mix(in srgb,var(--leaf) 84%,transparent) 55%,color-mix(in srgb,var(--leaf-deep) 72%,transparent) 100%)}
   .plg-grid{position:relative;z-index:2;width:var(--wrap);margin-inline:auto;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);align-items:center;gap:clamp(2rem,5vw,5rem);padding:clamp(6.5rem,13vh,8rem) 0 calc(var(--peek) + clamp(4rem,9vh,6rem));min-height:100svh}
-  .plg-c{max-width:640px}
+  .plg-c{max-width:640px;min-width:0}
   .plg-logo{margin:0 0 clamp(1.4rem,3vh,2.2rem);line-height:0}
   .plg-logo :global(img){width:min(440px,100%);height:auto}
   .plg-eyebrow{font-family:var(--utility);font-weight:600;font-size:clamp(.6rem,1.4vw,.7rem);letter-spacing:.28em;text-transform:uppercase;color:var(--ivory);margin-bottom:clamp(1rem,2.4vh,1.6rem);opacity:.92}
@@ -66,83 +59,46 @@ const film = MEDIA.heroFilm;
   .plg-h .ital{font-style:italic;font-weight:300;color:var(--gold-lt)}
   .plg-it{font-family:var(--display);font-style:italic;font-size:clamp(1.04rem,1.5vw,1.3rem);line-height:1.55;color:color-mix(in srgb,var(--ivory) 90%,transparent);max-width:30em;margin:clamp(1.2rem,2.4vh,1.8rem) 0 0;font-variation-settings:'opsz' 48,'SOFT' 70}
   .plg-ctas{display:flex;flex-wrap:wrap;gap:14px;margin-top:clamp(1.6rem,3.2vh,2.4rem)}
-  .plg-loc{margin-top:clamp(1.2rem,2.4vh,1.8rem)}
-  .plg-loc a{font-family:var(--utility);font-weight:600;color:var(--gold-lt);font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;border-bottom:1px solid var(--hairdk-strong);padding-bottom:.4em}
-  .plg-loc a:hover,.plg-loc a:focus-visible{color:var(--ivory)}
-  /* the film frame: the poster <img> paints first; the video sits on top once it can play */
-  .plg-frame{position:relative;justify-self:end;height:min(78svh,760px);aspect-ratio:9/16;border-radius:var(--r-lg);overflow:hidden;background:var(--leaf-deep);box-shadow:0 60px 120px -50px rgba(0,0,0,.7),0 0 0 1px color-mix(in srgb,var(--gold-lt) 35%,transparent)}
-  .plg-poster,.plg-film{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
-  .plg-film{filter:saturate(.96)}
-  .plg-scrim{position:absolute;inset:0;background:linear-gradient(color-mix(in srgb,var(--leaf-deep) 22%,transparent),transparent 30%,transparent 70%,color-mix(in srgb,var(--leaf-deep) 55%,transparent))}
-
-  /* ---- motion (only when allowed): the title card holds, lifts; the copy rises after ---- */
+  .plg-frame{position:relative;margin:0;justify-self:end;height:min(78svh,760px);aspect-ratio:3/4;max-width:100%;border-radius:var(--r-lg);overflow:hidden;background:var(--leaf-deep);box-shadow:0 60px 120px -50px rgba(0,0,0,.7),0 0 0 1px color-mix(in srgb,var(--gold-lt) 35%,transparent)}
+  .plg-frame :global(.plg-photo){position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
+  .plg-scrim{position:absolute;inset:0;background:linear-gradient(transparent 60%,color-mix(in srgb,var(--leaf-deep) 45%,transparent))}
+  .plg-cue{position:absolute;bottom:calc(var(--peek) + clamp(.6rem,1.6vh,1rem));left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:.7rem;min-height:44px;padding:4px 12px;color:var(--gold-lt)}
+  .plg-cue span{font-family:var(--utility);font-weight:600;text-transform:uppercase;letter-spacing:.36em;text-indent:.36em;font-size:.6rem}
+  .plg-cue .ln{width:1px;height:28px;background:linear-gradient(currentColor,transparent);transform-origin:top}
+  .plg-cue:hover,.plg-cue:focus-visible{color:var(--ivory)}
   @media (prefers-reduced-motion:no-preference){
-    .plg-veil{animation:veil 1.5s var(--ease) .55s 1 both}
-    .plg-veil-c{animation:veilCard 1.5s var(--ease) .55s 1 both}
-    .plg-veil-rule{animation:ruleIn .7s var(--ease) .05s both}
-    .plg-film{animation:plgKb 9s ease-in-out 1s infinite alternate}
-    .plg-h .li{animation:riseIn 1s var(--ease) both}
-    .plg-h .lo:nth-child(1) .li{animation-delay:1.05s}
-    .plg-h .lo:nth-child(2) .li{animation-delay:1.17s}
-    .plg-h .lo:nth-child(3) .li{animation-delay:1.29s}
-    .plg-eyebrow,.plg-it,.plg-ctas,.plg-loc{animation:fadeUp .8s ease both}
-    .plg-eyebrow{animation-delay:.95s}.plg-it{animation-delay:1.45s}.plg-ctas{animation-delay:1.6s}.plg-loc{animation-delay:1.72s}
-    .plg-cue{animation:fadeIn 1s ease 2.2s both}
-    .plg-cue .ln{animation:cuePulse 2.8s ease-in-out 2.6s infinite}
+    .plg-c>*{animation:fadeUp .8s var(--ease) both}
+    .plg-c>:nth-child(2){animation-delay:.08s}.plg-c>:nth-child(3){animation-delay:.14s}.plg-c>:nth-child(4){animation-delay:.22s}.plg-c>:nth-child(5){animation-delay:.3s}
+    .plg-frame{animation:fadeIn 1s ease .1s both}
+    .plg-cue .ln{animation:cuePulse 2.8s ease-in-out 1.2s infinite}
   }
-  @keyframes plgKb{from{transform:scale(1.04)}to{transform:scale(1)}}
-  /* THE VEIL: her logo on deep navy. Without motion it is simply absent (finished page). */
-  .plg-veil{position:absolute;inset:0;z-index:4;display:grid;place-items:center;background:var(--leaf);opacity:0;visibility:hidden;pointer-events:none}
-  @keyframes veil{from{opacity:1;visibility:visible}55%{opacity:1}to{opacity:0;visibility:hidden}}
-  .plg-veil-c{display:flex;flex-direction:column;align-items:center;gap:1.1rem}
-  @keyframes veilCard{from{transform:none}55%{transform:none}to{transform:scale(1.03) translateY(-6px)}}
-  .plg-veil :global(.plg-veil-logo){width:min(520px,78vw);height:auto}
-  .plg-veil-rule{display:block;width:clamp(56px,8vw,88px);height:1px;background:var(--gold-lt);opacity:.7;transform-origin:center}
-  @keyframes ruleIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-  .plg-cue{position:absolute;bottom:calc(var(--peek) + clamp(.6rem,1.6vh,1rem));left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:.8rem}
-  .plg-cue span{font-family:var(--utility);font-weight:600;text-transform:uppercase;letter-spacing:.42em;text-indent:.42em;font-size:.55rem;color:var(--gold-lt)}
-  .plg-cue .ln{width:1px;height:32px;background:linear-gradient(var(--gold-lt),transparent);transform-origin:top}
   @keyframes cuePulse{0%,100%{transform:scaleY(.35);opacity:.5}50%{transform:scaleY(1);opacity:1}}
 
-  /* ---- phones & tablets: the film IS the screen ---- */
+  /* ---- phones & tablets: logo-led, the photograph as a soft backdrop ---- */
   @media(max-width:899px){
-    .plg-amb{display:none}
+    .plg-frame{display:none}
+    .plg-bg :global(.plg-bg-img){filter:saturate(.9);transform:none}
+    .plg-bg::after{background:linear-gradient(color-mix(in srgb,var(--leaf-deep) 80%,transparent),color-mix(in srgb,var(--leaf-deep) 58%,transparent) 40%,color-mix(in srgb,var(--leaf-deep) 70%,transparent) 70%,var(--leaf-deep))}
     .plg-grid{display:block;width:100%;padding:0;min-height:100svh}
-    .plg-frame{position:absolute;inset:0;height:auto;aspect-ratio:auto;border-radius:0;box-shadow:none;justify-self:auto}
-    .plg-scrim{background:linear-gradient(color-mix(in srgb,var(--leaf-deep) 72%,transparent),color-mix(in srgb,var(--leaf-deep) 30%,transparent) 34%,color-mix(in srgb,var(--leaf-deep) 40%,transparent) 58%,color-mix(in srgb,var(--leaf-deep) 90%,transparent))}
-    .plg-c{position:relative;z-index:3;max-width:none;width:100%;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;text-align:center;padding:6.2rem 6vw calc(var(--peek) + 4rem)}
+    .plg-c{max-width:none;width:100%;min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:6rem max(20px,6vw) calc(var(--peek) + 5.2rem)}
     .plg-logo :global(img){width:min(340px,82vw)}
     .plg-it{margin-inline:auto}
     .plg-ctas{justify-content:center}
   }
   @media(max-width:640px){
     .plg{--peek:38px}
-    .plg-h{font-size:clamp(2rem,9.6vw,2.7rem)}
+    .plg-h{font-size:clamp(1.9rem,9.4vw,2.7rem)}
     .plg-ctas{flex-direction:column;align-items:stretch;width:100%;max-width:330px}
-    .plg-cue{display:none}
     .plg-eyebrow b{padding:0 .45em}
   }
-  @media(max-height:700px) and (max-width:640px){.plg-c{padding-top:5.4rem}.plg-logo :global(img){width:min(270px,70vw)}.plg-it{font-size:.98rem}}
+  @media(max-height:700px) and (max-width:640px){.plg-c{padding-top:5.2rem}.plg-logo :global(img){width:min(260px,70vw)}.plg-it{font-size:.98rem}}
   @media (prefers-reduced-motion:reduce){.plg{position:relative;top:auto!important;visibility:visible!important}}
 </style>
 <script>
-  // Film: requested as soon as the page has parsed (the poster <img> carries the first paint
-  // meanwhile); never under reduced motion or Save-Data. Pin: on a phone shorter than the hero
-  // content, the hero scrolls until its foot reaches the screen's foot, then holds.
-  const v = document.getElementById('heroFilm') as HTMLVideoElement | null;
+  // Pin: on a phone shorter than the hero content, the hero scrolls until its foot reaches the
+  // screen's foot, then holds (About Kass rises over it).
   const hero = document.getElementById('hero');
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true;
-  if (v) {
-    if (reduced || saveData) { v.querySelectorAll('source').forEach((s) => s.remove()); v.remove(); }
-    else {
-      v.querySelectorAll('source').forEach((s) => { const src = (s as HTMLSourceElement).dataset.src; if (src) (s as HTMLSourceElement).src = src; });
-      v.style.opacity = '0';
-      v.addEventListener('playing', () => { v.style.transition = 'opacity .8s ease'; v.style.opacity = '1'; }, { once: true });
-      v.load(); v.play().catch(() => {});
-    }
-  }
-  if (hero && !reduced) {
+  if (hero && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const pin = () => { hero.style.setProperty('--pin-top', `${Math.min(0, innerHeight - hero.offsetHeight)}px`); };
     pin(); addEventListener('resize', pin);
   }

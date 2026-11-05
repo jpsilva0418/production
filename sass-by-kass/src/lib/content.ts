@@ -13,10 +13,9 @@ export const HERO = {
   sub: 'Bridal and hair artistry by Kassandra — for the bride and everyone getting ready with her. Now booking brides.',
   cta: 'Bridal inquiry',
   ctaHref: SITE.bridal,
-  secondary: 'View portfolio',
-  secondaryHref: SITE.links.portfolio,
-  salon: 'Book a salon appointment',
+  salon: 'Book in-salon',
   salonHref: SITE.booking,
+  cue: 'Meet Kass',
 } as const;
 
 export const INTRO = {
@@ -38,11 +37,11 @@ export const PATHS = [
     key: 'bridal',
     kicker: 'Weddings',
     title: 'Bridal & Wedding Hair',
-    body: 'For the bride, her party and her family. Tell Kass the date and where you’re getting ready, and she’ll reply with availability and a plan.',
+    body: 'For the bride, her party and her family. Send Kass a short bridal inquiry and she’ll reply by email with availability, your package, contract and deposit details.',
     points: ['Brides and bridal parties', 'Updos, soft waves, half-up', 'Booked with a contract and deposit'],
     cta: 'Bridal inquiry',
     href: SITE.bridal,
-    note: SITE.bridalIsHoneyBook ? 'Opens her HoneyBook inquiry' : `Opens an email to ${SITE.email}`,
+    note: 'A short on-site form — Kass replies by email',
     plate: 'bride-veil',
   },
   {
@@ -173,3 +172,26 @@ export const FEATURED: WorkItem[] = [
   { kind: 'photo', plate: 'bridesmaids', alt: 'A bride and six bridesmaids in pale yellow' },
   { kind: 'photo', plate: 'autumn-embrace', alt: 'A bride with a sleek low bun, autumn light' },
 ];
+
+/** Her own "Need makeup recommendations?" board (bridal reference brochure), as native text.
+ *  Handles are transcribed from the board. One is corrected: the board reads "@LETISILVABAUTY",
+ *  but her Instagram shows the account as @letisilvabeauty. `verified` = the handle was seen on a
+ *  source other than the board; the rest are exactly as Kass wrote them and should be confirmed
+ *  with her before launch. */
+export const MAKEUP: { group: string; artists: { handle: string; verified?: boolean }[] }[] = [
+  { group: 'Soft glam', artists: [{ handle: 'letisilvabeauty', verified: true }, { handle: 'chelseaelizabethbeauty' }, { handle: 'brushedbyjulia' }, { handle: 'jill_aesthetics_' }] },
+  { group: 'Full glam', artists: [{ handle: 'amaribeautyandbrows' }, { handle: 'gabriellacorricelli' }, { handle: 'beauty_by_mariachristina' }] },
+  { group: 'Airbrush', artists: [{ handle: 'makeupnikki' }] },
+];
+export const igUrl = (h: string) => `https://www.instagram.com/${h}/`;
+
+/** The bridal inquiry page's introduction — Kass's own "Ready to book?" words from her brochure,
+ *  adapted only where the brochure says "email me": on the site, the form IS that message. */
+export const READY = {
+  label: 'Bridal Inquiry',
+  heading: 'Ready to book?',
+  body: 'Amazing! Just tell me about your day and which package you’d like below. When you send your inquiry it comes straight to me, and I’ll reply by email to confirm availability, send your contract and let you know how to send your deposit.',
+  qHeading: 'More questions?',
+  qBody: 'Please feel free to add any further questions in the form — I would be happy to answer them.',
+  note: 'Sending the form is an inquiry, not a confirmed booking — no payment is taken here.',
+} as const;

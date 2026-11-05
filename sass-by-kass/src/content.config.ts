@@ -23,4 +23,18 @@ const services = defineCollection({
   }),
 });
 
-export const collections = { services };
+/** Blog drafts — written for Kass to review and edit before launch. No invented facts, prices,
+ *  timings or professional claims: planning questions and her own documented process only. */
+const posts = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.md', base: './src/content/posts' }),
+  schema: z.object({
+    title: z.string().max(90),
+    description: z.string().max(200),
+    pubDate: z.coerce.date(),
+    plate: z.string(),
+    order: z.number().default(99),
+    draft: z.boolean().default(true),     // true = awaiting Kass's review (shown with a draft note)
+  }),
+});
+
+export const collections = { services, posts };

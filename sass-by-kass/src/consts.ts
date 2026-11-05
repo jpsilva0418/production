@@ -6,19 +6,16 @@
  *    Dimensional hair", "BOOKING 2026 BRIDES", "Text +15085061845 with questions", GlossGenius link);
  *  · her bridal reference brochure ("Kassandra Ortiz", "SassByKass@yahoo.com", "Bridal and Hair
  *    Artistry", bridal bookings confirmed by email with a contract and deposit);
- *  · the founder's handoff (Nov 2026): bridal-first, HoneyBook for weddings, GlossGenius for salon;
+ *  · the founder's handoffs (Nov 2026): bridal-first; bridal inquiries on-site, salon via GlossGenius;
  *  · her supplied photos and clips.
  * Anything the materials do not establish is left `null` and never guessed: no prices, no years in
  * business, no salon address, no reviews.
  */
 
-/** Her existing HoneyBook bridal inquiry link. NOT YET SUPPLIED — paste it here and every
- *  "Bridal inquiry" button on the site switches to it. Until then bridal inquiries go to her
- *  email, which is how her own bridal brochure says to book. */
-const HONEYBOOK: string | null = null;
+/** HoneyBook: Kass may use it AFTER receiving an inquiry (contract, availability, deposit). It is
+ *  not the website's bridal entry point — the on-site /bridal-inquiry form is (handoff v2). */
 
 const EMAIL = 'SassByKass@yahoo.com';
-const BRIDAL_MAILTO = `mailto:${EMAIL}?subject=${encodeURIComponent('Bridal inquiry')}&body=${encodeURIComponent('Hi Kass! I’d love to talk about hair for my wedding.\n\nWedding date:\nWhere we’re getting ready:\nHow many of us need hair:\n')}`;
 
 export const SITE = {
   name: 'Sass by Kass',
@@ -39,9 +36,8 @@ export const SITE = {
   email: EMAIL,
   /** In-salon booking: her live GlossGenius page (link in bio), tracking parameters removed. */
   booking: 'https://sassbykass.glossgenius.com/',
-  /** Bridal & wedding inquiries: HoneyBook when supplied, her email until then. */
-  bridal: HONEYBOOK ?? BRIDAL_MAILTO,
-  bridalIsHoneyBook: HONEYBOOK !== null,
+  /** Bridal & wedding inquiries: the on-site, bridal-only inquiry page. */
+  bridal: '/bridal-inquiry',
   instagram: { handle: '@sassbykass', url: 'https://www.instagram.com/sassbykass/' },
   /** The only location on record is the state ("MA"). */
   area: { label: 'Massachusetts', region: 'Massachusetts', regionCode: 'MA' },
@@ -52,12 +48,15 @@ export const SITE = {
     portfolio: '/portfolio',
     reviews: '/reviews',
     book: '/book',
+    blog: '/blog',
+    bridalInquiry: '/bridal-inquiry',
   },
   nav: [
     { href: '/about', label: 'About Kass', note: 'The artist behind the chair' },
     { href: '/services', label: 'Bridal Services', note: 'Weddings, then the salon' },
     { href: '/portfolio', label: 'Portfolio', note: 'Photos and films' },
     { href: '/reviews', label: 'Reviews', note: 'Kind words from clients' },
+    { href: '/blog', label: 'Blog', note: 'Bridal hair notes' },
     { href: '/book', label: 'Book / Inquire', note: 'Wedding or salon' },
   ],
 } as const;

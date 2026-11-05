@@ -1,0 +1,48 @@
+---
+/** BLOG — bridal hair notes. Drafts are written for Kass to review before launch. */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Plate from '../../components/Plate.astro';
+import { getCollection } from 'astro:content';
+import { SITE } from '../../lib/content';
+import { businessJsonLd, breadcrumbJsonLd } from '../../lib/seo';
+const posts = (await getCollection('posts')).sort((a, b) => a.data.order - b.data.order);
+const jsonLd = [businessJsonLd(), breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Blog', path: '/blog' }])];
+const anyDraft = posts.some((p) => p.data.draft);
+---
+<BaseLayout title="Blog — Bridal Hair Notes" description={`Notes on planning your wedding hair with Kass: what happens after you inquire, questions to settle early and gathering inspiration. ${SITE.name}, ${SITE.area.label}.`} path="/blog" jsonLd={jsonLd}>
+  <section class="cov ghostwrap">
+    <span class="ghost-w" aria-hidden="true">notes</span>
+    <div class="cov-c">
+      <p class="cov-kick fade">Blog</p>
+      <h1 class="disp rv">Bridal hair, <span class="ital">planned calmly.</span></h1>
+      <p class="cov-sub rv" style="--d:.08s">Short notes for brides on planning their wedding hair with Kass.</p>
+      {anyDraft && <p class="bl-draft fade" style="--d:.12s">Drafts for Kass to review before launch.</p>}
+    </div>
+  </section>
+  <section class="sec sec--tight">
+    <div class="wrap bl-g" data-stag=".1">
+      {posts.map((p) => (
+        <a class="bl-card rv" href={`/blog/${p.id}`}>
+          <div class="ph bl-ph"><Plate id={p.data.plate} alt="" sizes="(max-width:899px) 90vw, 400px" widths={[480, 800]} /></div>
+          <div class="bl-b">
+            <h2>{p.data.title}</h2>
+            <p>{p.data.description}</p>
+            <span class="arrow-link">Read <span class="arr" aria-hidden="true">&rarr;</span></span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .bl-draft{display:inline-block;margin-top:1.2rem;font-family:var(--utility);font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--brass);border:1px dashed var(--hair-strong);border-radius:999px;padding:.55em 1.1em}
+  .bl-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1rem,2vw,1.6rem)}
+  .bl-card{display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--hair);border-radius:var(--r);overflow:hidden;transition:box-shadow .45s var(--ease),transform .45s var(--ease)}
+  .bl-card:hover,.bl-card:focus-visible{box-shadow:var(--shadow);transform:translateY(-3px)}
+  .bl-ph{aspect-ratio:4/3;border-radius:0}
+  .bl-ph :global(img){object-position:50% 25%}
+  .bl-b{padding:1.3rem 1.4rem 1.5rem;display:flex;flex-direction:column;gap:.6rem;flex:1}
+  .bl-b h2{font-size:1.3rem;line-height:1.2;font-weight:350;color:var(--ink)}
+  .bl-b p{font-size:.94rem;flex:1}
+  @media(max-width:899px){.bl-g{grid-template-columns:minmax(0,1fr)}}
+</style>

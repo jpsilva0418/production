@@ -34,7 +34,7 @@ import { SITE, TEL, SMS, ext, PATHS } from '../lib/content';
           <article class:list={['bk-path fade', `bk-path--${p.key}`]} style={`--d:${(0.1 + i * 0.1).toFixed(2)}s`}>
             <div class="ph bk-ph"><Plate id={p.plate} alt="" sizes="(max-width:899px) 90vw, 560px" widths={[480, 800]} /><i class="grain" aria-hidden="true"></i></div>
             <div class="bk-b">
-              <span class="caps-xs">{['i', 'ii'][i]}. {p.kicker}</span>
+              <span class="caps-xs">{p.kicker}</span>
               <h2>{p.title}</h2>
               <p>{p.body}</p>
               <a class:list={['btn', i === 0 ? 'btn--solid' : 'btn--line']} href={p.href} {...ext(p.href)}>{p.cta}</a>

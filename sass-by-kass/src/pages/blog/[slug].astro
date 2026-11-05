@@ -1,0 +1,51 @@
+---
+/** A blog post. Drafts carry a visible note until Kass approves them. */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Plate from '../../components/Plate.astro';
+import { getCollection, render } from 'astro:content';
+import { SITE } from '../../lib/content';
+import { businessJsonLd, breadcrumbJsonLd } from '../../lib/seo';
+export async function getStaticPaths() {
+  return (await getCollection('posts')).map((p) => ({ params: { slug: p.id }, props: { post: p } }));
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+const path = `/blog/${post.id}`;
+const jsonLd = [
+  businessJsonLd(),
+  breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Blog', path: '/blog' }, { name: post.data.title, path }]),
+  { '@context': 'https://schema.org', '@type': 'BlogPosting', headline: post.data.title, description: post.data.description, datePublished: post.data.pubDate.toISOString(), mainEntityOfPage: new URL(path, SITE.url).href, author: { '@type': 'Person', name: SITE.owner }, publisher: { '@type': 'Organization', name: SITE.name } },
+];
+---
+<BaseLayout title={post.data.title} description={post.data.description} path={path} type="article" jsonLd={jsonLd}>
+  <article class="po">
+    <header class="po-h wrap-text">
+      <a class="tlk" href="/blog">&larr; All notes</a>
+      <h1 class="disp rv">{post.data.title}</h1>
+      <p class="po-dek rv" style="--d:.06s">{post.data.description}</p>
+      {post.data.draft && <p class="po-draft fade">Draft for Kass to review before launch.</p>}
+    </header>
+    <figure class="po-fig wrap-text rv-im"><div class="ph ph--framed"><Plate id={post.data.plate} alt="" sizes="(max-width:899px) 92vw, 720px" widths={[480, 800, 1200]} /></div></figure>
+    <div class="po-body wrap-text"><Content /></div>
+    <div class="po-cta wrap-text">
+      <a class="btn btn--solid" href={SITE.bridal}>Bridal inquiry</a>
+      <a class="tlk" href={SITE.links.portfolio}>View the portfolio</a>
+    </div>
+  </article>
+</BaseLayout>
+<style>
+  .po{padding:clamp(7rem,15vh,9rem) 0 var(--pad)}
+  .po-h{display:grid;gap:1rem;margin-bottom:clamp(1.8rem,4vw,2.6rem)}
+  .po-h .tlk{justify-self:start}
+  .po-h .disp{font-size:clamp(2rem,5vw,3.4rem);font-weight:300}
+  .po-dek{font-family:var(--display);font-style:italic;font-size:1.15rem;color:var(--ink-soft)}
+  .po-draft{justify-self:start;font-family:var(--utility);font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--brass);border:1px dashed var(--hair-strong);border-radius:999px;padding:.5em 1em}
+  .po-fig{margin:0 auto clamp(2rem,4vw,3rem)}
+  .po-fig .ph{aspect-ratio:16/10}
+  .po-fig .ph :global(img){object-position:50% 25%}
+  .po-body{font-size:1.08rem;line-height:1.8}
+  .po-body :global(h2){font-size:clamp(1.4rem,2.4vw,1.8rem);font-weight:350;margin:2.2rem 0 .7rem}
+  .po-body :global(p){margin:0 0 1.1rem}
+  .po-body :global(a){color:var(--leaf);text-decoration:underline;text-underline-offset:3px}
+  .po-cta{display:flex;align-items:center;gap:1rem 2rem;flex-wrap:wrap;margin-top:clamp(2rem,4vw,3rem);padding-top:1.6rem;border-top:1px solid var(--hair)}
+</style>

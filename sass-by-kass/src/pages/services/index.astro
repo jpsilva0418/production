@@ -55,7 +55,7 @@ const groups = [
                 {s.data.film && <div class="svc-film fade" style="--d:.2s"><Film film={MEDIA[s.data.film]} label="Reel" /></div>}
               </figure>
               <div class="svc-copy">
-                <span class="caps-xs rv">{g.label} &middot; No. {s.data.numeral}</span>
+                <span class="caps-xs rv">{g.label}</span>
                 <h2 class="rv" style="--d:.06s">{s.data.title}</h2>
                 <p class="svc-sum rv" style="--d:.1s">{s.data.summary}</p>
                 {s.data.points.length > 0 && <ul class="svc-inc rv" style="--d:.14s">{s.data.points.map((p) => <li>{p}</li>)}</ul>}
@@ -76,9 +76,9 @@ const groups = [
   <section class="sec sec--dk lit">
     <i class="lx-dusk" aria-hidden="true"></i>
     <div class="wrap how-grid" data-stag=".08" style="position:relative;z-index:1">
-      {PATHS.map((p, i) => (
+      {PATHS.map((p) => (
         <article class="how rv">
-          <span class="caps-xs">{['i', 'ii'][i]}. {p.kicker}</span>
+          <span class="caps-xs">{p.kicker}</span>
           <h2>{p.title}</h2>
           <p>{p.body}</p>
           <a class="arrow-link" href={p.href} {...ext(p.href)}>{p.cta} <span class="arr" aria-hidden="true">&rarr;</span></a>

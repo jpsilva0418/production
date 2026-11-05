@@ -1,49 +1,32 @@
 ---
-/** HOME — bridal-first, in the order Kassandra confirmed (handoff, Nov 2026):
- *  ① opening: her SBK logo, bridal film, Bridal inquiry →
- *  ② i. About Kass, directly under the opening →
- *  ③ ii. Two ways to book: Bridal & Wedding Hair (HoneyBook) · In-Salon Services (GlossGenius) →
- *  ④ iii. Bridal portfolio (mixed photo/film, a swipe on phones) →
- *  ⑤ iv. Reviews teaser (verified quotes only; honest empty state until supplied) →
- *  ⑥ the second film, pinned → ⑦ v. the two booking choices again (the one dark chapter) →
- *  ⑧ Follow along. Structure and choreography are the approved system; every word and image is hers. */
+/** HOME — short, in the order Kassandra confirmed (handoff v2, Nov 2026):
+ *  ① static SBK logo-led opening: Bridal Inquiry (on-site form) + Book In-Salon (GlossGenius),
+ *     a "Meet Kass" cue →
+ *  ② About Kass →
+ *  ③ the existing portfolio carousel, moved here intact →
+ *  ④ Need makeup recommendations? (her own board, as native text and links) →
+ *  footer. Reviews, Blog and the booking paths live on their own pages, never here. */
 import Hero from './Hero.astro';
-import Logo from './Logo.astro';
 import Plate from './Plate.astro';
 import WorkTile from './WorkTile.astro';
-import { SITE, ext, INTRO, PATHS, WORK, SECTION_LABELS, REVIEWS, REVIEWS_EMPTY, BAND, FINAL, FOLLOW, FEATURED, MEDIA } from '../lib/content';
-
-const roman = ['i', 'ii', 'iii', 'iv', 'v', 'vi'];
-const chapters = [
-  { id: 'about', label: 'About Kass' },
-  { id: 'book-paths', label: 'Book' },
-  { id: 'portfolio', label: 'Portfolio' },
-  { id: 'reviews', label: 'Reviews' },
-  { id: 'begin', label: 'Inquire' },
-];
-const ring = 'M27 89.84A46 46 0 1 1 73 89.84';
-const featuredReviews = REVIEWS.slice(0, 3);
+import { SITE, ext, INTRO, WORK, SECTION_LABELS, FEATURED, MEDIA, MAKEUP, igUrl } from '../lib/content';
 ---
 <div class="c7-prog" id="c7Prog" aria-hidden="true"></div>
-<nav class="c7-rail" id="c7Rail" aria-label="Chapters">
-  {chapters.map((c, i) => <a href={`#${c.id}`} data-rail={c.id}><i aria-hidden="true"></i><span><b>{roman[i]}.</b> {c.label}</span></a>)}
-</nav>
 
 <!-- ① THE OPENING -->
 <Hero />
 
-<!-- ② CHAPTER I · ABOUT KASS — directly beneath the opening -->
+<!-- ② ABOUT KASS — directly beneath the opening -->
 <section class="c7-ch c7-ch--first" id="about" data-chapter="about" data-tone="light" data-curve>
   <div class="c7-light" aria-hidden="true"><i class="lx-shaft"></i></div>
   <div class="wrap c7-mis">
     <div class="c7-mis-t">
-      <p class="chap-rn rv">Chapter i.</p>
       <h2 class="disp c7-mis-h rv" style="--d:.06s">{INTRO.heading[0]} <span class="ital">{INTRO.heading[1]}</span></h2>
       <p class="kick rv" style="--d:.1s">{INTRO.eyebrow}</p>
       <p class="c7-mis-s c7-mis-s--lead rv" style="--d:.16s">{INTRO.lead}</p>
       {INTRO.sentences.map((s, i) => <p class="c7-mis-s rv" style={`--d:${(0.28 + i * 0.12).toFixed(2)}s`}>{s}</p>)}
       <div class="c7-mis-foot fade" style="--d:.62s">
-        <ul class="c7-vals" aria-label="Specialties">{INTRO.values.map((v, i) => <li><b>{roman[i]}.</b> {v}</li>)}</ul>
+        <ul class="c7-vals" aria-label="Specialties">{INTRO.values.map((v) => <li>{v}</li>)}</ul>
         <a class="tlk" href={SITE.links.about}>More about Kass</a>
       </div>
     </div>
@@ -55,42 +38,10 @@ const featuredReviews = REVIEWS.slice(0, 3);
   </div>
 </section>
 
-<!-- ③ CHAPTER II · TWO WAYS TO BOOK — no forms in between -->
-<section class="c7-ch c7-ch--sage c7-paths" id="book-paths" data-chapter="book-paths" data-tone="light" data-curve aria-labelledby="c7PathsH">
-  <div class="wrap">
-    <header class="c7-care-h">
-      <div>
-        <p class="chap-rn rv">Chapter ii.</p>
-        <p class="kick rv" style="--d:.04s">{SECTION_LABELS.paths}</p>
-        <h2 class="disp rv" id="c7PathsH" style="--d:.08s">Weddings, <span class="ital">or the salon.</span></h2>
-      </div>
-      <p class="ital c7-care-line rv" style="--d:.12s">Two different bookings, two direct links. Pick the one that’s you.</p>
-    </header>
-    <div class="c7-dual" data-stag=".12">
-      {PATHS.map((p, i) => (
-        <article class:list={['c7-path rv', `c7-path--${p.key}`]}>
-          <div class="ph c7-path-ph"><Plate id={p.plate} alt="" sizes="(max-width:899px) 90vw, 600px" widths={[480, 800, 1200]} /><i class="grain" aria-hidden="true"></i><span class="c7-path-num">{roman[i]}.</span></div>
-          <div class="c7-path-b">
-            <span class="caps-xs">{p.kicker}</span>
-            <h3>{p.title}</h3>
-            <p>{p.body}</p>
-            <ul>{p.points.map((pt) => <li>{pt}</li>)}</ul>
-            <a class:list={['btn', i === 0 ? 'btn--solid' : 'btn--line']} href={p.href} {...ext(p.href)}>{p.cta}</a>
-            <span class="c7-path-note">{p.note}</span>
-          </div>
-        </article>
-      ))}
-    </div>
-  </div>
-</section>
-
-<div class="chapslate chapslate--linen fade" role="presentation"><span class="cs-t">{SECTION_LABELS.portfolio}</span></div>
-
-<!-- ④ CHAPTER III · BRIDAL PORTFOLIO — mixed photographs and clips; a swipe sequence on phones, a 3 × 2 grid on desktop -->
+<!-- ③ PORTFOLIO — the existing carousel, moved directly beneath About Kass, otherwise unchanged -->
 <section class="c7-care c7-work" id="portfolio" data-chapter="portfolio" data-tone="light">
   <div class="wrap c7-care-h">
     <div>
-      <p class="chap-rn rv">Chapter iii.</p>
       <p class="kick rv" style="--d:.04s">{SECTION_LABELS.portfolio}</p>
       <h2 class="disp rv" style="--d:.08s">{WORK.heading[0]}<br /><span class="ital">{WORK.heading[1]}</span></h2>
     </div>
@@ -113,72 +64,24 @@ const featuredReviews = REVIEWS.slice(0, 3);
   <div class="wrap c7-work-foot fade"><a class="btn btn--line" href={SITE.links.portfolio}>{WORK.all}</a><a class="tlk" href={SITE.instagram.url} {...ext(SITE.instagram.url)}>More on Instagram {SITE.instagram.handle}</a></div>
 </section>
 
-<!-- ⑤ CHAPTER IV · REVIEWS — only verified quotes; until there are any, an honest note -->
-<section class="c7-voices" id="reviews" data-chapter="reviews" data-tone="light" aria-labelledby="c7RevH">
-  <div class="wrap">
-    <header class="c7-vh">
-      <p class="chap-rn rv">Chapter iv.</p>
-      <h2 class="disp rv" id="c7RevH" style="--d:.06s">{featuredReviews.length ? <>What her clients <span class="ital">say.</span></> : <>{REVIEWS_EMPTY.heading.split(',')[0]}, <span class="ital">{REVIEWS_EMPTY.heading.split(',')[1]}</span></>}</h2>
+<!-- ④ NEED MAKEUP RECOMMENDATIONS? — her own list, verbatim handles, each a real link -->
+<section class="c7-ch c7-after c7-mu" id="makeup" data-chapter="makeup" data-tone="light" data-curve aria-labelledby="c7MuH">
+  <div class="wrap c7-mu-in">
+    <header class="c7-mu-h">
+      <p class="kick rv">Bridal glam</p>
+      <h2 class="disp rv" id="c7MuH" style="--d:.06s">Need makeup <span class="ital">recommendations?</span></h2>
+      <p class="c7-mu-line fade" style="--d:.1s">Artists Kass recommends for the wedding morning, by the look you’re going for.</p>
     </header>
-    {featuredReviews.length > 0 ? (
-      <div class="c7-qs" data-stag=".2">
-        {featuredReviews.map((t) => (
-          <figure class="c7-q fade">
-            <span class="c7-q-m" aria-hidden="true">&ldquo;</span>
-            <blockquote><p>{t.quote}</p></blockquote>
-            <figcaption><span class="caps-xs">{t.name} &middot; {t.source}</span></figcaption>
-          </figure>
-        ))}
-      </div>
-    ) : (
-      <p class="c7-q-empty fade">{REVIEWS_EMPTY.body}</p>
-    )}
-    <p class="c7-q-more fade"><a class="tlk" href={SITE.links.reviews}>{featuredReviews.length ? 'Read all reviews' : 'Open the reviews page'}</a></p>
+    <div class="c7-mu-g" data-stag=".1">
+      {MAKEUP.map((g) => (
+        <div class="c7-mu-col fade">
+          <h3>{g.group}</h3>
+          <ul>{g.artists.map((a) => <li><a href={igUrl(a.handle)} {...ext(igUrl(a.handle))}>@{a.handle}</a></li>)}</ul>
+        </div>
+      ))}
+    </div>
   </div>
 </section>
-
-<!-- ⑥ the second film, pinned — the final chapter rises over it -->
-<div class="c7-band" data-pin data-chapter="reviews" data-tone="film" role="presentation" style={`--poster:url(${MEDIA.cineFilm.poster})`}>
-  <div class="c7-band-amb" aria-hidden="true"></div>
-  <div class="c7-band-fr">
-    <video data-film muted loop playsinline preload="none" poster={MEDIA.cineFilm.poster} disablepictureinpicture tabindex="-1" aria-hidden="true">
-      <source data-src={MEDIA.cineFilm.webm} type="video/webm" />
-      <source data-src={MEDIA.cineFilm.mp4} type="video/mp4" />
-    </video>
-  </div>
-  <i class="grain" aria-hidden="true"></i>
-  <p class="c7-band-cap" set:html={BAND.caption} />
-</div>
-
-<!-- ⑦ CHAPTER V · THE TWO CHOICES AGAIN — the one controlled dark moment after the opening -->
-<section class="c7-ch c7-ch--dk" id="begin" data-chapter="begin" data-tone="dark" data-curve aria-labelledby="c7BegH">
-  <div class="c7-light" aria-hidden="true"><i class="lx-dusk"></i></div>
-  <div class="wrap-text c7-beg">
-    <Logo tone="dark" class="c7-beg-logo" />
-    <p class="caps-xs fade" style="--d:.04s">Chapter v. &middot; {FINAL.eyebrow}</p>
-    <h2 class="c7-beg-h rv" id="c7BegH" style="--d:.08s">{FINAL.heading}</h2>
-    <p class="c7-beg-b fade" style="--d:.14s">{FINAL.body}</p>
-    <div class="c7-beg-two fade" style="--d:.22s">
-      <div><a class="btn btn--ivory" href={FINAL.bridal.href} {...ext(FINAL.bridal.href)}>{FINAL.bridal.label}</a><span>{FINAL.bridal.note}</span></div>
-      <div><a class="btn btn--ghost" href={FINAL.salon.href} {...ext(FINAL.salon.href)}>{FINAL.salon.label}</a><span>{FINAL.salon.note}</span></div>
-    </div>
-    <p class="c7-beg-sm fade" style="--d:.3s">Questions first? Text <a href={`sms:${SITE.phoneE164}`}>{SITE.phone}</a> or DM <a href={SITE.instagram.url} {...ext(SITE.instagram.url)}>{SITE.instagram.handle}</a></p>
-  </div>
-</section>
-
-<!-- ⑧ Follow along, back on the light ground -->
-<div class="c7-ch c7-after" data-chapter="begin" data-tone="light" data-curve>
-  <section class="wrap c7-mom" aria-labelledby="c7FolH">
-    <header class="c7-mom-h">
-      <div><p class="caps rv">{SECTION_LABELS.follow}</p><h2 class="disp rv" id="c7FolH" style="--d:.06s">{FOLLOW.heading}</h2></div>
-      <p class="c7-mom-line fade" style="--d:.1s">{FOLLOW.body}</p>
-    </header>
-    <div class="c7-mom-g" data-stag=".1">
-      {FOLLOW.tiles.map((t) => <div class="rv"><a class="ph c7-ig" href={FOLLOW.href} {...ext(FOLLOW.href)} aria-label={`Open ${SITE.instagram.handle} on Instagram`}><Plate id={t} alt="" sizes="(max-width:599px) 90vw, 30vw" widths={[480, 800]} /><i class="grain" aria-hidden="true"></i></a></div>)}
-      <div class="rv"><a class="c7-all" href={FOLLOW.href} {...ext(FOLLOW.href)}><span class="caps-xs">Instagram</span><span class="c7-all-t">{FOLLOW.heading}</span><span class="arrow-link">{FOLLOW.cta} <span class="arr" aria-hidden="true">&rarr;</span></span></a></div>
-    </div>
-  </section>
-</div>
 
 <style is:global>
   body{--gut:max(20px,calc((100vw - var(--wrap)) / 2));--peek:56px}
@@ -369,6 +272,21 @@ const featuredReviews = REVIEWS.slice(0, 3);
   .c7-beg-sm a{color:var(--gold-lt);text-decoration:underline;text-underline-offset:3px}
   @media(max-width:560px){.c7-beg-two{flex-direction:column;align-items:stretch}.c7-beg-two .btn{width:100%;min-width:0}}
 
+
+  /* ===== ④ makeup recommendations ===== */
+  .c7-mu{--c-bg:var(--ivory);padding-block:var(--pad)!important}
+  .c7-mu-in{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(2rem,6vw,6rem);align-items:start}
+  .c7-mu-h .kick{margin-bottom:1.2rem}
+  .c7-mu-h .disp{font-size:clamp(2.1rem,4vw,3.6rem);font-weight:300;margin-bottom:1rem}
+  .c7-mu-line{max-width:26em;font-family:var(--display);font-style:italic;font-size:1.06rem;color:var(--ink-soft)}
+  .c7-mu-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1.2rem,3vw,2.4rem)}
+  .c7-mu-col{border-top:1px solid var(--hair-strong);padding-top:1.1rem;min-width:0}
+  .c7-mu-col h3{font-family:var(--utility);font-weight:600;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--brass);margin-bottom:.9rem}
+  .c7-mu-col ul{list-style:none;margin:0;padding:0;display:grid;gap:.3rem}
+  .c7-mu-col a{display:inline-flex;align-items:center;min-height:40px;font-family:var(--display);font-size:clamp(1.02rem,1.4vw,1.15rem);color:var(--ink);overflow-wrap:anywhere;border-bottom:1px solid transparent;transition:border-color .3s,color .3s}
+  .c7-mu-col a:hover,.c7-mu-col a:focus-visible{color:var(--leaf);border-bottom-color:var(--hair-strong)}
+  @media(max-width:899px){.c7-mu-in{grid-template-columns:minmax(0,1fr)}}
+  @media(max-width:559px){.c7-mu-g{grid-template-columns:minmax(0,1fr)}}
   @media (prefers-reduced-motion:reduce){
     .c7-band{position:relative;visibility:visible!important;height:70vh;height:70svh}
     .c7-trk .c7-pn{opacity:1!important;transform:none!important}
@@ -383,7 +301,7 @@ const featuredReviews = REVIEWS.slice(0, 3);
   const pins = Array.from(document.querySelectorAll<HTMLElement>('[data-pin]'));
   const curves = Array.from(document.querySelectorAll<HTMLElement>('[data-curve]'));
   const prog = document.getElementById('c7Prog');
-  const rail = document.getElementById('c7Rail');
+  const rail = null as HTMLElement | null;
   const after = (el: HTMLElement) => { let n = el.nextElementSibling; while (n && (n.tagName === 'SCRIPT' || n.tagName === 'STYLE')) n = n.nextElementSibling; return n as HTMLElement | null; };
 
   let ticking = false;
