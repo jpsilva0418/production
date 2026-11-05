@@ -11,11 +11,17 @@
 import Logo from './Logo.astro';
 import { SITE, HERO, ext } from '../lib/content';
 ---
+<script is:inline>
+  /* Signature reveal gate: runs before the hero paints. Plays once per browsing session; never under
+     reduced motion; without JS the static approved hero shows (animation is opt-in via this class). */
+  (function(){try{var d=document.documentElement;if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    if(sessionStorage.getItem('sbk-intro-v1'))return;sessionStorage.setItem('sbk-intro-v1','1');d.classList.add('sbk-intro');}catch(e){}})();
+</script>
 <section class="plg" id="hero" data-pin data-chapter="hero" data-tone="film" aria-label={`${SITE.name} — ${SITE.tagline}`}>
   <div class="plg-ground" aria-hidden="true"><i class="plg-light"></i><i class="plg-weave"></i><i class="grain"></i></div>
   <div class="plg-frame" aria-hidden="true"></div>
   <div class="plg-c">
-    <h1 class="plg-logo"><Logo tone="dark" size="lg" eager label={`${SITE.name} — ${SITE.tagline}`} /></h1>
+    <h1 class="plg-logo"><svg class="plg-arc" viewBox="0 0 200 200" aria-hidden="true" focusable="false"><circle class="a1" cx="100" cy="100" r="96" pathLength="100"/><circle class="a2" cx="100" cy="100" r="90" pathLength="100"/></svg><Logo tone="dark" size="lg" eager label={`${SITE.name} — ${SITE.tagline}`} /></h1>
     <span class="plg-rule" aria-hidden="true"></span>
     <div class="plg-ctas">
       <a class="btn btn--ivory" href={HERO.ctaHref}>{HERO.cta}</a>
@@ -53,15 +59,28 @@ import { SITE, HERO, ext } from '../lib/content';
   .plg-cue span{font-family:var(--utility);font-weight:600;text-transform:uppercase;letter-spacing:.36em;text-indent:.36em;font-size:.62rem}
   .plg-cue .ln{width:1px;height:26px;background:linear-gradient(currentColor,transparent);transform-origin:top}
   .plg-cue:hover,.plg-cue:focus-visible{color:var(--ivory)}
+  /* SBK signature reveal: one real logo element; an arc draws around it, the logo resolves into its
+     final place (opacity, a whisper of scale and focus — transforms only, so no layout shift), the arc
+     dissolves, then the rule and buttons arrive. ~1.4 s total. The logo starts partly visible: never blank. */
+  .plg-logo{position:relative}
+  .plg-arc{position:absolute;left:50%;top:50%;width:min(600px,92vw);aspect-ratio:1;transform:translate(-50%,-50%) rotate(-104deg);overflow:visible;pointer-events:none;opacity:0;fill:none;stroke:var(--gold-lt);stroke-width:.5;vector-effect:non-scaling-stroke}
+  .plg-arc circle{stroke-dasharray:100 100;stroke-dashoffset:100;vector-effect:non-scaling-stroke}
+  .plg-arc .a1{stroke-opacity:.55}.plg-arc .a2{stroke-opacity:.28}
   @media (prefers-reduced-motion:no-preference){
     .plg-light{animation:plgBreathe 9s ease-in-out infinite alternate}
-    .plg-logo{animation:fadeIn .9s ease both}
-    .plg-rule{animation:plgRule .9s var(--ease) .25s both}
-    .plg-ctas{animation:fadeUp .8s var(--ease) .3s both}
-    .plg-cue .ln{animation:cuePulse 2.8s ease-in-out 1.2s infinite}
+    .plg-cue .ln{animation:cuePulse 2.8s ease-in-out 1.6s infinite}
+    :global(.sbk-intro) .plg-arc{animation:plgArcLife 1.45s var(--ease) both}
+    :global(.sbk-intro) .plg-arc .a1{animation:plgDraw1 .95s cubic-bezier(.65,0,.35,1) both}
+    :global(.sbk-intro) .plg-arc .a2{animation:plgDraw2 1s cubic-bezier(.65,0,.35,1) .08s both}
+    :global(.sbk-intro) .plg-logo :global(img){animation:plgLogo 1.05s cubic-bezier(.22,.8,.24,1) .12s both}
+    :global(.sbk-intro) .plg-rule{animation:plgRule .55s var(--ease) .8s both}
+    :global(.sbk-intro) .plg-ctas{animation:fadeUp .6s var(--ease) .88s both}
+    :global(.sbk-intro) .plg-cue{animation:fadeIn .6s ease 1.05s both}
   }
-  @keyframes plgBreathe{from{opacity:.75;transform:scale(1)}to{opacity:1;transform:scale(1.06)}}
-  @keyframes plgRule{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  @keyframes plgDraw1{to{stroke-dashoffset:18}}
+  @keyframes plgDraw2{to{stroke-dashoffset:30}}
+  @keyframes plgArcLife{0%{opacity:1;transform:translate(-50%,-50%) rotate(-104deg) scale(.97)}62%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) rotate(-96deg) scale(1.05)}}
+  @keyframes plgLogo{from{opacity:.22;transform:scale(.955);filter:blur(6px) drop-shadow(0 18px 40px rgba(0,0,0,0))}to{opacity:1;transform:none;filter:blur(0) drop-shadow(0 18px 40px rgba(0,0,0,.22))}}
   @keyframes cuePulse{0%,100%{transform:scaleY(.35);opacity:.5}50%{transform:scaleY(1);opacity:1}}
   @media(max-width:640px){
     .plg{--peek:38px}
