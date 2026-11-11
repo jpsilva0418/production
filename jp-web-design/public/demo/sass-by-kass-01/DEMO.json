@@ -5,10 +5,10 @@
   "direction": "a",
   "sourceRepo": "jpsilva0418/production",
   "sourceDir": "sass-by-kass",
-  "sourceCommit": "979526fbc749601009c54f88a92721e330c251ca",
+  "sourceCommit": "20a2b91e051bdad652eb7636ef1dd8d93cac4724",
   "sourceDirty": false,
-  "builtAt": "2026-11-01T04:54:31.389Z",
-  "pages": 9,
+  "builtAt": "2026-11-11T23:48:48.260Z",
+  "pages": 17,
   "shared": {
     "assets": "/demo/_shared/assets/",
     "media": "/demo/_shared/sass-by-kass/"
