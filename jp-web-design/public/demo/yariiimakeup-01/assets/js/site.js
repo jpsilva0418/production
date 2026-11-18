@@ -230,9 +230,23 @@
       show(Math.max(0, items.findIndex(function (it) { return it.a === a; })), 0);
     });
 
-    $('[data-lb-close]', lb).addEventListener('click', function () { lb.close(); });
-    $('[data-lb-prev]', lb).addEventListener('click', function () { show(idx - 1, -1); });
-    $('[data-lb-next]', lb).addEventListener('click', function () { show(idx + 1, 1); });
+    /* A browser can swallow the click of a tap that lands just after a swipe.
+       On touch, act on the finger lifting instead, and ignore the click that
+       usually follows. Mouse and keyboard still use the click. */
+    var press = function (el, fn) {
+      var touched = 0;
+      el.addEventListener('pointerup', function (e) {
+        if (e.pointerType !== 'touch') return;
+        touched = Date.now();
+        fn();
+      });
+      el.addEventListener('click', function () {
+        if (Date.now() - touched > 700) fn();
+      });
+    };
+    press($('[data-lb-close]', lb), function () { lb.close(); });
+    press($('[data-lb-prev]', lb), function () { show(idx - 1, -1); });
+    press($('[data-lb-next]', lb), function () { show(idx + 1, 1); });
     lb.addEventListener('keydown', function (e) {
       if (e.key === 'ArrowLeft') { e.preventDefault(); show(idx - 1, -1); }
       if (e.key === 'ArrowRight') { e.preventDefault(); show(idx + 1, 1); }
