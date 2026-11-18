@@ -112,7 +112,7 @@ em{font-style:italic}
 
 /* ── Header ── */
 .bar{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:16px;height:var(--bar-h);padding-inline:var(--pad);transition:background-color .4s var(--ease),box-shadow .4s var(--ease)}
-.bar.is-stuck{background:rgba(245,239,230,.88);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px);box-shadow:0 1px 0 var(--line)}
+.bar.is-stuck{background:rgba(245,239,230,.97);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px);box-shadow:0 1px 0 var(--line)}
 .bar-end{display:flex;align-items:center;gap:6px}
 .nav{display:none}
 .ig{display:none;width:44px;height:44px;align-items:center;justify-content:center;border-radius:50%;transition:color .3s}
