@@ -13,6 +13,7 @@ normal Vercel deploy. No subdomains, no DNS, no separate project.
 | `magnolia-05` | Magnolia Healthcare, Inc. (MA) | Concept 05 · Immersive Storytelling | same |
 | `magnolia-07` | Magnolia Healthcare, Inc. (MA) | Concept 07 · Family, at Home · Evolved | same |
 | `sass-by-kass-01` | Sass by Kass — Kassandra, hair stylist (MA) | Revision 03 · logo hero, signature entrance, bridal inquiry (republished 2026-11-11) | `jpsilva0418/production` → `sass-by-kass/`, see `DEMO.json` |
+| `yariiimakeup-01` | YariiiMakeup — makeup & hair artist (Poinciana / Kissimmee, FL) | Concept 01 · First Look: cat-eye opening, editorial portfolio, Booksy booking (prospect concept, 2026-11-18) | hand-built, in this folder; notes in `docs/demo-yariiimakeup-01.md` |
 
 Each generated demo has a `DEMO.json` that records its client, concept, source
 commit and build time.
