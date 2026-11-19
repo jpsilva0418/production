@@ -7,6 +7,9 @@
     "veil": "1 · Veil — Pearl and champagne. Bridal luxury.",
     "noir": "2 · Noir — Espresso black. Cinematic.",
     "edit": "3 · The Edit — Peach, cream and Gulf blue. Modern and social.",
+    "atelier": "7 · Atelier — Ivory and espresso. Quiet, editorial luxury.",
+    "blush": "8 · Blush — Warm cream and blush. Soft, romantic, personal.",
+    "cocoa": "9 · Cocoa — Her espresso and cream. Confident, social, proven.",
     "rouge": "4 · Rouge — Black and white with a soft rose-red. Warm and polished.",
     "maison": "5 · Maison — Glam By Amairanymua, as a fashion house. Black, white and a soft rose-red.",
     "darkroom": "6 · Darkroom — Black and white prints under a soft rose glow. Warm and playful."
@@ -39,6 +42,36 @@
       "reviews",
       "bridal-inquiry"
     ],
+    "atelier": [
+      "home",
+      "portfolio",
+      "bridal",
+      "about",
+      "journal",
+      "journal/how-to-prepare",
+      "journal/destination-bride",
+      "bridal-inquiry"
+    ],
+    "blush": [
+      "home",
+      "portfolio",
+      "bridal",
+      "about",
+      "journal",
+      "journal/how-to-prepare",
+      "journal/destination-bride",
+      "bridal-inquiry"
+    ],
+    "cocoa": [
+      "home",
+      "portfolio",
+      "bridal",
+      "about",
+      "journal",
+      "journal/how-to-prepare",
+      "journal/destination-bride",
+      "bridal-inquiry"
+    ],
     "rouge": [
       "(prebuilt)"
     ],
@@ -63,13 +96,8 @@
       "bridal-inquiry"
     ]
   },
-  "files": 38,
-  "filmSlotsOpen": [
-    "f1",
-    "f2",
-    "f3",
-    "f4"
-  ],
+  "files": 62,
+  "filmSlotsOpen": [],
   "source": "jp-web-design/scripts/amairanymua-01-build.mjs + scripts/amairanymua-01/",
   "shared": "nothing is shared with any other demo — fonts, images, CSS and script all live in this folder",
   "note": "Unlisted design preview — not the official website. noindex. The bridal inquiry is demo-only: nothing typed is sent anywhere, and its last step hands off to her own JotForm. Event bookings link to her Acuity event category."

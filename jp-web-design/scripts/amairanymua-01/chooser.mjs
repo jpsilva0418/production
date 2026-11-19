@@ -31,9 +31,10 @@ export function chooser() {
         <p class="ch-pages"><span class="ch-pages-k">Jump to</span> ${pagesOf(x.id).filter((p) => p && PAGE_LABEL[p]).map((p) => `<a href="${BASE}/${x.id}/${p}">${PAGE_LABEL[p]}</a>`).join('')}</p>
       </div>
     </article>`;
-  const all = Object.values(SITES);
+  const all = Object.values(SITES).sort((a, b) => a.n - b.n);
   const rounds = [
-    { id: 'two', k: 'Round two', h: 'In her colours.', p: 'Red, black and white, from her own brand: &ldquo;Glam By Amairanymua&rdquo;. The red is a soft rose, used lightly. Each has an opening before the site appears, a photograph beside a film frame, the bridal inquiry beside the event booking with her About right under, a slideshow that moves on its own, and her links one tap away.', sites: all.filter((x) => x.n > 3) },
+    { id: 'three', k: 'Round three', h: 'Lighter, with her film.', p: 'Ivory, cream and her own espresso, built on the references you sent and Leti Silva Beauty&rsquo;s structure, and the first to play her real clips: an opening, The Looks and The Reel, the inquiry beside the booking with her About under it, her journal, and every path ending at an inquiry or a booking.', sites: all.filter((x) => x.n > 6) },
+    { id: 'two', k: 'Round two', h: 'In her colours.', p: 'Red, black and white, from her own brand: &ldquo;Glam By Amairanymua&rdquo;. The red is a soft rose, used lightly. Each has an opening before the site appears, a photograph beside a film frame, the bridal inquiry beside the event booking with her About right under, a slideshow that moves on its own, and her links one tap away.', sites: all.filter((x) => x.n > 3 && x.n <= 6) },
     { id: 'one', k: 'Round one', h: 'Three more directions.', p: 'The first three, in other palettes: pearl and champagne, espresso black, and peach.', sites: all.filter((x) => x.n <= 3) },
   ].filter((r) => r.sites.length);
   const cards = rounds.map((r) => `<section class="ch-round" aria-labelledby="ch-r-${r.id}">
@@ -52,12 +53,12 @@ export function chooser() {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>${SITE.name} — six previews · design preview</title>
-<meta name="description" content="Six website previews for ${SITE.name} (${SITE.handle}) by JP Silva Digital. Design preview, not the official website.">
+<title>${SITE.name} — nine previews · design preview</title>
+<meta name="description" content="Nine website previews for ${SITE.name} (${SITE.handle}) by JP Silva Digital. Design preview, not the official website.">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <link rel="canonical" href="${ORIGIN}${BASE}">
-<meta property="og:title" content="${SITE.name} — six website previews">
-<meta property="og:description" content="Six previews by JP Silva Digital. Design preview, not the official website.">
+<meta property="og:title" content="${SITE.name} — nine website previews">
+<meta property="og:description" content="Nine previews by JP Silva Digital. Design preview, not the official website.">
 <meta property="og:image" content="${ORIGIN}${A}/img/og.jpg">
 <link rel="icon" type="image/svg+xml" href="${A}/img/favicon.svg">
 <meta name="theme-color" content="#F7F4F0">
@@ -68,8 +69,8 @@ export function chooser() {
 <main id="main" class="ch-wrap">
   <header class="ch-head">
     <p class="ch-flag">Design preview &middot; not the official site</p>
-    <h1 class="ch-h">${SITE.name}, <em>six ways.</em></h1>
-    <p class="ch-lede">Six complete sites, each with its own look, type and motion, and its own opening. They share her photographs, her words, her prices, her booking links and her bridal inquiry. Open each one on your phone, watch the opening, tap around, then pick the one to finish.</p>
+    <h1 class="ch-h">${SITE.name}, <em>nine ways.</em></h1>
+    <p class="ch-lede">Nine complete sites, each with its own look, type and motion, and its own opening. They share her photographs, her words, her prices, her booking links and her bridal inquiry. Open each one on your phone, watch the opening, tap around, then pick the one to finish.</p>
   </header>
 
   ${cards}
@@ -84,7 +85,7 @@ export function chooser() {
       <li><b>Stills and film</b> Her photographs move through the hero and the portfolio with film cutting in. ${open} film ${open === 1 ? 'spot is' : 'spots are'} marked and waiting for her reels: no stand-in video anywhere.</li>
       <li><b>Pages</b> Round two: Home, Portfolio, Bridal, About, a Journal with two sample articles, and the Bridal Inquiry (Rouge keeps a tighter five). Round one: Home, About, Bridal, Services, Portfolio, Reviews and the Bridal Inquiry.</li>
     </ul>
-    <p class="ch-foot">The small marker at the foot of every page switches between 1 and 6 on the same page where that page exists, so any two can be compared screen for screen. The opening plays once per visit: add <code>?intro=1</code> to replay it.</p>
+    <p class="ch-foot">The small marker at the foot of every page switches between 1 and 9 on the same page where that page exists, so any two can be compared screen for screen. The opening plays once per visit: add <code>?intro=1</code> to replay it.</p>
   </section>
 
   <p class="ch-fine">Concepts by JP Silva Digital for ${SITE.name} (${SITE.handle}). These are concepts, not her official website. Photography from ${SITE.handle}, shown with her permission. The wordmarks and monograms are concept styling, not an official logo.</p>

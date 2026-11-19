@@ -84,6 +84,35 @@ export const SITES = {
    current booking site, her JotForm, Faces by Clara, Leti Silva Beauty — and the first Sass by Kass
    build. `prebuilt` sites are built by their own project and copied in whole (the build skips them;
    the checker still applies every rule to their pages). `pages` overrides the default page list. */
+/* Round three (founder, 2026-11-19): lighter, built on four references he sent (Galya Makeup
+   Artistry, Emily Lynn &amp; Co, The Styling Stewardess, Valeria Nichols), with Leti Silva Beauty's
+   structure, and her own clips at last. Listed first in the chooser. */
+Object.assign(SITES, {
+  atelier: {
+    id: 'atelier', n: 7, name: 'Atelier', theme: '#F6F1EA',
+    pages: ['', 'portfolio', 'bridal', 'about', 'journal', 'journal/how-to-prepare', 'journal/destination-bride', 'bridal-inquiry'],
+    line: 'Ivory and espresso. Quiet, editorial luxury.',
+    intro: 'TBD',
+    blurb: 'TBD',
+    swatch: ['#F6F1EA', '#EAE1D6', '#36302A', '#C9A9A0'],
+  },
+  blush: {
+    id: 'blush', n: 8, name: 'Blush', theme: '#FBF6F2',
+    pages: ['', 'portfolio', 'bridal', 'about', 'journal', 'journal/how-to-prepare', 'journal/destination-bride', 'bridal-inquiry'],
+    line: 'Warm cream and blush. Soft, romantic, personal.',
+    intro: 'TBD',
+    blurb: 'TBD',
+    swatch: ['#FBF6F2', '#F3E2DC', '#B88A82', '#3B3330'],
+  },
+  cocoa: {
+    id: 'cocoa', n: 9, name: 'Cocoa', theme: '#36302A',
+    pages: ['', 'portfolio', 'bridal', 'about', 'journal', 'journal/how-to-prepare', 'journal/destination-bride', 'bridal-inquiry'],
+    line: 'Her espresso and cream. Confident, social, proven.',
+    intro: 'TBD',
+    blurb: 'TBD',
+    swatch: ['#F4EDE4', '#36302A', '#5A4A3F', '#D9B8A8'],
+  },
+});
 Object.assign(SITES, {
   rouge: {
     id: 'rouge', n: 4, name: 'Rouge', theme: '#0D0D0D', prebuilt: true,
@@ -168,6 +197,24 @@ export const PHOTOS = {
   'wedding-florals': { w: 1280, h: 1273, pos: '58% 24%', alt: 'Newlyweds in white beside a wall of flowers; the bride has pastel pink waves and soft, glowing makeup.' },
   'golden-hour': { w: 1280, h: 1583, pos: '42% 36%', alt: 'A couple embracing on the beach at sunset; she wears soft glam with long, smooth hair.' },
   'wedding-night': { w: 1280, h: 1587, pos: '60% 52%', alt: 'Bride and groom forehead to forehead at night, her cathedral veil sweeping across the frame in front of an illuminated castle.' },
+  /* round three (2026-11-19): frames from her own TikTok clips (scripts/amairanymua-01-media.py),
+     576 wide, portrait 9:16. `credit` names a collaborator credited in her own caption; where it is
+     set, the look is captioned as her makeup with that hair credit, never as hers alone. */
+  'artist-chair': { w: 800, h: 830, pos: '35% 20%', widths: [480, 800], alt: 'Amairany Sierra in a black suit and strappy heels, leaning back in a director’s chair.' },
+  'artist-chair-cut': { w: 800, h: 830, pos: '35% 20%', widths: [480, 800], alt: 'Amairany Sierra in a black suit and strappy heels, leaning back in a director’s chair.' },
+  'reel-veil-reveal': { w: 576, h: 1024, pos: '50% 30%', widths: [480, 576], alt: 'Bride in a veil and off-the-shoulder lace gown with soft glam and a sleek pulled-back style.' },
+  'reel-morning-veil': { w: 576, h: 1024, pos: '50% 30%', widths: [480, 576], alt: 'Bride on her wedding morning in a lace-edged veil and pearls, with soft glam and a glowing complexion.' },
+  'reel-bride-gown': { w: 576, h: 1024, pos: '50% 28%', widths: [480, 576], alt: 'Bride in a lace gown with long, glossy dark waves and bronzed soft glam.' },
+  'reel-bride-pearls-updo': { w: 576, h: 1024, pos: '50% 32%', widths: [480, 576], alt: 'Bride with deep skin, a sleek updo with face-framing tendrils, full glam and a pearl necklace, in a strapless lace gown.' },
+  'reel-final-touch': { w: 576, h: 1024, pos: '50% 38%', widths: [480, 576], alt: 'A final brush of powder for a bride in a strapless lace gown, moments before the aisle.' },
+  'reel-burgundy': { w: 576, h: 1024, pos: '50% 32%', widths: [480, 576], alt: 'Bride with burgundy hair in bangs and big glam waves, a red lip, in a white satin robe.' },
+  'reel-curly-updo': { w: 576, h: 1024, pos: '50% 34%', widths: [480, 576], alt: 'A textured curly updo from behind, finished with pearl pins, above a beaded open-back dress.' },
+  'reel-bridesmaid-half-up': { w: 576, h: 1024, pos: '50% 34%', widths: [480, 576], alt: 'A bridesmaid’s half-up style with long brushed curls, in a pink robe.' },
+  'reel-bridesmaid-waves': { w: 576, h: 1024, pos: '50% 34%', widths: [480, 576], alt: 'A bridesmaid’s long glossy vintage waves from behind, in a striped pink robe.' },
+  'reel-copper': { w: 576, h: 1024, pos: '50% 34%', widths: [480, 576], credit: 'Hair by @.artistic.aestheticss', alt: 'Full glam with soft lashes and a glossy nude lip, with layered copper hair and curtain bangs.' },
+  'reel-red-waves': { w: 576, h: 1024, pos: '50% 30%', widths: [480, 576], alt: 'Full glam outdoors with bright red layered hair, a sculpted cheek and a nude lip.' },
+  'reel-pink': { w: 576, h: 1024, pos: '50% 34%', widths: [480, 576], credit: 'With Alejandro Lopez', alt: 'A smoky glam eye with hot-pink and black layered hair.' },
+  'reel-editorial': { w: 576, h: 1024, pos: '50% 32%', widths: [480, 576], alt: 'Editorial glam: a graphic orange and pink eye with long dark curls.' },
 };
 export const srcset = (k) => (PHOTOS[k].widths ?? [480, 800, 1280]).map((w) => `${A}/img/${k}-${w}.webp ${w}w`).join(', ');
 export const src = (k, w) => `${A}/img/${k}-${w ?? ((PHOTOS[k].widths ?? [480, 800])[1] ?? 480)}.webp`;
@@ -242,18 +289,32 @@ export const LOOKS = [
 export const looksIn = (cat) => LOOKS.filter((x) => x.cats.includes(cat));
 
 /* ---------- film ----------
-   No video file exists for this demo yet: the founder is supplying screen recordings of
-   her reels. Until a clip is here its place is a MARKED SLOT, never a stand-in video.
+   Every film below has a real clip of her own work (2026-11-19). A film with `file: null` would
+   render as a MARKED SLOT, never a stand-in video.
 
    To fill a slot: put <name>.mp4 (H.264, silent, portrait) and <name>.jpg (its poster
    frame) in assets/film/, set `file: '<name>'` below and describe what it shows in
    `alt`. Every place that uses the slot (hero, home, portfolio, services, about) then
    plays the clip. Nothing else changes. */
+/* 2026-11-19: her own clips, from the founder's media pack (her public TikTok, the last ~12 s of
+   each post, silent). f1–f4 keep their ids, so every earlier site now plays real film too.
+   `views` is the post's view count as listed in the pack on 2026-11-19 (only the pinned posts are
+   large enough to be worth quoting). `credit` repeats a collaborator named in her caption. */
 export const FILMS = {
-  f1: { n: 1, file: null, label: 'Bridal', title: 'A bridal reel', pos: '50% 35%', alt: '' },
-  f2: { n: 2, file: null, label: 'Full glam', title: 'A glam reel', pos: '50% 35%', alt: '' },
-  f3: { n: 3, file: null, label: 'Getting ready', title: 'A getting-ready reel', pos: '50% 35%', alt: '' },
-  f4: { n: 4, file: null, label: 'Glam waves', title: 'A glam-waves reel', pos: '50% 35%', alt: '' },
+  f1: { n: 1, file: 'veil-reveal', label: 'Bridal', title: 'A bridal reveal', pos: '50% 30%', alt: 'Silent clip: a bride in a veil and lace gown turns toward the camera, soft glam finished.' },
+  f2: { n: 2, file: 'copper-glam', label: 'Full glam', title: 'Full glam', pos: '50% 35%', credit: 'Hair by @.artistic.aestheticss', views: '1.6M', alt: 'Silent clip: full glam with layered copper hair and curtain bangs, turning to the light.' },
+  f3: { n: 3, file: 'final-moments', label: 'Getting ready', title: 'Final moments before the aisle', pos: '50% 38%', alt: 'Silent clip: final touches of powder for a bride in a strapless lace gown.' },
+  f4: { n: 4, file: 'robe-to-gown', label: 'Glam waves', title: 'Robe to gown', pos: '50% 28%', alt: 'Silent clip: a bride with long dark glam waves, from her robe to her wedding dress.' },
+  f5: { n: 5, file: 'pearls-reveal', label: 'Bridal', title: 'The glam reveal', pos: '50% 32%', alt: 'Silent clip: a bride with a sleek updo and pearls sees her finished glam.' },
+  f6: { n: 6, file: 'bride-reaction', label: 'Bridal', title: 'Her reaction', pos: '50% 32%', alt: 'Silent clip: a bride with burgundy waves and a red lip reacts to her look.' },
+  f7: { n: 7, file: 'morning-veil', label: 'Bridal', title: 'An early bridal morning', pos: '50% 30%', alt: 'Silent clip: a bride in a lace veil and pearls on her wedding morning.' },
+  f8: { n: 8, file: 'bridesmaids', label: 'Bridal party', title: 'The bridesmaids', pos: '50% 34%', alt: 'Silent clip: bridesmaids’ waves, half-up styles and updos, in pink robes.' },
+  f9: { n: 9, file: 'curly-updo', label: 'Hair', title: 'A curly updo', pos: '50% 34%', alt: 'Silent clip: a textured curly updo finished with pearl pins, seen from behind.' },
+  f10: { n: 10, file: 'pink-transformation', label: 'Editorial', title: 'A pink transformation', pos: '50% 34%', credit: 'With Alejandro Lopez', alt: 'Silent clip: hot-pink and black hair with smoky glam, turning to camera.' },
+  f11: { n: 11, file: 'pink-glam', label: 'Editorial', title: 'Pink glam', pos: '50% 34%', credit: 'With Alejandro Lopez', alt: 'Silent clip: close-ups of hot-pink hair and glam, then the chair reveal.' },
+  f12: { n: 12, file: 'editorial-glam', label: 'Editorial', title: 'Editorial colour', pos: '50% 32%', alt: 'Silent clip: a graphic orange and pink eye with long dark curls.' },
+  f13: { n: 13, file: 'transformation', label: 'Transformation', title: 'The transformation', pos: '50% 30%', views: '1.1M', alt: 'Silent clip: full glam and red waves outdoors, the end of a transformation.' },
+  f14: { n: 14, file: 'copper-finish', label: 'Full glam', title: 'The finish', pos: '50% 35%', views: '1.5M', alt: 'Silent clip: the finished copper glam, close to camera.' },
 };
 export const filmSrc = (id) => (FILMS[id].file ? { mp4: `${A}/film/${FILMS[id].file}.mp4`, poster: `${A}/film/${FILMS[id].file}.jpg` } : null);
 /** One film frame. With a file: a muted, looping, playsinline <video data-film> with its poster
@@ -269,7 +330,7 @@ export const film = (id, { label = 'Reel', cls = '' } = {}) => {
   if (!s) {
     return `<div class="film film--slot${cls ? ` ${cls}` : ''}" data-film-slot="${id}"><div class="slot" role="img" aria-label="Film slot ${f.n}: ${esc(f.title.toLowerCase())} from ${SITE.handle} will play here."><span class="slot-ic" aria-hidden="true"></span><span class="slot-n" aria-hidden="true">Film ${n}</span><span class="slot-t" aria-hidden="true">${f.title} plays here</span><span class="slot-s" aria-hidden="true">Slot &middot; clip to come</span></div></div>`;
   }
-  return `<div class="film${cls ? ` ${cls}` : ''}" data-film-tile><video data-film muted loop playsinline preload="none" poster="${s.poster}" disablepictureinpicture disableremoteplayback tabindex="-1" aria-label="${esc(f.alt || `Silent looping clip: ${f.title.toLowerCase()}.`)}" style="object-position:${f.pos}"><source data-src="${s.mp4}" type="video/mp4"></video>${label ? `<span class="film-lbl" aria-hidden="true">${label}</span>` : ''}</div>`;
+  return `<div class="film${cls ? ` ${cls}` : ''}" data-film-tile><video data-film muted loop playsinline preload="none" poster="${s.poster}" disablepictureinpicture disableremoteplayback tabindex="-1" aria-label="${esc((f.alt || `Silent looping clip: ${f.title.toLowerCase()}.`) + (f.credit ? ` Makeup by ${SITE.first}; ${f.credit.replace(/^With /, 'with ')}.` : ''))}" style="object-position:${f.pos}"><source data-src="${s.mp4}" type="video/mp4"></video>${label ? `<span class="film-lbl" aria-hidden="true">${label}</span>` : ''}${f.credit ? `<span class="film-credit" aria-hidden="true" style="position:absolute;right:8px;bottom:8px;z-index:2;font:500 10px/1.3 system-ui,sans-serif;letter-spacing:.03em;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.7)">Makeup by ${SITE.first} &middot; ${f.credit}</span>` : ''}</div>`;
 };
 /* ---------- what every page must carry ---------- */
 /** The standard <head> block: charset, viewport, title, description, noindex, canonical, Open
@@ -303,7 +364,7 @@ export const head = (s, { path = '', title, description }) => {
  *  fixed to the bottom of the screen lifts the marker above it by setting --marker-bottom. */
 const HOW_MANY = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'][Object.keys(SITES).length] || String(Object.keys(SITES).length);
 export const marker = (s, path = '') => {
-  const sw = PICK ? '' : `<span class="demo-dirs" role="navigation" aria-label="The ${HOW_MANY} previews"><span class="demo-dirs-k" aria-hidden="true">Preview</span>${Object.values(SITES)
+  const sw = PICK ? '' : `<span class="demo-dirs" role="navigation" aria-label="The ${HOW_MANY} previews"><span class="demo-dirs-k" aria-hidden="true">Preview</span>${Object.values(SITES).sort((a, b) => a.n - b.n)
     .map((x) => `<a href="${BASE}/${x.id}${path && pagesOf(x.id).includes(path) ? `/${path}` : ''}"${x.id === s ? ' aria-current="true"' : ''} aria-label="Preview ${x.n}: ${x.name}">${x.n}</a>`)
     .join('')}<a class="demo-all" href="${BASE}" aria-label="All ${HOW_MANY} previews">All</a></span>`;
   return `<div class="demo-flag${PICK ? '' : ' demo-flag--review'}"><span class="demo-flag-t">Design preview &middot; not the official site</span>${sw}</div>`;
@@ -534,6 +595,15 @@ export const ABOUT = {
   },
   noteKick: 'Ready when you are',
   note: 'Getting married? Start a bridal inquiry. Dressing for an event? Choose a time on her calendar.',
+};
+
+/* Her reach, from the founder's media pack (her public TikTok profile), read 2026-11-19. Dated on
+   the page wherever it is quoted; counts drift. */
+export const SOCIAL = {
+  asOf: 'November 19, 2026',
+  tiktok: { followers: '178.1K', likes: '3.9M' },
+  pinned: [{ film: 'f2', views: '1.6M' }, { film: 'f14', views: '1.5M' }, { film: 'f13', views: '1.1M' }],
+  igLine: 'Florida + destination bridal hair &amp; makeup. Soft glam, full glam, bridal hair. Real-life filter, never cakey.',
 };
 
 export const REVIEWS = {

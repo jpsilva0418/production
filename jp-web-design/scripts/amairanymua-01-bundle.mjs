@@ -5,8 +5,9 @@
        node scripts/amairanymua-01-build.mjs
        node scripts/amairanymua-01-bundle.mjs <site id> <out.html> [--img 480|800]
 
-   Everything the site needs travels inside the file: the seven pages, their stylesheets and
-   scripts, the fonts and her photographs (as data URIs). Page text is gzip-compressed and
+   Everything the site needs travels inside the file: the pages, their stylesheets and scripts,
+   the fonts, her photographs and her clips (as data URIs; clips re-encoded to 360 wide, at most
+   8 s, so a preview file stays small enough to send). Page text is gzip-compressed and
    unpacked in the browser (DecompressionStream; iPhone iOS 16.4+). The pages run in a
    full-screen frame; tapping a link to another page of the same site swaps the page inside
    the file, so the whole site can be clicked through offline. Links to her booking pages and
@@ -23,7 +24,8 @@
 
    Nothing is fetched and nothing is sent: the file makes no network request of its own. It
    reads only the built pages in public/demo/amairanymua-01/ and writes only <out.html>. */
-import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, readdirSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { gzipSync } from 'node:zlib';
 import { execFileSync } from 'node:child_process';
 import { dirname, join, posix } from 'node:path';
@@ -57,6 +59,12 @@ const token = (url) => {
     const t = `@@A${assets.size}@@`;
     assets.set(url, t);
     let bytes = readFileSync(f), mime = MIME[ext] || 'application/octet-stream';
+    if (ext === 'mp4') {
+      // her clips ride inside the file at phone-preview size: 360 wide, at most 8 s, silent
+      const tmp = join(tmpdir(), `am01-${process.pid}-${assets.size}.mp4`);
+      execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', f, '-t', '8', '-an', '-vf', 'scale=360:-2', '-c:v', 'libx264', '-preset', 'slow', '-crf', '33', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', tmp]);
+      bytes = readFileSync(tmp); rmSync(tmp, { force: true });
+    }
     if (/^(webp|jpe?g|png)$/.test(ext) && bytes.length > 110 * 1024) {
       // too heavy for a single-file preview: re-encode at phone size (Pillow), keeping the picture as is
       bytes = execFileSync('python3', ['-I', '-c', 'import sys,io\nfrom PIL import Image\nim=Image.open(io.BytesIO(sys.stdin.buffer.read()))\nim=im.convert("RGB")\nw=min(im.width,820)\nim=im.resize((w,round(im.height*w/im.width)),Image.LANCZOS)\nb=io.BytesIO();im.save(b,"WEBP",quality=74,method=6);sys.stdout.buffer.write(b.getvalue())'], { input: bytes, maxBuffer: 64 * 1024 * 1024 });
@@ -142,12 +150,16 @@ var NAMES={src:1,'data-src':1,'data-l':1,'data-m':1,poster:1};
 var sa=Element.prototype.setAttribute,ga=Element.prototype.getAttribute,ra=Element.prototype.removeAttribute;
 Element.prototype.setAttribute=function(n,v){var k=String(n).toLowerCase();
 if(k==='srcset'&&(v==null||v==='null'||String(v).indexOf(B)>-1)){ra.call(this,'srcset');return}
-if(NAMES[k])v=fw(v);else if(k==='style')v=fwCss(v);return sa.call(this,n,v)};
+if(NAMES[k]){v=fw(v);if(k==='src'&&(this.tagName==='SOURCE'||this.tagName==='VIDEO'))v=vid(v)}else if(k==='style')v=fwCss(v);return sa.call(this,n,v)};
 Element.prototype.getAttribute=function(n){var v=ga.call(this,n);if(v&&v.length>64&&v.charCodeAt(0)===100&&NAMES[String(n).toLowerCase()]&&R.has(v))return R.get(v);return v};
 var wrap=function(proto,prop,f){var d=Object.getOwnPropertyDescriptor(proto,prop);if(!d||!d.set)return;Object.defineProperty(proto,prop,{configurable:true,enumerable:d.enumerable,get:d.get,set:function(v){d.set.call(this,f(v,this))}})};
 wrap(HTMLImageElement.prototype,'src',function(v){return fw(v)});
 wrap(HTMLImageElement.prototype,'srcset',function(v,el){return (v==null||String(v).indexOf(B)>-1)?'':v});
-if(window.HTMLSourceElement)wrap(HTMLSourceElement.prototype,'src',function(v){return fw(v)});
+/* clips: a data: video becomes an in-memory blob before it plays (iPhone Safari is unreliable with
+   data: video); one blob per clip, made only when a page asks for that clip */
+var BC=new Map(),vid=function(v){if(typeof v!=='string'||v.indexOf('data:video/')!==0)return v;if(BC.has(v))return BC.get(v);try{var b=atob(v.slice(v.indexOf(',')+1)),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);var url=URL.createObjectURL(new Blob([u],{type:'video/mp4'}));BC.set(v,url);return url}catch(e){return v}};
+if(window.HTMLSourceElement)wrap(HTMLSourceElement.prototype,'src',function(v){return vid(fw(v))});
+if(window.HTMLVideoElement)wrap(HTMLVideoElement.prototype,'src',function(v){return vid(fw(v))});
 if(window.HTMLVideoElement)wrap(HTMLVideoElement.prototype,'poster',function(v){return fw(v)});
 /* style properties set in script (el.style.backgroundImage = ...) are per-element accessors in
    Chromium, so they are caught after the fact: the rewrite lands before the next style pass */
