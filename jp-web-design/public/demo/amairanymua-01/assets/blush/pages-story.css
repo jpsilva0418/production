@@ -27,7 +27,9 @@
 .st-dest-ph .fr-m{box-shadow:0 0 0 clamp(8px,1.2vw,14px) var(--cream)}
 .st-dest-seal{position:absolute;right:-6%;top:-4%;width:clamp(92px,26%,128px);z-index:2}
 .st-dest-seal .seal-disc{fill:var(--cream)}
-.st-oc{font-size:clamp(1.85rem,.95rem + 4.6vw,4.6rem);padding-bottom:.62em}
+.st-dest-txt{container-type:inline-size;min-width:0}
+/* the caps are sized by their column so DESTINATION always fits on one line */
+.st-oc{font-size:clamp(1.5rem,10.8cqi,4.6rem);padding-bottom:.62em}
 .st-oc .oc-s{font-size:1.02em;bottom:-.1em}
 .st-dest-q{margin-top:clamp(22px,3vw,34px)}
 .st-dest-q p{font-size:clamp(1.4rem,1.1rem + 1.3vw,2.1rem)}

@@ -82,6 +82,7 @@ html.js .lk-bar { display: flex; flex-wrap: wrap; justify-content: center; gap: 
 .pf-fn { font-size: 12px; font-weight: 500; letter-spacing: .16em; color: var(--on-dark-2); }
 .pf-fm { grid-column: 1 / -1; font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--on-dark-2); }
 .pf-fg { grid-column: 1 / -1; font-size: 10.5px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; }
+@media (max-width: 429px) { .pf-fa { grid-template-columns: minmax(0, 1fr); gap: 6px; } }
 .pf-fg .arr { display: inline-block; transition: transform .5s var(--ease); }
 @media (hover: hover) { .pf-fa:hover .pf-fg .arr { transform: translateX(5px); } .pf-fa:hover .pf-fk { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .1em; } }
 @media (min-width: 900px) { .pf-fl { grid-template-columns: 1fr 1fr; border-top: 0; } .pf-fl li + li { border-left: 1px solid var(--line-dark); } .pf-fa { grid-template-columns: 1fr; justify-items: center; text-align: center; padding: 30px 24px; border-bottom: 0; border-top: 1px solid var(--line-dark); } .pf-fl li:first-child .pf-fa { border-right: 0; } }
