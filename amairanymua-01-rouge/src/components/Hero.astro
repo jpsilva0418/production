@@ -115,6 +115,7 @@ const n = HERO.slides.length;
   .plg-ctl.paused .plg-bar i{animation-play-state:paused}
   @keyframes plgBar{to{transform:scaleX(1)}}
   .plg-pause{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;cursor:pointer;color:var(--ivory);background:color-mix(in srgb,var(--leaf-deep) 50%,transparent);border:1px solid rgba(255,255,255,.4);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:background .3s,border-color .3s}
+  .plg-pause[hidden]{display:none}
   .plg-pause:hover{background:var(--rouge);border-color:var(--rouge)}
   .plg-pause:focus-visible{outline:2px solid var(--ivory);outline-offset:3px}
   .plg-pause .ic{width:10px;height:12px;border-left:3px solid currentColor;border-right:3px solid currentColor}

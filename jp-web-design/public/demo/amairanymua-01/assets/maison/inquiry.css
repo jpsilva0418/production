@@ -1,0 +1,220 @@
+/* /demo/amairanymua-01 — MAISON: the Bridal Inquiry page, and its skin of the shared inquiry.
+   Loaded AFTER assets/css/inquiry-core.css (structure, iPhone fixes, hidden states), so every
+   single-class rule here wins. The form's markup and behaviour are shared and untouched
+   (inquiry-core.mjs, assets/js/inquiry.js); this file only dresses them. Guide: SKINNING.md.
+
+   Maison's manner, applied to a form: the card is the house's letterhead (white on silk, the
+   lockup in the corner); questions are set in Hanken, steps in Italiana caps; fields and choices
+   are square boxes with a 3:1 rule; a chosen card turns black with a red dot; the active field
+   takes a red underline. Red stays the lipstick: the current step, the active field, the dot.
+   Every colour comes from the site.css tokens; the one addition is the field rule (--iq-line),
+   black at 50% on white (3.9:1), so inputs keep a 3:1 boundary. */
+
+.iq-page {
+  --iq-line: rgba(11, 11, 11, .5);
+  --iq-pad: 20px;                 /* the card's inner gutter */
+  --iq-prog: 64px;                /* the progress row + its gap, above every step */
+}
+@media (min-width: 600px) { .iq-page { --iq-pad: 36px; } }
+@media (min-width: 1200px) { .iq-page { --iq-pad: 52px; } }
+
+/* ===================== the title card ===================== */
+.iq-top { padding: clamp(36px, 5vw, 72px) 0 clamp(36px, 4.4vw, 64px); background: var(--blanc); color: var(--noir); }
+.iq-top-in { display: grid; gap: 0; }
+.iq-top-h .d-xl { margin: 0 0 22px; }
+.iq-top-t .lede { margin: 0 0 22px; }
+.iq-alt-jump { margin: 14px 0 0; }
+.iq-ph { display: none; }
+@media (min-width: 900px) {
+  .iq-top-in { grid-template-columns: minmax(0, 1fr) clamp(150px, 14vw, 212px); column-gap: clamp(40px, 6vw, 96px); align-items: end; }
+  .iq-top-h, .iq-top-t { grid-column: 1; }
+  .iq-top-t .lede { max-width: 50ch; }
+  .iq-alt-jump { display: none; }
+  .iq-ph { display: block; grid-column: 2; grid-row: 1 / span 2; margin: 0; }
+}
+
+/* ===================== the spread: the card beside the side column ===================== */
+.iq { padding-top: clamp(20px, 4vw, 64px); }
+.iq-g { display: grid; gap: 48px; }
+.iq-main { min-width: 0; }
+@media (min-width: 900px) {
+  .iq-g { grid-template-columns: minmax(0, 1fr) clamp(290px, 27vw, 392px); column-gap: clamp(36px, 5vw, 88px); align-items: start; }
+}
+/* the side column stays beside the form while it scrolls (only where it fits in the window) */
+@media (min-width: 900px) and (min-height: 700px) {
+  .iq-side { position: sticky; top: calc(var(--hd-h) + 24px); }
+}
+
+/* the card: white letterhead on the silk ground */
+.iq-card { container-type: inline-size; min-width: 0; padding: 22px var(--iq-pad) calc(var(--iq-pad) - 4px); background: var(--blanc); }
+.iq-card-hd { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 18px; margin-bottom: 26px; border-bottom: 1px solid var(--noir); }
+.iq-card-k { margin: 0; }
+.iq-lk { --lk-f: 7.5px; color: var(--noir); flex: none; }
+@media (max-width: 359px) { .iq-lk { display: none; } }
+
+/* the two notes under the card; the design-preview line is set to be read, not skimmed */
+.iq-notes { display: grid; gap: 10px; margin-top: 18px; }
+.iq-note { margin: 0; font-size: 14px; line-height: 1.55; color: var(--ash); }
+.iq-demo { display: flex; gap: 12px; align-items: baseline; margin: 0; font-size: 14.5px; line-height: 1.55; font-weight: 600; color: var(--noir); }
+.iq-demo::before { content: ''; flex: 0 0 24px; height: 1px; background: var(--rouge); transform: translateY(-.3em); }
+
+/* ===================== the side column ===================== */
+.iq-side { display: grid; align-content: start; min-width: 0; }
+.iq-blk p:not(.kick) { font-size: 15px; line-height: 1.6; }
+.iq-blk .kick { margin-bottom: 16px; }
+.iq-ev { background: var(--noir); color: var(--blanc); padding: 30px 24px 28px; }
+.iq-ev .d-m { margin: 0 0 12px; }
+.iq-ev p { color: var(--smoke); margin-bottom: 22px; }
+.iq-ev .btn { width: 100%; min-height: 50px; height: auto; padding: 14px 18px; white-space: normal; }
+.iq-dest, .iq-prep { padding: 30px 0 22px; border-bottom: 1px solid var(--noir); }
+.iq-dest .d-s, .iq-prep .d-s { margin: 0 0 14px; }
+.iq-q { margin: 0 0 6px; }
+.iq-q p { margin: 0 0 10px; }
+.iq-q cite { display: flex; align-items: center; gap: 10px; font-style: normal; font-size: 10.5px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--ash); }
+.iq-q cite::before { content: ''; flex: 0 0 18px; height: 1px; background: currentColor; }
+.iq-steps { list-style: none; margin: 0 0 8px; border-top: 1px solid var(--line-soft); }
+.iq-steps li { display: grid; grid-template-columns: 34px minmax(0, 1fr); align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--line-soft); font-size: 15px; line-height: 1.55; }
+.iq-n { font-family: var(--f-cap); font-size: 18px; line-height: 1; color: var(--ash); }
+@media (min-width: 600px) and (max-width: 899px) {
+  /* tablets: the three blocks side by side under the form */
+  .iq-side { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 28px; }
+  .iq-dest, .iq-prep { padding-top: 26px; }
+}
+@media (min-width: 900px) {
+  .iq-ev { padding: 34px 32px 32px; }
+}
+
+/* ===================== the shared inquiry, dressed ===================== */
+.cf-inquiry {
+  /* after Continue / Back / Edit the step's top rests below the sticky header with the progress
+     row (just above the step) still in view; the hand-off has no progress row */
+  --cf-scroll-offset: calc(var(--hd-h) + env(safe-area-inset-top, 0px) + 20px + var(--iq-prog));
+  color: var(--noir); font-family: var(--f-ui); font-size: 16px; line-height: 1.55;
+}
+.cf-inquiry[data-view="handoff"] { --cf-scroll-offset: calc(var(--hd-h) + env(safe-area-inset-top, 0px) + 28px); }
+
+/* ---------- progress: four columns, a rule over each. Done: black. Now: a thick red rule. ---------- */
+.cf-prog { gap: 8px; margin: 0 0 30px; }
+.cf-prog li { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: baseline; column-gap: 10px; }
+.cf-prog-bar { grid-column: 1 / -1; grid-row: 1; height: 3px; margin-bottom: 10px; background: linear-gradient(var(--line-soft), var(--line-soft)) 0 100% / 100% 1px no-repeat; }
+.cf-prog li.done .cf-prog-bar { background-image: linear-gradient(var(--noir), var(--noir)); }
+.cf-prog li.now .cf-prog-bar { background: var(--rouge); }
+.cf-prog li::before { content: "0" attr(data-n); content: "0" attr(data-n) / ""; grid-row: 2; font-family: var(--f-cap); font-size: 19px; line-height: 1; color: var(--ash); }
+.cf-prog li.done::before, .cf-prog li.now::before { color: var(--noir); }
+.cf-prog-lbl { display: none; grid-row: 2; min-width: 0; font-size: 10px; line-height: 1.3; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--ash); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cf-prog li.done .cf-prog-lbl, .cf-prog li.now .cf-prog-lbl { color: var(--noir); }
+@container (min-width: 500px) { .cf-prog-lbl { display: block; } }
+
+/* ---------- a step: its question in Italiana caps ---------- */
+.cf-step > legend { float: left; width: 100%; padding: 0 0 26px; font-family: var(--f-cap); font-size: clamp(26px, 3vw, 38px); line-height: 1.06; letter-spacing: .04em; text-transform: uppercase; color: var(--noir); text-wrap: balance; }
+.cf-step > legend + * { clear: both; }
+@media (prefers-reduced-motion: no-preference) {
+  .cf-form.ready .cf-step:not([hidden]), .cf-handoff:not([hidden]) { animation: iqIn .5s var(--ease) both; }
+}
+@keyframes iqIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+.cf-two { column-gap: 20px; }
+.cf-field { margin-bottom: 26px; }
+.cf-lbl { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: .7em; margin-bottom: 10px; font-size: 14.5px; line-height: 1.45; font-weight: 600; color: var(--noir); }
+.cf-req, .cf-opt { font-size: 9.5px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; white-space: nowrap; color: var(--ash); }
+.cf-req { color: var(--rouge-deep); }
+
+/* fields: square boxes with a 3:1 rule; the active one takes a black rule and a red underline */
+.cf-input { min-height: 50px; padding: 12px 14px; border: 1px solid var(--iq-line); border-radius: 0; background: var(--blanc); color: var(--noir); font-family: var(--f-ui); font-size: 16px; line-height: 1.45; caret-color: var(--rouge); box-shadow: none; transition: border-color .25s var(--ease), box-shadow .25s var(--ease); }
+.cf-input::placeholder { color: var(--ash); opacity: 1; }
+.cf-input:hover { border-color: var(--noir); }
+.cf-input:focus { outline: none; border-color: var(--noir); box-shadow: inset 0 -2px 0 var(--rouge); }
+.cf-input:focus-visible { outline: none; }
+textarea.cf-input { min-height: 120px; line-height: 1.55; }
+.cf-input[type="date"], .cf-input[type="time"] { min-height: 50px; }
+.cf-input::-webkit-calendar-picker-indicator { opacity: .55; cursor: pointer; }
+.cf-input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+.cf-input[type="number"]::-webkit-inner-spin-button, .cf-input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.cf-input[aria-invalid="true"] { border-color: var(--rouge); box-shadow: inset 0 -2px 0 var(--rouge); }
+.cf-err { display: flex; gap: 8px; align-items: baseline; margin: 8px 0 0; font-size: 13.5px; line-height: 1.45; font-weight: 600; color: var(--rouge-deep); }
+.cf-err::before { content: ''; flex: 0 0 12px; height: 1px; background: currentColor; transform: translateY(-.3em); }
+
+.cf-check { gap: 10px; margin-top: 8px; min-height: 44px; font-size: 14px; color: var(--ash); }
+.cf-check input { width: 18px; height: 18px; accent-color: var(--noir); }
+.cf-check:has(input:checked) { color: var(--noir); font-weight: 600; }
+
+/* choice cards: a ring at rest; chosen, the card turns black and the ring becomes a red dot */
+.cf-cards { gap: 8px; }
+.cf-card { gap: 12px; min-height: 52px; padding: 12px 16px; border: 1px solid var(--iq-line); background: var(--blanc); color: var(--noir); font-size: 15px; line-height: 1.35; font-weight: 500; transition: border-color .25s var(--ease), background-color .25s var(--ease), color .25s var(--ease); }
+.cf-card::before { content: ''; flex: none; width: 12px; height: 12px; border: 1px solid currentColor; border-radius: 50%; transition: background-color .25s var(--ease), border-color .25s var(--ease); }
+.cf-card:hover { border-color: var(--noir); }
+.cf-card:has(input:checked) { background: var(--noir); border-color: var(--noir); color: var(--blanc); }
+.cf-card:has(input:checked)::before { background: var(--rouge); border-color: var(--blanc); box-shadow: inset 0 0 0 2px var(--noir); }
+.cf-card:has(input:focus-visible) { outline: 2px solid var(--rouge); outline-offset: 3px; }
+.cf-field[data-invalid] .cf-card { border-color: var(--rouge); }
+/* an odd last card takes the whole row (the seven packages) */
+.cf-cards-2 > .cf-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
+/* her package names are set like the price list: Italiana caps */
+.cf-field:has(#cf-package-label) .cf-card > span { font-family: var(--f-cap); font-size: 16.5px; line-height: 1.2; letter-spacing: .06em; text-transform: uppercase; font-weight: 400; }
+/* the long answers ("Dating around: searching for quotes", "Email me! I never answer the phone")
+   take one column until the card is wide enough to set them side by side */
+.cf-cards-3, .cf-field:has(#cf-stage-label) .cf-cards { grid-template-columns: minmax(0, 1fr); }
+@container (min-width: 460px) { .cf-field:has(#cf-stage-label) .cf-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@container (min-width: 600px) {
+  .cf-cards-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  /* "How did you hear about her?": eight short answers in two rows of four */
+  .cf-field:has(#cf-heardFrom-label) .cf-cards { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+.cf-hint { margin: 10px 0 0; font-size: 13.5px; line-height: 1.55; color: var(--ash); }
+.cf-hint a, .cf-noscript a { color: var(--noir); font-weight: 600; text-decoration: underline; text-decoration-color: var(--rouge); text-underline-offset: .25em; }
+.cf-hint a { display: inline-block; min-height: 24px; }
+
+/* ---------- review: the answers as a spec sheet, one numbered group per step ---------- */
+.cf-review { gap: 0; margin-bottom: 18px; border-top: 1px solid var(--noir); counter-reset: iqrv; }
+.cf-rev-group { padding: 16px 0 20px; border-bottom: 1px solid var(--line-soft); counter-increment: iqrv; }
+.cf-rev-head { gap: 12px; align-items: center; margin-bottom: 8px; }
+.cf-rev-title { display: flex; align-items: baseline; gap: 12px; margin: 0; font-size: 11px; line-height: 1.4; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; }
+.cf-rev-title::before { content: "0" counter(iqrv); content: "0" counter(iqrv) / ""; font-family: var(--f-cap); font-size: 19px; line-height: 1; letter-spacing: 0; }
+.cf-rev-edit { display: inline-flex; align-items: center; min-height: 44px; padding: 0 2px; font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--noir); background: linear-gradient(var(--rouge), var(--rouge)) 0 calc(100% - 10px) / 100% 1px no-repeat; cursor: pointer; }
+.cf-rev-edit:hover { color: var(--rouge-deep); }
+.cf-rev-list { gap: 10px; }
+.cf-rev-row { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 2px; }
+.cf-rev-q { font-size: 13px; line-height: 1.45; color: var(--ash); }
+.cf-rev-a { font-size: 15.5px; line-height: 1.5; font-weight: 500; color: var(--noir); }
+.cf-rev-none { margin: 0; font-size: 14px; color: var(--ash); }
+@container (min-width: 520px) { .cf-rev-row { grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); column-gap: 20px; } }
+.cf-consent { max-width: 60ch; margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ash); }
+
+/* ---------- the step buttons (Maison's own .btn, passed in) and Start over ---------- */
+.cf-nav { gap: 10px; margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--line-soft); }
+.cf-nav .btn { flex: 1 1 0; min-width: 0; padding: 0 18px; }
+.cf-btn--primary::after { content: "\2192"; content: "\2192" / ""; font-size: 14px; letter-spacing: 0; transition: transform .35s var(--ease); }
+.cf-btn--primary:hover::after { transform: translateX(4px); }
+.cf-btn[disabled], .cf-btn[disabled]:hover { opacity: .45; cursor: default; background: var(--fg); border-color: var(--fg); color: var(--bg); }
+@media (min-width: 600px) { .cf-nav .btn { flex: 0 0 auto; min-width: 172px; padding: 0 28px; } }
+.cf-reset { display: block; margin: 14px 0 0 auto; min-height: 44px; padding: 0 2px; font-size: 10.5px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--ash); background: linear-gradient(var(--line-soft), var(--line-soft)) 0 calc(100% - 12px) / 100% 1px no-repeat; cursor: pointer; transition: color .25s; }
+.cf-reset:hover { color: var(--noir); }
+
+/* ---------- the hand-off ---------- */
+.cf-strip { margin: 0 0 28px; padding: 12px 16px; background: var(--noir); color: var(--blanc); border-left: 3px solid var(--rouge); font-size: 13.5px; line-height: 1.5; }
+.cf-strip strong { font-size: 10.5px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+.cf-kick { display: flex; align-items: center; gap: 12px; margin: 0 0 18px; font-size: 11px; line-height: 1.4; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--noir); }
+.cf-kick::before { content: ''; flex: 0 0 24px; height: 1px; background: var(--rouge); }
+.cf-handoff h2 { margin: 0 0 18px; font-family: var(--f-cap); font-size: clamp(32px, 4.4vw, 56px); line-height: 1.02; letter-spacing: .035em; text-transform: uppercase; text-wrap: balance; }
+.cf-handoff-body { max-width: 54ch; margin: 0; font-size: 16.5px; line-height: 1.65; }
+.cf-actions { gap: 10px; margin-top: 28px; }
+.cf-actions .btn { flex: 1 1 100%; padding: 14px 20px; height: auto; }
+@media (min-width: 600px) { .cf-actions .btn { flex: 0 0 auto; } }
+.cf-back { display: inline-flex; align-items: center; min-height: 44px; padding: 0 2px; margin: 0; font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--noir); background: linear-gradient(var(--rouge), var(--rouge)) 0 calc(100% - 10px) / 100% 1px no-repeat; cursor: pointer; }
+.cf-back:hover { color: var(--rouge-deep); }
+@media (min-width: 600px) { .cf-back { margin-left: 12px; } }
+.cf-status { min-height: 1.5em; margin: 14px 0 0; font-size: 14px; font-weight: 600; color: var(--noir); }
+.cf-copytext { margin-top: 12px; padding: 12px 14px; border: 1px solid var(--iq-line); border-radius: 0; background: var(--silk); color: var(--noir); }
+.cf-copytext:focus { outline: 2px solid var(--rouge); outline-offset: 2px; }
+
+/* without script: the line and her real form's link, nothing else */
+.cf-noscript { margin: 0; padding: 18px 20px; border: 1px solid var(--iq-line); font-size: 15px; line-height: 1.6; }
+
+/* ===================== the FAQ: the heading beside the questions ===================== */
+.iq-faq-hd { margin-bottom: clamp(32px, 4vw, 56px); }
+.iq-faq-hd .d-l { margin-bottom: 22px; }
+.iq-faq-hd .lede { margin: 0; }
+@media (min-width: 900px) {
+  .iq-faq-g { display: grid; grid-template-columns: 5fr 7fr; column-gap: clamp(48px, 6vw, 112px); align-items: start; }
+  .iq-faq-hd { margin: 0; }
+}

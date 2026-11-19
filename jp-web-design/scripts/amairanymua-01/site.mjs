@@ -91,15 +91,15 @@ Object.assign(SITES, {
     line: 'Red, black and white, on the first Sass by Kass build.',
     intro: 'The first Sass by Kass layout, structure and motion, in her colours: black and white with a red lip of an accent.',
     blurb: 'The first Sass by Kass build, done for her: a filmed-style hero of her work, the curved chapters, the work wall and the booking page, in red, black and white.',
-    swatch: ['#0D0D0D', '#FFFFFF', '#B3132B', '#F2F2F2'],
+    swatch: ['#0D0D0D', '#FFFFFF', '#D9868C', '#F6E3E3'],
   },
   maison: {
     id: 'maison', n: 5, name: 'Maison', theme: '#0B0B0B',
     pages: ['', 'portfolio', 'bridal', 'about', 'journal', 'journal/how-to-prepare', 'journal/destination-bride', 'bridal-inquiry'],
-    line: 'Glam By Amairanymua, as a fashion house. Black, white and one red.',
+    line: 'Glam By Amairanymua, as a fashion house. Black, white and a soft rose-red.',
     intro: 'Her "Glam By" script writes itself in red on black, the caps set beneath it, and the page opens like a curtain onto her work.',
     blurb: 'Built on her own brand, the way a fashion house would present it: editorial black and white, red used like a lipstick, a runway of her looks with film among them, her journal, and the inquiry beside the booking.',
-    swatch: ['#0B0B0B', '#FFFFFF', '#C1121F', '#EDEDED'],
+    swatch: ['#0B0B0B', '#FFFFFF', '#D9868C', '#F6E3E3'],
   },
   darkroom: {
     id: 'darkroom', n: 6, name: 'Darkroom', theme: '#140707',
@@ -194,7 +194,8 @@ export const HER = {
     'I bring warm vibes &amp; total devotion to making you look and feel your absolute best. Let’s create magic together!',
   ],
   years: [['In makeup', '13 years'], ['In hair', '4 years']],
-  services: ['Bridal', 'Engagement', 'Event glam', 'Film photography'],
+  /* her own services (her site's grid also shows film photography: that is her fiancé's, a separate service — founder, 2026-11-19) */
+  services: ['Bridal', 'Engagement', 'Event glam'],
   /* now booking (founder: "2026, 2027 bookings"; her form asks 2027–2028 brides to specify their date) */
   booking: 'Now booking 2026 &amp; 2027 weddings',
   packages: [
@@ -213,7 +214,7 @@ export const HER = {
     ['Do you recommend hair extensions?', 'For max volume &amp; longevity with glam waves, hair extensions are highly recommended. You can either rent them directly with me or I can guide you toward the best extensions to purchase.'],
     ['Is there a booking minimum?', 'I do not have a booking minimum for hair &amp; makeup.'],
     ['Do you offer trials?', 'Yes! Preview sessions are available for both hair and makeup. Our packages already include your preview, but you are always welcome to book a trial session prior to signing if you prefer.'],
-    ['Do you offer photography?', 'Yes, my fiancé is a photographer. He offers film / polaroid photography for weddings &amp; special events.'],
+    ['Do you offer photography?', 'Photography is a separate service: my fiancé is a photographer. He offers film / polaroid photography for weddings &amp; special events.'],
   ],
   prepare: ['Please come in with a clean face.', 'Hair should be washed and blown out a day before your appointment.'],
   /* what her form says after it is sent */

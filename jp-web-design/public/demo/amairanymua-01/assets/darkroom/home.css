@@ -119,6 +119,7 @@ html:not(.js) .st-b{display:none}
   .way-btn .l-long{display:inline}.way-btn .l-short{display:none}
 }
 .way .ring{white-space:normal}
+@media(min-width:1100px){.way{grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);gap:clamp(24px,2.6vw,40px);align-items:start}.way .pr{margin-top:6px}}
 .way .pr-note{font-size:clamp(1.1rem,2.1vw,1.6rem)}
 
 /* About, right under */

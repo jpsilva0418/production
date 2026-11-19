@@ -1,52 +1,23 @@
-# Sass by Kass — premium website demo
+# Rouge — Amairany Sierra, design preview 4
 
-A private design demo for **Sass by Kass** (Kassandra, Massachusetts hair stylist —
-hand-tied extensions, dimensional color, bridal hair), built on the approved client-demo
-template (Astro 7, static, no UI framework) with the client's own photos, clips and
-business facts as the only source of truth.
+The source of `/demo/amairanymua-01/rouge`: a red, black and white website concept for
+Amairany Sierra (@amairanymua), built with Astro. Not her official site; every page is noindex
+and carries the "Design preview" marker.
 
-> This is a demo. It is `noindex,nofollow,noarchive` everywhere, carries a visible
-> "Design demo" badge, never sends form submissions anywhere unless delivery secrets are
-> deliberately set, and is never pointed at the client's real domain.
+- **Facts, links, photographs, film slots and copy** are read at build time from
+  `../jp-web-design/scripts/amairanymua-01/site.mjs` (the single source all the previews share);
+  the bridal inquiry is the shared component in `inquiry-core.mjs` plus
+  `/demo/amairanymua-01/assets/js/inquiry.js`. Nothing about her is typed in this project.
+- **Photographs**: `src/assets/plates/` holds JPEG conversions of her own images (same keys as
+  `PHOTOS` in site.mjs).
+- **Film**: no clip exists yet, so every film frame is a marked slot. Set `FILMS[id].file` in
+  site.mjs (and add the .mp4/.jpg to `/demo/amairanymua-01/assets/film/`) and the slot plays it.
 
-- Media inventory and provenance: `docs/MEDIA.md`
-- Blue directions under review: `src/styles/palettes.css` (A deep navy · B modern royal · C soft blue)
-
-## Run
-
-Requires Node 22.12+.
-
-```bash
+```sh
 npm ci
-npm run dev       # http://localhost:4321  → /preview/a, /preview/b, /preview/c
-npm run check     # astro check (types + content)
-npm run build     # static build -> dist/
+node scripts/publish.mjs          # build and replace ../jp-web-design/public/demo/amairanymua-01/rouge/
+cd ../jp-web-design && node scripts/amairanymua-01-check.mjs
 ```
 
-Re-import the client's media from the uploads folder (needs ffmpeg + Pillow):
-
-```bash
-bash scripts/media/import-client-media.sh <uploads-dir>
-```
-
-## Structure
-
-```
-src/
-  consts.ts            every business fact (from the client's supplied materials) — single source of truth
-  lib/content.ts       all copy, media map and portfolio groups
-  lib/palette.ts       the three directions; DEMO_PALETTE locks a client build to one
-  content/services     the four services her materials support (no pricing modelled)
-  styles/tokens.css    token roles + default values · palettes.css the three directions · system.css shared grammar
-  layouts/BaseLayout   HTML shell, SEO, header/footer, palette switch, shared runtime (menu, reveals, films)
-  components/          Hero, Home (the five chapters), Film, WorkTile, EnquiryForm, Header, Footer, Mark, PaletteBar
-  pages/               /  /work  /services  /about  /book  /preview/[a|b|c]  404
-api/inquiry.js         Vercel function: enquiries (Resend when configured, else demo mode)
-scripts/snapshot-demo.mjs   publishes one locked direction into the JP Silva Digital demo library
-```
-
-## Publishing the private demo
-
-`node scripts/snapshot-demo.mjs <slug> <a|b|c> --lib <path-to>/jp-web-design/public/demo`
-builds the chosen direction as a frozen, unlisted `/demo/<slug>` (noindex, demo-only forms,
-no review bar, no /preview routes). The library's existing demos are never touched.
+`npm run dev` serves the site locally under `/demo/amairanymua-01/rouge` (the shared assets it
+links, such as the marker stylesheet and the inquiry script, are served by the demo host).

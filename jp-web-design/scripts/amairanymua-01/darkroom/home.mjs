@@ -111,7 +111,7 @@ ${MONTAGE.map(stackItem).join('\n')}
 </div>
 <div class="hero-txt">
 <p class="hero-k edge">${SITE.name} &middot; ${SITE.tagline} &middot; ${SITE.area}</p>
-<h1 class="hero-h d-xl"><span class="hero-l">Real-life filter skin.</span> <span class="hero-l hero-l2">Never <span class="hero-cake">cakey.${note('Cake free!', { rot: -8, cls: 'hero-gp' })}</span></span></h1>
+<h1 class="hero-h d-xl"><span class="hero-l"><span class="nw">Real-life</span> filter skin.</span> <span class="hero-l hero-l2">Never <span class="hero-cake">cakey.${note('Cake free!', { rot: -8, cls: 'hero-gp' })}</span></span></h1>
 <p class="hero-line">${HERO.line}</p>
 ${booking('hero-nowb')}
 ${actions()}
