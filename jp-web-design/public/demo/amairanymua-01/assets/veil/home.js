@@ -55,11 +55,15 @@
      stills (the marked slot until a clip exists). Paused when off screen, when the tab is
      hidden, and by the pause control. Under reduced motion it stays on the first still. */
   var reel = doc.querySelector('[data-reel]');
-  var pauseBtn = doc.querySelector('.hero-pause');
+  var pauseBtns = $$('.hero-pause');
   if (reel && !reduced) {
     var beats = $$('.beat', reel);
-    var lblN = doc.querySelector('.hero-n'), lblL = doc.querySelector('.hero-l');
-    var idx = 0, hold = 5600, fade = 1900, tmr = 0, userPaused = false, visible = true, started = false;
+    var lblN = $$('.hero-n'), lblL = $$('.hero-l');
+    /* one still every 2.6 s (a 1.1 s dissolve inside it), so a bride sees her range, not one
+       photograph; the first change after the opening comes sooner, because the lead picture
+       has already been on screen since the veil lifted */
+    var period = 2600, firstHold = 1700, fade = 1100;
+    var idx = 0, hold = period, tmr = 0, userPaused = false, visible = true, started = false;
     var pad = function (n) { return (n < 10 ? '0' : '') + n; };
     var prime = function (b) {
       var img = b && b.querySelector('img[data-srcset]');
@@ -70,11 +74,17 @@
       return img.decode ? img.decode().catch(function () {}) : Promise.resolve();
     };
     var running = function () { return started && !userPaused && visible && !doc.hidden; };
+    /* (re)arm the next change; `due` is when it should happen, so an observer or a visibility
+       event firing mid-hold does not restart the count from zero */
+    var due = 0;
     var schedule = function () {
       clearTimeout(tmr);
-      if (running()) tmr = setTimeout(step, hold);
+      if (!running()) { due = 0; return; }
+      if (!due) due = now() + hold;
+      tmr = setTimeout(step, Math.max(0, due - now()));
     };
     var step = function () {
+      due = 0;
       if (!running()) return;
       var next = (idx + 1) % beats.length;
       var cur = beats[idx], nb = beats[next];
@@ -84,33 +94,44 @@
         cur.classList.add('is-prev');
         nb.classList.remove('is-prev');
         nb.classList.add('is-on', 'moved');
-        setTimeout(function () { cur.classList.remove('is-prev', 'moved'); }, fade + 60);
+        setTimeout(function () { cur.classList.remove('is-prev', 'moved'); }, fade + 80);
         idx = next;
-        if (lblN) lblN.textContent = pad(idx + 1);
-        if (lblL) lblL.textContent = nb.getAttribute('data-label') || '';
+        lblN.forEach(function (n) { n.textContent = pad(idx + 1); });
+        lblL.forEach(function (n) { n.textContent = nb.getAttribute('data-label') || ''; });
         prime(beats[(idx + 1) % beats.length]);
+        hold = period;
         schedule();
       });
     };
     reelStart = function () {
       if (started) return;
       started = true;
-      prime(beats[1]);
+      hold = playing ? firstHold : period;
       schedule();
     };
-    if (pauseBtn) {
-      pauseBtn.hidden = false;
-      pauseBtn.addEventListener('click', function () {
+    /* the next two pictures are fetched and decoded straight away, so the first changes never
+       wait on the network */
+    prime(beats[1]).then(function () { prime(beats[2]); });
+    pauseBtns.forEach(function (btn) {
+      btn.hidden = false;
+      btn.addEventListener('click', function () {
         userPaused = !userPaused;
-        pauseBtn.setAttribute('aria-pressed', String(userPaused));
-        pauseBtn.setAttribute('aria-label', userPaused ? 'Play the slideshow' : 'Pause the slideshow');
+        pauseBtns.forEach(function (b) {
+          b.setAttribute('aria-pressed', String(userPaused));
+          b.setAttribute('aria-label', userPaused ? 'Play the slideshow' : 'Pause the slideshow');
+        });
+        due = 0;
         schedule();
       });
-    }
+    });
     if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (es) { visible = es[0].isIntersecting; schedule(); }, { threshold: 0.15 }).observe(reel);
+      new IntersectionObserver(function (es) {
+        var v = es[0].isIntersecting;
+        if (v !== visible) { visible = v; due = 0; }
+        schedule();
+      }, { threshold: 0.15 }).observe(reel);
     }
-    doc.addEventListener('visibilitychange', schedule);
+    doc.addEventListener('visibilitychange', function () { due = 0; schedule(); });
     if (!playing) reelStart();
   }
 

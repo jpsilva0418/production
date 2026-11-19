@@ -88,7 +88,8 @@
   .cf-prog li{grid-template-rows:6px}
   .cf-prog li:not(.now) .cf-prog-lbl{display:none}
   .cf-prog li.now .cf-prog-lbl{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center}
-  .cf-prog li.now .cf-prog-lbl::after{content:counter(iq,decimal-leading-zero) " / 04";margin-left:auto;padding-left:12px;font:700 12px/1 var(--f-body);color:var(--charcoal-soft)}
+  /* the total comes from INQUIRY.steps (inquiry.mjs writes it on .iq-card as --iq-n) */
+  .cf-prog li.now .cf-prog-lbl::after{content:counter(iq,decimal-leading-zero) " / " var(--iq-n,"04");margin-left:auto;padding-left:12px;font:700 12px/1 var(--f-body);color:var(--charcoal-soft)}
 }
 
 /* ================================================================ steps, legends, fields */

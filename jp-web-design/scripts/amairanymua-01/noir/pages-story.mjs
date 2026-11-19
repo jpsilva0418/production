@@ -18,9 +18,11 @@ const capOf = (k) => (LOOKS.find((x) => x.photo === k) || {}).cap || '';
    the black, because a fade turns its bright edges into a grey vignette. It hangs like a lit
    print instead: the whole rectangle, unmasked, inside a fine champagne hairline set a few
    pixels off its edge (class "print"; the same block is in pages-story.css and pages-work.css).
-   Photographs shot on dark or grey grounds keep the dissolve. Measured from the files: these
-   seven have a mean edge luminance above 120 of 255; the rest sit between 40 and 118. */
-export const PRINT = new Set(['artist-brushes', 'artist-spotlight-crop', 'bride-pearls', 'glam-sculpt', 'waves-blonde', 'wedding-florals', 'golden-hour']);
+   Photographs shot on dark or grey grounds keep the dissolve, and only they may be a cover.
+   Measured from the files (the outer 15% band of each 480w image): in these eight, 12% to 88%
+   of the edge is near-white (luminance above 180 of 255: walls, blinds, sky, sand); in the
+   other four it is 2% or less (bride-gold-waves is a flat mid-grey backdrop: 0%). */
+export const PRINT = new Set(['artist-brushes', 'artist-spotlight-crop', 'bride-pearls', 'glam-sculpt', 'waves-blonde', 'glam-bronze', 'wedding-florals', 'golden-hour']);
 export const isPrint = (k) => PRINT.has(k);
 /* A title split for the roman/italic mix: before "&amp;" or after " to ", else before the last word. */
 const split = (t) => {

@@ -43,7 +43,9 @@ img,svg,video{display:block;max-width:100%}
 img{height:auto}
 a{color:inherit}
 p{margin:0}
-h1,h2,h3,h4{margin:0;color:var(--espresso);font-family:var(--ff-d);font-weight:300;line-height:1.05}
+h1,h2,h3,h4{margin:0;color:var(--espresso);font-family:var(--ff-d);font-weight:300;line-height:1.05;text-wrap:balance}
+/* no orphans: paragraphs avoid a lone last word where the browser can */
+p,li,figcaption{text-wrap:pretty}
 ul,ol{margin:0;padding:0;list-style:none}
 figure{margin:0}
 button{font:inherit;color:inherit}
@@ -84,25 +86,41 @@ html.js .fl.in::after{animation:flNarrow 1.5s var(--ease) calc(var(--d,0s) + .6s
 @keyframes flNarrow{from{clip-path:polygon(-28% 0,-20% 0,-32% 100%,-40% 100%)}to{clip-path:polygon(128% 0,136% 0,124% 100%,116% 100%)}}
 
 /* ---------- links + buttons ---------- */
-.lnk{display:inline-flex;align-items:center;gap:.7em;min-height:44px;font:500 .72rem/1.2 var(--ff-u);letter-spacing:.24em;text-transform:uppercase;color:var(--bronze);text-decoration:none;position:relative}
+.lnk{display:inline-flex;align-items:center;gap:.7em;min-height:44px;font:500 .72rem/1.2 var(--ff-u);letter-spacing:.24em;text-transform:uppercase;color:var(--bronze);text-decoration:none;position:relative;-webkit-tap-highlight-color:transparent}
 .lnk::after{content:'';position:absolute;left:0;right:0;bottom:10px;height:1px;background:currentColor;opacity:.45;transform-origin:left;transition:transform .5s var(--ease),opacity .3s}
-.lnk:hover::after{opacity:1}
 .lnk .arr{transition:transform .4s var(--ease)}
-.lnk:hover .arr{transform:translateX(4px)}
+.lnk:focus-visible::after,.lnk:active::after{opacity:1}
+.lnk:active .arr{transform:translateX(4px)}
 .prose a,.ft a,.menu-sub a{text-underline-offset:.2em;text-decoration-thickness:1px}
-.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:50px;padding:0 1.7em;border:1px solid var(--espresso);border-radius:2px;background:var(--espresso);color:var(--tulle);font:500 .72rem/1.2 var(--ff-u);letter-spacing:.24em;text-transform:uppercase;text-decoration:none;text-align:center;overflow:hidden;isolation:isolate;cursor:pointer;transition:background .35s,color .35s,border-color .35s;-webkit-tap-highlight-color:transparent}
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:50px;padding:0 1.7em;border:1px solid var(--espresso);border-radius:2px;background:var(--espresso);color:var(--tulle);font:500 .72rem/1.2 var(--ff-u);letter-spacing:.24em;text-transform:uppercase;text-decoration:none;text-align:center;overflow:hidden;isolation:isolate;cursor:pointer;transition:background .35s,color .35s,border-color .35s,transform .2s var(--ease);-webkit-tap-highlight-color:transparent}
 /* a champagne light passes across a button on hover/focus */
 .btn::before{content:'';position:absolute;top:-10%;bottom:-10%;left:0;width:45%;z-index:-1;background:linear-gradient(100deg,rgb(var(--foil-1-rgb)/0),rgb(var(--foil-1-rgb)/.32),rgb(var(--foil-1-rgb)/0));transform:translateX(-120%) skewX(-18deg);transition:transform .8s var(--ease)}
-.btn:hover::before,.btn:focus-visible::before{transform:translateX(300%) skewX(-18deg)}
-.btn:hover{background:var(--bronze);border-color:var(--bronze)}
+.btn:focus-visible::before{transform:translateX(300%) skewX(-18deg)}
 .btn--sm{min-height:44px;padding:0 1.25em;font-size:.66rem;letter-spacing:.22em}
 .btn--line{background:transparent;color:var(--espresso);border-color:rgb(var(--espresso-rgb)/.55)}
-.btn--line:hover{background:rgb(var(--espresso-rgb)/.05);border-color:var(--espresso)}
 .btn--line::before{background:linear-gradient(100deg,rgb(var(--foil-1-rgb)/0),rgb(var(--foil-1-rgb)/.7),rgb(var(--foil-1-rgb)/0))}
 .btn--light{background:var(--tulle);color:var(--espresso);border-color:var(--tulle)}
-.btn--light:hover{background:var(--satin)}
 .btn--line-light{background:transparent;color:var(--tulle);border-color:rgb(var(--tulle-rgb)/.55)}
-.btn--line-light:hover{background:rgb(var(--tulle-rgb)/.08);border-color:var(--tulle)}
+/* pressed: every device, a quick settle and the hover colour for as long as the finger is down */
+.btn:active{transform:scale(.985);transition-duration:.08s}
+.btn:active{background:var(--bronze);border-color:var(--bronze)}
+.btn--line:active{background:rgb(var(--espresso-rgb)/.07);border-color:var(--espresso)}
+.btn--light:active{background:var(--satin);border-color:var(--satin)}
+.btn--line-light:active{background:rgb(var(--tulle-rgb)/.12);border-color:var(--tulle)}
+/* hover only where there is a real pointer: on a phone a tapped button must not keep its
+   hover look until the next tap */
+@media(hover:hover){
+  .lnk:hover::after{opacity:1}
+  .lnk:hover .arr{transform:translateX(4px)}
+  .btn:hover::before{transform:translateX(300%) skewX(-18deg)}
+  .btn:hover{background:var(--bronze);border-color:var(--bronze)}
+  .btn--line:hover{background:rgb(var(--espresso-rgb)/.05);border-color:var(--espresso)}
+  .btn--light:hover{background:var(--satin);border-color:var(--satin)}
+  .btn--line-light:hover{background:rgb(var(--tulle-rgb)/.08);border-color:var(--tulle)}
+  .hd-nav a:hover::after{transform:none}
+  .menu-list a:hover .ml{font-style:italic}
+  .ft-col li a:hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em}
+}
 .acts{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
 .acts .btn{flex:1 1 auto}
 @media(min-width:600px){.acts .btn{flex:0 0 auto}}
@@ -168,7 +186,9 @@ html.js .rv-line.in>span{transform:none}
 /* ---------- header ---------- */
 .hd{position:fixed;inset:0 0 auto;z-index:50;padding-top:env(safe-area-inset-top,0px);transition:transform .5s var(--ease),background-color .4s,box-shadow .4s}
 .hd-in{display:flex;align-items:center;gap:8px;height:var(--hd-h);max-width:calc(var(--maxw) + var(--gut)*2);margin:0 auto;padding-inline:var(--gut)}
-.hd--stuck{background:rgb(var(--tulle-rgb)/.96);box-shadow:0 1px 0 rgb(var(--pearl-rgb)/.8)}
+.hd--stuck,html:not(.js) .hd{background:rgb(var(--tulle-rgb)/.96);box-shadow:0 1px 0 rgb(var(--pearl-rgb)/.8)}
+/* without the script nothing turns the header solid as the page scrolls, so it is solid from
+   the start and the page text never runs behind a transparent bar */
 .hd--hide{transform:translate3d(0,-100%,0)}
 .hd-logo{display:inline-flex;align-items:center;min-height:44px;text-decoration:none;color:var(--espresso);margin-right:auto}
 .wm{display:inline-flex;align-items:center;gap:10px}
@@ -196,7 +216,7 @@ html.js .rv-line.in>span{transform:none}
   .hd-nav{display:flex;gap:clamp(1.2rem,2.2vw,2.2rem);margin-right:clamp(1rem,2vw,2rem)}
   .hd-nav a{position:relative;display:inline-flex;align-items:center;min-height:44px;font:500 .66rem/1 var(--ff-u);letter-spacing:.26em;text-transform:uppercase;color:var(--espresso);text-decoration:none}
   .hd-nav a::after{content:'';position:absolute;left:0;right:.26em;bottom:12px;height:1px;background:var(--foil);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
-  .hd-nav a:hover::after,.hd-nav a[aria-current="page"]::after{transform:none}
+  .hd-nav a[aria-current="page"]::after,.hd-nav a:focus-visible::after{transform:none}
 }
 
 /* ---------- the full-screen menu: a tulle curtain ---------- */
@@ -213,7 +233,7 @@ html.js .rv-line.in>span{transform:none}
 .menu-list a{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.42rem 0;text-decoration:none;color:var(--espresso)}
 .menu-list .ml{font:300 clamp(2rem,8.4vw,3.4rem)/1.05 var(--ff-d);transition:color .3s}
 .menu-list .mn{font:500 .58rem/1 var(--ff-u);letter-spacing:.3em;text-transform:uppercase;color:var(--bronze);opacity:.8}
-.menu-list a:hover .ml,.menu-list a[aria-current="page"] .ml{font-style:italic}
+.menu-list a[aria-current="page"] .ml,.menu-list a:active .ml,.menu-list a:focus-visible .ml{font-style:italic}
 .menu-list a[aria-current="page"] .ml{color:var(--bronze)}
 html.js .menu-list li{opacity:0;transform:translate3d(0,16px,0);transition:opacity .5s,transform .7s var(--ease)}
 html.js .menu.open .menu-list li{opacity:1;transform:none;transition-delay:calc(.25s + var(--i,0) * .05s)}
@@ -234,8 +254,8 @@ body.menu-open .hd{visibility:hidden}
 .ft-cols{display:grid;gap:2rem;grid-template-columns:1fr 1fr}
 .ft-col:last-child{grid-column:1/-1}
 .ft-h{font:500 .62rem/1 var(--ff-u);letter-spacing:.3em;text-transform:uppercase;color:var(--bronze);margin-bottom:.6rem}
-.ft-col li a,.ft-where{display:inline-flex;align-items:center;min-height:40px;font-size:1.12rem;color:var(--espresso);text-decoration:none;line-height:1.25}
-.ft-col li a:hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em}
+.ft-col li a,.ft-where{display:inline-flex;align-items:center;min-height:40px;font-size:1.12rem;color:var(--espresso);text-decoration:none;line-height:1.25;text-wrap:balance}
+.ft-col li a:active,.ft-col li a:focus-visible{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em}
 .ft-mail{overflow-wrap:anywhere}
 .ft-rule{margin:0 auto}
 .ft-fine{max-width:46rem;margin:0 auto;text-align:center;font:400 .78rem/1.7 var(--ff-u);color:var(--espresso-soft)}
@@ -249,6 +269,9 @@ body.menu-open .hd{visibility:hidden}
   .ft-col:last-child{grid-column:auto}
   .ft-rule,.ft-fine{grid-column:1/-1}
 }
+/* between 900 and 1199px three columns are too narrow for the email address (it broke
+   mid-word at 1024): two columns, the contact column full width beneath */
+@media(min-width:900px) and (max-width:1199px){.ft-cols{grid-template-columns:1fr 1fr}.ft-col:last-child{grid-column:1/-1}}
 
 /* ---------- the phone booking bar ---------- */
 .bar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;gap:10px;padding:10px var(--gut) calc(10px + env(safe-area-inset-bottom,0px));background:rgb(var(--tulle-rgb)/.97);box-shadow:0 -1px 0 rgb(var(--pearl-rgb));transform:translate3d(0,110%,0);transition:transform .55s var(--ease)}

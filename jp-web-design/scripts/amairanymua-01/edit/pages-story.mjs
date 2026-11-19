@@ -2,7 +2,7 @@
    Built only from the page kit in shell.mjs (KIT.md) and the facts in site.mjs.
    Styles: assets/edit/pages-story.css. Runtime: assets/edit/pages-story.js (one quiet
    scroll-linked drift on the full-bleed wedding-day picture; nothing else needs script). */
-import { SITE, ABOUT, INTRO, SERVICES, PATHS, BRIDAL, FINAL, FILMS, LOOKS, href, book, inquire, pic, src, srcset, arrow } from '../site.mjs';
+import { SITE, ABOUT, INTRO, SERVICES, BRIDAL, FINAL, FILMS, LOOKS, href, book, inquire, pic, src, srcset, arrow } from '../site.mjs';
 import { page, S, hed, kick, spark, ticks, print, filmPrint, actions, cover, chapter, cta } from './shell.mjs';
 
 const capOf = (k) => (LOOKS.find((x) => x.photo === k) || {}).cap || '';
@@ -115,9 +115,9 @@ const svcItem = (it, i) => {
 };
 
 const groupActs = (g) => (g.id === 'weddings'
-  ? `<div class="acts">${inquire(S, 'Bridal inquiry', 'btn btn--solid')}${book('bridal-services', 'Explore Bridal Services', 'btn btn--line')}</div>
+  ? `<div class="acts">${inquire(S, 'Bridal inquiry', 'btn btn--solid')}${book('bridal-services', 'Bridal services', 'btn btn--line')}</div>
       <p><a class="lnk" href="${href(S, 'bridal')}">The bridal page ${arrow}</a></p>`
-  : `<div class="acts">${book('event', 'Book Event Makeup &amp; Hair', 'btn btn--solid')}${book('schedule', 'Packages and pricing', 'btn btn--line')}</div>`);
+  : `<div class="acts">${book('event', 'Book Event Makeup &amp; Hair', 'btn btn--solid')}</div>`);
 
 const group = (g) => chapter({
   id: g.id,
@@ -128,32 +128,6 @@ const group = (g) => chapter({
   body: `<div class="svc-list">${g.items.map(svcItem).join('')}</div>
     <div class="svc-acts rv">${groupActs(g)}</div>${g.id === 'events' ? `
     <p class="small svc-price rv">${SERVICES.pricing} ${book('schedule', SERVICES.pricingLink, 'tx')}.</p>` : ''}`,
-});
-
-const wayCard = (p) => {
-  const bridal = p.key === 'bridal';
-  const acts = bridal
-    ? `${inquire(S, p.cta, 'btn btn--solid')}${book('bridal-services', 'Explore Bridal Services', 'btn btn--line')}`
-    : book('event', p.cta, 'btn btn--solid');
-  return `<article class="way card ${bridal ? 'card--peach' : 'card--gulf'} rv-card" aria-labelledby="way-${p.key}-h">
-        <div class="way-ph ${bridal ? 'print--l' : 'print--r'}">${pic(p.plate, { sizes: '(max-width:899px) 80vw, 30vw' })}</div>
-        <div class="way-copy">
-          ${kick(p.kicker, 'cream')}
-          <h3 class="hed hed--l" id="way-${p.key}-h">${p.title}</h3>
-          <p class="way-body">${p.body}</p>
-          ${ticks(p.points)}
-          <div class="acts">${acts}</div>
-          <p class="small way-note">${p.note}</p>
-        </div>
-      </article>`;
-};
-
-const ways = chapter({
-  id: 'ways',
-  kick: SERVICES.slateHow,
-  heading: ['Which way', 'is yours?'],
-  sub: FINAL.line,
-  body: `<div class="ways" data-stag=".12">${PATHS.map(wayCard).join('')}</div>`,
 });
 
 export const services = () => page({
@@ -173,8 +147,7 @@ export const services = () => page({
     cls: 'st-cover',
   })}
 ${SERVICES.groups.map(group).join('\n')}
-${ways}
-${cta({ kick: ABOUT.noteKick, copy: ABOUT.note })}`,
+${cta({ kick: SERVICES.slateHow, copy: FINAL.line })}`,
 });
 
 /* ================================================================ BRIDAL */
@@ -186,7 +159,7 @@ const fill = (html) => html
   .replace('{event}', book('event', 'its own booking page', 'tx'))
   .replace('{sched}', book('schedule', 'her booking page', 'tx'));
 
-const bridalActs = `<div class="acts">${inquire(S, 'Bridal inquiry', 'btn btn--solid')}${book('bridal-services', 'Explore Bridal Services', 'btn btn--line')}</div>`;
+const bridalActs = `<div class="acts">${inquire(S, 'Bridal inquiry', 'btn btn--solid')}${book('bridal-services', 'Bridal services', 'btn btn--line')}</div>`;
 
 /* what her inquiry form asks, shown as the form's own four steps */
 const ask = chapter({
@@ -203,10 +176,14 @@ const ask = chapter({
     <div class="asks-go rv">${inquire(S, `Start the bridal inquiry ${arrow}`, 'btn btn--solid')}<p class="small">These are the questions ${SITE.first}’s own bridal inquiry asks.</p></div>`,
 });
 
-/* the wedding-day moment: golden hour on the Gulf, edge to edge */
-const moment = `<section class="bleed" aria-label="Wedding day">
-  <div class="bleed-f" data-drift>${pic('golden-hour', { sizes: '100vw', cls: 'bleed-im', pos: '44% 22%' })}</div>
-  <p class="bleed-cap"><span class="sticker sticker--gulf">${capOf('golden-hour')}</span></p>
+/* the wedding-day moment: golden hour on the Gulf, edge to edge on phones and tablets; on wide
+   screens a framed print no wider than the content (the largest file is 1280 wide, so it is never
+   stretched past its own pixels) */
+const moment = `<section class="bleed-sec f-cream" aria-label="Wedding day">
+  <div class="bleed">
+    <div class="bleed-f" data-drift>${pic('golden-hour', { sizes: '(min-width:1100px) min(1240px, 92vw), 100vw', cls: 'bleed-im', pos: '44% 22%' })}</div>
+    <p class="bleed-cap"><span class="sticker sticker--gulf">${capOf('golden-hour')}</span></p>
+  </div>
 </section>`;
 
 const collections = chapter({

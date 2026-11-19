@@ -69,7 +69,8 @@ ${SCENES.map((s, i) => `<div class="scn${i === 0 ? ' on' : ''}" data-i="${i}"><d
 <h2 class="scn-h"><em>${s.name}</em></h2>
 <p class="scn-p">${svc(s.item).summary}</p>
 </div>
-</div>${i ? '<i class="scn-edge" aria-hidden="true"></i>' : ''}</div>`).join('\n')}
+</div></div>`).join('\n')}
+<i class="sc-cut" aria-hidden="true"></i>
 <div class="sc-ui" aria-hidden="true"><span class="sc-prog"><i></i></span><span class="slate sc-n">Sc. <b>01</b> / ${pad(SCENES.length)}</span></div>
 </div>
 </section>`;

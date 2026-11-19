@@ -5,6 +5,9 @@
 .op{display:none}
 html.intro .op{position:fixed;inset:0;z-index:955;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);place-items:center;overflow:hidden;pointer-events:auto;touch-action:none}
 .op-bg{position:absolute;inset:0;background:var(--cream)}
+/* the flood is a plain peach field opened by a clip-path ellipse (cheap to paint at any size);
+   the masked swatch above it only swells a little and fades, so nothing huge is ever rastered */
+.op-flood{position:absolute;inset:0;background:var(--peach);clip-path:ellipse(0 0 at 50% 50%)}
 .op-sws{position:relative;grid-area:1 / 1;width:min(128vw,58vw + 300px,1120px);aspect-ratio:1600 / 900}
 .op-sw{position:absolute;left:0;width:100%;aspect-ratio:1600 / 420;transform-origin:34% 50%}
 .op-sw i{position:absolute;inset:0;-webkit-mask:url(swatch-1.webp) center / 100% 100% no-repeat;mask:url(swatch-1.webp) center / 100% 100% no-repeat}

@@ -42,7 +42,7 @@ const cover = `<section class="cover f-peach iq-cover">
 
 const stage = `<section class="iq-sec f-cream" aria-labelledby="iq-card-k">
   <div class="wrap iq-grid">
-    <div class="iq-card">
+    <div class="iq-card" style="--iq-n:'${String(INQUIRY.steps.length).padStart(2, '0')}'">
       <p class="kick kick--peach iq-card-k" id="iq-card-k">${INQUIRY.cardKick}</p>
       ${inquiryForm(S, { primary: 'btn btn--solid', secondary: 'btn btn--line' })}
     </div>

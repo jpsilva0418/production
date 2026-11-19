@@ -105,9 +105,12 @@ const svcItem = (it) => {
     </article>`;
 };
 
+/* Each chapter's kicker is the PATHS kicker for its side ("Weddings", "Events & everyday glam");
+   the heading answers the cover's "Brides first, then every occasion." Neither repeats the first
+   service's title, which follows directly under it. */
 const SVC_HEAD = {
-  weddings: { kick: PATHS[0].kicker, heading: ['Bridal hair', '&amp; makeup.'], tone: '' },
-  events: { kick: 'Every occasion', heading: ['Events &amp;', 'everyday glam.'], tone: 'satin' },
+  weddings: { kick: PATHS[0].kicker, heading: ['For the', 'wedding day.'], tone: '' },
+  events: { kick: PATHS[1].kicker.replace(/&(?!amp;)/g, '&amp;'), heading: ['For every', 'occasion.'], tone: 'satin' },
 };
 const svcActs = {
   weddings: `${inquire(S, 'Bridal inquiry', 'btn')}${book('bridal-services', 'Explore Bridal Services', 'btn btn--line')}`,

@@ -83,6 +83,7 @@
       root.classList.remove('intro', 'intro-run');
       anims.forEach(function (a) { try { a.cancel(); } catch (e) {} });
       var w = q('.hd .wm-s'); if (w) w.style.removeProperty('--wm-sw');
+      var g = q('.op-gate'); if (g) g.style.visibility = '';
       ['wheel', 'touchmove', 'pointerdown', 'keydown'].forEach(function (t) { window.removeEventListener(t, skip, true); });
       Reel.start();
     };
@@ -137,7 +138,24 @@
       /* --- the reel: a strip of portraits whips up through the gate and locks --- */
       var H = gate.getBoundingClientRect().height || heroH;
       var LOCK = 6, y0 = 0.35 * H, y1 = -LOCK * H, over = Math.max(6, H * 0.016);
-      A(gate, [{ opacity: 0 }, { opacity: 1 }], { duration: 140, delay: 1550, easing: 'linear' });
+      var gateIn = A(gate, [{ opacity: 0 }, { opacity: 1 }], { duration: 140, delay: 1550, easing: 'linear' });
+      /* a slow connection must never whip dark frames through the gate. Just before the spin,
+         any passing frame that has not arrived borrows the lead photograph; if even that has
+         not arrived, the gate stays shut and the black lifts onto whatever the hero has */
+      setTimeout(function () {
+        if (ended) return;
+        var ok = function (im) { return !!im && im.complete && im.naturalWidth > 0; };
+        var ims = $$('img', strip), lockIm = ims[LOCK], leadIm = q('.hb img', reel);
+        var have = ok(lockIm) ? lockIm : ok(leadIm) ? leadIm : null;
+        if (!have) {
+          if (gateIn && gateIn.effect && gateIn.effect.setKeyframes) gateIn.effect.setKeyframes([{ opacity: 0 }, { opacity: 0 }]);
+          else gate.style.visibility = 'hidden';
+          A(op, [{ opacity: 1 }, { opacity: 0 }], { duration: 700, delay: 120, easing: 'ease-out' });
+          return;
+        }
+        var fill = have.currentSrc || have.src;
+        ims.forEach(function (im) { if (!ok(im)) { im.srcset = ''; im.src = fill; } });
+      }, 1430);
       A(strip, [
         { transform: 'translate3d(0,' + y0.toFixed(1) + 'px,0)', easing: 'cubic-bezier(.1,.62,.16,1)' },
         { transform: 'translate3d(0,' + (y1 - over).toFixed(1) + 'px,0)', offset: 0.86, easing: 'cubic-bezier(.4,0,.3,1)' },
@@ -181,7 +199,7 @@
     var stage = q('.sc-stage', sc), scn = $$('.scn', sc), N = scn.length;
     var inner = scn.map(function (s) { return q('.scn-in', s); });
     var ims = scn.map(function (s) { return q('.scn-im', s); });
-    var edges = scn.map(function (s) { return q('.scn-edge', s); });
+    var cut = q('.sc-cut', sc), cutOn = -1;
     var prog = q('.sc-prog i', sc), num = q('.sc-n b', sc);
     var CUT = 0.6, LEAD = 0.18, END = 0.35, SETTLE = 12, DRIFT = 9;
     var active = 0, ticking = false, last = -1, vis = [];
@@ -196,7 +214,7 @@
       if (Math.abs(p - last) < 0.0002) return;
       last = p;
       var f = p * (N - 1 + END);
-      var a = 0;
+      var a = 0, moving = 0, sh = stage.offsetHeight;
       for (var k = 0; k < N; k++) {
         var w = wipe(f, k), wn = k + 1 < N ? wipe(f, k + 1) : 0;
         var show = w > 0 && wn < 1;
@@ -209,10 +227,17 @@
         if (k > 0) scn[k].style.transform = w >= 1 ? 'none' : 'translate3d(0,' + ((1 - w) * 100).toFixed(3) + '%,0)';
         var iy = (k > 0 ? (w - 1) * (100 - SETTLE) : 0) - wn * DRIFT;
         inner[k].style.transform = Math.abs(iy) < 0.001 ? 'none' : 'translate3d(0,' + iy.toFixed(3) + '%,0)';
-        if (edges[k]) edges[k].style.opacity = (w > 0 && w < 1 ? Math.min(1, Math.min(w, 1 - w) * 8) * 0.75 : 0).toFixed(3);
+        if (k > 0 && w > 0 && w < 1) moving = w;
         /* a slow push-in across the frame's whole life on screen */
         var lp = clamp((f - (k - 1) - LEAD) / (1 + CUT), 0, 1);
         ims[k].style.transform = 'scale(' + (1 + 0.07 * lp).toFixed(4) + ')';
+      }
+      /* the cut: one hairline riding the edge of whichever frame is moving, with a soft shadow
+         cast onto the frame it covers */
+      if (cut) {
+        var co = moving ? Math.min(1, Math.min(moving, 1 - moving) * 10) : 0;
+        if (co || cutOn) cut.style.transform = 'translate3d(0,' + ((1 - moving) * sh).toFixed(1) + 'px,0)';
+        if (co !== cutOn) { cut.style.opacity = co.toFixed(3); cutOn = co; }
       }
       if (prog) prog.style.transform = 'scaleX(' + p.toFixed(4) + ')';
       if (a !== active) {

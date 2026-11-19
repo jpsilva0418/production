@@ -85,9 +85,9 @@ html:not(.js) .pf-side{display:none}
 @media(min-width:1024px){
   .pf-side{position:sticky;top:calc(var(--hd-h) + 28px)}
   .pf-case{padding:14px;border-radius:var(--r-xl);background:var(--peach);box-shadow:0 30px 60px -40px rgba(43,37,35,.5)}
-  .pf-lid{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:8px 10px 14px}
-  .pf-lid-t{font:800 22px/1 var(--f-display);font-stretch:84%;letter-spacing:-.02em}
-  .pf-lid-n{font:italic 400 14px/1.2 var(--f-italic);color:var(--charcoal-soft)}
+  .pf-lid{display:grid;gap:4px;padding:8px 10px 14px}
+  .pf-lid-t{font:800 24px/1 var(--f-display);font-stretch:84%;letter-spacing:-.02em;white-space:nowrap}
+  .pf-lid-n{font:italic 400 15px/1.2 var(--f-italic);color:var(--charcoal-soft);white-space:nowrap}
   .pf-well{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px;border-radius:30px;background:var(--cream)}
   .pf-pan{display:grid;justify-items:center;gap:8px;min-height:0;padding:6px 2px 8px;border-radius:20px;background:none;box-shadow:none;white-space:normal;text-align:center}
   .pf-pan[aria-pressed="true"]{background:none;color:var(--charcoal)}
@@ -105,7 +105,7 @@ html:not(.js) .pf-side{display:none}
   .pf-pan--all .pf-pan-c{position:static;margin-left:auto;background:none;font:italic 400 16px/1 var(--f-italic);color:inherit;padding:0}
   .pf-pan--all[aria-pressed="true"] .pf-pan-c{color:var(--peach)}
   .pf-pan--all:focus-visible{border-radius:999px}
-  .pf-count{position:static!important;width:auto;height:auto;margin:14px 10px 4px;overflow:visible;clip:auto;white-space:normal;font-size:14px;line-height:1.45;color:var(--charcoal)}
+  .pf-count{position:static!important;width:auto;height:auto;margin:14px 10px 4px;overflow:visible;clip:auto;white-space:normal;font-size:14px;line-height:1.45;color:var(--charcoal);text-wrap:balance}
 }
 
 /* ---- the groups: one colour field each */
@@ -266,11 +266,22 @@ html.lb-open .dock{visibility:hidden}
   .pf-pan.glint .pf-dish::after{animation:none}
   .pf-mas .pf-it,.pf-m.pf-mas,.lb,.lb-card,.lb-img{transition:none}
 }
-@media(max-height:500px){.lb-hint{display:none}.lb-in{padding-bottom:calc(env(safe-area-inset-bottom) + 44px)}.lb-bar-row{min-height:44px}}
-/* a phone held sideways: arrows beside the photograph, the caption up in the top row */
+@media(max-height:500px){.lb-hint{display:none}.lb-in{padding-bottom:calc(env(safe-area-inset-bottom) + 44px)}.lb-bar-row{min-height:44px}.lb-x{width:44px;height:44px}}
+/* a phone held sideways: the photograph takes the whole height; the bars run across the top,
+   the chip, count and caption sit in the empty band to its left, close at the right, arrows beside it */
 @media(max-height:500px) and (min-width:700px){
-  .lb-in{grid-template-rows:auto minmax(0,1fr);padding-bottom:calc(env(safe-area-inset-bottom) + 62px)}
+  .lb-in{grid-template-rows:minmax(0,1fr);padding:calc(env(safe-area-inset-top) + 16px) max(16px,env(safe-area-inset-right)) calc(env(safe-area-inset-bottom) + 68px) max(16px,env(safe-area-inset-left))}
+  .lb-top{position:absolute;z-index:2;left:max(16px,env(safe-area-inset-left));right:max(16px,env(safe-area-inset-right));top:calc(env(safe-area-inset-top) + 6px);width:auto;max-width:none;pointer-events:none}
+  .lb-top .lb-x,.lb-top .lb-chip{pointer-events:auto}
+  .lb-bar-row{align-items:flex-start;min-height:44px}
+  .lb-count{padding-top:9px}
+  .lb-x{width:44px;height:44px}
   .lb-foot{position:absolute;left:max(16px,env(safe-area-inset-left));right:max(16px,env(safe-area-inset-right));top:calc(50% - 26px);display:flex;justify-content:space-between;width:auto;max-width:none;margin:0;pointer-events:none}
   .lb-foot .lb-nav{pointer-events:auto}
-  .lb-cap{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 27px);transform:translateX(-50%);white-space:nowrap}
+  .lb-cap{position:fixed;left:max(16px,env(safe-area-inset-left));top:calc(env(safe-area-inset-top) + 72px);max-width:calc(50vw - 160px);text-align:left}
 }
+
+/* the closing block's two small links: on a phone they wrap, so they stack and lose the dot
+   between them instead of leaving it hanging at the end of a line (cta() is used only by the
+   interior pages; site.css would be the better home for this rule) */
+@media(max-width:479px){.cta-more{flex-direction:column}.cta-more>span[aria-hidden]{display:none}}

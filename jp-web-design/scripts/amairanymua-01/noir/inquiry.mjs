@@ -39,7 +39,7 @@ ${inquiryFoot()}`,
 ${kick(INQUIRY.label, 'rv')}
 <h1 class="d-xl iq-h rv-mask" id="iqH">${H[0]} <em>${H[1]}</em></h1>
 <p class="lead iq-lead rv" style="--d:.12s">${INQUIRY.body}</p>
-<aside class="iq-alt rv" style="--d:.2s" aria-labelledby="iqAltH">
+<aside class="iq-alt" aria-labelledby="iqAltH">
 <h2 class="iq-alt-h" id="iqAltH">${INQUIRY.qHeading}</h2>
 <p class="iq-alt-p">${INQUIRY.qBody}</p>
 <p class="iq-alt-a">${book('event', `${INQUIRY.qLink} ${arrow}`, 'lnk')}</p>

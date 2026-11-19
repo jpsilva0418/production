@@ -100,8 +100,11 @@ const groupHtml = (g) => {
   });
 };
 
+/* The group index under the title card carries one small plate per group, so the first screen
+   of a portfolio already shows her work (decorative repeats: the link text names the group). */
+const PLATE = { bridal: 'bride-pearls', 'wedding-day': 'wedding-night', glam: 'glam-bronze' };
 const jump = () => `<nav class="pf-jump rv" style="--d:.34s" aria-label="Portfolio groups">
-  <ul>${PORTFOLIO.map((g) => `<li><a href="#g-${g.id}"><span class="pf-jump-t">${g.title.replace(/&(?!amp;)/g, '&amp;')}</span><span class="pf-jump-n">${String(g.items.length).padStart(2, '0')}</span></a></li>`).join('')}</ul>
+  <ul>${PORTFOLIO.map((g) => `<li><a href="#g-${g.id}">${PLATE[g.id] ? `<span class="pf-jump-im">${pic(PLATE[g.id], { alt: '', sizes: '(max-width:599px) 27vw, 120px' })}</span>` : ''}<span class="pf-jump-l"><span class="pf-jump-t">${g.title.replace(/&(?!amp;)/g, '&amp;')}</span><span class="pf-jump-n">${String(g.items.length).padStart(2, '0')}</span></span></a></li>`).join('')}</ul>
 </nav>`;
 
 /* The viewer. Empty until pages-work.js fills it; without script it never opens and every
@@ -188,7 +191,9 @@ export const reviews = () => page({
 ${chapter({
   id: 'read',
   kick: 'Where to read them',
-  heading: ['Where her clients', 'wrote them.'],
+  /* the cover already says where they live and to read them in full; this chapter is the way
+     in to them (REVIEWS.emptyBody: "every review is one tap away") */
+  heading: ['Two sites,', 'one tap away.'],
   cls: 'rs-where',
   body: `<div class="wrap rs-wrap">
     <ul class="rs-cards">

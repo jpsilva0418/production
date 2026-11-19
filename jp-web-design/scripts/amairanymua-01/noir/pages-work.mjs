@@ -139,7 +139,8 @@ ${viewer()}`,
    ==================================================================== */
 const stars = () => `<span class="rs-stars" aria-hidden="true">${'<i></i>'.repeat(5)}</span>`;
 const EMPTY_IMG = 'wedding-night';
-const REV_COVER = 'glam-bronze';
+/* a cover dissolves into the black, so it is one of the dark-ground portraits (see PRINT) */
+const REV_COVER = 'bride-crystal';
 const [eA, eB] = (() => { const t = REVIEWS.emptyHeading; const c = t.indexOf(','); return c > 0 ? [t.slice(0, c + 1), t.slice(c + 2)] : [t, '']; })();
 
 const siteLink = (r, i) => `<li class="rs rv" style="--d:${(i * 0.1).toFixed(2)}s">

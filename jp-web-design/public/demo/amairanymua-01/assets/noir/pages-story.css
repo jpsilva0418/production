@@ -63,8 +63,9 @@
 @media(max-width:599px){
   .ab-mo-g figcaption{flex-direction:column;align-items:flex-start;gap:.15em}
   .ab-mo-g figcaption .sep{display:none}
+  .ab-mo-g figcaption{letter-spacing:.14em}
   .ab-mo .slot{padding:1.2rem .7rem;gap:.5rem}
-  .ab-mo .slot-s{font-size:.54rem;letter-spacing:.1em}
+  .ab-mo .slot-s{font-size:.54rem;letter-spacing:.1em;white-space:nowrap}
 }
 @media(min-width:900px){
   .ab-mo-g{grid-template-columns:repeat(4,1fr);gap:clamp(14px,1.6vw,24px)}
@@ -87,15 +88,25 @@
 .ph.sv-ph{-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 64%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 64%,transparent 100%)}
 /* phones: the film plate is laid over the plate's lower corner and ends just below it, so it
    reads as a frame placed on a print, not as something hanging off it */
-.sv-film{position:relative;z-index:1;width:44%;margin:-66% var(--gut-r) 0 auto}
+.sv-film{position:relative;z-index:1;width:44%;margin:-60% var(--gut-r) 0 auto}
 .sv-it--print .sv-media{margin-inline:var(--pr)}
-.sv-it--print .sv-film{width:42%;margin:-62% calc(var(--pr) * -1 - 1px) 0 auto}
+.sv-it--print .sv-film{width:42%;margin:-54% calc(var(--pr) * -1 - 1px) 0 auto}
 .sv-film .film{width:100%;box-shadow:none}
 .sv-film .slot{gap:.6rem;padding:1.4rem .8rem}
 .sv-film .slot-ic{width:42px;height:42px}
 .sv-film .slot-t{font-size:clamp(1.1rem,3.8vw,1.75rem)}
 .sv-film .slot-s{letter-spacing:.12em;line-height:1.5}
-@media(max-width:379px){.sv-film .slot{padding:1rem .6rem}.sv-film .slot-s{font-size:.54rem;letter-spacing:.1em}}
+/* tablets: one column still, but a plate no longer fills a whole screen of height */
+@media(min-width:600px) and (max-width:899px){
+  .sv-media,.sv-it--print .sv-media{margin:0;width:74%}
+  .sv-it--flip .sv-media{margin-left:auto}
+  .sv-it--print .sv-media{width:calc(74% - var(--pr) * 2);margin-left:var(--pr)}
+  .sv-it--print.sv-it--flip .sv-media{margin-left:auto;margin-right:var(--pr)}
+  .sv-film,.sv-it--print .sv-film{width:40%;margin:-50% -16% 0 auto}
+  .sv-it--flip .sv-film,.sv-it--print.sv-it--flip .sv-film{margin:-50% auto 0 -16%}
+  .ph.sv-ph{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 11%,#000 89%,transparent 100%),linear-gradient(180deg,transparent 0,#000 8%,#000 64%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,#000 11%,#000 89%,transparent 100%),linear-gradient(180deg,transparent 0,#000 8%,#000 64%,transparent 100%);mask-composite:intersect}
+}
+@media(max-width:599px){.sv-film .slot{padding:1rem .6rem}.sv-film .slot-s{font-size:.54rem;letter-spacing:.1em;white-space:nowrap}}
 .sv-txt > .slate{display:flex;flex-wrap:wrap;row-gap:.25em;margin-bottom:1.1rem}
 .sv-txt .d-m{margin-bottom:1.2rem;max-width:12ch}
 .sv-txt .lead{max-width:30em}
@@ -191,3 +202,7 @@
    outside the box and is not clipped by the frame's own overflow. */
 :root{--pr:clamp(6px,.8vw,11px)}
 .print,.ph.print,.ph.sv-ph.print{-webkit-mask-image:none;mask-image:none;background:var(--cocoa);outline:1px solid rgba(230,207,166,.38);outline-offset:var(--pr)}
+
+/* the narrowest phones: the slot's small print may take two balanced lines ("Slot · clip" /
+   "to come") rather than run past the plate's inner hairline */
+@media(max-width:379px){.ab-mo .slot-s,.sv-film .slot-s{white-space:normal;text-wrap:balance;max-width:9em;line-height:1.6}}

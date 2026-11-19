@@ -1,9 +1,10 @@
 /* /demo/amairanymua-01 — site "veil": the Bridal Inquiry page.
 
-   The title card (her label, the page's h1, the line under it, and a quiet "Not a bride?" aside
-   that sends event bookings to her own booking page), then the inquiry itself as the
-   centrepiece: one matted card on a satin band, the shared four-step form inside it, and the
-   two notes under it (not a booking; nothing leaves this browser). On wide screens one of her
+   The title card (her label, the page's h1 and the line under it, kept short so the form starts
+   on a phone's first screen), then the inquiry itself as the centrepiece: one matted card on a
+   satin band, the shared four-step form inside it, the two notes under it (not a booking;
+   nothing leaves this browser) and a quiet "Not a bride?" aside that sends event bookings to
+   her own booking page. On wide screens one of her
    bridal portraits stands beside the card and stays in view while the bride fills it in (it is
    only displayed from 1200px, so it carries no reveal: a hidden element can never be revealed).
 
@@ -43,6 +44,7 @@ const card = () => `<section class="iq" id="inquiry" aria-labelledby="iq-kick">
         <p class="iq-note">${INQUIRY.note}</p>
         <p class="iq-demo">${INQUIRY.demoNote}</p>
       </div>
+      ${notBride()}
     </div>
   </div>
 </section>`;
@@ -54,6 +56,8 @@ export const inquiry = () => page({
   bodyClass: 'no-bar is-inquiry',
   css: [...INQUIRY_CSS.map((n) => `${A}/css/${n}.css`), 'inquiry'],
   js: INQUIRY_SCRIPTS.map((n) => `${A}/js/${n}.js`),
-  main: `${cover({ kick: INQUIRY.label, heading: H1, sub: INQUIRY.body, actions: notBride() })}
+  /* the title card is kept short so the form itself starts on the first screen of a phone;
+     "Not a bride?" waits under the card (the header, menu and footer also carry event booking) */
+  main: `${cover({ kick: INQUIRY.label, heading: H1, sub: INQUIRY.body })}
 ${card()}`,
 });

@@ -200,7 +200,7 @@ export const reviews = () => page({
   <div class="wrap">
     <header class="sec-hd rv">
       ${kick('Where to read them', 'peach')}
-      ${hed(['Read them', 'in full.'], { id: 'where-h' })}
+      ${hed(['Two sites,', 'one tap each.'], { id: 'where-h' })}
       <p class="lede">Every review is on the site it was written on. Choose one to read them there.</p>
     </header>
     <ul class="rs-grid" data-stag=".1">

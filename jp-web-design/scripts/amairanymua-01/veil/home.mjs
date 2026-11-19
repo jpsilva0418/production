@@ -47,23 +47,32 @@ const beat = (b, i) => {
   return `<div class="beat${i === 0 ? ' is-on' : ''}" data-label="${esc(b.label)}"${i === 0 ? '' : ' aria-hidden="true"'}>${lazy}</div>`;
 };
 
+/* The picture's counter and pause control. They live in two places and CSS shows one: on wide
+   screens a small caption in the frame's lower corner (over clothing, never a face); on phones
+   a foot row under the actions, the counter left and the pause right of the scroll cue, on
+   plain tulle, well clear of every face. The hidden copy is display:none, so assistive
+   technology meets one pause button. */
+const lbl = (cls) => `<p class="hero-lbl ${cls}" aria-hidden="true"><span class="hero-n">01</span><span class="hero-of">/ ${String(BEATS.length).padStart(2, '0')}</span><span class="hero-l">${BEATS[0].label}</span></p>`;
+const pause = (cls) => `<button class="hero-pause ${cls}" type="button" aria-pressed="false" aria-label="Pause the slideshow" hidden><span class="pz" aria-hidden="true"></span></button>`;
+
 const hero = () => `<section class="hero" id="top" aria-label="${esc(HERO.label)}" data-bar-after>
   <div class="hero-pic">
     <div class="hero-clip"><div class="hero-pic-in" data-reel>
       ${BEATS.map(beat).join('\n      ')}
     </div></div>
     <i class="hero-tulle" aria-hidden="true"></i>
-    <div class="hero-meta">
-      <p class="hero-lbl" aria-hidden="true"><span class="hero-n">01</span><span class="hero-of">/ ${String(BEATS.length).padStart(2, '0')}</span><span class="hero-l">${BEATS[0].label}</span></p>
-      <button class="hero-pause" type="button" aria-pressed="false" aria-label="Pause the slideshow" hidden><span class="pz" aria-hidden="true"></span></button>
-    </div>
+    <div class="hero-meta">${lbl('hero-lbl--pic')}${pause('hero-pause--pic')}</div>
   </div>
   <div class="hero-txt">
     <h1 class="hero-name"><span class="hero-ln"><span>Amairany</span></span> <span class="hero-ln"><span>Sierra</span></span></h1>
     <span class="hero-rule" aria-hidden="true"><i></i></span>
-    <p class="hero-sub">${HERO.sub}</p>
+    <p class="hero-sub"><span>${SITE.tagline}</span><span class="hero-dot"> &middot; </span><span>${SITE.area}</span></p>
     <div class="hero-act acts">${inquire(S, HERO.cta, 'btn')}${book('event', HERO.second, 'btn btn--line')}</div>
-    <a class="hero-cue" href="#signature"><span>${HERO.cue}</span><i aria-hidden="true"></i></a>
+    <div class="hero-foot">
+      ${lbl('hero-lbl--foot')}
+      <a class="hero-cue" href="#signature"><span>${HERO.cue}</span><i aria-hidden="true"></i></a>
+      ${pause('hero-pause--foot')}
+    </div>
   </div>
 </section>`;
 

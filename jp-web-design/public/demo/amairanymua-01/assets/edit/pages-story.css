@@ -78,6 +78,8 @@
 .svc-film .slot-t{font-size:clamp(14px,1.4vw,17px)}
 .svc-film .slot-s{display:none}
 .svc-film .film-lbl{display:none}
+/* phones: the reel card is bigger, so its slot reads as a story card rather than a thumbnail */
+@media(max-width:599px){.svc-media--film{padding-right:22%;padding-bottom:16%}.svc-film{width:46%}.svc-media--film .svc-ph .print-cap{padding-right:34%}.svc-film .slot-t{font-size:16px}}
 .svc-copy{display:grid;gap:18px;justify-items:start;max-width:34rem}
 .svc-n{font:italic 400 clamp(26px,2.6vw,34px)/1 var(--f-italic);color:var(--charcoal-soft)}
 .svc-copy .lede{color:var(--charcoal)}
@@ -91,17 +93,6 @@
   .svc-media{justify-self:stretch}
   .svc-acts{grid-template-columns:auto 1fr;align-items:center;column-gap:28px}
 }
-
-/* two ways to book */
-.ways{display:grid;gap:28px}
-.way{display:grid;gap:26px;align-content:start}
-.way-ph{position:relative;overflow:hidden;aspect-ratio:5 / 4;border-radius:28px;background:var(--peach-deep)}
-.way-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.way-copy{display:grid;gap:16px;justify-items:start}
-.way-body{color:var(--charcoal);max-width:34rem}
-.way .acts{margin-top:6px}
-.way-note{margin-top:-4px;color:var(--charcoal)}
-@media(min-width:960px){.ways{grid-template-columns:1fr 1fr;align-items:stretch}.way:nth-child(2){margin-top:64px}}
 
 /* ================================================================ BRIDAL */
 /* what the inquiry asks: the form's four steps */
@@ -124,7 +115,11 @@
 .bleed-cap{position:absolute;left:max(var(--gut),env(safe-area-inset-left));bottom:clamp(18px,3vw,36px);margin:0}
 .bleed-cap .sticker{position:static;box-shadow:0 10px 24px -14px var(--shade)}
 @media(min-width:768px){.bleed{height:clamp(560px,78vw,820px)}}
-@media(min-width:1100px){.bleed{height:min(62vw,900px);max-height:calc(100vh - 40px);max-height:calc(100svh - 40px);min-height:600px}}
+@media(min-width:1100px){
+  .bleed-sec{padding:calc(var(--sec) * .6) max(var(--gut),env(safe-area-inset-left)) 0 max(var(--gut),env(safe-area-inset-right))}
+  .bleed{max-width:var(--max);margin-inline:auto;border-radius:var(--r-xl);isolation:isolate;height:min(56vw,780px);max-height:calc(100vh - 120px);max-height:calc(100svh - 120px);min-height:560px;box-shadow:0 40px 80px -50px rgba(43,37,35,.5)}
+  .bleed-cap{left:clamp(24px,3vw,40px);bottom:clamp(24px,3vw,40px)}
+}
 
 /* collections: four names, a printed list */
 .colls .wrap{display:grid}
@@ -166,3 +161,8 @@
   .bleed-f{inset:0;transform:none!important}
   .qa[open] .qa-a{animation:none}
 }
+
+/* the closing block's two small links: on a phone they wrap, so they stack and lose the dot
+   between them instead of leaving it hanging at the end of a line (cta() is used only by the
+   interior pages; site.css would be the better home for this rule) */
+@media(max-width:479px){.cta-more{flex-direction:column}.cta-more>span[aria-hidden]{display:none}}

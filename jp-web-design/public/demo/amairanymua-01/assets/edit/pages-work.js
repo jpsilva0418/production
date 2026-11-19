@@ -24,40 +24,76 @@
   var items = $$('.pf-it', pf);
   var shown = function (el) { return !el.hidden; };
 
-  /* ================================================================ 1 the masonry */
-  var spanOf = function (it, cols) {
-    if (it.classList.contains('pf-it--big')) return Math.min(2, cols);
-    if (it.classList.contains('pf-it--wide')) return cols >= 3 ? 2 : 1;
-    return 1;
-  };
+  /* ================================================================ 1 the masonry
+     Only the group's lead card (its first visible one, when it is a 'big' or 'wide' look and at
+     least three cards are showing) spans two columns, and it always sits top-left, so a span can
+     never leave a hole. Everything else takes the shortest column. Then the columns are evened
+     out: the shorter ones lengthen their own cards' frames a little (a photograph by at most 30%,
+     cropping the sides with the face kept by its object-position; a film slot by up to 50%) so the group ends on one clean line. A group
+     with fewer cards than columns keeps the usual card size and is centred on its field. */
+  var frameOf = function (it) { return $('.pf-f', it); };
   var layout = function (m) {
     var W = m.clientWidth;
     if (!W) return;
     m._w = W;
     var gap = W < 600 ? 10 : 16, vgap = W < 600 ? 14 : 22;
     var its = $$('.pf-it', m).filter(shown);
-    /* a filtered group with one or two cards uses fewer, wider columns rather than leaving a hole */
-    var cols = Math.min(Math.max(2, Math.floor((W + gap) / (240 + gap))), Math.max(2, its.length));
+    $$('.pf-f', m).forEach(function (f) { f.style.aspectRatio = ''; });
+    var n = its.length;
+    if (!n) { m.style.height = '0px'; return; }
+    var cols = Math.max(2, Math.floor((W + gap) / (240 + gap)));
     var cw = (W - gap * (cols - 1)) / cols;
-    its.forEach(function (it) {
-      var s = spanOf(it, cols);
+    var lead = n >= 3 && (its[0].classList.contains('pf-it--big') || its[0].classList.contains('pf-it--wide'));
+    var used = Math.min(cols, n), x0 = 0;
+    if (n < cols || (n === 1)) {
+      /* one or two cards: the usual size (a lone card a touch larger on a phone), centred */
+      if (n === 1 && W < 600) cw = Math.min(W, 250);
+      used = n;
+      x0 = (W - (cw * used + gap * (used - 1))) / 2;
+    }
+    its.forEach(function (it, k) {
+      var s = lead && k === 0 ? Math.min(2, used) : 1;
       it._s = s;
-      /* a wide card spanning columns, or a big one spanning a tablet's whole row, is cropped to 5:4 (the face is kept by pos) */
-      it.classList.toggle('is-wide', s > 1 && (it.classList.contains('pf-it--wide') || (s === cols && W >= 600)));
+      /* a spanning wide look, or a big one spanning a tablet's whole row, is cropped to 5:4 */
+      it.classList.toggle('is-wide', s > 1 && (it.classList.contains('pf-it--wide') || (s === used && W >= 600)));
       it.style.width = (cw * s + gap * (s - 1)).toFixed(2) + 'px';
     });
     var hs = its.map(function (it) { return it.offsetHeight; });
-    var col = []; for (var c = 0; c < cols; c++) col.push(0);
-    var fresh = [];
+    var col = [], stacks = []; for (var c = 0; c < used; c++) { col.push(0); stacks.push([]); }
+    var place = [];
     its.forEach(function (it, k) {
       var s = it._s, bx = 0, by = Infinity;
-      for (var x = 0; x + s <= cols; x++) {
+      for (var x = 0; x + s <= used; x++) {
         var y = 0; for (var j = x; j < x + s; j++) y = Math.max(y, col[j]);
         if (y < by - 1) { by = y; bx = x; }
       }
-      if (it._new) { it.style.transition = 'none'; fresh.push(it); }
-      it.style.transform = 'translate3d(' + (bx * (cw + gap)).toFixed(2) + 'px,' + by.toFixed(2) + 'px,0)';
+      place[k] = { x: bx, y: by };
+      if (s === 1) stacks[bx].push(k);
       for (var q = bx; q < bx + s; q++) col[q] = by + hs[k] + vgap;
+    });
+    /* even the columns out */
+    var T = Math.max.apply(null, col);
+    stacks.forEach(function (ks, c) {
+      var need = T - col[c];
+      if (need < 2 || !ks.length) return;
+      /* a photograph gives at most 30% of its height, a film slot (a flat card) up to 50% */
+      var fr = ks.map(function (k) { var f = frameOf(its[k]); return f ? { f: f, w: f.offsetWidth, h: f.offsetHeight, c: f.offsetHeight * (its[k].classList.contains('pf-it--film') ? 0.5 : 0.3) } : null; });
+      var cap = fr.reduce(function (a, o) { return a + (o ? o.c : 0); }, 0);
+      if (!cap) return;
+      var take = Math.min(need, cap), shift = 0;
+      ks.forEach(function (k, i) {
+        place[k].y += shift;
+        var o = fr[i]; if (!o) return;
+        var add = take * o.c / cap;
+        o.f.style.aspectRatio = o.w.toFixed(1) + ' / ' + (o.h + add).toFixed(1);
+        shift += add;
+      });
+      col[c] += take;
+    });
+    var fresh = [];
+    its.forEach(function (it, k) {
+      if (it._new) { it.style.transition = 'none'; fresh.push(it); }
+      it.style.transform = 'translate3d(' + (x0 + place[k].x * (cw + gap)).toFixed(2) + 'px,' + place[k].y.toFixed(2) + 'px,0)';
     });
     m.style.height = Math.max(0, Math.max.apply(null, col) - vgap) + 'px';
     if (fresh.length) {
@@ -106,7 +142,19 @@
       it.hidden = !on;
       if (on) { if (it.classList.contains('pf-it--film')) fl++; else p++; }
     });
-    groups.forEach(function (g) { g.hidden = !$('.pf-it:not([hidden])', g); });
+    groups.forEach(function (g) {
+      var on = $$('.pf-it:not([hidden])', g);
+      g.hidden = !on.length;
+      /* the group's own tally follows the filter */
+      var c = $('.pf-g-c', g);
+      if (c) {
+        var gf = on.filter(function (it) { return it.classList.contains('pf-it--film'); }).length, gp = on.length - gf;
+        var t = [];
+        if (gp) t.push(gp + (gp === 1 ? ' photograph' : ' photographs'));
+        if (gf) t.push(gf + (gf === 1 ? ' film' : ' films'));
+        c.textContent = t.join(' · ');
+      }
+    });
     layoutAll(false);
     var name = ($('.pf-pan-n', btn) || btn).textContent;
     if (status) status.textContent = f === 'all' ? 'Showing all ' + (p + fl) + ': ' + words(p, fl) + '.' : 'Showing ' + name + ': ' + words(p, fl) + '.';
@@ -275,7 +323,9 @@
   xBtn.addEventListener('click', close);
   if (pBtn) pBtn.addEventListener('click', function () { go(-1); });
   if (nBtn) nBtn.addEventListener('click', function () { go(1); });
-  lb.addEventListener('keydown', function (e) {
+  /* on the document, not the dialog: a click on the photograph leaves focus on <body> */
+  doc.addEventListener('keydown', function (e) {
+    if (!isOpen) return;
     if (e.key === 'Escape' || e.key === 'Esc') { e.preventDefault(); close(); return; }
     if (e.key === 'ArrowRight') { e.preventDefault(); go(1); return; }
     if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); return; }

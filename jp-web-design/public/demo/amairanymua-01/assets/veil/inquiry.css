@@ -12,10 +12,10 @@
 }
 
 /* ---------- the title card ---------- */
-.is-inquiry .cover{padding-bottom:clamp(2.6rem,6vw,4.2rem)}
+.is-inquiry .cover{padding:calc(var(--hd-h) + clamp(2.2rem,5vw,4rem)) 0 clamp(2.2rem,5vw,3.6rem)}
 .is-inquiry .cover-h{max-width:12ch}
-.is-inquiry .cover-act{margin-top:clamp(1.8rem,4vw,2.4rem)}
-.iq-alt{display:grid;justify-items:center;gap:.35rem;width:100%;max-width:30rem;text-align:center}
+/* "Not a bride?" under the card and its notes */
+.iq-alt{display:grid;justify-items:center;gap:.35rem;width:100%;max-width:30rem;margin:clamp(2.6rem,6vw,3.4rem) auto 0;text-align:center}
 .iq-alt::before{content:'';display:block;width:56px;height:7px;margin-bottom:1.1rem;background:radial-gradient(circle,var(--foil-3) 0 2px,rgb(var(--tulle-rgb)/0) 2.6px) center/7px 7px no-repeat,linear-gradient(90deg,rgb(var(--pearl-rgb)/0),var(--pearl) 30%,var(--pearl) 70%,rgb(var(--pearl-rgb)/0)) center/100% 1px no-repeat}
 .iq-alt-h{font:italic 400 clamp(1.55rem,4.4vw,1.85rem)/1.15 var(--ff-d);color:var(--espresso)}
 .iq-alt-p{font-size:1.12rem;line-height:1.5;max-width:24rem}

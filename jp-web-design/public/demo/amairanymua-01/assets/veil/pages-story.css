@@ -16,6 +16,11 @@ html.js .st-thread i.rv.in{transform:none}
    ABOUT
    ===================================================================== */
 .st-portrait{width:min(100%,30rem);margin-inline:auto}
+/* phones: the portrait follows the actions closely, so her face starts on the first screen */
+@media(max-width:899px){.pg-about .cover-media{margin-top:clamp(2.2rem,6vw,3rem)}}
+/* film-slot titles in the smaller frames: no single word left on its own line */
+.st-motion .slot-t,.svc-film .slot-t{text-wrap:balance}
+.st-path h3{text-wrap:balance}
 @media(min-width:900px){
   .pg-about .cover{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;column-gap:clamp(3rem,6vw,6rem);max-width:calc(var(--maxw) + var(--gut)*2);margin-inline:auto;padding:calc(var(--hd-h) + clamp(2.5rem,4vw,4rem)) var(--gut) clamp(4rem,7vw,6rem)}
   .pg-about .cover-in,.pg-about .cover-media{max-width:none;margin:0;padding-inline:0}
@@ -57,7 +62,7 @@ html.js .st-thread i.rv.in{transform:none}
 
 /* what she is known for */
 .st-best{display:grid;max-width:74rem;margin-inline:auto;border-top:1px solid var(--pearl)}
-.st-best li{display:grid;justify-items:center;gap:.9rem;padding:clamp(2.2rem,5vw,3rem) .5rem;text-align:center;border-bottom:1px solid var(--pearl)}
+.st-best li{display:grid;justify-items:center;align-content:start;gap:.9rem;padding:clamp(2.2rem,5vw,3rem) .5rem;text-align:center;border-bottom:1px solid var(--pearl)}
 .st-best .pearl{margin-bottom:.4rem}
 .st-best h3{font-weight:300;font-size:clamp(1.9rem,4.6vw,2.4rem)}
 .st-best p{max-width:22rem}
@@ -72,6 +77,10 @@ html.js .st-thread i.rv.in{transform:none}
 /* =====================================================================
    SERVICES
    ===================================================================== */
+/* "then every occasion." stays one line wherever the measure allows it */
+.pg-services .cover-h{max-width:18ch}
+/* a jump from the index lands on the chapter's pearl */
+.pg-services .chapter{scroll-margin-top:calc(var(--sec) * -1 + 1.6rem)}
 .st-index{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:0 1.3rem;margin:clamp(-1.5rem,-2vw,-.5rem) auto 0}
 .st-index i{width:5px;height:5px;transform:rotate(45deg);background:var(--foil)}
 @media(max-width:499px){.st-index{flex-direction:column;gap:0}.st-index i{margin:.2rem 0}}
@@ -93,7 +102,7 @@ html.js .st-thread i.rv.in{transform:none}
 .svc-film .slot-s{font-size:.5rem;letter-spacing:.2em}
 .svc-txt{display:grid;justify-items:center;gap:1.1rem;max-width:30rem;text-align:center}
 .svc-pearl{margin-bottom:.3rem}
-.svc-txt h3{font-weight:300;font-size:clamp(2.1rem,6vw,3.2rem);line-height:1.05}
+.svc-txt h3{font-weight:300;font-size:clamp(2.1rem,6vw,3.2rem);line-height:1.05;text-wrap:balance}
 .svc-sum{color:var(--espresso-soft)}
 .svc-txt .points{text-align:left;font-size:1.12rem;margin-top:.3rem}
 .svc-act{display:flex;justify-content:center;margin-top:clamp(3.5rem,8vw,5.5rem)}
@@ -105,7 +114,8 @@ html.js .st-thread i.rv.in{transform:none}
   .svc-media--pair{max-width:none;gap:clamp(14px,1.6vw,22px)}
   .svc-media--pair .frame--mat{padding:10px}
   .svc-film .slot::before{inset:12px}
-  .svc-txt{justify-items:start;text-align:left;max-width:28rem}
+  .svc-txt{justify-items:start;text-align:left;max-width:30rem}
+  .svc-txt h3{font-size:clamp(2.2rem,3.2vw,2.9rem)}
   .svc-txt .svc-pearl{margin-left:0}
   .svc:nth-child(even) .svc-media{order:2}
   .svc:nth-child(even) .svc-txt{justify-self:end}
@@ -120,6 +130,8 @@ html.js .st-thread i.rv.in{transform:none}
   .svc-film .slot-t,.st-motion .slot-t{font-size:1rem;line-height:1.12}
   .svc-film .slot-n,.st-motion .slot-n{font-size:.52rem;letter-spacing:.24em}
   .svc-film .slot-s,.st-motion .slot-s{font-size:.44rem;letter-spacing:.14em}
+  /* the small caps under the paired frames: one line where they can, never a lone word */
+  .svc-media--pair .frame--mat .cap,.st-motion .frame--mat .cap{letter-spacing:.14em;text-wrap:balance}
 }
 
 /* the two ways to book: two quiet, tall panels */

@@ -7,33 +7,41 @@
 .op{display:none}
 html.intro .op,html.op-out .op{display:block;position:fixed;inset:0;z-index:90;pointer-events:none;overflow:hidden;contain:strict}
 html.op-out .op{opacity:0;transition:opacity .4s ease}
-.op-l{position:absolute;left:-5vw;right:-5vw;top:0;height:152vh;transform-origin:50% 0;backface-visibility:hidden;
-  /* the soft, curved lower edge: fabric taken up at its centre, the sides still hanging */
-  -webkit-mask-image:radial-gradient(ellipse 74% 31vh at 50% 100%,rgb(0 0 0/0) 54%,rgb(0 0 0/1) 100%);
-  mask-image:radial-gradient(ellipse 74% 31vh at 50% 100%,rgb(0 0 0/0) 54%,rgb(0 0 0/1) 100%)}
+/* Each layer is a length of tulle a little taller than the screen. Its lower edge is a HEM: an
+   arch, taken up at the centre with the sides still hanging (the ellipse below, in the layer's
+   own proportions so the arch reads the same on a phone and at 1920). The mask feathers only
+   the last few pixels inside the hem, so the edge reads as cloth, not as a soft hole; a sheen
+   band rides just outside it, where gathered tulle catches the light. */
+.op-l{--hem:ellipse 58% 19% at 50% 100%;position:absolute;left:-5vw;right:-5vw;top:0;height:128vh;transform-origin:50% 0;backface-visibility:hidden;
+  -webkit-mask-image:radial-gradient(var(--hem),rgb(0 0 0/0) 86%,rgb(0 0 0/1) 100%);
+  mask-image:radial-gradient(var(--hem),rgb(0 0 0/0) 86%,rgb(0 0 0/1) 100%)}
+html.intro .op-l{will-change:transform}
 .op-folds{position:absolute;inset:0;display:block}
 /* back layer: the densest tulle, pearl white */
 .op-l3{background:
+  radial-gradient(var(--hem),rgb(var(--pearl-rgb)/0) 98%,rgb(var(--pearl-rgb)/.34) 100.5%,rgb(var(--sheen-rgb)/.5) 103.5%,rgb(var(--sheen-rgb)/0) 115%),
   repeating-linear-gradient(90deg,rgb(var(--pearl-rgb)/0) 0,rgb(var(--pearl-rgb)/.16) 9%,rgb(var(--sheen-rgb)/.35) 15%,rgb(var(--pearl-rgb)/0) 23%),
-  repeating-linear-gradient(90deg,rgb(var(--sheen-rgb)/0) 0,rgb(var(--sheen-rgb)/.75) 1.6%,rgb(var(--pearl-rgb)/.34) 3.9%,rgb(var(--sheen-rgb)/0) 5.6%),
-  radial-gradient(ellipse 80% 37vh at 50% 100%,rgb(var(--pearl-rgb)/0) 52%,rgb(var(--pearl-rgb)/.75) 66%,rgb(var(--pearl-rgb)/0) 86%),
-  linear-gradient(180deg,rgb(var(--tulle-rgb)/.72),rgb(var(--tulle-rgb)/.6) 60%,rgb(var(--satin-rgb)/.66))}
+  repeating-linear-gradient(90deg,rgb(var(--sheen-rgb)/0) 0,rgb(var(--sheen-rgb)/.46) 2.4%,rgb(var(--pearl-rgb)/.24) 5.4%,rgb(var(--sheen-rgb)/0) 7.8%),
+  linear-gradient(180deg,rgb(var(--tulle-rgb)/.74),rgb(var(--tulle-rgb)/.62) 60%,rgb(var(--satin-rgb)/.7))}
 .op-l3 .op-folds{background:radial-gradient(60% 40% at 30% 30%,rgb(var(--sheen-rgb)/.55),rgb(var(--sheen-rgb)/0) 70%)}
 /* middle layer: wider folds, more translucent */
-.op-l2{background:
+.op-l2{--hem:ellipse 54% 17% at 47% 100%;background:
+  radial-gradient(var(--hem),rgb(var(--pearl-rgb)/0) 98%,rgb(var(--pearl-rgb)/.28) 100.5%,rgb(var(--sheen-rgb)/.42) 103.5%,rgb(var(--sheen-rgb)/0) 114%),
   repeating-linear-gradient(92deg,rgb(var(--sheen-rgb)/0) 0,rgb(var(--sheen-rgb)/.4) 7%,rgb(var(--pearl-rgb)/.14) 19%,rgb(var(--sheen-rgb)/0) 31%),
-  repeating-linear-gradient(86deg,rgb(var(--sheen-rgb)/0) 0,rgb(var(--sheen-rgb)/.7) 3.2%,rgb(var(--pearl-rgb)/.3) 6.8%,rgb(var(--sheen-rgb)/0) 9.4%),
-  radial-gradient(ellipse 80% 37vh at 50% 100%,rgb(var(--pearl-rgb)/0) 52%,rgb(var(--pearl-rgb)/.6) 66%,rgb(var(--pearl-rgb)/0) 86%),
+  repeating-linear-gradient(86deg,rgb(var(--sheen-rgb)/0) 0,rgb(var(--sheen-rgb)/.5) 3.2%,rgb(var(--pearl-rgb)/.24) 6.8%,rgb(var(--sheen-rgb)/0) 9.4%),
   rgb(var(--tulle-rgb)/.4)}
 .op-l2 .op-folds{background:linear-gradient(115deg,rgb(var(--sheen-rgb)/0) 30%,rgb(var(--sheen-rgb)/.5) 46%,rgb(var(--sheen-rgb)/0) 60%)}
-/* front layer: the sheerest, with a net texture and the monogram */
-.op-l1{background:
+/* front layer: the sheerest, with a fine net texture (phones only: it is invisible at a
+   distance and costly to paint across a wide screen) and the monogram */
+.op-l1{--hem:ellipse 62% 21% at 53% 100%;background:
+  radial-gradient(var(--hem),rgb(var(--pearl-rgb)/0) 98%,rgb(var(--pearl-rgb)/.24) 100.5%,rgb(var(--sheen-rgb)/.38) 103%,rgb(var(--sheen-rgb)/0) 112%),
   repeating-linear-gradient(88deg,rgb(var(--pearl-rgb)/0) 0,rgb(var(--pearl-rgb)/.12) 6%,rgb(var(--sheen-rgb)/.3) 11%,rgb(var(--pearl-rgb)/0) 17%),
-  repeating-linear-gradient(93deg,rgb(var(--sheen-rgb)/0) 0,rgb(var(--sheen-rgb)/.62) 4.6%,rgb(var(--pearl-rgb)/.26) 9%,rgb(var(--sheen-rgb)/0) 13%),
-  radial-gradient(ellipse 80% 37vh at 50% 100%,rgb(var(--pearl-rgb)/0) 52%,rgb(var(--pearl-rgb)/.5) 66%,rgb(var(--pearl-rgb)/0) 86%),
+  repeating-linear-gradient(93deg,rgb(var(--sheen-rgb)/0) 0,rgb(var(--sheen-rgb)/.48) 4.6%,rgb(var(--pearl-rgb)/.22) 9%,rgb(var(--sheen-rgb)/0) 13%),
   rgb(var(--tulle-rgb)/.34)}
-.op-l1 .op-folds{opacity:.55;background-image:radial-gradient(circle at 1px 1px,rgb(var(--pearl-rgb)/.5) .6px,rgb(var(--pearl-rgb)/0) 1.1px);background-size:5px 5px}
-.op-mark{position:absolute;left:5vw;right:5vw;top:50vh;display:flex;flex-direction:column;align-items:center;text-align:center;transform:translate3d(0,-54%,0)}
+.op-l1 .op-folds{opacity:.5;background-image:radial-gradient(circle at 1px 1px,rgb(var(--pearl-rgb)/.5) .6px,rgb(var(--pearl-rgb)/0) 1.1px);background-size:5px 5px}
+@media(min-width:900px){.op-l1 .op-folds{display:none}}
+/* the mark is its own layer, so the light crossing it repaints the mark and not the tulle */
+.op-mark{position:absolute;left:5vw;right:5vw;top:50vh;display:flex;flex-direction:column;align-items:center;text-align:center;transform:translate3d(0,-54%,0);will-change:transform,opacity}
 .op-mono{width:clamp(150px,40vw,230px);height:auto;overflow:visible}
 .op-name{margin-top:clamp(1.4rem,3.4vh,2rem);padding-left:.38em;font:400 clamp(.92rem,3.6vw,1.12rem)/1 var(--ff-d);letter-spacing:.38em;text-transform:uppercase;color:var(--espresso)}
 .op-rule{display:block;width:44px;height:1px;margin:1rem 0 .95rem;background:var(--foil)}
@@ -41,15 +49,28 @@ html.op-out .op{opacity:0;transition:opacity .4s ease}
 
 /* the timeline (t = 0 at first paint) */
 html.intro .op-glint{animation:opGlint 1s cubic-bezier(.45,.05,.3,1) .15s both}
-html.intro .op-l1{animation:opLift1 1.08s var(--ease-cloth) 1.25s both}
-html.intro .op-l2{animation:opLift2 1.12s var(--ease-cloth) 1.35s both}
-html.intro .op-l3{animation:opLift3 1.12s var(--ease-cloth) 1.45s both}
-html.intro .op-mark{animation:opMark .8s cubic-bezier(.5,0,.3,1) 1.22s both}
+/* The lift has two movements, like a hand taking a veil by its hem: first the hem is GATHERED
+   (it rises a quarter of the screen, slowly, the fabric drawing in a little, so the arch is
+   seen crossing the lower screen), then the length is TAKEN AWAY up and off, with a long
+   tail. Layers 100 ms apart, each drifting a different way. */
+html.intro .op-l1{animation:opLift1 1.2s cubic-bezier(.42,0,.58,1) 1.25s both}
+html.intro .op-l2{animation:opLift2 1.2s cubic-bezier(.42,0,.58,1) 1.35s both}
+html.intro .op-l3{animation:opLift3 1.18s cubic-bezier(.42,0,.58,1) 1.45s both}
+html.intro .op-mark{animation:opMark .85s cubic-bezier(.5,0,.3,1) 1.3s both}
 @keyframes opGlint{from{transform:translate3d(0,0,0)}to{transform:translate3d(1520px,0,0)}}
-@keyframes opLift1{0%{transform:translate3d(0,0,0) scale(1,1)}100%{transform:translate3d(-1.2vw,-154vh,0) scale(1.03,1.12)}}
-@keyframes opLift2{0%{transform:translate3d(0,0,0) scale(1,1)}100%{transform:translate3d(1vw,-154vh,0) scale(1.02,1.1)}}
-@keyframes opLift3{0%{transform:translate3d(0,0,0) scale(1,1)}100%{transform:translate3d(-.6vw,-154vh,0) scale(1.03,1.08)}}
-@keyframes opMark{0%{opacity:1;transform:translate3d(0,-54%,0)}100%{opacity:0;transform:translate3d(0,-74%,0)}}
+@keyframes opLift1{
+  0%{transform:translate3d(0,0,0) scale(1,1)}
+  40%{transform:translate3d(-.4vw,-24vh,0) scale(1.01,.95);animation-timing-function:cubic-bezier(.55,0,.2,1)}
+  100%{transform:translate3d(-1.4vw,-146vh,0) scale(1.03,1.1)}}
+@keyframes opLift2{
+  0%{transform:translate3d(0,0,0) scale(1,1)}
+  40%{transform:translate3d(.5vw,-22vh,0) scale(1.01,.955);animation-timing-function:cubic-bezier(.55,0,.2,1)}
+  100%{transform:translate3d(1.2vw,-146vh,0) scale(1.02,1.1)}}
+@keyframes opLift3{
+  0%{transform:translate3d(0,0,0) scale(1,1)}
+  40%{transform:translate3d(-.2vw,-20vh,0) scale(1.01,.96);animation-timing-function:cubic-bezier(.55,0,.2,1)}
+  100%{transform:translate3d(-.6vw,-146vh,0) scale(1.03,1.1)}}
+@keyframes opMark{0%{opacity:1;transform:translate3d(0,-54%,0)}100%{opacity:0;transform:translate3d(0,-82%,0)}}
 
 /* the page underneath settles as the veil leaves, then the name sets and the rest arrives */
 html.intro .hero-pic-in{animation:opSettle 2.1s cubic-bezier(.22,.6,.16,1) 1s both}
@@ -58,7 +79,7 @@ html.intro .hero-ln+.hero-ln>span{animation-delay:2.12s}
 html.intro .hero-rule i{animation:opRule .85s var(--ease) 2.28s both}
 html.intro .hero-sub{animation:opUp .7s var(--ease) 2.36s both}
 html.intro .hero-act{animation:opUp .6s var(--ease) 2.45s both}
-html.intro .hero-cue,html.intro .hero-meta{animation:opFade .5s ease 2.55s both}
+html.intro .hero-foot,html.intro .hero-meta{animation:opFade .6s ease 2.55s both}
 html.intro .hd{animation:opDown .6s var(--ease) 2.4s both}
 @keyframes opSettle{from{transform:scale(1.1)}to{transform:none}}
 @keyframes opLine{from{transform:translate3d(0,112%,0)}to{transform:none}}
@@ -72,21 +93,30 @@ html.intro .hd{animation:opDown .6s var(--ease) 2.4s both}
 .hero-pic{position:absolute;left:0;right:0;top:0;height:max(56%,calc(100% - 214px))}
 .hero-clip{position:absolute;inset:0;overflow:hidden;background:var(--satin)}
 .hero-pic-in{position:absolute;inset:0;transform-origin:50% 40%}
-.beat{position:absolute;inset:0;opacity:0;transition:opacity 1.9s ease}
+.beat{position:absolute;inset:0;opacity:0;transition:opacity 1.1s cubic-bezier(.4,0,.2,1)}
 .beat.is-on{opacity:1;z-index:2}
 .beat.is-prev{opacity:1;z-index:1;transition:none}
 .beat>img{width:100%;height:100%;object-fit:cover}
-.beat.is-on.moved>img{animation:beatSettle 7s cubic-bezier(.2,.5,.3,1) both}
-@keyframes beatSettle{from{transform:scale(1.035)}to{transform:none}}
+/* each new still drifts to rest over its whole time on screen: one slow breath, not a zoom */
+.beat.is-on.moved>img{animation:beatSettle 3.8s cubic-bezier(.25,.45,.35,1) both}
+@keyframes beatSettle{from{transform:scale(1.04)}to{transform:none}}
 .beat--film .film{position:absolute;inset:0}
 .beat-veil{position:absolute;inset:0;background:var(--folds);opacity:.6;pointer-events:none}
 .hero-tulle{position:absolute;left:0;right:0;bottom:-1px;height:44%;z-index:3;pointer-events:none;background:linear-gradient(0deg,var(--tulle) 0%,rgb(var(--tulle-rgb)/.94) 18%,rgb(var(--tulle-rgb)/.6) 48%,rgb(var(--tulle-rgb)/.18) 76%,rgb(var(--tulle-rgb)/0))}
-.hero-meta{position:absolute;z-index:4;right:var(--gut);top:calc(var(--hd-h) + env(safe-area-inset-top,0px) + 6px);display:flex;align-items:center;gap:6px}
-.hero-lbl{display:flex;align-items:baseline;gap:.5em;padding:.5rem .75rem;background:rgb(var(--tulle-rgb)/.86);font:500 .58rem/1 var(--ff-u);letter-spacing:.24em;text-transform:uppercase;color:var(--espresso)}
+/* counter + pause. Phones: the foot row (below). Wide: a caption in the frame's lower right
+   corner, over clothing, never a face. */
+.hero-meta{display:none}
+.hero-lbl{display:flex;align-items:baseline;gap:.5em;font:500 .58rem/1 var(--ff-u);letter-spacing:.24em;text-transform:uppercase;color:var(--espresso);font-variant-numeric:tabular-nums}
 .hero-of{color:var(--espresso-soft)}
 .hero-l{padding-left:.6em;border-left:1px solid var(--pearl);color:var(--bronze)}
-.hero-pause{display:inline-grid;place-items:center;width:44px;height:44px;padding:0;border:1px solid rgb(var(--pearl-rgb));border-radius:50%;background:rgb(var(--tulle-rgb)/.86);cursor:pointer;color:var(--espresso)}
+.hero-pause{display:inline-grid;place-items:center;width:44px;height:44px;padding:0;border:1px solid rgb(var(--pearl-rgb));border-radius:50%;background:rgb(var(--tulle-rgb)/.86);cursor:pointer;color:var(--espresso);-webkit-tap-highlight-color:transparent;transition:border-color .3s,background-color .3s}
+.hero-pause:active{background:var(--satin)}
+@media(hover:hover){.hero-pause:hover{border-color:var(--foil-3)}}
 .hero-pause[hidden]{display:none}
+.hero-foot{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;width:100%;max-width:30rem;margin-top:1.1rem}
+.hero-foot .hero-lbl{justify-self:start;flex-wrap:wrap;gap:.6em .5em;max-width:8.5em;text-align:left;line-height:1}
+.hero-foot .hero-l{flex-basis:100%;padding-left:0;border-left:0}
+.hero-foot .hero-pause{justify-self:end;background:transparent}
 .pz{position:relative;width:10px;height:11px}
 .pz::before,.pz::after{content:'';position:absolute;top:0;bottom:0;width:2px;background:currentColor}
 .pz::before{left:1px}.pz::after{right:1px}
@@ -99,13 +129,31 @@ html.intro .hd{animation:opDown .6s var(--ease) 2.4s both}
 .hero-ln>span{display:inline-block}
 .hero-rule{display:block;position:relative;width:120px;height:1px;margin:1.05rem 0 .95rem}
 .hero-rule i{position:absolute;inset:0;background:linear-gradient(90deg,rgb(var(--pearl-rgb)/0),var(--foil-3) 30%,var(--foil-2) 50%,var(--foil-3) 70%,rgb(var(--pearl-rgb)/0));transform-origin:50% 50%}
-.hero-sub{font:500 .66rem/1.5 var(--ff-u);letter-spacing:.28em;text-transform:uppercase;color:var(--bronze)}
+.hero-sub{font:500 .66rem/1.5 var(--ff-u);letter-spacing:.28em;text-transform:uppercase;color:var(--bronze);text-wrap:balance}
+/* below 380px the line would break mid-phrase ("… Orlando / + Tampa"): it tightens to stay on
+   one line, and below 340px it breaks between its two halves, the dot between them gone */
+@media(max-width:379px){.hero-sub{font-size:.62rem;letter-spacing:.2em}}
+@media(max-width:339px){.hero-sub>span:not(.hero-dot){display:block}.hero-dot{display:none}}
 .hero-act{width:100%;max-width:26rem;margin-top:1.35rem}
 .hero-act .btn{flex:1 1 9.5rem;padding:0 1em;font-size:.68rem;letter-spacing:.2em;white-space:nowrap}
-.hero-cue{display:inline-flex;flex-direction:column;align-items:center;gap:8px;min-height:44px;margin-top:1rem;padding-top:4px;font:500 .58rem/1 var(--ff-u);letter-spacing:.3em;text-transform:uppercase;color:var(--espresso-soft);text-decoration:none}
+/* the smallest phones keep both actions on one line: a little less tracking, not a stack */
+@media(max-width:359px){.hero-act{flex-wrap:nowrap;gap:8px}.hero-act .btn{flex:1 1 0;min-width:0;padding:0 .4em;font-size:.62rem;letter-spacing:.11em}}
+.hero-cue{display:inline-flex;flex-direction:column;align-items:center;gap:8px;min-height:44px;padding-top:4px;font:500 .58rem/1 var(--ff-u);letter-spacing:.3em;text-transform:uppercase;color:var(--espresso-soft);text-decoration:none;padding-left:.3em}
 .hero-cue i{display:block;width:1px;height:22px;background:linear-gradient(180deg,var(--foil-3),rgb(var(--pearl-rgb)/0));transform-origin:50% 0;animation:cue 2.6s var(--ease) 3.4s infinite}
 @keyframes cue{0%{transform:scaleY(0);opacity:1}55%{transform:none;opacity:1}100%{transform:none;opacity:0}}
-@media(max-height:640px) and (max-width:899px){.hero-cue{display:none}.hero-txt{padding-bottom:calc(58px + env(safe-area-inset-bottom,0px))}.hero-act{margin-top:.9rem}.hero-act .btn{min-height:44px}.hero-name{font-size:clamp(2.2rem,11vw,3.6rem)}.hero-rule{margin:.7rem 0 .6rem}.hero-pic{height:max(52%,calc(100% - 190px))}}
+/* short phones (an SE, an old Android): the face is anchored high in its frame and the name
+   block is a little tighter, so the name never sits on a chin */
+@media(max-height:700px) and (max-width:899px) and (orientation:portrait){
+  .beat>img{object-position:50% 6%!important}
+  .hero-name{font-size:clamp(2.2rem,11.2vw,3.6rem)}
+  .hero-rule{margin:.75rem 0 .7rem}
+  .hero-act{margin-top:1rem}
+  .hero-foot{margin-top:.6rem}
+}
+/* ...and where the header shows only the monogram (under 370px), the picture tucks up behind
+   it a little, giving the name the room the screen does not have */
+@media(max-height:700px) and (max-width:369px) and (orientation:portrait){.hero-pic{top:-28px}}
+@media(max-height:640px) and (max-width:899px){.hero-txt{padding-bottom:calc(58px + env(safe-area-inset-bottom,0px))}.hero-act .btn{min-height:44px}.hero-rule{margin:.6rem 0 .55rem}.hero-act{margin-top:.85rem}.hero-foot{margin-top:.35rem}.hero-pic{height:max(52%,calc(100% - 190px))}}
 
 /* wide screens and landscape phones: a tall framed picture to the right, the name beside it */
 @media (min-width:900px),(orientation:landscape) and (min-width:600px){
@@ -113,14 +161,16 @@ html.intro .hd{animation:opDown .6s var(--ease) 2.4s both}
   .hero-pic{position:relative;inset:auto;order:2;height:calc(100vh - var(--hd-h) - max(7vh,62px) - 4vh);height:calc(100svh - var(--hd-h) - max(7vh,62px) - 4vh);max-height:900px;aspect-ratio:4/5;padding:12px;border:1px solid var(--pearl);background:var(--tulle)}
   .hero-clip{inset:12px}
   .hero-tulle{display:none}
-  .hero-meta{top:26px;right:26px}
+  .hero-meta{position:absolute;z-index:4;right:24px;bottom:24px;display:flex;align-items:center;gap:6px}
+  .hero-meta .hero-lbl{padding:.55rem .8rem;background:rgb(var(--tulle-rgb)/.88)}
+  .hero-foot{display:flex;justify-content:center;margin-top:clamp(1.2rem,4vh,3rem)}
+  .hero-foot .hero-lbl,.hero-foot .hero-pause{display:none}
   .hero-txt{padding:0;order:1}
   .hero-name{font-size:min(6.7vw,14.5vh,8.4rem);letter-spacing:.06em}
   .hero-rule{width:150px;margin:1.6rem 0 1.3rem}
   .hero-sub{font-size:.7rem}
   .hero-act{margin-top:2rem;max-width:none;width:auto}
   .hero-act .btn{flex:0 0 auto}
-  .hero-cue{margin-top:clamp(1.2rem,4vh,3rem)}
 }
 @media (orientation:landscape) and (max-height:520px){
   .hero-name{font-size:min(7vw,14vh)}
@@ -128,7 +178,8 @@ html.intro .hd{animation:opDown .6s var(--ease) 2.4s both}
   .hero-act{margin-top:1rem}
   .hero-act .btn{min-height:44px}
   .hero-cue{display:none}
-  .hero-meta{display:none}
+  .hero-meta{right:14px;bottom:14px}
+  .hero-meta .hero-lbl,.hero-foot{display:none}
   .hero{padding-bottom:52px}
   .hero-pic{height:calc(100svh - var(--hd-h) - 64px);height:calc(100vh - var(--hd-h) - 64px)}
 }
@@ -187,7 +238,8 @@ html.intro .hd{animation:opDown .6s var(--ease) 2.4s both}
 .rail-count b{font-weight:500;color:var(--espresso)}
 .rail-btns{display:none;gap:8px}
 .rail-b{display:inline-grid;place-items:center;width:48px;height:48px;padding:0;border:1px solid rgb(var(--espresso-rgb)/.4);border-radius:50%;background:var(--tulle);color:var(--espresso);font:400 1.1rem/1 var(--ff-u);cursor:pointer;transition:background .3s,border-color .3s,opacity .3s}
-.rail-b:hover:not(:disabled){background:var(--espresso);color:var(--tulle);border-color:var(--espresso)}
+.rail-b:active:not(:disabled){background:var(--espresso);color:var(--tulle);border-color:var(--espresso)}
+@media(hover:hover){.rail-b:hover:not(:disabled){background:var(--espresso);color:var(--tulle);border-color:var(--espresso)}}
 .rail-b:disabled{opacity:.3;cursor:default}
 html.js .rail-btns{display:none}
 @media(min-width:900px){html.js .rail-btns{display:inline-flex}}
@@ -228,7 +280,11 @@ html.js .rail-btns{display:none}
 @media(min-width:900px){.paths{grid-template-columns:1fr 1fr;align-items:stretch}}
 .proof{display:flex;justify-content:center;margin-top:clamp(2.4rem,5vw,3.4rem)}
 
+/* a counter that never moves would be a false promise: without the script, or with motion
+   reduced, the picture is one still and the counter is not shown */
+html:not(.js) .hero-lbl{visibility:hidden}
 @media (prefers-reduced-motion:reduce){
   .op{display:none!important}
   .hero-cue i{animation:none}
+  .hero-lbl{visibility:hidden}
 }

@@ -202,7 +202,6 @@
 
     /* 0.10–1.10 s: three swatches painted on, one after another */
     var paintAt = function (x) { return 'polygon(-6% -10%,' + (x - 4) + '% -10%,' + (x - 0.5) + '% 18%,' + (x + 1.5) + '% 50%,' + (x - 0.5) + '% 82%,' + (x - 4) + '% 110%,-6% 110%)'; };
-    var wipeAt = function (x) { return 'polygon(' + (x - 4) + '% -10%,110% -10%,110% 18%,110% 50%,110% 82%,110% 110%,' + (x - 4) + '% 110%)'; };
     sw.forEach(function (s, k) {
       A(s, [{ clipPath: paintAt(-4), transform: from[k] }, { clipPath: paintAt(112), transform: base[k] }], { duration: 400, delay: 100 + k * 300, easing: hand });
     });
@@ -211,25 +210,41 @@
     A(wm, [{ transform: 'scale(1.07)' }, { transform: 'scale(1)' }], { duration: 360, delay: 950, easing: 'cubic-bezier(.2,.9,.25,1)' });
     A(wmC, [{ opacity: 0, transform: 'translate3d(-.3em,0,0)' }, { opacity: 1, transform: 'translate3d(0,0,0)' }], { duration: 420, delay: 1150, easing: 'cubic-bezier(.22,.9,.3,1)' });
 
-    /* 1.70–2.50 s: the peach floods, the other two wipe away, the wordmark travels home */
+    /* 1.68–2.20 s: the peach floods out of its own stroke, the other two wipe away, the
+       wordmark travels home. The flood is a plain peach field opened by an ellipse that starts
+       inside the peach stroke and ends past the corners of the screen; the stroke itself only
+       swells a little as it melts into it. (An earlier cut scaled the masked stroke ~15x: a
+       130-170 ms raster stall at the start of the flood under a 4x CPU throttle.) */
+    var flood = $('.op-flood', op);
     var r3 = sw[2].getBoundingClientRect();
-    var flood = Math.max(2.6 * vh / Math.max(r3.height, 1), 1.9 * vw / Math.max(r3.width, 1), 3);
-    A(sw[0], [{ clipPath: wipeAt(-4) }, { clipPath: wipeAt(114) }], { duration: 460, delay: 1700, easing: 'cubic-bezier(.6,0,.4,1)', fill: 'forwards' });
-    A(sw[1], [{ clipPath: wipeAt(-4) }, { clipPath: wipeAt(114) }], { duration: 460, delay: 1760, easing: 'cubic-bezier(.6,0,.4,1)', fill: 'forwards' });
-    A(sw[2], [{ transform: base[2] }, { transform: 'translateX(-2%) rotate(0deg) scale(' + flood.toFixed(2) + ')' }], { duration: 820, delay: 1700, easing: 'cubic-bezier(.62,0,.22,1)', fill: 'forwards' });
-    A(bg, [{ opacity: 1 }, { opacity: 0 }], { duration: 420, delay: 1900, easing: 'linear', fill: 'forwards' });
-    A(sws, [{ opacity: 1 }, { opacity: 0 }], { duration: 460, delay: 2180, easing: 'cubic-bezier(.4,0,.6,1)', fill: 'forwards' });
+    var cx = Math.min(Math.max(r3.left + r3.width / 2, vw * 0.3), vw * 0.7);
+    var cy = Math.min(Math.max(r3.top + r3.height / 2, vh * 0.2), vh * 0.8);
+    var dx = Math.max(cx, vw - cx), dy = Math.max(cy, vh - cy);
+    var ell = function (rx, ry) { return 'ellipse(' + rx.toFixed(1) + 'px ' + ry.toFixed(1) + 'px at ' + cx.toFixed(1) + 'px ' + cy.toFixed(1) + 'px)'; };
+    A(flood, [{ clipPath: ell(Math.min(r3.width, vw) * 0.22, r3.height * 0.16) }, { clipPath: ell(dx * 1.45, dy * 1.45) }], { duration: 520, delay: 1680, easing: 'cubic-bezier(.62,0,.24,1)' });
+    /* the bronze and deep strokes are swept off to the right (transform + opacity only: a
+       clip-path wipe re-rasters a masked layer every frame) */
+    [0, 1].forEach(function (j) {
+      A(sw[j], [{ transform: base[j], opacity: 1 }, { opacity: 1, offset: 0.35 }, { transform: base[j].replace(/translateX\([^)]*\)/, 'translateX(' + (j ? 34 : 28) + '%)'), opacity: 0 }], { duration: 440, delay: 1680 + j * 50, easing: 'cubic-bezier(.55,0,.6,1)', fill: 'forwards' });
+    });
+    A(sw[2], [{ transform: base[2], opacity: 1 }, { transform: base[2] + ' scale(1.28)', opacity: 0 }], { duration: 440, delay: 1700, easing: 'cubic-bezier(.45,0,.55,1)', fill: 'forwards' });
+    /* 2.20 s: the screen is all peach, and so is the hero underneath: the overlay's fields go in
+       one frame, so the story rises on the real hero ground with no veil across it */
+    [bg, flood, sws].forEach(function (el) { A(el, [{ opacity: 1 }, { opacity: 0 }], { duration: 1, delay: 2210, fill: 'forwards' }); });
     if (hdWm && wm) {
       var a = wmBox.getBoundingClientRect(), b = hdWm.getBoundingClientRect();
       if (a.width > 0 && b.width > 0) {
         var k = b.width / a.width;
         var t = 'translate3d(' + (b.left - a.left).toFixed(1) + 'px,' + (b.top - a.top).toFixed(1) + 'px,0) scale(' + k.toFixed(4) + ')';
-        A(wmBox, [{ transform: 'translate3d(0,0,0) scale(1)' }, { transform: t }], { duration: 660, delay: 1760, easing: 'cubic-bezier(.66,0,.2,1)', fill: 'forwards' });
+        A(wmBox, [{ transform: 'translate3d(0,0,0) scale(1)' }, { transform: t }], { duration: 600, delay: 1760, easing: 'cubic-bezier(.62,0,.18,1)', fill: 'forwards' });
       }
     }
 
-    /* 2.00–3.10 s: the story rises out of the peach, the headline steps in */
-    A($('.hero-story'), [{ opacity: 0, transform: 'translate3d(0,64px,0) scale(.94)' }, { opacity: 1, offset: 0.45 }, { opacity: 1, transform: 'none' }], { duration: 860, delay: 2020, easing: 'cubic-bezier(.22,.9,.3,1)' });
+    /* 2.16–3.10 s: the story rises behind the departing wordmark (its chips arrive last, once
+       the wordmark has cleared them), and the headline steps in */
+    A($('.hero-story'), [{ opacity: 0, transform: 'translate3d(0,56px,0) scale(.95)' }, { opacity: 1, offset: 0.4 }, { opacity: 1, transform: 'none' }], { duration: 820, delay: 2160, easing: 'cubic-bezier(.22,.9,.3,1)' });
+    A($('.st-top'), [{ opacity: 0 }, { opacity: 1 }], { duration: 320, delay: 2440, easing: 'linear' });
+    A($('.st-bars'), [{ opacity: 0 }, { opacity: 1 }], { duration: 320, delay: 2440, easing: 'linear' });
     A($('.hero-tag'), [{ opacity: 0, transform: 'scale(.92)' }, { opacity: 1, transform: 'none' }], { duration: 480, delay: 2260, easing: 'cubic-bezier(.22,.9,.3,1)' });
     A($('.hero-kick'), [{ opacity: 0, transform: 'translate3d(0,10px,0)' }, { opacity: 1, transform: 'none' }], { duration: 500, delay: 2260, easing: 'cubic-bezier(.22,.9,.3,1)' });
     $$('.hl-i').forEach(function (el, j) {

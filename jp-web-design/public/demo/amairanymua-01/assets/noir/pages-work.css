@@ -138,6 +138,7 @@
 .lb-stage{position:relative;display:grid;place-items:center;min-height:0;overflow:hidden;touch-action:pinch-zoom;-webkit-user-select:none;user-select:none}
 .lb-stage img{display:block;max-width:100%;max-height:100%;object-fit:contain;opacity:0;-webkit-user-drag:none}
 .lb-stage img.in{opacity:1}
+@media(pointer:fine){.lb-stage{cursor:e-resize}.lb-stage.lb-l{cursor:w-resize}}
 .lb-foot{display:grid;grid-template-columns:52px minmax(0,1fr) 52px;align-items:center;gap:12px;padding:12px 0 calc(66px + env(safe-area-inset-bottom,0px))}
 .lb-cap{text-align:center;font:italic 400 clamp(1.25rem,3.4vw,1.9rem)/1.15 var(--f-display);color:var(--bone);text-wrap:balance}
 .lb-nav{display:inline-grid;place-items:center;width:52px;height:52px;border:1px solid rgba(230,207,166,.5);color:var(--champagne);font-size:1.1rem;transition:background-color .3s,color .3s}

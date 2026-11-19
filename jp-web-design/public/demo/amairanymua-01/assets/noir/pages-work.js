@@ -268,6 +268,17 @@
     else img.style.transform = '';
   };
   stage.addEventListener('touchend', endSwipe, { passive: true });
+  stage.addEventListener('mousemove', function (e) {
+    var r = stage.getBoundingClientRect();
+    stage.classList.toggle('lb-l', e.clientX < r.left + r.width / 2);
+  });
+  /* with a mouse, the stage's two halves are previous and next (the arrows stay the
+     labelled controls; this only saves the trip to the foot of the screen) */
+  stage.addEventListener('click', function (e) {
+    if (!isOpen || e.pointerType === 'touch' || !mq('(pointer: fine)').matches) return;
+    var r = stage.getBoundingClientRect();
+    go(e.clientX < r.left + r.width / 2 ? -1 : 1);
+  });
   stage.addEventListener('touchcancel', endSwipe, { passive: true });
 
   /* a tile opens the viewer only on a deliberate tap: never at the end of a drag, never on the
