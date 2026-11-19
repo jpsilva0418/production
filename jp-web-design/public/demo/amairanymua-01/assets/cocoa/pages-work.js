@@ -143,6 +143,9 @@
       video.poster = a.getAttribute('data-poster') || '';
       video.style.objectPosition = a.getAttribute('data-film-pos') || '50% 50%';
       video.setAttribute('aria-label', a.getAttribute('data-film-alt') || 'Silent clip');
+      /* her reels open on the "before": start where the finished glam appears, as site.js does */
+      var t0 = parseFloat(a.getAttribute('data-film-start')) || 0;
+      if (t0) video.addEventListener('loadedmetadata', function () { if (t0 < (video.duration || 0) - 0.5) { try { video.currentTime = t0; } catch (e) {} } }, { once: true });
       video.src = a.getAttribute('data-film');
       img.hidden = true; video.hidden = false;
       var p; try { p = video.play(); } catch (e) {} if (p && p.catch) p.catch(function () {});
@@ -197,14 +200,14 @@
       vwOpen = true; hold(true);
       show(k, 0);
       lock(true); setInert(true);
-      vw.hidden = false; doc.body.classList.add('vw-open');
+      vw.hidden = false; doc.body.classList.add('vw-open'); doc.documentElement.classList.add('vw-on');
       if (!reduced && vw.animate) vw.animate([{ clipPath: 'inset(100% 0 0 0)' }, { clipPath: 'inset(0 0 0 0)' }], { duration: 520, easing: EASE_IO });
       try { closeB.focus({ preventScroll: true }); } catch (e) { closeB.focus(); }
     };
     var close = function () {
       if (!isOpen()) return;
       stopClip();
-      vw.hidden = true; doc.body.classList.remove('vw-open');
+      vw.hidden = true; doc.body.classList.remove('vw-open'); doc.documentElement.classList.remove('vw-on');
       setInert(false); lock(false);
       token++; vwOpen = false; hold(false);
       if (win.__cocoaRunway) win.__cocoaRunway.schedule();

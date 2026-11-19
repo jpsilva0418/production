@@ -2,14 +2,14 @@
    site.css (KIT.md); this file only lays out what those two pages add. Every colour is a token. */
 
 /* ---------- title cards ---------- */
+@media(max-width:379px){.cocoa .chip{font-size:10px;letter-spacing:.08em;padding:6px 12px}}
 .cv-after{display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px;margin-top:26px}
 .cover .fr .cap{margin-top:12px}
 .cover-m.fr{width:min(100%,420px)}
 
 /* About: the chair portrait (transparent cut-out) on an oat arch */
 .ac-in{align-items:center}
-.ac-badges{display:flex;flex-wrap:wrap;gap:6px 12px;margin:24px 0 0;font:650 10.5px/1.5 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--mocha)}
-.ac-badges span:not(:first-child)::before{content:"\00B7";margin-right:12px;color:var(--mocha)}
+.ac-badges{display:flex;flex-wrap:wrap;gap:6px 20px;margin:24px 0 0;font:650 10.5px/1.5 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--mocha)}
 .ac-fig{position:relative;margin:0;justify-self:center;width:min(100%,520px)}
 .ac-arch{position:absolute;left:9%;right:9%;top:5%;bottom:3.4em;border-radius:999px 999px var(--r) var(--r);background:var(--oat)}
 .ac-fig img{position:relative;width:100%;height:auto}
@@ -62,7 +62,7 @@ html.js .dest-fig.rv-im.in{clip-path:inset(0 0 0 0)}
 
 /* ---------- Bridal: the FAQ, heading beside the questions ---------- */
 .bq .faq-i summary{min-height:64px}
-.bq .faq-i summary:focus-visible{outline-offset:2px;border-radius:var(--r-s)}
+.bq .faq-i summary:focus-visible{outline-offset:6px;border-radius:var(--r-s)}
 .bq .faq-i[open] summary{color:var(--espresso)}
 .bq .faq-a{font-size:16px;line-height:1.65}
 .bq .faq-a p::before{content:"\201C"}
@@ -120,7 +120,7 @@ html.js .dest-fig.rv-im.in{clip-path:inset(0 0 0 0)}
 .am-g .fr--tall .fr-m{aspect-ratio:9/16}
 .am-g .cap .cap-cr{margin-top:4px}
 @media(min-width:760px){
-  .am-g{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;max-width:1080px;margin:0 auto}
+  .am-g{grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(14px,1.8vw,24px)}
   .am-g .fr--tall .fr-m{aspect-ratio:3/4}
   .am-lo{margin-top:clamp(40px,6vw,88px)}
   .am-lo2{margin-top:clamp(20px,3vw,44px)}

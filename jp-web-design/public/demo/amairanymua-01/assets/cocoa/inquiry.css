@@ -35,6 +35,7 @@
   .iq-jump{display:none}
   .iq-top-r{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
 }
+@media(max-width:379px){.iq-page .chip{font-size:10px;letter-spacing:.08em;padding:6px 12px}.iq-ev .btn{letter-spacing:.08em;padding:12px 12px}}
 @media(max-width:899px) and (max-height:700px){.iq-top .chip{margin-bottom:14px}.iq-top-h .d-xl{font-size:40px;margin-bottom:12px}.iq-top-t .lede{font-size:16px}}
 
 /* ===================== the spread: the sheet beside the side column ===================== */
@@ -101,6 +102,13 @@
 .cf-prog li.now .cf-prog-lbl{display:block;color:var(--espresso);overflow:visible}
 .cf-prog li.done .cf-prog-lbl{color:var(--espresso)}
 @container (min-width:480px){.cf-prog-lbl{display:block}}
+/* a narrow sheet: only the current step is named, on its own line under the numbers, so it never
+   runs into the next number; the last step's name sits flush right */
+@container (max-width:479.98px){
+  .cf-inquiry{--iq-prog:84px}
+  .cf-prog li.now .cf-prog-lbl{grid-row:3;grid-column:1/-1;width:max-content;margin-top:8px}
+  .cf-prog li.now:last-child .cf-prog-lbl{justify-self:end}
+}
 
 /* ---------- a step: its question in the serif ---------- */
 .cf-step>legend{float:left;width:100%;padding:0 0 24px;font:400 clamp(28px,3.2vw,38px)/1.1 var(--serif);color:var(--espresso);text-wrap:balance}
@@ -162,9 +170,11 @@ textarea.cf-input{min-height:118px;line-height:1.55}
 /* two short answers (first look) and the eight sources stay two across even at 320 wide, set tighter */
 .cf-field:has(#cf-firstLook-label) .cf-cards,.cf-field:has(#cf-heardFrom-label) .cf-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
 @container (max-width:300px){
-  .cf-field:has(#cf-heardFrom-label) .cf-card,.cf-field:has(#cf-firstLook-label) .cf-card{gap:8px;padding:10px 10px;font-size:14px}
-  .cf-field:has(#cf-heardFrom-label) .cf-card::before,.cf-field:has(#cf-firstLook-label) .cf-card::before{width:12px;height:12px}
+  .cf-field:has(#cf-heardFrom-label) .cf-card,.cf-field:has(#cf-firstLook-label) .cf-card{padding:10px 12px;font-size:14.5px}
+  .cf-field:has(#cf-heardFrom-label) .cf-card::before{display:none}
 }
+/* the seven packages: one name per row on a narrow sheet, like a price list, so none breaks */
+@container (max-width:419.98px){.cf-field:has(#cf-package-label) .cf-cards{grid-template-columns:minmax(0,1fr)}}
 .cf-hint{margin:10px 0 0;font-size:13.5px;line-height:1.55;color:var(--mocha)}
 .cf-hint a,.cf-noscript a{color:var(--espresso);font-weight:650;text-decoration:underline;text-decoration-color:var(--sand);text-underline-offset:.25em}
 .cf-hint a:hover,.cf-hint a:focus-visible,.cf-noscript a:hover,.cf-noscript a:focus-visible{text-decoration-color:currentColor}
@@ -197,8 +207,8 @@ textarea.cf-input{min-height:118px;line-height:1.55}
 .cf-reset:hover,.cf-reset:focus-visible{color:var(--espresso);text-decoration-color:currentColor}
 
 /* ---------- the hand-off ---------- */
-.cf-strip{display:flex;gap:10px;align-items:baseline;margin:0 0 26px;padding:12px 16px;border-radius:var(--r);background:var(--oat);color:var(--espresso);font-size:13.5px;line-height:1.5}
-.cf-strip::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--mocha);transform:translateY(-.05em)}
+.cf-strip{position:relative;margin:0 0 26px;padding:12px 16px 12px 34px;border-radius:var(--r);background:var(--oat);color:var(--espresso);font-size:13.5px;line-height:1.5}
+.cf-strip::before{content:"";position:absolute;left:16px;top:calc(12px + .5em);width:8px;height:8px;border-radius:50%;background:var(--mocha)}
 .cf-strip strong{font-weight:750}
 .cf-kick{display:block;margin:0 0 14px;font:650 11.5px/1.4 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--mocha)}
 .cf-handoff h2{margin:0 0 16px;font:400 clamp(34px,4.6vw,54px)/1.04 var(--serif);text-wrap:balance}

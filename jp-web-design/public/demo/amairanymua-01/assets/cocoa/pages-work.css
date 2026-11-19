@@ -5,11 +5,10 @@
 /* ======================= PORTFOLIO ======================= */
 
 /* the title card: a portrait with one of her clips laid over its corner */
-.pf-cm{position:relative;padding:0 0 12% 20%}
+.pf-cm{position:relative;padding:0 0 14% 20%}
 .pf-cm>.fr .fr-m{box-shadow:0 30px 60px -40px var(--shade)}
 .pf-cm-r{position:absolute;left:0;bottom:0;width:40%;z-index:2}
 .pf-cm-r .reel-m{box-shadow:0 0 0 5px var(--cream),0 26px 50px -26px var(--shade)}
-.pf-cm-c{position:absolute;right:0;bottom:0;width:56%;margin:0;font:600 10.5px/1.5 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--mocha);text-align:right}
 .pf-jump{display:flex;flex-wrap:wrap;gap:0 22px;margin-top:22px;padding-top:14px;border-top:1px solid var(--oat);max-width:30em}
 .pf-jump a{display:inline-flex;align-items:center;min-height:44px;font:650 11.5px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;text-decoration:underline;text-decoration-color:var(--sand);text-underline-offset:.5em}
 .pf-jump a:hover,.pf-jump a:focus-visible{text-decoration-color:currentColor}
@@ -32,13 +31,13 @@
 .pf-reel .sh--row>div:last-child{display:grid;justify-items:start;gap:0}
 @media(min-width:760px){.pf-reel .sh--row>div:last-child{justify-items:end;text-align:right}}
 .pf-sub{margin:0 0 18px}
-.pf-pins{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(-1 * max(var(--gut),env(safe-area-inset-left))) 56px;padding:4px max(var(--gut),env(safe-area-inset-left)) 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.pf-pins{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(-1 * max(var(--gut),env(safe-area-inset-left))) 56px;padding:4px max(var(--gut),env(safe-area-inset-left)) 6px;scroll-padding-left:max(var(--gut),env(safe-area-inset-left));scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 .pf-pins::-webkit-scrollbar{display:none}
 .pf-pin{position:relative;flex:0 0 auto;width:min(60vw,300px);scroll-snap-align:start}
 .pf-pin-n{display:block;margin:0 0 8px;font-size:30px;line-height:1;color:var(--sand)}
 .pf-pin .reel-t{font-size:20px}
 @media(min-width:760px){
-  .pf-pins{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;overflow:visible;margin:0 0 72px;padding:0;max-width:1080px}
+  .pf-pins{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;overflow:visible;margin:0 0 72px;padding:0}
   .pf-pin{width:auto}
 }
 @media(min-width:1024px){.pf-pins{gap:32px}.pf-pin-n{font-size:38px}}
@@ -71,7 +70,7 @@
 .pf-follow .lnk{color:var(--cream)}
 
 /* ---------- the look viewer (a modal dialog; pages-work.js) ---------- */
-.vw{position:fixed;inset:0;z-index:120;display:grid;grid-template-rows:auto minmax(0,1fr) auto;background:var(--bean);color:var(--cream);padding:env(safe-area-inset-top) 0 calc(env(safe-area-inset-bottom) + 52px)}
+.vw{position:fixed;inset:0;z-index:120;display:grid;grid-template-rows:auto minmax(0,1fr) auto;background:var(--bean);color:var(--cream);padding:env(safe-area-inset-top) 0 calc(env(safe-area-inset-bottom) + 66px)}
 .vw[hidden]{display:none}
 .vw :focus-visible{outline-color:var(--latte)}
 .vw-top{display:flex;align-items:center;justify-content:space-between;gap:16px;height:var(--hd-h);padding:0 max(var(--gut),env(safe-area-inset-right)) 0 max(var(--gut),env(safe-area-inset-left))}
@@ -108,11 +107,13 @@
   .vw-row{gap:18px}
 }
 body.vw-open{overflow:hidden}
+/* the marker rests at its usual place over the viewer (the phone bar it normally clears is behind it) */
+html.vw-on{--marker-bottom:8px}
 
 /* ======================= JOURNAL ======================= */
 .jx-fig{position:relative;margin:0;width:min(78%,420px)}
 .jx-fig::before{content:"";position:absolute;left:8%;right:8%;top:6%;bottom:0;border-radius:999px 999px var(--r) var(--r);background:var(--oat)}
-.jx-fig .fr-m{overflow:visible}
+.jx-fig .fr-m{overflow:visible;box-shadow:none!important}
 .jx-fig img{position:relative;width:100%;height:auto}
 
 .jx-l{display:grid;border-top:1px solid var(--sand)}

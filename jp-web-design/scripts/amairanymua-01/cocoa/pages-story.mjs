@@ -156,7 +156,7 @@ ${sectionHead({ kick: 'In motion', heading: 'Real skin, <em>in motion.</em>', id
 <div class="am-g">
 ${frame('bride-pearls', { shape: 'tall', sizes: '(max-width:759px) 46vw, 290px', cap: 'Bridal &middot; Soft glam' })}
 ${filmFrame('f5', { shape: 'reel', cap: `${FILMS.f5.title} &middot; ${FILMS.f5.label}`, cls: 'am-lo' }).replace('rv-im"', 'rv-im" style="--d:.1s"')}
-${frame('reel-bride-gown', { shape: 'tall', sizes: '(max-width:759px) 46vw, 290px', cap: 'Bridal &middot; Glam waves', cls: 'am-lo2' }).replace('rv-im"', 'rv-im" style="--d:.16s"')}
+${frame('reel-burgundy', { shape: 'tall', sizes: '(max-width:759px) 46vw, 290px', cap: 'Bridal &middot; Burgundy waves, red lip', cls: 'am-lo2' }).replace('rv-im"', 'rv-im" style="--d:.16s"')}
 ${filmFrame('f7', { shape: 'reel', cap: `${FILMS.f7.title} &middot; ${FILMS.f7.label}`, cls: 'am-hi' }).replace('rv-im"', 'rv-im" style="--d:.22s"')}
 </div>
 ${nextStep({ links: [[href(S, 'portfolio'), 'See the portfolio'], [L.ig, 'Follow on Instagram']] })}`);

@@ -1,0 +1,226 @@
+/* /demo/amairanymua-01 — BLUSH: the Bridal Inquiry page, and its skin of the shared inquiry.
+   On this site assets/css/inquiry-core.css (structure, iPhone fixes, hidden states) loads BEFORE
+   site.css, and this file after both, so every single-class rule here wins. The form's markup and
+   behaviour are shared and untouched (inquiry-core.mjs, assets/js/inquiry.js); this file only
+   dresses them. Guide: SKINNING.md.
+
+   Blush's manner, applied to a form: the card is paper on cream with the big soft radius; the
+   progress row is four round numerals on a blush hairline (the home page's "Tell her about your
+   day" row, continued); questions are set in Petrona, labels in Nunito; fields and choices are
+   soft rounded boxes with a mauve rule (3:1 on paper); a chosen card turns ink with a blush dot;
+   errors are her rose-deep (6.4:1 on paper), soft rather than a strong red. Every colour is a
+   site.css token. */
+
+.iq-page{
+  --iq-pad:20px;            /* the card's inner gutter */
+  --iq-prog:96px;           /* the progress row + its gap, above every step */
+  --iq-bad:var(--rose-deep);
+}
+@media(min-width:600px){.iq-page{--iq-pad:36px}}
+@media(min-width:1200px){.iq-page{--iq-pad:52px}}
+
+/* ===================== the title card ===================== */
+.iq-top{padding:clamp(28px,5vw,72px) 0 clamp(26px,3.4vw,48px)}
+.iq-top-in{display:grid;gap:28px;align-items:center}
+.iq-top-t .d-xl{max-width:11em}
+.iq-top-t .lede{margin-top:1.1rem}
+.iq-top-t .chip{margin-top:1.2rem}
+.iq-alt{display:flex;flex-wrap:wrap;align-items:center;gap:0 14px;margin:.9rem 0 0}
+.iq-alt-l{font:italic 300 1.15rem/1.4 var(--f-serif);color:var(--ink-soft)}
+.iq-seal{display:none}
+@media(min-width:900px){
+  .iq-top-in{grid-template-columns:minmax(0,1fr) auto;gap:clamp(40px,6vw,96px)}
+  .iq-alt{display:none}
+  .iq-seal{display:block;width:clamp(150px,14vw,200px);margin-right:clamp(0px,3vw,48px)}
+}
+
+/* ===================== the spread: the card beside the side column ===================== */
+.sec.iq{padding-top:clamp(4px,1.6vw,24px)}
+.iq-g{display:grid;gap:clamp(40px,5vw,56px)}
+.iq-main{min-width:0}
+@media(min-width:900px){
+  .iq-g{grid-template-columns:minmax(0,1fr) clamp(290px,27vw,380px);column-gap:clamp(36px,5vw,80px);align-items:start}
+}
+/* the side column rides beside the form wherever all of it fits under the header */
+@media(min-width:900px) and (min-height:860px){.iq-side{position:sticky;top:calc(var(--hd-h) + 28px)}}
+
+.iq-card{container-type:inline-size;min-width:0;padding:22px var(--iq-pad) calc(var(--iq-pad) - 2px);background:var(--paper);border:1px solid var(--petal);border-radius:var(--r-lg);box-shadow:var(--shadow)}
+.iq-card-hd{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 24px;padding-bottom:16px;border-bottom:1px solid var(--petal)}
+.iq-card-k{margin:0}
+.iq-card-seal{width:46px;height:46px;flex:none}
+@media(max-width:359px){.iq-card-seal{display:none}}
+
+/* the two notes under the card; the design-preview line is set to be read */
+.iq-notes{display:grid;gap:10px;margin-top:20px;padding-inline:clamp(4px,1.6vw,16px)}
+.iq-note{margin:0;font-size:.9rem;line-height:1.55;color:var(--ink-soft)}
+.iq-demo{display:flex;gap:12px;align-items:flex-start;margin:0;padding:12px 16px;border-radius:16px;background:var(--blush);font-size:.92rem;line-height:1.5;font-weight:700;color:var(--ink)}
+.iq-demo i{position:relative;flex:none;width:9px;height:9px;margin-top:.45em;border-radius:50%;background:var(--rose-deep)}
+
+/* ===================== the side column ===================== */
+.iq-side{display:grid;align-content:start;gap:0;min-width:0}
+.iq-blk p:not(.kick){font-size:.98rem;line-height:1.6;color:var(--ink-soft)}
+.iq-ev{padding:clamp(26px,2.6vw,34px);border-radius:var(--r-lg);background:var(--blush)}
+.iq-ev .kick{color:var(--rose-deep);margin-bottom:.9rem}
+.iq-ev .d-m{margin:0 0 .6rem}
+.iq-ev .d-m em{color:var(--rose-deep)}
+.iq-ev p{margin:0 0 1.3rem}
+.iq-ev .btn{width:100%;height:auto;padding:14px 18px;white-space:normal}
+@media(max-width:379px){.iq-ev .btn{letter-spacing:.08em;padding-inline:14px}}
+.iq-ev .btn--sec:hover,.iq-ev .btn--sec:focus-visible{background:var(--cream)}
+.iq-dest,.iq-prep{padding:28px 4px 20px;border-bottom:1px solid var(--petal)}
+.iq-dest .d-s,.iq-prep .d-s{margin:0 0 .9rem}
+.iq-q{margin:0 0 .6rem}
+.iq-blk .iq-q p{font-size:1.18rem;line-height:1.45;color:var(--ink)}
+.iq-q cite{margin-top:.7rem}
+.iq-steps{list-style:none;margin:0 0 .4rem}
+.iq-steps li{display:grid;grid-template-columns:44px minmax(0,1fr);align-items:center;gap:12px;padding:8px 0;font-size:.98rem;line-height:1.5}
+.iq-n{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;border:1px solid var(--petal);background:var(--paper);font:400 .95rem/1 var(--f-serif);color:var(--ink)}
+@media(min-width:600px) and (max-width:899px){
+  /* tablets: the three blocks side by side under the form */
+  .iq-side{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:24px;align-items:start}
+  .iq-dest,.iq-prep{padding-top:6px;border-bottom:0}
+}
+
+/* ===================== the shared inquiry, dressed ===================== */
+.cf-inquiry{
+  /* after Continue / Back / Edit the step's top rests below the sticky header with the progress
+     row (just above the step) still in view; the hand-off has no progress row */
+  --cf-scroll-offset:calc(var(--hd-h) + env(safe-area-inset-top,0px) + 14px + var(--iq-prog));
+  color:var(--ink);font:400 16px/1.55 var(--f-sans);
+}
+.cf-inquiry[data-view="handoff"]{--cf-scroll-offset:calc(var(--hd-h) + env(safe-area-inset-top,0px) + 28px)}
+
+/* ---------- progress: four round numerals on a hairline (the home card's row) ---------- */
+.cf-prog{gap:4px;margin:0 0 30px}
+.cf-prog li{position:relative;display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center}
+.cf-prog li::before{content:attr(data-n);content:attr(data-n) / "";position:relative;z-index:1;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;border:1px solid var(--petal);background:var(--paper);font:400 1rem/1 var(--f-serif);color:var(--ink-soft);font-variant-numeric:lining-nums;transition:background-color .35s var(--ease),color .35s var(--ease),border-color .35s var(--ease)}
+.cf-prog li.done::before{content:"\2713";content:"\2713" / "";background:var(--blush);border-color:var(--mauve);color:var(--rose-deep);font:700 .95rem/1 var(--f-sans)}
+.cf-prog li.now::before{background:var(--ink);border-color:var(--ink);color:var(--cream)}
+.cf-prog-bar{position:absolute;top:18px;left:calc(50% + 22px);right:calc(-50% + 22px);height:1px;background:var(--petal)}
+.cf-prog li:last-child .cf-prog-bar{display:none}
+.cf-prog li.done .cf-prog-bar{background:var(--mauve)}
+.cf-prog-lbl{max-width:100%;font:800 .6rem/1.3 var(--f-sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.cf-prog li.now .cf-prog-lbl,.cf-prog li.done .cf-prog-lbl{color:var(--ink)}
+@container (max-width:380px){.cf-prog-lbl{font-size:.56rem;letter-spacing:.06em}}
+
+/* ---------- a step: its question in Petrona ---------- */
+.cf-step>legend{float:left;width:100%;padding:0 0 22px;font:300 clamp(1.7rem,1.3rem + 1.6vw,2.35rem)/1.15 var(--f-serif);letter-spacing:-.008em;color:var(--ink);text-wrap:balance}
+.cf-step>legend+*{clear:both}
+@media (prefers-reduced-motion:no-preference){
+  .cf-form.ready .cf-step:not([hidden]),.cf-handoff:not([hidden]){animation:iqIn .5s var(--ease) both}
+}
+@keyframes iqIn{from{opacity:0;transform:translate3d(0,10px,0)}to{opacity:1;transform:none}}
+
+.cf-two{column-gap:18px}
+/* the two guest counts: their questions wrap differently, so the boxes line up along the bottom */
+.cf-two:has(#cf-makeupGuests){align-items:end}
+.cf-field{margin-bottom:24px}
+.cf-lbl{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.7em;margin-bottom:10px;font:700 .95rem/1.45 var(--f-sans);color:var(--ink)}
+.cf-req,.cf-opt{font:800 .6rem/1.3 var(--f-sans);letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;color:var(--ink-soft)}
+.cf-req{color:var(--rosewood)}
+
+/* fields: soft rounded boxes with a mauve rule; the active one takes an ink rule and a ring */
+.cf-input{min-height:52px;padding:13px 16px;border:1px solid var(--mauve);border-radius:14px;background:var(--paper);color:var(--ink);font-family:var(--f-sans);font-size:16px;line-height:1.45;caret-color:var(--rosewood);box-shadow:none;transition:border-color .25s var(--ease),box-shadow .25s var(--ease)}
+.cf-input::placeholder{color:var(--ink-soft);opacity:1}
+.cf-input:hover{border-color:var(--ink-soft)}
+.cf-input:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px var(--blush)}
+.cf-input:focus-visible{outline:2px solid var(--rosewood);outline-offset:3px;border-radius:14px}
+textarea.cf-input{min-height:124px;line-height:1.6}
+.cf-input[type="date"],.cf-input[type="time"]{min-height:52px}
+.cf-input::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer}
+.cf-input[type="number"]{-moz-appearance:textfield;appearance:textfield}
+.cf-input[type="number"]::-webkit-inner-spin-button,.cf-input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.cf-input[aria-invalid="true"]{border-color:var(--iq-bad);background:var(--cream);box-shadow:inset 0 0 0 1px var(--iq-bad)}
+.cf-input[aria-invalid="true"]:focus{box-shadow:inset 0 0 0 1px var(--iq-bad),0 0 0 3px var(--blush)}
+.cf-err{display:flex;gap:9px;align-items:baseline;margin:9px 0 0;font:700 .88rem/1.45 var(--f-sans);color:var(--iq-bad)}
+.cf-err::before{content:'';flex:none;width:8px;height:8px;border:1.5px solid currentColor;border-radius:50%;transform:translateY(-.05em)}
+
+.cf-check{gap:10px;margin-top:8px;min-height:44px;font-size:.95rem;color:var(--ink-soft)}
+.cf-check input{width:20px;height:20px;accent-color:var(--ink)}
+.cf-check:has(input:checked){color:var(--ink);font-weight:700}
+.cf-check:has(input:focus-visible){outline:2px solid var(--rosewood);outline-offset:3px;border-radius:8px}
+
+/* choice cards: a ring at rest; chosen, the card turns ink and the ring becomes a blush dot */
+.cf-cards{gap:10px}
+.cf-card{gap:12px;min-height:54px;padding:12px 16px;border:1px solid var(--mauve);border-radius:16px;background:var(--paper);color:var(--ink);font:600 .95rem/1.35 var(--f-sans);-webkit-user-select:none;user-select:none;transition:border-color .25s var(--ease),background-color .25s var(--ease),color .25s var(--ease)}
+.cf-card::before{content:'';flex:none;width:14px;height:14px;border:1.5px solid var(--mauve);border-radius:50%;background:var(--paper);transition:background-color .25s var(--ease),border-color .25s var(--ease),box-shadow .25s var(--ease)}
+.cf-card:hover{background:var(--blush);border-color:var(--rosewood)}
+.cf-card:has(input:checked){background:var(--ink);border-color:var(--ink);color:var(--cream)}
+.cf-card:has(input:checked)::before{background:var(--blush);border-color:var(--blush);box-shadow:inset 0 0 0 3px var(--ink)}
+.cf-card:has(input:focus-visible){outline:2px solid var(--rosewood);outline-offset:3px}
+.cf-field[data-invalid] .cf-card{border-color:var(--iq-bad)}
+/* an odd last card takes the whole row (the seven packages) */
+.cf-cards-2>.cf-card:last-child:nth-child(odd){grid-column:1/-1}
+/* her package names are set like her price list: Petrona */
+.cf-field:has(#cf-package-label) .cf-card>span{font:400 1.12rem/1.2 var(--f-serif)}
+/* the long answers ("Dating around: searching for quotes", "Email me! I never answer the phone")
+   take one column until the card is wide enough to set them side by side */
+.cf-cards-3,.cf-field:has(#cf-stage-label) .cf-cards{grid-template-columns:minmax(0,1fr)}
+@container (min-width:460px){.cf-field:has(#cf-stage-label) .cf-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@container (min-width:600px){
+  .cf-cards-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+/* "How did you hear about her?": eight short answers, two rows of four once "WeddingWire" fits whole */
+@container (min-width:720px){.cf-field:has(#cf-heardFrom-label) .cf-cards{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.cf-hint{margin:10px 0 0;font-size:.88rem;line-height:1.55;color:var(--ink-soft)}
+.cf-hint a,.cf-noscript a{color:var(--rosewood);font-weight:700;text-decoration:underline;text-decoration-color:var(--mauve);text-underline-offset:.22em}
+.cf-hint a{display:inline-block;padding:12px 0;margin:-12px 0} /* a 44px target inside the line */
+
+/* ---------- review: one soft panel per step, numbered ---------- */
+.cf-review{gap:12px;margin-bottom:20px;counter-reset:iqrv}
+.cf-rev-group{padding:16px 18px 18px;border-radius:18px;background:var(--cream);border:1px solid var(--petal);counter-increment:iqrv}
+.cf-rev-head{gap:12px;align-items:center;margin-bottom:8px}
+.cf-rev-title{display:flex;align-items:center;gap:12px;margin:0;font:400 1.22rem/1.25 var(--f-serif);color:var(--ink)}
+.cf-rev-title::before{content:counter(iqrv);content:counter(iqrv) / "";display:grid;place-items:center;flex:none;width:30px;height:30px;border-radius:50%;background:var(--paper);border:1px solid var(--petal);font:400 .9rem/1 var(--f-serif);color:var(--ink-soft)}
+.cf-rev-edit{display:inline-flex;align-items:center;min-height:44px;padding:0 4px;border:0;font:800 .72rem/1 var(--f-sans);letter-spacing:.16em;text-transform:uppercase;color:var(--ink);background:linear-gradient(var(--mauve),var(--mauve)) 4px calc(100% - 11px)/calc(100% - 8px) 1px no-repeat;cursor:pointer}
+.cf-rev-edit:hover{color:var(--rosewood)}
+.cf-rev-list{gap:10px;padding-left:42px}
+.cf-rev-row{display:grid;grid-template-columns:minmax(0,1fr);row-gap:1px}
+.cf-rev-q{font-size:.84rem;line-height:1.45;color:var(--ink-soft)}
+.cf-rev-a{font-size:1rem;line-height:1.5;font-weight:700;color:var(--ink)}
+.cf-rev-none{margin:0;padding-left:42px;font:italic 300 1.02rem/1.4 var(--f-serif);color:var(--ink-soft)}
+@container (max-width:380px){.cf-rev-list,.cf-rev-none{padding-left:0}}
+@container (min-width:540px){.cf-rev-row{grid-template-columns:minmax(0,14rem) minmax(0,1fr);column-gap:20px}}
+.cf-consent{max-width:60ch;margin:0;font:italic 300 1.06rem/1.5 var(--f-serif);color:var(--ink)}
+
+/* ---------- the step buttons (the kit's .btn, passed in) and Start over ---------- */
+.cf-nav{gap:10px;margin-top:28px;padding-top:22px;border-top:1px solid var(--petal)}
+.cf-nav .btn{flex:1 1 0;min-width:0;padding:0 18px}
+.cf-btn--primary::after{content:"\2192";content:"\2192" / "";font-size:1rem;letter-spacing:0;transition:transform .35s var(--ease)}
+.cf-btn--primary:hover::after,.cf-btn--primary:focus-visible::after{transform:translateX(4px)}
+.cf-btn[disabled],.cf-btn[disabled]:hover{opacity:.45;cursor:default;transform:none}
+@media(min-width:600px){.cf-nav .btn{flex:0 0 auto;min-width:176px;padding:0 28px}}
+.cf-reset{display:block;margin:12px 0 0 auto;min-height:44px;padding:0 4px;border:0;font:800 .68rem/1 var(--f-sans);letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);background:linear-gradient(var(--petal),var(--petal)) 4px calc(100% - 12px)/calc(100% - 8px) 1px no-repeat;cursor:pointer;transition:color .25s}
+.cf-reset:hover{color:var(--ink)}
+
+/* ---------- the hand-off ---------- */
+.cf-strip{display:block;margin:0 0 26px;padding:13px 18px;border-radius:16px;background:var(--blush);color:var(--ink);font-size:.92rem;line-height:1.5}
+.cf-strip strong{margin-right:.2em;font:800 .66rem/1 var(--f-sans);letter-spacing:.16em;text-transform:uppercase;color:var(--rose-deep)}
+.cf-kick{display:inline-flex;align-items:center;gap:.7em;margin:0 0 14px;font:800 .72rem/1.3 var(--f-sans);letter-spacing:.26em;text-transform:uppercase;color:var(--rosewood)}
+.cf-kick::before{content:'';flex:none;width:8px;height:8px;border:1.5px solid var(--mauve);border-radius:50%}
+.cf-handoff h2{margin:0 0 16px;font:300 clamp(2rem,1.4rem + 2.4vw,3.1rem)/1.08 var(--f-serif);letter-spacing:-.012em;color:var(--ink);text-wrap:balance}
+.cf-handoff-body{max-width:52ch;margin:0;font-size:1.04rem;line-height:1.7;color:var(--ink-soft)}
+.cf-actions{gap:10px;margin-top:26px}
+.cf-actions .btn{flex:1 1 100%;height:auto;min-height:50px;padding:14px 20px}
+@media(min-width:600px){.cf-actions .btn{flex:0 0 auto}}
+.cf-back{display:inline-flex;align-items:center;min-height:44px;padding:0 4px;margin:0;border:0;font:800 .72rem/1 var(--f-sans);letter-spacing:.16em;text-transform:uppercase;color:var(--ink);background:linear-gradient(var(--mauve),var(--mauve)) 4px calc(100% - 11px)/calc(100% - 8px) 1px no-repeat;cursor:pointer}
+.cf-back:hover{color:var(--rosewood)}
+@media(min-width:600px){.cf-back{margin-left:10px}}
+.cf-status{min-height:1.5em;margin:14px 0 0;font:italic 400 1.05rem/1.4 var(--f-serif);color:var(--ink)}
+.cf-copytext{margin-top:12px;padding:14px 16px;border:1px solid var(--mauve);border-radius:14px;background:var(--cream);color:var(--ink)}
+.cf-copytext:focus{outline:2px solid var(--rosewood);outline-offset:2px}
+
+/* every control in the component gets the site's ring when reached by keyboard */
+.cf-rev-edit:focus-visible,.cf-reset:focus-visible,.cf-back:focus-visible,.cf-hint a:focus-visible{outline:2px solid var(--rosewood);outline-offset:3px;border-radius:6px}
+
+/* without script: the line and her real form's link, nothing else */
+.cf-noscript{margin:0;padding:18px 20px;border-radius:16px;background:var(--blush);font-size:1rem;line-height:1.6;color:var(--ink)}
+
+/* narrow cards: a tighter card so two columns keep every word whole ("WeddingWire", "Signature"),
+   and one column where even that would split a word */
+@container (max-width:419px){
+  .cf-cards{gap:8px}
+  .cf-card{gap:9px;padding:11px 12px}
+  .cf-card::before{width:12px;height:12px}
+}
+@container (max-width:299px){.cf-cards-2{grid-template-columns:minmax(0,1fr)}}

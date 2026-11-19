@@ -25,7 +25,7 @@ ${h(1, INQUIRY.heading.replace(/your day\.$/, '<em>your day.</em>'), 'd-xl', 'id
 <div class="iq-top-t">
 ${lede(INQUIRY.body)}
 <p class="iq-jump">${book('event', `${INQUIRY.qHeading} Book event glam ${arrow}`, 'lnk')}</p>
-<div class="iq-top-r">${rateChip('ww')}${rateChip('knot')}</div>
+<div class="iq-top-r">${rateChip('ww')}</div>
 </div>
 </div>
 </section>`;

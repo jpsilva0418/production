@@ -11,7 +11,7 @@
 
    Honesty: no fact is written here that site.mjs does not hold. Article prose is third person; her
    own lines are quoted as hers. Credited looks and clips always say "Makeup by Amairany · <credit>". */
-import { page, S, section, sectionHead, kicker, h, lede, actions, more, nextStep, bookingChip, chips, rail, reelCard, frame, quote, POSTS, POST_LABEL, CHEV_L, CHEV_R, PLAY, arrow } from './shell.mjs';
+import { page, S, section, sectionHead, kicker, h, lede, actions, more, nextStep, bookingChip, chips, rail, reelCard, frame, quote, POSTS, POST_LABEL, CHEV_L, CHEV_R, PLAY, FILM_START, arrow } from './shell.mjs';
 import { SITE, HER, SOCIAL, FILMS, PHOTOS, LOOKS3, LOOK_CATS3, looksIn3, PORTFOLIO_PAGE, L, A, href, pic, src, srcset, esc } from '../site.mjs';
 
 const lookOf = (photo) => LOOKS3.find((l) => l.photo === photo);
@@ -48,14 +48,13 @@ const pfCover = () => `<section class="cover cover--m pf-cover" aria-labelledby=
 ${bookingChip()}
 ${kicker('Bridal &amp; event portfolio')}
 ${h(1, `${PORTFOLIO_PAGE.heading[0]} <em>${PORTFOLIO_PAGE.heading[1]}</em>`, 'd-xl', 'id="pfH"')}
-${lede(`A glimpse of ${HER.years[0][1]} of artistry: brides first, then glam, hair and editorial colour. ${LOOKS3.length} looks and ${CLIPS} clips of her own work.`)}
+${lede(`A glimpse of ${HER.years[0][1]} of artistry: brides first, then glam, hair and editorial colour. ${LOOKS3.length} looks and ${CLIPS} of her clips.`)}
 ${actions()}
 <nav class="pf-jump" aria-label="On this page"><a href="#looks">The Looks</a><a href="#reel">The Reel</a><a href="#every-look">Every look</a></nav>
 </div>
 <div class="cover-m pf-cm">
 ${frame('bride-crystal', { shape: 'port', eager: true, rv: '', sizes: '(max-width:899px) 78vw, 34vw', cap: '' })}
 <div class="pf-cm-r">${reelCard('f5', { cap: false, rv: '', tag: 'div' })}</div>
-<p class="pf-cm-c">${lookOf('bride-crystal').cap} <span aria-hidden="true">&middot;</span> ${FILMS.f5.title}, in motion</p>
 </div>
 </div>
 </section>`;
@@ -73,7 +72,7 @@ const pfLooks = () => {
 const pfReel = () => section({ id: 'reel', tone: 'milk', cls: 'pf-reel', labelledby: 'reelH' }, `
 ${sectionHead({ kick: `The Reel &middot; ${SITE.handle}`, heading: 'Her clips, <em>in motion.</em>', id: 'reelH', line: `${SOCIAL.tiktok.followers} followers and ${SOCIAL.tiktok.likes} likes on TikTok. Silent here; the sound is on TikTok.`, side: `<p class="small pf-asof">View counts as of ${SOCIAL.asOf}</p>${more(L.tiktok, 'Watch more on TikTok')}` })}
 <p class="kick pf-sub rv">Her pinned three</p>
-<ol class="pf-pins" data-stag=".08">${PINNED.map((id, i) => `<li class="pf-pin rv"><span class="pf-pin-n num" aria-hidden="true">0${i + 1}</span>${reelCard(id, { rv: '' })}</li>`).join('')}</ol>
+<ol class="pf-pins rv">${PINNED.map((id, i) => `<li class="pf-pin"><span class="pf-pin-n num" aria-hidden="true">0${i + 1}</span>${reelCard(id, { rv: '' })}</li>`).join('')}</ol>
 <p class="kick pf-sub rv">More from her reels</p>
 <div class="vg pf-vg" data-stag=".06">${REST.map((id) => reelCard(id)).join('')}</div>
 ${nextStep({ links: [[L.tiktok, 'Watch more on TikTok'], [L.ig, 'Follow on Instagram']] })}`);
@@ -87,7 +86,7 @@ const tile = (l, i) => {
   const p = PHOTOS[l.photo];
   const big = largest(l.photo);
   const f = l.film ? FILMS[l.film] : null;
-  const film = f?.file ? ` data-film="${A}/film/${f.file}.mp4" data-poster="${A}/film/${f.file}.jpg" data-film-alt="${esc(f.alt)}" data-film-pos="${f.pos}"` : '';
+  const film = f?.file ? ` data-film="${A}/film/${f.file}.mp4" data-poster="${A}/film/${f.file}.jpg" data-film-alt="${esc(f.alt)}" data-film-pos="${f.pos}"${FILM_START[l.film] ? ` data-film-start="${FILM_START[l.film]}"` : ''}` : '';
   return `<li class="pa-i rv" data-cats="${l.cats.join(' ')}" style="--d:${((i % 4) * 0.06).toFixed(2)}s">
 <figure class="fr fr--tall pa-f"><a class="fr-m pa-a" href="${src(l.photo, big)}" data-vw data-src="${src(l.photo, big)}" data-srcset="${srcset(l.photo)}" data-w="${p.w}" data-h="${p.h}" data-alt="${esc(p.alt)}" data-cap="${esc(l.cap)}"${l.credit ? ` data-credit="${esc(credit(l.credit))}"` : ''}${film}>${pic(l.photo, { sizes: TILE_SIZES })}<span class="pa-zoom" aria-hidden="true"></span>${f ? `<span class="pa-clip" aria-hidden="true">${PLAY}Clip</span>` : ''}<span class="vh">View larger</span></a>
 <figcaption class="cap">${l.cap}${l.credit ? `<span class="cap-cr">${credit(l.credit)}</span>` : ''}</figcaption></figure>
@@ -117,7 +116,7 @@ const pfClose = () => section({ tone: 'espresso', cls: 'close on-dark', labelled
 export const portfolio = () => page({
   path: 'portfolio',
   title: 'Portfolio',
-  description: `Bridal and event hair and makeup by ${SITE.name}, ${SITE.area}: ${LOOKS3.length} looks and ${CLIPS} of her own clips, soft glam to full glam.`,
+  description: `Bridal and event hair and makeup by ${SITE.name}, ${SITE.area}: ${LOOKS3.length} looks and ${CLIPS} of her clips, soft glam to full glam.`,
   head: preload('bride-crystal', '(max-width:899px) 78vw, 34vw'),
   css: ['pages-work'],
   js: ['pages-work'],
@@ -236,7 +235,7 @@ const prepareBody = () => `
 <h2>Your preview comes first</h2>
 <p>Preview sessions are offered for hair and for makeup, and her packages already include yours. If you would rather see the glam before you sign, a trial can be booked first.</p>
 ${quote(`&ldquo;${TRIAL}&rdquo;`, ME)}
-<figure class="fr fr--port art-fig rv-im"><div class="fr-m">${pic('reel-final-touch', { sizes: '(max-width:599px) 86vw, 420px' })}</div><figcaption class="cap">${lookOf('reel-final-touch').cap}</figcaption></figure>
+<figure class="fr fr--port art-fig rv-im"><div class="fr-m">${pic('bride-pearls', { sizes: '(max-width:599px) 86vw, 420px' })}</div><figcaption class="cap">${lookOf('bride-pearls').cap}</figcaption></figure>
 <h2>Extensions, for glam waves</h2>
 <p>Planning glam waves? Ask her about extensions. She rents them, or points you to the ones worth buying.</p>
 ${quote(`&ldquo;${EXT}&rdquo;`, ME)}
