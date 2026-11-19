@@ -13,7 +13,7 @@ normal Vercel deploy. No subdomains, no DNS, no separate project.
 | `magnolia-05` | Magnolia Healthcare, Inc. (MA) | Concept 05 · Immersive Storytelling | same |
 | `magnolia-07` | Magnolia Healthcare, Inc. (MA) | Concept 07 · Family, at Home · Evolved | same |
 | `sass-by-kass-01` | Sass by Kass — Kassandra, hair stylist (MA) | Revision 03 · logo hero, signature entrance, bridal inquiry (republished 2026-11-11) | `jpsilva0418/production` → `sass-by-kass/`, see `DEMO.json` |
-| `amairanymua-01` | Amairany Sierra — @amairanymua, bridal hair & makeup (FL) | Six complete sites to choose from (2026-11-19), in two rounds: Rouge, Maison, Darkroom (her red, black and white, softened to a rose) and Veil, Noir, The Edit. Each has its own opening, an on-site bridal inquiry in demo mode with her JotForm's questions, and stills with marked film slots. Not deployed; awaiting founder's pick | hand-built by `scripts/amairanymua-01-build.mjs` + `scripts/amairanymua-01/`; Rouge from `amairanymua-01-rouge/` (Astro). See `docs/demo-amairanymua-01.md` |
+| `amairanymua-01` | Amairany Sierra — @amairanymua, bridal hair & makeup (FL) | Nine complete sites to choose from (2026-11-19), in three rounds: Atelier, Blush, Cocoa (lighter, after four reference sites); Rouge, Maison, Darkroom (her red, black and white, softened to a rose); Veil, Noir, The Edit. Each has its own opening, an on-site bridal inquiry in demo mode with her JotForm's questions, and her real clips. Not deployed; awaiting founder's pick | hand-built by `scripts/amairanymua-01-build.mjs` + `scripts/amairanymua-01/`; Rouge from `amairanymua-01-rouge/` (Astro). See `docs/demo-amairanymua-01.md` |
 
 Each generated demo has a `DEMO.json` that records its client, concept, source
 commit and build time.

@@ -1,7 +1,7 @@
 /* /demo/amairanymua-01 — the founder's chooser (review build only).
 
-   Six different sites for one artist, in two rounds: round two (4–6, her own red, black and
-   white) first, then round one (1–3). Each card shows the site's real
+   Nine different sites for one artist, in three rounds, newest first: round three (7–9,
+   lighter, with her film), round two (4–6, her red, black and white), round one (1–3). Each card shows the site's real
    home page (a screenshot of the built page, phone and wide screen), how it opens,
    what it feels like, and a way in. Once one is picked (PICK in site.mjs) this page,
    its stylesheet and the preview images are no longer built or needed. */
@@ -82,8 +82,8 @@ export function chooser() {
       <li><b>Bridal inquiry</b> On the site, in short steps, asking her own form&rsquo;s questions with her own answer choices. Demo mode: nothing is sent, and the last step hands off to her real form.</li>
       <li><b>Her booking</b> Event bookings and bridal services open her own booking pages, at the addresses on her link page.</li>
       <li><b>Her links</b> Instagram, TikTok and her Google reviews open in one tap, and her WeddingWire and The Knot ratings link to the reviews themselves.</li>
-      <li><b>Stills and film</b> Her photographs move through the hero and the portfolio with film cutting in. ${open} film ${open === 1 ? 'spot is' : 'spots are'} marked and waiting for her reels: no stand-in video anywhere.</li>
-      <li><b>Pages</b> Round two: Home, Portfolio, Bridal, About, a Journal with two sample articles, and the Bridal Inquiry (Rouge keeps a tighter five). Round one: Home, About, Bridal, Services, Portfolio, Reviews and the Bridal Inquiry.</li>
+      <li><b>Stills and film</b> Her photographs move through the hero and the portfolio with her own clips playing among them (from her TikTok, silent). Where her caption credits another artist, the clip and the photo say so.${open ? ` ${open} film ${open === 1 ? 'spot is' : 'spots are'} still marked and waiting.` : ''}</li>
+      <li><b>Pages</b> Rounds two and three: Home, Portfolio, Bridal, About, a Journal with two sample articles, and the Bridal Inquiry (Rouge keeps a tighter five). Round one: Home, About, Bridal, Services, Portfolio, Reviews and the Bridal Inquiry.</li>
     </ul>
     <p class="ch-foot">The small marker at the foot of every page switches between 1 and 9 on the same page where that page exists, so any two can be compared screen for screen. The opening plays once per visit: add <code>?intro=1</code> to replay it.</p>
   </section>

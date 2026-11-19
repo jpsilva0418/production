@@ -1,4 +1,4 @@
-# `/demo/amairanymua-01` — Amairany Sierra, six complete sites
+# `/demo/amairanymua-01` — Amairany Sierra, nine complete sites
 
 An unlisted design preview for a prospective client: Amairany Sierra
 (@amairanymua), luxury bridal hair and makeup, Orlando + Tampa. It is **not**
@@ -6,7 +6,7 @@ her official website and says so on every page: a marker that stays on screen,
 the page title, and the footer. It is `noindex` by meta tag and by the
 `/demo/(.*)` header in `vercel.json`.
 
-**State: review build. Six complete sites in two rounds, awaiting the founder's
+**State: review build. Nine complete sites in three rounds, awaiting the founder's
 pick. Not deployed.** (`PICK = null` in `scripts/amairanymua-01/site.mjs`.)
 
 ## What the founder asked for
@@ -53,19 +53,48 @@ pick. Not deployed.** (`PICK = null` in `scripts/amairanymua-01/site.mjs`.)
    - **Links:** her Instagram, TikTok and Google should each be one tap away,
      and *"take them directly to the site"*.
 
+4. **Round three** (Atelier, Blush, Cocoa), the same day, with her media pack (her public TikTok
+   clips and stills, her booking-page graphics) and four reference sites (Galya Makeup Artistry,
+   Emily Lynn & Co, The Styling Stewardess, Valeria Nichols):
+
+   > "What I want you to do with these references is copy them … lighter like these, and just with
+   > her brand, her stuff … elegant, sophisticated. We're not making it look like it's AI … for
+   > beauty. At the same time, the whole point of it is for someone to book and inquire … Still keep
+   > the same style as Leti Silva Beauty … But incorporate these different looks. Give me 3 different
+   > demos again."
+
+   The references gave the ideas and the level of finish; no logo, copy line, photo or exact layout
+   was taken from them.
+
 The first version's directions are in git history at `dd6d627`.
 
-## The six sites
+## The nine sites
 
-`/demo/amairanymua-01` is the founder's chooser. Round two comes first, then
-round one. Each card shows real phone and wide screenshots of the site's home
+`/demo/amairanymua-01` is the founder's chooser, newest round first:
+three, two, one. Each card shows real phone and wide screenshots of the site's home
 page (`assets/img/preview-*.webp`, captured from the built pages).
 
-The marker at the foot of every page carries a **1–6 · All** switch during
-review. It opens the same page in another site where that page exists.
+The marker at the foot of every page carries a **1–9 · All** switch during
+review (two rows on a narrow phone). It opens the same page in another site where that page exists.
 
 Each opening plays once per browser session per site. `?intro=1` replays it
 and `?intro=0` skips it.
+
+### Round three: lighter, with her film (listed first in the chooser)
+
+| | 7 · Atelier | 8 · Blush | 9 · Cocoa |
+| --- | --- | --- | --- |
+| After | Galya Makeup Artistry | Emily Lynn & Co, The Styling Stewardess | Valeria Nichols |
+| Palette | ivory and her espresso (`#36302A`, her booking page's colour) | warm cream and blush, espresso ink | her espresso and cream (cream pages, espresso bands) |
+| Type | Noto Serif Display (narrowest width) caps + Montserrat (her own graphics use it); Allura for "Glam By" | Petrona roman and italic in mixed lines + Nunito Sans; Great Vibes for single words | Libre Caslon Display + Manrope; Castoro italic for "Glam By" |
+| The opening | a hairline draws, "Glam By" writes, an arched window opens onto her bridal clip and travels into the hero | her monogram seal draws (text round the ring), its centre opens onto her clip, the circle settles into the hero | her lockup on espresso, her numbers count up (13 years, 178.1K, 3.9M), three of her most-viewed reels rise, the espresso lifts away |
+| Signatures | clips in arched windows like portraits on a wall; "The Experience" from her facts | round frames; a floating "Begin your inquiry" pill; "Tell her about your day" carries the wedding date into the real form | numbers band; "What brings you here?" path cards; a viral-reels grid with real view counts; an "Inquire here" that never leaves |
+
+All three: the round-two list (opening, picture beside film, inquiry beside booking with About under,
+a self-advancing slideshow, Leti-style portfolio, journal, Love Notes, one-tap links) plus a
+persistent way to inquire on every page. Their portfolio is `LOOKS3` (23 looks: 13 frames from her
+clips, then the ten earlier photographs, with two more categories, Hair and Editorial); sites 1–6 keep
+`LOOKS`.
 
 ### Round two: her colours (red, black and white)
 
@@ -139,26 +168,29 @@ and the switch are no longer built.
 
 ## Film and stills
 
-**No video file exists in this demo.** There are four film slots, `f1`–`f4`
-(`FILMS` in `site.mjs`), placed among the photographs in every site. Until a
-clip exists, each slot renders as a marked plate in its site's style ("Film 01
-· A bridal reel plays here · Slot · clip to come"). There is:
+**Her real clips play in every site** (2026-11-19). The founder's media pack holds 14 silent clips of
+her work from her public TikTok (the last ~12 s of each post, 576×1024), processed by
+`python3 -I scripts/amairanymua-01-media.py <media-folder>` into `assets/film/<name>.mp4` + poster
+(H.264, silent, faststart). They are `FILMS` f1–f14 in `site.mjs`. f1–f4 kept their ids, so sites 1–6
+switched from marked slots to real film with no change of their own (checked in a browser on every
+site; Rouge republished). The same script makes 13 stills from the clips and her director's-chair
+portrait (on white and as a cut-out) from her own About graphic.
 
-- no looped or animated photograph presented as film;
-- no Instagram embed;
-- no stock footage.
+- **Credits:** her captions credit the hair on the copper look to @.artistic.aestheticss (f2 and the
+  still `reel-copper`) and name Alejandro Lopez on the pink looks (f10, f11, `reel-pink`). Those are
+  always captioned "Makeup by Amairany · …". f14 is the same copper look in a post with no caption,
+  so the credit is carried over: **confirm with her.**
+- **Burned-in captions:** f1 ("The Art"), f3, f4 ("POV: …") and f11 carry her own on-screen text; the
+  sites keep them away from headlines.
+- **Transformations:** several clips open on the "before" (glasses, no makeup). The round-three sites
+  start those at the finished look and loop there.
+- **Numbers:** `SOCIAL` (TikTok 178.1K followers, 3.9M likes; pinned posts 1.6M, 1.5M, 1.1M views)
+  as read in the media pack on 2026-11-19, dated wherever shown.
+- **Preview files** carry each clip whole at 360 wide (crf 34) and turn it into an in-memory blob
+  inside the file, because iPhone Safari is unreliable with `data:` video. That conversion was
+  tested in Chromium only.
 
-To fill a slot from a screen recording of one of her reels:
-
-    python3 scripts/amairanymua-01-film.py <recording> --probe
-    python3 scripts/amairanymua-01-film.py <recording> bridal --start 2.4 --dur 5 --crop 0:210:1179:2096 --poster-at 1.2
-
-Then set `file: 'bridal'` and an `alt` on the slot in `site.mjs`, rebuild, and
-republish Rouge. Every place that uses the slot then plays the clip: muted,
-looping, inline, poster first, and still under reduced motion and Save-Data.
-
-**The script has been run only on a synthetic test recording.** No site's
-"clip present" path has been exercised with a real clip.
+A film with `file: null` still renders as a marked slot; none is left.
 
 ## Booking: her system, exactly as published
 
@@ -260,6 +292,7 @@ information for this demo. The originals are not in the repository.
 | --- | --- |
 | `artist-brushes` | the About portrait. Founder: "this is her" |
 | `artist-spotlight-crop` | Founder: "this is her". The full frame's prop reads "The Nail Times", so only a head-and-shoulders crop is used. **Confirm with her.** |
+| `reel-*` (13), `artist-chair`, `artist-chair-cut` | round three: frames from her own clips (576 wide, never shown wider than ~600 CSS px) and her director's-chair portrait from her About graphic |
 | `bride-crystal`, `bride-pearls`, `bride-gold-waves`, `bride-ruby`, `glam-sculpt`, `waves-blonde`, `glam-bronze` | heroes and portfolios |
 | `wedding-florals`, `golden-hour`, `wedding-night` | wedding-day groups. `wedding-night` shows a theme-park castle; it is her call whether it stays |
 
@@ -334,4 +367,8 @@ phone is unproven.
 5. Which reviews can be quoted.
 6. Which inquiry questions are required, and whether inquiries should keep
    finishing on your JotForm.
-7. That the prices and "now booking 2026 &amp; 2027" are current.
+7. That the prices and "now booking 2026 &amp; 2027" are current. Her booking page shows The Luxe Gala
+   at $3,500 and Glam Hair at $1,200, but her price-sheet graphic says $3,300 and $1,500; the sites show
+   the price-sheet numbers.
+8. That the hair credits are right (f14 especially), and that each client in a clip is happy to appear
+   on a website.
