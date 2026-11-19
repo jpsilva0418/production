@@ -78,17 +78,24 @@
       }
     }
 
+    /* The denser the screen, the taller the picture it needs. */
+    function best(p) { return p.hi && (window.devicePixelRatio || 1) * stage.clientHeight > 1050 ? p.hi : p.src; }
+
     function tick() {
       timer = null;
       if (!wanted || !onScreen || shots.length < 2) return;
       var fast = burst > 0;
       var sh = shots[beat % shots.length];
-      if (fast && sh.film) { beat++; sh = shots[beat % shots.length]; } /* the quick cuts are stills only */
+      /* phones show one full-screen picture: only the beats tall enough to stay sharp */
+      if (!wide.matches) {
+        for (var guard = 0; !sh.phone && guard < shots.length; guard++) { beat++; sh = shots[beat % shots.length]; }
+      }
       stage.classList.toggle('is-fast', fast);
-      put(cols.c, sh.src, sh.pos, sh.film, fast);
-      if (wide.matches && sh.l && sh.r) {
-        setTimeout(function () { put(cols.l, sh.l[0], sh.l[1], null, fast); }, fast ? 0 : 260);
-        setTimeout(function () { put(cols.r, sh.r[0], sh.r[1], null, fast); }, fast ? 0 : 520);
+      put(cols.c, best(sh.c), sh.c.pos, null, fast);
+      if (wide.matches) {
+        /* the side columns: a film clip plays here, never full-bleed */
+        setTimeout(function () { put(cols.l, best(sh.l), sh.l.pos, sh.l.film, fast); }, fast ? 0 : 260);
+        setTimeout(function () { put(cols.r, best(sh.r), sh.r.pos, sh.r.film, fast); }, fast ? 0 : 520);
       }
       if (tagEl) {
         if (sh.label) tagEl.textContent = sh.label;
@@ -96,7 +103,7 @@
       }
       beat++;
       if (burst) burst--;
-      timer = setTimeout(tick, fast ? 250 : (sh.film ? 2500 : 1900));
+      timer = setTimeout(tick, fast ? 250 : 2100);
     }
 
     function sync() {

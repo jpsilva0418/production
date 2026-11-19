@@ -49,7 +49,24 @@ LOOKS = {
     "sweet16-crown": (BOOKSY, "sweet16-crown.jpeg", (0.0, 0.0, 1.0, 1.0)),
     "prom-lilac": (BOOKSY, "prom-lilac.jpeg", (0.0, 0.0, 1.0, 1.0)),
     "studio-station": (BOOKSY, "studio-station.jpeg", (0.0, 0.0, 1.0, 1.0)),
+    "hair-bride-back": (BOOKSY, "hair-bride-back.jpeg", (0.0, 0.0, 1.0, 1.0)),       # hero only
 }
+HERO_ONLY = {"hair-bride-back"}
+
+# Tall crops for the full-bleed hero, cut from the source at its own resolution.
+# The hero fills a tall box; drawing a square derivative into it enlarges the
+# picture to the box height (about 2.75x on a 3x phone with an 800px square).
+# These keep the full height of the source and only trim the sides, centred on
+# the face, so a 2340px source fills a phone at 1:1. Two sizes: 1000px tall for
+# ordinary screens, and the source's own height (up to 1800px) for dense ones.
+# name -> horizontal centre of the face, as a fraction of the cropped picture
+TALL = {
+    "glam-teal": 0.48, "bridal-profile": 0.56, "soft-comb": 0.34, "look-10": 0.50, "look-09": 0.55,
+    "hair-black-waves": 0.42, "soft-hairpiece": 0.52, "bridal-ring": 0.58, "look-12": 0.64, "prom-lilac": 0.50,
+    "hair-long-waves": 0.55, "hair-vine": 0.44, "look-11": 0.36, "bridal-bouquet": 0.50, "look-02": 0.56,
+    "sweet16-crown": 0.50, "glam-bronze": 0.56, "bridal-waves": 0.50, "hair-bride-back": 0.45, "studio-station": 0.40,
+}
+TALL_ASPECT = 0.62  # width / height
 WIDTHS = (480, 800, 1200)
 
 
@@ -71,6 +88,24 @@ def save(im, name):
     return made, im.size
 
 
+def save_tall(im, name, fx):
+    w, h = im.size
+    cw = min(w, round(h * TALL_ASPECT))
+    left = max(0, min(w - cw, round(w * fx - cw / 2)))
+    tall = im.crop((left, 0, left + cw, h))
+    made = []
+    for th in (min(1000, tall.height), min(1800, tall.height)):
+        if th in made or (th > 1000 and th < 1300):
+            continue  # never enlarged; a second size only where the source is genuinely taller
+        made.append(th)
+        tw = round(tall.width * th / tall.height)
+        tall.resize((tw, th), Image.LANCZOS).save(os.path.join(OUT, f"{name}-tall-{th}.webp"), "WEBP", quality=82, method=6)
+    return made, tall.size
+
+
 for name, (folder, f, box) in LOOKS.items():
     im = crop(Image.open(os.path.join(folder, f)).convert("RGB"), box)
-    print(name, *save(im, name))
+    if name not in HERO_ONLY:
+        print(name, *save(im, name))
+    if name in TALL:
+        print(name, "tall", *save_tall(im, name, TALL[name]))

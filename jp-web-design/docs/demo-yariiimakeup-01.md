@@ -20,10 +20,11 @@ the screen, the site is behind it already moving, and the YARIIIMAKEUP line of
 the logo travels up into the header and stays there. Two and a third seconds
 from first paint to the finished page.
 
-What the eye opens onto is the hero: her work in motion. Photographs and two
-short clips dissolve through one full-screen column on phones and three
-columns on wide screens, each with a small title (Glam, Bridal, Hair, Pageant,
-Events, Sweet 16), with the headline and Book Now over it. It makes six quick
+What the eye opens onto is the hero: her work in motion. On phones, ten
+photographs dissolve through one full screen; on wide screens, three columns
+of photographs, with the two short film clips playing in a side column. Each
+picture carries a small title (Glam, Bridal, Hair, Pageant, Sweet 16), with
+the headline and Book Now over it. It makes six quick
 cuts as the eye opens, then settles to a slow dissolve. Stills and film are
 mixed the same way in the gallery: two moving tiles among eighteen
 photographs. Ivory, ink and a restrained gold are the logo's own colours.
@@ -72,17 +73,37 @@ large PNG) is still needed, and "Profesional" is spelled as in her logo.
 ## The films
 
 Two short silent clips, `film/gown.mp4` and `film/mirror.mp4`, cut from one
-9.5-second transformation reel supplied by the founder as a screen recording
-(`scripts/yariiimakeup-01-film.py` documents each cut). They are the film
-beats among the photographs in the hero and the two moving tiles in the
-gallery.
+9.5-second transformation reel supplied by the founder as a screen recording.
+They are the two moving tiles in the gallery and play in a side column of the
+desktop hero. `scripts/yariiimakeup-01-clips.py` makes them, and reproduces
+the committed files byte for byte:
 
-The crop removes the editing app's corner watermark. The reel's bare-faced
-"before" shot is not used anywhere. Whose reel it is and the client's consent
-to appear on a website are Yaribel's to confirm, and her original files would
-look considerably better than a screen recording. More clips would make the
-hero and the gallery richer: Instagram could not be reached from the build
-environment, so the only video is this one reel.
+    python3 -I scripts/yariiimakeup-01-clips.py <reel.mov> public/demo/yariiimakeup-01/assets/film --edgefix
+
+(then move the two `film-*.jpg` posters it writes into `assets/img/`).
+
+**They are soft, and that is the recording, not the encoding.** Measured on
+2026-11-19: the screen recording holds real detail only up to about a
+500-600px-wide picture inside its 1024px frame; in the blue-dress shot her
+face is about 180px wide. Stacking all 36 frames of the shot (aligned to a
+few hundredths of a pixel) removed compression mottle but recovered no detail,
+because the frames are near-copies of one already-compressed picture. Lowering
+the encoder's compression changed nothing visible, and the denoise and deblock
+filters tried either did nothing or ghosted her face. What the clips get is
+one fixed sharpening of brightness only (a difference of Gaussians at source
+resolution; colour is passed through untouched), about a third more edge
+contrast, plus two trims: the shots no longer start or end on frames blurred
+by the reel's own transitions, and a dark strip the crop left down the right
+edge is gone. No AI upscaler or face restorer is used; those repaint faces.
+
+Because of that limit they are never shown full screen: not in the phone
+hero, where the blue-dress shot looked plainly blurry, only small in the
+gallery and in a desktop side column. **Her original video files would fix
+this properly.** A reel downloaded from her own Instagram app, or the camera
+file, holds two to four times the detail of a screen recording.
+
+The reel's bare-faced "before" shot is not used anywhere. Whose reel it is and
+the client's consent to appear on a website are Yaribel's to confirm.
 
 ## What is verified, proposed, and pending
 
@@ -160,6 +181,17 @@ our reading of what each picture shows ("Bridal" only where there is a veil,
 bouquet, ring or wedding-morning robe, or where Booksy ties it to her wedding
 service). Derivatives are produced by `scripts/yariiimakeup-01-assets.py`:
 crop, downscale, re-encode, nothing else.
+
+The hero uses its own tall crops (`*-tall-<height>.webp`), cut from each
+source at the source's own resolution and centred on the face. The earlier
+hero drew 800px squares into a tall box, which enlarged them about 2.75x on a
+3x phone and was the main reason it looked soft. Measured after the change
+(390px phone at 3x): the ten phone pictures are enlarged 1.34-1.79x, 1.52x on
+average; on a 1440px laptop they are drawn at or below their own size. Only
+four of her photographs (about 2300px tall) fill a phone at better than 1.4x;
+the rest of the Booksy photographs are 1000-1440px and are kept to the gallery
+and the desktop side columns. Larger originals from her would sharpen the
+hero further.
 
 ## Booking
 
