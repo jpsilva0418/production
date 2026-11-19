@@ -251,7 +251,8 @@ const bookPoints = [PATHS[1].points[2], 'Brides & events', SITE.area];
   /* ===== mobile progress bar + desktop chapter rail ===== */
   .c7-prog{position:fixed;top:0;left:0;right:0;height:2px;z-index:72;background:var(--moss);transform:scaleX(0);transform-origin:left;pointer-events:none;display:none}
   .c7-rail{position:fixed;left:clamp(14px,2vw,28px);top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:0;color:var(--ink);opacity:0;transition:opacity .5s ease}
-  .c7-rail.on{opacity:1}
+  .c7-rail.on,.c7-rail:focus-within{opacity:1}
+  .c7-rail:focus-within{pointer-events:auto}
   .c7-rail:not(.on){pointer-events:none}
   .c7-rail[data-tone="film"],.c7-rail[data-tone="dark"]{color:var(--ivory)}
   .c7-rail a{display:flex;align-items:center;gap:.8rem;min-height:44px;color:inherit;font-family:var(--utility);font-weight:600;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase}
@@ -358,8 +359,8 @@ const bookPoints = [PATHS[1].points[2], 'Brides & events', SITE.area];
     .c7-pn{flex:none}
     .c7-ctl{display:none}
     .c7-trk.fade{opacity:1;transform:none}
-    .c7-trk.fade .c7-pn{opacity:0;transform:translateY(28px);transition:opacity .7s ease calc(var(--i) * .08s),transform .95s var(--ease) calc(var(--i) * .08s),box-shadow .45s var(--ease),border-color .45s var(--ease)}
-    .c7-trk.fade.in .c7-pn{opacity:1;transform:none}
+    :global(.js) .c7-trk.fade .c7-pn{opacity:0;transform:translateY(28px);transition:opacity .7s ease calc(var(--i) * .08s),transform .95s var(--ease) calc(var(--i) * .08s),box-shadow .45s var(--ease),border-color .45s var(--ease)}
+    :global(.js) .c7-trk.fade.in .c7-pn{opacity:1;transform:none}
   }
 
   /* ===== III · services ===== */

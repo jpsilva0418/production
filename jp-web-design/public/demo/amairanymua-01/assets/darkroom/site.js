@@ -90,7 +90,7 @@
          print comes near; it develops once it is on screen and its stages are ready (or after a
          short wait without them: then simply paper -> photograph). Never under reduced motion. ---- */
   var prints = $$('.pr--dv').filter(function (p) { return !p.hasAttribute('data-dv-manual'); });
-  var finish = function (p) { p.classList.add('in'); setTimeout(function () { p.classList.add('dv-done'); }, 2300); };
+  var finish = function (p) { p.classList.add('in'); setTimeout(function () { p.classList.add('dv-done'); }, 1700); };
   if (reduced || !hasIO) prints.forEach(function (p) { p.classList.add('in', 'dv-done'); });
   else {
     var load = function (p) {

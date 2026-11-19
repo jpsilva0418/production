@@ -23,10 +23,10 @@
   --line-paper:rgba(42,38,38,.16);/* hairlines on paper */
   --glow:rgba(215,38,61,.34);   /* the safelight's light on the walls */
   --glow-soft:rgba(215,38,61,.14);
-  --wash:rgba(215,38,61,.55);   /* the safelight on wet paper (transitions only) */
+  --wash:rgba(196,22,40,.86);   /* the safelight on wet paper (transitions only) */
   --shadow:rgba(8,4,4,.42);     /* a print's shadow */
   --shadow-soft:rgba(8,4,4,.18);
-  --sheen:rgba(255,255,255,.55);/* liquid shimmer on paper (transitions only) */
+  --sheen:rgba(255,236,236,.42);/* liquid shimmer on paper (transitions only) */
   --scrim:rgba(14,11,11,.86);   /* the header over the page */
   --grain:url(grain.webp);      /* tiled noise over dark grounds */
 
@@ -95,7 +95,7 @@ ul,ol{padding:0;list-style:none}
 .kick-m{color:var(--safelight-lit);letter-spacing:.06em}
 .band--paper .kick,.on-paper .kick{color:var(--fixer-dim)}
 .band--paper .kick-m,.on-paper .kick-m{color:var(--safelight-deep)}
-.gp{display:inline-block;font:700 1.55rem/1 var(--f-hand);color:var(--safelight-lit);transform:rotate(var(--rot,-4deg));letter-spacing:.005em}
+.gp{display:inline-block;font:700 1.55rem/1 var(--f-hand);color:var(--safelight-lit);transform:rotate(var(--rot,-4deg));letter-spacing:.005em;text-transform:none}
 .band--paper .gp,.on-paper .gp,.pr .gp{color:var(--safelight)}
 .gp--lg{font-size:clamp(2rem,3.6vw,2.9rem)}
 .gp--sm{font-size:1.25rem}
@@ -154,9 +154,9 @@ html.js .rv-w.in .mk,html.js .rv-w.in.gp,html.js .rv-w.in>.gp{clip-path:inset(-2
 html.js .pr--dv .dv{display:block;position:absolute;inset:0;pointer-events:none}
 .dv i{position:absolute;inset:0;background-size:cover;background-position:var(--pos,50% 50%);background-repeat:no-repeat}
 .dv-p{background:var(--paper)}
-html.js .pr--dv.in .dv-p{opacity:0;transition:opacity .75s var(--e-dev) .05s}
-html.js .pr--dv.in .dv-l{opacity:0;transition:opacity .75s var(--e-dev) .62s}
-html.js .pr--dv.in .dv-m{opacity:0;transition:opacity .85s var(--e-dev) 1.18s}
+html.js .pr--dv.in .dv-p{opacity:0;transition:opacity .55s var(--e-dev) .05s}
+html.js .pr--dv.in .dv-l{opacity:0;transition:opacity .55s var(--e-dev) .48s}
+html.js .pr--dv.in .dv-m{opacity:0;transition:opacity .6s var(--e-dev) .9s}
 html.js .pr--dv.dv-done .dv{display:none}
 @media (prefers-reduced-motion:reduce){
   html.js .rv,html.js .rv-w .mk,html.js .rv-w.gp,html.js .rv-w>.gp{opacity:1;transform:none;clip-path:none;transition:none}
@@ -311,12 +311,13 @@ html.js .ln-i{animation:sway 6s ease-in-out calc(var(--i) * -1.7s) infinite alte
 @media(min-width:1180px){.hd-ev{display:inline-flex}}
 
 /* the wordmark: "Glam By" in grease pencil over "AMAIRANYMUA" in Syne */
-.wm{display:inline-grid;justify-items:start;line-height:1}
-.wm-s{width:62px;height:auto;aspect-ratio:2771/920;fill:var(--safelight);margin:0 0 -5px 2px;transform:rotate(-4deg);overflow:visible}
-.wm-c{font:800 1.02rem/1 var(--f-display);letter-spacing:.04em}
-.wm--xl .wm-s{width:clamp(110px,16vw,210px);margin:0 0 -.12em .04em}
-.wm--xl .wm-c{font-size:clamp(2.4rem,10.4vw,9.4rem);letter-spacing:-.02em}
-@media(min-width:1024px){.hd .wm-s{width:70px}.hd .wm-c{font-size:1.12rem}}
+.wm{display:inline-grid;justify-items:start;line-height:1;font-size:clamp(.68rem,calc((100vw - 186px) / 13.4),1.02rem)}
+.wm-s{width:3.9em;height:auto;aspect-ratio:2771/920;fill:var(--safelight);margin:0 0 -.06em .12em;transform:rotate(-4deg);overflow:visible}
+.wm-c{font:800 1em/1 var(--f-display);letter-spacing:.04em}
+.wm--xl{font-size:calc((min(100vw,1376px) - 2 * var(--gut)) / 13.2)}
+.wm--xl .wm-s{width:max(96px,1.7em);margin:0 0 -.04em .04em}
+.wm--xl .wm-c{letter-spacing:-.02em}
+@media(min-width:1024px){.hd .wm,.menu .wm{font-size:1.12rem}}
 
 /* ---------- the menu ---------- */
 .menu{position:fixed;inset:0;z-index:100;background:var(--room);color:var(--ink);overflow-y:auto;overscroll-behavior:contain;visibility:hidden;opacity:0;clip-path:inset(0 0 100% 0);transition:clip-path .6s cubic-bezier(.7,0,.2,1),opacity .3s,visibility 0s .6s;isolation:isolate}

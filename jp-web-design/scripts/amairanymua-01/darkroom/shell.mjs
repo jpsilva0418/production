@@ -94,12 +94,14 @@ export const devLayers = (key, w = 800) => (DEV_KEYS.includes(key)
  *    note:  grease-pencil words on the bottom border (gives the print a deeper bottom margin)
  *    tilt:  resting rotation in degrees (e.g. -2); 0 is square
  *    cap:   a mono caption under the print (true information only)
- *    stage: develop-stage width, 800 (default) or 480 for small prints */
+ *    stage: develop-stage width, 800 (default) or 480 for small prints
+ *    dev:   true (develops on scroll, site.js) | false (a plain print) | 'manual' (carries the
+ *           develop layers, hidden, for a page script to drive: add .is-dev to show them) */
 export const print = (key, { shape = 'port', alt, sizes = '(max-width:759px) 86vw, 40vw', eager = false, pos, n = '', note: nt = '', tilt = 0, cls = '', dev = true, cap = '', stage = 800, attrs = '' } = {}) => {
   const p = PHOTOS[key];
   if (!p) throw new Error(`photo "${key}" is not in PHOTOS`);
   const ratio = shape === 'nat' ? ` style="--pos:${pos ?? p.pos};aspect-ratio:${p.w}/${p.h}"` : ` style="--pos:${pos ?? p.pos}"`;
-  return `<figure class="pr pr--${shape}${dev ? ' pr--dv' : ''}${nt ? ' pr--noted' : ''}${cls ? ` ${cls}` : ''}" style="--tilt:${tilt}deg"${attrs ? ` ${attrs}` : ''}>
+  return `<figure class="pr pr--${shape}${dev === 'manual' ? ' pr--dvm' : dev ? ' pr--dv' : ''}${nt ? ' pr--noted' : ''}${cls ? ` ${cls}` : ''}" style="--tilt:${tilt}deg"${attrs ? ` ${attrs}` : ''}>
 <span class="pr-im"${ratio}>${pic(key, { alt, sizes, eager, pos })}${dev ? devLayers(key, stage) : ''}</span>
 ${n || nt ? `<span class="pr-b" aria-hidden="true">${nt ? `<span class="pr-note">${nt}</span>` : ''}${n ? `<span class="pr-n">&#9656; ${n}</span>` : ''}</span>` : ''}${cap ? `<figcaption class="pr-cap">${cap}</figcaption>` : ''}</figure>`;
 };
@@ -111,16 +113,19 @@ export const strip = (id, { n = '', label = '', cls = '', cap = '' } = {}) =>
   `<figure class="strip${cls ? ` ${cls}` : ''}"><span class="strip-e strip-e--l" aria-hidden="true">AMAIRANY 400${n ? ` &#9656; ${n}` : ''}</span>${film(id, { label })}<span class="strip-e strip-e--r" aria-hidden="true">&#9656; ${String(n || '').replace(/A$/, '')}A</span>${cap ? `<figcaption class="pr-cap">${cap}</figcaption>` : ''}</figure>`;
 
 /** A contact sheet: a tight grid of frames on black film, each with its frame number.
- *  items: [{ photo, n?, alt? } | { film, n? }]; buttons: render each frame as a <button> with
- *  data-i (for a viewer you wire yourself) instead of a <figure>; cols: columns at the widest. */
+ *  items: [{ photo, n?, alt?, cap?, pick? } | { film, n? }]; pick: a grease-pencil tick on that frame.
+ *  buttons: render each frame as a <button> (data-i, data-photo, aria-pressed, a hidden red ring
+ *  that draws itself when aria-pressed="true") for a viewer you wire yourself; its accessible name
+ *  is "Frame <n>: <cap or the photo's alt>". cols: columns from 760px up (5 below). */
 export const sheet = (items, { buttons = false, cols = 5, cls = '', sizes = '(max-width:759px) 22vw, 12vw', label = 'Contact sheet' } = {}) => `<div class="sheet${cls ? ` ${cls}` : ''}" style="--cols:${cols}"${buttons ? ` role="group" aria-label="${esc(label)}"` : ''}>
 ${items.map((it, i) => {
   const n = it.n ?? `${i + 1}A`;
   if (it.film) return `<figure class="sh-f sh-f--film">${film(it.film, { label: '' })}<span class="sh-n" aria-hidden="true">${n}</span></figure>`;
-  const img = pic(it.photo, { alt: it.alt, sizes });
+  const img = `<span class="sh-im">${pic(it.photo, { alt: buttons ? '' : it.alt, sizes })}</span>`;
+  const marks = `${it.pick ? tick('sh-tick') : ''}${buttons ? mark(RING_D, '0 0 100 60', 'mk-ring sh-ring') : ''}`;
   return buttons
-    ? `<button class="sh-f" type="button" data-i="${i}" data-photo="${it.photo}" aria-pressed="false" aria-label="Frame ${n}: ${esc(it.cap ?? PHOTOS[it.photo].alt)}">${img}<span class="sh-n" aria-hidden="true">${n}</span></button>`
-    : `<figure class="sh-f">${img}<span class="sh-n" aria-hidden="true">${n}</span></figure>`;
+    ? `<button class="sh-f" type="button" data-i="${i}" data-photo="${it.photo}" data-alt="${esc(PHOTOS[it.photo].alt)}" aria-pressed="false" aria-label="Frame ${n}: ${esc(it.cap ?? PHOTOS[it.photo].alt)}">${img}<span class="sh-n" aria-hidden="true">${n}</span>${marks}</button>`
+    : `<figure class="sh-f">${img}<span class="sh-n" aria-hidden="true">${n}</span>${marks}</figure>`;
 }).join('\n')}
 </div>`;
 

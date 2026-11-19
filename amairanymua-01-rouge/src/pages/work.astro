@@ -17,7 +17,7 @@ const count = PORTFOLIO.reduce((n, g) => n + g.items.length, 0);
     <span class="ghost-w" aria-hidden="true">{PORTFOLIO_PAGE.ghost}</span>
     <div class="cov-c">
       <p class="cov-kick fade">{PORTFOLIO_PAGE.kick}</p>
-      <h1 class="disp rv">{PORTFOLIO_PAGE.heading[0]} <span class="ital">{PORTFOLIO_PAGE.heading[1]}</span></h1>
+      <h1 class="disp rv">{PORTFOLIO_PAGE.heading[0]}<br /><span class="ital">{PORTFOLIO_PAGE.heading[1]}</span></h1>
       <p class="cov-sub rv" style="--d:.08s">{PORTFOLIO_PAGE.sub(count)}</p>
       <div class="cov-cta fade" style="--d:.16s">
         <a class="btn btn--solid" href={LINKS.inquiry}>Bridal inquiry</a>

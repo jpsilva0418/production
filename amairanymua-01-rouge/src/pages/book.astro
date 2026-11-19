@@ -18,7 +18,7 @@ const form = inquiryForm('rouge', { primary: 'btn btn--solid', secondary: 'btn b
   inquiry>
   <section class="iq" id="iqSection" aria-label="Book">
     <div class="iq-l ghostwrap">
-      <span class="ghost-w" aria-hidden="true">rouge</span>
+      <span class="ghost-w" aria-hidden="true">gorgeous</span>
       <div class="iq-lc">
         <p class="iq-kick fade">{FINAL.label}</p>
         <h1 class="disp iq-t rv">{FINAL.heading[0]} <span class="ital">{FINAL.heading[1]}</span></h1>
@@ -126,6 +126,7 @@ const form = inquiryForm('rouge', { primary: 'btn btn--solid', secondary: 'btn b
   .cf-check{gap:10px;margin-top:10px;min-height:44px;font-size:.92rem;color:var(--ink-soft)}
   .cf-check input{width:18px;height:18px;accent-color:var(--leaf)}
   .cf-cards{gap:8px}
+  @media(max-width:479px){.cf-cards-3{grid-template-columns:minmax(0,1fr)}}
   .cf-card{gap:10px;min-height:48px;padding:11px 14px;border:1px solid var(--hair-strong);border-radius:var(--r-sm);background:var(--paper);color:var(--ink);font-size:.95rem;cursor:pointer;transition:background .3s var(--ease),color .3s var(--ease),border-color .3s var(--ease)}
   .cf-card:hover{border-color:var(--ink)}
   .cf-card:has(input:checked){background:var(--leaf);border-color:var(--leaf);color:#fff;font-weight:600}

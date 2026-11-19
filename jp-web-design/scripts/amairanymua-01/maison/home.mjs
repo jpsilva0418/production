@@ -7,7 +7,7 @@
    3. The Looks: a runway rail that advances on its own.
    4. The packages, on black.   5. Love Notes, on silk.   6. The Journal.   7. The red band. */
 import { page, S, M, lockup, kicker, h, note, ruled, bookingLine, spec, actions, more, frame, filmFrame, section, rail, wipe, wipeControls, packageCard, loveNotes, closing, arrow } from './shell.mjs';
-import { SITE, HER, PATHS, LOOKS, HERO, href, inquire, book, src, srcset, L } from '../site.mjs';
+import { SITE, HER, PATHS, LOOKS, HERO, REVIEWS, href, inquire, book, src, srcset } from '../site.mjs';
 
 /* the hero's looks: her portraits only (faces), in the montage order */
 const HERO_LOOKS = [
@@ -35,10 +35,12 @@ const hero = () => `<section class="hero" aria-labelledby="heroH">
 <div class="hero-fm">${filmFrame('f1', { shape: '', label: 'Bridal', rv: '' })}</div>
 <div class="hero-txt">
 <p class="kick hero-k">${SITE.name} &middot; ${SITE.tagline} &middot; ${SITE.area}</p>
+<div class="hero-mid">
 <h1 class="d-hero" id="heroH"><span class="hl"><span>Soft-full glam.</span></span> <span class="hl hl--in"><span>Cake free.</span></span></h1>
 <p class="hero-line">${HERO.line}</p>
 ${bookingLine('hero-book')}
 ${actions({ tone: 'light', cls: 'hero-acts' })}
+</div>
 ${wipeControls({ id: 'heroWipe', n: HERO_LOOKS.length, cap: HERO_LOOKS[0][1] })}
 </div>
 </div>
@@ -108,7 +110,7 @@ const packages = () => {
 
 /* 5 — Love Notes */
 const love = () => section({ id: 'love', tone: 'silk', cls: 'love', labelledby: 'loveH' }, `
-<div class="love-hd">${kicker(HER.links.reviewsName, 'rv')}${h(2, ['Five stars,', 'in their words.'], 'd-l rv-mask', 'id="loveH"')}<p class="lede rv" style="--d:.1s">Her reviews live where her clients wrote them. One tap opens each one in full.</p></div>
+<div class="love-hd"><div>${kicker(HER.links.reviewsName, 'rv')}${h(2, REVIEWS.heading, 'd-l rv-mask', 'id="loveH"')}</div><p class="lede rv" style="--d:.1s">Her reviews live where her clients wrote them. One tap opens each one in full.</p></div>
 ${loveNotes()}`);
 
 /* 6 — Journal */

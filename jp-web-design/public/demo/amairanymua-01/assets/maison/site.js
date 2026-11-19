@@ -182,8 +182,11 @@
     var start = function () { if (started) return; started = true; if (doc.readyState === 'complete') loadAll(); else win.addEventListener('load', loadAll); schedule(); };
     wipes[id] = { start: start };
     /* the home page's opening holds the slideshow until it has handed over */
-    if (root.classList.contains('intro')) doc.addEventListener('maison:introdone', start, { once: true });
-    else start();
+    if (root.classList.contains('intro')) {
+      doc.addEventListener('maison:introdone', start, { once: true });
+      /* and if the opening never ran (its failsafe removed the class), start anyway */
+      var iv = setInterval(function () { if (!root.classList.contains('intro')) { clearInterval(iv); start(); } }, 400);
+    } else start();
   });
 
   /* ---- the runway rail: [data-rail] ----

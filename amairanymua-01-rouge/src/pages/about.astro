@@ -6,7 +6,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Plate from '../components/Plate.astro';
 import Film from '../components/Film.astro';
 import { SITE, LINKS, INTRO, ABOUT, FILMS } from '../lib/content';
-import { book } from '../consts';
+import { book, HER } from '../consts';
 ---
 <BaseLayout
   title={`About ${SITE.first}`}
@@ -40,9 +40,18 @@ import { book } from '../consts';
       <div class="story">
         <span class="caps-xs story-k rv">{ABOUT.storyKick}</span>
         <p class="drop rv" style="--d:.07s">{ABOUT.story[0]}</p>
-        <p class="rv">{ABOUT.story[1]}</p>
+        <dl class="story-facts rv">
+          {HER.years.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+          <div><dt>Trained at</dt><dd>Aveda Institute</dd></div>
+          <div><dt>Badges</dt><dd set:html={HER.badges.join(' &middot; ')} /></div>
+        </dl>
+        <blockquote class="story-her">
+          <p class="story-hi rv">{HER.hello}</p>
+          {HER.about.map((t) => <p class="rv" set:html={t} />)}
+          <footer class="rv">{SITE.first}, in her own words</footer>
+        </blockquote>
         <div class="story-pull rv"><p set:html={ABOUT.pull} /></div>
-        {ABOUT.story2.map((t: string) => <p class="rv">{t}</p>)}
+        <p class="rv">{ABOUT.story2[1]}</p>
       </div>
     </div>
   </section>
@@ -120,7 +129,15 @@ import { book } from '../consts';
   .story-k{text-align:center;display:block;margin-bottom:clamp(2.4rem,4.5vw,3.6rem)}
   .story p{font-size:clamp(1.12rem,1.5vw,1.26rem);line-height:1.9;color:var(--ink-soft);margin:0}
   .story p+p{margin-top:1.5em}
-  .story .drop::first-letter{font-family:var(--display);float:left;font-size:4.4em;line-height:.8;padding:.06em .12em 0 0;color:var(--leaf);font-variation-settings:'opsz' 144,'SOFT' 50}
+  .story .drop::first-letter{font-family:var(--display);float:left;font-size:4.4em;line-height:.8;padding:.06em .12em 0 0;color:var(--brass);font-variation-settings:'opsz' 144,'SOFT' 50}
+.story-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.2rem 2rem;margin:clamp(2rem,3.6vw,2.8rem) 0;padding:1.4rem 0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+  .story-facts div{display:flex;flex-direction:column-reverse;gap:.2rem}
+  .story-facts dt{font-family:var(--utility);font-weight:600;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--brass)}
+  .story-facts dd{margin:0;font-family:var(--display);font-weight:300;font-size:clamp(1.3rem,2vw,1.7rem);line-height:1.15;color:var(--ink)}
+  .story-her{margin:clamp(2.4rem,4.4vw,3.4rem) 0 0;padding:0 0 0 clamp(1.2rem,2.6vw,2rem);border-left:2px solid var(--rouge)}
+  .story-her p{color:var(--ink)!important}
+  .story-hi{font-family:var(--script);font-size:clamp(2.4rem,4vw,3.4rem)!important;line-height:1.05!important;color:var(--brass)!important;margin-bottom:.4em!important}
+  .story-her footer{margin-top:1.2rem;font-family:var(--utility);font-weight:600;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft)}
   .story-pull{margin:clamp(2.8rem,5vw,4rem) 0;padding:clamp(1.8rem,3.4vw,2.6rem) 0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);text-align:center}
   .story-pull p{font-family:var(--display);font-style:italic;font-size:clamp(1.4rem,2.3vw,1.9rem);line-height:1.5;color:var(--leaf);max-width:20em;margin-inline:auto;font-variation-settings:'opsz' 72,'SOFT' 60}
   .story-pull+p{margin-top:0}

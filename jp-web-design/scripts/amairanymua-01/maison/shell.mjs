@@ -169,7 +169,7 @@ function header(path, draw) {
 <nav class="hd-nav" aria-label="Primary">${primary.map((n) => `<a href="${href(S, n.path)}"${cur(path, n.path)}>${n.label}</a>`).join('')}</nav>
 <div class="hd-tools">
 ${book('event', 'Book event', 'hd-ev')}
-${inquire(S, 'Bridal inquiry', 'btn btn--pri btn--sm hd-cta', path === 'bridal-inquiry' ? 'aria-current="page"' : '')}
+${inquire(S, '<span class="hd-cta-b">Bridal </span>inquiry', 'btn btn--pri btn--sm hd-cta', path === 'bridal-inquiry' ? 'aria-current="page"' : '')}
 <button class="menu-btn" id="menuOpen" type="button" aria-expanded="false" aria-controls="menu"><span class="menu-btn-t">Menu</span><span class="bars" aria-hidden="true"><i></i><i></i></span></button>
 </div>
 </div>
