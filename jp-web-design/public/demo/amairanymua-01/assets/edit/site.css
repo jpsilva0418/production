@@ -18,6 +18,8 @@
   --cream-line:rgba(255,247,238,.34);
   --shade:rgba(43,37,35,.18);
   --white:#FFFFFF;
+  --hover:rgba(43,37,35,.07);
+  --press:rgba(43,37,35,.12);
 
   --f-display:"Bricolage",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --f-body:"Bricolage",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
@@ -112,19 +114,31 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:12px 24px;border-radius:999px;border:1.5px solid var(--charcoal);font:600 16px/1.1 var(--f-body);letter-spacing:.005em;text-decoration:none;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .25s var(--ease),background-color .25s,color .25s,border-color .25s}
 .btn:active{transform:scale(.97)}
 .btn--solid{background:var(--charcoal);color:var(--cream)}
-.btn--solid:hover{background:var(--charcoal-soft);border-color:var(--charcoal-soft)}
 .btn--line{background:transparent;color:var(--charcoal)}
-.btn--line:hover{background:var(--charcoal);color:var(--cream)}
 .btn--cream{background:var(--cream);color:var(--charcoal);border-color:var(--cream)}
-.btn--cream:hover{background:var(--peach);border-color:var(--peach)}
 .btn--line-cream{background:transparent;color:var(--cream);border-color:var(--cream-line)}
-.btn--line-cream:hover{border-color:var(--cream)}
 .btn--sm{min-height:44px;padding:10px 18px;font-size:15px}
 .btn .arr,.arr{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:500}
 .lnk{display:inline-flex;align-items:center;gap:6px;min-height:44px;font-weight:600;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:5px;text-decoration-color:var(--line-strong);transition:text-decoration-color .2s}
-.lnk:hover{text-decoration-color:var(--lip)}
 .lnk--hot{text-decoration-color:var(--lip);text-decoration-thickness:2px}
 .f-char .lnk{text-decoration-color:var(--cream-line)}
+/* hover lives only where there is a real pointer: a touch screen keeps :hover after a tap,
+   which left tapped buttons looking lit. Touch gets the pressed state (:active) instead. */
+@media(hover:hover){
+  .btn--solid:hover{background:var(--charcoal-soft);border-color:var(--charcoal-soft)}
+  .btn--line:hover{background:var(--charcoal);color:var(--cream)}
+  .btn--cream:hover{background:var(--peach);border-color:var(--peach)}
+  .btn--line-cream:hover{border-color:var(--cream)}
+  .lnk:hover{text-decoration-color:var(--lip)}
+  .hd-nav a:hover{background:var(--hover)}
+  .hd-menu:hover{background:var(--hover)}
+  .menu-list a:hover .menu-l{color:var(--charcoal-soft)}
+  .ft-col a:hover{text-decoration:underline;text-underline-offset:4px}
+}
+.btn--line:active,.hd-menu:active,.hd-nav a:active{background:var(--press)}
+.btn--line-cream:active{border-color:var(--cream)}
+.btn--solid:active{background:var(--charcoal-soft);border-color:var(--charcoal-soft)}
+.btn--cream:active{background:var(--peach);border-color:var(--peach)}
 
 /* ---------------------------------------------------------------- prints (photo cards) */
 .print{position:relative;margin:0}
@@ -169,13 +183,11 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .hd-logo{display:inline-flex;align-items:center;min-height:44px;text-decoration:none;color:var(--charcoal);margin-right:auto;border-radius:8px}
 .hd-nav{display:none;gap:4px}
 .hd-nav a{display:inline-flex;align-items:center;min-height:40px;padding:8px 14px;border-radius:999px;font:600 15px/1 var(--f-body);text-decoration:none;color:var(--charcoal);transition:background-color .2s}
-.hd-nav a:hover{background:rgba(43,37,35,.07)}
 .hd-nav a[aria-current="page"]{background:var(--charcoal);color:var(--cream)}
 .hd-tools{display:flex;align-items:center;gap:8px}
 .hd-cta{padding-inline:16px}
 .hd-cta[aria-current="page"]{background:var(--charcoal-soft)}
 .hd-menu{display:inline-flex;align-items:center;gap:10px;min-height:44px;min-width:44px;padding:8px 14px;border-radius:999px;border:1.5px solid var(--charcoal);font:600 15px/1 var(--f-body);color:var(--charcoal);background:transparent;transition:background-color .2s}
-.hd-menu:hover{background:rgba(43,37,35,.07)}
 .hd-menu-i{display:grid;gap:4px;width:16px}
 .hd-menu-i i{display:block;height:2px;border-radius:2px;background:currentColor}
 .hd-menu-i i+i{width:10px;justify-self:end}
@@ -183,12 +195,14 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 @media(min-width:1120px){.hd-nav{display:flex}}
 
 /* the wordmark */
-.wm{display:inline-grid;grid-template-columns:auto auto;align-items:baseline;justify-items:start;font-family:var(--f-display);font-weight:800;font-stretch:76%;line-height:.82;letter-spacing:-.01em;text-transform:uppercase;color:inherit;column-gap:.14em;white-space:nowrap}
+.wm{display:inline-grid;grid-template-columns:auto auto;align-items:baseline;justify-items:start;font-family:var(--f-display);font-weight:800;font-stretch:76%;line-height:.82;letter-spacing:-.01em;text-transform:uppercase;color:inherit;column-gap:.1em;white-space:nowrap}
 .wm-a{grid-column:1 / -1}
 .wm-b{grid-column:1}
-.wm-c{grid-column:2;align-self:end;display:grid;font-family:var(--f-italic);font-style:italic;font-weight:400;font-stretch:normal;text-transform:none;letter-spacing:0;font-size:.44em;line-height:.96;padding-bottom:.02em}
-.wm--hd{font-size:19px}
-@media(min-width:768px){.wm--hd{font-size:21px}}
+.wm-c{grid-column:2;align-self:end;display:grid;font-family:var(--f-italic);font-style:italic;font-weight:400;font-stretch:normal;text-transform:none;letter-spacing:0;font-size:.46em;line-height:.88;padding-bottom:.02em}
+/* the header lockup is sized so its italic "hair + makeup" stays readable (10.6-12.4px), not a smudge */
+.wm--hd{font-size:23px}
+@media(min-width:375px){.wm--hd{font-size:25px}}
+@media(min-width:768px){.wm--hd{font-size:27px}}
 
 /* ---------------------------------------------------------------- menu */
 .menu{position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top) + 10px) max(var(--gut),env(safe-area-inset-right)) calc(env(safe-area-inset-bottom) + 64px) max(var(--gut),env(safe-area-inset-left));overflow-y:auto;overscroll-behavior:contain;visibility:hidden;opacity:0;clip-path:inset(0 0 100% 0 round 0 0 40px 40px);transition:clip-path .55s var(--ease-io),opacity .3s,visibility 0s .55s}
@@ -205,7 +219,6 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .menu-l{font:800 max(32px,min(9.4vw,7.6vh,84px))/.98 var(--f-display);font-stretch:80%;letter-spacing:-.03em}
 .menu-n{font:italic 400 clamp(15px,1.6vw,20px)/1.2 var(--f-italic);color:var(--charcoal-soft);text-align:right}
 .menu-list a[aria-current="page"] .menu-l{font-family:var(--f-italic);font-style:italic;font-weight:380;font-stretch:normal;letter-spacing:-.02em}
-.menu-list a:hover .menu-l{color:var(--charcoal-soft)}
 .menu-foot{display:grid;gap:18px;width:100%;max-width:var(--max);margin-inline:auto}
 .menu-sub{display:flex;flex-wrap:wrap;gap:4px 20px;font-weight:600;font-size:15px}
 .menu-sub a{display:inline-flex;align-items:center;min-height:44px;text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--line-strong)}
@@ -261,7 +274,6 @@ html.js .tick.paused .tick-track{animation-play-state:paused}
 .ft-h{font:italic 400 18px/1.2 var(--f-italic);color:var(--peach);margin-bottom:10px}
 .ft-col ul{display:grid}
 .ft-col a,.ft-k{display:inline-flex;align-items:center;min-height:40px;font-size:16px;font-weight:500;text-decoration:none}
-.ft-col a:hover{text-decoration:underline;text-underline-offset:4px}
 .ft-mail{overflow-wrap:anywhere}
 .ft-k{opacity:.8}
 .ft-fine{margin-top:clamp(36px,5vw,56px);padding-top:22px;border-top:1.5px solid var(--cream-line);font-size:13px;line-height:1.6;opacity:.72;max-width:60rem}

@@ -22,12 +22,15 @@ const BEATS = [{ photo: LEAD, label: 'Soft glam' }, ...MONTAGE.filter((b) => b.p
 const decide = `<script>(function(h){var p=false,k='am01-intro-veil',m=/[?&]intro=([01])/.exec(location.search);try{if(m)p=m[1]==='1';else{var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,sd=navigator.connection&&navigator.connection.saveData,seen=false;try{seen=!!sessionStorage.getItem(k)}catch(e){}p=!rm&&!sd&&!seen}}catch(e){p=false}if(!p)return;h.classList.add('intro');window.__veilT0=(window.performance&&performance.now)?performance.now():0;try{sessionStorage.setItem(k,'1')}catch(e){}setTimeout(function(){if(!window.__veilOp)h.classList.remove('intro')},2500)})(document.documentElement)</script>`;
 
 /* The veil: three layers of tulle, the monogram on the front one. Pure CSS paints it; the
-   specular light is a band moving inside the monogram's own outline. */
+   specular light is a band moving inside the monogram's own outline. Each layer is a body
+   (a plain rectangle) and a hem (a short strip carrying the arched, masked lower edge), so only
+   the hem needs a mask: a fraction of the compositing a full-height masked layer costs on a
+   wide screen. */
 const opening = () => `${decide}
 <div class="op" aria-hidden="true">
-  <div class="op-l op-l3"><i class="op-folds"></i></div>
-  <div class="op-l op-l2"><i class="op-folds"></i></div>
-  <div class="op-l op-l1"><i class="op-folds"></i>
+  <div class="op-l op-l3"><i class="op-b"><i class="op-folds"></i></i><i class="op-h"></i></div>
+  <div class="op-l op-l2"><i class="op-b"><i class="op-folds"></i></i><i class="op-h"></i></div>
+  <div class="op-l op-l1"><i class="op-b"><i class="op-folds"></i></i><i class="op-h"></i>
     <div class="op-mark">
       <svg class="op-mono" viewBox="${MONO_VB}" focusable="false"><defs><clipPath id="op-clip"><path d="${MONO_D}"/></clipPath><linearGradient id="op-glint-g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFFDFA" stop-opacity="0"/><stop offset=".5" stop-color="#FFFDFA" stop-opacity=".95"/><stop offset="1" stop-color="#FFFDFA" stop-opacity="0"/></linearGradient></defs><use href="#vl-as" fill="url(#vl-foil)"/><g clip-path="url(#op-clip)"><g transform="skewX(-16)"><rect class="op-glint" x="-420" y="0" width="300" height="720" fill="url(#op-glint-g)"/></g></g></svg>
       <p class="op-name">${SITE.name}</p>

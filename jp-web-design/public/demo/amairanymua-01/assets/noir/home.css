@@ -157,14 +157,13 @@ html.intro .hr-l{clip-path:inset(0 0 100% 0)}
 /* =================== 3. THE ARTIST ===================
    artist-brushes is shot on a white studio wall: dissolving it into the black would turn its
    edges into a grey rectangle. So it hangs like a lit print, inside a fine champagne hairline
-   frame, exactly as on the About page. */
+   frame (the kit's .print), exactly as on the interior pages. */
 .art{overflow:hidden}
 .art-g{display:grid;gap:clamp(2.8rem,7vh,3.6rem);align-items:center}
-.art-fig{margin:0;justify-self:center;width:min(calc(100% - 22px),calc(66vh * .8),calc(66svh * .8))}
-.art-ph{position:relative;aspect-ratio:4/5;background:var(--cocoa)}
+.art-fig{margin:0;justify-self:center;width:min(calc(100% - var(--pr) * 2 - 2px),calc(66vh * .8),calc(66svh * .8))}
+.art-ph{position:relative;aspect-ratio:4/5}
 .art-ph img{width:100%;height:100%;object-fit:cover}
-.art-ph::after{content:"";position:absolute;inset:-11px;border:1px solid rgba(230,207,166,.38);pointer-events:none}
-.art-fig figcaption{display:flex;margin-top:calc(11px + 1rem)}
+.art-fig figcaption{display:flex;margin-top:calc(var(--pr) + 1rem)}
 .art-txt .lead{margin-top:1.5rem}
 .art-body{margin-top:1.4rem}
 .art-txt .lnk{margin-top:1.6rem}
@@ -172,7 +171,7 @@ html.intro .hr-l{clip-path:inset(0 0 100% 0)}
 .art-pull em + em{color:var(--champagne)}
 @media(min-width:900px){
   .art-g{grid-template-columns:1fr 1fr;gap:clamp(3rem,7vw,8rem)}
-  .art-fig{justify-self:start;margin-left:11px;width:min(calc(100% - 22px),calc((100vh - var(--hd) - 8rem) * .8),calc((100svh - var(--hd) - 8rem) * .8))}
+  .art-fig{justify-self:start;margin-left:calc(var(--pr) + 1px);width:min(calc(100% - var(--pr) * 2 - 2px),calc((100vh - var(--hd) - 8rem) * .8),calc((100svh - var(--hd) - 8rem) * .8))}
   .art-pull{max-width:13ch}
 }
 
@@ -181,17 +180,17 @@ html.intro .hr-l{clip-path:inset(0 0 100% 0)}
 .strip-head{display:grid;gap:1.6rem;margin-bottom:clamp(2.4rem,6vh,3.6rem)}
 .strip-side{display:grid;gap:1.4rem;align-content:end}
 .strip-arrows{display:none}
-.strip-vp{overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scroll-padding-left:var(--gut-l);cursor:grab;outline-offset:-2px}
+.strip-vp{overflow-x:auto;overflow-y:hidden;padding-block:calc(var(--pr) + 1px);scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scroll-padding-left:var(--gut-l);cursor:grab;outline-offset:-2px}
 .strip-vp::-webkit-scrollbar{display:none}
 .strip-vp.drag{scroll-snap-type:none;cursor:grabbing;user-select:none}
 .strip-vp.drag *{pointer-events:none}
-.strip-track{display:flex;gap:clamp(12px,1.6vw,22px);padding:0 var(--gut-r) 0 var(--gut-l);width:max-content}
+.strip-track{display:flex;gap:calc(var(--pr) * 2 + clamp(10px,1.2vw,18px));padding:0 var(--gut-r) 0 var(--gut-l);width:max-content}
 .strip-it{flex:none;width:min(72vw,340px);scroll-snap-align:start}
 .strip-fig{margin:0}
 .strip-ph{position:relative;aspect-ratio:3/4;overflow:hidden;background:var(--cocoa)}
 .strip-ph img{width:100%;height:100%;object-fit:cover;-webkit-user-drag:none;user-select:none;transition:transform 1.2s var(--ease)}
 .strip-ph.film{position:relative}
-.strip-fig figcaption{display:flex;margin-top:.9rem;color:var(--bone-soft);white-space:nowrap;overflow:hidden}
+.strip-fig figcaption{display:flex;margin-top:calc(var(--pr) + .9rem);color:var(--bone-soft);white-space:nowrap;overflow:hidden}
 .strip-fig figcaption b{color:var(--champagne)}
 .strip-foot{display:flex;flex-wrap:wrap;gap:.5rem 2.4rem;margin-top:2.4rem}
 @media(hover:hover){.strip-it:hover .strip-ph img{transform:scale(1.035)}}
@@ -202,7 +201,7 @@ html.intro .hr-l{clip-path:inset(0 0 100% 0)}
   .strip-it{width:clamp(280px,25vw,400px)}
 }
 .strip-btn{display:inline-grid;place-items:center;width:52px;height:52px;border:1px solid rgba(230,207,166,.5);color:var(--champagne);font-size:1.1rem;transition:background-color .3s,color .3s,opacity .3s}
-.strip-btn:hover{background:var(--champ-a);color:var(--bone)}
+@media(hover:hover){.strip-btn:hover:not(:disabled){background:var(--champ-a);color:var(--bone)}}
 .strip-btn:disabled{opacity:.3;cursor:default;background:none}
 
 /* =================== 5. TWO WAYS TO BOOK =================== */

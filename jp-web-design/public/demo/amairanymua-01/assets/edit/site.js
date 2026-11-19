@@ -72,6 +72,20 @@
     dock.setAttribute('aria-hidden', String(!on));
     dockLinks.forEach(function (a) { if (on) a.removeAttribute('tabindex'); else a.setAttribute('tabindex', '-1'); });
   };
+  /* The header tucks away only when the PERSON scrolls down (wheel, a finger dragging and its
+     momentum, a scroll key). A scroll the page makes by itself (a form step bringing its next
+     question into view, a lookbook pan scrolling its panel up, focus moving) never hides it. */
+  var userAt = -1e9;
+  var byUser = function () { userAt = Date.now(); };
+  window.addEventListener('wheel', byUser, { passive: true });
+  window.addEventListener('touchmove', byUser, { passive: true });
+  doc.addEventListener('keydown', function (e) {
+    var k = e.key, t = e.target, typing = t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName));
+    if (/^(ArrowDown|ArrowUp|PageDown|PageUp|End|Home|Down|Up)$/.test(k) || (k === ' ' && !typing && !(t && t.closest && t.closest('button,a,[role="tab"]')))) byUser();
+  });
+  /* the momentum after a flick keeps the finger's intent for a while (a tap has no touchmove,
+     so a scroll a tapped control causes does not count) */
+  var userScrolling = function () { return Date.now() - userAt < 1600; };
   var frame = function () {
     tick = false;
     var y = window.pageYOffset;
@@ -79,7 +93,7 @@
       var stuck = y > 24;
       hd.classList.toggle('hd--stuck', stuck);
       if (y < 300 || y < lastY - 4) hd.classList.remove('hd--hide');
-      else if (y > lastY + 6 && !hd.contains(doc.activeElement)) hd.classList.add('hd--hide');
+      else if (y > lastY + 6 && userScrolling() && !hd.contains(doc.activeElement)) hd.classList.add('hd--hide');
     }
     setDock(y > dockAfter() && !footIn);
     lastY = y;
@@ -91,6 +105,9 @@
     new IntersectionObserver(function (es) { footIn = es[0].isIntersecting; frame(); }, { rootMargin: '0px 0px -10% 0px' }).observe(foot);
   }
   frame();
+
+  /* iOS only shows :active pressed states once a touch listener exists */
+  doc.addEventListener('touchstart', function () {}, { passive: true });
 
   /* ---- stagger: data-stag=".08" gives each child its own --d ---- */
   $$('[data-stag]').forEach(function (s) {

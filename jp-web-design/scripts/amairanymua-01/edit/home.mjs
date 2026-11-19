@@ -153,7 +153,7 @@ const ways = `<section class="sec f-cream ways" id="book" aria-labelledby="book-
   <div class="wrap">
     <header class="sec-hd rv">
       ${kick(FINAL.label)}
-      ${hed(['Bride, or', 'guest of honor?'], { id: 'book-h' })}
+      ${hed(['Bride, or', 'guest&nbsp;of&nbsp;honor?'], { id: 'book-h' })}
       <p class="lede">${FINAL.line}</p>
     </header>
     <div class="ways-grid" data-stag=".12">${PATHS.map(pathCard).join('')}</div>

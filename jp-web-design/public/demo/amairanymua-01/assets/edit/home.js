@@ -240,9 +240,13 @@
 
     /* 2.16–3.10 s: the story rises behind the departing wordmark (its chips arrive last, once
        the wordmark has cleared them), and the headline steps in */
-    A($('.hero-story'), [{ opacity: 0, transform: 'translate3d(0,56px,0) scale(.95)' }, { opacity: 1, offset: 0.4 }, { opacity: 1, transform: 'none' }], { duration: 820, delay: 2160, easing: 'cubic-bezier(.22,.9,.3,1)' });
-    A($('.st-top'), [{ opacity: 0 }, { opacity: 1 }], { duration: 320, delay: 2440, easing: 'linear' });
-    A($('.st-bars'), [{ opacity: 0 }, { opacity: 1 }], { duration: 320, delay: 2440, easing: 'linear' });
+    /* where the story sits beside the headline (wide screens, phones held sideways) it is clear
+       of the wordmark's path and may rise sooner */
+    var beside = vw >= 900 || (vw > vh && vh <= 620);
+    var stAt = beside ? 1980 : 2100;
+    A($('.hero-story'), [{ opacity: 0, transform: 'translate3d(0,56px,0) scale(.95)' }, { opacity: 1, offset: 0.4 }, { opacity: 1, transform: 'none' }], { duration: 820, delay: stAt, easing: 'cubic-bezier(.22,.9,.3,1)' });
+    A($('.st-top'), [{ opacity: 0 }, { opacity: 1 }], { duration: 320, delay: stAt + 300, easing: 'linear' });
+    A($('.st-bars'), [{ opacity: 0 }, { opacity: 1 }], { duration: 320, delay: stAt + 300, easing: 'linear' });
     A($('.hero-tag'), [{ opacity: 0, transform: 'scale(.92)' }, { opacity: 1, transform: 'none' }], { duration: 480, delay: 2260, easing: 'cubic-bezier(.22,.9,.3,1)' });
     A($('.hero-kick'), [{ opacity: 0, transform: 'translate3d(0,10px,0)' }, { opacity: 1, transform: 'none' }], { duration: 500, delay: 2260, easing: 'cubic-bezier(.22,.9,.3,1)' });
     $$('.hl-i').forEach(function (el, j) {

@@ -8,36 +8,43 @@
 html.intro .op,html.op-out .op{display:block;position:fixed;inset:0;z-index:90;pointer-events:none;overflow:hidden;contain:strict}
 html.op-out .op{opacity:0;transition:opacity .4s ease}
 /* Each layer is a length of tulle a little taller than the screen. Its lower edge is a HEM: an
-   arch, taken up at the centre with the sides still hanging (the ellipse below, in the layer's
+   arch, taken up at the centre with the sides still hanging (the ellipse --hem, in the layer's
    own proportions so the arch reads the same on a phone and at 1920). The mask feathers only
    the last few pixels inside the hem, so the edge reads as cloth, not as a soft hole; a sheen
-   band rides just outside it, where gathered tulle catches the light. */
-.op-l{--hem:ellipse 58% 19% at 50% 100%;position:absolute;left:-5vw;right:-5vw;top:0;height:128vh;transform-origin:50% 0;backface-visibility:hidden;
-  -webkit-mask-image:radial-gradient(var(--hem),rgb(0 0 0/0) 86%,rgb(0 0 0/1) 100%);
-  mask-image:radial-gradient(var(--hem),rgb(0 0 0/0) 86%,rgb(0 0 0/1) 100%)}
+   band rides just outside it, where gathered tulle catches the light.
+   Cost: the layer is two boxes. The body (.op-b) is a plain rectangle; only the hem strip
+   (.op-h, the lowest 31vh) carries the mask. Both paint the same full-height background
+   (--bg, sized to the whole layer and anchored top or bottom), so they meet without a seam,
+   and the compositor blends a masked surface a quarter of the size. */
+.op-l{--hem:ellipse 58% 19% at 50% 100%;--hh:31vh;position:absolute;left:-5vw;right:-5vw;top:0;height:128vh;transform-origin:50% 0;backface-visibility:hidden}
 html.intro .op-l{will-change:transform}
+.op-b,.op-h{position:absolute;left:0;right:0;display:block;background:var(--bg);background-size:100% 128vh;background-repeat:no-repeat}
+.op-b{top:0;bottom:var(--hh);background-position:0 0}
+.op-h{bottom:0;height:var(--hh);background:var(--band),var(--bg);background-size:100% 128vh;background-repeat:no-repeat;background-position:0 100%;
+  -webkit-mask:radial-gradient(var(--hem),rgb(0 0 0/0) 86%,rgb(0 0 0/1) 100%) 0 100%/100% 128vh no-repeat;
+  mask:radial-gradient(var(--hem),rgb(0 0 0/0) 86%,rgb(0 0 0/1) 100%) 0 100%/100% 128vh no-repeat}
 .op-folds{position:absolute;inset:0;display:block}
 /* back layer: the densest tulle, pearl white */
-.op-l3{background:
-  radial-gradient(var(--hem),rgb(var(--pearl-rgb)/0) 98%,rgb(var(--pearl-rgb)/.34) 100.5%,rgb(var(--sheen-rgb)/.5) 103.5%,rgb(var(--sheen-rgb)/0) 115%),
-  repeating-linear-gradient(90deg,rgb(var(--pearl-rgb)/0) 0,rgb(var(--pearl-rgb)/.16) 9%,rgb(var(--sheen-rgb)/.35) 15%,rgb(var(--pearl-rgb)/0) 23%),
+.op-l3{
+  --band:radial-gradient(var(--hem),rgb(var(--pearl-rgb)/0) 98%,rgb(var(--pearl-rgb)/.34) 100.5%,rgb(var(--sheen-rgb)/.5) 103.5%,rgb(var(--sheen-rgb)/0) 115%);
+  --bg:repeating-linear-gradient(90deg,rgb(var(--pearl-rgb)/0) 0,rgb(var(--pearl-rgb)/.16) 9%,rgb(var(--sheen-rgb)/.35) 15%,rgb(var(--pearl-rgb)/0) 23%),
   repeating-linear-gradient(90deg,rgb(var(--sheen-rgb)/0) 0,rgb(var(--sheen-rgb)/.46) 2.4%,rgb(var(--pearl-rgb)/.24) 5.4%,rgb(var(--sheen-rgb)/0) 7.8%),
   linear-gradient(180deg,rgb(var(--tulle-rgb)/.74),rgb(var(--tulle-rgb)/.62) 60%,rgb(var(--satin-rgb)/.7))}
 .op-l3 .op-folds{background:radial-gradient(60% 40% at 30% 30%,rgb(var(--sheen-rgb)/.55),rgb(var(--sheen-rgb)/0) 70%)}
 /* middle layer: wider folds, more translucent */
-.op-l2{--hem:ellipse 54% 17% at 47% 100%;background:
-  radial-gradient(var(--hem),rgb(var(--pearl-rgb)/0) 98%,rgb(var(--pearl-rgb)/.28) 100.5%,rgb(var(--sheen-rgb)/.42) 103.5%,rgb(var(--sheen-rgb)/0) 114%),
-  repeating-linear-gradient(92deg,rgb(var(--sheen-rgb)/0) 0,rgb(var(--sheen-rgb)/.4) 7%,rgb(var(--pearl-rgb)/.14) 19%,rgb(var(--sheen-rgb)/0) 31%),
+.op-l2{--hem:ellipse 54% 17% at 47% 100%;
+  --band:radial-gradient(var(--hem),rgb(var(--pearl-rgb)/0) 98%,rgb(var(--pearl-rgb)/.28) 100.5%,rgb(var(--sheen-rgb)/.42) 103.5%,rgb(var(--sheen-rgb)/0) 114%);
+  --bg:repeating-linear-gradient(92deg,rgb(var(--sheen-rgb)/0) 0,rgb(var(--sheen-rgb)/.4) 7%,rgb(var(--pearl-rgb)/.14) 19%,rgb(var(--sheen-rgb)/0) 31%),
   repeating-linear-gradient(86deg,rgb(var(--sheen-rgb)/0) 0,rgb(var(--sheen-rgb)/.5) 3.2%,rgb(var(--pearl-rgb)/.24) 6.8%,rgb(var(--sheen-rgb)/0) 9.4%),
-  rgb(var(--tulle-rgb)/.4)}
+  linear-gradient(rgb(var(--tulle-rgb)/.4),rgb(var(--tulle-rgb)/.4))}
 .op-l2 .op-folds{background:linear-gradient(115deg,rgb(var(--sheen-rgb)/0) 30%,rgb(var(--sheen-rgb)/.5) 46%,rgb(var(--sheen-rgb)/0) 60%)}
 /* front layer: the sheerest, with a fine net texture (phones only: it is invisible at a
    distance and costly to paint across a wide screen) and the monogram */
-.op-l1{--hem:ellipse 62% 21% at 53% 100%;background:
-  radial-gradient(var(--hem),rgb(var(--pearl-rgb)/0) 98%,rgb(var(--pearl-rgb)/.24) 100.5%,rgb(var(--sheen-rgb)/.38) 103%,rgb(var(--sheen-rgb)/0) 112%),
-  repeating-linear-gradient(88deg,rgb(var(--pearl-rgb)/0) 0,rgb(var(--pearl-rgb)/.12) 6%,rgb(var(--sheen-rgb)/.3) 11%,rgb(var(--pearl-rgb)/0) 17%),
+.op-l1{--hem:ellipse 62% 21% at 53% 100%;
+  --band:radial-gradient(var(--hem),rgb(var(--pearl-rgb)/0) 98%,rgb(var(--pearl-rgb)/.24) 100.5%,rgb(var(--sheen-rgb)/.38) 103%,rgb(var(--sheen-rgb)/0) 112%);
+  --bg:repeating-linear-gradient(88deg,rgb(var(--pearl-rgb)/0) 0,rgb(var(--pearl-rgb)/.12) 6%,rgb(var(--sheen-rgb)/.3) 11%,rgb(var(--pearl-rgb)/0) 17%),
   repeating-linear-gradient(93deg,rgb(var(--sheen-rgb)/0) 0,rgb(var(--sheen-rgb)/.48) 4.6%,rgb(var(--pearl-rgb)/.22) 9%,rgb(var(--sheen-rgb)/0) 13%),
-  rgb(var(--tulle-rgb)/.34)}
+  linear-gradient(rgb(var(--tulle-rgb)/.34),rgb(var(--tulle-rgb)/.34))}
 .op-l1 .op-folds{opacity:.5;background-image:radial-gradient(circle at 1px 1px,rgb(var(--pearl-rgb)/.5) .6px,rgb(var(--pearl-rgb)/0) 1.1px);background-size:5px 5px}
 @media(min-width:900px){.op-l1 .op-folds{display:none}}
 /* the mark is its own layer, so the light crossing it repaints the mark and not the tulle */

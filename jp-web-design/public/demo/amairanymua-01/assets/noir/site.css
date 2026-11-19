@@ -27,6 +27,7 @@
   --sec:clamp(5.5rem,15vh,10.5rem);
   --ease:cubic-bezier(.22,.8,.24,1);
   --ease-io:cubic-bezier(.65,0,.25,1);
+  --pr:clamp(6px,.8vw,11px);   /* the offset of a print's hairline frame */
   color-scheme:dark;
 }
 @media(min-width:900px){:root{--hd:72px}}
@@ -94,19 +95,23 @@ em,i{font-style:italic}
 /* ---------- actions ---------- */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.75em;min-height:50px;padding:.9rem 1.6rem;font:400 .74rem/1.2 var(--f-mono);letter-spacing:.18em;text-transform:uppercase;text-align:center;border:1px solid transparent;transition:background-color .35s var(--ease),color .35s var(--ease),border-color .35s var(--ease);-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .btn--solid{background:var(--bone);color:var(--blackout);border-color:var(--bone)}
-.btn--solid:hover{background:var(--champagne);border-color:var(--champagne)}
 .btn--line{color:var(--champagne);border-color:rgba(230,207,166,.6)}
-.btn--line:hover{background:var(--champ-a);border-color:var(--champagne);color:var(--bone)}
 .btn--sm{min-height:44px;padding:.6rem 1rem;font-size:.66rem;letter-spacing:.16em}
 .btn--block{width:100%}
 .btn .arr{transition:transform .35s var(--ease)}
-.btn:hover .arr{transform:translateX(4px)}
+/* hover only where there is one: on touch a tapped button must not keep its hover state */
+@media(hover:hover){
+  .btn--solid:hover{background:var(--champagne);border-color:var(--champagne)}
+  .btn--line:hover{background:var(--champ-a);border-color:var(--champagne);color:var(--bone)}
+  .btn:hover .arr{transform:translateX(4px)}
+}
+.btn--solid:active{background:var(--champagne);border-color:var(--champagne)}
+.btn--line:active{background:var(--champ-a)}
 .acts{display:flex;flex-wrap:wrap;gap:12px}
 .acts--stack{flex-direction:column;align-items:stretch;max-width:340px}
 .lnk{display:inline-flex;align-items:center;gap:.6em;min-height:44px;font:400 .72rem/1.3 var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--champagne);background:linear-gradient(currentColor,currentColor) 0 calc(50% + .95em)/100% 1px no-repeat;padding-right:2px;transition:color .3s,background-size .45s var(--ease)}
-.lnk:hover{color:var(--bone);background-size:40% 1px}
 .lnk .arr{transition:transform .35s var(--ease)}
-.lnk:hover .arr{transform:translateX(4px)}
+@media(hover:hover){.lnk:hover{color:var(--bone);background-size:40% 1px}.lnk:hover .arr{transform:translateX(4px)}}
 .tlink{color:var(--bone);text-decoration:underline;text-decoration-color:rgba(230,207,166,.55);text-underline-offset:.22em;text-decoration-thickness:1px;transition:text-decoration-color .3s,color .3s}
 .tlink:hover{color:var(--champagne);text-decoration-color:var(--champagne)}
 
@@ -165,7 +170,7 @@ em,i{font-style:italic}
 .menu-list .w{font:italic 400 clamp(2.2rem,min(9.5vw,6.6vh),5.2rem)/1 var(--f-display);letter-spacing:-.01em;transition:color .3s,transform .5s var(--ease)}
 .menu-list .note{display:none;margin-left:auto;font:400 .64rem/1.4 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--bone-soft)}
 .menu-list a:hover .w,.menu-list a[aria-current="page"] .w{color:var(--champagne)}
-.menu-list a:hover .w{transform:translateX(10px)}
+@media(hover:hover){.menu-list a:hover .w{transform:translateX(10px)}}
 .menu-foot{display:grid;gap:1.4rem;padding-top:clamp(1.5rem,4vh,2.5rem)}
 .menu-foot .acts .btn{flex:1 1 220px}
 .menu-foot .slate{color:var(--bone-soft)}
@@ -225,6 +230,11 @@ em,i{font-style:italic}
 .ph--fade-l{-webkit-mask-image:linear-gradient(90deg,transparent,#000 38%);mask-image:linear-gradient(90deg,transparent,#000 38%)}
 .ph--fade-r{-webkit-mask-image:linear-gradient(270deg,transparent,#000 38%);mask-image:linear-gradient(270deg,transparent,#000 38%)}
 .ph--fade-x{-webkit-mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent);mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent)}
+/* a print: a photograph shot on a bright background is shown whole, unmasked, inside a fine
+   champagne hairline set a few pixels off its edge, like a lit print on the black (dissolving
+   it into the ground would turn its edges into a grey rectangle). Dark-ground photographs keep
+   the edge fades. Leave var(--pr) + 1px of room around it where a parent clips. */
+.print{-webkit-mask-image:none;mask-image:none;background:var(--cocoa);outline:1px solid rgba(230,207,166,.38);outline-offset:var(--pr)}
 .cap{display:flex;justify-content:space-between;gap:1rem;margin-top:.9rem}
 
 /* ---------- the film slot: a leader plate (no clip exists yet) ---------- */

@@ -78,7 +78,7 @@ ${SCENES.map((s, i) => `<div class="scn${i === 0 ? ' on' : ''}" data-i="${i}"><d
 /* ---------- 3. the artist ---------- */
 const artist = () => `<section class="sec art" id="artist" aria-labelledby="artH">
 <div class="wrap art-g">
-<figure class="art-fig rv-fade"><div class="art-ph">${pic('artist-brushes', { sizes: '(min-width:900px) 40vw, 86vw' })}</div><figcaption class="slate">${INTRO.caption}</figcaption></figure>
+<figure class="art-fig rv-fade"><div class="art-ph print">${pic('artist-brushes', { sizes: '(min-width:900px) 40vw, 86vw' })}</div><figcaption class="slate">${INTRO.caption}</figcaption></figure>
 <div class="art-txt">
 ${kick(INTRO.eyebrow, 'rv')}
 ${h(2, INTRO.heading, 'd-l rv-mask', 'id="artH"')}
@@ -91,6 +91,8 @@ ${h(2, INTRO.heading, 'd-l rv-mask', 'id="artH"')}
 </section>`;
 
 /* ---------- 4. the strip ---------- */
+/* photographs shot on a bright background hang as prints (the kit's .print), as on the interior pages */
+const BRIGHT = ['artist-brushes', 'artist-spotlight-crop', 'bride-pearls', 'glam-sculpt', 'waves-blonde', 'glam-bronze', 'wedding-florals', 'golden-hour'];
 const capOf = (k) => (LOOKS.find((x) => x.photo === k) || {}).cap || '';
 const STRIP = [...FEATURED, { photo: 'bride-ruby' }, { film: 'f2' }, { photo: 'glam-bronze' }, { photo: 'wedding-florals' }, { photo: 'golden-hour' }, { photo: 'wedding-night' }];
 const stripSec = () => `<section class="sec strip" id="work" aria-labelledby="workH">
@@ -108,7 +110,7 @@ ${h(2, WORK.heading, 'd-l rv-mask', 'id="workH"')}
 <ul class="strip-track">
 ${STRIP.map((it, i) => `<li class="strip-it">${it.film
     ? `<figure class="strip-fig">${film(it.film, { label: FILMS[it.film].label, cls: 'strip-ph' })}<figcaption class="slate"><b>${pad(i + 1)}</b> / ${pad(STRIP.length)}<span class="sep"></span>Film &middot; ${FILMS[it.film].label}</figcaption></figure>`
-    : `<figure class="strip-fig"><div class="strip-ph">${pic(it.photo, { sizes: '(min-width:900px) 28vw, 72vw' })}</div><figcaption class="slate"><b>${pad(i + 1)}</b> / ${pad(STRIP.length)}<span class="sep"></span>${capOf(it.photo)}</figcaption></figure>`}</li>`).join('\n')}
+    : `<figure class="strip-fig"><div class="strip-ph${BRIGHT.includes(it.photo) ? ' print' : ''}">${pic(it.photo, { sizes: '(min-width:900px) 28vw, 72vw' })}</div><figcaption class="slate"><b>${pad(i + 1)}</b> / ${pad(STRIP.length)}<span class="sep"></span>${capOf(it.photo)}</figcaption></figure>`}</li>`).join('\n')}
 </ul>
 </div>
 <div class="wrap strip-foot">

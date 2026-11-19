@@ -55,7 +55,7 @@ const allBtn = `<button class="pf-pan pf-pan--all" type="button" data-f="all" ar
 const filterBar = `<aside class="pf-side" aria-label="Filter the portfolio">
       <div class="pf-case">
         <div class="pf-lid" aria-hidden="true"><span class="pf-lid-t">Pick a shade</span><span class="pf-lid-n">The Edit &middot; six shades</span></div>
-        <div class="pf-well" role="group" aria-label="Show looks">${allBtn}${PANS.map(panBtn).join('')}</div>
+        <div class="pf-well" role="group" aria-label="Show looks">${PANS.map(panBtn).join('')}${allBtn}</div>
         <p class="pf-count" data-pf-status aria-live="polite">Showing all ${N}: ${tally(ITEMS)}.</p>
       </div>
     </aside>`;

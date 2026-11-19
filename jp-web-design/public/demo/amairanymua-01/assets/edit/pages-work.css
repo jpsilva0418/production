@@ -79,6 +79,8 @@ html:not(.js) .pf-side{display:none}
   .pf-well{overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scroll-padding-inline:var(--gut);padding:8px var(--gut);scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,transparent 0,var(--charcoal) var(--gut),var(--charcoal) calc(100% - var(--gut)),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,var(--charcoal) var(--gut),var(--charcoal) calc(100% - var(--gut)),transparent 100%)}
   .pf-well::-webkit-scrollbar{display:none}
   .pf-pan{scroll-snap-align:start}
+  /* All leads the bar on phones; in the DOM (and on wide screens) it follows the six pans */
+  .pf-pan--all{order:-1}
 }
 
 /* wide screens: the compact itself, beside the work, staying in reach */
@@ -98,7 +100,7 @@ html:not(.js) .pf-side{display:none}
   .pf-pan-c{position:absolute;right:6px;top:8px;display:grid;place-items:center;min-width:24px;height:24px;padding:0 6px;border-radius:999px;background:var(--cream);font:700 12px/1 var(--f-body);color:var(--charcoal)}
   .pf-pan[aria-pressed="true"] .pf-pan-c{color:var(--charcoal)}
   .pf-pan:focus-visible{outline-offset:1px;border-radius:20px}
-  .pf-pan--all{order:9;grid-column:1 / -1;display:flex;justify-content:flex-start;gap:12px;min-height:52px;margin-top:6px;padding:6px 18px 6px 7px;border-radius:999px;background:var(--white);box-shadow:inset 0 0 0 1.5px var(--line);text-align:left}
+  .pf-pan--all{grid-column:1 / -1;display:flex;justify-content:flex-start;gap:12px;min-height:52px;margin-top:6px;padding:6px 18px 6px 7px;border-radius:999px;background:var(--white);box-shadow:inset 0 0 0 1.5px var(--line);text-align:left}
   .pf-pan--all .pf-dish{width:38px;height:38px;aspect-ratio:auto;border-radius:50%}
   .pf-pan--all[aria-pressed="true"]{background:var(--charcoal);color:var(--cream)}
   .pf-pan--all[aria-pressed="true"] .pf-dish{transform:none;box-shadow:0 0 0 2px var(--cream)}
