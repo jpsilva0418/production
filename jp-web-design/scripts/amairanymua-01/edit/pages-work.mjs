@@ -105,8 +105,10 @@ const group = (g, gi) => {
       </section>`;
 };
 
+/* the cover fan: one picture per group, chosen so the label sits on hair or background, never a face */
+const THUMB = { bridal: 'bride-crystal', 'wedding-day': 'wedding-night', glam: 'glam-sculpt' };
 const jump = `<nav class="pf-jump" aria-label="Groups">
-        ${PORTFOLIO.map((g) => `<a class="pf-jump-a" href="#${g.id}"><span class="pf-jump-ph" aria-hidden="true">${pic(g.items.find((x) => x.photo).photo, { alt: '', sizes: '150px' })}</span><span class="pf-jump-t">${g.title}<span class="pf-jump-c" aria-hidden="true"></span></span></a>`).join('\n        ')}
+        ${PORTFOLIO.map((g) => `<a class="pf-jump-a" href="#${g.id}"><span class="pf-jump-ph" aria-hidden="true">${pic(THUMB[g.id], { alt: '', sizes: '200px' })}</span><span class="pf-jump-t">${g.title}<span class="pf-jump-c" aria-hidden="true"></span></span></a>`).join('\n        ')}
       </nav>`;
 
 const viewer = `<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photograph viewer" hidden>
