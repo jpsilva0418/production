@@ -1,63 +1,107 @@
 /* /demo/amairanymua-01 — site "atelier": the home page.
 
-   1. The opening (an arched window opens: home.js) and the hero, a gallery wall of arches: her
-      clip in the tall centre arch, two stills either side that change on their own.
+   1. The opening (a title card that lifts away: CSS, gated inline) and the hero: Amairany herself,
+      her director's-chair portrait art-directed in front of a linen arch, the headline and both
+      ways to book; then "The magic in motion", a row of her real clips over stills.
    2. Two ways to book (The Bride / The Event), then her About directly under, on linen.
    3. The Experience: three numbered steps, from her own facts only.
    4. The Looks: an arched runway of stills and clips that advances on its own.
    5. The bridal collections on the espresso band.
    6. Her own words in the tall caps, then Love Notes.
    7. The Journal.   (The footer carries the closing call to action on every page.) */
-import { page, S, AT, lockup, kicker, h, lede, sig, bookingLine, spec, actions, more, next, arch, archFilm, frame, section, sectionHead, steps, packageCard, loveNotes, quote, rail, archShow, wallToggle, arrow } from './shell.mjs';
-import { SITE, HER, HERO, PATHS, FILMS, href, inquire, book, film, pic, filmSrc } from '../site.mjs';
+import { page, S, AT, lockup, kicker, h, lede, sig, bookingLine, spec, actions, more, next, arch, archFilm, frame, section, sectionHead, steps, packageCard, loveNotes, quote, rail, arrow } from './shell.mjs';
+import { SITE, HER, PATHS, FILMS, PHOTOS, href, inquire, book, pic, filmSrc, src, srcset } from '../site.mjs';
 
-/* The hero wall: her bridal morning clip in the centre; faces either side, older 1280 photographs
-   and new reel stills alternating (none with burned-in text, none needing a credit line). */
-const HERO_FILM = 'f7';
-/* the clip opens on the artist herself; the bride (in her veil) is on screen from 4.4 s to the end,
-   so the hero plays that part, and loops back to it (site.js reads data-start) */
-const HERO_START = 4.4;
-const LEFT = [
-  ['bride-crystal', 'Bridal · Glam waves'],
-  ['reel-bride-pearls-updo', 'Bridal · Sleek updo &amp; pearls'],
-  ['bride-gold-waves', 'Bridal · Gold shimmer'],
-  ['reel-burgundy', 'Bridal · Burgundy waves'],
-];
-const RIGHT = [
-  ['waves-blonde', 'Glam waves · Smoky eye'],
-  ['bride-ruby', 'Bridal · Full glam'],
-  ['reel-red-waves', 'Full glam · Red waves'],
-  ['glam-bronze', 'Full glam · Winged liner'],
-];
-const SIDE_SIZES = '(max-width:899px) 96px, (max-width:1439px) 200px, 260px';
+/* ===================== 1 — the hero: Amairany herself =====================
+   Her own director's-chair portrait (artist-chair-cut, the transparent cut-out of her brand photo)
+   art-directed into the ivory world: a linen arch stands behind her shoulders and she leans out of
+   it, her heels crossing its edge; GLAM, oversized in the thin tall caps, sits between the arch and
+   her, her head over its first letters, like a masthead behind a cover portrait; a
+   fine taupe arch line and a floor hairline hold the composition. Then the headline and the two
+   ways to book, together on the first screen at every size.
 
-/* The opening gate: runs first in <body>, before anything paints, so the first frame is already the
-   opening's ivory (no flash of the finished page). Plays once per browser session; ?intro=1 always
-   plays, ?intro=0 never; never under reduced motion or Save-Data (unless ?intro=1), never without
-   the Web Animations API. Failsafe: if home.js has not taken over within 2.5 s, the class goes and
-   the finished page shows. */
-const GATE = `<script>(function(){var d=document.documentElement,k='am01-intro-atelier';try{var q=location.search,on=/[?&]intro=1(&|$)/.test(q),off=/[?&]intro=0(&|$)/.test(q);if(off||!document.body.animate||!window.matchMedia)return;if(!on){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;if(sessionStorage.getItem(k))return;if(navigator.connection&&navigator.connection.saveData)return;}sessionStorage.setItem(k,'1');d.classList.add('intro');setTimeout(function(){if(!d.classList.contains('intro-run'))d.classList.remove('intro');},2500);}catch(e){d.classList.remove('intro');}})();</script>`;
-const OVERLAY = `<div class="op" aria-hidden="true"><i class="op-ln"></i><p class="op-b">${HER.badges.join(' &middot; ')}</p></div>`;
+   The centrepiece is an IMAGE, on purpose: the founder opens the single-file preview in the iPhone
+   file viewer, which paints photographs but never video. Nothing in the hero depends on video,
+   script or an animation finishing. */
+const PORTRAIT = 'artist-chair-cut';
+const PT_SIZES = '(max-width:599px) 86vw, (max-width:899px) 52vw, 44vw';
 
-/* 1 — the hero */
+/* The opening, rebuilt (2026-11-19, round three refinement). One coherent piece, about 2.5 s, that
+   ends on the hero above:
+     0.00–0.95  an ivory title card: "Glam By" writes on, AMAIRANYMUA rises letter by letter, the
+                badges fade in, tiny
+     0.95–1.60  the card lifts away like a sheet of paper (transform only)
+     1.05–2.05  behind it the linen arch opens from the floor; her portrait rises through a mask
+     1.35–2.30  the headline rises line by line; the two buttons and the booking line follow
+     2.10–2.50  the start of the film row
+   Every hidden state lives only INSIDE a CSS animation (fill: both) under html.intro, so a browser
+   without CSS animations, clip-path, script or video still shows the finished page; nothing has a
+   static hidden pre-state except the title card itself, and the gate below removes the class after
+   2.7 s whatever happens (that is also its own failsafe). Plays once per browser session; ?intro=1
+   always plays (except under reduced motion, which always skips it), ?intro=0 never; Save-Data
+   skips it unless ?intro=1. Any wheel,
+   touchmove, pointerdown or key (not Tab or Shift) finishes it at once: the class goes and the page
+   rests on its plain static styles in the same frame. The booking buttons are clickable throughout
+   (the title card takes no pointer events). */
+const GATE = `<script>(function(){var d=document.documentElement,k='am01-intro-atelier';try{var q=location.search,on=/[?&]intro=1(&|$)/.test(q),off=/[?&]intro=0(&|$)/.test(q);if(off||!window.CSS||!CSS.supports||!CSS.supports('(animation-name:a)'))return;if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;if(!on){try{if(sessionStorage.getItem(k))return;}catch(e){}if(navigator.connection&&navigator.connection.saveData)return;}try{sessionStorage.setItem(k,'1');}catch(e){}d.classList.add('intro');var E=['wheel','touchmove','pointerdown','keydown'],end=function(e){if(e&&e.type==='keydown'&&(e.key==='Tab'||e.key==='Shift'))return;d.classList.remove('intro');E.forEach(function(t){removeEventListener(t,end,true);});};E.forEach(function(t){addEventListener(t,end,{capture:true,passive:true});});setTimeout(end,2700);addEventListener('pagehide',end);}catch(e){d.classList.remove('intro');}})();</script>`;
+const OVERLAY = `<div class="op" aria-hidden="true"><div class="op-in">${lockup({ cls: 'lk--op' })}<p class="op-b">${HER.badges.join(' &middot; ')}</p></div></div>`;
+
 const hero = () => `<section class="hero" aria-labelledby="heroH">
 <div class="hero-in">
+<div class="hero-stage">
+<div class="hero-fig">
+<span class="hero-arch" aria-hidden="true"></span>
+<span class="hero-line-arch" aria-hidden="true"></span>
+<p class="hero-glam" aria-hidden="true">Glam</p>
+<div class="hero-pt">${pic(PORTRAIT, { sizes: PT_SIZES, eager: true, alt: `${SITE.name}, the artist, in a black suit and strappy heels, leaning back in her director’s chair.` })}</div>
+<span class="hero-floor" aria-hidden="true"></span>
+</div>
+<p class="hero-cap" aria-hidden="true">${SITE.name} &middot; ${SITE.handle}</p>
+</div>
 <div class="hero-t">
 <p class="kick hero-k">${SITE.tagline} &middot; ${SITE.area}</p>
-<h1 class="d-hero" id="heroH"><span class="hl"><span>Timeless</span></span> <span class="hl"><span>soft glam.</span></span></h1>
-<p class="hero-line">${HERO.line}</p>
+<h1 class="d-hero hero-h" id="heroH"><span class="hl"><span>The art of</span></span> <span class="hl"><span>being</span></span> <span class="hl"><span>unforgettable.</span></span></h1>
+<p class="hero-sub">Soft-full glam, &ldquo;cake free&rdquo;, by ${SITE.name}: for your wedding day and every moment you want to remember.</p>
+<div class="hero-acts">${book('schedule', '<span>Book your glam</span>', 'btn btn--glam')}${inquire(S, '<span>Bridal inquiry</span>', 'btn btn--sec')}</div>
+<p class="hero-hint">Choose a service, date and time on her booking calendar &middot; or start a bridal inquiry</p>
 ${bookingLine('hero-book')}
-${actions({ cls: 'hero-acts' })}
-</div>
-<div class="hero-w">
-<figure class="arch arch--film wall-c" id="heroFilm" style="--ar:3/5"><div class="arch-w"><div class="arch-m">${film(HERO_FILM, { label: '' }).replace('<video data-film', `<video data-film data-start="${HERO_START}"`)}</div></div><figcaption class="cap wall-c-cap">Film &middot; ${FILMS[HERO_FILM].title}</figcaption></figure>
-<div class="wall-side" id="heroWall" data-wall data-hold="3800" data-films="heroFilm" role="group" aria-roledescription="slideshow" aria-label="Her looks, changing every few seconds">
-${archShow({ keys: LEFT.map((x) => x[0]), caps: LEFT.map((x) => x[1]), ar: '5/9', sizes: SIDE_SIZES, eager: false, cls: 'wall-l' })}
-${archShow({ keys: RIGHT.map((x) => x[0]), caps: RIGHT.map((x) => x[1]), ar: '4/7', sizes: SIDE_SIZES, eager: false, cls: 'wall-r' })}
-</div>
-<div class="hero-ctl">${wallToggle({ id: 'heroWall', cap: LEFT[0][1] })}${more(href(S, 'portfolio'), 'The portfolio', 'hero-more')}</div>
 </div>
 </div>
+</section>`;
+
+/* ===================== 1b — the magic in motion =====================
+   A row of her real clips right under the hero, its continuation: small vertical cards with arched
+   tops, two to three visible on a phone, swipe for more. Each card is a real <img> of the look (a
+   frame of that same clip) with the clip laid over it: the clip is fetched only after the page has
+   loaded and the opening has finished, plays only near the viewport (site.js: at most three at
+   once), fades in only once it is actually playing, and is never shown at all under reduced motion,
+   Save-Data, without script, or in a viewer that does not play video: the photograph stands.
+   Clips start at the finished look (`start`, seconds: most open on the "before"). None of the
+   clips with her own burned-in captions (f1, f3, f4, f11). */
+const MOTION = [
+  { film: 'f7', photo: 'reel-morning-veil', k: 'Bridal', t: 'Morning veil', start: 5 },
+  { film: 'f5', photo: 'reel-bride-pearls-updo', k: 'Bridal', t: 'The glam reveal', start: 8 },
+  { film: 'f9', photo: 'reel-curly-updo', k: 'Bridal hair', t: 'Curly updo, pearl pins', start: 9 },
+  { film: 'f13', photo: 'reel-red-waves', k: 'Transformation', t: 'Red waves', start: 3.4 },
+  { film: 'f8', photo: 'reel-bridesmaid-half-up', k: 'Bridal party', t: 'Getting ready', start: 1 },
+  { film: 'f14', photo: 'reel-copper', k: 'Full glam', t: 'The finish', start: 1.8 },
+  { film: 'f10', photo: 'reel-pink', k: 'Editorial', t: 'Pink transformation', start: 9 },
+];
+const MV_SIZES = '(max-width:599px) 40vw, (max-width:1099px) 24vw, 200px';
+const mvCard = (m) => {
+  const f = FILMS[m.film], s = filmSrc(m.film);
+  const credit = f.credit ?? PHOTOS[m.photo].credit;
+  const video = s ? `<video data-film data-mv data-start="${m.start}" muted loop playsinline preload="none" disablepictureinpicture disableremoteplayback tabindex="-1" aria-hidden="true" style="object-position:${f.pos}"><source data-src="${s.mp4}" type="video/mp4"></video>` : '';
+  return `<li class="mv-it"><figure class="mv-card"><div class="mv-m">${pic(m.photo, { sizes: MV_SIZES, alt: PHOTOS[m.photo].alt })}${video}</div><figcaption class="mv-cap"><span class="mv-k">${m.k}</span><span class="mv-t">${m.t}</span>${credit ? `<span class="mv-cr">Makeup by ${SITE.first} &middot; ${credit}</span>` : ''}</figcaption></figure></li>`;
+};
+const motion = () => `<section class="mv" id="motion" aria-labelledby="mvH">
+<div class="wrap mv-hd">
+<div class="mv-hd-t"><p class="kick mv-kick">Straight from her chair</p><h2 class="d-l mv-h" id="mvH"><span class="hl"><span>The magic</span></span> <span class="hl"><span>in motion</span></span></h2></div>
+<div class="mv-hd-s"><p class="mv-lede">Real brides and real glam, a few silent seconds from her own clips.</p>
+<div class="mv-ctl"><button class="ic-btn" type="button" data-mv-prev aria-label="Previous clip" hidden><span aria-hidden="true">&larr;</span></button><button class="ic-btn" type="button" data-mv-next aria-label="Next clip" hidden><span aria-hidden="true">&rarr;</span></button><button class="pause mv-pause" type="button" data-mv-toggle aria-controls="mvTrack" hidden><span class="pause-i" aria-hidden="true"></span><span class="pause-t">Pause</span></button></div></div>
+</div>
+<ul class="mv-track" id="mvTrack" tabindex="0" aria-label="Her clips: swipe, or scroll with the arrow keys">${MOTION.map(mvCard).join('')}</ul>
+<div class="wrap mv-next">${more(`${href(S, 'portfolio')}#reel`, 'Watch the reel')}${book('schedule', '<span>Book your glam</span>', 'btn btn--glam btn--sm')}</div>
 </section>`;
 
 /* 2 — two ways to book, then About directly under (the founder's exact ask) */
@@ -164,17 +208,14 @@ const journal = () => section({ id: 'journal', tone: 'ivory', cls: 'jr', labelle
 <div class="jr-g">${POSTS.map((p, i) => `<article class="jc rv" style="--d:${(i * 0.12).toFixed(2)}s"><a class="jc-a" href="${href(S, p.path)}">${frame(p.img, { ar: '4/5', sizes: '(max-width:599px) 92vw, (max-width:899px) 80vw, 560px', alt: '', pos: p.pos, rv: '' })}<p class="jc-k">Sample article, to be written with ${SITE.first}</p><h3 class="d-m jc-t">${p.title}</h3><p class="jc-d">${p.dek}</p><span class="more jc-more">Read the article ${arrow}</span></a></article>`).join('')}</div>
 ${next(more(href(S, 'journal'), 'All journal articles'))}`);
 
-export const home = () => {
-  const poster = filmSrc(HERO_FILM).poster;
-  return page({
-    path: '',
-    title: 'Glam By Amairanymua · Bridal Hair & Makeup, Orlando + Tampa',
-    description: `${SITE.name}, luxury bridal hair and makeup artist in Orlando and Tampa: timeless soft glam to full glam, cake free. ${HER.booking.replace('&amp;', '&')}.`,
-    head: `<link rel="preload" as="image" href="${poster}" fetchpriority="high">`,
-    css: ['home'],
-    js: ['home'],
-    bodyClass: 'home',
-    opening: GATE + OVERLAY,
-    main: hero() + ways() + about() + experience() + looks() + packages() + words() + journal(),
-  });
-};
+export const home = () => page({
+  path: '',
+  title: 'Glam By Amairanymua · Bridal Hair & Makeup, Orlando + Tampa',
+  description: `${SITE.name}, luxury bridal hair and makeup artist in Orlando and Tampa: soft-full glam, cake free, for your wedding day and every moment you want to remember. ${HER.booking.replace('&amp;', '&')}.`,
+  head: `<link rel="preload" as="image" href="${src(PORTRAIT, 800)}" imagesrcset="${srcset(PORTRAIT)}" imagesizes="${PT_SIZES}" fetchpriority="high">`,
+  css: ['home'],
+  js: ['home'],
+  bodyClass: 'home',
+  opening: GATE + OVERLAY,
+  main: hero() + motion() + ways() + about() + experience() + looks() + packages() + words() + journal(),
+});

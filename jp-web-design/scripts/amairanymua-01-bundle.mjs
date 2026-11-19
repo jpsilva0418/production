@@ -71,7 +71,8 @@ const token = (url) => {
       bytes = readFileSync(tmp); rmSync(tmp, { force: true });
     }
     if (LITE && /^(webp|jpe?g)$/.test(ext) && bytes.length > 14 * 1024) {
-      bytes = execFileSync('python3', ['-I', '-c', 'import sys,io\nfrom PIL import Image\nim=Image.open(io.BytesIO(sys.stdin.buffer.read()))\nhas_a=im.mode in ("RGBA","LA")\nim=im.convert("RGBA" if has_a else "RGB")\nw=min(im.width,360)\nim=im.resize((w,round(im.height*w/im.width)),Image.LANCZOS)\nb=io.BytesIO();im.save(b,"WEBP",quality=60,method=6);sys.stdout.buffer.write(b.getvalue())'], { input: bytes, maxBuffer: 64 * 1024 * 1024 });
+      const hero = /artist-chair/.test(url); /* her portrait is a hero centrepiece: keep it sharper */
+      bytes = execFileSync('python3', ['-I', '-c', 'import sys,io\nfrom PIL import Image\nim=Image.open(io.BytesIO(sys.stdin.buffer.read()))\nhas_a=im.mode in ("RGBA","LA")\nim=im.convert("RGBA" if has_a else "RGB")\nw=min(im.width,' + (hero ? 480 : 360) + ')\nim=im.resize((w,round(im.height*w/im.width)),Image.LANCZOS)\nb=io.BytesIO();im.save(b,"WEBP",quality=' + (hero ? 74 : 60) + ',method=6);sys.stdout.buffer.write(b.getvalue())'], { input: bytes, maxBuffer: 64 * 1024 * 1024 });
       mime = 'image/webp';
     } else if (/^(webp|jpe?g|png)$/.test(ext) && bytes.length > 110 * 1024) {
       // too heavy for a single-file preview: re-encode at phone size (Pillow), keeping the picture as is
