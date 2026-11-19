@@ -113,7 +113,6 @@
   var bClose = $('lpClose'), lPrev = $('lpPrev'), lNext = $('lpNext'), bZoom = $('lpZoom'), stage = $('lpStage');
   var IMG = lp.getAttribute('data-img'), DEV = lp.getAttribute('data-dev');
   if (!img || !im || !pr || !bClose) return;
-  var SIZES = img.getAttribute('sizes');
 
   var read = function (a) {
     return { v: +a.getAttribute('data-v'), key: a.getAttribute('data-photo'), w: +a.getAttribute('data-w'), h: +a.getAttribute('data-h'), pos: a.getAttribute('data-pos'), cap: a.getAttribute('data-cap'), n: a.getAttribute('data-n'), alt: a.getAttribute('data-alt') };
@@ -186,11 +185,16 @@
     if (bZoom) bZoom.setAttribute('aria-pressed', String(on));
     if (on) {
       finishAll(busy); busy = [];
-      img.setAttribute('sizes', Math.ceil(im.clientWidth * Z * (window.devicePixelRatio > 1 ? 1.4 : 1)) + 'px'); /* the 1280 file, only now */
+      /* the 1280 file, fetched only now; the print keeps the smaller file on screen until it is in */
+      var key = looks[set[at]] && looks[set[at]].key, big = IMG + key + '-1280.webp';
+      if (key && img.getAttribute('src') !== big) {
+        var hi = new Image();
+        hi.onload = function () { if (zoomed && looks[set[at]].key === key) { img.removeAttribute('srcset'); img.setAttribute('src', big); } };
+        hi.src = big;
+      }
       if (cx === undefined) { panXY = [0.5, 0.4]; applyPan(); } else panTo(cx, cy);
     } else {
       img.style.transform = '';
-      img.setAttribute('sizes', SIZES);
     }
   };
 
@@ -281,7 +285,8 @@
   if (lNext) lNext.addEventListener('click', function () { show(at + 1, 1); });
   if (bZoom) bZoom.addEventListener('click', function () { setZoom(!zoomed); });
 
-  lp.addEventListener('keydown', function (e) {
+  doc.addEventListener('keydown', function (e) {
+    if (!isOpen) return;
     if (e.key === 'Escape') { e.preventDefault(); if (zoomed) setZoom(false); else close(); return; }
     if (e.key === 'ArrowRight') { e.preventDefault(); show(at + 1, 1); return; }
     if (e.key === 'ArrowLeft') { e.preventDefault(); show(at - 1, -1); return; }

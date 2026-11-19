@@ -192,3 +192,9 @@ button.sh-f:focus-visible{outline:2px solid var(--safelight-lit);outline-offset:
 
 /* ---------- reduced motion: the stack rests ---------- */
 @media (prefers-reduced-motion:reduce){.st-i{transition:none}}
+
+/* only the print on top carries its grease-pencil note: the ones beneath peek out at the border, and
+   their notes read as a second, stray label under hers */
+.stack .st-i:not(.d0) .pr-note{opacity:0}
+.stack .st-i .pr-note{transition:opacity .35s ease}
+@media (prefers-reduced-motion:reduce){.stack .st-i .pr-note{transition:none}}
