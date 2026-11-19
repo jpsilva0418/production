@@ -215,6 +215,26 @@ export const PHOTOS = {
   'reel-red-waves': { w: 576, h: 1024, pos: '50% 30%', widths: [480, 576], alt: 'Full glam outdoors with bright red layered hair, a sculpted cheek and a nude lip.' },
   'reel-pink': { w: 576, h: 1024, pos: '50% 34%', widths: [480, 576], credit: 'With Alejandro Lopez', alt: 'A smoky glam eye with hot-pink and black layered hair.' },
   'reel-editorial': { w: 576, h: 1024, pos: '50% 32%', widths: [480, 576], alt: 'Editorial glam: a graphic orange and pink eye with long dark curls.' },
+  /* round four (2026-11-19): more frames from her clips, and client photos from her own booking-page
+     graphics (scripts/amairanymua-01-media.py). The sheet-* photos are small (≈270 px): show them no
+     wider than that. */
+  'reel-copper-2': { w: 576, h: 1024, pos: '50% 34%', widths: [480, 576], credit: 'Hair by @.artistic.aestheticss', alt: 'Full glam with fluttery lashes and a glossy nude lip, copper layers falling over one shoulder.' },
+  'reel-pearls-updo-2': { w: 576, h: 1024, pos: '50% 30%', widths: [480, 576], alt: 'Bride with deep skin smiling in full glam, a sleek updo with tendrils and a pearl necklace.' },
+  'reel-burgundy-2': { w: 576, h: 1024, pos: '50% 30%', widths: [480, 576], alt: 'Bride with burgundy bangs and big glam waves pinned with a small flower, red lip, satin robe.' },
+  'reel-morning-veil-2': { w: 576, h: 1024, pos: '50% 30%', widths: [480, 576], alt: 'Bride smiling in a lace-edged veil and pearls, soft glam, on her wedding morning.' },
+  'reel-bridesmaid-updo': { w: 576, h: 1024, pos: '50% 40%', widths: [480, 576], alt: 'A voluminous textured updo from behind, on a bridesmaid in a pink robe.' },
+  'reel-curly-updo-2': { w: 576, h: 1024, pos: '50% 34%', widths: [480, 576], alt: 'A curly updo with pearl pins, seen from behind above an open-back beaded dress.' },
+  'reel-pink-2': { w: 576, h: 1024, pos: '50% 34%', widths: [480, 576], credit: 'With Alejandro Lopez', alt: 'Smoky glam with hot-pink and black curtain layers.' },
+  'reel-editorial-2': { w: 576, h: 1024, pos: '50% 32%', widths: [480, 576], alt: 'A graphic sunset eye in orange and pink with long dark curls.' },
+  'sheet-luxe-bride': { w: 262, h: 337, pos: '50% 35%', widths: [262], alt: 'Bride with soft blonde waves, luminous skin and a nude lip.' },
+  'sheet-signature': { w: 282, h: 341, pos: '50% 35%', widths: [282], alt: 'Bride with defined natural curls pinned to one side, bronzed full glam.' },
+  'sheet-luxe-gala': { w: 272, h: 342, pos: '50% 35%', widths: [272], alt: 'Bride with long glossy black waves, a sculpted eye and a soft nude lip.' },
+  'sheet-luxe-glam': { w: 264, h: 353, pos: '50% 35%', widths: [264], alt: 'Bride with vintage-style waves, a jewelled hairpiece and rosy glam.' },
+  'tile-bridal': { w: 410, h: 614, pos: '50% 25%', widths: [410], alt: 'Bride in a sheer beaded gown with long glossy waves, looking over her shoulder.' },
+  'tile-engagement': { w: 408, h: 614, pos: '55% 35%', widths: [408], alt: 'An engaged couple laughing on a city rooftop; she has a sleek ponytail and soft glam.' },
+  'tile-event-glam': { w: 459, h: 614, pos: '50% 25%', widths: [459], alt: 'Event glam: a gold shimmer eye, long waves and gold jewellery with a red and gold top.' },
+  'studio-waves': { w: 933, h: 1272, pos: '50% 30%', widths: [480, 800, 933], alt: 'Studio portrait: voluminous short waves, a smoky eye and a nude lip, on white.' },
+  'studio-updo': { w: 709, h: 901, pos: '50% 30%', widths: [480, 709], alt: 'Studio portrait on black: a sleek updo with face-framing tendrils and radiant glam.' },
 };
 export const srcset = (k) => (PHOTOS[k].widths ?? [480, 800, 1280]).map((w) => `${A}/img/${k}-${w}.webp ${w}w`).join(', ');
 export const src = (k, w) => `${A}/img/${k}-${w ?? ((PHOTOS[k].widths ?? [480, 800])[1] ?? 480)}.webp`;
@@ -338,6 +358,8 @@ export const FILMS = {
   f13: { n: 13, file: 'transformation', label: 'Transformation', title: 'The transformation', pos: '50% 30%', views: '1.1M', alt: 'Silent clip: full glam and red waves outdoors, the end of a transformation.' },
   f14: { n: 14, file: 'copper-finish', label: 'Full glam', title: 'The finish', pos: '50% 35%', views: '1.5M', credit: 'Hair by @.artistic.aestheticss' /* same copper look as f2, whose caption credits the hair; this post has no caption, so the credit is carried over: confirm with her */, alt: 'Silent clip: the finished copper glam, close to camera.' },
 };
+/* The public TikTok post each clip comes from (media pack README, 2026-11-19): tap a clip, open that post. */
+export const FILM_POST = { f1: 'https://www.tiktok.com/@amairanymua/video/7706156146196843807', f2: 'https://www.tiktok.com/@amairanymua/video/7150836053123829038', f3: 'https://www.tiktok.com/@amairanymua/video/7699118373593976094', f4: 'https://www.tiktok.com/@amairanymua/video/7709498487829777695', f5: 'https://www.tiktok.com/@amairanymua/video/7699834924928421150', f6: 'https://www.tiktok.com/@amairanymua/video/7695776085757168927', f7: 'https://www.tiktok.com/@amairanymua/video/7689074144322850079', f8: 'https://www.tiktok.com/@amairanymua/video/7693563601935813918', f9: 'https://www.tiktok.com/@amairanymua/video/7701693639176506654', f10: 'https://www.tiktok.com/@amairanymua/video/7706203772032240926', f11: 'https://www.tiktok.com/@amairanymua/video/7708757292937727263', f12: 'https://www.tiktok.com/@amairanymua/video/7706899084749098271', f13: 'https://www.tiktok.com/@amairanymua/video/7036922330328698117', f14: 'https://www.tiktok.com/@amairanymua/video/7099997289241922862' };
 export const filmSrc = (id) => (FILMS[id].file ? { mp4: `${A}/film/${FILMS[id].file}.mp4`, poster: `${A}/film/${FILMS[id].file}.jpg` } : null);
 /** One film frame. With a file: a muted, looping, playsinline <video data-film> with its poster
  *  and a lazy data-src (each site's own script loads and plays it near the viewport, rests it off
