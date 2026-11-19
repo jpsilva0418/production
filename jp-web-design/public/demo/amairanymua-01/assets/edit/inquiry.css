@@ -1,0 +1,264 @@
+/* /demo/amairanymua-01 — The Edit: the Bridal Inquiry page and its skin of the shared inquiry.
+   Loaded AFTER assets/css/inquiry-core.css, so single-class rules here win on equal specificity.
+   Core keeps the structure (hidden states, iPhone date/time fixes, 16px inputs, zero-minimum
+   grids); everything that looks like The Edit is here. Hooks and states: SKINNING.md.
+   Site tokens live in site.css; the three below are this page's only additions. */
+.pg-bridal-inquiry{
+  --iq-bad:#9A3A31;                 /* error text: 7.0:1 on white, 6.6:1 on cream */
+  --iq-bad-edge:#B2473D;            /* error border: 5.4:1 on white */
+  --iq-edge:rgba(43,37,35,.5);      /* field and card edges: 3.2:1 on white (WCAG non-text) */
+  --iq-lift:clamp(44px,7vw,104px);  /* how far the form card rises into the peach */
+  --iq-pad:clamp(20px,4vw,48px);
+}
+
+/* The header stays put on this page. site.js tucks it away on the way down, and a step change
+   can scroll DOWN a little (a short step followed by a long one, or "Back to my answers"), which
+   would hide it mid-move and leave the step resting 64px lower than every other time. A form is
+   worked from top to bottom in small moves, so here the header simply stays. */
+.pg-bridal-inquiry .hd--hide{transform:none}
+
+/* ================================================================ the title card */
+.iq-cover{padding-bottom:calc(var(--iq-lift) + clamp(28px,4vw,56px))}
+.iq-cover-in{display:grid;gap:24px}
+.iq-cover-copy{gap:18px}
+.iq-h{max-width:12ch}
+.iq-cover .cover-sub{color:var(--charcoal)}
+
+/* "Not a bride?" */
+.iq-q{display:grid;gap:8px;justify-items:start;padding:18px 20px 20px;border-radius:var(--r-m);background:var(--cream);box-shadow:0 18px 36px -28px var(--shade)}
+.iq-q-h{font-size:22px}
+.iq-q-t{font-size:15px;line-height:1.45;color:var(--charcoal-soft);max-width:26rem}
+.iq-q-go{margin-top:6px}
+
+@media(min-width:900px){
+  .iq-cover-in{grid-template-columns:minmax(0,1fr) minmax(280px,340px);column-gap:clamp(40px,6vw,96px);align-items:end}
+  .iq-q{padding:26px 28px 28px;border-radius:var(--r-l);gap:10px}
+  .iq-q-h{font-size:clamp(26px,2.4vw,32px)}
+  .iq-q-t{font-size:16px}
+}
+
+/* ================================================================ the stage: card + side */
+.iq-sec{padding-bottom:var(--sec)}
+.iq-grid{display:grid;gap:28px;align-items:start}
+.iq-card{position:relative;z-index:1;min-width:0;overflow:hidden;margin-top:calc(var(--iq-lift) * -1);padding:var(--iq-pad);border-radius:clamp(28px,4vw,40px);background:var(--white);box-shadow:0 34px 70px -46px rgba(43,37,35,.55);transition:background-color .45s var(--ease)}
+.iq-card-k{margin-bottom:clamp(22px,3vw,34px)}
+.iq-card .cf-inquiry{width:100%}
+
+.iq-side{display:grid;gap:16px;align-content:start;min-width:0}
+.iq-print{display:none}
+.iq-note{display:flex;gap:10px;align-items:baseline;font-size:15px;line-height:1.5;color:var(--charcoal-soft)}
+.iq-note .spark{width:12px;height:12px;color:var(--bronze);transform:translateY(1px)}
+.iq-demo{display:flex;gap:12px;align-items:baseline;padding:14px 18px;border-radius:var(--r-m);background:var(--gulf);font:600 15px/1.45 var(--f-body);color:var(--charcoal)}
+.iq-demo-dot{flex:none;width:8px;height:8px;border-radius:50%;background:var(--charcoal);transform:translateY(-1px)}
+
+@media(min-width:900px){
+  .iq-grid{grid-template-columns:minmax(0,1fr) minmax(280px,340px);column-gap:clamp(40px,6vw,96px)}
+  .iq-side{position:sticky;top:calc(var(--hd-h) + 28px);gap:20px;padding-top:clamp(8px,2vw,28px)}
+  .iq-print{display:block;width:min(100%,320px);justify-self:center;margin-bottom:18px}
+}
+
+/* ================================================================ the inquiry: base + scroll offset */
+/* After Continue, Back or Edit the script brings the new step's top (its legend) to this distance
+   below the viewport's top. The fixed header is --hd-h tall at every width; the step's story bars
+   sit above the legend in a block exactly 64px tall (see .cf-prog), so the bars land 16px under the
+   header and the question right below them. The hand-off has no bars: it rests 24px under it. */
+.cf-inquiry{--cf-scroll-offset:calc(var(--hd-h) + env(safe-area-inset-top, 0px) + 80px);color:var(--charcoal);font-family:var(--f-body)}
+.cf-inquiry[data-view="handoff"]{--cf-scroll-offset:calc(var(--hd-h) + env(safe-area-inset-top, 0px) + 24px)}
+
+/* ================================================================ progress: story bars */
+/* done: a full Gulf bar and a tick; now: a charcoal bar that fills on arrival and the live dot;
+   to come: an empty track and its number. Never colour alone. Block height: 6 + 10 + 20 + 28 = 64. */
+.cf-prog{position:relative;gap:6px;margin:0 0 28px;counter-reset:iq}
+.cf-prog li{display:grid;grid-template-rows:6px 20px;row-gap:10px;counter-increment:iq}
+.cf-prog-bar{position:relative;overflow:hidden;height:6px;border-radius:6px;background:var(--line)}
+.cf-prog-bar::after{content:"";position:absolute;inset:0;border-radius:inherit;transform-origin:0 50%;transform:scaleX(0)}
+.cf-prog li.done .cf-prog-bar::after{background:var(--gulf);transform:none}
+.cf-prog li.now .cf-prog-bar::after{background:var(--charcoal);transform:none;animation:iqFill .7s var(--ease) both}
+@keyframes iqFill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.cf-prog-lbl{height:20px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font:600 13px/20px var(--f-body);letter-spacing:.005em;color:var(--charcoal-soft)}
+.cf-prog-lbl::before{display:inline-block;vertical-align:middle;margin:-2px 7px 0 0}
+.cf-prog li:not(.done):not(.now) .cf-prog-lbl{opacity:.72}
+.cf-prog li:not(.done):not(.now) .cf-prog-lbl::before{content:counter(iq,decimal-leading-zero);margin-top:-1px;font:700 11px/1 var(--f-body)}
+.cf-prog li.done .cf-prog-lbl::before{content:"";width:9px;height:5px;margin-top:-5px;border:solid var(--charcoal);border-width:0 0 2px 2px;transform:rotate(-45deg)}
+.cf-prog li.now .cf-prog-lbl{color:var(--charcoal);font-weight:700}
+.cf-prog li.now .cf-prog-lbl::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--lip);box-shadow:0 0 0 3px rgba(194,84,92,.18)}
+/* phones: only the current step is named, across the full width, with its place in the four */
+@media(max-width:599px){
+  .cf-prog{padding-bottom:30px}
+  .cf-prog li{grid-template-rows:6px}
+  .cf-prog li:not(.now) .cf-prog-lbl{display:none}
+  .cf-prog li.now .cf-prog-lbl{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center}
+  .cf-prog li.now .cf-prog-lbl::after{content:counter(iq,decimal-leading-zero) " / 04";margin-left:auto;padding-left:12px;font:700 12px/1 var(--f-body);color:var(--charcoal-soft)}
+}
+
+/* ================================================================ steps, legends, fields */
+html.js .cf-form.ready .cf-step:not([hidden]){animation:iqStep .4s var(--ease) both}
+@keyframes iqStep{from{opacity:0}to{opacity:1}}
+.cf-step>legend{margin-bottom:clamp(22px,3vw,30px);font:800 clamp(30px,4.2vw,46px)/.96 var(--f-display);font-stretch:84%;letter-spacing:-.03em;color:var(--charcoal);text-wrap:balance}
+.cf-two{column-gap:16px}
+.cf-field{margin-bottom:24px}
+.cf-step>.cf-field:last-child,.cf-step>.cf-two:last-child>.cf-field{margin-bottom:0}
+.cf-lbl{margin-bottom:10px;font:600 15px/1.35 var(--f-body);color:var(--charcoal)}
+.cf-req{display:inline-block;margin-left:6px;padding:3px 9px 4px;border-radius:999px;background:var(--peach);font:700 11px/1.1 var(--f-body);letter-spacing:.03em;vertical-align:2px;white-space:nowrap}
+.cf-opt{margin-left:3px;font:italic 400 15px/1 var(--f-italic);color:var(--charcoal-soft);white-space:nowrap}
+
+/* text, email, tel, date, time and the textarea (core keeps them 16px+ and full width) */
+.cf-input{min-height:54px;padding:14px 18px;border:1.5px solid var(--iq-edge);border-radius:var(--r-s);background:var(--cream);color:var(--charcoal);font-size:17px;-webkit-tap-highlight-color:transparent;transition:border-color .2s,background-color .2s}
+textarea.cf-input{min-height:132px;line-height:1.5}
+.cf-input::placeholder{color:var(--charcoal-soft);opacity:.74}
+@media(hover:hover){.cf-input:hover{border-color:var(--charcoal)}}
+.cf-input:focus,.cf-input:focus-visible{outline:none;border-color:var(--charcoal);background:var(--white);box-shadow:0 0 0 3px var(--white),0 0 0 5.5px var(--charcoal);border-radius:var(--r-s)}
+.cf-input[type="date"],.cf-input[type="time"]{min-height:54px}
+.cf-input::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer}
+.cf-input[aria-invalid="true"]{border-color:var(--iq-bad-edge);background:var(--white);box-shadow:inset 0 0 0 1px var(--iq-bad-edge)}
+.cf-input[aria-invalid="true"]:focus{box-shadow:inset 0 0 0 1px var(--iq-bad-edge),0 0 0 3px var(--white),0 0 0 5.5px var(--iq-bad-edge)}
+
+/* errors: the one place a red appears; the "!" disc and the words carry it without colour */
+.cf-err{display:flex;gap:8px;align-items:flex-start;margin:10px 0 0;font:600 14px/1.4 var(--f-body);color:var(--iq-bad)}
+.cf-err::before{content:"!";flex:none;display:grid;place-items:center;width:18px;height:18px;margin-top:1px;border-radius:50%;background:var(--iq-bad);color:var(--white);font:800 12px/1 var(--f-body)}
+
+/* "Date not set yet" */
+.cf-check{gap:10px;margin-top:10px;min-height:44px;padding-right:6px;font:500 15px/1.3 var(--f-body);color:var(--charcoal)}
+.cf-check input{width:22px;height:22px;accent-color:var(--charcoal);cursor:pointer}
+.cf-check input:focus-visible{outline:3px solid var(--charcoal);outline-offset:3px;border-radius:6px}
+.cf-check:has(input:checked){font-weight:700}
+
+.cf-hint{margin:12px 0 0;font-size:14px;line-height:1.5;color:var(--charcoal-soft)}
+.cf-hint a,.cf-handoff-body a{color:var(--charcoal);font-weight:600;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px;text-decoration-color:var(--line-strong)}
+@media(hover:hover){.cf-hint a:hover{text-decoration-color:var(--lip)}}
+
+/* ================================================================ choice cards */
+/* rest: cream, hairline edge, an empty ring. chosen: peach, a heavy charcoal edge, the ring filled
+   charcoal with a cream tick, bolder words (unmistakable without colour). The ring and tick live
+   on the span, so even a browser without :has() shows the choice. */
+.cf-cards{gap:10px}
+.cf-card{min-height:56px;padding:12px 16px;border:1.5px solid var(--iq-edge);border-radius:var(--r-s);background:var(--cream);color:var(--charcoal);font:600 16px/1.25 var(--f-body);transition:background-color .2s,border-color .2s,transform .2s var(--ease)}
+.cf-card>span{position:relative;display:grid;grid-template-columns:22px minmax(0,1fr);align-items:center;column-gap:12px;width:100%}
+.cf-card>span::before{content:"";width:22px;height:22px;border-radius:50%;border:1.5px solid var(--iq-edge);background:var(--white);box-sizing:border-box;transition:background-color .2s,border-color .2s}
+.cf-card>span::after{content:"";position:absolute;left:8px;top:50%;width:6px;height:11px;margin-top:-7px;border:solid var(--cream);border-width:0 2.5px 2.5px 0;transform:rotate(45deg);opacity:0;transition:opacity .15s}
+.cf-card input:checked+span{font-weight:800}
+.cf-card input:checked+span::before{background:var(--charcoal);border-color:var(--charcoal)}
+.cf-card input:checked+span::after{opacity:1}
+.cf-card:has(input:checked){background:var(--peach);border-color:var(--charcoal);box-shadow:inset 0 0 0 1.5px var(--charcoal)}
+.cf-card:active{transform:scale(.985)}
+@media(hover:hover){.cf-card:hover{border-color:var(--charcoal);background:var(--white)}.cf-card:has(input:checked):hover{background:var(--peach)}}
+/* keyboard focus: a ring around the whole card (and, without :has(), around its own ring) */
+.cf-card:has(input:focus-visible){outline:3px solid var(--charcoal);outline-offset:3px}
+.cf-card input:focus-visible+span::before{box-shadow:0 0 0 3px var(--white),0 0 0 5.5px var(--charcoal)}
+@supports selector(:has(a)){.cf-card input:focus-visible+span::before{box-shadow:none}}
+.cf-field[data-invalid] .cf-card{border-color:var(--iq-bad-edge)}
+
+/* the package names read like her collections: display face, a touch larger */
+.cf-cards-2 .cf-card{min-height:62px;font:700 17px/1.15 var(--f-display);font-stretch:92%;letter-spacing:-.01em}
+.cf-cards-2 .cf-card input:checked+span{font-weight:800}
+/* odd card out spans the row (packages: 2+2+1) */
+.cf-cards-2>.cf-card:last-child:nth-child(odd){grid-column:1/-1}
+
+/* three-up groups (first look, preferred contact) and party size (five) on phones: two across,
+   the odd one out full width, so no label is squeezed into a third of a phone */
+@media(max-width:559px){
+  .cf-cards-3{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cf-cards-3>.cf-card:last-child:nth-child(odd){grid-column:1/-1}
+}
+@media(max-width:379px){
+  .cf-cards{gap:8px}
+  .cf-card{padding:12px 10px}
+  .cf-card>span{grid-template-columns:20px minmax(0,1fr);column-gap:8px}
+  .cf-card>span::before{width:20px;height:20px}
+  .cf-card>span::after{left:7px;width:5px;height:10px;margin-top:-6px}
+  .cf-cards-3 .cf-card{font-size:15px}
+  .cf-cards-3 .cf-card{padding-inline:9px;letter-spacing:-.01em}
+}
+/* party size on wider screens: three on the first row, two wider ones under them (3+2, no hole) */
+@media(min-width:560px){
+  #cf-partySize-label+.cf-cards{grid-template-columns:repeat(6,minmax(0,1fr))}
+  #cf-partySize-label+.cf-cards>.cf-card{grid-column:span 2}
+  #cf-partySize-label+.cf-cards>.cf-card:nth-child(n+4){grid-column:span 3}
+}
+
+/* ================================================================ review */
+.cf-review{gap:12px;margin-bottom:22px}
+.cf-rev-group{padding:16px 18px 20px;border-radius:var(--r-m);background:var(--cream);border:1.5px solid var(--line)}
+.cf-rev-head{align-items:center;gap:12px;margin-bottom:10px}
+.cf-rev-title{margin:0;font:800 22px/1 var(--f-display);font-stretch:84%;letter-spacing:-.02em}
+.cf-rev-edit{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:8px 18px;border-radius:999px;border:1.5px solid var(--charcoal);background:transparent;color:var(--charcoal);font:600 15px/1 var(--f-body);transition:background-color .2s,color .2s}
+@media(hover:hover){.cf-rev-edit:hover{background:var(--charcoal);color:var(--cream)}}
+.cf-rev-edit:active{transform:scale(.97)}
+.cf-rev-edit:focus-visible{outline:3px solid var(--charcoal);outline-offset:3px;border-radius:999px}
+.cf-rev-list{gap:12px}
+.cf-rev-row{display:grid;gap:2px}
+.cf-rev-q{font:500 13px/1.35 var(--f-body);color:var(--charcoal-soft)}
+.cf-rev-a{font:600 16px/1.45 var(--f-body);color:var(--charcoal)}
+.cf-rev-none{margin:0;font:italic 400 17px/1.3 var(--f-italic);color:var(--charcoal-soft)}
+@media(min-width:600px){
+  .cf-rev-group{padding:18px 24px 22px}
+  .cf-rev-list{gap:8px}
+  .cf-rev-row{grid-template-columns:minmax(0,12rem) minmax(0,1fr);column-gap:20px;align-items:baseline}
+  .cf-rev-q{font-size:14px}
+}
+.cf-consent{font-size:14px;line-height:1.5;color:var(--charcoal-soft);max-width:36rem}
+
+/* ================================================================ step buttons + start over */
+/* #cfNext is .btn.btn--solid and #cfBack .btn.btn--line (passed in from inquiry.mjs) */
+.cf-nav{gap:10px;margin-top:32px;padding-top:24px;border-top:1.5px solid var(--line)}
+.cf-btn--primary::after{content:"\2192";content:"\2192" / "";font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:500;transition:transform .25s var(--ease)}
+@media(hover:hover){.cf-btn--primary:hover::after{transform:translateX(3px)}}
+.cf-btn:focus-visible{outline:3px solid var(--charcoal);outline-offset:3px;border-radius:999px}
+.cf-btn[disabled],.cf-btn[disabled]:hover{opacity:.45;cursor:not-allowed;transform:none;background:var(--charcoal);border-color:var(--charcoal)}
+.cf-btn--secondary[disabled],.cf-btn--secondary[disabled]:hover{background:transparent;color:var(--charcoal)}
+@media(max-width:599px){.cf-nav .btn{flex:1 1 0;padding-inline:16px}}
+@media(min-width:600px){.cf-nav .btn{min-width:168px}}
+/* touch screens keep :hover after a tap; the step buttons must not stay lit */
+@media(hover:none){
+  .cf-nav .btn--solid:hover,.cf-actions .btn--solid:hover{background:var(--charcoal);border-color:var(--charcoal)}
+  .cf-nav .btn--line:hover,.cf-actions .btn--line:hover{background:transparent;color:var(--charcoal)}
+}
+.cf-reset{display:block;margin:12px 0 0 auto;min-height:44px;padding:8px 6px;border-radius:10px;background:none;color:var(--charcoal-soft);font:600 14px/1 var(--f-body);text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px;text-decoration-color:var(--line);transition:color .2s,text-decoration-color .2s}
+@media(hover:hover){.cf-reset:hover{color:var(--charcoal);text-decoration-color:var(--lip)}}
+.cf-reset:focus-visible{outline:3px solid var(--charcoal);outline-offset:2px}
+
+/* ================================================================ the hand-off */
+/* the card turns peach for the last step; a swatch is painted on behind the heading */
+.iq-card:has(.cf-inquiry[data-view="handoff"]){background:var(--peach)}
+.iq-card:has(.cf-inquiry[data-view="handoff"]) .iq-card-k{background:var(--cream);border-color:var(--cream)}
+.cf-handoff{position:relative;isolation:isolate}
+.cf-handoff:not([hidden]){animation:iqStep .45s var(--ease) both}
+.cf-handoff h2::before{content:"";position:absolute;z-index:-1;left:18%;top:2%;width:min(150%,600px);aspect-ratio:1600 / 420;background:var(--peach-deep);-webkit-mask:url(swatch-1.webp) center / 100% 100% no-repeat;mask:url(swatch-1.webp) center / 100% 100% no-repeat;transform:rotate(-4deg);pointer-events:none}
+.cf-handoff:not([hidden]) h2::before{animation:iqPaint .75s var(--ease) .2s both}
+@keyframes iqPaint{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.cf-strip{position:relative;margin:0 0 26px;padding:12px 16px 12px 34px;border-radius:var(--r-s);background:var(--charcoal);color:var(--cream);font:400 14px/1.45 var(--f-body)}
+.cf-strip::before{content:"";position:absolute;left:16px;top:19px;width:8px;height:8px;border-radius:50%;background:var(--gulf)}
+.cf-strip strong{font-weight:700}
+.cf-kick{display:inline-flex;align-items:center;gap:8px;min-height:32px;padding:5px 14px 5px 12px;border-radius:999px;background:var(--cream);font:600 13px/1.2 var(--f-body);color:var(--charcoal)}
+.cf-kick::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:currentColor}
+.cf-handoff h2{position:relative;margin:18px 0 16px;max-width:13ch;font:800 clamp(38px,5.6vw,68px)/.92 var(--f-display);font-stretch:84%;letter-spacing:-.03em;color:var(--charcoal);text-wrap:balance}
+.cf-handoff-body{max-width:34rem;font-size:clamp(17px,1.5vw,19px);line-height:1.5;color:var(--charcoal)}
+.cf-actions{gap:10px;margin-top:28px}
+.cf-go,.cf-copy{white-space:normal;text-align:center;line-height:1.2}
+.cf-go:focus-visible,.cf-copy:focus-visible{outline:3px solid var(--charcoal);outline-offset:3px;border-radius:999px}
+.cf-back{display:inline-flex;align-items:center;min-height:44px;padding:8px 6px;border-radius:10px;background:none;color:var(--charcoal);font:600 15px/1 var(--f-body);text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:5px;text-decoration-color:var(--line-strong)}
+@media(hover:hover){.cf-back:hover{text-decoration-color:var(--lip)}}
+.cf-back:focus-visible{outline:3px solid var(--charcoal);outline-offset:2px}
+@media(max-width:599px){
+  .cf-actions{display:grid;grid-template-columns:minmax(0,1fr)}
+  .cf-actions .btn{width:100%}
+  .cf-back{justify-self:center}
+}
+/* the copy status: an empty line that becomes a cream sticker with a tick ("Copied"), or the
+   manual-copy instruction; space is kept so nothing jumps */
+.cf-status{min-height:40px;margin:14px 0 0;font:600 14px/1.4 var(--f-body);color:var(--charcoal)}
+.cf-status:not(:empty){display:flex;align-items:center;gap:10px;width:max-content;max-width:100%;padding:9px 16px 9px 12px;border-radius:999px;background:var(--cream)}
+.cf-status:not(:empty)::before{content:"";flex:none;width:9px;height:5px;margin:-3px 2px 0 2px;border:solid var(--charcoal);border-width:0 0 2px 2px;transform:rotate(-45deg)}
+.cf-copytext{margin-top:12px;padding:14px 16px;border:1.5px solid var(--charcoal);border-radius:var(--r-s);background:var(--cream);color:var(--charcoal)}
+.cf-copytext:focus-visible{outline:3px solid var(--charcoal);outline-offset:3px}
+
+/* ================================================================ without script */
+.cf-noscript{display:grid;gap:16px;justify-items:start;margin:0;padding:20px 22px 22px;border-radius:var(--r-m);background:var(--cream);border:1.5px solid var(--line);font:500 17px/1.5 var(--f-body);color:var(--charcoal)}
+.cf-noscript a{display:inline-flex;align-items:center;min-height:52px;padding:12px 24px;border-radius:999px;background:var(--charcoal);color:var(--cream);font:600 16px/1.2 var(--f-body);text-decoration:none;text-align:center}
+.cf-noscript a:focus-visible{outline:3px solid var(--charcoal);outline-offset:3px;border-radius:999px}
+
+/* ================================================================ reduced motion */
+@media(prefers-reduced-motion:reduce){
+  .cf-prog li.now .cf-prog-bar::after,html.js .cf-form.ready .cf-step:not([hidden]),.cf-handoff:not([hidden]),.cf-handoff:not([hidden]) h2::before{animation:none}
+  .cf-card:active,.cf-rev-edit:active{transform:none}
+}

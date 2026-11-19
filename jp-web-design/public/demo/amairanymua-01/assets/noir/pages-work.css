@@ -1,0 +1,198 @@
+/* /demo/amairanymua-01 — NOIR: Portfolio (the contact reel + frame viewer) and Reviews.
+   Built on the page kit in site.css; every colour comes from its tokens. No cards, no boxes:
+   faces float on the black and their frames dissolve at the edges (masks on the frame,
+   never across a face). Mobile first; two-column compositions from 900px. */
+
+/* =====================================================================
+   PORTFOLIO — the contact reel
+   ===================================================================== */
+.rl{position:relative;padding-bottom:calc(var(--sec) * .4)}
+
+/* ---- the filter: slates with true counts ---- */
+.rl-bar{padding-top:clamp(1rem,4vh,2.4rem)}
+.rl-bar-in{display:grid;gap:1rem;padding-bottom:clamp(1rem,3vh,1.6rem);border-bottom:1px solid var(--umber)}
+.rl-fl,.rl-jump{display:flex;flex-wrap:wrap;gap:0 clamp(18px,3.2vw,40px)}
+.rl-fl[hidden],.rl-jump[hidden]{display:none}
+.rl-b{position:relative;display:inline-flex;align-items:center;gap:.7em;min-height:44px;font:400 .68rem/1.2 var(--f-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--bone-soft);transition:color .3s var(--ease);-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.rl-b b{font-weight:400;color:var(--champagne);opacity:.75;transition:opacity .3s}
+.rl-b::after{content:"";position:absolute;left:0;right:0;bottom:8px;height:1px;background:var(--champagne);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.rl-b:hover{color:var(--bone)}
+.rl-b[aria-pressed="true"]{color:var(--bone)}
+.rl-b[aria-pressed="true"] b{opacity:1}
+.rl-b[aria-pressed="true"]::after{transform:none}
+.rl-now{min-height:1.5em}
+@media(min-width:900px){
+  .rl-bar-in{grid-template-columns:1fr auto;align-items:center}
+  .rl-now{justify-self:end}
+}
+
+/* ---- a group of the reel ---- */
+.rl-groups{transition:opacity .22s var(--ease)}
+.rl-groups.swap{opacity:0}
+.rl-g{padding-top:clamp(3.4rem,10vh,6.5rem)}
+.rl-g[hidden]{display:none}
+.rl-gh{display:grid;gap:.9rem;margin-bottom:clamp(2rem,6vh,3.6rem)}
+.rl-gn{margin-bottom:.4rem}
+.rl-gt{line-height:.95}
+.rl-gl{max-width:30em}
+@media(min-width:900px){
+  .rl-gh{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"n n" "t l" "t m";column-gap:3rem;align-items:end}
+  .rl-gn{grid-area:n}
+  .rl-gt{grid-area:t;align-self:end}
+  .rl-gl{grid-area:l;justify-self:end;text-align:right}
+  .rl-gm{grid-area:m;justify-self:end}
+}
+
+/* ---- the wall: faces floating on the black. Composition per place in the group ---- */
+.rl-wall{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));column-gap:14px;row-gap:clamp(2.2rem,6vw,3rem);align-items:start;margin:0;padding:0 var(--gut-r) 0 var(--gut-l);list-style:none;max-width:calc(var(--max) + var(--gut-l) + var(--gut-r));margin-inline:auto}
+.rl-t{position:relative;min-width:0}
+.rl-a{display:block;position:relative;-webkit-tap-highlight-color:transparent;cursor:zoom-in}
+.rl-a:focus-visible{outline-offset:6px}
+.rl-ph,.rl-f{display:block;position:relative;overflow:hidden;aspect-ratio:4/5}
+/* the dissolve: soft at the sides and top, long at the foot, so a face rises out of the black.
+   Faces sit in the upper half of every frame (PHOTOS.pos), clear of all four fades. */
+.rl-ph{background:var(--blackout);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent),linear-gradient(180deg,transparent,#000 9%,#000 60%,transparent);
+  -webkit-mask-composite:source-in;
+  mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent),linear-gradient(180deg,transparent,#000 9%,#000 60%,transparent);
+  mask-composite:intersect}
+.rl-ph img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s var(--ease)}
+.rl-k--film .rl-f{aspect-ratio:9/16}
+.rl-film{position:absolute;inset:0}
+.rl-cap{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:.2em .7em;margin-top:-.4rem;padding-right:.5rem;transition:color .3s}
+.rl-k--film .rl-cap{margin-top:.8rem}
+.rl-cap b{color:var(--champagne)}
+.rl-num{white-space:nowrap}
+@media(hover:hover){
+  .rl-a:hover .rl-ph img{transform:scale(1.035)}
+  .rl-t:hover .rl-cap{color:var(--bone)}
+}
+
+/* phones: one big face edge to edge, then a staggered pair, then a shifted single */
+.rl-t--0,.rl-t--4{grid-column:1/-1}
+.rl-t--0 .rl-ph,.rl-t--0 .rl-f,.rl-t--4 .rl-ph,.rl-t--4 .rl-f{margin-inline:calc(var(--gut-l) * -1) calc(var(--gut-r) * -1)}
+.rl-t--1{grid-column:1/span 3}
+.rl-t--2{grid-column:4/span 3;margin-top:22vw}
+.rl-t--3{grid-column:2/span 5}
+.rl-k--wide.rl-t--0 .rl-ph{aspect-ratio:1}
+.rl-t--1 .rl-cap,.rl-t--2 .rl-cap,.rl-t--3 .rl-cap{flex-direction:column;align-items:flex-start;gap:.15em}
+.rl-t--1 .rl-cap .sep,.rl-t--2 .rl-cap .sep,.rl-t--3 .rl-cap .sep{display:none}
+.rl-t--1 .slot,.rl-t--2 .slot{padding:1.2rem .8rem;gap:.6rem}
+.rl-t--1 .slot-s,.rl-t--2 .slot-s{letter-spacing:.12em;line-height:1.5}
+@media(min-width:600px) and (max-width:899px){
+  .rl-t--0 .rl-ph,.rl-t--0 .rl-f,.rl-t--4 .rl-ph,.rl-t--4 .rl-f{margin-inline:0}
+  .rl-t--0{grid-column:1/span 5}
+  .rl-t--4{grid-column:2/span 5}
+  .rl-k--film.rl-t--3{grid-column:3/span 3}
+}
+
+/* wide: twelve columns; the faces answer each other across the black like frames on a reel */
+@media(min-width:900px){
+  .rl-wall{grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(18px,2vw,32px);row-gap:clamp(3rem,6vw,6.5rem)}
+  .rl-t--0 .rl-ph,.rl-t--0 .rl-f,.rl-t--4 .rl-ph,.rl-t--4 .rl-f{margin-inline:0}
+  .rl-t--0{grid-column:1/span 6}
+  .rl-t--1{grid-column:8/span 4;margin-top:7vw}
+  .rl-t--2{grid-column:2/span 4;margin-top:0}
+  .rl-t--3{grid-column:7/span 5;margin-top:9vw}
+  .rl-t--4{grid-column:4/span 5;margin-top:0}
+  .rl-k--film.rl-t--3{grid-column:8/span 4}
+  .rl-k--wide.rl-t--0{grid-column:1/span 7}
+  .rl-k--wide.rl-t--4{grid-column:3/span 10}
+  .rl-k--wide.rl-t--4 .rl-ph{aspect-ratio:16/9}
+  .rl-t--1 .rl-cap,.rl-t--2 .rl-cap,.rl-t--3 .rl-cap{flex-direction:row;align-items:center;gap:.2em .7em}
+  .rl-t--1 .rl-cap .sep,.rl-t--2 .rl-cap .sep,.rl-t--3 .rl-cap .sep{display:block}
+}
+@media(min-width:1600px){
+  .rl-t--1{margin-top:112px}
+  .rl-t--3{margin-top:144px}
+}
+
+/* the wall arrives frame by frame (only when the script runs; never under reduced motion) */
+@media(prefers-reduced-motion:no-preference){
+  html.rlx .rl-t{opacity:0;transform:translate3d(0,36px,0);transition:opacity 1s var(--ease) var(--d,0s),transform 1.2s var(--ease) var(--d,0s)}
+  html.rlx .rl-t.in{opacity:1;transform:none}
+}
+
+/* ---- Instagram and the close ---- */
+.rl-ig{padding-bottom:0}
+.rl-ig-in{display:grid;gap:1.3rem;justify-items:start;padding-top:clamp(3rem,9vh,5.5rem)}
+.rl-ig-in .d-m{max-width:16ch}
+
+/* =====================================================================
+   THE FRAME VIEWER (role=dialog; stays under the preview marker)
+   ===================================================================== */
+.lb{position:fixed;inset:0;z-index:80;display:none;grid-template-rows:auto minmax(0,1fr) auto;background:var(--blackout);color:var(--bone);
+  padding:env(safe-area-inset-top,0px) var(--gut-r) 0 var(--gut-l);overscroll-behavior:contain}
+.lb.open{display:grid}
+.lb-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;height:var(--hd)}
+.lb-n{color:var(--bone-soft)}
+.lb-n b{font-weight:400;color:var(--champagne)}
+.lb-x{display:inline-flex;align-items:center;gap:10px;min-height:44px;min-width:44px;justify-content:flex-end;margin-right:-6px;padding:0 6px;font:400 .68rem/1 var(--f-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--bone)}
+.lb-x i{position:relative;width:18px;height:18px}
+.lb-x i::before,.lb-x i::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:currentColor;transform:rotate(45deg)}
+.lb-x i::after{transform:rotate(-45deg)}
+.lb-stage{position:relative;display:grid;place-items:center;min-height:0;overflow:hidden;touch-action:pinch-zoom;-webkit-user-select:none;user-select:none}
+.lb-stage img{display:block;max-width:100%;max-height:100%;object-fit:contain;opacity:0;-webkit-user-drag:none}
+.lb-stage img.in{opacity:1}
+.lb-foot{display:grid;grid-template-columns:52px minmax(0,1fr) 52px;align-items:center;gap:12px;padding:12px 0 calc(66px + env(safe-area-inset-bottom,0px))}
+.lb-cap{text-align:center;font:italic 400 clamp(1.25rem,3.4vw,1.9rem)/1.15 var(--f-display);color:var(--bone);text-wrap:balance}
+.lb-nav{display:inline-grid;place-items:center;width:52px;height:52px;border:1px solid rgba(230,207,166,.5);color:var(--champagne);font-size:1.1rem;transition:background-color .3s,color .3s}
+.lb-nav:hover{background:var(--champ-a);color:var(--bone)}
+@media(min-width:900px){
+  .lb-foot{padding-bottom:calc(52px + env(safe-area-inset-bottom,0px))}
+}
+@media(prefers-reduced-motion:no-preference){
+  .lb{opacity:0;transition:opacity .32s var(--ease)}
+  .lb.shown{opacity:1}
+  .lb-stage img{transition:opacity .2s var(--ease),transform .38s var(--ease)}
+  .lb-stage img.drag{transition:none}
+}
+@media(prefers-reduced-motion:reduce){.lb-nav,.rl-b,.rl-b::after,.rl-groups{transition:none}}
+
+/* =====================================================================
+   REVIEWS
+   ===================================================================== */
+.rs-sec{padding-top:clamp(1rem,4vh,2.5rem)}
+.rs-list{display:grid;border-top:1px solid var(--umber)}
+.rs{border-bottom:1px solid var(--umber)}
+.rs-a{display:grid;grid-template-columns:auto 1fr;grid-template-areas:"k k" "s s" "n n" "m g";align-items:end;gap:.6rem 1rem;padding:clamp(1.8rem,5vh,2.8rem) 0;-webkit-tap-highlight-color:transparent}
+.rs-k{grid-area:k}
+.rs-score{grid-area:s;display:flex;align-items:flex-end;gap:clamp(14px,2.4vw,26px);margin-top:.4rem}
+.rs-num{font:400 clamp(5.6rem,24vw,10.5rem)/.8 var(--f-display);letter-spacing:-.03em;color:var(--bone)}
+.rs-stars{display:flex;gap:6px;padding-bottom:.55em}
+.rs-stars i{display:block;width:clamp(15px,3.4vw,20px);aspect-ratio:1;background:var(--champagne);clip-path:polygon(50% 0,61.8% 35.4%,100% 35.4%,69.1% 57.3%,80.9% 92.7%,50% 70.8%,19.1% 92.7%,30.9% 57.3%,0 35.4%,38.2% 35.4%)}
+.rs-name{grid-area:n;font:italic 400 clamp(2rem,6.4vw,3.4rem)/1 var(--f-display);color:var(--champagne);margin-top:.5rem}
+.rs-meta{grid-area:m;align-self:center}
+.rs-go{grid-area:g;justify-self:end}
+.rs-a:hover .rs-go{color:var(--bone);background-size:40% 1px}
+.rs-a:hover .rs-go .arr{transform:translateX(4px)}
+.rs-a:focus-visible{outline-offset:-2px}
+.rs-g{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem 1.6rem;padding:1.6rem 0;border-bottom:1px solid var(--umber)}
+.rs-g-k{min-width:6em}
+.rs-g-l{font:italic 400 clamp(1.3rem,3vw,1.7rem)/1.2 var(--f-display);color:var(--bone);margin-right:auto}
+.rs-asof{margin-top:1.4rem}
+@media(min-width:900px){
+  .rs-list{grid-template-columns:1fr 1fr}
+  .rs + .rs{border-left:1px solid var(--umber)}
+  .rs:nth-child(2) .rs-a{padding-left:clamp(2rem,4vw,4rem)}
+  .rs:first-child .rs-a{padding-right:clamp(2rem,4vw,4rem)}
+}
+
+/* the honest empty state, beside a wedding-day photograph */
+.rs-empty{overflow:hidden;isolation:isolate;padding-top:0}
+.rs-e-ph{position:relative;aspect-ratio:4/5;max-height:78svh;width:100%;
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 14%,#000 55%,transparent);mask-image:linear-gradient(180deg,transparent,#000 14%,#000 55%,transparent)}
+.rs-e-ph img{width:100%;height:100%;object-fit:cover}
+.rs-e-in{position:relative;margin-top:-18vw}
+.rs-e-txt{max-width:36rem}
+.rs-e-txt .d-m{max-width:15ch}
+.rs-e-txt .body{margin-top:1.4rem}
+.rs-e-acts{margin-top:2rem;align-items:center;column-gap:1.8rem}
+@media(min-width:900px){
+  .rs-empty{display:grid;align-items:center;min-height:min(92vh,980px);padding-block:var(--sec)}
+  .rs-e-ph{position:absolute;z-index:-1;top:0;bottom:0;right:0;width:56%;max-height:none;aspect-ratio:auto;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 40%),linear-gradient(180deg,transparent,#000 12%,#000 82%,transparent);-webkit-mask-composite:source-in;
+    mask-image:linear-gradient(90deg,transparent,#000 40%),linear-gradient(180deg,transparent,#000 12%,#000 82%,transparent);mask-composite:intersect}
+  .rs-e-in{margin-top:0}
+  .rs-e-txt{max-width:min(44%,36rem)}
+}

@@ -1,0 +1,167 @@
+/* /demo/amairanymua-01 — NOIR story pages: About, Services, Bridal.
+   Built on the kit in site.css; every colour is a token (or a token's transparent twin). */
+
+/* =========================== ABOUT =========================== */
+/* The title card. artist-brushes is shot on white, so it does not dissolve into the black
+   (that would turn its edges into a grey rectangle): it hangs like a lit print, inside a
+   fine champagne frame, with its caption slate beneath. */
+.ab-cv{position:relative;padding:calc(var(--hd) + env(safe-area-inset-top,0px) + 2.2rem) 0 clamp(3.5rem,9vh,6rem);overflow:hidden;isolation:isolate}
+.ab-cv::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(55% 45% at 70% 40%,rgba(192,138,91,.10),transparent 70%)}
+.ab-cv-g{display:grid;gap:clamp(2.6rem,6vh,3.6rem)}
+.ab-cv-fig{order:-1;margin:0;justify-self:center;width:min(calc(100% - 24px),calc((52vh - 20px) * .8),calc((52svh - 20px) * .8))}
+.ab-cv-ph{position:relative;aspect-ratio:4/5;background:var(--cocoa)}
+.ab-cv-ph img{width:100%;height:100%;object-fit:cover}
+.ab-cv-ph::after{content:"";position:absolute;inset:-11px;border:1px solid rgba(230,207,166,.38);pointer-events:none}
+.ab-cv-fig figcaption{margin-top:calc(11px + 1rem);display:flex;flex-wrap:wrap;row-gap:.2em}
+.ab-cv .d-xl{max-width:9ch}
+.ab-cv .acts{margin-top:2rem}
+@media(min-width:900px){
+  .ab-cv{min-height:100vh;min-height:100svh;display:flex;align-items:flex-end}
+  .ab-cv > .wrap{width:100%}
+  .ab-cv-g{grid-template-columns:1.1fr .9fr;align-items:end;gap:clamp(2rem,5vw,6rem)}
+  .ab-cv-fig{order:0;justify-self:end;width:min(100%,calc((100vh - var(--hd) - 9rem) * .8),calc((100svh - var(--hd) - 9rem) * .8));margin-right:11px}
+  .ab-cv-txt{padding-bottom:calc(11px + 2.4rem)}
+}
+
+/* the story */
+.ab-st-g{display:grid;gap:1.4rem}
+.ab-st-g .ch{margin-bottom:.6rem}
+.ab-st-r .body{margin-top:1.2rem}
+.ab-st-r.body p + p{margin-top:1em}
+.ab-st-k{margin-top:.4rem}
+.ab-pull{margin:clamp(4rem,12vh,8rem) 0 clamp(3rem,8vh,5rem);font:italic 400 clamp(3rem,12.5vw,9.4rem)/.9 var(--f-display);letter-spacing:-.02em;color:var(--bone);text-wrap:balance}
+.ab-pull em{color:var(--champagne)}
+.ab-facts{margin-top:clamp(4rem,10vh,7rem);border-top:1px solid rgba(230,207,166,.45)}
+.ab-facts > div{padding:1.5rem 0 1.7rem;border-bottom:1px solid var(--umber)}
+.ab-facts dt{display:flex}
+.ab-facts dd{margin-top:.7rem;font:italic 400 clamp(2.3rem,7vw,4.4rem)/1 var(--f-display);letter-spacing:-.01em;color:var(--champagne)}
+@media(min-width:900px){
+  .ab-st-g{grid-template-columns:1.1fr 1fr;gap:3rem;align-items:start}
+  .ab-st-g .ch{margin-bottom:0}
+  .ab-st-r{max-width:34em;justify-self:end;width:100%}
+  .ab-pull{max-width:12ch}
+  .ab-facts{display:grid;grid-template-columns:repeat(3,1fr)}
+  .ab-facts > div{padding:2rem clamp(1rem,3vw,3rem) 2.2rem;border-bottom:0}
+  .ab-facts > div:first-child{padding-left:0}
+  .ab-facts > div + div{border-left:1px solid var(--umber)}
+}
+
+/* in motion: four vertical frames, film and stills, like a row of reels */
+.ab-mo{border-top:1px solid var(--umber)}
+.ab-mo-g{display:grid;grid-template-columns:1fr 1fr;align-items:start;gap:28px 12px}
+.ab-mo-g > li:nth-child(even){margin-top:3.5rem}
+.ab-mo-g figure{margin:0}
+.ab-mo-g .ph,.ab-mo-g .film{width:100%}
+.ab-mo-g figcaption{display:flex;flex-wrap:wrap;row-gap:.25em;margin-top:.9rem}
+.ab-mo .slot{gap:.6rem;padding:1.4rem .9rem}
+.ab-mo .slot-ic{width:42px;height:42px}
+.ab-mo .slot-t{font-size:clamp(1.12rem,3.8vw,1.75rem)}
+.ab-mo .slot-s{letter-spacing:.14em}
+@media(min-width:900px){
+  .ab-mo-g{grid-template-columns:repeat(4,1fr);gap:clamp(14px,1.6vw,24px)}
+  .ab-mo-g > li:nth-child(even){margin-top:5rem}
+}
+
+/* known for */
+.ab-rule{margin-bottom:var(--sec)}
+.ab-more{margin-top:2.2rem}
+
+/* =========================== SERVICES =========================== */
+.sv-g{scroll-margin-top:var(--hd)}
+.sv-g--2{border-top:1px solid var(--umber)}
+.sv-gh{margin-bottom:clamp(3rem,8vh,5rem)}
+.sv-gk{flex-wrap:wrap;row-gap:.3em}
+.sv-gk b{color:var(--bone)}
+.sv-list{display:grid;gap:clamp(4.5rem,12vh,8rem)}
+.sv-it{display:grid;gap:2rem;scroll-margin-top:var(--hd)}
+.sv-media{position:relative;margin:0 calc(var(--gut-r) * -1) 0 calc(var(--gut-l) * -1)}
+.ph.sv-ph{-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 64%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 64%,transparent 100%)}
+.sv-film{position:relative;z-index:1;width:46%;margin:-37.5% var(--gut-r) 0 auto}
+.sv-film .film{width:100%;box-shadow:none}
+.sv-film .slot{gap:.6rem;padding:1.4rem .8rem}
+.sv-film .slot-ic{width:42px;height:42px}
+.sv-film .slot-t{font-size:clamp(1.1rem,3.8vw,1.75rem)}
+.sv-film .slot-s{letter-spacing:.14em}
+.sv-txt > .slate{display:flex;flex-wrap:wrap;row-gap:.25em;margin-bottom:1.1rem}
+.sv-txt .d-m{margin-bottom:1.2rem;max-width:12ch}
+.sv-txt .lead{max-width:30em}
+.sv-txt .ticks{margin-top:1.3rem}
+.sv-go{display:grid;gap:1.2rem;margin-top:clamp(4rem,10vh,6rem);padding-top:1.8rem;border-top:1px solid rgba(230,207,166,.45)}
+.sv-price{margin-top:2.4rem}
+@media(min-width:900px){
+  .sv-it{grid-template-columns:1fr 1fr;gap:clamp(2.5rem,6vw,7rem);align-items:center}
+  .sv-it--flip .sv-media{order:2}
+  .sv-media{margin:0}
+  .sv-ph{width:86%}
+  .ph.sv-ph{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 11%,#000 89%,transparent 100%),linear-gradient(180deg,transparent 0,#000 8%,#000 64%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,#000 11%,#000 89%,transparent 100%),linear-gradient(180deg,transparent 0,#000 8%,#000 64%,transparent 100%);mask-composite:intersect}
+  .sv-it--flip .sv-ph{margin-left:auto}
+  .sv-it--film .sv-ph{width:76%}
+  .sv-it--film .sv-media{padding-bottom:9%}
+  .sv-film{position:absolute;right:0;bottom:0;width:36%;margin:0}
+  .sv-it--flip .sv-film{right:auto;left:0}
+  .sv-go{grid-template-columns:1fr auto;align-items:center}
+}
+
+/* two ways to book */
+.sv-paths{border-top:1px solid var(--umber)}
+.sv-paths-g{display:grid;border-top:1px solid rgba(230,207,166,.45)}
+.sv-path{display:flex;flex-direction:column;gap:1.2rem;padding:2.4rem 0 2.8rem}
+.sv-path + .sv-path{border-top:1px solid var(--umber)}
+.sv-path .acts{margin-top:.6rem}
+.sv-path .small{margin-top:-.2rem}
+@media(min-width:900px){
+  .sv-paths-g{grid-template-columns:1fr 1fr}
+  .sv-path{padding:3rem clamp(1.5rem,4vw,4rem) 3rem 0}
+  .sv-path + .sv-path{border-top:0;border-left:1px solid var(--umber);padding-left:clamp(1.5rem,4vw,4rem);padding-right:0}
+}
+
+/* =========================== BRIDAL =========================== */
+/* what the inquiry asks: her form's real questions, set as a call sheet */
+.br-sheet-k{display:flex;flex-wrap:wrap;row-gap:.3em;margin-bottom:1.2rem}
+.br-steps{border-top:1px solid rgba(230,207,166,.45)}
+.br-steps > li{display:grid;gap:.5rem;padding:1.6rem 0 1.7rem;border-bottom:1px solid var(--umber)}
+.br-st-t{font:italic 400 clamp(2rem,6.4vw,3.4rem)/1 var(--f-display);letter-spacing:-.01em;color:var(--bone)}
+.br-st-d{max-width:34em;color:var(--bone);font-size:clamp(1rem,1.5vw,1.12rem);line-height:1.6}
+.br-sheet-go{margin-top:2.4rem}
+@media(min-width:900px){
+  .br-steps > li{grid-template-columns:7rem minmax(0,.9fr) minmax(0,1.1fr);align-items:baseline;gap:2rem;padding:2rem 0 2.1rem}
+}
+
+/* the picture moment: full bleed, after dark; the frame dissolves at top and bottom only */
+.br-mo{position:relative;overflow:hidden}
+.br-mo-ph{position:relative;margin:0;height:86vh;height:86svh;min-height:480px;max-height:1100px;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 78%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 78%,transparent 100%)}
+.br-mo-ph img{width:100%;height:100%;object-fit:cover}
+.br-mo-cap{position:relative;margin-top:-2.6rem}
+@media(min-width:900px){.br-mo-ph{height:100vh;height:100svh;max-height:1200px}}
+
+/* the four collections: names only */
+.br-col{padding-top:calc(var(--sec) * .7)}
+.br-names{border-top:1px solid var(--umber)}
+.br-names > li{display:flex;align-items:baseline;gap:clamp(14px,3vw,32px);padding:clamp(1rem,2.6vh,1.6rem) 0;border-bottom:1px solid var(--umber)}
+.br-names .n{flex:none;width:2.4em;font:400 .66rem/1 var(--f-mono);letter-spacing:.18em;color:var(--champagne);transform:translateY(-.6em)}
+.br-names .w{font:italic 400 clamp(2.3rem,8.6vw,6.4rem)/1 var(--f-display);letter-spacing:-.015em;color:var(--bone)}
+.br-col-note{margin-top:2rem;max-width:40em}
+@media(min-width:900px){.br-names > li:nth-child(even){padding-left:clamp(2rem,9vw,9rem)}}
+
+/* before you inquire: native details rows */
+.br-faq-g{display:grid}
+.br-qs{border-top:1px solid var(--umber)}
+.br-q{border-bottom:1px solid var(--umber)}
+.br-q summary{display:grid;grid-template-columns:2.4em 1fr 22px;align-items:center;gap:.9rem;min-height:64px;padding:1rem 0;cursor:pointer;list-style:none;-webkit-tap-highlight-color:transparent}
+.br-q summary::-webkit-details-marker{display:none}
+.br-q summary::marker{content:""}
+.br-q summary:focus-visible{outline-offset:2px}
+.br-q .n{font:400 .66rem/1 var(--f-mono);letter-spacing:.18em;color:var(--champagne)}
+.br-q .q{font:400 clamp(1.3rem,3.4vw,1.85rem)/1.15 var(--f-display);color:var(--bone);transition:color .3s}
+.br-q summary:hover .q,.br-q[open] .q{color:var(--champagne)}
+.br-q i{position:relative;width:22px;height:22px}
+.br-q i::before,.br-q i::after{content:"";position:absolute;left:3px;right:3px;top:50%;height:1px;background:var(--champagne)}
+.br-q i::after{transform:rotate(90deg);transition:transform .35s var(--ease)}
+.br-q[open] i::after{transform:rotate(0deg)}
+.br-a{padding:0 calc(22px + .9rem) 1.6rem calc(2.4em + .9rem);color:var(--bone-soft);max-width:44em}
+@media(min-width:900px){
+  .br-faq-g{grid-template-columns:.8fr 1.2fr;gap:clamp(2rem,5vw,6rem);align-items:start}
+  .br-faq-g > .ch{position:sticky;top:calc(var(--hd) + 2rem)}
+}
+@media(prefers-reduced-motion:reduce){.br-q i::after,.br-q .q{transition:none}}
