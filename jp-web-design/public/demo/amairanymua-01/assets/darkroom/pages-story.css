@@ -118,7 +118,7 @@ html.js .faq[open] .faq-a{animation:faq-up 1.1s both}
 .ab-q p+p{margin-top:1em}
 .ab-q .ab-q1{font:400 clamp(1.28rem,2.3vw,1.85rem)/1.42 var(--f-body);letter-spacing:-.012em;max-width:24em;margin-bottom:.4em}
 .ab-q .ring{font-weight:600}
-.ab-q1 .mk-ring{left:-7%;top:-16%;width:114%;height:132%}
+.ab-q1 .mk-ring{left:-6%;top:-8%;width:112%;height:118%}
 @media(max-width:379px){.ab-q .ring{white-space:normal}}
 
 /* ---------- her services, and the photography question kept apart ---------- */

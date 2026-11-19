@@ -129,10 +129,10 @@ html:not(.js) .pf-tabs{display:none}
 body.lp-open .hd{visibility:hidden}
 
 /* ---------- the closing invitation ---------- */
-.pf-fol{display:grid;gap:40px;align-items:end}
-@media(min-width:900px){.pf-fol{grid-template-columns:5fr 6fr;gap:clamp(48px,7vw,110px)}}
-.pf-soc{display:grid;gap:18px}
-@media(min-width:560px){.pf-soc{grid-template-columns:1fr 1fr}}
+.pf-soc{display:grid;gap:22px;max-width:920px}
+@media(min-width:560px){.pf-soc{grid-template-columns:1fr 1fr;gap:clamp(22px,4vw,48px)}}
+/* the title card's print shows from 900px; on a phone the line right under it is the picture */
+@media(max-width:899px){.pf .cover-pr{display:none}}
 .pf-so{position:relative;display:grid;gap:6px;justify-items:start;padding:24px 22px 20px;background:var(--paper);color:var(--fixer);text-decoration:none;box-shadow:0 1px 1px var(--shadow-soft),0 18px 34px -18px var(--shadow);transform:rotate(-1deg);transition:transform .4s var(--e-out)}
 .pf-soc li:nth-child(2) .pf-so{transform:rotate(1.2deg)}
 .pf-so:hover,.pf-soc li:nth-child(2) .pf-so:hover{transform:translate3d(0,-4px,0) rotate(0deg)}

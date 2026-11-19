@@ -31,6 +31,11 @@ const lookData = (i) => {
 
 /* ======================= PORTFOLIO ======================= */
 
+/* the title card's print (bride-ruby, look 6A). It shows from 900px only (preloaded there), so on
+   a phone it is lazy and, hidden, never downloads. */
+const COVER = LOOKS[5].photo;
+const coverPf = (o) => cover(o).replace(' fetchpriority="high"', ' loading="lazy"');
+
 /* The Looks: stills in LOOKS order with three films hung among them */
 const LINE = [0, 1, 'f1', 2, 3, 4, 'f4', 5, 6, 'f2', 7, 8, 9];
 const SWAY = [-1.4, 0.9, -0.5, 1.3, -1, 0.6, -1.5, 1.1, -0.7, 1.4, -1.1, 0.5, -0.9];
@@ -117,17 +122,11 @@ const loupe = () => {
 };
 
 /* The closing invitation: Instagram and TikTok */
-const follow = () => band(`<div class="pf-fol">
-<div class="pf-fol-tx">
-${kick(PORTFOLIO_PAGE.noteKick, { n: '05', cls: 'rv' })}
-${h(2, ['More of her work,', 'on her socials.'], 'd-l rv', 'style="--d:.06s"')}
-<p class="lead rv" style="--d:.12s">${PORTFOLIO_PAGE.note}</p>
-</div>
-<ul class="pf-soc rv" style="--d:.16s">
+const follow = () => band(`${chapter({ kick: PORTFOLIO_PAGE.noteKick, n: '05', heading: ['More of her work,', 'on her socials.'], lead: PORTFOLIO_PAGE.note, split: true })}
+<ul class="pf-soc rv" style="--d:.1s">
 <li><a class="pf-so" href="${L.ig}" rel="external"><span class="edge pf-so-k">Instagram</span><span class="pf-so-h">${SITE.handle}</span><span class="pf-so-go">Open Instagram ${arrow}</span></a></li>
 <li><a class="pf-so" href="${L.tiktok}" rel="external"><span class="edge pf-so-k">TikTok</span><span class="pf-so-h">${SITE.handle}</span><span class="pf-so-go">Open TikTok ${arrow}</span></a></li>
-</ul>
-</div>`, { tone: 'paper', id: 'follow', cls: 'pf-follow', label: 'Instagram and TikTok' });
+</ul>`, { tone: 'paper', id: 'follow', cls: 'pf-follow', label: 'Instagram and TikTok' });
 
 export const portfolio = () => page({
   path: 'portfolio',
@@ -136,7 +135,8 @@ export const portfolio = () => page({
   css: ['pages-work'],
   js: ['pages-work'],
   bodyClass: 'pf',
-  main: `${cover({ kick: PORTFOLIO_PAGE.kick, n: '01', heading: PORTFOLIO_PAGE.heading, sub: `${LOOKS.length} of her looks, from bridal to full glam and glam waves, hung on the line with her films among them.` })}
+  head: `<link rel="preload" as="image" href="${src(COVER, 800)}" imagesrcset="${srcset(COVER)}" imagesizes="(max-width:759px) 78vw, 36vw" media="(min-width:900px)" fetchpriority="high">`,
+  main: `${coverPf({ kick: PORTFOLIO_PAGE.kick, n: '01', heading: PORTFOLIO_PAGE.heading, sub: `${LOOKS.length} of her looks, from bridal to full glam and glam waves, hung on the line with her films among them.`, image: COVER, frame: fr(5), note: 'Bridal', tilt: 2 })}
 ${looks()}
 ${reel()}
 ${proof()}
