@@ -1,0 +1,68 @@
+/* ============ ROUGE — design tokens ============
+   Red, black and white: red lip, black gown, white satin. Black and white carry the page; red
+   is the accent. The token ROLES are the source build's (names are historical, no colour is a
+   literal):
+     --leaf       near-black: dark chapters, primary buttons, headings' deep tone
+     --leaf-2     the primary button's hover fill (the red sweeps up through the black)
+     --leaf-deep  the deepest black (hero ground, film frames)
+     --moss       progress bar and the stripe over the bridal band (red)
+     --sage       the coloured lip on each curved chapter (red)
+     --sage-band  the light band tint (a cool, faint grey)
+     --petal / --petal-deep  the soft accent surface and its deeper tone (a blush of the red)
+     --brass      small caps, links and hairline accents on white (deep red, AA for small text)
+     --gold-lt    the same accent on black (a lighter red, AA on black)
+     --rouge / --rouge-lt  the red as a fill, and its lighter form for hairlines on black
+     --ivory / --linen / --paper / --blush  grounds, from page to card
+     --ink / --ink-soft  text
+   Measured (WCAG 2): ink #111111 on #FAFAFA 18.09:1 · ink-soft #4A4A4A on #FAFAFA 8.49:1, on
+   linen #EFEFF0 7.71:1 · brass #9E1027 on #FAFAFA 7.87:1, on #FFFFFF 8.21:1, on linen 7.15:1 ·
+   gold-lt #E8505F on #0E0E0E 5.28:1 · ivory on #0E0E0E 18.50:1 · white on rouge #B5132B 6.79:1. */
+:root{
+  /* grounds */
+  --ivory:#FAFAFA; --linen:#EFEFF0; --paper:#FFFFFF; --blush:#F7ECEE;
+  /* the anchor */
+  --leaf:#0E0E0E; --leaf-2:#B5132B; --leaf-deep:#070707;
+  --moss:#B5132B; --sage:#B5132B; --sage-band:#F3F3F4;
+  /* the red */
+  --rouge:#B5132B; --rouge-lt:#E8505F;
+  /* the soft accent */
+  --petal:#F4D9DD; --petal-deep:#D98D97;
+  /* hairlines & engraved caps */
+  --brass:#9E1027;
+  --gold-lt:#E8505F;
+  /* ink */
+  --ink:#111111; --ink-soft:#4A4A4A;
+  --hair:rgba(14,14,14,.13); --hair-strong:rgba(14,14,14,.28);
+  --hairdk:rgba(255,255,255,.16); --hairdk-strong:rgba(255,255,255,.34);
+  /* type roles */
+  --display:'Fraunces Variable','Iowan Old Style',Georgia,'Times New Roman',serif;
+  --script:'Pinyon Script','Snell Roundhand','Apple Chancery',cursive;
+  --utility:'Figtree Variable','Avenir Next','Segoe UI',system-ui,-apple-system,sans-serif;
+  /* rhythm */
+  --wrap:min(90vw,1280px); --wrap-text:720px;
+  --pad:clamp(88px,12vw,160px);
+  --ease:cubic-bezier(.16,1,.3,1);
+  /* shape */
+  --r-sm:5px; --r:12px; --r-lg:20px;
+  --shadow-lg:0 50px 90px -46px rgba(0,0,0,.42);
+  --shadow:0 24px 48px -30px rgba(0,0,0,.34);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html,body{overflow-x:clip}
+body{margin:0;background:var(--ivory);color:var(--ink-soft);font-family:var(--utility);
+  font-size:1.06rem;line-height:1.72;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4{font-family:var(--display);font-weight:400;color:var(--ink);line-height:1.08;
+  text-wrap:balance;margin:0;font-variation-settings:'opsz' 144,'SOFT' 40}
+h3,h4{font-variation-settings:'opsz' 48,'SOFT' 30}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+img,video{max-width:100%;display:block}
+button{font:inherit}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{
+  outline:2px solid var(--brass);outline-offset:3px}
+.skip-link{position:absolute;left:-9999px;top:0;background:var(--leaf);color:var(--ivory);padding:10px 16px;z-index:200;border-radius:0 0 var(--r-sm) 0}
+.skip-link:focus{left:8px;top:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.wrap{width:var(--wrap);margin-inline:auto}
+.wrap-text{width:min(90vw,var(--wrap-text));margin-inline:auto}

@@ -1,0 +1,10 @@
+---
+/** HOME — Rouge, Amairany Sierra's fourth design preview. */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Home from '../components/Home.astro';
+import { SITE } from '../consts';
+import { FOOTER } from '../lib/content';
+---
+<BaseLayout headerLight headerPrologue intro title={`${SITE.role}, ${SITE.area}`} description={FOOTER.line}>
+  <Home />
+</BaseLayout>

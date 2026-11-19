@@ -1,0 +1,25 @@
+---
+/** One of her photographs, from src/assets/plates (converted from her own images), through
+ *  astro:assets: responsive widths, lazy by default. The alt text and the face position
+ *  (object-position) come from PHOTOS in site.mjs; `alt=""` marks a decorative repeat. */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { PHOTOS } from '../lib/content';
+interface Props {
+  id: string;
+  alt?: string;
+  class?: string;
+  widths?: number[];
+  sizes?: string;
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  pos?: string;
+}
+const { id, alt, class: cls, widths = [480, 800, 1200], sizes = '(max-width: 899px) 90vw, 50vw', loading = 'lazy', fetchpriority, pos } = Astro.props;
+const plates = import.meta.glob<{ default: ImageMetadata }>('../assets/plates/*.jpg', { eager: true });
+const entry = plates[`../assets/plates/${id}.jpg`];
+const meta = PHOTOS[id];
+if (!entry || !meta) throw new Error(`Plate "${id}" not found in src/assets/plates or PHOTOS`);
+const w = widths.filter((x) => x <= entry.default.width);
+---
+<Image src={entry.default} alt={alt ?? meta.alt} class={cls} widths={w.length ? w : [entry.default.width]} sizes={sizes} loading={loading} fetchpriority={fetchpriority} style={`object-position:${pos ?? meta.pos}`} />

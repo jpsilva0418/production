@@ -1,0 +1,172 @@
+---
+/** BOOK — two ways in, on one page. A sticky dark panel with her events booking, email,
+ *  Instagram, TikTok and Google reviews; beside it the bridal inquiry: the shared component
+ *  (inquiry-core.mjs + /demo/amairanymua-01/assets/js/inquiry.js), skinned here in this site's
+ *  manner. Nothing typed is sent anywhere: the last step hands the bride to her own JotForm.
+ *  She has published no phone number, so there is none. */
+import BaseLayout from '../layouts/BaseLayout.astro';
+// @ts-ignore — plain ES module outside the project root
+import { inquiryForm } from '../../../jp-web-design/scripts/amairanymua-01/inquiry-core.mjs';
+import { SITE, L, LINKS, FINAL, INQUIRY } from '../lib/content';
+import { SOCIAL, A, book } from '../consts';
+/* inquiryForm() knows the three earlier previews by name; its markup is identical for each apart
+   from data-site, and it contains no internal links (only her JotForm and booking page, through
+   book()), so Rouge renders it and names itself. */
+const form = (inquiryForm('veil', { primary: 'btn btn--solid', secondary: 'btn btn--line' }) as string)
+  .replace('data-site="veil"', 'data-site="rouge"');
+if (/href="\/demo\//.test(form)) throw new Error('inquiry markup now carries an internal link: re-root it for Rouge');
+---
+<BaseLayout
+  title="Book"
+  description={`Start a bridal inquiry or book event makeup and hair with ${SITE.name}, ${SITE.area}.`}
+  headerLight
+  inquiry>
+  <section class="iq" id="iqSection" aria-label="Book">
+    <div class="iq-l ghostwrap">
+      <span class="ghost-w" aria-hidden="true">rouge</span>
+      <div class="iq-lc">
+        <p class="iq-kick fade">{FINAL.label}</p>
+        <h1 class="disp iq-t rv">{FINAL.heading[0]} <span class="ital">{FINAL.heading[1]}</span></h1>
+        <p class="iq-line rv" style="--d:.08s">{FINAL.line}</p>
+        <div class="iq-cta rv" style="--d:.1s">
+          <a class="btn btn--ivory" href="#inquiry">Bridal inquiry</a>
+          <Fragment set:html={book('event', 'Book event glam', 'btn btn--ghost')} />
+        </div>
+        <dl class="iq-ways rv" style="--d:.14s">
+          <div><dt>Events</dt><dd><Fragment set:html={book('event', 'Book Event Makeup &amp; Hair')} /> <span class="dim">&mdash; on her booking page</span></dd></div>
+          <div><dt>Email</dt><dd><a href={L.mail}>{SITE.email}</a></dd></div>
+          {SOCIAL.map((s) => <div><dt>{s.label}</dt><dd><a href={s.href} rel="external">{s.value}</a></dd></div>)}
+          <div><dt>Where</dt><dd>{SITE.areaLong}</dd></div>
+        </dl>
+      </div>
+    </div>
+    <div class="iq-r lit" id="inquiry">
+      <i class="lx-dusk" aria-hidden="true"></i>
+      <div class="iq-form-head">
+        <span class="caps-xs rv">{INQUIRY.label}</span>
+        <h2 class="rv" style="--d:.06s">{INQUIRY.heading}</h2>
+        <p class="iq-form-body fade" style="--d:.1s">{INQUIRY.body}</p>
+      </div>
+      <div class="cf-stage fade" style="--d:.1s">
+        <p class="cf-stage-k"><span>{INQUIRY.cardKick}</span></p>
+        <p class="cf-demo">{INQUIRY.demoNote}</p>
+        <Fragment set:html={form} />
+      </div>
+      <p class="iq-assure fade" style="--d:.16s">{INQUIRY.note}</p>
+      <div class="iq-alt fade" style="--d:.2s">
+        <h2>{INQUIRY.qHeading}</h2>
+        <p>{INQUIRY.qBody}</p>
+        <Fragment set:html={book('event', INQUIRY.qLink, 'btn btn--ghost')} />
+      </div>
+    </div>
+  </section>
+  <script is:inline src={`${A}/js/inquiry.js`} defer></script>
+</BaseLayout>
+<style>
+  .iq{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);background:var(--leaf)}
+  .iq-l{position:sticky;top:0;height:100svh;background:var(--leaf);color:color-mix(in srgb,var(--ivory) 88%,transparent);display:flex;flex-direction:column;justify-content:center;overflow:hidden;
+    padding:clamp(6.5rem,13vh,8rem) clamp(1.6rem,4.5vw,4.5rem) clamp(2.6rem,6vh,4rem) max(5vw,(100vw - var(--wrap))/2)}
+  .iq-l .ghost-w{left:-2%;bottom:-.1em;font-size:clamp(7rem,15vw,13rem);-webkit-text-stroke-color:var(--hairdk)}
+  .iq-lc{position:relative;z-index:1}
+  .iq-kick{display:flex;align-items:center;gap:1.3rem;font-family:var(--utility);font-weight:600;text-transform:uppercase;letter-spacing:.22em;font-size:.62rem;color:var(--gold-lt);margin:0 0 clamp(1.2rem,2.6vh,2rem)}
+  .iq-kick::before{content:"";width:48px;height:1px;background:var(--rouge-lt);opacity:.8}
+  .iq-t{font-size:clamp(2.4rem,4.6vw,4.2rem)!important;color:var(--ivory);margin-bottom:clamp(1rem,2.2vh,1.5rem)}
+  .iq-t .ital{color:var(--gold-lt)}
+  .iq-line{font-family:var(--display);font-style:italic;font-size:clamp(1.06rem,1.4vw,1.28rem);color:color-mix(in srgb,var(--ivory) 85%,transparent);max-width:26em;margin:0 0 clamp(1.6rem,3.4vh,2.4rem);font-variation-settings:'opsz' 48,'SOFT' 60}
+  .iq-cta{display:flex;gap:.8rem 1rem;flex-wrap:wrap;margin-bottom:clamp(1.6rem,3.4vh,2.4rem)}
+  .iq-ways{margin:0;border-top:1px solid var(--hairdk)}
+  .iq-ways div{display:grid;grid-template-columns:7.5em 1fr;gap:1rem;padding:.7em 0;border-bottom:1px solid var(--hairdk);font-size:.95rem}
+  .iq-ways dt{font-family:var(--utility);font-weight:600;text-transform:uppercase;letter-spacing:.2em;font-size:.58rem;color:var(--gold-lt);padding-top:.35em}
+  .iq-ways dd{margin:0;color:color-mix(in srgb,var(--ivory) 90%,transparent);overflow-wrap:anywhere}
+  .iq-ways dd :global(a){display:inline-block;padding-block:.15em}
+  .iq-ways dd :global(a:hover){color:var(--gold-lt)}
+  .iq-ways .dim{color:color-mix(in srgb,var(--ivory) 62%,transparent);font-size:.85rem}
+  .iq-r{position:relative;background:linear-gradient(rgba(255,255,255,.035),rgba(255,255,255,.035)),var(--leaf);padding:clamp(7rem,15vh,9rem) max(5vw,(100vw - var(--wrap))/2) clamp(4rem,9vh,6rem) clamp(1.6rem,4.5vw,4.5rem);scroll-margin-top:0;border-left:1px solid var(--hairdk)}
+  .iq-form-head{position:relative;z-index:1;margin-bottom:clamp(1.8rem,3.4vw,2.6rem);max-width:660px}
+  .iq-form-head .caps-xs{color:var(--gold-lt);display:block;margin-bottom:.8rem}
+  .iq-form-head h2{font-size:clamp(1.9rem,2.8vw,2.6rem);color:var(--ivory);font-weight:300}
+  .iq-form-body{margin-top:1rem;color:color-mix(in srgb,var(--ivory) 80%,transparent);max-width:34em;font-size:.98rem}
+  .cf-stage{position:relative;z-index:1;max-width:660px;min-width:0;background:var(--paper);border:1px solid var(--hair);border-radius:var(--r-lg);padding:clamp(22px,3.4vw,44px);box-shadow:0 100px 170px -60px rgba(0,0,0,.9),0 34px 70px -34px rgba(0,0,0,.6)}
+  .cf-stage::before{content:"";position:absolute;left:clamp(22px,3.4vw,44px);right:clamp(22px,3.4vw,44px);top:0;height:3px;background:var(--rouge);border-radius:0 0 3px 3px}
+  .cf-stage-k{display:flex;align-items:center;gap:1rem;margin:0 0 .6rem;font-family:var(--utility);font-weight:600;text-transform:uppercase;letter-spacing:.22em;font-size:.6rem;color:var(--brass)}
+  .cf-stage-k::after{content:"";flex:1;height:1px;background:var(--hair)}
+  .cf-demo{margin:0 0 1.4rem;font-size:.82rem;line-height:1.55;color:var(--ink-soft)}
+  .iq-assure{margin:clamp(1.4rem,2.6vw,2rem) 0 0;max-width:660px;position:relative;z-index:1;text-align:center;font-family:var(--utility);font-weight:600;text-transform:uppercase;letter-spacing:.2em;font-size:.56rem;line-height:2.2;color:var(--gold-lt)}
+  .iq-alt{position:relative;z-index:1;max-width:660px;margin-top:clamp(2.4rem,5vw,3.6rem);padding-top:clamp(1.8rem,3.4vw,2.4rem);border-top:1px solid var(--hairdk);display:grid;grid-template-columns:1fr auto;align-items:center;gap:.4rem 2rem}
+  .iq-alt h2{font-size:clamp(1.4rem,2vw,1.8rem);color:var(--ivory);font-weight:300;grid-column:1}
+  .iq-alt p{grid-column:1;color:color-mix(in srgb,var(--ivory) 80%,transparent);font-size:.95rem}
+  .iq-alt :global(.btn){grid-column:2;grid-row:1/3}
+  @media(max-height:760px) and (min-width:900px){.iq-l{padding-top:6rem}.iq-line{display:none}}
+  @media(max-width:899px){
+    .iq{grid-template-columns:1fr}
+    .iq-l{position:relative;top:auto;height:auto;min-height:0;padding:clamp(6.5rem,16vh,8rem) 5vw clamp(3rem,9vw,4rem)}
+    .iq-r{padding:clamp(3rem,8vw,4rem) 5vw clamp(4rem,10vw,5.5rem);border-left:0;border-top:1px solid var(--hairdk)}
+    .cf-stage,.iq-assure,.iq-form-head,.iq-alt{margin-inline:auto}
+  }
+  @media(max-width:640px){.iq-cta{flex-direction:column}.iq-cta :global(.btn){width:100%}.iq-alt{grid-template-columns:1fr}.iq-alt :global(.btn){grid-column:1;grid-row:auto;margin-top:.8rem;justify-self:start}.iq-ways div{grid-template-columns:1fr;gap:.1rem}}
+</style>
+<style is:global>
+  /* ============ the shared bridal inquiry, in Rouge's manner (SKINNING.md) ============
+     Single-class hooks under .cf-inquiry; core keeps structure, [hidden] and the iPhone fixes. */
+  .cf-inquiry{--cf-scroll-offset:96px;color:var(--ink);font-family:var(--utility);font-size:1rem;line-height:1.55}
+  @media(min-width:900px){.cf-inquiry{--cf-scroll-offset:112px}}
+  .cf-inquiry .btn{white-space:normal}
+  .cf-prog{gap:6px;margin:0 0 1.8rem;padding:0}
+  .cf-prog-bar{height:2px;background:var(--hair-strong);margin-bottom:.6rem;transition:background .4s var(--ease)}
+  .cf-prog li.done .cf-prog-bar,.cf-prog li.now .cf-prog-bar{background:var(--rouge)}
+  .cf-prog-lbl{font-family:var(--utility);font-weight:600;font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cf-prog li.now .cf-prog-lbl{color:var(--brass)}
+  @media (max-width:479px){.cf-prog-lbl{display:none}.cf-prog li.now .cf-prog-lbl{display:block;overflow:visible}}
+  .cf-step legend{font-family:var(--display);font-weight:300;font-size:clamp(1.5rem,2.4vw,1.9rem);line-height:1.15;color:var(--ink);margin-bottom:1.4rem;padding:0;font-variation-settings:'opsz' 96,'SOFT' 50}
+  .cf-two{column-gap:16px}
+  .cf-field{margin-bottom:1.3rem}
+  .cf-lbl{font-family:var(--utility);font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);margin-bottom:.55rem}
+  .cf-req,.cf-opt{font-weight:500;letter-spacing:.04em;text-transform:none;color:var(--ink-soft)}
+  .cf-req{color:var(--brass)}
+  .cf-input{padding:12px 14px;border:1px solid var(--hair-strong);border-radius:var(--r-sm);background:var(--paper);color:var(--ink);font-family:var(--utility);transition:border-color .3s}
+  .cf-input:hover{border-color:color-mix(in srgb,var(--ink) 45%,transparent)}
+  .cf-input:focus-visible{outline:2px solid var(--brass);outline-offset:1px;border-color:var(--ink)}
+  .cf-input[aria-invalid="true"]{border-color:var(--brass);box-shadow:inset 3px 0 0 var(--brass)}
+  .cf-check{gap:10px;margin-top:10px;min-height:44px;font-size:.92rem;color:var(--ink-soft)}
+  .cf-check input{width:18px;height:18px;accent-color:var(--leaf)}
+  .cf-cards{gap:8px}
+  .cf-card{gap:10px;min-height:48px;padding:11px 14px;border:1px solid var(--hair-strong);border-radius:var(--r-sm);background:var(--paper);color:var(--ink);font-size:.95rem;cursor:pointer;transition:background .3s var(--ease),color .3s var(--ease),border-color .3s var(--ease)}
+  .cf-card:hover{border-color:var(--ink)}
+  .cf-card:has(input:checked){background:var(--leaf);border-color:var(--leaf);color:#fff;font-weight:600}
+  .cf-card:has(input:checked)::before{content:"";width:7px;height:7px;flex:none;border-radius:50%;background:var(--rouge-lt)}
+  .cf-card:has(input:focus-visible){outline:2px solid var(--brass);outline-offset:2px}
+  .cf-cards-2 > .cf-card:last-child:nth-child(odd){grid-column:1/-1}
+  .cf-field[data-invalid] .cf-card{border-color:var(--brass)}
+  .cf-hint{font-size:.85rem;color:var(--ink-soft);margin:.6rem 0 0}
+  .cf-hint a,.cf-handoff-body a{color:var(--brass);text-decoration:underline;text-underline-offset:3px}
+  .cf-err{font-size:.85rem;color:var(--brass);font-weight:600;margin:.45rem 0 0}
+  .cf-review{gap:12px;margin-bottom:1.2rem}
+  .cf-rev-group{border:1px solid var(--hair);border-radius:var(--r-sm);padding:14px 16px;background:var(--ivory)}
+  .cf-rev-head{gap:12px;margin-bottom:6px}
+  .cf-rev-title{font-family:var(--utility);font-size:.66rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--brass);margin:0}
+  .cf-rev-edit{padding:8px;min-height:44px;background:none;border:0;color:var(--ink);text-decoration:underline;text-underline-offset:3px;font:inherit;font-size:.85rem;cursor:pointer}
+  .cf-rev-list{gap:4px;font-size:.92rem}
+  .cf-rev-q{color:var(--ink-soft)}
+  .cf-rev-q::after{content:":"}
+  .cf-rev-a{font-weight:600;color:var(--ink);overflow-wrap:anywhere}
+  .cf-rev-none{margin:0;color:var(--ink-soft);font-size:.92rem}
+  .cf-consent{font-size:.85rem;color:var(--ink-soft);margin:0}
+  .cf-nav{gap:12px;margin-top:1.6rem}
+  .cf-btn,.cf-go,.cf-copy{min-height:48px}
+  .cf-btn:focus-visible,.cf-go:focus-visible,.cf-copy:focus-visible,.cf-back:focus-visible,.cf-reset:focus-visible,.cf-rev-edit:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+  .cf-btn[disabled]{opacity:.5;cursor:default}
+  .cf-reset,.cf-back{display:block;margin:14px 0 0 auto;min-height:44px;padding:8px;background:none;border:0;font:inherit;font-size:.85rem;color:var(--ink-soft);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+  .cf-reset:hover,.cf-back:hover{color:var(--brass)}
+  .cf-strip{margin:0 0 1.4rem;padding:10px 14px;border-radius:var(--r-sm);background:var(--leaf);color:#fff;font-size:.85rem;border-left:3px solid var(--rouge)}
+  .cf-kick{display:block;font-family:var(--utility);font-weight:600;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--brass);margin-bottom:.6rem}
+  .cf-handoff h2{font-family:var(--display);font-weight:300;font-size:clamp(1.6rem,2.6vw,2.1rem);line-height:1.15;color:var(--ink);margin:0 0 .8rem}
+  .cf-handoff-body{color:var(--ink-soft)}
+  .cf-actions{gap:12px;margin-top:1.4rem}
+  .cf-back{margin:0}
+  .cf-status{min-height:1.5em;margin:12px 0 0;font-size:.9rem;color:var(--ink)}
+  .cf-copytext{margin-top:10px;padding:10px;border:1px solid var(--hair-strong);border-radius:var(--r-sm)}
+  .cf-noscript{margin:0;padding:16px;border:1px solid var(--hair-strong);border-radius:var(--r-sm);color:var(--ink)}
+  .cf-noscript a{color:var(--brass);text-decoration:underline;text-underline-offset:3px;font-weight:600}
+  @media (prefers-reduced-motion:no-preference){.js .cf-step:not([hidden]){animation:cfIn .45s var(--ease) both}}
+  @keyframes cfIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+</style>

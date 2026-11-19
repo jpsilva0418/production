@@ -1,0 +1,11 @@
+---
+/** One film frame for a FILMS entry in site.mjs. No clip of hers exists yet, so today every
+ *  frame is a MARKED SLOT ("Film 01 · A bridal reel plays here · Slot · clip to come"). The
+ *  markup is site.mjs's film(): when FILMS[id].file is set there, the same frame becomes a
+ *  muted, looping, poster-first video of /demo/amairanymua-01/assets/film/<file>.mp4, loaded
+ *  near the viewport by BaseLayout's runtime and left a still under reduced motion. */
+import { film } from '../consts';
+interface Props { id: string; class?: string; label?: string }
+const { id, class: cls, label = 'Reel' } = Astro.props;
+---
+<Fragment set:html={film(id, { label, cls })} />

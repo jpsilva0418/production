@@ -1,0 +1,52 @@
+---
+/** Grand footer: the lockup and one line, navigation, where to see more of her work (Instagram,
+ *  TikTok, Google reviews, email), the two ways to book, and the preview's fine print. Only
+ *  facts from site.mjs; no phone, address or hours, because none were published. */
+import Mark from './Mark.astro';
+import { SITE, NAV, LINKS, SOCIAL, L, DEMO, HER, LOVE, book } from '../consts';
+import { FOOTER } from '../lib/content';
+---
+<footer class="foot">
+  <i class="lx-dusk" aria-hidden="true"></i>
+  <div class="foot-in">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <Mark />
+        <div class="foot-name">{HER.brand.script}</div>
+        <div class="foot-sub">{HER.brand.caps}</div>
+        <div class="foot-who">{SITE.name} &middot; Hair + Makeup</div>
+        <p>{FOOTER.line}</p>
+      </div>
+      <div>
+        <p class="foot-h">Explore</p>
+        <ul class="foot-nav" id="foot-nav">
+          <li><a href={LINKS.home}>Home</a></li>
+          {NAV.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+          <li><a href={LINKS.inquiry}>Bridal inquiry</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="foot-h">See more &amp; review</p>
+        <ul class="foot-contact">
+          {SOCIAL.map((s) => <li><span class="k">{s.label}</span><a href={s.href} rel="external">{s.value}</a></li>)}
+          <li><span class="k">{HER.links.reviewsName}</span><span class="foot-love">{LOVE.filter((x) => x.name !== 'Google').map((x, i) => <>{i > 0 && ' · '}<a href={x.href} rel="external">{x.name}</a></>)}</span></li>
+          <li><span class="k">Email</span><a href={L.mail}>{SITE.email}</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="foot-h">Book</p>
+        <ul class="foot-contact">
+          <li><span class="k">Weddings</span><a href={LINKS.inquiry}>Start a bridal inquiry</a></li>
+          <li><span class="k">Events &amp; everyday glam</span><Fragment set:html={book('event', 'Book Event Makeup &amp; Hair')} /></li>
+          <li><span class="k">Where</span>{SITE.areaLong}</li>
+        </ul>
+      </div>
+    </div>
+    <p class="foot-fine">{FOOTER.fine} <a href={DEMO}>See all the previews</a>.</p>
+    <div class="foot-bar">
+      <span>{SITE.name}</span>
+      <span>{SITE.tagline} &middot; {SITE.area}</span>
+      <span><a href={L.ig} rel="external">Instagram</a> &middot; <a href={L.tiktok} rel="external">TikTok</a> &middot; <a href={L.google} rel="external">Google</a></span>
+    </div>
+  </div>
+</footer>

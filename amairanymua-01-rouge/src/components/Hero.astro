@@ -1,0 +1,267 @@
+---
+/** HERO — the opening, and the first screen.
+ *
+ *  THE INTRO (logo first, once per browser session, about 3 s, skippable): her lockup — the
+ *  "Glam By" script writing itself over AMAIRANYMUA, inside a ring that draws — on black, then
+ *  the black lifts like a curtain onto her photograph and the headline rises. It is a pre-state
+ *  of the real page (html.intro, decided in the <head> by BaseLayout), never a gate: the page
+ *  and its lead photograph are underneath from the first frame. Without the class — reduced
+ *  motion, Save-Data, no script, a second visit, ?intro=0 — the page is simply finished.
+ *
+ *  THE SLIDESHOW: no clip of hers exists yet, so the filmed hero of the source build becomes her
+ *  looks as stills, advancing on their own every few seconds, one photograph wiping up over the
+ *  last (never two faces dissolved through each other), with a pause control. Still under
+ *  reduced motion. Phones: the photograph IS the screen. Desktop: headline left, the
+ *  photograph in a tall frame right, the first one blurred behind as the ambient ground. */
+import Mark from './Mark.astro';
+import Plate from './Plate.astro';
+import { SITE, HERO, LINKS, PHOTOS, capOf } from '../lib/content';
+import { book, HER } from '../consts';
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+const plates = import.meta.glob<{ default: ImageMetadata }>('../assets/plates/*.jpg', { eager: true });
+const amb = await getImage({ src: plates[`../assets/plates/${HERO.slides[0]}.jpg`].default, width: 480, format: 'webp' });
+const n = HERO.slides.length;
+---
+<section class="plg" id="hero" data-pin data-chapter="hero" data-tone="film" aria-label={`${SITE.name} — ${SITE.role}, ${SITE.area}`} style={`--poster:url(${amb.src})`}>
+  <div class="plg-amb" aria-hidden="true"></div>
+  <div class="plg-grid">
+    <div class="plg-c">
+      <p class="plg-ribbon a1"><i aria-hidden="true"></i><span set:html={HER.booking} /></p>
+      <p class="plg-eyebrow a1">{HERO.eyebrow.map((e, i) => <>{i > 0 && <b>&middot;</b>}{e}</>)}</p>
+      <h1 class="plg-h">
+        {HERO.lines.map((l) => <span class="lo"><span class="li">{l}</span></span>)}
+        <span class="lo"><span class="li ital">{HERO.italic}</span></span>
+      </h1>
+      <p class="plg-it a3">{HERO.sub}</p>
+      <div class="plg-ctas a4">
+        <a class="btn btn--ivory" href={LINKS.inquiry}>{HERO.cta}</a>
+        <Fragment set:html={book('event', HERO.second, 'btn btn--ghost')} />
+      </div>
+      <p class="plg-loc a4"><Fragment set:html={HER.badges.join(' &middot; ')} /> &middot; {SITE.handle}</p>
+    </div>
+    <div class="plg-frame" id="heroFrame" role="group" aria-roledescription="slideshow" aria-label={`${SITE.first}’s looks`}>
+      {HERO.slides.map((k, i) => (
+        <figure class:list={['plg-slide', { on: i === 0 }]} data-cap={capOf(k)} aria-hidden={i === 0 ? undefined : 'true'}>
+          <Plate id={k} alt={PHOTOS[k].alt} class="plg-img" sizes="(max-width:899px) 100vw, 480px" widths={[480, 800, 1200]} loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} />
+        </figure>
+      ))}
+      <div class="plg-scrim" aria-hidden="true"></div>
+      <i class="grain" aria-hidden="true"></i>
+      <div class="plg-ctl" id="heroCtl">
+        <span class="plg-tag" aria-hidden="true"><span class="plg-tag-n"><b id="heroN">01</b> / {String(n).padStart(2, '0')}</span><span class="plg-tag-t" id="heroCap">{capOf(HERO.slides[0])}</span></span>
+        <span class="plg-bar" aria-hidden="true"><i id="heroBar"></i></span>
+        <button type="button" class="plg-pause js-only" id="heroPause" aria-label="Pause the slideshow" hidden><span class="ic" aria-hidden="true"></span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE INTRO: her lockup on black, then the curtain lifts (html.intro only) -->
+  <div class="plg-veil" aria-hidden="true">
+    <div class="plg-veil-c">
+      <span class="plg-ring">
+        <svg class="plg-ring-svg" viewBox="0 0 100 100" fill="none"><path d="M27 89.84A46 46 0 1 1 73 89.84" pathLength="1" /></svg>
+        <Mark class="plg-veil-mark" />
+      </span>
+      <span class="plg-veil-script">{HER.brand.script}</span>
+      <span class="plg-veil-caps">{HER.brand.caps}</span>
+      <span class="plg-veil-rule"></span>
+      <span class="plg-veil-sub">{SITE.name} &middot; Hair + Makeup</span>
+    </div>
+  </div>
+  <div class="plg-cue" aria-hidden="true"><span>Scroll</span><i class="ln"></i></div>
+</section>
+
+<style>
+  .plg{--peek:56px;position:sticky;top:var(--pin-top,0px);z-index:0;min-height:100vh;min-height:100svh;background:var(--leaf-deep);overflow:hidden;display:grid;color:var(--ivory)}
+  .plg.is-covered{visibility:hidden}
+  /* ambient ground: the first photograph, blurred and darkened (desktop); plain black on phones */
+  .plg-amb{position:absolute;inset:-8%;background:var(--poster) center/cover no-repeat;filter:blur(46px) saturate(.85);transform:scale(1.1)}
+  .plg-amb::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,var(--leaf-deep) 0%,color-mix(in srgb,var(--leaf) 84%,transparent) 52%,color-mix(in srgb,var(--leaf-deep) 58%,transparent) 100%)}
+  .plg-grid{position:relative;z-index:2;width:var(--wrap);margin-inline:auto;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);align-items:center;gap:clamp(2rem,5vw,5rem);padding:clamp(6.5rem,13vh,8rem) 0 calc(var(--peek) + clamp(4rem,9vh,6rem));min-height:100vh;min-height:100svh}
+  .plg-c{max-width:640px}
+  .plg-ribbon{display:inline-flex;align-items:center;gap:.75em;margin:0 0 clamp(1.2rem,2.6vh,1.8rem);padding:.62em 1.1em .58em;border:1px solid color-mix(in srgb,var(--rouge-lt) 55%,transparent);border-radius:999px;background:color-mix(in srgb,var(--leaf-deep) 55%,transparent);font-family:var(--utility);font-weight:600;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ivory);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  .plg-ribbon i{width:6px;height:6px;border-radius:50%;background:var(--rouge-lt);box-shadow:0 0 0 3px rgba(232,80,95,.22)}
+  .plg-eyebrow{font-family:var(--utility);font-weight:600;font-size:clamp(.6rem,1.4vw,.7rem);letter-spacing:.28em;text-transform:uppercase;color:var(--ivory);margin-bottom:clamp(1.2rem,2.6vh,2rem);opacity:.92;text-shadow:0 1px 14px rgba(0,0,0,.3)}
+  .plg-eyebrow b{color:var(--gold-lt);font-weight:600;padding:0 .7em}
+  .plg-h{font-family:var(--display);font-weight:300;font-size:clamp(2.6rem,6.4vw,6rem);line-height:1;letter-spacing:-.015em;color:var(--ivory);margin:0;font-variation-settings:'opsz' 144,'SOFT' 60;text-shadow:0 2px 40px rgba(0,0,0,.35)}
+  .plg-h .lo{display:block;overflow:hidden;padding-block:.04em}
+  .plg-h .li{display:block}
+  .plg-h .ital{font-style:italic;font-weight:300;color:var(--gold-lt)}
+  .plg-it{font-family:var(--display);font-style:italic;font-size:clamp(1.06rem,1.6vw,1.36rem);line-height:1.55;color:color-mix(in srgb,var(--ivory) 90%,transparent);max-width:30em;margin:clamp(1.4rem,2.8vh,2.2rem) 0 0;font-variation-settings:'opsz' 48,'SOFT' 70;text-shadow:0 1px 18px rgba(0,0,0,.3)}
+  .plg-ctas{display:flex;flex-wrap:wrap;gap:14px;margin-top:clamp(1.8rem,3.6vh,2.6rem)}
+  .plg-loc{font-family:var(--utility);font-weight:600;color:var(--gold-lt);font-size:.6rem;letter-spacing:.26em;text-transform:uppercase;margin-top:clamp(1.6rem,3vh,2.2rem)}
+  /* the photograph frame */
+  .plg-frame{position:relative;justify-self:end;height:min(78svh,760px);aspect-ratio:2/3;border-radius:var(--r-lg);overflow:hidden;background:var(--leaf-deep);box-shadow:0 60px 120px -50px rgba(0,0,0,.8),0 0 0 1px color-mix(in srgb,var(--gold-lt) 32%,transparent)}
+  .plg-slide{position:absolute;inset:0;margin:0;visibility:hidden;z-index:0}
+  .plg-slide :global(.plg-img){width:100%;height:100%;object-fit:cover;filter:saturate(.98);transform:scale(1.04);animation:plgKb 9s ease-in-out infinite alternate}
+  @keyframes plgKb{from{transform:scale(1.04)}to{transform:scale(1)}}
+  .plg-slide.on{visibility:visible;z-index:2}
+  .plg-slide.was{visibility:visible;z-index:1}
+  /* the wipe: the incoming photograph uncovers from the bottom edge over the one it replaces */
+  .plg-slide.in{animation:plgWipe 1.5s cubic-bezier(.7,0,.2,1) both}
+  @keyframes plgWipe{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0 0 0 0)}}
+  .plg-scrim{position:absolute;inset:0;z-index:3;background:linear-gradient(color-mix(in srgb,var(--leaf-deep) 22%,transparent),transparent 30%,transparent 66%,color-mix(in srgb,var(--leaf-deep) 66%,transparent))}
+  .plg-frame .grain{z-index:4}
+  /* the slideshow's caption, progress and pause: inside the frame's foot on desktop */
+  .plg-ctl{position:absolute;z-index:5;left:20px;right:16px;bottom:16px;display:flex;align-items:center;gap:14px;color:var(--ivory)}
+  .plg-tag{flex:1;min-width:0;display:flex;flex-direction:column;gap:.35em;font-family:var(--utility);font-weight:600;font-size:.56rem;letter-spacing:.22em;text-transform:uppercase}
+  .plg-tag-n{color:var(--gold-lt)}
+  .plg-tag-n b{font-weight:600;color:var(--ivory)}
+  .plg-tag-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .plg-bar{position:absolute;left:0;right:58px;top:-12px;height:1px;background:rgba(255,255,255,.22);overflow:hidden}
+  .plg-bar i{display:block;height:100%;background:var(--rouge-lt);transform-origin:left;transform:scaleX(0)}
+  .plg-bar i.run{animation:plgBar var(--hold,5.5s) linear both}
+  .plg-ctl.paused .plg-bar i{animation-play-state:paused}
+  @keyframes plgBar{to{transform:scaleX(1)}}
+  .plg-pause{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;cursor:pointer;color:var(--ivory);background:color-mix(in srgb,var(--leaf-deep) 50%,transparent);border:1px solid rgba(255,255,255,.4);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:background .3s,border-color .3s}
+  .plg-pause:hover{background:var(--rouge);border-color:var(--rouge)}
+  .plg-pause:focus-visible{outline:2px solid var(--ivory);outline-offset:3px}
+  .plg-pause .ic{width:10px;height:12px;border-left:3px solid currentColor;border-right:3px solid currentColor}
+  .plg-ctl.paused .plg-pause .ic{width:0;height:0;border-style:solid;border-width:6px 0 6px 10px;border-color:transparent transparent transparent currentColor;margin-left:3px}
+  .plg-cue{position:absolute;bottom:calc(var(--peek) + clamp(.6rem,1.6vh,1rem));left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:.8rem}
+  .plg-cue span{font-family:var(--utility);font-weight:600;text-transform:uppercase;letter-spacing:.42em;text-indent:.42em;font-size:.55rem;color:var(--gold-lt)}
+  .plg-cue .ln{width:1px;height:32px;background:linear-gradient(var(--gold-lt),transparent);transform-origin:top;animation:cuePulse 2.8s ease-in-out 1s infinite}
+  @keyframes cuePulse{0%,100%{transform:scaleY(.35);opacity:.5}50%{transform:scaleY(1);opacity:1}}
+
+  /* THE INTRO CARD — base state GONE; only html.intro shows and animates it */
+  .plg-veil{position:absolute;inset:0;z-index:8;display:none;place-items:center;background:var(--leaf);pointer-events:none}
+  .plg-veil-c{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 6vw}
+  .plg-ring{position:relative;display:grid;place-items:center;width:clamp(78px,10vw,108px);aspect-ratio:1;margin-bottom:1.1rem}
+  .plg-ring-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .plg-ring-svg path{stroke:var(--rouge-lt);stroke-width:.9;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
+  .plg-veil :global(.plg-veil-mark){width:46%;height:auto;color:var(--ivory)}
+  .plg-veil-script{font-family:var(--script);font-size:clamp(3.2rem,9vw,6.4rem);line-height:.95;color:var(--gold-lt);padding:0 .25em}
+  .plg-veil-caps{font-family:var(--utility);font-weight:600;font-size:clamp(.9rem,2.4vw,1.5rem);letter-spacing:.42em;text-indent:.42em;color:var(--ivory);margin-top:.15em}
+  .plg-veil-rule{display:block;width:clamp(56px,8vw,88px);height:1px;background:var(--rouge-lt);margin:1.1rem 0 .2rem}
+  .plg-veil-sub{font-family:var(--utility);font-weight:600;font-size:clamp(.54rem,1.1vw,.64rem);letter-spacing:.34em;text-indent:.34em;text-transform:uppercase;color:color-mix(in srgb,var(--ivory) 70%,transparent);margin-top:.7rem}
+
+  :global(html.intro) .plg-veil{display:grid;animation:veilLift .9s cubic-bezier(.76,0,.24,1) 1.95s both}
+  @keyframes veilLift{from{clip-path:inset(0 0 0 0)}to{clip-path:inset(0 0 100% 0)}}
+  :global(html.intro) .plg-veil-c{animation:veilCard 2.85s var(--ease) both}
+  @keyframes veilCard{from{opacity:0;transform:translateY(10px) scale(.985)}14%{opacity:1;transform:none}70%{opacity:1;transform:none}to{opacity:0;transform:translateY(-36px) scale(1.02)}}
+  :global(html.intro) .plg-ring-svg path{animation:ringDraw 1.2s var(--ease) .2s both}
+  @keyframes ringDraw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+  :global(html.intro) .plg-veil :global(.plg-veil-mark){animation:fadeIn .7s ease .55s both}
+  :global(html.intro) .plg-veil-script{animation:scriptWrite 1.05s cubic-bezier(.55,.1,.25,1) .45s both}
+  @keyframes scriptWrite{from{clip-path:inset(-10% 100% -10% 0)}to{clip-path:inset(-10% -4% -10% 0)}}
+  :global(html.intro) .plg-veil-caps{animation:capsIn .8s var(--ease) 1.05s both}
+  @keyframes capsIn{from{opacity:0;transform:translateY(8px);letter-spacing:.62em}to{opacity:1;transform:none}}
+  :global(html.intro) .plg-veil-rule{animation:ruleIn .8s var(--ease) 1.25s both}
+  @keyframes ruleIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  :global(html.intro) .plg-veil-sub{animation:fadeIn .7s ease 1.4s both}
+  /* the hand-over: the headline rises as the curtain clears it */
+  :global(html.intro) .plg-h .li{animation:riseIn 1s var(--ease) 2.25s both}
+  :global(html.intro) .plg-h .lo:nth-child(2) .li{animation-delay:2.36s}
+  :global(html.intro) .plg-h .lo:nth-child(3) .li{animation-delay:2.47s}
+  :global(html.intro) .plg-ribbon,:global(html.intro) .plg-eyebrow{animation:fadeUp .8s ease 2.2s both}
+  :global(html.intro) .plg-it{animation:fadeUp .8s ease 2.5s both}
+  :global(html.intro) .plg-ctas,:global(html.intro) .plg-loc{animation:fadeUp .8s ease 2.6s both}
+  :global(html.intro) .plg-ctl,:global(html.intro) .plg-cue{animation:fadeIn .8s ease 2.6s both}
+  :global(html.intro) .plg-slide.on :global(.plg-img){animation:introPush 2.9s var(--ease) both}
+  @keyframes introPush{from{transform:scale(1.14)}to{transform:scale(1.04)}}
+
+  /* ---- phones & tablets: the photograph IS the screen ---- */
+  @media(max-width:899px){
+    .plg-amb{display:none}
+    .plg-grid{display:block;width:100%;padding:0;min-height:100vh;min-height:100svh}
+    .plg-frame{position:absolute;inset:0;height:auto;aspect-ratio:auto;border-radius:0;box-shadow:none;justify-self:auto}
+    .plg-scrim{background:linear-gradient(color-mix(in srgb,var(--leaf-deep) 72%,transparent),color-mix(in srgb,var(--leaf-deep) 22%,transparent) 30%,color-mix(in srgb,var(--leaf-deep) 34%,transparent) 50%,color-mix(in srgb,var(--leaf-deep) 92%,transparent) 78%)}
+    .plg-c{position:relative;z-index:3;max-width:none;width:100%;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;text-align:center;padding:6.4rem 6vw calc(var(--peek) + 5.4rem)}
+    .plg-it{margin-inline:auto}
+    .plg-ctas{justify-content:center}
+    .plg-ctl{left:6vw;right:6vw;bottom:calc(var(--peek) + 1rem)}
+    .plg-tag{flex-direction:row;align-items:center;gap:1em}
+    .plg-bar{right:58px}
+    .plg-cue{display:none}
+  }
+  @media(max-width:640px){
+    .plg{--peek:38px}
+    .plg-h{font-size:clamp(2.5rem,12.5vw,3.4rem)}
+    .plg-ctas{flex-direction:column;align-items:center}
+    .plg-ctas :global(.btn){min-width:264px}
+    .plg-eyebrow b{padding:0 .45em}
+    .plg-ribbon{font-size:.52rem;letter-spacing:.16em}
+  }
+  @media(max-height:740px) and (max-width:640px){.plg-c{padding-top:5.4rem}.plg-it{font-size:1rem;margin-top:1rem}.plg-loc{margin-top:1rem}.plg-ribbon{margin-bottom:.9rem}.plg-eyebrow{margin-bottom:.9rem}}
+  @media (prefers-reduced-motion:reduce){
+    .plg{position:relative;top:auto!important;visibility:visible!important}
+    .plg-slide :global(.plg-img){transform:none!important;animation:none!important}
+    .plg-cue .ln{animation:none!important}
+    .plg-bar{display:none}
+  }
+</style>
+<script>
+  // The intro (html.intro is set in <head> only when it should play) and the slideshow.
+  const root = document.documentElement;
+  const hero = document.getElementById('hero');
+  const frame = document.getElementById('heroFrame');
+  const ctl = document.getElementById('heroCtl');
+  const capEl = document.getElementById('heroCap');
+  const nEl = document.getElementById('heroN');
+  const bar = document.getElementById('heroBar');
+  const pauseBtn = document.getElementById('heroPause') as HTMLButtonElement | null;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const HOLD = 5500;
+  let started = false;
+
+  /* ---- the slideshow ---- */
+  const slides = frame ? Array.from(frame.querySelectorAll<HTMLElement>('.plg-slide')) : [];
+  let cur = 0, timer: ReturnType<typeof setTimeout> | undefined, paused = false;
+  const runBar = () => { if (!bar) return; bar.classList.remove('run'); void bar.offsetWidth; bar.classList.add('run'); };
+  const show = (to: number) => {
+    const prev = slides[cur];
+    cur = (to + slides.length) % slides.length;
+    const next = slides[cur];
+    slides.forEach((s) => { if (s !== prev && s !== next) s.classList.remove('on', 'was', 'in'); s.setAttribute('aria-hidden', 'true'); });
+    next.removeAttribute('aria-hidden');
+    prev.classList.remove('on', 'in'); prev.classList.add('was');
+    next.classList.remove('was'); next.classList.add('on', 'in');
+    if (capEl) capEl.textContent = next.dataset.cap ?? '';
+    if (nEl) nEl.textContent = String(cur + 1).padStart(2, '0');
+    next.addEventListener('animationend', (e) => { if (e.target === next) { next.classList.remove('in'); prev.classList.remove('was'); } }, { once: true });
+  };
+  const schedule = () => {
+    clearTimeout(timer);
+    if (paused) return;
+    runBar();
+    timer = setTimeout(() => {
+      if (document.hidden || hero?.classList.contains('is-covered')) { schedule(); return; }
+      show(cur + 1); schedule();
+    }, HOLD);
+  };
+  const setPaused = (p: boolean) => {
+    paused = p;
+    ctl?.classList.toggle('paused', p);
+    pauseBtn?.setAttribute('aria-label', p ? 'Play the slideshow' : 'Pause the slideshow');
+    if (p) clearTimeout(timer); else { show(cur + 1); schedule(); }
+  };
+  const startShow = () => {
+    if (started || reduced || slides.length < 2) return;
+    started = true;
+    if (pauseBtn) { pauseBtn.hidden = false; pauseBtn.addEventListener('click', () => setPaused(!paused)); }
+    schedule();
+  };
+
+  /* ---- the intro ---- */
+  const w = window as Window & { __rgIntroT?: ReturnType<typeof setTimeout> };
+  if (root.classList.contains('intro')) {
+    clearTimeout(w.__rgIntroT);
+    const evs = ['wheel', 'touchmove', 'pointerdown', 'keydown'] as const;
+    const finish = () => {
+      if (!root.classList.contains('intro')) return;
+      root.classList.remove('intro');       // every intro animation is scoped to html.intro: removing it rests the page on its static styles
+      evs.forEach((t) => removeEventListener(t, onInput as EventListener, true));
+      startShow();
+    };
+    const onInput = (e: Event) => { if (e.type === 'keydown' && ['Tab', 'Shift'].includes((e as KeyboardEvent).key)) return; finish(); };
+    evs.forEach((t) => addEventListener(t, onInput as EventListener, { capture: true, passive: true }));
+    setTimeout(finish, 3300);
+  } else startShow();
+
+  // Pin: on a phone shorter than the hero content, the hero scrolls until its foot reaches the screen's foot, then holds.
+  if (hero && !reduced) {
+    const pin = () => { hero.style.setProperty('--pin-top', `${Math.min(0, innerHeight - hero.offsetHeight)}px`); };
+    pin(); addEventListener('resize', pin);
+  }
+</script>
