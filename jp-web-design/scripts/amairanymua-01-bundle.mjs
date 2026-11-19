@@ -36,8 +36,22 @@ const [site, out] = process.argv.slice(2);
 /* --lite: a file small enough for chat viewers that refuse big attachments (~2 MB): photos at
    phone width, each clip's last 6 s (her clips end on the finished look) at 240 wide */
 const LITE = process.argv.includes('--lite');
+/* --sizes <json>: how wide each image family is really drawn (phone CSS px x2, desktop x1), measured
+   in a browser. With it, --lite carries every photo at the sharpness it needs instead of one small
+   width for all (a 360-wide photo stretched across a phone screen looked blurry: founder, 2026-11-19). */
+const SIZES = process.argv.includes('--sizes') ? JSON.parse(readFileSync(process.argv[process.argv.indexOf('--sizes') + 1], 'utf8')) : null;
+const familyOf = (url) => url.replace(/-\d+\.(?:webp|jpe?g|png)$/, '');
+/* the largest file of an image family on disk (name-480.webp, name-800.webp, ...) */
+const largestOf = (url) => {
+  const fam = familyOf(url);
+  if (fam === url) return { file: fileOf(url), w: 0 };
+  const dir = dirname(fileOf(url)), base = fam.split('/').pop();
+  let best = null;
+  for (const f of readdirSync(dir)) { const m = f.match(/^(.*)-(\d+)\.(webp|jpe?g|png)$/); if (m && m[1] === base && (!best || +m[2] > best.w)) best = { file: join(dir, f), w: +m[2] }; }
+  return best || { file: fileOf(url), w: 0 };
+};
 const IMG = process.argv.includes('--img') ? process.argv[process.argv.indexOf('--img') + 1] : (LITE ? '480' : '800');
-if (!SITES[site] || !out) { console.error(`usage: node scripts/amairanymua-01-bundle.mjs <${Object.keys(SITES).join('|')}> <out.html> [--img 480|800] [--lite]`); process.exit(1); }
+if (!SITES[site] || !out) { console.error(`usage: node scripts/amairanymua-01-bundle.mjs <${Object.keys(SITES).join('|')}> <out.html> [--img 480|800] [--lite [--sizes measured.json]]`); process.exit(1); }
 const DEMO = join(dirname(fileURLToPath(import.meta.url)), '..', 'public', 'demo', 'amairanymua-01');
 const fileOf = (url) => join(DEMO, url.slice(BASE.length + 1));
 
@@ -70,7 +84,12 @@ const token = (url) => {
         : ['-v', 'error', '-y', '-i', f, '-an', '-vf', 'scale=360:-2', '-c:v', 'libx264', '-preset', 'slow', '-crf', '34', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', tmp]);
       bytes = readFileSync(tmp); rmSync(tmp, { force: true });
     }
-    if (LITE && /^(webp|jpe?g)$/.test(ext) && bytes.length > 14 * 1024) {
+    if (LITE && SIZES && /^(webp|jpe?g|png)$/.test(ext)) {
+      const src = largestOf(url), want = SIZES[familyOf(url)];
+      const target = Math.max(160, Math.min(want || 360, 1100));
+      bytes = execFileSync('python3', ['-I', '-c', 'import sys,io\nfrom PIL import Image\nim=Image.open(sys.argv[1])\nhas_a=im.mode in ("RGBA","LA")\nim=im.convert("RGBA" if has_a else "RGB")\nw=min(im.width,int(sys.argv[2]))\nim=im.resize((w,round(im.height*w/im.width)),Image.LANCZOS) if w<im.width else im\nb=io.BytesIO();im.save(b,"WEBP",quality=76,method=6);sys.stdout.buffer.write(b.getvalue())', src.file, String(target)], { maxBuffer: 64 * 1024 * 1024 });
+      mime = 'image/webp';
+    } else if (LITE && /^(webp|jpe?g)$/.test(ext) && bytes.length > 14 * 1024) {
       const hero = /artist-chair/.test(url); /* her portrait is a hero centrepiece: keep it sharper */
       bytes = execFileSync('python3', ['-I', '-c', 'import sys,io\nfrom PIL import Image\nim=Image.open(io.BytesIO(sys.stdin.buffer.read()))\nhas_a=im.mode in ("RGBA","LA")\nim=im.convert("RGBA" if has_a else "RGB")\nw=min(im.width,' + (hero ? 480 : 360) + ')\nim=im.resize((w,round(im.height*w/im.width)),Image.LANCZOS)\nb=io.BytesIO();im.save(b,"WEBP",quality=' + (hero ? 74 : 60) + ',method=6);sys.stdout.buffer.write(b.getvalue())'], { input: bytes, maxBuffer: 64 * 1024 * 1024 });
       mime = 'image/webp';
