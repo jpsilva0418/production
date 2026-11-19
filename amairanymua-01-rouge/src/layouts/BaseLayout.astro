@@ -106,7 +106,12 @@ const page = current.startsWith(ROOT) ? current.slice(ROOT.length).replace(/^\//
         toReveal.forEach((el) => el.classList.add('in'));
       } else {
         const io = new IntersectionObserver((es) => {
-          es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+          es.forEach((e) => {
+            if (!e.isIntersecting) return;
+            e.target.classList.add('in'); io.unobserve(e.target);
+            // a revealed scroller (the phone swipe track) reveals what it holds, even off to the side
+            if (e.target.matches('.c7-trk')) e.target.querySelectorAll('.rv,.rv-im,.fade').forEach((c) => { c.classList.add('in'); io.unobserve(c); });
+          });
         }, { threshold: 0, rootMargin: '0px 0px -8% 0px' });
         toReveal.forEach((el) => io.observe(el));
         addEventListener('load', () => { setTimeout(() => {

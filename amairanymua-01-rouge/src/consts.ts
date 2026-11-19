@@ -31,7 +31,7 @@ export const LINKS = {
   services: u('services'),
   about: u('about'),
   book: u('book'),
-  inquiry: `${u('book')}#inquiry`,
+  inquiry: `${u('book')}#bridal-inquiry`,
 };
 
 export const NAV = [
@@ -63,8 +63,9 @@ export const HER = SM.HER as {
   links: { reviewsName: string; reviewsLine: string };
 };
 /** "Love Notes": where her clients wrote their reviews, one tap each. Ratings as read on SITE.ratingsAsOf. */
-export const LOVE = [
-  ...(SM.REVIEWS.sites as { name: string; score: string; meta: string; go: string; href: string }[]),
-  { name: 'Google', score: '', meta: '', go: SM.REVIEWS.google.go as string, href: L.google },
+type Love = { name: string; score: string; meta: string; go: string; href: string; asOf: string };
+export const LOVE: Love[] = [
+  ...(SM.REVIEWS.sites as Love[]).map((x) => ({ ...x, asOf: x.asOf ?? (SM.SITE.ratingsAsOf as string) })),
+  { name: SM.REVIEWS.google.name, score: SM.REVIEWS.google.score ?? '', meta: SM.REVIEWS.google.meta ?? '', go: SM.REVIEWS.google.go, href: SM.REVIEWS.google.href, asOf: SM.REVIEWS.google.asOf ?? '' },
 ];
 export const RATINGS_AS_OF = SM.SITE.ratingsAsOf as string;

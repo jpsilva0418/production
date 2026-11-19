@@ -17,9 +17,10 @@
    reads only the built pages in public/demo/amairanymua-01/ and writes only <out.html>. */
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
+import { execFileSync } from 'node:child_process';
 import { dirname, join, posix } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { BASE, PAGES, SITES, SITE } from './amairanymua-01/site.mjs';
+import { BASE, SITES, SITE, pagesOf } from './amairanymua-01/site.mjs';
 
 const [site, out] = process.argv.slice(2);
 const IMG = process.argv.includes('--img') ? process.argv[process.argv.indexOf('--img') + 1] : '800';
@@ -35,19 +36,29 @@ const pickWidth = (url) => url.replace(/-(480|800|1280)\.webp$/, (m, w) => {
   const want = url.replace(/-(480|800|1280)\.webp$/, `-${IMG}.webp`);
   return existsSync(fileOf(want)) ? `-${IMG}.webp` : m;
 });
+/* a prebuilt site ships several sizes of one photograph (name.HASH_variant.webp): pack one copy of each */
+const sameImage = new Map();
 const token = (url) => {
   url = pickWidth(url);
+  const fam = url.match(/\/([A-Za-z0-9-]+\.[A-Za-z0-9_-]{8})(?:_[A-Za-z0-9]+)?\.(?:webp|jpe?g|png)$/);
+  if (fam && url.includes('/assets/') && !url.includes(`${BASE}/assets/`)) { const k = fam[1]; if (sameImage.has(k)) url = sameImage.get(k); else sameImage.set(k, url); }
   if (!assets.has(url)) {
     const f = fileOf(url);
     if (!existsSync(f)) throw new Error(`missing asset ${url}`);
     const ext = url.split('.').pop().toLowerCase();
     const t = `@@A${assets.size}@@`;
     assets.set(url, t);
-    assetData[t] = `data:${MIME[ext] || 'application/octet-stream'};base64,${readFileSync(f).toString('base64')}`;
+    let bytes = readFileSync(f), mime = MIME[ext] || 'application/octet-stream';
+    if (/^(webp|jpe?g|png)$/.test(ext) && bytes.length > 110 * 1024) {
+      // too heavy for a single-file preview: re-encode at phone size (Pillow), keeping the picture as is
+      bytes = execFileSync('python3', ['-I', '-c', 'import sys,io\nfrom PIL import Image\nim=Image.open(io.BytesIO(sys.stdin.buffer.read()))\nim=im.convert("RGB")\nw=min(im.width,820)\nim=im.resize((w,round(im.height*w/im.width)),Image.LANCZOS)\nb=io.BytesIO();im.save(b,"WEBP",quality=74,method=6);sys.stdout.buffer.write(b.getvalue())'], { input: bytes, maxBuffer: 64 * 1024 * 1024 });
+      mime = 'image/webp';
+    }
+    assetData[t] = `data:${mime};base64,${bytes.toString('base64')}`;
   }
   return assets.get(url);
 };
-const ASSET_RE = new RegExp(`${BASE.replace(/[/.]/g, '\\$&')}/assets/[A-Za-z0-9_./-]+\\.(?:webp|jpg|jpeg|png|svg|woff2|mp4)`, 'g');
+const ASSET_RE = new RegExp(`${BASE.replace(/[/.]/g, '\\$&')}/(?:[a-z]+/)?assets/[A-Za-z0-9_./-]+\\.(?:webp|jpg|jpeg|png|svg|woff2|mp4)`, 'g');
 const tokenize = (text) => text.replace(ASSET_RE, (u) => token(u));
 
 /* ---- stylesheets and scripts: stored once, spliced into each page at run time ---- */
@@ -59,7 +70,7 @@ const cssText = (url) => {
     t = t.replace(/url\(\s*(['"]?)([^'")]+)\1\s*\)/g, (m, q, u) => {
       if (/^(data:|#|%23|https?:)/.test(u)) return m;
       const abs = u.startsWith('/') ? u : posix.normalize(posix.join(posix.dirname(url), u));
-      return abs.startsWith(`${BASE}/assets/`) ? `url("${token(abs)}")` : m;
+      return new RegExp(`^${BASE}/(?:[a-z]+/)?assets/`).test(abs) ? `url("${token(abs)}")` : m;
     });
     css[url] = tokenize(t);
   }
@@ -69,7 +80,7 @@ const jsText = (url) => { if (js[url] === undefined) js[url] = tokenize(readFile
 
 /* ---- the pages ---- */
 const pages = {};
-for (const path of PAGES) {
+for (const path of pagesOf(site)) {
   const f = join(DEMO, site, path, 'index.html');
   if (!existsSync(f)) throw new Error(`page not built: ${site}/${path} (run the build first)`);
   let h = readFileSync(f, 'utf8');

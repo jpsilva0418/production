@@ -39,6 +39,8 @@ for (const f of await fs.readdir(DIST)) if (/^sitemap.*\.xml$/.test(f)) await fs
 const mapPath = (p) => (p.startsWith('//') || p.startsWith(`${DEMO}/`) || p === DEMO ? p : BASE + (p === '/' ? '' : p));
 let rerooted = 0;
 const rewrite = (html) => html
+  // Astro writes an empty alt as a bare `alt`; spell decorative images out as alt=""
+  .replace(/<img\b[^>]*>/g, (tag) => tag.replace(/\salt(?=[\s>\/])/, ' alt=""'))
   .replace(/\b(href|src|poster|data-src)="(\/[^"]*)"/g, (m, a, p) => { const q = mapPath(p); if (q !== p) rerooted++; return `${a}="${q}"`; })
   .replace(/\bsrcset="([^"]*)"/g, (_, v) => `srcset="${v.split(',').map((part) => part.trim().replace(/^(\/\S*)/, (x) => { const q = mapPath(x); if (q !== x) rerooted++; return q; })).join(', ')}"`)
   .replace(/url\((['"]?)(\/[^)'"]+)\1\)/g, (m, q, p) => { const r = mapPath(p); if (r !== p) rerooted++; return `url(${q}${r}${q})`; });

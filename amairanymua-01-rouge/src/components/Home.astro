@@ -13,7 +13,7 @@ import { getCollection } from 'astro:content';
 import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import { SITE, L, LINKS, INTRO, WORK_C, SERVICES_C, SECTION_LABELS, PATHS, FINAL, INQUIRY, BRIDAL_C, FEATURED, SERVICE_BY_ID, FILMS, capOf } from '../lib/content';
-import { book, HER, LOVE, RATINGS_AS_OF } from '../consts';
+import { book, HER, LOVE } from '../consts';
 
 const services = (await getCollection('services')).filter((s) => !s.data.draft).sort((a, b) => a.data.order - b.data.order)
   .map((s) => ({ ...SERVICE_BY_ID[s.data.key], numeral: s.data.numeral }));
@@ -29,6 +29,9 @@ const ring = 'M27 89.84A46 46 0 1 1 73 89.84';
 const plates = import.meta.glob<{ default: ImageMetadata }>('../assets/plates/*.jpg', { eager: true });
 const bandAmb = await getImage({ src: plates['../assets/plates/glam-sculpt.jpg'].default, width: 480, format: 'webp' });
 const followTiles = ['glam-bronze', 'wedding-florals', 'bride-pearls'];
+/* her own greeting, set as the chapter's heading: "Hey Gorgeous!" / "I’m Amairany." */
+const hello = HER.hello.split(/(?<=!)\s+/);
+const workHeading = (WORK_C.line as string).split('. ')[0].split(' in ');
 const bookPoints = [PATHS[1].points[2], 'Brides & events', SITE.area];
 ---
 <div class="c7-prog" id="c7Prog" aria-hidden="true"></div>
@@ -71,9 +74,8 @@ const bookPoints = [PATHS[1].points[2], 'Brides & events', SITE.area];
   <div class="wrap c7-mis" id="meet" data-chapter="meet" data-tone="light">
     <div class="c7-mis-t">
       <p class="kick rv">{INTRO.eyebrow}</p>
-      <h2 class="disp c7-mis-h rv" style="--d:.06s">{INTRO.heading[0]} <span class="ital">{INTRO.heading[1]}</span></h2>
+      <h2 class="disp c7-mis-h rv" style="--d:.06s">{hello[0]} <span class="ital">{hello[1]}</span></h2>
       <blockquote class="c7-her">
-        <p class="c7-her-hi rv" style="--d:.12s">{HER.hello}</p>
         {HER.about.map((t, i) => <p class="c7-mis-s rv" style={`--d:${(0.2 + i * 0.1).toFixed(2)}s`} set:html={t} />)}
         <footer class="c7-her-by fade" style="--d:.5s">{SITE.first}, in her own words</footer>
       </blockquote>
@@ -102,9 +104,9 @@ const bookPoints = [PATHS[1].points[2], 'Brides & events', SITE.area];
     <div>
       <p class="chap-rn rv">Chapter ii.</p>
       <p class="kick rv" style="--d:.04s">{SECTION_LABELS.work}</p>
-      <h2 class="disp rv" style="--d:.08s">{WORK_C.heading[0]}<br /><span class="ital">{WORK_C.heading[1]}</span></h2>
+      <h2 class="disp rv" style="--d:.08s">{workHeading[0]}<br /><span class="ital">in {workHeading[1]}.</span></h2>
     </div>
-    <p class="ital c7-care-line rv" style="--d:.12s">{WORK_C.line}</p>
+    <p class="ital c7-care-line rv" style="--d:.12s">{(WORK_C.line as string).split('. ').slice(1).join('. ')}</p>
   </div>
   <div class="c7-seq">
     <ul class="c7-trk c7-trk--work fade" id="c7Trk" tabindex="0" aria-label={WORK_C.aria}>
@@ -194,10 +196,10 @@ const bookPoints = [PATHS[1].points[2], 'Brides & events', SITE.area];
   <section class="wrap c7-love" id="notes" data-chapter="notes" data-tone="light" aria-labelledby="c7LoveH">
     <header class="c7-mom-h">
       <div><p class="caps rv">{HER.links.reviewsLine}</p><h2 class="disp rv" id="c7LoveH" style="--d:.06s">{HER.links.reviewsName}</h2></div>
-      <p class="c7-mom-line fade" style="--d:.1s">Her clients’ reviews, in full, where they wrote them. Ratings as shown on each site on {RATINGS_AS_OF}.</p>
+      <p class="c7-mom-line fade" style="--d:.1s">Her clients’ reviews, in full, where they wrote them. Ratings and counts as shown on each site on the date beside it.</p>
     </header>
     <ul class="c7-love-g" data-stag=".08">
-      {LOVE.map((x) => <li class="rv"><a class="c7-note" href={x.href} rel="external"><span class="caps-xs">{x.name}</span>{x.score ? <span class="c7-note-s">{x.score}<small>{x.meta}</small></span> : <span class="c7-note-s c7-note-s--q">Worked with her?</span>}<span class="arrow-link">{x.go} <span class="arr" aria-hidden="true">&rarr;</span></span></a></li>)}
+      {LOVE.map((x) => <li class="rv"><a class="c7-note" href={x.href} rel="external"><span class="caps-xs">{x.name}</span>{x.score ? <span class="c7-note-s">{x.score}<small>{x.meta}</small></span> : <span class="c7-note-s c7-note-s--q">Worked with her?</span>}<span class="c7-note-d">As shown on {x.asOf}</span><span class="arrow-link">{x.go} <span class="arr" aria-hidden="true">&rarr;</span></span></a></li>)}
     </ul>
   </section>
   <section class="wrap c7-mom" aria-labelledby="c7FolH">
@@ -248,11 +250,11 @@ const bookPoints = [PATHS[1].points[2], 'Brides & events', SITE.area];
 <style>
   /* ===== mobile progress bar + desktop chapter rail ===== */
   .c7-prog{position:fixed;top:0;left:0;right:0;height:2px;z-index:72;background:var(--moss);transform:scaleX(0);transform-origin:left;pointer-events:none;display:none}
-  .c7-rail{position:fixed;left:clamp(14px,2vw,28px);top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:12px;color:var(--ink);opacity:0;transition:opacity .5s ease}
+  .c7-rail{position:fixed;left:clamp(14px,2vw,28px);top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;gap:0;color:var(--ink);opacity:0;transition:opacity .5s ease}
   .c7-rail.on{opacity:1}
   .c7-rail:not(.on){pointer-events:none}
   .c7-rail[data-tone="film"],.c7-rail[data-tone="dark"]{color:var(--ivory)}
-  .c7-rail a{display:flex;align-items:center;gap:.8rem;min-height:30px;color:inherit;font-family:var(--utility);font-weight:600;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase}
+  .c7-rail a{display:flex;align-items:center;gap:.8rem;min-height:44px;color:inherit;font-family:var(--utility);font-weight:600;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase}
   .c7-rail a i{display:block;width:7px;height:7px;border-radius:50%;border:1px solid currentColor;transition:transform .35s var(--ease),background .35s}
   .c7-rail a span{opacity:0;transform:translateX(-6px);transition:opacity .35s,transform .45s var(--ease);padding:.5em .85em .45em;border-radius:999px;background:color-mix(in srgb,var(--ivory) 90%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
   .c7-rail[data-tone="film"] a span,.c7-rail[data-tone="dark"] a span{background:color-mix(in srgb,var(--leaf-deep) 55%,transparent)}
@@ -302,7 +304,6 @@ const bookPoints = [PATHS[1].points[2], 'Brides & events', SITE.area];
   /* ===== I · meet Amairany ===== */
   .c7-mis{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:clamp(2.4rem,6vw,6.5rem);align-items:center;position:relative;margin-top:clamp(4.5rem,9vw,8rem);scroll-margin-top:80px}
   .c7-her{margin:0;padding:0}
-  .c7-her-hi{font-family:var(--script);font-size:clamp(2.2rem,3.6vw,3.2rem);line-height:1.05;color:var(--brass);margin:0 0 .6rem}
   .c7-her-by{font-family:var(--utility);font-weight:600;font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft);margin-top:.2rem}
   .c7-her-by::before{content:"";display:inline-block;width:28px;height:1px;background:var(--brass);vertical-align:middle;margin-right:.8em}
   .c7-facts{display:flex;flex-wrap:wrap;gap:1rem clamp(1.6rem,3vw,2.8rem);margin:clamp(1.6rem,2.6vw,2.2rem) 0 0}
@@ -437,6 +438,7 @@ const bookPoints = [PATHS[1].points[2], 'Brides & events', SITE.area];
   .c7-note-s{font-family:var(--display);font-weight:300;font-size:clamp(2.4rem,3.6vw,3.2rem);line-height:1;color:var(--ink);display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap}
   .c7-note-s small{font-family:var(--utility);font-weight:600;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft)}
   .c7-note-s--q{font-style:italic;font-size:clamp(1.6rem,2.4vw,2.1rem)}
+  .c7-note-d{font-size:.78rem;color:var(--ink-soft);margin-top:-.6rem}
   .c7-note .arrow-link{margin-top:auto}
   @media(max-width:899px){.c7-love-g{grid-template-columns:1fr}}
   .c7-mom{padding-top:var(--pad)}
@@ -458,9 +460,9 @@ const bookPoints = [PATHS[1].points[2], 'Brides & events', SITE.area];
   .c7-all{display:flex;flex-direction:column;justify-content:space-between;gap:2rem;padding:clamp(1.6rem,2.6vw,2.2rem);background:var(--sage-band);color:var(--ink);border:1px solid var(--hair);border-radius:var(--r);min-height:300px;transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
   .c7-all:hover,.c7-all:focus-visible{transform:translateY(-3px);box-shadow:var(--shadow)}
   .c7-all .caps-xs{color:var(--brass)}
-  .c7-all-t{font-family:var(--display);font-weight:300;font-size:clamp(1.8rem,2.6vw,2.4rem);line-height:1.05;color:var(--ink);overflow-wrap:anywhere}
+  .c7-all-t{font-family:var(--display);font-weight:300;font-size:clamp(1.3rem,1.9vw,1.75rem);line-height:1.1;color:var(--ink);overflow-wrap:anywhere}
   @media(max-width:899px){.c7-mom-g{grid-template-columns:1fr 1fr 1fr}.c7-mom-g>div:last-child{grid-column:1/-1}.c7-all{min-height:0;flex-direction:row;align-items:center;flex-wrap:wrap}}
-  @media(max-width:599px){.c7-mom-g{grid-template-columns:1fr 1fr}.c7-mom-g>div:nth-child(3){display:none}}
+  @media(max-width:599px){.c7-mom-g{gap:8px}.c7-ig-cap{display:none}}
   .c7-join{margin-top:var(--pad);background:var(--sage-band);padding-block:clamp(60px,8vw,104px);position:relative}
   .c7-join::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:var(--moss)}
   .c7-join-in{display:grid;grid-template-columns:1fr minmax(260px,460px);gap:clamp(2.4rem,6vw,6rem);align-items:center}

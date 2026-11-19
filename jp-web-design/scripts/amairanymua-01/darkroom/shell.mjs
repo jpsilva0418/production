@@ -1,14 +1,316 @@
-/* STUB — replaced by this site's LEAD with its real shell. */
-import { head, marker, href, NAV, SITE, finePrint, inquire, book } from '../site.mjs';
-const S = 'darkroom';
-export const page = ({ path = '', title, description, main }) => `<!doctype html>
-<html lang="en"><head>
+/* /demo/amairanymua-01 — site "darkroom": the shell (document, header, menu, footer) and the
+   page kit every Darkroom page is built from. Documented for page authors in KIT.md
+   (scratchpad/work/darkroom-lead/KIT.md).
+
+   Darkroom: red, black and white as a darkroom. Under a red safelight her prints develop,
+   hang on a line to dry and get marked up in grease pencil. The ground is the dark room
+   (--room), prints and light pages are photographic paper (--paper), red is LIGHT (the
+   safelight glow) and the grease pencil's marks, never paint on a page.
+   Type: Syne (display), IBM Plex Sans (body), IBM Plex Mono (edge markings: only true
+   information), Caveat (the grease pencil). The wordmark is her own lockup, "Glam By" over
+   "AMAIRANYMUA", set as type: "Glam By" is drawn from Caveat's outlines (so it never waits
+   for a font), the caps are Syne. */
+import { head, marker, href, NAV, SITE, HER, finePrint, inquire, book, pic, esc, arrow, L, A, FOOTER, PHOTOS, film, REVIEWS, LOOKS } from '../site.mjs';
+
+export const S = 'darkroom';
+/** This site's asset folder (stylesheets, scripts, develop stages, grain). */
+export const D = `${A}/darkroom`;
+
+/* ---------- the grease-pencil lettering: Caveat 700 outlines, one path per glyph of
+   "Glam By Amairanymua" (fontTools, Caveat variable instanced at wght 700, y flipped,
+   1000 units per em, no kerning). Glyphs 0–6 are "Glam By", 8–18 "Amairanymua". ---------- */
+const GP = ["M159 46Q132 26 118 -12Q103 -49 104 -81Q103 -143 114 -209Q126 -275 145 -332Q158 -368 173 -405Q188 -442 204 -476Q220 -509 235 -532Q266 -585 298 -617Q331 -649 348 -659Q376 -673 415 -680Q454 -688 491 -680Q517 -673 542 -660Q568 -647 587 -628Q598 -618 604 -607Q610 -596 610 -584Q610 -569 596 -555Q582 -541 565 -536Q548 -531 539 -542Q526 -562 514 -572Q502 -583 489 -588Q478 -595 460 -595Q441 -595 420 -588Q399 -582 380 -566Q373 -560 362 -549Q350 -538 338 -522Q325 -507 315 -489Q287 -443 268 -396Q248 -348 233 -292Q226 -269 218 -236Q210 -202 204 -169Q197 -136 195 -111Q192 -76 197 -56Q202 -36 218 -30Q234 -23 263 -30Q289 -36 316 -50Q342 -65 367 -88Q392 -110 412 -141Q430 -175 442 -203Q453 -231 454 -248Q454 -264 436 -263Q395 -262 370 -266Q346 -270 337 -286Q324 -289 324 -308Q323 -327 342 -339Q359 -348 389 -350Q419 -352 450 -348Q482 -345 501 -334Q523 -323 532 -302Q540 -280 540 -256Q541 -232 537 -211Q528 -176 512 -143Q497 -110 471 -76Q456 -55 430 -32Q404 -9 376 10Q347 28 322 39Q282 57 238 65Q195 73 159 46Z","M636 11Q617 16 602 0Q587 -15 581 -45Q575 -75 583 -112Q588 -124 591 -136Q594 -147 594 -154Q596 -164 602 -184Q608 -203 615 -224Q622 -245 628 -262Q635 -278 637 -282Q641 -282 644 -289Q647 -296 647 -303Q647 -311 650 -321Q654 -331 658 -335Q658 -340 660 -346Q663 -353 663 -357Q663 -361 666 -365Q668 -369 668 -373Q675 -386 686 -414Q698 -443 712 -478Q725 -513 737 -547Q749 -581 756 -604Q764 -628 764 -633Q764 -641 770 -648Q776 -655 784 -655Q787 -658 798 -660Q809 -661 813 -661Q813 -661 817 -657Q821 -653 829 -645Q837 -638 844 -629Q852 -620 852 -608Q852 -595 848 -583Q845 -571 836 -550Q827 -530 808 -490Q800 -470 791 -452Q782 -435 782 -431Q782 -427 778 -419Q775 -411 771 -399Q767 -391 760 -376Q753 -360 746 -342Q738 -325 733 -312Q728 -300 728 -298Q728 -294 728 -290Q727 -286 723 -282Q719 -282 718 -276Q718 -271 718 -271Q718 -261 702 -218Q686 -163 672 -117Q659 -71 659 -43Q659 -19 652 -6Q644 7 636 11Z","M796 -21Q792 -29 778 -37Q765 -45 765 -49Q765 -53 760 -62Q756 -70 752 -74Q747 -80 755 -104Q763 -127 779 -161Q795 -195 814 -230Q822 -238 830 -251Q838 -264 842 -268Q842 -272 845 -276Q848 -279 852 -279L860 -295Q862 -299 872 -311Q883 -323 898 -338Q913 -352 928 -365Q944 -378 954 -384Q975 -398 998 -397Q1020 -396 1036 -383Q1039 -380 1050 -371Q1060 -362 1074 -351Q1087 -340 1097 -331L1134 -298L1117 -248Q1104 -208 1110 -178Q1116 -148 1129 -126Q1134 -115 1142 -109Q1151 -103 1165 -101Q1173 -100 1180 -95Q1187 -90 1187 -79Q1187 -55 1178 -44Q1170 -34 1160 -32Q1127 -28 1097 -39Q1067 -50 1043 -96Q1039 -102 1032 -118Q1026 -135 1025 -140Q1021 -135 1014 -128Q1008 -120 1002 -114Q931 -42 880 -20Q830 1 796 -21ZM851 -104Q858 -103 873 -112Q888 -120 913 -140Q947 -169 969 -188Q991 -207 1012 -237L1034 -273Q1024 -296 1016 -303Q1008 -310 1000 -310Q987 -310 969 -294Q951 -277 928 -246Q906 -214 878 -167Q865 -145 858 -124Q851 -104 851 -104Z","M1684 -24Q1677 -26 1662 -37Q1647 -48 1636 -70Q1624 -92 1625 -127Q1626 -157 1630 -170Q1633 -182 1626 -183Q1621 -184 1606 -174Q1591 -164 1567 -142Q1543 -120 1509 -84Q1497 -74 1482 -60Q1468 -45 1454 -38Q1439 -31 1428 -41L1418 -50Q1411 -56 1406 -66Q1401 -76 1403 -83L1431 -161Q1443 -187 1448 -199Q1452 -211 1452 -214Q1451 -217 1446 -216Q1440 -215 1429 -206Q1418 -196 1414 -190Q1410 -190 1404 -182Q1397 -174 1391 -168Q1385 -162 1370 -146Q1355 -129 1338 -111Q1325 -99 1308 -79Q1291 -59 1278 -43Q1265 -27 1262 -27Q1244 -28 1230 -39Q1215 -50 1210 -66Q1204 -77 1209 -106Q1214 -136 1228 -201Q1232 -216 1236 -227Q1239 -238 1243 -249Q1247 -260 1252 -274Q1258 -288 1267 -308Q1272 -322 1271 -334Q1270 -347 1269 -355Q1269 -370 1278 -379Q1288 -388 1300 -392Q1312 -395 1319 -393Q1347 -390 1357 -373Q1367 -356 1368 -340Q1369 -325 1364 -313Q1359 -301 1356 -293L1345 -266Q1335 -243 1330 -232Q1326 -222 1326 -218Q1325 -215 1325 -212Q1326 -209 1334 -215Q1342 -221 1354 -232Q1365 -242 1375 -250Q1393 -265 1414 -280Q1434 -296 1454 -308Q1474 -320 1487 -324Q1504 -321 1518 -307Q1533 -293 1537 -283Q1542 -268 1538 -256Q1535 -244 1533 -234Q1532 -230 1529 -219Q1526 -208 1523 -198Q1520 -189 1520 -189Q1520 -189 1526 -195Q1532 -201 1542 -210Q1552 -218 1562 -225Q1612 -263 1642 -274Q1671 -284 1692 -256Q1704 -245 1708 -226Q1711 -207 1711 -175Q1712 -162 1714 -146Q1715 -130 1718 -118Q1720 -106 1722 -103Q1725 -99 1733 -96Q1741 -92 1748 -90Q1762 -83 1764 -64Q1765 -46 1749 -36Q1734 -27 1718 -25Q1701 -23 1684 -24Z","","M2132 72Q2089 44 2082 16Q2074 -12 2101 -29Q2107 -33 2124 -30Q2142 -27 2151 -18Q2171 0 2196 4Q2222 9 2259 -1Q2301 -14 2324 -34Q2346 -53 2374 -87Q2395 -114 2404 -140Q2412 -166 2412 -188Q2411 -209 2401 -220Q2376 -255 2339 -268Q2302 -282 2242 -266Q2235 -265 2221 -262Q2207 -259 2196 -256Q2185 -254 2184 -254Q2177 -252 2173 -252Q2169 -252 2164 -242Q2158 -233 2147 -204Q2136 -174 2114 -113Q2093 -52 2079 -26Q2064 -1 2053 -4Q2042 -6 2028 -25Q2020 -39 2010 -56Q2001 -73 2011 -91Q2016 -100 2019 -108Q2022 -115 2027 -134Q2032 -149 2046 -186Q2061 -224 2081 -274Q2101 -325 2123 -379Q2145 -433 2166 -481Q2186 -529 2200 -562Q2214 -593 2217 -607Q2220 -621 2215 -622Q2215 -627 2212 -632Q2209 -636 2210 -640Q2210 -644 2228 -651Q2245 -658 2265 -664Q2285 -670 2294 -668Q2299 -668 2306 -668Q2313 -669 2313 -673Q2316 -673 2332 -675Q2348 -677 2367 -675Q2434 -669 2477 -636Q2520 -604 2519 -533Q2518 -516 2505 -489Q2492 -462 2472 -435Q2453 -408 2431 -388Q2418 -377 2404 -366Q2389 -354 2378 -346Q2368 -339 2368 -339Q2368 -339 2376 -336Q2384 -333 2393 -330Q2439 -313 2466 -287Q2492 -261 2503 -215Q2507 -200 2504 -178Q2500 -156 2494 -134Q2488 -113 2481 -98Q2474 -91 2470 -84Q2466 -76 2466 -76Q2466 -74 2458 -60Q2450 -47 2439 -31Q2428 -15 2418 -3Q2408 5 2390 20Q2371 34 2350 48Q2328 62 2309 69Q2281 81 2246 86Q2212 90 2181 86Q2150 83 2132 72ZM2204 -343Q2204 -343 2221 -346Q2237 -350 2257 -354Q2277 -359 2287 -363Q2292 -366 2302 -371Q2311 -376 2321 -386Q2335 -399 2351 -416Q2367 -432 2382 -451Q2398 -470 2409 -492Q2432 -528 2434 -544Q2436 -560 2423 -573Q2414 -584 2398 -590Q2382 -595 2364 -596Q2345 -596 2328 -591Q2315 -587 2308 -582Q2301 -576 2301 -565Q2301 -556 2296 -547Q2290 -537 2285 -532Q2284 -525 2278 -518Q2273 -512 2273 -512Q2273 -508 2260 -488Q2248 -467 2234 -429Q2216 -386 2210 -367Q2204 -348 2204 -343Z","M2538 208Q2502 215 2469 210Q2436 206 2414 193Q2391 180 2386 164Q2380 141 2392 130Q2404 119 2420 117Q2437 115 2442 121Q2450 126 2468 136Q2485 146 2511 141Q2534 136 2552 119Q2570 102 2584 83Q2592 71 2611 40Q2630 9 2650 -28Q2671 -66 2685 -98Q2688 -106 2692 -117Q2696 -128 2702 -135Q2708 -147 2712 -158Q2717 -168 2718 -172Q2719 -177 2727 -192Q2735 -207 2742 -222Q2747 -237 2757 -266Q2767 -295 2777 -313Q2789 -336 2796 -350Q2804 -365 2813 -368Q2822 -375 2830 -375Q2838 -375 2849 -369Q2861 -357 2868 -346Q2876 -334 2874 -318Q2873 -301 2858 -273Q2850 -249 2840 -230Q2831 -210 2826 -204Q2821 -192 2814 -178Q2808 -163 2803 -151Q2785 -111 2772 -86Q2759 -61 2749 -40Q2739 -19 2728 9Q2705 46 2684 80Q2662 113 2638 142Q2628 151 2610 166Q2591 180 2572 192Q2552 205 2538 208ZM2663 -18Q2648 -20 2630 -38Q2613 -56 2602 -76Q2590 -96 2592 -104Q2592 -109 2592 -112Q2592 -115 2592 -115Q2586 -115 2582 -132Q2579 -150 2578 -177Q2576 -204 2576 -233Q2577 -262 2579 -286Q2583 -303 2583 -324Q2583 -344 2584 -356Q2583 -372 2590 -382Q2598 -392 2602 -395Q2639 -411 2656 -378Q2673 -345 2668 -273Q2666 -233 2666 -196Q2666 -160 2673 -134Q2680 -108 2697 -97Q2704 -93 2702 -80Q2700 -67 2693 -52Q2686 -38 2678 -28Q2669 -17 2663 -18Z","","M3096 33Q3078 23 3076 11Q3075 -1 3090 -31Q3105 -61 3137 -124Q3161 -169 3170 -194Q3178 -220 3179 -231Q3180 -242 3180 -245Q3178 -254 3182 -260Q3186 -265 3195 -269Q3200 -274 3218 -287Q3236 -300 3246 -318Q3255 -339 3266 -361Q3278 -383 3297 -416Q3316 -450 3348 -504Q3368 -539 3396 -583Q3423 -627 3450 -663Q3461 -677 3473 -685Q3485 -693 3494 -693Q3516 -693 3538 -682Q3560 -670 3577 -653Q3594 -636 3600 -621Q3605 -613 3604 -587Q3603 -561 3600 -524Q3597 -487 3593 -445Q3590 -404 3584 -348Q3578 -292 3572 -231Q3567 -170 3564 -114Q3561 -57 3564 -15Q3565 -6 3564 2Q3563 10 3563 15Q3557 21 3537 20Q3516 20 3498 14Q3479 8 3477 -1Q3474 -4 3473 -6Q3472 -8 3473 -26Q3474 -43 3476 -90L3481 -243L3468 -242Q3459 -242 3435 -240Q3412 -238 3384 -234Q3357 -231 3334 -228Q3311 -224 3302 -221Q3293 -221 3280 -209Q3268 -197 3257 -178Q3253 -164 3242 -148Q3232 -133 3232 -128Q3225 -123 3221 -116Q3216 -109 3216 -109Q3216 -103 3207 -80Q3198 -56 3185 -28Q3172 1 3158 22L3131 60ZM3335 -311Q3335 -311 3346 -313Q3357 -315 3373 -318Q3388 -320 3400 -320Q3423 -326 3438 -329Q3454 -332 3464 -332Q3474 -333 3480 -330Q3484 -325 3488 -324Q3491 -323 3491 -323Q3492 -325 3495 -344Q3498 -363 3502 -391Q3506 -419 3510 -450Q3514 -480 3517 -506Q3520 -533 3521 -548Q3522 -567 3520 -582Q3518 -598 3518 -598Q3512 -598 3496 -576Q3479 -555 3458 -520Q3436 -484 3415 -443Q3405 -424 3396 -413Q3388 -402 3383 -402Q3381 -400 3373 -387Q3364 -373 3354 -356Q3345 -340 3338 -326Q3332 -313 3335 -311Z","M4112 -24Q4105 -26 4090 -37Q4075 -48 4064 -70Q4052 -92 4053 -127Q4054 -157 4058 -170Q4061 -182 4054 -183Q4049 -184 4034 -174Q4019 -164 3995 -142Q3971 -120 3937 -84Q3925 -74 3910 -60Q3896 -45 3882 -38Q3867 -31 3856 -41L3846 -50Q3839 -56 3834 -66Q3829 -76 3831 -83L3859 -161Q3871 -187 3876 -199Q3880 -211 3880 -214Q3879 -217 3874 -216Q3868 -215 3857 -206Q3846 -196 3842 -190Q3838 -190 3832 -182Q3825 -174 3819 -168Q3813 -162 3798 -146Q3783 -129 3766 -111Q3753 -99 3736 -79Q3719 -59 3706 -43Q3693 -27 3690 -27Q3672 -28 3658 -39Q3643 -50 3638 -66Q3632 -77 3637 -106Q3642 -136 3656 -201Q3660 -216 3664 -227Q3667 -238 3671 -249Q3675 -260 3680 -274Q3686 -288 3695 -308Q3700 -322 3699 -334Q3698 -347 3697 -355Q3697 -370 3706 -379Q3716 -388 3728 -392Q3740 -395 3747 -393Q3775 -390 3785 -373Q3795 -356 3796 -340Q3797 -325 3792 -313Q3787 -301 3784 -293L3773 -266Q3763 -243 3758 -232Q3754 -222 3754 -218Q3753 -215 3753 -212Q3754 -209 3762 -215Q3770 -221 3782 -232Q3793 -242 3803 -250Q3821 -265 3842 -280Q3862 -296 3882 -308Q3902 -320 3915 -324Q3932 -321 3946 -307Q3961 -293 3965 -283Q3970 -268 3966 -256Q3963 -244 3961 -234Q3960 -230 3957 -219Q3954 -208 3951 -198Q3948 -189 3948 -189Q3948 -189 3954 -195Q3960 -201 3970 -210Q3980 -218 3990 -225Q4040 -263 4070 -274Q4099 -284 4120 -256Q4132 -245 4136 -226Q4139 -207 4139 -175Q4140 -162 4142 -146Q4143 -130 4146 -118Q4148 -106 4150 -103Q4153 -99 4161 -96Q4169 -92 4176 -90Q4190 -83 4192 -64Q4193 -46 4177 -36Q4162 -27 4146 -25Q4129 -23 4112 -24Z","M4239 -21Q4235 -29 4222 -37Q4208 -45 4208 -49Q4208 -53 4204 -62Q4199 -70 4195 -74Q4190 -80 4198 -104Q4206 -127 4222 -161Q4238 -195 4257 -230Q4265 -238 4273 -251Q4281 -264 4285 -268Q4285 -272 4288 -276Q4291 -279 4295 -279L4303 -295Q4305 -299 4315 -311Q4326 -323 4341 -338Q4356 -352 4371 -365Q4387 -378 4397 -384Q4418 -398 4440 -397Q4463 -396 4479 -383Q4482 -380 4492 -371Q4503 -362 4516 -351Q4530 -340 4540 -331L4577 -298L4560 -248Q4547 -208 4553 -178Q4560 -148 4572 -126Q4577 -115 4586 -109Q4594 -103 4608 -101Q4616 -100 4623 -95Q4630 -90 4630 -79Q4630 -55 4622 -44Q4613 -34 4603 -32Q4570 -28 4540 -39Q4510 -50 4486 -96Q4482 -102 4476 -118Q4469 -135 4468 -140Q4464 -135 4458 -128Q4451 -120 4445 -114Q4374 -42 4323 -20Q4273 1 4239 -21ZM4294 -104Q4301 -103 4316 -112Q4331 -120 4356 -140Q4390 -169 4412 -188Q4434 -207 4455 -237L4477 -273Q4467 -296 4459 -303Q4451 -310 4443 -310Q4430 -310 4412 -294Q4394 -277 4372 -246Q4349 -214 4321 -167Q4308 -145 4301 -124Q4294 -104 4294 -104Z","M4664 -17Q4656 -25 4652 -41Q4649 -57 4650 -72Q4651 -88 4655 -96Q4655 -104 4658 -108Q4660 -113 4659 -117Q4658 -121 4661 -131Q4664 -141 4667 -150Q4674 -166 4683 -192Q4692 -217 4701 -244Q4710 -270 4716 -290Q4722 -309 4723 -313Q4723 -325 4739 -326Q4751 -330 4768 -316Q4785 -302 4795 -286Q4803 -278 4801 -265Q4799 -252 4788 -228Q4784 -220 4778 -202Q4773 -183 4771 -171Q4767 -163 4762 -148Q4756 -134 4752 -121Q4750 -116 4748 -102Q4746 -89 4743 -75Q4740 -61 4735 -53Q4726 -12 4704 -5Q4681 2 4664 -17ZM4772 -418Q4761 -426 4756 -438Q4750 -449 4750 -458Q4749 -467 4751 -469Q4761 -480 4768 -498Q4776 -516 4785 -531Q4787 -534 4790 -540Q4794 -545 4798 -546Q4810 -554 4832 -545Q4853 -536 4863 -520Q4872 -501 4868 -481Q4865 -461 4847 -439Q4832 -419 4809 -414Q4786 -408 4772 -418Z","M4876 -27Q4867 -34 4856 -45Q4846 -56 4849 -76Q4852 -104 4857 -126Q4862 -147 4869 -175Q4871 -187 4879 -216Q4888 -245 4900 -279Q4912 -313 4925 -344Q4938 -374 4948 -389Q4959 -399 4980 -399Q5002 -399 5010 -391Q5021 -382 5017 -360Q5013 -337 4989 -290Q4984 -278 4976 -264Q4969 -251 4966 -242Q4963 -234 4968 -235Q4974 -246 4990 -260Q5006 -275 5024 -289Q5042 -303 5058 -314Q5074 -325 5080 -328Q5088 -333 5098 -336Q5109 -340 5113 -342Q5136 -353 5164 -350Q5191 -348 5197 -333Q5198 -325 5204 -321Q5209 -317 5209 -317Q5213 -317 5214 -314Q5214 -311 5214 -311Q5214 -304 5200 -291Q5187 -278 5171 -277Q5158 -276 5148 -272Q5138 -268 5124 -262Q5086 -240 5056 -223Q5025 -206 4993 -171Q4986 -163 4978 -156Q4970 -149 4962 -136Q4957 -131 4952 -114Q4947 -97 4944 -82Q4940 -66 4940 -63Q4940 -63 4937 -54Q4934 -44 4927 -35Q4915 -19 4904 -15Q4892 -11 4876 -27Z","M5241 -21Q5237 -29 5224 -37Q5210 -45 5210 -49Q5210 -53 5206 -62Q5201 -70 5197 -74Q5192 -80 5200 -104Q5208 -127 5224 -161Q5240 -195 5259 -230Q5267 -238 5275 -251Q5283 -264 5287 -268Q5287 -272 5290 -276Q5293 -279 5297 -279L5305 -295Q5307 -299 5317 -311Q5328 -323 5343 -338Q5358 -352 5373 -365Q5389 -378 5399 -384Q5420 -398 5442 -397Q5465 -396 5481 -383Q5484 -380 5494 -371Q5505 -362 5518 -351Q5532 -340 5542 -331L5579 -298L5562 -248Q5549 -208 5555 -178Q5562 -148 5574 -126Q5579 -115 5588 -109Q5596 -103 5610 -101Q5618 -100 5625 -95Q5632 -90 5632 -79Q5632 -55 5624 -44Q5615 -34 5605 -32Q5572 -28 5542 -39Q5512 -50 5488 -96Q5484 -102 5478 -118Q5471 -135 5470 -140Q5466 -135 5460 -128Q5453 -120 5447 -114Q5376 -42 5325 -20Q5275 1 5241 -21ZM5296 -104Q5303 -103 5318 -112Q5333 -120 5358 -140Q5392 -169 5414 -188Q5436 -207 5457 -237L5479 -273Q5469 -296 5461 -303Q5453 -310 5445 -310Q5432 -310 5414 -294Q5396 -277 5374 -246Q5351 -214 5323 -167Q5310 -145 5303 -124Q5296 -104 5296 -104Z","M6006 -24Q5984 -26 5970 -34Q5955 -41 5946 -64Q5942 -80 5942 -98Q5943 -115 5945 -132Q5947 -148 5947 -160Q5947 -162 5947 -168Q5947 -174 5947 -179Q5945 -194 5940 -198Q5934 -201 5921 -196Q5900 -186 5876 -170Q5851 -153 5824 -132Q5798 -110 5770 -86Q5748 -62 5738 -47Q5727 -32 5716 -32Q5708 -28 5699 -34Q5690 -40 5680 -48Q5673 -56 5664 -68Q5654 -81 5652 -85Q5652 -101 5654 -114Q5657 -127 5662 -141Q5668 -155 5676 -173Q5680 -180 5684 -188Q5687 -195 5692 -204Q5696 -218 5704 -236Q5711 -254 5718 -270Q5729 -296 5735 -315Q5741 -334 5745 -356Q5744 -358 5746 -362Q5748 -366 5752 -367H5753H5754Q5761 -372 5780 -368Q5800 -365 5810 -357Q5831 -339 5830 -310Q5829 -281 5800 -234Q5793 -218 5786 -204Q5778 -191 5778 -186Q5778 -186 5786 -192Q5794 -198 5805 -206Q5816 -215 5824 -220Q5829 -225 5846 -238Q5863 -252 5883 -267Q5903 -282 5915 -290Q5926 -298 5943 -306Q5960 -315 5964 -315Q5974 -315 5988 -308Q6003 -301 6016 -292Q6028 -282 6030 -274Q6030 -270 6029 -264Q6028 -257 6028 -252Q6027 -236 6028 -214Q6028 -191 6028 -168Q6028 -146 6024 -128Q6024 -128 6025 -126Q6026 -125 6027 -122Q6026 -121 6026 -118Q6027 -116 6027 -116Q6029 -109 6032 -102Q6034 -95 6038 -86Q6042 -78 6047 -65Q6046 -52 6032 -40Q6019 -27 6006 -24Z","M6108 208Q6072 215 6039 210Q6006 206 5984 193Q5961 180 5956 164Q5950 141 5962 130Q5974 119 5990 117Q6007 115 6012 121Q6020 126 6038 136Q6055 146 6081 141Q6104 136 6122 119Q6140 102 6154 83Q6162 71 6181 40Q6200 9 6220 -28Q6241 -66 6255 -98Q6258 -106 6262 -117Q6266 -128 6272 -135Q6278 -147 6282 -158Q6287 -168 6288 -172Q6289 -177 6297 -192Q6305 -207 6312 -222Q6317 -237 6327 -266Q6337 -295 6347 -313Q6359 -336 6366 -350Q6374 -365 6383 -368Q6392 -375 6400 -375Q6408 -375 6419 -369Q6431 -357 6438 -346Q6446 -334 6444 -318Q6443 -301 6428 -273Q6420 -249 6410 -230Q6401 -210 6396 -204Q6391 -192 6384 -178Q6378 -163 6373 -151Q6355 -111 6342 -86Q6329 -61 6319 -40Q6309 -19 6298 9Q6275 46 6254 80Q6232 113 6208 142Q6198 151 6180 166Q6161 180 6142 192Q6122 205 6108 208ZM6233 -18Q6218 -20 6200 -38Q6183 -56 6172 -76Q6160 -96 6162 -104Q6162 -109 6162 -112Q6162 -115 6162 -115Q6156 -115 6152 -132Q6149 -150 6148 -177Q6146 -204 6146 -233Q6147 -262 6149 -286Q6153 -303 6153 -324Q6153 -344 6154 -356Q6153 -372 6160 -382Q6168 -392 6172 -395Q6209 -411 6226 -378Q6243 -345 6238 -273Q6236 -233 6236 -196Q6236 -160 6243 -134Q6250 -108 6267 -97Q6274 -93 6272 -80Q6270 -67 6263 -52Q6256 -38 6248 -28Q6239 -17 6233 -18Z","M6929 -24Q6922 -26 6907 -37Q6892 -48 6880 -70Q6869 -92 6870 -127Q6871 -157 6874 -170Q6878 -182 6871 -183Q6866 -184 6851 -174Q6836 -164 6812 -142Q6788 -120 6754 -84Q6742 -74 6728 -60Q6713 -45 6698 -38Q6684 -31 6673 -41L6663 -50Q6656 -56 6651 -66Q6646 -76 6648 -83L6676 -161Q6688 -187 6692 -199Q6697 -211 6696 -214Q6696 -217 6691 -216Q6685 -215 6674 -206Q6663 -196 6659 -190Q6655 -190 6648 -182Q6642 -174 6636 -168Q6630 -162 6615 -146Q6600 -129 6583 -111Q6570 -99 6553 -79Q6536 -59 6523 -43Q6510 -27 6507 -27Q6489 -28 6474 -39Q6460 -50 6455 -66Q6449 -77 6454 -106Q6459 -136 6473 -201Q6477 -216 6480 -227Q6484 -238 6488 -249Q6492 -260 6498 -274Q6503 -288 6512 -308Q6517 -322 6516 -334Q6515 -347 6514 -355Q6514 -370 6524 -379Q6533 -388 6545 -392Q6557 -395 6564 -393Q6592 -390 6602 -373Q6612 -356 6613 -340Q6614 -325 6609 -313Q6604 -301 6601 -293L6590 -266Q6580 -243 6576 -232Q6571 -222 6570 -218Q6570 -215 6570 -212Q6571 -209 6579 -215Q6587 -221 6598 -232Q6610 -242 6620 -250Q6638 -265 6658 -280Q6679 -296 6699 -308Q6719 -320 6732 -324Q6749 -321 6764 -307Q6778 -293 6782 -283Q6787 -268 6784 -256Q6780 -244 6778 -234Q6777 -230 6774 -219Q6771 -208 6768 -198Q6765 -189 6765 -189Q6765 -189 6771 -195Q6777 -201 6787 -210Q6797 -218 6807 -225Q6857 -263 6886 -274Q6916 -284 6937 -256Q6949 -245 6952 -226Q6956 -207 6956 -175Q6957 -162 6958 -146Q6960 -130 6962 -118Q6965 -106 6967 -103Q6970 -99 6978 -96Q6986 -92 6993 -90Q7007 -83 7008 -64Q7010 -46 6994 -36Q6979 -27 6962 -25Q6946 -23 6929 -24Z","M7268 -2Q7258 -12 7252 -30Q7246 -47 7240 -70Q7238 -78 7238 -88Q7239 -98 7238 -104Q7235 -97 7228 -86Q7222 -75 7216 -70Q7212 -66 7198 -54Q7184 -43 7170 -36Q7137 -15 7112 -16Q7086 -18 7067 -42Q7051 -55 7041 -75Q7031 -95 7037 -123Q7039 -158 7047 -192Q7055 -225 7080 -281Q7101 -322 7112 -345Q7123 -368 7126 -372Q7141 -377 7163 -372Q7185 -366 7187 -352Q7193 -342 7187 -314Q7181 -287 7163 -252Q7149 -218 7136 -186Q7124 -154 7122 -132Q7119 -110 7133 -105Q7142 -100 7160 -106Q7177 -112 7201 -142Q7225 -172 7252 -237Q7260 -257 7264 -272Q7268 -288 7269 -307Q7267 -319 7276 -332Q7284 -345 7296 -352Q7300 -357 7307 -362Q7314 -366 7316 -361L7332 -362Q7336 -363 7341 -354Q7346 -345 7351 -341Q7362 -332 7361 -302Q7360 -272 7337 -218Q7318 -177 7312 -156Q7305 -135 7304 -115Q7304 -97 7307 -84Q7310 -72 7325 -59Q7336 -52 7338 -36Q7339 -19 7338 -7Q7336 2 7322 6Q7309 9 7294 7Q7278 5 7268 -2Z","M7426 -21Q7422 -29 7408 -37Q7395 -45 7395 -49Q7395 -53 7390 -62Q7386 -70 7382 -74Q7377 -80 7385 -104Q7393 -127 7409 -161Q7425 -195 7444 -230Q7452 -238 7460 -251Q7468 -264 7472 -268Q7472 -272 7475 -276Q7478 -279 7482 -279L7490 -295Q7492 -299 7502 -311Q7513 -323 7528 -338Q7543 -352 7558 -365Q7574 -378 7584 -384Q7605 -398 7628 -397Q7650 -396 7666 -383Q7669 -380 7680 -371Q7690 -362 7704 -351Q7717 -340 7727 -331L7764 -298L7747 -248Q7734 -208 7740 -178Q7746 -148 7759 -126Q7764 -115 7772 -109Q7781 -103 7795 -101Q7803 -100 7810 -95Q7817 -90 7817 -79Q7817 -55 7808 -44Q7800 -34 7790 -32Q7757 -28 7727 -39Q7697 -50 7673 -96Q7669 -102 7662 -118Q7656 -135 7655 -140Q7651 -135 7644 -128Q7638 -120 7632 -114Q7561 -42 7510 -20Q7460 1 7426 -21ZM7481 -104Q7488 -103 7503 -112Q7518 -120 7543 -140Q7577 -169 7599 -188Q7621 -207 7642 -237L7664 -273Q7654 -296 7646 -303Q7638 -310 7630 -310Q7617 -310 7599 -294Q7581 -277 7558 -246Q7536 -214 7508 -167Q7495 -145 7488 -124Q7481 -104 7481 -104Z"];
+/* bounds of "Glam By" and of "Amairanymua" in the units above (x from the string's origin) */
+const GB_X = 104, GB_W = 2771, AM_X = 3076, AM_W = 4741, G_Y = -700, G_H = 920;
+const sprite = (withName) => `<svg class="sprite" aria-hidden="true" focusable="false" width="0" height="0"><symbol id="dr-glamby" viewBox="${GB_X} ${G_Y} ${GB_W} ${G_H}"><path d="${GP.slice(0, 7).join('')}"/></symbol>${withName ? `<symbol id="dr-amai" viewBox="${AM_X} ${G_Y} ${AM_W} ${G_H}"><path d="${GP.slice(8).join('')}"/></symbol>` : ''}</svg>`;
+/** "Glam By" in grease pencil, as an inline SVG (decorative). */
+export const glamBy = (cls = '') => `<svg class="gb${cls ? ` ${cls}` : ''}" viewBox="0 0 ${GB_W} ${G_H}" aria-hidden="true" focusable="false"><use href="#dr-glamby" width="${GB_W}" height="${G_H}"/></svg>`;
+/** "Glam By Amairanymua" written in grease pencil on one line (home page only: the sprite
+ *  carries the second word only when page() is called with sprite:'name'). */
+export const signature = (cls = '') => `<svg class="sig${cls ? ` ${cls}` : ''}" viewBox="0 0 ${AM_X + AM_W - GB_X} ${G_H}" aria-hidden="true" focusable="false"><use href="#dr-glamby" width="${GB_W}" height="${G_H}"/><use href="#dr-amai" x="${AM_X - GB_X}" width="${AM_W}" height="${G_H}"/></svg>`;
+
+/** The concept wordmark: "Glam By" (grease pencil) over "AMAIRANYMUA" (Syne). Decorative
+ *  inside a labelled link; pass `label` to make it an image. size: '' | 'wm--lg' | 'wm--xl'. */
+export const wordmark = ({ cls = '', label = '' } = {}) =>
+  `<span class="wm${cls ? ` ${cls}` : ''}"${label ? ` role="img" aria-label="${esc(label)}"` : ' aria-hidden="true"'}>${glamBy('wm-s')}<span class="wm-c">${HER.brand.caps}</span></span>`;
+
+/* ---------- small furniture ---------- */
+/** An edge marking: mono, uppercase, tracked, like the printing on a film's rebate.
+ *  Only ever true information (a frame number, a date, a place, a price, a count). */
+export const edge = (text, cls = '') => `<span class="edge${cls ? ` ${cls}` : ''}">${text}</span>`;
+/** A kicker above a heading: a red frame marker and a mono label. n: an optional frame number ("02A"). */
+export const kick = (text, { n = '', cls = '', tag = 'p' } = {}) =>
+  `<${tag} class="kick${cls ? ` ${cls}` : ''}"><span class="kick-m" aria-hidden="true">${n ? `${n}` : ''}&#9656;</span>${text}</${tag}>`;
+/** A heading. parts: a string or [a, b]; b is set on its own line (a <span class="h-b">).
+ *  cls: a display size, 'd-xxl' | 'd-xl' | 'd-l' | 'd-m' | 'd-s' (default 'd-l'). */
+export const h = (level, parts, cls = 'd-l', attrs = '') => {
+  const [a, b = ''] = Array.isArray(parts) ? parts : [parts];
+  return `<h${level} class="${cls}"${attrs ? ` ${attrs}` : ''}>${a}${b ? ` <span class="h-b">${b}</span>` : ''}</h${level}>`;
+};
+/** A grease-pencil note (Caveat, safelight red). Use for HER words or short interface marks only.
+ *  rot: degrees; cls e.g. 'gp--lg'. Decorative by default (aria-hidden) unless `say` is true. */
+export const note = (text, { rot = -4, cls = '', say = false } = {}) =>
+  `<span class="gp${cls ? ` ${cls}` : ''}" style="--rot:${rot}deg"${say ? '' : ' aria-hidden="true"'}>${text}</span>`;
+/* hand-drawn marks, drawn as single strokes so they read as grease pencil */
+const RING_D = 'M52 6C25 5 5 16 4 31c-1 16 22 26 50 25 29-1 45-13 44-27C97 14 79 5 55 4 40 3 26 7 18 13';
+const LINE_D = 'M3 7c22-3 47-4 70-2 9 1 17 0 24-1';
+const ARROW_D = 'M4 26C20 25 36 18 48 6M48 6l-11 2M48 6l-1 11';
+const TICK_D = 'M4 18l9 9L33 4';
+const mark = (d, vb, cls) => `<svg class="mk ${cls}" viewBox="${vb}" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="${d}"/></svg>`;
+/** Wrap inline content in a hand-drawn red ring. The ring draws itself (clip-path wipe) when its
+ *  section reveals: give the wrapper `rv-w` on an ancestor or rely on the default (it is .rv-w itself). */
+export const ring = (inner, cls = '') => `<span class="ring rv-w${cls ? ` ${cls}` : ''}">${inner}${mark(RING_D, '0 0 100 60', 'mk-ring')}</span>`;
+/** Underline inline content with one red grease-pencil stroke. */
+export const underline = (inner, cls = '') => `<span class="uline rv-w${cls ? ` ${cls}` : ''}">${inner}${mark(LINE_D, '0 0 100 10', 'mk-line')}</span>`;
+/** A small hand-drawn arrow (decorative). dir: 'ne' | 'nw' | 'se' | 'sw'. */
+export const scrawlArrow = (dir = 'ne', cls = '') => mark(ARROW_D, '0 0 52 30', `mk-arrow mk-arrow--${dir}${cls ? ` ${cls}` : ''}`);
+/** A small hand-drawn tick (decorative). */
+export const tick = (cls = '') => mark(TICK_D, '0 0 36 30', `mk-tick${cls ? ` ${cls}` : ''}`);
+
+/** "Now booking 2026 & 2027 weddings", as a lit status line with a safelight dot. tone: '' | 'on-paper'. */
+export const booking = (cls = '') => `<p class="nowb${cls ? ` ${cls}` : ''}"><span class="nowb-dot" aria-hidden="true"></span>${HER.booking}</p>`;
+
+/** Both ways to book, as a button pair: the on-site bridal inquiry (primary) and her event booking page.
+ *  size: '' | 'btn--sm'; tone: '' (on the dark room) | 'on-paper'. */
+export const actions = ({ inq = 'Bridal inquiry', event = 'Book event glam', size = '', cls = '', tone = '' } = {}) =>
+  `<div class="acts${tone ? ` acts--${tone}` : ''}${cls ? ` ${cls}` : ''}">${inquire(S, `${inq} ${arrow}`, `btn btn--red${size ? ` ${size}` : ''}`)}${book('event', event, `btn btn--line${size ? ` ${size}` : ''}`)}</div>`;
+/** A plain text link with an arrow. tone '' (red-lit on dark) or 'on-paper'. */
+export const more = (url, label, cls = '') => `<a class="more${cls ? ` ${cls}` : ''}" href="${url}">${label} ${arrow}</a>`;
+
+/* ---------- prints ---------- */
+/** Photographs that have precomputed develop stages in assets/darkroom/dev/ (<key>-l-<w>.webp
+ *  a faint monochrome stage, <key>-m-<w>.webp a mid stage, w = 480 | 800). Transitions only:
+ *  every resting image is her original photograph. */
+export const DEV_KEYS = ['artist-brushes', 'bride-crystal', 'bride-pearls', 'glam-sculpt', 'bride-gold-waves', 'bride-ruby', 'waves-blonde', 'glam-bronze', 'wedding-florals', 'golden-hour', 'wedding-night'];
+export const devLayers = (key, w = 800) => (DEV_KEYS.includes(key)
+  ? `<span class="dv" aria-hidden="true" data-l="${D}/dev/${key}-l-${w}.webp" data-m="${D}/dev/${key}-m-${w}.webp"><i class="dv-m"></i><i class="dv-l"></i><i class="dv-p"></i></span>`
+  : '<span class="dv" aria-hidden="true"><i class="dv-p"></i></span>');
+
+/** A photographic print: her photograph inside a paper border with a faint shadow, sitting
+ *  slightly off-square, a frame number in mono on the border, an optional grease-pencil note.
+ *  On scroll it DEVELOPS (paper -> faint -> mid -> her photograph) unless dev:false.
+ *    shape: 'port' (4:5, default) | 'tall' (3:4) | 'sq' | 'land' (5:4) | 'wide' (3:2) | 'nat' (the photo's own ratio)
+ *    n:     frame number on the border, e.g. '12A' (printed as "▶ 12A")
+ *    note:  grease-pencil words on the bottom border (gives the print a deeper bottom margin)
+ *    tilt:  resting rotation in degrees (e.g. -2); 0 is square
+ *    cap:   a mono caption under the print (true information only)
+ *    stage: develop-stage width, 800 (default) or 480 for small prints */
+export const print = (key, { shape = 'port', alt, sizes = '(max-width:759px) 86vw, 40vw', eager = false, pos, n = '', note: nt = '', tilt = 0, cls = '', dev = true, cap = '', stage = 800, attrs = '' } = {}) => {
+  const p = PHOTOS[key];
+  if (!p) throw new Error(`photo "${key}" is not in PHOTOS`);
+  const ratio = shape === 'nat' ? ` style="--pos:${pos ?? p.pos};aspect-ratio:${p.w}/${p.h}"` : ` style="--pos:${pos ?? p.pos}"`;
+  return `<figure class="pr pr--${shape}${dev ? ' pr--dv' : ''}${nt ? ' pr--noted' : ''}${cls ? ` ${cls}` : ''}" style="--tilt:${tilt}deg"${attrs ? ` ${attrs}` : ''}>
+<span class="pr-im"${ratio}>${pic(key, { alt, sizes, eager, pos })}${dev ? devLayers(key, stage) : ''}</span>
+${n || nt ? `<span class="pr-b" aria-hidden="true">${nt ? `<span class="pr-note">${nt}</span>` : ''}${n ? `<span class="pr-n">&#9656; ${n}</span>` : ''}</span>` : ''}${cap ? `<figcaption class="pr-cap">${cap}</figcaption>` : ''}</figure>`;
+};
+
+/** A frame of 35mm film: a black strip with sprocket holes and edge markings, holding a film
+ *  slot (or the clip, once FILMS[id].file is set). n: frame number; label: the film's tag;
+ *  cap: a mono caption under the strip. */
+export const strip = (id, { n = '', label = '', cls = '', cap = '' } = {}) =>
+  `<figure class="strip${cls ? ` ${cls}` : ''}"><span class="strip-e strip-e--l" aria-hidden="true">AMAIRANY 400${n ? ` &#9656; ${n}` : ''}</span>${film(id, { label })}<span class="strip-e strip-e--r" aria-hidden="true">&#9656; ${String(n || '').replace(/A$/, '')}A</span>${cap ? `<figcaption class="pr-cap">${cap}</figcaption>` : ''}</figure>`;
+
+/** A contact sheet: a tight grid of frames on black film, each with its frame number.
+ *  items: [{ photo, n?, alt? } | { film, n? }]; buttons: render each frame as a <button> with
+ *  data-i (for a viewer you wire yourself) instead of a <figure>; cols: columns at the widest. */
+export const sheet = (items, { buttons = false, cols = 5, cls = '', sizes = '(max-width:759px) 22vw, 12vw', label = 'Contact sheet' } = {}) => `<div class="sheet${cls ? ` ${cls}` : ''}" style="--cols:${cols}"${buttons ? ` role="group" aria-label="${esc(label)}"` : ''}>
+${items.map((it, i) => {
+  const n = it.n ?? `${i + 1}A`;
+  if (it.film) return `<figure class="sh-f sh-f--film">${film(it.film, { label: '' })}<span class="sh-n" aria-hidden="true">${n}</span></figure>`;
+  const img = pic(it.photo, { alt: it.alt, sizes });
+  return buttons
+    ? `<button class="sh-f" type="button" data-i="${i}" data-photo="${it.photo}" aria-pressed="false" aria-label="Frame ${n}: ${esc(it.cap ?? PHOTOS[it.photo].alt)}">${img}<span class="sh-n" aria-hidden="true">${n}</span></button>`
+    : `<figure class="sh-f">${img}<span class="sh-n" aria-hidden="true">${n}</span></figure>`;
+}).join('\n')}
+</div>`;
+
+/* ---------- page kit: sections ---------- */
+/** A section in one of three grounds. tone: 'room' (the dark room, red glow at the top edge,
+ *  grain) | 'paper' (photographic paper white) | 'tray' (a raised dark surface).
+ *  glow: false to drop the safelight glow on a dark band. */
+export const band = (inner, { tone = 'room', id = '', cls = '', label = '', glow = true } = {}) =>
+  `<section class="band band--${tone}${glow && tone !== 'paper' ? ' band--glow' : ''}${cls ? ` ${cls}` : ''}"${id ? ` id="${id}"` : ''}${label ? ` aria-label="${esc(label)}"` : ''}>
+${tone !== 'paper' ? '<span class="grain" aria-hidden="true"></span>' : ''}<div class="wrap">${inner}</div>
+</section>`;
+/** A section's opening: kicker, heading, lead. split: the lead beside the heading on wide screens. */
+export const chapter = ({ kick: k = '', n = '', heading = '', lead = '', level = 2, size = 'd-l', split = false, cls = '', id = '' } = {}) => `<header class="ch${split ? ' ch--split' : ''}${cls ? ` ${cls}` : ''}"${id ? ` id="${id}"` : ''}>
+<div>${k ? kick(k, { n, cls: 'rv' }) : ''}${h(level, heading, `${size} ch-h rv`, 'style="--d:.06s"')}</div>
+${lead ? `<p class="lead ch-lead rv" style="--d:.14s">${lead}</p>` : ''}
+</header>`;
+
+/** The title card of an inner page: the dark room, a kicker, the page's <h1> (unless h1:false),
+ *  one line, both actions, and optionally one of her photographs as a print beside it (tilted,
+ *  developing). note: an optional grease-pencil note on that print's border. */
+export const cover = ({ kick: k = '', n = '', heading = '', sub = '', actions: acts, image = '', alt, pos, tilt = 2, note: nt = '', frame = '', h1 = true, id = '', cls = '' } = {}) => `<section class="cover band band--room band--glow${image ? ' cover--pr' : ''}${cls ? ` ${cls}` : ''}"${id ? ` id="${id}"` : ''}>
+<span class="grain" aria-hidden="true"></span>
+<div class="wrap cover-in">
+<div class="cover-txt">
+${k ? kick(k, { n, cls: 'rv' }) : ''}
+${h(h1 ? 1 : 2, heading, 'd-xl rv', 'style="--d:.06s"')}
+${sub ? `<p class="lead cover-sub rv" style="--d:.14s">${sub}</p>` : ''}
+${acts === false ? '' : `<div class="rv" style="--d:.22s">${acts ?? actions()}</div>`}
+</div>
+${image ? `<div class="cover-pr">${print(image, { alt, pos, eager: true, tilt, n: frame, note: nt, sizes: '(max-width:759px) 78vw, 36vw' })}</div>` : ''}
+</div>
+</section>`;
+
+/** The end card every page closes on: the dark room, her line enormous, now booking, both actions.
+ *  scrawl: an optional grease-pencil line (HER words only). */
+export const cta = ({ kick: k = 'Ready when you are', heading = ['Secure your', 'wedding day glam.'], copy = '', scrawl = '', id = '' } = {}) => band(`<div class="cta">
+${kick(k, { cls: 'rv' })}
+${h(2, heading, 'd-xxl cta-h rv', 'style="--d:.06s"')}
+${scrawl ? `<p class="cta-gp rv-w">${note(scrawl, { rot: -5, cls: 'gp--lg', say: true })}</p>` : ''}
+${copy ? `<p class="lead cta-copy rv" style="--d:.14s">${copy}</p>` : ''}
+<div class="rv" style="--d:.2s">${booking()}${actions()}</div>
+</div>`, { tone: 'room', id, cls: 'band--cta' });
+
+/** HER.packages as a darkroom price board (mono, dot leaders, prices as on her booking page).
+ *  pkgs: the package objects to show (default: all six); popular: the name to circle;
+ *  points: how many inclusions to list under each (0 for none). Always followed by HER.packagesNote. */
+export const board = ({ pkgs = HER.packages, popular = 'The Signature Soiree', points = 3, cls = '' } = {}) => `<div class="board${cls ? ` ${cls}` : ''}">
+<ol class="board-l">
+${pkgs.map((p, i) => `<li class="board-r${p.name === popular ? ' is-pop' : ''}">
+<p class="board-h"><span class="board-nm">${p.name}</span><span class="board-dots" aria-hidden="true"></span><span class="board-pr">$${p.price}</span></p>
+<p class="board-who">${p.name === popular ? `${p.who.replace(/ · most popular$/, '')} · ${ring('most popular', 'ring--pop')}` : p.who}</p>
+${points ? `<ul class="board-pts">${p.points.slice(0, points).map((x) => `<li>${x}</li>`).join('')}</ul>` : ''}
+<span class="board-n" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span>
+</li>`).join('\n')}
+</ol>
+<p class="board-note">${HER.packagesNote}</p>
+</div>`;
+
+/** "Love Notes" (her name for her reviews): WeddingWire, The Knot and Google as three prints
+ *  hung on a line with binder clips, each one tap to the site where the reviews were written. */
+export const loveNotes = ({ cls = '' } = {}) => {
+  const items = [...REVIEWS.sites.map((x) => ({ ...x, asOf: SITE.ratingsAsOf })), { ...REVIEWS.google, go: 'Read on Google' }];
+  return `<div class="line-hang${cls ? ` ${cls}` : ''}">
+<span class="line-wire" aria-hidden="true"></span>
+<ul class="ln-l">
+${items.map((x, i) => `<li class="ln-i" style="--i:${i}"><span class="clip" aria-hidden="true"></span><a class="ln-pr" href="${x.href}" rel="external">
+<span class="ln-src">${x.name}</span>
+<span class="ln-sc">${x.score}</span>
+<span class="ln-st" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+<span class="ln-meta">${x.meta}</span>
+<span class="ln-go">${x.go} ${arrow}</span>
+<span class="ln-asof">As shown ${x.asOf}</span>
+</a></li>`).join('\n')}
+</ul>
+</div>`;
+};
+
+/** The two journal posts. Built only from her own words (HER.prepare, HER.faq, HER.destination);
+ *  each is labelled a sample article. Shared by the home page and the journal index. */
+export const POSTS = [
+  { path: 'journal/how-to-prepare', title: 'How to prepare for your glam', photo: 'bride-pearls', n: '07A', dek: HER.prepare.join(' '), tag: 'Before the day' },
+  { path: 'journal/destination-bride', title: HER.destination.heading, photo: 'golden-hour', n: '09A', dek: 'I travel worldwide for my brides.', tag: 'Travel' },
+];
+export const SAMPLE = 'Sample article, to be written with Amairany';
+/** One journal post as a card: a print, the sample label, the title, the dek, a read link. level: heading level. */
+export const postCard = (p, { level = 3, cls = '' } = {}) => `<article class="post${cls ? ` ${cls}` : ''}">
+<a class="post-a" href="${href(S, p.path)}">
+${print(p.photo, { shape: 'land', n: p.n, alt: '', sizes: '(max-width:759px) 90vw, 44vw', stage: 480 })}
+<span class="post-tx">
+<span class="edge post-tag">${p.tag} &middot; ${SAMPLE}</span>
+<h${level} class="d-m post-h">${p.title}</h${level}>
+<span class="post-dek">&ldquo;${p.dek}&rdquo;</span>
+<span class="more">Read the note ${arrow}</span>
+</span>
+</a>
+</article>`;
+
+/* ---------- the shell ---------- */
+const nav = (p) => NAV.find((n) => n.path === p) ?? {};
+/** The site's pages, in menu order (Darkroom's own page set; NAV supplies shared labels). */
+export const PAGES_NAV = [
+  { path: '', label: 'Home', note: SITE.tagline },
+  { path: 'portfolio', label: 'Portfolio', note: 'The looks, the reel, every frame' },
+  { path: 'bridal', label: 'Bridal', note: 'Packages, prices, good to know' },
+  { path: 'about', label: nav('about').label ?? 'About', note: nav('about').note ?? 'The artist behind the brushes' },
+  { path: 'journal', label: 'Journal', note: 'Notes from the chair' },
+  { path: 'bridal-inquiry', label: nav('bridal-inquiry').label ?? 'Bridal Inquiry', note: nav('bridal-inquiry').note ?? 'Weddings start here', cta: true },
+];
+const cur = (p, path) => (p === path || (p && path.startsWith(`${p}/`)) ? ' aria-current="page"' : '');
+const pad = (n) => String(n).padStart(2, '0');
+const socials = (cls = '') => `<ul class="soc${cls ? ` ${cls}` : ''}"><li><a href="${L.ig}" rel="external">Instagram</a></li><li><a href="${L.tiktok}" rel="external">TikTok</a></li><li><a href="${L.google}" rel="external">Google reviews</a></li></ul>`;
+
+const header = (path) => `<header class="hd" id="siteHeader">
+<div class="hd-in">
+<a class="hd-wm" href="${href(S)}" aria-label="${SITE.name}, home"${path === '' ? ' aria-current="page"' : ''}>${wordmark()}</a>
+<nav class="hd-nav" aria-label="Main">${PAGES_NAV.filter((n) => n.path && !n.cta).map((n) => `<a href="${href(S, n.path)}"${cur(n.path, path)}>${n.label}</a>`).join('')}</nav>
+<span class="hd-ev">${book('event', 'Book event glam', 'btn btn--line btn--sm')}</span>
+<span class="hd-inq">${inquire(S, '<span class="l-long">Bridal inquiry</span><span class="l-short">Inquire</span>', 'btn btn--red btn--sm', path === 'bridal-inquiry' ? 'aria-current="page"' : '')}</span>
+<button class="hd-menu" id="menuOpen" type="button" aria-expanded="false" aria-controls="menu"><span class="hd-menu-t">Menu</span><i aria-hidden="true"></i></button>
+</div>
+</header>`;
+
+const menu = (path) => `<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu" aria-hidden="true" inert>
+<span class="grain" aria-hidden="true"></span>
+<div class="menu-top">
+<a class="hd-wm" href="${href(S)}" aria-label="${SITE.name}, home">${wordmark()}</a>
+<button class="menu-x" id="menuClose" type="button"><span>Close</span><i aria-hidden="true"></i></button>
+</div>
+<nav class="menu-body" aria-label="Pages">
+<ol class="menu-l">${PAGES_NAV.map((n, i) => `<li style="--i:${i}"><a href="${href(S, n.path)}"${n.path === '' ? (path === '' ? ' aria-current="page"' : '') : cur(n.path, path)}><span class="menu-n" aria-hidden="true">${pad(i + 1)}A</span><span class="menu-w">${n.label}</span><span class="menu-note">${n.note}</span></a></li>`).join('')}</ol>
+<div class="menu-foot">
+${booking()}
+${actions()}
+${socials('soc--menu')}
+<p class="edge">${SITE.areaLong} &middot; ${SITE.handle}</p>
+</div>
+</nav>
+</div>`;
+
+const footer = (path) => `<footer class="ft">
+<span class="grain" aria-hidden="true"></span>
+<div class="wrap">
+<div class="ft-top">
+<a class="ft-wm" href="${href(S)}" aria-label="${SITE.name}, home">${wordmark({ cls: 'wm--xl' })}</a>
+<div class="ft-cta">${booking()}${actions({ size: 'btn--sm' })}</div>
+</div>
+<p class="ft-line">${FOOTER.line}</p>
+<div class="ft-cols">
+<div class="ft-col"><h2 class="edge">Pages</h2><ul>${PAGES_NAV.map((n) => `<li><a href="${href(S, n.path)}"${n.path === '' ? (path === '' ? ' aria-current="page"' : '') : cur(n.path, path)}>${n.label}</a></li>`).join('')}</ul></div>
+<div class="ft-col"><h2 class="edge">Book</h2><ul><li>${inquire(S, 'Bridal inquiry')}</li><li>${book('bridal-services', 'Bridal services')}</li><li>${book('event', 'Event makeup &amp; hair')}</li><li>${book('schedule', 'All services')}</li></ul></div>
+<div class="ft-col"><h2 class="edge">Follow</h2><ul><li><a href="${L.ig}" rel="external">Instagram</a></li><li><a href="${L.tiktok}" rel="external">TikTok</a></li><li><a href="${L.google}" rel="external">Google reviews</a></li><li><a href="${L.mail}">Email</a></li></ul></div>
+<div class="ft-col"><h2 class="edge">${HER.links.reviewsName}</h2><ul><li><a href="${L.ww}" rel="external">WeddingWire 5.0 &middot; 31</a></li><li><a href="${L.knot}" rel="external">The Knot 5.0 &middot; 4</a></li><li><a href="${L.google}" rel="external">Google 5.0 &middot; 2</a></li></ul></div>
+</div>
+<p class="ft-fine">${finePrint()}</p>
+<div class="ft-base"><span class="edge">AMAIRANY 400 &#9656; ${SITE.areaLong}</span><span class="edge">${HER.badges.join(' &middot; ')}</span><span class="edge">${SITE.handle}</span></div>
+</div>
+</footer>`;
+
+/** A whole Darkroom document.
+ *  path: '' | 'portfolio' | 'journal/how-to-prepare' ...; title/description: this page's own;
+ *  main: the page's markup (inside <main id="main">); head: extra <head> markup (preloads);
+ *  css/js: extra file names in assets/darkroom/ without extension (css:['pages'], js:['pages']),
+ *  or full paths starting with '/' (e.g. the shared inquiry files); bodyClass: classes on <body>;
+ *  sprite: 'name' adds "Amairanymua" to the grease-pencil sprite (for signature()). */
+export const page = ({ path = '', title, description, main, head: extra = '', css = [], js = [], bodyClass = '', sprite: sp = '' }) => {
+  const u = (x, ext) => (x.startsWith('/') ? x : `${D}/${x}.${ext}`);
+  return `<!doctype html>
+<html lang="en" class="dr">
+<head>
 ${head(S, { path, title, description })}
-</head><body style="font-family:system-ui;margin:0;padding:24px 20px 90px;max-width:760px">
-<a href="#main">Skip to content</a>
-<header><p><a href="${href(S)}">${SITE.name}</a> · <a href="${href(S,'portfolio')}">Portfolio</a> · <a href="${href(S,'bridal')}">Bridal</a> · <a href="${href(S,'about')}">About</a> · <a href="${href(S,'journal')}">Journal</a> · <a href="${href(S,'bridal-inquiry')}">Inquire</a></p></header>
-<main id="main">${main}<p>${inquire(S)} · ${book('event', 'Book event glam')}</p></main>
-<footer><p style="font-size:12px">${finePrint()}</p></footer>
+<link rel="preload" href="${A}/fonts/syne-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="${A}/fonts/ibm-plex-sans-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="${D}/site.css">
+${css.map((c) => `<link rel="stylesheet" href="${u(c, 'css')}">`).join('\n')}
+${extra}
+<script>(function(d){d.classList.add('js');setTimeout(function(){if(!window.__dr)d.classList.remove('js')},3500)})(document.documentElement)</script>
+</head>
+<body${bodyClass ? ` class="${bodyClass}"` : ''}>
+<a class="skip" href="#main">Skip to content</a>
+${sprite(sp === 'name')}
+${header(path)}
+${menu(path)}
+<main id="main">
+${main}
+</main>
+${footer(path)}
 ${marker(S, path)}
-</body></html>
+<script src="${D}/site.js" defer></script>
+${js.map((s) => `<script src="${u(s, 'js')}" defer></script>`).join('\n')}
+</body>
+</html>
 `;
+};

@@ -8,13 +8,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 // @ts-ignore — plain ES module outside the project root
 import { inquiryForm } from '../../../jp-web-design/scripts/amairanymua-01/inquiry-core.mjs';
 import { SITE, L, LINKS, FINAL, INQUIRY } from '../lib/content';
-import { SOCIAL, A, book } from '../consts';
-/* inquiryForm() knows the three earlier previews by name; its markup is identical for each apart
-   from data-site, and it contains no internal links (only her JotForm and booking page, through
-   book()), so Rouge renders it and names itself. */
-const form = (inquiryForm('veil', { primary: 'btn btn--solid', secondary: 'btn btn--line' }) as string)
-  .replace('data-site="veil"', 'data-site="rouge"');
-if (/href="\/demo\//.test(form)) throw new Error('inquiry markup now carries an internal link: re-root it for Rouge');
+import { SOCIAL, A, HER, LOVE, book } from '../consts';
+const form = inquiryForm('rouge', { primary: 'btn btn--solid', secondary: 'btn btn--line' }) as string;
 ---
 <BaseLayout
   title="Book"
@@ -29,18 +24,19 @@ if (/href="\/demo\//.test(form)) throw new Error('inquiry markup now carries an 
         <h1 class="disp iq-t rv">{FINAL.heading[0]} <span class="ital">{FINAL.heading[1]}</span></h1>
         <p class="iq-line rv" style="--d:.08s">{FINAL.line}</p>
         <div class="iq-cta rv" style="--d:.1s">
-          <a class="btn btn--ivory" href="#inquiry">Bridal inquiry</a>
+          <a class="btn btn--ivory" href="#bridal-inquiry">Bridal inquiry</a>
           <Fragment set:html={book('event', 'Book event glam', 'btn btn--ghost')} />
         </div>
         <dl class="iq-ways rv" style="--d:.14s">
           <div><dt>Events</dt><dd><Fragment set:html={book('event', 'Book Event Makeup &amp; Hair')} /> <span class="dim">&mdash; on her booking page</span></dd></div>
           <div><dt>Email</dt><dd><a href={L.mail}>{SITE.email}</a></dd></div>
           {SOCIAL.map((s) => <div><dt>{s.label}</dt><dd><a href={s.href} rel="external">{s.value}</a></dd></div>)}
+          <div><dt>{HER.links.reviewsName}</dt><dd>{LOVE.map((x, i) => <>{i > 0 && <span class="dim"> &middot; </span>}<a href={x.href} rel="external">{x.name}</a></>)}</dd></div>
           <div><dt>Where</dt><dd>{SITE.areaLong}</dd></div>
         </dl>
       </div>
     </div>
-    <div class="iq-r lit" id="inquiry">
+    <div class="iq-r lit" id="bridal-inquiry">
       <i class="lx-dusk" aria-hidden="true"></i>
       <div class="iq-form-head">
         <span class="caps-xs rv">{INQUIRY.label}</span>
@@ -75,10 +71,10 @@ if (/href="\/demo\//.test(form)) throw new Error('inquiry markup now carries an 
   .iq-line{font-family:var(--display);font-style:italic;font-size:clamp(1.06rem,1.4vw,1.28rem);color:color-mix(in srgb,var(--ivory) 85%,transparent);max-width:26em;margin:0 0 clamp(1.6rem,3.4vh,2.4rem);font-variation-settings:'opsz' 48,'SOFT' 60}
   .iq-cta{display:flex;gap:.8rem 1rem;flex-wrap:wrap;margin-bottom:clamp(1.6rem,3.4vh,2.4rem)}
   .iq-ways{margin:0;border-top:1px solid var(--hairdk)}
-  .iq-ways div{display:grid;grid-template-columns:7.5em 1fr;gap:1rem;padding:.7em 0;border-bottom:1px solid var(--hairdk);font-size:.95rem}
+  .iq-ways div{display:grid;grid-template-columns:7.5em 1fr;gap:1rem;align-items:center;padding:.1em 0;border-bottom:1px solid var(--hairdk);font-size:.95rem}
   .iq-ways dt{font-family:var(--utility);font-weight:600;text-transform:uppercase;letter-spacing:.2em;font-size:.58rem;color:var(--gold-lt);padding-top:.35em}
   .iq-ways dd{margin:0;color:color-mix(in srgb,var(--ivory) 90%,transparent);overflow-wrap:anywhere}
-  .iq-ways dd :global(a){display:inline-block;padding-block:.15em}
+  .iq-ways dd :global(a){display:inline-flex;align-items:center;min-height:44px}
   .iq-ways dd :global(a:hover){color:var(--gold-lt)}
   .iq-ways .dim{color:color-mix(in srgb,var(--ivory) 62%,transparent);font-size:.85rem}
   .iq-r{position:relative;background:linear-gradient(rgba(255,255,255,.035),rgba(255,255,255,.035)),var(--leaf);padding:clamp(7rem,15vh,9rem) max(5vw,(100vw - var(--wrap))/2) clamp(4rem,9vh,6rem) clamp(1.6rem,4.5vw,4.5rem);scroll-margin-top:0;border-left:1px solid var(--hairdk)}

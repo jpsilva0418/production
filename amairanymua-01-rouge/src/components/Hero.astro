@@ -30,8 +30,8 @@ const n = HERO.slides.length;
       <p class="plg-ribbon a1"><i aria-hidden="true"></i><span set:html={HER.booking} /></p>
       <p class="plg-eyebrow a1">{HERO.eyebrow.map((e, i) => <>{i > 0 && <b>&middot;</b>}{e}</>)}</p>
       <h1 class="plg-h">
-        {HERO.lines.map((l) => <span class="lo"><span class="li">{l}</span></span>)}
-        <span class="lo"><span class="li ital">{HERO.italic}</span></span>
+        <span class="lo"><span class="li">{HERO.lines[0]}</span></span>
+        <span class="lo"><span class="li">{HERO.lines[1]} <span class="ital">{HERO.italic}</span></span></span>
       </h1>
       <p class="plg-it a3">{HERO.sub}</p>
       <div class="plg-ctas a4">
@@ -85,7 +85,7 @@ const n = HERO.slides.length;
   .plg-eyebrow{font-family:var(--utility);font-weight:600;font-size:clamp(.6rem,1.4vw,.7rem);letter-spacing:.28em;text-transform:uppercase;color:var(--ivory);margin-bottom:clamp(1.2rem,2.6vh,2rem);opacity:.92;text-shadow:0 1px 14px rgba(0,0,0,.3)}
   .plg-eyebrow b{color:var(--gold-lt);font-weight:600;padding:0 .7em}
   .plg-h{font-family:var(--display);font-weight:300;font-size:clamp(2.6rem,6.4vw,6rem);line-height:1;letter-spacing:-.015em;color:var(--ivory);margin:0;font-variation-settings:'opsz' 144,'SOFT' 60;text-shadow:0 2px 40px rgba(0,0,0,.35)}
-  .plg-h .lo{display:block;overflow:hidden;padding-block:.04em}
+  .plg-h .lo{display:block;overflow:hidden;padding-block:.04em .14em;margin-bottom:-.1em}
   .plg-h .li{display:block}
   .plg-h .ital{font-style:italic;font-weight:300;color:var(--gold-lt)}
   .plg-it{font-family:var(--display);font-style:italic;font-size:clamp(1.06rem,1.6vw,1.36rem);line-height:1.55;color:color-mix(in srgb,var(--ivory) 90%,transparent);max-width:30em;margin:clamp(1.4rem,2.8vh,2.2rem) 0 0;font-variation-settings:'opsz' 48,'SOFT' 70;text-shadow:0 1px 18px rgba(0,0,0,.3)}
@@ -153,7 +153,6 @@ const n = HERO.slides.length;
   /* the hand-over: the headline rises as the curtain clears it */
   :global(html.intro) .plg-h .li{animation:riseIn 1s var(--ease) 2.25s both}
   :global(html.intro) .plg-h .lo:nth-child(2) .li{animation-delay:2.36s}
-  :global(html.intro) .plg-h .lo:nth-child(3) .li{animation-delay:2.47s}
   :global(html.intro) .plg-ribbon,:global(html.intro) .plg-eyebrow{animation:fadeUp .8s ease 2.2s both}
   :global(html.intro) .plg-it{animation:fadeUp .8s ease 2.5s both}
   :global(html.intro) .plg-ctas,:global(html.intro) .plg-loc{animation:fadeUp .8s ease 2.6s both}
@@ -165,14 +164,17 @@ const n = HERO.slides.length;
   @media(max-width:899px){
     .plg-amb{display:none}
     .plg-grid{display:block;width:100%;padding:0;min-height:100vh;min-height:100svh}
-    .plg-frame{position:absolute;inset:0;height:auto;aspect-ratio:auto;border-radius:0;box-shadow:none;justify-self:auto}
-    .plg-scrim{background:linear-gradient(color-mix(in srgb,var(--leaf-deep) 72%,transparent),color-mix(in srgb,var(--leaf-deep) 22%,transparent) 30%,color-mix(in srgb,var(--leaf-deep) 34%,transparent) 50%,color-mix(in srgb,var(--leaf-deep) 92%,transparent) 78%)}
+    .plg-frame{position:absolute;inset:0 0 auto 0;height:72vh;height:72svh;aspect-ratio:auto;border-radius:0;box-shadow:none;justify-self:auto;z-index:0}
+    .plg-c{pointer-events:none}
+    .plg-c > *{pointer-events:auto}
+    .plg-scrim{background:linear-gradient(color-mix(in srgb,var(--leaf-deep) 70%,transparent),color-mix(in srgb,var(--leaf-deep) 8%,transparent) 26%,color-mix(in srgb,var(--leaf-deep) 18%,transparent) 48%,var(--leaf-deep) 98%)}
     .plg-c{position:relative;z-index:3;max-width:none;width:100%;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;text-align:center;padding:6.4rem 6vw calc(var(--peek) + 5.4rem)}
     .plg-it{margin-inline:auto}
     .plg-ctas{justify-content:center}
-    .plg-ctl{left:6vw;right:6vw;bottom:calc(var(--peek) + 1rem)}
-    .plg-tag{flex-direction:row;align-items:center;gap:1em}
-    .plg-bar{right:58px}
+    .plg-ctl{left:auto;right:4vw;top:84px;bottom:auto;flex-direction:row-reverse;gap:10px}
+    .plg-tag{flex:none;align-items:flex-end;text-align:right;text-shadow:0 1px 10px rgba(0,0,0,.6)}
+    .plg-tag-t{display:none}
+    .plg-bar{display:none}
     .plg-cue{display:none}
   }
   @media(max-width:640px){
