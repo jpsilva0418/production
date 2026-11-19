@@ -3,7 +3,7 @@
    where a link cannot go: a chat attachment, an email, a phone's file viewer.
 
        node scripts/amairanymua-01-build.mjs
-       node scripts/amairanymua-01-bundle.mjs <veil|noir|edit> <out.html> [--img 480|800]
+       node scripts/amairanymua-01-bundle.mjs <site id> <out.html> [--img 480|800]
 
    Everything the site needs travels inside the file: the seven pages, their stylesheets and
    scripts, the fonts and her photographs (as data URIs). Page text is gzip-compressed and
@@ -13,9 +13,17 @@
    Instagram open outside. Links to the other two previews show a short note, because each
    preview is its own file.
 
+   Some pages build an image address in script (Darkroom's viewer and enlarger: base + photo +
+   size). Those addresses never appear in the page text, so the file also carries a small map
+   from each packed asset's address (every size it stands for) to its packed copy, and each page
+   carries its own copies of the images (a sandboxed viewer cannot reach the outer file), and
+   resolves addresses set in script through them: img src, data-* stage addresses and background
+   images. A site's precomputed develop stages (assets/<site>/dev/) are packed whole for that
+   reason.
+
    Nothing is fetched and nothing is sent: the file makes no network request of its own. It
    reads only the built pages in public/demo/amairanymua-01/ and writes only <out.html>. */
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
 import { execFileSync } from 'node:child_process';
 import { dirname, join, posix } from 'node:path';
@@ -24,7 +32,7 @@ import { BASE, SITES, SITE, pagesOf } from './amairanymua-01/site.mjs';
 
 const [site, out] = process.argv.slice(2);
 const IMG = process.argv.includes('--img') ? process.argv[process.argv.indexOf('--img') + 1] : '800';
-if (!SITES[site] || !out) { console.error('usage: node scripts/amairanymua-01-bundle.mjs <veil|noir|edit> <out.html> [--img 480|800]'); process.exit(1); }
+if (!SITES[site] || !out) { console.error(`usage: node scripts/amairanymua-01-bundle.mjs <${Object.keys(SITES).join('|')}> <out.html> [--img 480|800]`); process.exit(1); }
 const DEMO = join(dirname(fileURLToPath(import.meta.url)), '..', 'public', 'demo', 'amairanymua-01');
 const fileOf = (url) => join(DEMO, url.slice(BASE.length + 1));
 
@@ -96,6 +104,23 @@ for (const path of pagesOf(site)) {
   pages[path] = tokenize(h);
 }
 
+/* ---- addresses built in script: pack the site's develop stages whole, then map every packed
+   address (and the other sizes it stands for) to its token ---- */
+const devDir = join(DEMO, 'assets', site, 'dev');
+if (existsSync(devDir)) for (const f of readdirSync(devDir)) if (f.endsWith(`-${IMG}.webp`)) token(`${BASE}/assets/${site}/dev/${f}`);
+const urlMap = {};   /* token ids without their @@ marks, or the page fill would replace them */
+for (const [url, tok] of assets) {
+  const t = tok.slice(2, -2);
+  urlMap[url] = t;
+  const m = url.match(/^(.*)-(?:480|800|1280)\.webp$/);
+  if (m) for (const w of ['480', '800', '1280']) if (!urlMap[`${m[1]}-${w}.webp`]) urlMap[`${m[1]}-${w}.webp`] = t;
+}
+/* the images themselves travel inside each page too: a locked-down viewer (a sandboxed frame
+   without same-origin) cannot reach the outer file's copies, so the page carries its own. The
+   page fill turns each "@@An@@" below into that image's data URI. Images only: fonts and
+   stylesheet art never have their address built in script. */
+const imgCopies = Object.fromEntries([...new Set(Object.entries(urlMap).filter(([u]) => /\.(?:webp|jpe?g|png)$/.test(u)).map(([, t]) => t))].map((t) => [t, `@@${t}@@`]));
+
 /* ---- what runs inside every page: storage stand-in, link handling, hash scroll ---- */
 const INJECT = `<script>(function(){var P=window.parent!==window?window.parent:null;
 function mem(n){var s;try{s=P&&P.__am01store&&P.__am01store[n]}catch(e){}if(!s){s={}}return{getItem:function(k){return Object.prototype.hasOwnProperty.call(s,k)?s[k]:null},setItem:function(k,v){s[k]=String(v)},removeItem:function(k){delete s[k]},clear:function(){for(var k in s)delete s[k]},key:function(i){return Object.keys(s)[i]||null},get length(){return Object.keys(s).length}}}
@@ -105,7 +130,30 @@ if(h.indexOf(${JSON.stringify(BASE)})===0||/^https?:|^mailto:/.test(h)){e.preven
 /* a sandboxed viewer may block form submission outright (no submit event at all); the inquiry
    never submits anywhere, so its step button is turned into a plain submit EVENT here */
 document.addEventListener('click',function(e){var b=e.target&&e.target.closest&&e.target.closest('button[type="submit"],input[type="submit"]');if(!b||!b.form)return;e.preventDefault();var ev;try{ev=new SubmitEvent('submit',{bubbles:true,cancelable:true,submitter:b})}catch(x){ev=new Event('submit',{bubbles:true,cancelable:true})}b.form.dispatchEvent(ev)},true);
-var go=function(){var id=window.__am01hash;if(id){var el=document.getElementById(id);if(el)el.scrollIntoView()}};document.addEventListener('DOMContentLoaded',function(){setTimeout(go,60)});})();</script>`;
+var go=function(){var id=window.__am01hash;if(id){var el=document.getElementById(id);if(el)el.scrollIntoView()}};document.addEventListener('DOMContentLoaded',function(){setTimeout(go,60)});
+/* addresses set in script resolve to the packed copies (see the header); a packed copy read back
+   from src or a data-* stage attribute reads as its address, so code that edits the address works */
+(function(){var AA=${JSON.stringify(imgCopies)},B=${JSON.stringify(BASE)},M=${JSON.stringify(urlMap)},R=new Map();
+var at=function(t){var d=t&&AA[t];return d&&d.charCodeAt(0)===100?d:null};
+Object.keys(M).forEach(function(u){var d=at(M[u]);if(d&&!R.has(d))R.set(d,u)});
+var fw=function(u){if(typeof u!=='string'||u.indexOf(B)<0)return u;var d=at(M[u.split(/[?#]/)[0]]);return d||u};
+var fwCss=function(v){return typeof v==='string'&&v.indexOf(B)>-1?v.replace(/url\\((['"]?)([^'")]+)\\1\\)/g,function(m,q,u){return 'url("'+fw(u)+'")'}):v};
+var NAMES={src:1,'data-src':1,'data-l':1,'data-m':1,poster:1};
+var sa=Element.prototype.setAttribute,ga=Element.prototype.getAttribute,ra=Element.prototype.removeAttribute;
+Element.prototype.setAttribute=function(n,v){var k=String(n).toLowerCase();
+if(k==='srcset'&&(v==null||v==='null'||String(v).indexOf(B)>-1)){ra.call(this,'srcset');return}
+if(NAMES[k])v=fw(v);else if(k==='style')v=fwCss(v);return sa.call(this,n,v)};
+Element.prototype.getAttribute=function(n){var v=ga.call(this,n);if(v&&v.length>64&&v.charCodeAt(0)===100&&NAMES[String(n).toLowerCase()]&&R.has(v))return R.get(v);return v};
+var wrap=function(proto,prop,f){var d=Object.getOwnPropertyDescriptor(proto,prop);if(!d||!d.set)return;Object.defineProperty(proto,prop,{configurable:true,enumerable:d.enumerable,get:d.get,set:function(v){d.set.call(this,f(v,this))}})};
+wrap(HTMLImageElement.prototype,'src',function(v){return fw(v)});
+wrap(HTMLImageElement.prototype,'srcset',function(v,el){return (v==null||String(v).indexOf(B)>-1)?'':v});
+if(window.HTMLSourceElement)wrap(HTMLSourceElement.prototype,'src',function(v){return fw(v)});
+if(window.HTMLVideoElement)wrap(HTMLVideoElement.prototype,'poster',function(v){return fw(v)});
+/* style properties set in script (el.style.backgroundImage = ...) are per-element accessors in
+   Chromium, so they are caught after the fact: the rewrite lands before the next style pass */
+new MutationObserver(function(ms){ms.forEach(function(m){var t=m.target,v=ga.call(t,'style');if(v&&v.indexOf(B)>-1)sa.call(t,'style',fwCss(v))})}).observe(document.documentElement,{subtree:true,attributes:true,attributeFilter:['style']});
+var sp=CSSStyleDeclaration.prototype.setProperty;CSSStyleDeclaration.prototype.setProperty=function(n,v,pr){return sp.call(this,n,fwCss(v),pr)};
+})();})();</script>`;
 
 const payload = gzipSync(Buffer.from(JSON.stringify({ pages, css, js, inject: INJECT })), { level: 9 }).toString('base64');
 const S = SITES[site];

@@ -82,6 +82,13 @@
     if (hasIO) new IntersectionObserver(function (es) { es.forEach(function (e) { dl.classList.toggle('is-still', !e.isIntersecting); }); }).observe(dl);
   }
 
+  /* the reel's strip only scrolls on narrower screens: off the tab order when it does not */
+  var reelVp = doc.querySelector('.reel-vp');
+  if (reelVp) {
+    var reelTab = function () { if (reelVp.scrollWidth > reelVp.clientWidth + 2) reelVp.setAttribute('tabindex', '0'); else reelVp.removeAttribute('tabindex'); };
+    reelTab(); window.addEventListener('resize', reelTab, { passive: true });
+  }
+
   /* ================= 2. the category tabs ================= */
   var tabs = $$('.pf-tab'), frames = $$('.pf-f'), live = $('pfLive');
   tabs.forEach(function (t) {
@@ -184,7 +191,10 @@
     pr.classList.toggle('is-zoom', on);
     if (bZoom) bZoom.setAttribute('aria-pressed', String(on));
     if (on) {
-      finishAll(busy); busy = [];
+      /* settle any develop in flight (and one still waiting for its stages) on the photograph */
+      token++; finishAll(busy); busy = [];
+      if (paper) paper.style.opacity = '';
+      pr.classList.remove('is-dev');
       /* the 1280 file, fetched only now; the print keeps the smaller file on screen until it is in */
       var key = looks[set[at]] && looks[set[at]].key, big = IMG + key + '-1280.webp';
       if (key && img.getAttribute('src') !== big) {

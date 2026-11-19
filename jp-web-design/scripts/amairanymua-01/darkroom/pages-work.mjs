@@ -131,7 +131,7 @@ const follow = () => band(`${chapter({ kick: PORTFOLIO_PAGE.noteKick, n: '05', h
 export const portfolio = () => page({
   path: 'portfolio',
   title: 'Portfolio',
-  description: `${SITE.name}’s bridal, soft glam, full glam, glam waves and wedding-day looks, photographed for clients across ${SITE.area}.`,
+  description: `${SITE.name}’s bridal, soft glam, full glam, glam waves and wedding-day looks, with a strip for her reels.`,
   css: ['pages-work'],
   js: ['pages-work'],
   bodyClass: 'pf',
@@ -153,8 +153,9 @@ export const journal = () => page({
   description: `Two sample notes from ${SITE.name}’s chair, in her own words: how to prepare for your glam, and destination weddings.`,
   css: ['pages-work'],
   bodyClass: 'jx',
-  main: `${cover({ kick: 'Journal', n: '01', heading: ['Notes from', 'the chair.'], sub: 'Her own advice, in her own words, for brides getting ready.', actions: false })}
-${band(`<p class="jx-label edge rv"><span class="jx-dot" aria-hidden="true"></span>${SAMPLE}s: two notes, drawn only from her own words</p>
+  head: `<link rel="preload" as="image" href="${src('artist-brushes', 800)}" imagesrcset="${srcset('artist-brushes')}" imagesizes="(max-width:759px) 78vw, 36vw" fetchpriority="high">`,
+  main: `${cover({ kick: 'Journal', n: '01', heading: ['Notes from', 'the chair.'], sub: 'Her own advice, in her own words, for brides getting ready.', actions: false, image: 'artist-brushes', frame: '04A', note: 'Hey Gorgeous!', tilt: -2 })}
+${band(`<p class="jx-label edge rv"><span class="jx-dot" aria-hidden="true"></span>Two sample notes, drawn only from her own words</p>
 <div class="jx-l">${POSTS.map((p, i) => `<div class="jx-i rv" style="--d:${(0.06 * i).toFixed(2)}s"><p class="jx-n edge" aria-hidden="true">Note ${pad(i + 1)}</p>${postCard(p, { level: 2 })}</div>`).join('\n')}</div>`, { tone: 'paper', id: 'notes', cls: 'jx-b', label: 'The notes' })}
 ${cta({ scrawl: 'I’d love to have you in my chair!' })}`,
 });
@@ -169,7 +170,7 @@ const pq = (text, { rot = -2.5, src: from = SITE.first, side = '' } = {}) => `<f
 const said = (q, a, from = 'from her FAQ') => `<blockquote class="said rv"><p class="edge said-q">${q ? `${q} &middot; ` : ''}${from}</p><p>&ldquo;${a}&rdquo;</p></blockquote>`;
 const faq = (q) => HER.faq.find(([x]) => x === q)[1];
 
-const article = ({ path, post, lead, sections, glance, glanceH }) => {
+const article = ({ post, lead, sections, glance, glanceH, scrawl = '' }) => {
   const i = POSTS.indexOf(post);
   const prev = POSTS[i - 1], next = POSTS[i + 1];
   const nav = [prev && { p: prev, k: 'Previous note' }, next && { p: next, k: 'Next note' }].filter(Boolean);
@@ -187,7 +188,7 @@ ${h(1, post.title, 'd-xl art-h rv', 'style="--d:.06s"')}
 <div class="band band--paper art-body">
 <div class="wrap art-g">
 <aside class="art-side" aria-label="In this note">
-<p class="edge art-side-h">In this note</p>
+<p class="edge art-side-h art-toc-h">In this note</p>
 <ol class="art-toc">${sections.map((s, k) => `<li><a href="#${s.id}"><span aria-hidden="true">${pad(k + 1)}</span>${s.toc}</a></li>`).join('')}</ol>
 <div class="art-glance"><p class="edge art-side-h">${glanceH}</p><dl>${glance.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl></div>
 </aside>
@@ -210,7 +211,7 @@ ${sections.map((s, k) => `<section class="art-s" id="${s.id}" aria-labelledby="$
 <div class="wrap">
 <div class="art-pn-g">
 ${nav.map(({ p, k }) => `<a class="art-pn-a art-pn-a--${k.startsWith('Prev') ? 'prev' : 'next'}" href="${href(S, p.path)}">
-${print(p.photo, { shape: 'land', n: p.n, alt: '', sizes: '(max-width:759px) 34vw, 200px', stage: 480, dev: false })}
+${print(p.photo, { shape: 'land', n: p.n, alt: '', sizes: '(max-width:759px) 36vw, 280px', stage: 480, dev: false })}
 <span class="art-pn-tx"><span class="edge">${k.startsWith('Prev') ? '&larr; ' : ''}${k}${k.startsWith('Next') ? ' &rarr;' : ''}</span><span class="d-s">${p.title}</span><span class="edge art-pn-s">${SAMPLE}</span></span>
 </a>`).join('\n')}
 <a class="art-pn-all more" href="${href(S, 'journal')}">All notes ${arrow}</a>
@@ -218,7 +219,7 @@ ${print(p.photo, { shape: 'land', n: p.n, alt: '', sizes: '(max-width:759px) 34v
 </div>
 </nav>
 </article>
-${cta({ scrawl: 'I’d love to have you in my chair!' })}`;
+${cta({ scrawl })}`;
 };
 
 /* ---------- 1. How to prepare for your glam ---------- */
@@ -240,8 +241,8 @@ export const postPrepare = () => page({
   bodyClass: 'art-page',
   head: `<link rel="preload" as="image" href="${src(prep.photo, 800)}" imagesrcset="${srcset(prep.photo)}" imagesizes="(max-width:759px) 92vw, (max-width:1279px) 80vw, 1040px" fetchpriority="high">`,
   main: article({
-    path: prep.path,
     post: prep,
+    scrawl: 'I’d love to have you in my chair!',
     lead: `Two things to do before your appointment, then what her packages already cover: the preview, the extensions, the touch-ups. All of it from ${SITE.first}’s own words.`,
     glanceH: 'Before your appointment',
     glance: [['Face', 'Clean'], ['Hair', 'Washed and blown out a day before'], ['Preview', 'In every package'], ['Trial', 'Welcome before signing']],
@@ -275,7 +276,6 @@ export const postDestination = () => page({
   bodyClass: 'art-page',
   head: `<link rel="preload" as="image" href="${src(dest.photo, 800)}" imagesrcset="${srcset(dest.photo)}" imagesizes="(max-width:759px) 92vw, (max-width:1279px) 80vw, 1040px" fetchpriority="high">`,
   main: article({
-    path: dest.path,
     post: dest,
     lead: `${SITE.first} travels worldwide for her brides. Here is how a destination wedding starts, in her own words.`,
     glanceH: 'Travel at a glance',

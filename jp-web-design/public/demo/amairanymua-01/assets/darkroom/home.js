@@ -188,6 +188,7 @@
       }
       if (im && pos) im.style.setProperty('--pos', pos);
       if (cap) cap.innerHTML = '<span class="enl-n">&#9656; ' + n + '</span> ' + label;
+      var pn = enl.querySelector('.pr-n'); if (pn && n) pn.textContent = '\u25B8 ' + n; /* the frame number on the print's border follows the frame */
       if (!canAnim) return;
       eBusy = [enl.animate([{ transform: 'rotate(-1.2deg)', easing: 'cubic-bezier(.3,0,.4,1)' }, { transform: 'translate3d(0,-10px,0) rotate(-2.4deg) scale(.985)', offset: 0.35, easing: 'cubic-bezier(.3,0,.2,1)' }, { transform: 'rotate(-1.2deg)' }], { duration: 650 })];
       var go = function () {
