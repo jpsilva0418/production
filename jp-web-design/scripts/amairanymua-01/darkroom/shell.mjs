@@ -4,7 +4,7 @@
 
    Darkroom: red, black and white as a darkroom. Under a red safelight her prints develop,
    hang on a line to dry and get marked up in grease pencil. The ground is the dark room
-   (--room), prints and light pages are photographic paper (--paper), red is LIGHT (the
+   (--room), prints and light pages are photographic paper (--paper), the red is a SOFT rose LIGHT (the
    safelight glow) and the grease pencil's marks, never paint on a page.
    Type: Syne (display), IBM Plex Sans (body), IBM Plex Mono (edge markings: only true
    information), Caveat (the grease pencil). The wordmark is her own lockup, "Glam By" over
@@ -38,7 +38,7 @@ export const wordmark = ({ cls = '', label = '' } = {}) =>
 /** An edge marking: mono, uppercase, tracked, like the printing on a film's rebate.
  *  Only ever true information (a frame number, a date, a place, a price, a count). */
 export const edge = (text, cls = '') => `<span class="edge${cls ? ` ${cls}` : ''}">${text}</span>`;
-/** A kicker above a heading: a red frame marker and a mono label. n: an optional frame number ("02A"). */
+/** A kicker above a heading: a rose frame marker and a mono label. n: an optional frame number ("02A"). */
 export const kick = (text, { n = '', cls = '', tag = 'p' } = {}) =>
   `<${tag} class="kick${cls ? ` ${cls}` : ''}"><span class="kick-m" aria-hidden="true">${n ? `${n}` : ''}&#9656;</span>${text}</${tag}>`;
 /** A heading. parts: a string or [a, b]; b is set on its own line (a <span class="h-b">).
@@ -57,10 +57,10 @@ const LINE_D = 'M3 7c22-3 47-4 70-2 9 1 17 0 24-1';
 const ARROW_D = 'M4 26C20 25 36 18 48 6M48 6l-11 2M48 6l-1 11';
 const TICK_D = 'M4 18l9 9L33 4';
 const mark = (d, vb, cls) => `<svg class="mk ${cls}" viewBox="${vb}" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="${d}"/></svg>`;
-/** Wrap inline content in a hand-drawn red ring. The ring draws itself (clip-path wipe) when its
+/** Wrap inline content in a hand-drawn rose ring. The ring draws itself (clip-path wipe) when its
  *  section reveals: give the wrapper `rv-w` on an ancestor or rely on the default (it is .rv-w itself). */
 export const ring = (inner, cls = '') => `<span class="ring rv-w${cls ? ` ${cls}` : ''}">${inner}${mark(RING_D, '0 0 100 60', 'mk-ring')}</span>`;
-/** Underline inline content with one red grease-pencil stroke. */
+/** Underline inline content with one rose grease-pencil stroke. */
 export const underline = (inner, cls = '') => `<span class="uline rv-w${cls ? ` ${cls}` : ''}">${inner}${mark(LINE_D, '0 0 100 10', 'mk-line')}</span>`;
 /** A small hand-drawn arrow (decorative). dir: 'ne' | 'nw' | 'se' | 'sw'. */
 export const scrawlArrow = (dir = 'ne', cls = '') => mark(ARROW_D, '0 0 52 30', `mk-arrow mk-arrow--${dir}${cls ? ` ${cls}` : ''}`);
@@ -74,7 +74,7 @@ export const booking = (cls = '') => `<p class="nowb${cls ? ` ${cls}` : ''}"><sp
  *  size: '' | 'btn--sm'; tone: '' (on the dark room) | 'on-paper'. */
 export const actions = ({ inq = 'Bridal inquiry', event = 'Book event glam', size = '', cls = '', tone = '' } = {}) =>
   `<div class="acts${tone ? ` acts--${tone}` : ''}${cls ? ` ${cls}` : ''}">${inquire(S, `${inq} ${arrow}`, `btn btn--main${size ? ` ${size}` : ''}`)}${book('event', event, `btn btn--line${size ? ` ${size}` : ''}`)}</div>`;
-/** A plain text link with an arrow. tone '' (red-lit on dark) or 'on-paper'. */
+/** A plain text link with an arrow. tone '' (rose-lit on dark) or 'on-paper'. */
 export const more = (url, label, cls = '') => `<a class="more${cls ? ` ${cls}` : ''}" href="${url}">${label} ${arrow}</a>`;
 
 /* ---------- prints ---------- */
@@ -114,7 +114,7 @@ export const strip = (id, { n = '', label = '', cls = '', cap = '' } = {}) =>
 
 /** A contact sheet: a tight grid of frames on black film, each with its frame number.
  *  items: [{ photo, n?, alt?, cap?, pick? } | { film, n? }]; pick: a grease-pencil tick on that frame.
- *  buttons: render each frame as a <button> (data-i, data-photo, aria-pressed, a hidden red ring
+ *  buttons: render each frame as a <button> (data-i, data-photo, aria-pressed, a hidden rose ring
  *  that draws itself when aria-pressed="true") for a viewer you wire yourself; its accessible name
  *  is "Frame <n>: <cap or the photo's alt>". cols: columns from 760px up (5 below). */
 export const sheet = (items, { buttons = false, cols = 5, cls = '', sizes = '(max-width:759px) 22vw, 12vw', label = 'Contact sheet' } = {}) => `<div class="sheet${cls ? ` ${cls}` : ''}" style="--cols:${cols}"${buttons ? ` role="group" aria-label="${esc(label)}"` : ''}>
@@ -130,7 +130,7 @@ ${items.map((it, i) => {
 </div>`;
 
 /* ---------- page kit: sections ---------- */
-/** A section in one of three grounds. tone: 'room' (the dark room, red glow at the top edge,
+/** A section in one of three grounds. tone: 'room' (the dark room, faint rose glow at the top edge,
  *  grain) | 'paper' (photographic paper white) | 'tray' (a raised dark surface).
  *  glow: false to drop the safelight glow on a dark band. */
 export const band = (inner, { tone = 'room', id = '', cls = '', label = '', glow = true } = {}) =>

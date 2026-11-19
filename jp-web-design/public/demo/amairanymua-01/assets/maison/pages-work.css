@@ -4,7 +4,7 @@
 
 /* ===================== shared: the title card's extras ===================== */
 .cover-book { margin-top: 26px; }
-.ps-sample { display: inline-flex; align-self: start; margin: 26px 0 0; padding: 7px 10px; border: 1px solid var(--line); font-size: 10.5px; line-height: 1.4; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--fg); }
+.ps-sample { display: inline-flex; justify-self: start; align-self: start; margin: 26px 0 0; padding: 7px 10px; border: 1px solid var(--line); font-size: 10.5px; line-height: 1.4; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--fg); }
 .ps-sample + .cover-book { margin-top: 18px; }
 
 /* ===================== PORTFOLIO ===================== */
@@ -131,7 +131,7 @@ body.vw-open { overflow: hidden; }
 .fol-l { list-style: none; display: grid; gap: 0; max-width: 980px; margin: 0 auto; border-top: 1px solid var(--line); }
 .fol-a { display: grid; justify-items: center; gap: 6px; padding: 30px 12px 28px; text-decoration: none; border-bottom: 1px solid var(--line); }
 .fol-k { font-size: 11px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--mut); }
-.fol-h { font-family: var(--f-cap); font-size: clamp(30px, 4.6vw, 60px); line-height: 1.05; letter-spacing: .04em; text-transform: uppercase; transition: color .3s var(--ease); overflow-wrap: anywhere; }
+.fol-h { font-family: var(--f-cap); font-size: clamp(26px, 3.2vw, 46px); line-height: 1.05; letter-spacing: .04em; text-transform: uppercase; transition: color .3s var(--ease); overflow-wrap: anywhere; }
 .fol-go { display: inline-flex; align-items: center; gap: 10px; min-height: 30px; margin-top: 6px; font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--accent-t); }
 .fol-go .arr { transition: transform .35s var(--ease); }
 .fol-a:hover .fol-h { color: var(--rouge-deep); }
@@ -181,6 +181,7 @@ body.vw-open { overflow: hidden; }
 }
 .ps-body { min-width: 0; max-width: 760px; }
 .ps-body .prose > :last-child { margin-bottom: 0; }
+.ps-body .prose--drop::after { content: ''; display: block; clear: both; }
 .ps-body .prose h2 { margin-top: 1.8em; }
 .ps-body .pq { margin: 1.6em 0 1.8em; }
 .ps-body .pq p { font-size: clamp(22px, 2.6vw, 34px); }

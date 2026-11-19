@@ -5,10 +5,10 @@
       border in grease pencil, and the print lifts out of the tray into its place as the first
       print of the hero's stack while the room lights to the page.
    2. The hero: a stack of prints coming up. Every few seconds a new print drops onto the stack
-      and develops on top (paper -> faint -> mid -> her photograph); her films arrive as strips
+      and develops on top (paper -> faint -> mid -> her photograph); her reels arrive as strips
       of 35mm. Never two faces dissolved through each other.
    3. Two ways to book (the bride, the event), her About right under.
-   4. The contact sheet: choose a frame and it develops as a print beside her film.
+   4. The contact sheet: choose a frame and it develops as a print beside a reel of her work.
    5. The price board, Love Notes on a line, the journal, the end card. */
 import { SITE, HER, HERO, MONTAGE, PATHS, FINAL, LOOKS, PHOTOS, href, inquire, book, arrow, src, srcset, esc } from '../site.mjs';
 import { S, D, page, print, strip, sheet, kick, h, note, ring, booking, actions, more, edge, chapter, band, board, loveNotes, POSTS, postCard, cta, signature, tick } from './shell.mjs';
@@ -173,7 +173,7 @@ ${HER.about.map((p) => `<p>${p.replace('“CAKE FREE”', ring('“CAKE FREE”'
 
 /* ---------- 4: the contact sheet and the enlarger ---------- */
 const FIRST = 3; /* bride-gold-waves is on the enlarger first */
-const work = () => band(`${chapter({ kick: 'The contact sheet', n: '04', heading: ['Pick a frame.', 'Watch it come up.'], lead: 'Real clients in real light. Choose any frame on the sheet and it develops as a print, right beside her film.', split: true })}
+const work = () => band(`${chapter({ kick: 'The contact sheet', n: '04', heading: ['Pick a frame.', 'Watch it come up.'], lead: 'Real clients in real light. Choose any frame on the sheet and it develops as a print, right beside a reel of her work.', split: true })}
 <div class="work-g">
 <div class="work-pair">
 <div class="enl" id="enl">

@@ -26,7 +26,7 @@
 }
 .b-pk-ft { display: grid; gap: 26px; margin-top: clamp(32px, 4vw, 48px); }
 .b-pk-note p { margin: 0 0 .6em; max-width: 60ch; font-size: 14.5px; line-height: 1.65; color: var(--mut); }
-.b-pk-note a { color: var(--fg); text-decoration-color: var(--rouge); }
+.b-pk-note a { padding: 12px 0; color: var(--fg); text-decoration-color: var(--rouge); }
 .b-pk-note a:hover { color: var(--accent-t); }
 @media (min-width: 900px) { .b-pk-ft { grid-template-columns: 1fr auto; align-items: end; gap: 48px; } }
 
@@ -39,7 +39,7 @@
 .b-dest-q { margin: 0 0 6px; padding: 0; max-width: 40ch; }
 .b-dest-q p { font-size: clamp(18px, 1.7vw, 22px); line-height: 1.6; margin-bottom: 14px; }
 .b-dest-q cite { font-style: normal; font-size: 10.5px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--mut); }
-.b-dest .note { transform-origin: center; margin: 14px 0 30px; }
+.b-dest .note { transform-origin: center; margin: 14px 0 30px; color: var(--rouge); }
 .b-dest .acts { justify-content: center; width: 100%; max-width: 520px; }
 .b-dest-a { grid-area: a; }
 .b-dest-b { grid-area: b; margin-top: 56px; }
@@ -64,6 +64,7 @@
 .b-faq-l .faq-i summary > span { flex: 1; }
 .b-faq-l .faq-i summary i { flex: 0 0 32px; height: 32px; border: 1px solid var(--line-soft); transition: border-color .3s var(--ease), background-color .3s var(--ease); }
 .b-faq-l .faq-i summary i::before, .b-faq-l .faq-i summary i::after { left: 9px; right: 9px; }
+.b-faq-l .faq-i summary:focus-visible { outline-color: var(--rouge-deep); }
 .b-faq-l .faq-i summary:hover i { border-color: var(--fg); }
 .b-faq-l .faq-i[open] summary::before { color: var(--accent-t); }
 .b-faq-l .faq-i[open] summary i { border-color: var(--rouge); }

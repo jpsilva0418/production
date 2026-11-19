@@ -5,13 +5,17 @@
 
    Maison's manner, applied to a form: the card is the house's letterhead (white on silk, the
    lockup in the corner); questions are set in Hanken, steps in Italiana caps; fields and choices
-   are square boxes with a 3:1 rule; a chosen card turns black with a red dot; the active field
-   takes a red underline. Red stays the lipstick: the current step, the active field, the dot.
-   Every colour comes from the site.css tokens; the one addition is the field rule (--iq-line),
-   black at 50% on white (3.9:1), so inputs keep a 3:1 boundary. */
+   are square boxes with a 3:1 rule; a chosen card turns black with a rose dot; the active field
+   takes a rosewood underline. Red stays the lipstick: the current step, the active field, the dot.
+   Red is the SOFT rose (founder, 2026-11-19): --rouge for lines and the dot, --rouge-deep where a
+   red must carry meaning on white (errors, the active underline, focus rings; 5.3:1), never a red
+   field and never white text on red. Every colour comes from the site.css tokens; the one addition
+   is the field rule (--iq-line), black at 50% on white (3.9:1), so inputs keep a 3:1 boundary. */
 
 .iq-page {
   --iq-line: rgba(11, 11, 11, .5);
+  --iq-bad: var(--rouge-deep);    /* errors: rosewood, 5.3:1 on white, set bold with a rule */
+  --iq-on: var(--rouge-deep);     /* the active field's underline and focus rings (the soft rose is under 3:1) */
   --iq-pad: 20px;                 /* the card's inner gutter */
   --iq-prog: 64px;                /* the progress row + its gap, above every step */
 }
@@ -24,6 +28,7 @@
 .iq-top-h .d-xl { margin: 0 0 22px; }
 .iq-top-t .lede { margin: 0 0 22px; }
 .iq-alt-jump { margin: 14px 0 0; }
+.iq-alt-jump .more { letter-spacing: .14em; }
 .iq-ph { display: none; }
 @media (min-width: 900px) {
   .iq-top-in { grid-template-columns: minmax(0, 1fr) clamp(150px, 14vw, 212px); column-gap: clamp(40px, 6vw, 96px); align-items: end; }
@@ -40,8 +45,9 @@
 @media (min-width: 900px) {
   .iq-g { grid-template-columns: minmax(0, 1fr) clamp(290px, 27vw, 392px); column-gap: clamp(36px, 5vw, 88px); align-items: start; }
 }
-/* the side column stays beside the form while it scrolls (only where it fits in the window) */
-@media (min-width: 900px) and (min-height: 700px) {
+/* the side column stays beside the form while it scrolls, wherever the whole column fits in the
+   window under the header (it is about 740px tall; shorter windows let it scroll with the page) */
+@media (min-width: 900px) and (min-height: 880px) {
   .iq-side { position: sticky; top: calc(var(--hd-h) + 24px); }
 }
 
@@ -66,8 +72,8 @@
 .iq-ev .d-m { margin: 0 0 12px; }
 .iq-ev p { color: var(--smoke); margin-bottom: 22px; }
 .iq-ev .btn { width: 100%; min-height: 50px; height: auto; padding: 14px 18px; white-space: normal; }
-.iq-dest, .iq-prep { padding: 30px 0 22px; border-bottom: 1px solid var(--noir); }
-.iq-dest .d-s, .iq-prep .d-s { margin: 0 0 14px; }
+.iq-dest, .iq-prep { padding: 26px 0 18px; border-bottom: 1px solid var(--noir); }
+.iq-dest .d-s, .iq-prep .d-s { margin: 0 0 12px; }
 .iq-q { margin: 0 0 6px; }
 .iq-q p { margin: 0 0 10px; }
 .iq-q cite { display: flex; align-items: center; gap: 10px; font-style: normal; font-size: 10.5px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--ash); }
@@ -81,7 +87,7 @@
   .iq-dest, .iq-prep { padding-top: 26px; }
 }
 @media (min-width: 900px) {
-  .iq-ev { padding: 34px 32px 32px; }
+  .iq-ev { padding: 30px 30px 28px; }
 }
 
 /* ===================== the shared inquiry, dressed ===================== */
@@ -114,24 +120,26 @@
 @keyframes iqIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
 .cf-two { column-gap: 20px; }
+/* the two guest counts: their questions wrap differently, so the boxes line up along the bottom */
+.cf-two:has(#cf-makeupGuests) { align-items: end; }
 .cf-field { margin-bottom: 26px; }
 .cf-lbl { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: .7em; margin-bottom: 10px; font-size: 14.5px; line-height: 1.45; font-weight: 600; color: var(--noir); }
 .cf-req, .cf-opt { font-size: 9.5px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; white-space: nowrap; color: var(--ash); }
 .cf-req { color: var(--rouge-deep); }
 
 /* fields: square boxes with a 3:1 rule; the active one takes a black rule and a red underline */
-.cf-input { min-height: 50px; padding: 12px 14px; border: 1px solid var(--iq-line); border-radius: 0; background: var(--blanc); color: var(--noir); font-family: var(--f-ui); font-size: 16px; line-height: 1.45; caret-color: var(--rouge); box-shadow: none; transition: border-color .25s var(--ease), box-shadow .25s var(--ease); }
+.cf-input { min-height: 50px; padding: 12px 14px; border: 1px solid var(--iq-line); border-radius: 0; background: var(--blanc); color: var(--noir); font-family: var(--f-ui); font-size: 16px; line-height: 1.45; caret-color: var(--rouge-deep); box-shadow: none; transition: border-color .25s var(--ease), box-shadow .25s var(--ease); }
 .cf-input::placeholder { color: var(--ash); opacity: 1; }
 .cf-input:hover { border-color: var(--noir); }
-.cf-input:focus { outline: none; border-color: var(--noir); box-shadow: inset 0 -2px 0 var(--rouge); }
+.cf-input:focus { outline: none; border-color: var(--noir); box-shadow: inset 0 -2px 0 var(--iq-on); }
 .cf-input:focus-visible { outline: none; }
 textarea.cf-input { min-height: 120px; line-height: 1.55; }
 .cf-input[type="date"], .cf-input[type="time"] { min-height: 50px; }
 .cf-input::-webkit-calendar-picker-indicator { opacity: .55; cursor: pointer; }
 .cf-input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
 .cf-input[type="number"]::-webkit-inner-spin-button, .cf-input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-.cf-input[aria-invalid="true"] { border-color: var(--rouge); box-shadow: inset 0 -2px 0 var(--rouge); }
-.cf-err { display: flex; gap: 8px; align-items: baseline; margin: 8px 0 0; font-size: 13.5px; line-height: 1.45; font-weight: 600; color: var(--rouge-deep); }
+.cf-input[aria-invalid="true"] { border-color: var(--iq-bad); box-shadow: inset 0 -2px 0 var(--iq-bad); }
+.cf-err { display: flex; gap: 8px; align-items: baseline; margin: 8px 0 0; font-size: 13.5px; line-height: 1.45; font-weight: 600; color: var(--iq-bad); }
 .cf-err::before { content: ''; flex: 0 0 12px; height: 1px; background: currentColor; transform: translateY(-.3em); }
 
 .cf-check { gap: 10px; margin-top: 8px; min-height: 44px; font-size: 14px; color: var(--ash); }
@@ -145,8 +153,8 @@ textarea.cf-input { min-height: 120px; line-height: 1.55; }
 .cf-card:hover { border-color: var(--noir); }
 .cf-card:has(input:checked) { background: var(--noir); border-color: var(--noir); color: var(--blanc); }
 .cf-card:has(input:checked)::before { background: var(--rouge); border-color: var(--blanc); box-shadow: inset 0 0 0 2px var(--noir); }
-.cf-card:has(input:focus-visible) { outline: 2px solid var(--rouge); outline-offset: 3px; }
-.cf-field[data-invalid] .cf-card { border-color: var(--rouge); }
+.cf-card:has(input:focus-visible) { outline: 2px solid var(--iq-on); outline-offset: 3px; }
+.cf-field[data-invalid] .cf-card { border-color: var(--iq-bad); }
 /* an odd last card takes the whole row (the seven packages) */
 .cf-cards-2 > .cf-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
 /* her package names are set like the price list: Italiana caps */
@@ -162,7 +170,7 @@ textarea.cf-input { min-height: 120px; line-height: 1.55; }
 }
 .cf-hint { margin: 10px 0 0; font-size: 13.5px; line-height: 1.55; color: var(--ash); }
 .cf-hint a, .cf-noscript a { color: var(--noir); font-weight: 600; text-decoration: underline; text-decoration-color: var(--rouge); text-underline-offset: .25em; }
-.cf-hint a { display: inline-block; min-height: 24px; }
+.cf-hint a { display: inline-block; padding: 10px 0; margin: -10px 0; } /* a 44px target inside the line, with no change to the line */
 
 /* ---------- review: the answers as a spec sheet, one numbered group per step ---------- */
 .cf-review { gap: 0; margin-bottom: 18px; border-top: 1px solid var(--noir); counter-reset: iqrv; }
@@ -198,14 +206,15 @@ textarea.cf-input { min-height: 120px; line-height: 1.55; }
 .cf-handoff h2 { margin: 0 0 18px; font-family: var(--f-cap); font-size: clamp(32px, 4.4vw, 56px); line-height: 1.02; letter-spacing: .035em; text-transform: uppercase; text-wrap: balance; }
 .cf-handoff-body { max-width: 54ch; margin: 0; font-size: 16.5px; line-height: 1.65; }
 .cf-actions { gap: 10px; margin-top: 28px; }
-.cf-actions .btn { flex: 1 1 100%; padding: 14px 20px; height: auto; }
+.cf-actions .btn { flex: 1 1 100%; padding: 14px 18px; height: auto; }
+@media (max-width: 429px) { .cf-actions .btn { letter-spacing: .12em; } }
 @media (min-width: 600px) { .cf-actions .btn { flex: 0 0 auto; } }
 .cf-back { display: inline-flex; align-items: center; min-height: 44px; padding: 0 2px; margin: 0; font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--noir); background: linear-gradient(var(--rouge), var(--rouge)) 0 calc(100% - 10px) / 100% 1px no-repeat; cursor: pointer; }
 .cf-back:hover { color: var(--rouge-deep); }
 @media (min-width: 600px) { .cf-back { margin-left: 12px; } }
 .cf-status { min-height: 1.5em; margin: 14px 0 0; font-size: 14px; font-weight: 600; color: var(--noir); }
 .cf-copytext { margin-top: 12px; padding: 12px 14px; border: 1px solid var(--iq-line); border-radius: 0; background: var(--silk); color: var(--noir); }
-.cf-copytext:focus { outline: 2px solid var(--rouge); outline-offset: 2px; }
+.cf-copytext:focus { outline: 2px solid var(--iq-on); outline-offset: 2px; }
 
 /* without script: the line and her real form's link, nothing else */
 .cf-noscript { margin: 0; padding: 18px 20px; border: 1px solid var(--iq-line); font-size: 15px; line-height: 1.6; }

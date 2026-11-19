@@ -89,12 +89,13 @@ html:not(.js) .st-b{display:none}
 }
 @media(min-width:640px) and (orientation:landscape) and (max-height:560px){
   .hero{padding-bottom:calc(46px + env(safe-area-inset-bottom,0px))}
-  .stack{width:max(150px,calc((100vh - 150px) * .74));width:max(150px,calc((100svh - 150px) * .74))}
+  .stack{width:max(140px,calc((100vh - 200px) * .74));width:max(140px,calc((100svh - 200px) * .74))}
+  .stack-w{gap:8px}
   .hero-k,.hero-line{display:none}
   .hero-nowb{margin:12px 0 10px}
   .st-ctl{min-height:40px}
 }
-@media(min-width:1280px){.hero-in{gap:clamp(60px,7vw,140px)}.hero-txt{max-width:700px}}
+@media(min-width:1280px){.hero-in{gap:clamp(60px,7vw,140px)}.hero-txt{max-width:780px}}
 
 /* ---------- two ways to book ---------- */
 .ways-hd{margin-bottom:clamp(30px,5vw,60px)}

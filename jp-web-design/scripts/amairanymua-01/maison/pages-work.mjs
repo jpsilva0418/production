@@ -33,7 +33,7 @@ const RUNWAY = [
   { film: 'f3' },
   { photo: 'glam-bronze' },
   { photo: 'bride-ruby' },
-  { photo: 'wedding-night' },
+  { photo: 'golden-hour' },
 ].map((it) => (it.film
   ? { ...it, cap: `Film &middot; ${FILMS[it.film].label}` }
   : { ...it, cap: LOOKS.find((l) => l.photo === it.photo).cap.replace(' · ', ' &middot; ') }));
@@ -225,8 +225,7 @@ export const postPrepare = () => {
 <ol class="asks">${HER.prepare.map((x, i) => `<li><span class="asks-n" aria-hidden="true">${pad(i + 1)}</span><p>&ldquo;${x}&rdquo;</p></li>`).join('')}</ol>
 <div class="prose">
 <h2>The look, before the day</h2>
-<p>Every one of her bridal packages includes a preview of the look before the wedding day: the hair-and-makeup collections open with two-part bridal artistry, a private preview session and then the wedding-day application. Preview sessions are available for both hair and makeup.</p>
-<p>Booking a trial first is also an option.</p>
+<p>Every one of her bridal packages includes a preview of the look before the wedding day: the hair-and-makeup collections open with two-part bridal artistry, a private preview session and then the wedding-day application. And if you would rather try first, a trial can be booked before you sign.</p>
 </div>
 ${quote(TRIAL.replace(/^Yes! /, ''), SITE.first)}
 <div class="prose">
@@ -265,12 +264,12 @@ export const postDestination = () => {
 ${quote(worldwide, SITE.first)}
 <div class="prose">
 <h2>Close to home, and further</h2>
-<p>Closer to home, that means all across Central Florida. She also travels out of state.</p>
+<p>Closer to home, she travels all across Central Florida, and out of state as well.</p>
 </div>
 ${quote(TRAVEL, `${SITE.first}, asked &ldquo;Do you travel?&rdquo;`)}
 <div class="prose">
 <h2>How to ask</h2>
-<p>For a destination wedding, reach out to her directly to discuss travel availability and to receive a custom quote. The bridal inquiry is the place to start, and her email works too.</p>
+<p>To ask about a wedding away from home, start with the bridal inquiry or write to her by email. In her words:</p>
 </div>
 <div class="ask rv">
 <p class="ask-q">&ldquo;${reach}&rdquo;</p>

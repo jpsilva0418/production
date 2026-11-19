@@ -36,7 +36,7 @@ ${h(1, H1, 'd-xl rv-mask', 'id="iqH"')}
 <div class="iq-top-t">
 <p class="lede rv" style="--d:.12s">${INQUIRY.body}</p>
 ${bookingLine('rv iq-book')}
-<p class="iq-alt-jump rv" style="--d:.18s">${book('event', `${INQUIRY.qHeading} Book event glam ${arrow}`, 'more')}</p>
+<p class="iq-alt-jump">${book('event', `${INQUIRY.qHeading} Book event glam ${arrow}`, 'more')}</p>
 </div>
 ${frame(PH, { shape: 'port', sizes: PH_SIZES, cls: 'iq-ph', rv: '', cap: 'Bridal &middot; Full glam' })}
 </div>
@@ -51,13 +51,11 @@ ${kicker('Event &amp; everyday glam')}
 ${book('event', `${INQUIRY.qLink} ${arrow}`, 'btn btn--pri')}
 </section>
 <section class="iq-blk iq-dest" aria-labelledby="iqDestH">
-${kicker('Worldwide')}
 <h2 class="d-s" id="iqDestH">${HER.destination.heading}</h2>
 <blockquote class="iq-q"><p>${HER.destination.body}</p><cite>${SITE.first}</cite></blockquote>
 ${more(href(S, 'journal/destination-bride'), 'Destination brides')}
 </section>
 <section class="iq-blk iq-prep" aria-labelledby="iqPrepH">
-${kicker('Before your appointment')}
 <h2 class="d-s" id="iqPrepH">How to prepare</h2>
 <ol class="iq-steps">${HER.prepare.map((p, i) => `<li><span class="iq-n" aria-hidden="true">0${i + 1}</span><span>${p}</span></li>`).join('')}</ol>
 ${more(href(S, 'journal/how-to-prepare'), 'Read the article')}

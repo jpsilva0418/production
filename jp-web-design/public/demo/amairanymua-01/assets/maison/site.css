@@ -65,6 +65,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 ::selection { background: var(--blush); color: var(--noir); }
 :focus-visible { outline: 2px solid var(--rouge-deep); outline-offset: 3px; }
 .sec--rouge :focus-visible, .close :focus-visible { outline-color: var(--noir); }
+/* on black the focus ring is the soft rose (7.2:1); on white it is rosewood (5.3:1) */
+.sec--noir :focus-visible, .tone-noir :focus-visible, .menu :focus-visible, .ft :focus-visible { outline-color: var(--rouge); }
 .vh { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
 .skip { position: fixed; left: 12px; top: 12px; z-index: 120; padding: 12px 18px; background: var(--blanc); color: var(--noir); font-size: 13px; font-weight: 600; letter-spacing: .08em; transform: translateY(-160%); }
 .skip:focus { transform: none; }
@@ -97,7 +99,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .mut { color: var(--mut); }
 .cap { margin: 12px 0 0; font-size: 10.5px; line-height: 1.5; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--mut); }
 .note { margin: .3em 0 .5em; font-family: var(--f-script); font-size: clamp(38px, 4.6vw, 56px); line-height: 1; color: var(--rouge); transform: rotate(-4deg); transform-origin: left center; }
-.sec--noir .note, .tone-noir .note { color: #E5383F; } /* the same red, lifted for contrast on black (large text) */
+.sec--noir .note, .tone-noir .note { color: var(--rouge); } /* the soft rose reads 7.2:1 on black */
 .sec--rouge .note { color: var(--rouge-deep); }
 .ruled { display: flex; align-items: center; gap: 12px; margin: 0; font-size: 11px; line-height: 1.4; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--fg); }
 .ruled::before { content: ''; flex: 0 0 32px; height: 1px; background: var(--rouge); }
@@ -188,8 +190,8 @@ html.intro .lk-sk { display: inline; }
 .ml { font-family: var(--f-cap); font-size: clamp(30px, 8.4vw, 60px); line-height: 1; text-transform: uppercase; letter-spacing: .04em; transition: transform .4s var(--ease), color .3s; }
 .mo { grid-column: 2; font-size: 12px; letter-spacing: .08em; color: var(--smoke); }
 .menu-list a:hover .ml { transform: translateX(8px); }
-.menu-list a[aria-current] .ml { color: #E5383F; }
-.menu-list a[aria-current] .mn { color: #E5383F; }
+.menu-list a[aria-current] .ml { color: var(--rouge); }
+.menu-list a[aria-current] .mn { color: var(--rouge); }
 .menu-side { display: grid; gap: 22px; align-content: start; }
 .menu-links { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
 .menu-links a { display: flex; align-items: center; min-height: 44px; font-size: 14px; text-decoration: none; border-bottom: 1px solid var(--line-dk); }
@@ -373,3 +375,6 @@ html.js .rv-im.in .fr-m > img { transform: none; }
   .menu { transition: none; }
   .note { transform: rotate(-4deg); }
 }
+
+/* a wrapped spec line must not start with a divider: on narrow screens the items stand apart by space alone */
+@media (max-width: 599px) { .spec li + li::before { display: none; } }
