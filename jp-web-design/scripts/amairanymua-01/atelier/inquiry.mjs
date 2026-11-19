@@ -29,7 +29,7 @@ ${h(1, H1, 'd-xl rv-mask', 'id="iqH"')}
 <div class="iq-top-t">
 ${lede(INQUIRY.body, 'rv')}
 ${bookingLine('rv iq-book')}
-<p class="iq-alt rv">${book('event', `${INQUIRY.qHeading} Book event glam ${arrow}`, 'more')}</p>
+<p class="iq-alt">${book('event', `${INQUIRY.qHeading} Book event glam ${arrow}`, 'more')}</p>
 </div>
 </div>
 </section>`;

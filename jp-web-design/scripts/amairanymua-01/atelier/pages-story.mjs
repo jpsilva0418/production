@@ -189,9 +189,10 @@ const MOTION = [
   { photo: 'reel-red-waves', cap: 'Full glam &middot; Red waves' },
 ];
 const MO_AR = ['3/5', '5/8', '3/5', '2/3'];
-/* both clips open on the "before" (about 4 s) and cut to the finished look: start just before the cut
-   and loop back to it, so each still sits beside the same look in motion (site.js reads data-start) */
-const MO_START = 3;
+/* both clips open on the "before" (about 4 s) and cut to the finished look (their posters are the
+   finished look): play from just after the cut and loop back to it, so each still sits beside the
+   same look in motion (site.js reads data-start) */
+const MO_START = 4.2;
 const aboutMotion = () => section({ id: 'motion', tone: 'espresso', cls: 'ab-mo', labelledby: 'moH' }, `
 <div class="ab-mo-hd">
 <div>${kicker('Photographs and film', 'rv')}${h(2, ['In', 'motion'], 'd-l rv-mask', 'id="moH"')}</div>

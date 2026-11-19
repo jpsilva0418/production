@@ -53,7 +53,7 @@
 .bs-faq-ask a { color: var(--ink); font-weight: 600; display: inline-block; padding: 10px 0; margin: -10px 0; }
 @media (min-width: 900px) { .bs-faq-hd { position: sticky; top: calc(var(--hd-h) + 40px); } }
 .bs-faq-l .faq-i summary { min-height: 72px; }
-.bs-faq-l .faq-i summary:focus-visible { outline-offset: -2px; }
+.bs-faq-l .faq-i summary:focus-visible { outline-offset: 4px; }
 .bs-faq-l .faq-i summary span { padding-right: 8px; }
 .bs-faq-l .faq-a p { font-size: 15.5px; line-height: 1.75; }
 @media (hover: hover) { .bs-faq-l .faq-i summary:hover span { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .14em; } }

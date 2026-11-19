@@ -75,7 +75,7 @@ const tile = (l, i) => {
   const fs = l.film && filmSrc(l.film);
   const filmAttrs = fs ? ` data-film-mp4="${fs.mp4}" data-film-poster="${fs.poster}" data-film-alt="${esc(FILMS[l.film].alt)}" data-film-pos="${FILMS[l.film].pos}"` : '';
   return `<li class="lt" data-cats="${l.cats.join(' ')}">
-<figure class="lt-f"><a class="lt-a" href="${largest(l.photo)}" data-vw data-i="${i}" data-src="${largest(l.photo)}" data-srcset="${srcset(l.photo)}" data-w="${P.w}" data-h="${P.h}" data-alt="${esc(P.alt)}" data-cap="${esc(plain(l.cap))}"${crTxt ? ` data-cr="${esc(crTxt)}"` : ''}${filmAttrs}><span class="lt-m">${pic(l.photo, { sizes: '(max-width:599px) 46vw, (max-width:899px) 31vw, (max-width:1439px) 23vw, 320px', pos: TILE_POS[l.photo] })}</span><span class="vh">Open larger: </span><span class="lt-n" aria-hidden="true">${pad2(i + 1)}</span>${l.film ? '<span class="lt-fi" aria-hidden="true">Film</span>' : ''}</a>
+<figure class="lt-f"><a class="lt-a" href="${largest(l.photo)}" data-vw data-i="${i}" data-src="${largest(l.photo)}" data-srcset="${srcset(l.photo)}" data-w="${P.w}" data-h="${P.h}" data-alt="${esc(P.alt)}" data-cap="${esc(plain(l.cap))}"${crTxt ? ` data-cr="${esc(crTxt)}"` : ''}${filmAttrs}><span class="vh">Open larger: </span><span class="lt-m">${pic(l.photo, { sizes: '(max-width:599px) 46vw, (max-width:899px) 31vw, (max-width:1439px) 23vw, 320px', pos: TILE_POS[l.photo] })}</span><span class="lt-n" aria-hidden="true">${pad2(i + 1)}</span>${l.film ? '<span class="lt-fi" aria-hidden="true">Film</span>' : ''}</a>
 <figcaption class="cap lt-cap">${l.cap}${cr ? `<span class="cap-cr">Makeup by ${SITE.first} &middot; ${cr}</span>` : ''}</figcaption></figure>
 </li>`;
 };

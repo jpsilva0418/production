@@ -38,14 +38,16 @@
 }
 
 /* ===================== the spread: the sheet beside the side column ===================== */
-.iq { padding-top: clamp(24px, 4vw, 64px); }
+.iq { padding-top: clamp(24px, 4vw, 64px); padding-bottom: clamp(56px, 7vw, 104px); }
+/* the footer is linen too: a hairline marks where the spread ends and the footer's call begins */
+.iq::after { content: ''; position: absolute; bottom: 0; left: var(--gx); right: var(--gx); max-width: var(--maxw); margin: 0 auto; height: 1px; background: var(--line-soft); }
 .iq-g { display: grid; gap: 48px; }
 .iq-main { min-width: 0; }
 @media (min-width: 900px) {
   .iq-g { grid-template-columns: minmax(0, 1fr) clamp(280px, 26vw, 360px); column-gap: clamp(32px, 4.5vw, 80px); align-items: start; }
 }
 /* the side column stays beside the form while it scrolls, wherever it fits under the header */
-@media (min-width: 900px) and (min-height: 820px) {
+@media (min-width: 1200px) and (min-height: 820px), (min-width: 900px) and (min-height: 1060px) {
   .iq-side { position: sticky; top: calc(var(--hd-h) + 28px); }
 }
 

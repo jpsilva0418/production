@@ -76,7 +76,7 @@ ${pair({ image: 'bride-pearls', film: 'f4', cap: 'Bridal &middot; Soft glam', fi
 <div class="st-prep-txt">
 ${kicker('How to prepare', 'rv')}
 ${h(2, 'Before you sit in *her chair.*', 'd-l rv', 'id="prepH"')}
-${lede(`Two notes from ${SITE.first} for the morning of your glam.`, 'rv')}
+${lede(`Two notes from ${SITE.first} before your appointment.`, 'rv')}
 <ol class="st-steps" data-stag=".1">${HER.prepare.map((p, i) => `<li class="rv"><span class="st-n" aria-hidden="true">0${i + 1}</span><span>${p}</span></li>`).join('')}</ol>
 ${next({ cls: 'next--left rv', go: [more(href(S, 'journal/how-to-prepare'), 'Read the article'), inquire(S, `Begin your inquiry ${arrow}`, 'more')] })}
 </div>
