@@ -1,26 +1,29 @@
 /* /demo/amairanymua-01 — ATELIER: the design system, the shell and the page kit.
-   An ivory atelier: ivory paper, her espresso as the ink, very tall thin condensed caps, arched
+   Black, white and soft cream (round four; first built as ivory and espresso): white paper, near-black ink, very tall thin condensed caps, arched
    windows, taupe hairlines, square corners. Mobile first. Every colour comes from a token below.
    Page authors: see KIT.md (every class a page needs is documented there). */
 
 :root {
-  /* --- palette (SITE-atelier.md) --- */
-  --ivory: #F6F1EA;      /* the page */
-  --linen: #EAE1D6;      /* second ground: bands, cards */
-  --espresso: #36302A;   /* ink, buttons, the one dark band per page, the menu (her brand colour) */
-  --cocoa: #5E5148;      /* secondary text: 6.8:1 on ivory, 5.9:1 on linen */
-  --taupe: #B9A99A;      /* hairlines and quiet marks (never body text on light grounds) */
-  --rose: #C9A9A0;       /* a dusty-rose whisper: accents on espresso, large marks only on ivory */
-  --paper: #FFFFFF;      /* the inquiry sheet, the portrait's white ground */
+  /* --- palette (round four, 2026-11-19: black, white and a soft cream, the Galya register) ---
+     The token NAMES are the original ones so every Atelier page follows the change from here; the
+     VALUES are now: --ivory the white page, --linen the quiet cream second ground, --espresso the
+     near-black ink and the black bands. No green, no rose. Contrast (WCAG 2.x) noted beside each. */
+  --ivory: #FAF9F6;      /* the page: an off-white */
+  --linen: #F1ECE4;      /* second ground: a soft cream (bands, cards, footer) */
+  --espresso: #141211;   /* ink, primary buttons, the black band, the menu: 17.7:1 on the page, 15.9:1 on cream */
+  --cocoa: #5A544E;      /* secondary text: 7.1:1 on the page, 6.4:1 on cream, 7.5:1 on white */
+  --taupe: #8E8780;      /* numerals and quiet marks: 3.4:1 on the page (large or decorative only) */
+  --rose: #D8D1C7;       /* the cream accent on black ("Most popular", the current menu item): 13:1 with ink on it */
+  --paper: #FFFFFF;      /* white: the inquiry sheet, the booking cards */
   /* --- derived (all from the palette) --- */
   --ink: var(--espresso);
   --ink-2: var(--cocoa);
-  --line: var(--taupe);
-  --line-soft: rgba(185, 169, 154, .55);
+  --line: #BFB8B0;       /* hairlines */
+  --line-soft: rgba(20, 18, 17, .14);
   --on-dark: var(--ivory);
-  --on-dark-2: #CDBFB2;  /* secondary text on espresso: 7.4:1 */
-  --line-dark: rgba(246, 241, 234, .22);
-  --shade: rgba(54, 48, 42, .52);  /* the edge scrim under a credit line, never across a face */
+  --on-dark-2: #BDB7B0;  /* secondary text on black: 9.4:1 */
+  --line-dark: rgba(250, 249, 246, .2);
+  --shade: rgba(20, 18, 17, .52);  /* the edge scrim under a credit line, never across a face */
   /* --- type --- */
   --f-cap: 'Atelier Display', 'Bodoni 72 Condensed', 'Didot', Georgia, serif;
   --f-sans: 'Atelier Sans', 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -112,7 +115,7 @@ strong { font-weight: 600; }
 .acts--c { justify-content: center; }
 .acts--dark .btn--pri { background: var(--ivory); color: var(--espresso); border-color: var(--ivory); }
 .acts--dark .btn--pri::before { background: var(--linen); }
-.acts--dark .btn--sec { color: var(--ivory); border-color: rgba(246, 241, 234, .55); }
+.acts--dark .btn--sec { color: var(--ivory); border-color: rgba(250, 249, 246, .55); }
 .acts--dark .btn--sec::before { background: var(--ivory); }
 @media (hover: hover) { .acts--dark .btn--sec:hover { color: var(--espresso); border-color: var(--ivory); } }
 @media (max-width: 429px) { .acts .btn { flex: 1 1 auto; padding: 0 14px; letter-spacing: .15em; } .acts { gap: 8px; } }
