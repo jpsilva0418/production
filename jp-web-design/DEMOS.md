@@ -13,7 +13,7 @@ normal Vercel deploy. No subdomains, no DNS, no separate project.
 | `magnolia-05` | Magnolia Healthcare, Inc. (MA) | Concept 05 · Immersive Storytelling | same |
 | `magnolia-07` | Magnolia Healthcare, Inc. (MA) | Concept 07 · Family, at Home · Evolved | same |
 | `sass-by-kass-01` | Sass by Kass — Kassandra, hair stylist (MA) | Revision 03 · logo hero, signature entrance, bridal inquiry (republished 2026-11-11) | `jpsilva0418/production` → `sass-by-kass/`, see `DEMO.json` |
-| `amairanymua-01` | Amairany Sierra — @amairanymua, bridal hair & makeup (FL) | Rebuilt 2026-11-19 on the Sass by Kass system: seven pages, on-site bridal inquiry (demo mode), stills and film mixed. Review build with three directions (A Espresso, B Peach & Cream, C Rosewood). Not deployed; awaiting founder's pick | hand-built by `scripts/amairanymua-01-build.mjs` + `scripts/amairanymua-01/`, see `docs/demo-amairanymua-01.md` |
+| `amairanymua-01` | Amairany Sierra — @amairanymua, bridal hair & makeup (FL) | Being rebuilt (2026-11-19) as three completely different sites for the founder to choose one from: Veil, Noir, The Edit. Each has its own logo opening, seven pages, an on-site bridal inquiry in demo mode, and stills mixed with marked film slots. Work in progress; not deployed | hand-built by `scripts/amairanymua-01-build.mjs` + `scripts/amairanymua-01/`, see `docs/demo-amairanymua-01.md` |
 
 Each generated demo has a `DEMO.json` that records its client, concept, source
 commit and build time.

@@ -1,5 +1,15 @@
 # `/demo/amairanymua-01` — Amairany Sierra, on the demo-family system
 
+> **Being rewritten.** Founder direction changed on 2026-11-19: instead of one site in
+> three colour directions, the demo is now **three completely different sites** (Veil,
+> Noir, The Edit), each with its own logo opening, design and motion, built on shared
+> facts, booking links, photographs and inquiry behaviour. The build is in progress on
+> this branch. The sections below about "directions A, B, C" and the Sass by Kass port
+> describe the superseded plan and will be replaced when the three sites are verified.
+> What still holds: the booking links, the photographs, the film-slot rule (no stand-in
+> video), the inquiry's questions and demo mode, the sourced-facts table, and the list of
+> things for her to confirm.
+
 An unlisted design preview for a prospective client: Amairany Sierra
 (@amairanymua), bridal hair and makeup, Orlando + Tampa. It is **not** her
 official website and says so on every page (a marker that stays on screen,

@@ -19,7 +19,7 @@
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { dirname, join, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { BASE, BOOK, L, PICK, DIR_IDS, PAGES, outFile } from './amairanymua-01/site.mjs';
+import { BASE, BOOK, L, PICK, SITE_IDS, PAGES, outFile } from './amairanymua-01/site.mjs';
 
 const OUT = join(dirname(fileURLToPath(import.meta.url)), '..', 'public', 'demo', 'amairanymua-01');
 const fail = [];
@@ -31,7 +31,7 @@ const rel = (f) => f.slice(OUT.length + 1);
 const html = all.filter((f) => f.endsWith('.html'));
 
 /* every page the build promises is there, and nothing else */
-const expected = new Set([...DIR_IDS.flatMap((d) => PAGES.map((p) => outFile(d, p))), ...(PICK ? [] : ['index.html'])]);
+const expected = new Set([...SITE_IDS.flatMap((d) => PAGES.map((p) => outFile(d, p))), ...(PICK ? [] : ['index.html'])]);
 for (const e of expected) if (!existsSync(join(OUT, e))) bad(e, 'expected page was not built');
 for (const f of html) if (!expected.has(rel(f))) bad(rel(f), 'unexpected page in the demo folder');
 
@@ -63,7 +63,11 @@ for (const f of html) {
   for (const m of s.matchAll(/\sid="([^"]+)"/g)) { if (seen.has(m[1])) bad(name, `duplicate id "${m[1]}"`); seen.add(m[1]); }
   if (/<form\b[^>]*\b(action|method)=/i.test(s)) bad(name, 'a form declares an action or method');
   if (/_shared\//.test(s)) bad(name, 'references /demo/_shared/');
-  if (!isChooser && !/<a href="#main" class="skip-link">/.test(s)) bad(name, 'missing skip link');
+  if (!isChooser && !/<a\b[^>]*\shref="#main"/.test(s)) bad(name, 'missing a skip link to #main');
+  if (!/\sid="main"/.test(s)) bad(name, 'missing id="main"');
+  if (!isChooser && !/assets\/css\/marker\.css/.test(s)) bad(name, 'does not load the preview marker stylesheet');
+  if (!isChooser && !/class="demo-flag/.test(s)) bad(name, 'missing the preview marker element');
+  if (/<html(?![^>]*\slang=)/.test(s)) bad(name, '<html> has no lang');
 
   /* booking links */
   for (const m of s.matchAll(/<a\b[^>]*>/g)) {
@@ -86,7 +90,8 @@ for (const f of html) {
     if (/^mailto:/.test(href)) { if (href !== L.mail) bad(name, `unexpected mailto: ${href}`); continue; }
     if (/^https?:/.test(href)) { if (!EXTERNAL_OK.has(href)) bad(name, `external link not in her published set: ${href}`); if (/\starget=/.test(tag)) bad(name, `external link opens a new tab: ${href}`); continue; }
     if (!href.startsWith(`${BASE}`)) { bad(name, `link leaves the demo: ${href}`); continue; }
-    const [path, frag] = href.split('#');
+    const [withQuery, frag] = href.split('#');
+    const path = withQuery.split('?')[0]; /* ?intro=1 replays a site's opening */
     const target = resolve(path);
     if (!target) bad(name, `internal link does not resolve: ${href}`);
     else if (frag && !ids.get(target)?.has(frag)) bad(name, `fragment #${frag} not found in ${rel(target)}`);

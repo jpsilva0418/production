@@ -2,11 +2,11 @@
   "slug": "amairanymua-01",
   "url": "https://jpsilvadigital.com/demo/amairanymua-01",
   "client": "Amairany Sierra (@amairanymua)",
-  "state": "review build: three directions, awaiting the founder's pick",
-  "directions": {
-    "a": "A · Espresso & Champagne — Full-bleed stills and film",
-    "b": "B · Peach & Cream — An arched window of stills and film",
-    "c": "C · Rosewood & Blush — A framed reel beside her name"
+  "state": "review build: three different sites, awaiting the founder's pick",
+  "sites": {
+    "veil": "1 · Veil — Pearl and champagne. Bridal luxury.",
+    "noir": "2 · Noir — Espresso black. Cinematic.",
+    "edit": "3 · The Edit — Peach, cream and Gulf blue. Modern and social."
   },
   "pages": [
     "home",
@@ -25,6 +25,6 @@
     "f4"
   ],
   "source": "jp-web-design/scripts/amairanymua-01-build.mjs + scripts/amairanymua-01/",
-  "shared": "none — fonts, images, CSS and script all live in this folder",
+  "shared": "nothing is shared with any other demo — fonts, images, CSS and script all live in this folder",
   "note": "Unlisted design preview — not the official website. noindex. The bridal inquiry is demo-only: nothing typed is sent anywhere, and its last step hands off to her own JotForm. Event bookings link to her Acuity event category."
 }

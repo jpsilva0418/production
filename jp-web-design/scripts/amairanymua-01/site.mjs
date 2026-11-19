@@ -1,17 +1,20 @@
-/* /demo/amairanymua-01 — the single source of facts, links, media and copy.
+/* /demo/amairanymua-01 — the single source of facts, links, media and shared copy.
 
-   Every page module reads from here, so a correction is made once. Rule (the
-   same one the Sass by Kass source keeps): nothing here is invented. Every
-   fact comes from the table in docs/demo-amairanymua-01.md; where her own
-   materials are silent the copy stays neutral, and anything she still has to
-   confirm is listed in that document.
+   Three completely different sites are built for Amairany Sierra (scripts/amairanymua-01/
+   veil, noir and edit). Each has its own design, type, layout, motion and opening, but
+   ALL of them read their facts, her booking links, her photographs, the film slots and
+   the fact-carrying copy from this file, so a correction is made once and no site can
+   say something about her that another does not.
+
+   Rule (the one the Sass by Kass source keeps): nothing here is invented. Every fact
+   comes from the table in docs/demo-amairanymua-01.md; where her own materials are
+   silent the copy stays neutral, and anything she still has to confirm is listed there.
 
    PICK decides what the build writes:
-     null             review build — a chooser at the root and one full site
-                      per direction under /a, /b and /c, each with a small
-                      direction switch in the preview marker
-     'a' | 'b' | 'c'  client build — that one direction at the root, no
-                      chooser, no switch */
+     null                       review build — a chooser at the root and the three sites
+                                under /veil, /noir and /edit, each with a small switch
+                                between them in the preview marker
+     'veil' | 'noir' | 'edit'   client build — that one site at the root, no chooser */
 export const PICK = null;
 
 export const SLUG = 'amairanymua-01';
@@ -51,41 +54,40 @@ export const SITE = {
   ratingsAsOf: 'November 18, 2026',
 };
 
-/* ---------- the three directions ----------
-   One structure, one set of words and photographs. A direction is a palette
-   (assets/css/system.css, body.pal-*) and a hero composition (hero.mjs,
-   assets/css/hero.css). `heroTone` tells the header whether the home hero
-   under it is dark ('film') or light. */
-export const DIRS = {
-  a: {
-    id: 'a', letter: 'A', name: 'Espresso', full: 'Espresso & Champagne', theme: '#2E1F18', heroTone: 'film',
-    hero: 'Full-bleed stills and film',
-    blurb: 'Deep espresso, warm cream and the champagne of her shimmer lids. The opening draws her name inside a ring, then the field lifts onto her work in motion, edge to edge: one column on a phone, three on a wide screen.',
-    swatch: ['#2E1F18', '#FBF7F2', '#EAD3B3', '#D8B894'],
+/* ---------- the three sites ---------- */
+export const SITES = {
+  veil: {
+    id: 'veil', n: 1, name: 'Veil', theme: '#FAF7F3',
+    line: 'Pearl and champagne. Bridal luxury.',
+    intro: 'A tulle veil carrying her monogram in champagne foil lifts off the page.',
+    blurb: 'Light, luminous and unhurried, for the bride who wants it to feel expensive. Her work unveils as you scroll, along a fine line that runs the length of the page like an aisle.',
+    swatch: ['#FAF7F3', '#EFE7DE', '#D9B98A', '#7A4E33', '#211713'],
   },
-  b: {
-    id: 'b', letter: 'B', name: 'Peach & Cream', full: 'Peach & Cream', theme: '#FFF9F3', heroTone: 'light',
-    hero: 'An arched window of stills and film',
-    blurb: 'The peach, cream and charcoal of her own link page. A light, airy opening: her name on cream, and her work moving inside an arched frame, with charcoal chapters further down.',
-    swatch: ['#FFF9F3', '#F2B894', '#2F2A28', '#F9D9C2'],
+  noir: {
+    id: 'noir', n: 2, name: 'Noir', theme: '#0E0A09',
+    line: 'Espresso black. Cinematic.',
+    intro: 'Her name draws itself on black, then her portraits spin like a reel and lock onto the opening frame.',
+    blurb: 'Dark and dramatic, built on the way she shoots: faces lit against a dark backdrop. Scrolling moves through full-screen scenes, one look dissolving into the next.',
+    swatch: ['#0E0A09', '#1E1512', '#C08A5B', '#E6CFA6', '#F3EADF'],
   },
-  c: {
-    id: 'c', letter: 'C', name: 'Rosewood', full: 'Rosewood & Blush', theme: '#5A2A35', heroTone: 'film',
-    hero: 'A framed reel beside her name',
-    blurb: 'A deep rosewood taken from her rose-nude lip, with blush canvases and champagne-rose accents. Her name sits on the rosewood field beside a tall framed reel, the way a phone holds one.',
-    swatch: ['#5A2A35', '#FCF6F4', '#F0D5C4', '#E3B4B4'],
+  edit: {
+    id: 'edit', n: 3, name: 'The Edit', theme: '#F9C7A8',
+    line: 'Peach, cream and Gulf blue. Modern and social.',
+    intro: 'Three makeup swatches paint across the screen, her name stamps in, and the peach floods the page.',
+    blurb: 'Her own link-page colours, turned up. Bold, playful and made for the bride who found her on Instagram: the opening is a tap-through story of her looks, and the lookbook is an eyeshadow palette.',
+    swatch: ['#FFF7EE', '#F9C7A8', '#9CC4E4', '#C2545C', '#2B2523'],
   },
 };
-export const DIR_IDS = PICK ? [PICK] : Object.keys(DIRS);
+export const SITE_IDS = PICK ? [PICK] : Object.keys(SITES);
 
 /* ---------- addresses ---------- */
 export const PAGES = ['', 'about', 'bridal', 'services', 'portfolio', 'reviews', 'bridal-inquiry'];
-/** The root of one direction's site: /demo/amairanymua-01/a in review, the demo root once picked. */
-export const root = (d) => (PICK ? BASE : `${BASE}/${d}`);
-/** An internal address inside one direction. href('a', 'portfolio') -> /demo/amairanymua-01/a/portfolio */
-export const href = (d, path = '') => (path ? `${root(d)}/${path}` : root(d));
+/** The root of one site: /demo/amairanymua-01/veil in review, the demo root once picked. */
+export const root = (s) => (PICK ? BASE : `${BASE}/${s}`);
+/** An internal address inside one site. href('veil', 'portfolio') -> /demo/amairanymua-01/veil/portfolio */
+export const href = (s, path = '') => (path ? `${root(s)}/${path}` : root(s));
 /** Where a page is written, relative to the demo folder. */
-export const outFile = (d, path = '') => `${PICK ? '' : `${d}/`}${path ? `${path}/` : ''}index.html`;
+export const outFile = (s, path = '') => `${PICK ? '' : `${s}/`}${path ? `${path}/` : ''}index.html`;
 
 export const NAV = [
   { path: 'about', label: 'About', menu: 'About Amairany', note: 'The artist behind the brushes' },
@@ -107,8 +109,8 @@ export const book = (kind, label, cls = '', attrs = '') => {
   return `<a${cls ? ` class="${cls}"` : ''} href="${BOOK[kind]}" data-book="${kind}" rel="external"${attrs ? ` ${attrs}` : ''}>${label}</a>`;
 };
 /** The primary action everywhere: the on-site bridal inquiry. */
-export const inquire = (d, label = 'Bridal inquiry', cls = 'btn btn--solid', attrs = '') =>
-  `<a class="${cls}" href="${href(d, 'bridal-inquiry')}"${attrs ? ` ${attrs}` : ''}>${label}</a>`;
+export const inquire = (s, label = 'Bridal inquiry', cls = '', attrs = '') =>
+  `<a${cls ? ` class="${cls}"` : ''} href="${href(s, 'bridal-inquiry')}" data-inquire${attrs ? ` ${attrs}` : ''}>${label}</a>`;
 export const arrow = '<span class="arr" aria-hidden="true">&rarr;</span>';
 
 /* ---------- photographs ----------
@@ -138,6 +140,24 @@ export const pic = (k, { alt, sizes = '(max-width:899px) 90vw, 50vw', cls = '', 
   return `<img src="${src(k)}" srcset="${srcset(k)}" sizes="${sizes}" width="${p.w}" height="${p.h}" alt="${esc(alt ?? p.alt)}"${cls ? ` class="${cls}"` : ''} style="object-position:${pos ?? p.pos}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async"${attrs ? ` ${attrs}` : ''}>`;
 };
 
+/* Every look, with what it shows. `cats` is our reading of each picture (a look is "bridal" only
+   where there is a veil, a gown, a robe-and-pearls morning or a wedding portrait); she confirms. */
+export const LOOK_CATS = { bridal: 'Bridal', soft: 'Soft glam', full: 'Full glam', waves: 'Glam waves', wedding: 'Wedding day' };
+export const LOOKS = [
+  { photo: 'bride-crystal', cats: ['bridal', 'waves'], cap: 'Bridal · Glam waves' },
+  { photo: 'bride-pearls', cats: ['bridal', 'soft'], cap: 'Bridal · Soft glam' },
+  { photo: 'glam-sculpt', cats: ['full'], cap: 'Full glam · Sculpted bronze' },
+  { photo: 'bride-gold-waves', cats: ['bridal', 'full', 'waves'], cap: 'Bridal · Gold shimmer' },
+  { photo: 'waves-blonde', cats: ['waves', 'full'], cap: 'Glam waves · Smoky eye' },
+  { photo: 'bride-ruby', cats: ['bridal', 'full', 'waves'], cap: 'Bridal · Full glam' },
+  { photo: 'glam-bronze', cats: ['full', 'waves'], cap: 'Full glam · Winged liner' },
+  { photo: 'wedding-florals', cats: ['wedding', 'soft'], cap: 'Wedding day · Soft glam' },
+  { photo: 'golden-hour', cats: ['wedding', 'soft'], cap: 'Wedding day · Golden hour' },
+  { photo: 'wedding-night', cats: ['wedding', 'bridal'], cap: 'Wedding day · After dark' },
+];
+/** The looks in one category, in LOOKS order. */
+export const looksIn = (cat) => LOOKS.filter((x) => x.cats.includes(cat));
+
 /* ---------- film ----------
    No video file exists for this demo yet: the founder is supplying screen recordings of
    her reels. Until a clip is here its place is a MARKED SLOT, never a stand-in video.
@@ -153,9 +173,11 @@ export const FILMS = {
   f4: { n: 4, file: null, label: 'Glam waves', title: 'A glam-waves reel', pos: '50% 35%', alt: '' },
 };
 export const filmSrc = (id) => (FILMS[id].file ? { mp4: `${A}/film/${FILMS[id].file}.mp4`, poster: `${A}/film/${FILMS[id].file}.jpg` } : null);
-/** A 9:16 film tile. With a file: a lazy, muted, looping clip that shows its poster first, loads
- *  near the viewport, rests off screen and stays a still for reduced motion or Save-Data
- *  (assets/js/site.js). Without one: the marked slot. `label` is the small tag in the corner. */
+/** One film frame. With a file: a muted, looping, playsinline <video data-film> with its poster
+ *  and a lazy data-src (each site's own script loads and plays it near the viewport, rests it off
+ *  screen, and leaves it a still for reduced motion or Save-Data). Without one: the MARKED SLOT.
+ *  The class names are a contract (.film, .film--slot, .slot, .slot-ic, .slot-n, .slot-t, .slot-s,
+ *  .film-lbl); each site styles them in its own manner. `label` is the small tag in the corner. */
 export const film = (id, { label = 'Reel', cls = '' } = {}) => {
   const f = FILMS[id];
   if (!f) throw new Error(`film "${id}" is not in FILMS`);
@@ -164,15 +186,46 @@ export const film = (id, { label = 'Reel', cls = '' } = {}) => {
   if (!s) {
     return `<div class="film film--slot${cls ? ` ${cls}` : ''}" data-film-slot="${id}"><div class="slot" role="img" aria-label="Film slot ${f.n}: ${esc(f.title.toLowerCase())} from ${SITE.handle} will play here."><span class="slot-ic" aria-hidden="true"></span><span class="slot-n" aria-hidden="true">Film ${n}</span><span class="slot-t" aria-hidden="true">${f.title} plays here</span><span class="slot-s" aria-hidden="true">Slot &middot; clip to come</span></div></div>`;
   }
-  return `<div class="film${cls ? ` ${cls}` : ''}" data-film-tile><video data-film muted loop playsinline preload="none" poster="${s.poster}" disablepictureinpicture disableremoteplayback tabindex="-1" aria-label="${esc(f.alt || `Silent looping clip: ${f.title.toLowerCase()}.`)}" style="object-position:${f.pos}"><source data-src="${s.mp4}" type="video/mp4"></video><i class="grain" aria-hidden="true"></i>${label ? `<span class="film-lbl" aria-hidden="true">${label}</span>` : ''}</div>`;
+  return `<div class="film${cls ? ` ${cls}` : ''}" data-film-tile><video data-film muted loop playsinline preload="none" poster="${s.poster}" disablepictureinpicture disableremoteplayback tabindex="-1" aria-label="${esc(f.alt || `Silent looping clip: ${f.title.toLowerCase()}.`)}" style="object-position:${f.pos}"><source data-src="${s.mp4}" type="video/mp4"></video>${label ? `<span class="film-lbl" aria-hidden="true">${label}</span>` : ''}</div>`;
 };
-/** One portfolio tile: a framed photograph or a film. item = { photo, alt?, span? } | { film, span? }.
- *  span: 'tall' | 'wide' | 'big' drives the masonry shape. */
-export const tile = (item, { sizes = '(max-width:899px) 82vw, 33vw', label } = {}) => {
-  const span = item.span ? ` tile--${item.span}` : '';
-  if (item.film) return `<div class="tile tile--film rv-im${span}">${film(item.film, { label: label ?? 'Reel' })}</div>`;
-  return `<div class="tile rv-im${span}"><div class="ph tile-ph">${pic(item.photo, { alt: item.alt, sizes })}<i class="grain" aria-hidden="true"></i></div></div>`;
+/* ---------- what every page must carry ---------- */
+/** The standard <head> block: charset, viewport, title, description, noindex, canonical, Open
+ *  Graph, favicon, theme colour and the preview marker's stylesheet. A site's shell adds its own
+ *  fonts, stylesheets and scripts after it. `title` is the page's own; the site name and
+ *  "design preview" are appended here so no page can forget them. */
+export const head = (s, { path = '', title, description }) => {
+  const url = `${ORIGIN}${href(s, path)}`;
+  const full = `${title} · ${SITE.name} · design preview`;
+  return `<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>${esc(full)}</title>
+<meta name="description" content="${esc(description)} Design preview, not the official website.">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<link rel="canonical" href="${url}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="${SITE.name} · design preview">
+<meta property="og:title" content="${esc(full)}">
+<meta property="og:description" content="A website concept for ${SITE.handle} by JP Silva Digital. Design preview, not the official website.">
+<meta property="og:url" content="${url}">
+<meta property="og:image" content="${ORIGIN}${A}/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="${A}/img/favicon.svg">
+<meta name="theme-color" content="${SITES[s].theme}">
+<link rel="stylesheet" href="${A}/css/marker.css">`;
 };
+/** The "Design preview · not the official site" marker: on every page of every site, always on
+ *  screen, styled by assets/css/marker.css (studio chrome, the same in all three sites, never
+ *  restyled by a site). During review it also carries the switch between the three sites: the
+ *  same page in Veil, Noir or The Edit, and the way back to the chooser. A site that has a bar
+ *  fixed to the bottom of the screen lifts the marker above it by setting --marker-bottom. */
+export const marker = (s, path = '') => {
+  const sw = PICK ? '' : `<span class="demo-dirs" role="navigation" aria-label="The three previews"><span class="demo-dirs-k" aria-hidden="true">Preview</span>${Object.values(SITES)
+    .map((x) => `<a href="${BASE}/${x.id}${path ? `/${path}` : ''}"${x.id === s ? ' aria-current="true"' : ''} aria-label="Preview ${x.n}: ${x.name}">${x.n}</a>`)
+    .join('')}<a class="demo-all" href="${BASE}" aria-label="All three previews">All</a></span>`;
+  return `<div class="demo-flag${PICK ? '' : ' demo-flag--review'}"><span class="demo-flag-t">Design preview &middot; not the official site</span>${sw}</div>`;
+};
+/** The footer's fine print, the same words in every site. */
+export const finePrint = () => `${FOOTER.fine}${PICK ? '' : ` <a href="${BASE}">See all three previews</a>.`}`;
 
 /* ====================================================================
    COPY — the single copy source for every page. Her own words are kept
