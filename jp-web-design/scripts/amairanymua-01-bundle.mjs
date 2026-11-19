@@ -33,8 +33,11 @@ import { fileURLToPath } from 'node:url';
 import { BASE, SITES, SITE, pagesOf } from './amairanymua-01/site.mjs';
 
 const [site, out] = process.argv.slice(2);
-const IMG = process.argv.includes('--img') ? process.argv[process.argv.indexOf('--img') + 1] : '800';
-if (!SITES[site] || !out) { console.error(`usage: node scripts/amairanymua-01-bundle.mjs <${Object.keys(SITES).join('|')}> <out.html> [--img 480|800]`); process.exit(1); }
+/* --lite: a file small enough for chat viewers that refuse big attachments (~2 MB): photos at
+   phone width, each clip's last 6 s (her clips end on the finished look) at 240 wide */
+const LITE = process.argv.includes('--lite');
+const IMG = process.argv.includes('--img') ? process.argv[process.argv.indexOf('--img') + 1] : (LITE ? '480' : '800');
+if (!SITES[site] || !out) { console.error(`usage: node scripts/amairanymua-01-bundle.mjs <${Object.keys(SITES).join('|')}> <out.html> [--img 480|800] [--lite]`); process.exit(1); }
 const DEMO = join(dirname(fileURLToPath(import.meta.url)), '..', 'public', 'demo', 'amairanymua-01');
 const fileOf = (url) => join(DEMO, url.slice(BASE.length + 1));
 
@@ -62,10 +65,15 @@ const token = (url) => {
     if (ext === 'mp4') {
       // her clips ride inside the file whole (the finished look is often at the end) at phone-preview size: 360 wide, silent
       const tmp = join(tmpdir(), `am01-${process.pid}-${assets.size}.mp4`);
-      execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', f, '-an', '-vf', 'scale=360:-2', '-c:v', 'libx264', '-preset', 'slow', '-crf', '34', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', tmp]);
+      execFileSync('ffmpeg', LITE
+        ? ['-v', 'error', '-y', '-sseof', '-6', '-i', f, '-an', '-vf', 'scale=240:-2,fps=24', '-c:v', 'libx264', '-preset', 'slow', '-crf', '40', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', tmp]
+        : ['-v', 'error', '-y', '-i', f, '-an', '-vf', 'scale=360:-2', '-c:v', 'libx264', '-preset', 'slow', '-crf', '34', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', tmp]);
       bytes = readFileSync(tmp); rmSync(tmp, { force: true });
     }
-    if (/^(webp|jpe?g|png)$/.test(ext) && bytes.length > 110 * 1024) {
+    if (LITE && /^(webp|jpe?g)$/.test(ext) && bytes.length > 14 * 1024) {
+      bytes = execFileSync('python3', ['-I', '-c', 'import sys,io\nfrom PIL import Image\nim=Image.open(io.BytesIO(sys.stdin.buffer.read()))\nhas_a=im.mode in ("RGBA","LA")\nim=im.convert("RGBA" if has_a else "RGB")\nw=min(im.width,360)\nim=im.resize((w,round(im.height*w/im.width)),Image.LANCZOS)\nb=io.BytesIO();im.save(b,"WEBP",quality=60,method=6);sys.stdout.buffer.write(b.getvalue())'], { input: bytes, maxBuffer: 64 * 1024 * 1024 });
+      mime = 'image/webp';
+    } else if (/^(webp|jpe?g|png)$/.test(ext) && bytes.length > 110 * 1024) {
       // too heavy for a single-file preview: re-encode at phone size (Pillow), keeping the picture as is
       bytes = execFileSync('python3', ['-I', '-c', 'import sys,io\nfrom PIL import Image\nim=Image.open(io.BytesIO(sys.stdin.buffer.read()))\nim=im.convert("RGB")\nw=min(im.width,820)\nim=im.resize((w,round(im.height*w/im.width)),Image.LANCZOS)\nb=io.BytesIO();im.save(b,"WEBP",quality=74,method=6);sys.stdout.buffer.write(b.getvalue())'], { input: bytes, maxBuffer: 64 * 1024 * 1024 });
       mime = 'image/webp';
@@ -157,7 +165,7 @@ wrap(HTMLImageElement.prototype,'src',function(v){return fw(v)});
 wrap(HTMLImageElement.prototype,'srcset',function(v,el){return (v==null||String(v).indexOf(B)>-1)?'':v});
 /* clips: a data: video becomes an in-memory blob before it plays (iPhone Safari is unreliable with
    data: video); one blob per clip, made only when a page asks for that clip */
-var BC=new Map(),vid=function(v){if(typeof v!=='string'||v.indexOf('data:video/')!==0)return v;var h=v.indexOf('#'),frag=h>-1?v.slice(h):'',d=h>-1?v.slice(0,h):v;if(BC.has(d))return BC.get(d)+frag;try{var b=atob(d.slice(d.indexOf(',')+1)),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);var url=URL.createObjectURL(new Blob([u],{type:'video/mp4'}));BC.set(d,url);return url+frag}catch(e){return v}};
+var BC=new Map(),vid=function(v){if(typeof v!=='string'||v.indexOf('data:video/')!==0)return v;var h=v.indexOf('#'),frag=h>-1&&!${LITE}?v.slice(h):'',d=h>-1?v.slice(0,h):v;if(BC.has(d))return BC.get(d)+frag;try{var b=atob(d.slice(d.indexOf(',')+1)),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);var url=URL.createObjectURL(new Blob([u],{type:'video/mp4'}));BC.set(d,url);return url+frag}catch(e){return v}};
 if(window.HTMLSourceElement)wrap(HTMLSourceElement.prototype,'src',function(v){return vid(fw(v))});
 if(window.HTMLVideoElement)wrap(HTMLVideoElement.prototype,'src',function(v){return vid(fw(v))});
 /* clips written straight into the page (a src already in the markup) get the same treatment */
