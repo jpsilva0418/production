@@ -13,31 +13,38 @@ script all live in its own folder, and it reads nothing from `/demo/_shared/`.
 ## The direction, in one paragraph
 
 Her logo is a pair of winged-liner eyes, so the site is built on that: the
-headline is "All eyes on you." and the opening ends on her logo. On a first
-visit a montage of her work cuts across the screen: eleven beats of
-photographs and three short clips, each titled with what it is (Glam, Bridal,
-Hair, Pageant, Events, Sweet 16). Phones get one full-screen column; wide
-screens get three columns cutting together, thirty-one photographs in under
-four seconds. A cat-eye of light opens over it, her logo draws itself in its
-own colours, and the YARIIIMAKEUP line of that logo travels up into the header
-and stays there. Stills and film are mixed through the page the same way: a
-film hero, and two moving tiles among the eighteen photographs of the gallery.
-Ivory, ink and a restrained gold are the logo's own colours.
+headline is "All eyes on you." and the site opens on her logo. On a first
+visit the logo draws itself on ivory, in its own colours, in about a second.
+Then its eyes open: a cat-eye widens from the logo out past every corner of
+the screen, the site is behind it already moving, and the YARIIIMAKEUP line of
+the logo travels up into the header and stays there. Two and a third seconds
+from first paint to the finished page.
 
-The opening runs about 6.5 seconds (montage 3.9, logo 1.6, handoff 0.9). Book
-Now is on screen for all of it. Any tap, key or scroll ends it at once, there
-is a Skip control, it plays once per session, and it never plays for reduced
-motion or Save-Data. The montage is mostly photographs on purpose: if a phone
-refuses to autoplay video, the clips simply show their still frame and the
-montage runs unchanged. If pictures are slow it starts anyway after 1.6
-seconds; if the script never loads, the curtain removes itself.
+What the eye opens onto is the hero: her work in motion. Photographs and two
+short clips dissolve through one full-screen column on phones and three
+columns on wide screens, each with a small title (Glam, Bridal, Hair, Pageant,
+Events, Sweet 16), with the headline and Book Now over it. It makes six quick
+cuts as the eye opens, then settles to a slow dissolve. Stills and film are
+mixed the same way in the gallery: two moving tiles among eighteen
+photographs. Ivory, ink and a restrained gold are the logo's own colours.
 
-Founder direction, 2026-11-19, in two steps. First: the close-up hero
-photograph was not liked, and the opening should be a cinematic launch that
-resolves into her logo, after the first Sass by Kass entrance. Then: make it
-a montage of many pictures and clips rather than one video, pull better
-pictures, and mix photographs with video through the page the way Leti Silva
-Beauty does.
+Book Now is on screen for all of the opening. Any tap, key or scroll ends it
+at once, it plays once per session, and never for reduced motion or
+Save-Data. The logo drawing is CSS, so it starts with the first paint and
+needs no script; if the script that ends it never loads, the curtain removes
+itself after three seconds. The hero rests when it is off screen, has a pause
+button, and stays on one still photograph for reduced motion. It is built
+from photographs on purpose: a phone that refuses to autoplay video shows
+each clip's still frame and everything else runs unchanged.
+
+Founder direction, 2026-11-19, in three steps. First: the close-up hero
+photograph was not liked, and the opening should be a cinematic launch with
+her logo, after the first Sass by Kass entrance. Then: a montage of many
+pictures and clips rather than one video, better pictures, and photographs
+mixed with video through the page the way Leti Silva Beauty does. Then, on
+seeing a six-second montage ahead of the site: turn it round. Open on the
+logo, keep it short, and let the logo go into the moving pictures, which
+become the hero's background.
 
 Directions considered and dropped:
 
@@ -64,21 +71,18 @@ large PNG) is still needed, and "Profesional" is spelled as in her logo.
 
 ## The films
 
-All cut from one 9.5-second transformation reel supplied by the founder as a
-screen recording (`scripts/yariiimakeup-01-film.py` documents every cut):
+Two short silent clips, `film/gown.mp4` and `film/mirror.mp4`, cut from one
+9.5-second transformation reel supplied by the founder as a screen recording
+(`scripts/yariiimakeup-01-film.py` documents each cut). They are the film
+beats among the photographs in the hero and the two moving tiles in the
+gallery.
 
-- `film/ring.mp4`, `gown.mp4`, `mirror.mp4`: three short silent clips. They
-  are the film beats of the opening montage and, slowed, the two moving tiles
-  in the gallery.
-- `film/hero.mp4`: the looping hero, the finished look and the mirror shot
-  cross-faded so the loop has no seam.
-
-Silent. The crop removes the editing app's corner watermark. The reel's
-bare-faced "before" shot is not used anywhere. Whose reel it is and the
-client's consent to appear on a website are Yaribel's to confirm, and her
-original files would look considerably better than a screen recording. More
-clips would make the montage and the gallery richer: Instagram could not be
-reached from the build environment, so the only video is this one reel.
+The crop removes the editing app's corner watermark. The reel's bare-faced
+"before" shot is not used anywhere. Whose reel it is and the client's consent
+to appear on a website are Yaribel's to confirm, and her original files would
+look considerably better than a screen recording. More clips would make the
+hero and the gallery richer: Instagram could not be reached from the build
+environment, so the only video is this one reel.
 
 ## What is verified, proposed, and pending
 
@@ -185,9 +189,9 @@ hosted, downloaded or extracted.
 - New photographs: add them to `scripts/yariiimakeup-01-assets.py`, re-run it,
   add a `<li class="look">` with its categories, and update the counts on the
   filter chips.
-- The montage is a list: the JSON in `#montage-data` in `index.html`. Each beat
-  names a picture or clip, its length, where to centre it, its title, and the
-  two pictures beside it on wide screens.
+- The hero's moving pictures are a list: the JSON in `#montage-data` in
+  `index.html`. Each beat names a picture or clip, where to centre it, its
+  title, and the two pictures beside it on wide screens.
 - The opening is the `.curtain` block in `index.html`, "THE OPENING" in
-  `assets/css/site.css`, and the intro section of `assets/js/site.js`. Append
+  `assets/css/site.css`, and "The opening" in `assets/js/site.js`. Append
   `?intro=1` to the URL to replay it, `?intro=0` to skip it.

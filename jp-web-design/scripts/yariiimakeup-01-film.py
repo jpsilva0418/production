@@ -14,9 +14,8 @@ Writes into public/demo/yariiimakeup-01/assets/:
   img/logo-wordmark.webp                  the YARIIIMAKEUP line of that same
                                           logo, for the header
   img/logo-full.webp                      the whole logo on the page's ivory
-  film/ring.mp4, gown.mp4, mirror.mp4     three short silent clips, with a
-                                          poster frame each (img/film-*.jpg)
-  film/hero.mp4, img/hero-film.jpg        the looping hero film and its poster
+  film/gown.mp4, film/mirror.mp4          two short silent clips, with a poster
+                                          frame each (img/film-*.jpg)
 
 Nothing is redrawn or retouched. The logo is the published bitmap with its
 cream ground removed, so it can sit on the page's ivory. The films are cuts,
@@ -96,29 +95,18 @@ def clip(name, ss, to, speed, extra=""):
     return out
 
 
-# Three short clips, used as moving tiles in the gallery and as the film
-# beats of the opening montage (where the two slowed ones play at double speed).
+# Two short clips, slowed. They are the moving tiles in the gallery and the
+# film beats among the photographs in the hero.
 def publish(src, name, crf=27):
     out = os.path.join(FILM, name + ".mp4")
     run(["-i", src, "-an", "-c:v", "libx264", "-profile:v", "high", "-pix_fmt", "yuv420p", "-crf", str(crf), "-preset", "slow", "-movflags", "+faststart", out])
     run(["-ss", "0.05", "-i", out, "-frames:v", "1", "-q:v", "4", os.path.join(IMG, "film-" + name + ".jpg")])
 
 
-publish(clip("ring", 0.55, 1.45, 1.0, ",fade=t=in:st=0:d=0.1"), "ring")
 publish(clip("gown", 5.85, 6.95, 0.5), "gown")
 publish(clip("mirror", 7.45, 8.55, 0.5), "mirror")
 
-# The hero loop: the finished look and the mirror shot, slowed and cross-faded so
-# the last frame meets the first.
-a = clip("h-gown", 5.85, 6.95, 0.5)
-b = clip("h-mirror", 7.45, 8.55, 0.5)
-loop = os.path.join(tmp, "loop.mp4")
-run(["-i", a, "-i", b, "-i", a, "-filter_complex",
-     "[0][1]xfade=transition=fade:duration=0.5:offset=1.7[x];[x][2]xfade=transition=fade:duration=0.5:offset=3.4,trim=start=0.5:end=3.9,setpts=PTS-STARTPTS,scale=540:-2:flags=lanczos,format=yuv420p",
-     "-an", "-c:v", "libx264", "-profile:v", "high", "-crf", "27", "-preset", "slow", "-movflags", "+faststart", os.path.join(FILM, "hero.mp4")])
-run(["-ss", "0", "-i", os.path.join(FILM, "hero.mp4"), "-frames:v", "1", "-q:v", "4", os.path.join(IMG, "hero-film.jpg")])
-
-for f in ("ring.mp4", "gown.mp4", "mirror.mp4", "hero.mp4"):
+for f in ("gown.mp4", "mirror.mp4"):
     p = os.path.join(FILM, f)
     d = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", p], capture_output=True, text=True).stdout.strip()
     print(f, round(os.path.getsize(p) / 1024), "KB", d, "s")

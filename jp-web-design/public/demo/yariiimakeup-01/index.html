@@ -14,7 +14,7 @@
 <meta name="theme-color" content="#F5EFE6">
 <link rel="icon" href="/demo/yariiimakeup-01/assets/img/favicon.svg" type="image/svg+xml">
 <!--
-  The opening film plays once per session, and only when motion is welcome.
+  The opening plays once per session, and only when motion is welcome.
   Without this script the page is simply in its finished state: nothing
   waits on JavaScript to become visible.
 -->
@@ -22,17 +22,14 @@
 <link rel="preload" href="/demo/yariiimakeup-01/assets/fonts/bodoni-moda-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/demo/yariiimakeup-01/assets/fonts/bodoni-moda-italic-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" as="image" href="/demo/yariiimakeup-01/assets/img/logo-wordmark.webp" fetchpriority="high">
-<link rel="preload" as="image" href="/demo/yariiimakeup-01/assets/img/hero-film.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="/demo/yariiimakeup-01/assets/img/logo-ink.webp" fetchpriority="high">
+<link rel="preload" as="image" href="/demo/yariiimakeup-01/assets/img/glam-teal-800.webp" imagesrcset="/demo/yariiimakeup-01/assets/img/glam-teal-480.webp 480w, /demo/yariiimakeup-01/assets/img/glam-teal-800.webp 800w, /demo/yariiimakeup-01/assets/img/glam-teal-1200.webp 1200w" imagesizes="(min-width: 900px) 36vw, 100vw" fetchpriority="high">
 <link rel="stylesheet" href="/demo/yariiimakeup-01/assets/css/site.css">
 </head>
 <body>
 
-<!-- The opening. Present in the page only as decoration; html.intro switches it on. -->
+<!-- The opening: her logo, drawn in CSS from the first paint. html.intro switches it on. -->
 <div class="curtain" id="curtain" aria-hidden="true">
-  <div class="curtain-film" id="montage"></div>
-  <p class="curtain-label" id="montage-label"></p>
-  <p class="curtain-cap"><span>Makeup &amp; Hair Artistry</span><i> · </i><span>Poinciana &amp; Kissimmee, FL</span></p>
-  <span class="curtain-bar"><i id="intro-bar"></i></span>
   <div class="curtain-cream"></div>
   <div class="curtain-logo" id="intro-logo">
     <div class="lg-rest">
@@ -47,9 +44,9 @@
     <span class="lg lg-word"><i></i></span>
   </div>
 </div>
-<button class="curtain-skip" id="intro-skip" type="button">Skip intro</button>
-<script type="application/json" id="montage-data">[{"clip":"ring","d":0.4,"pos":"50% 40%","src":"/demo/yariiimakeup-01/assets/img/film-ring.jpg","film":"/demo/yariiimakeup-01/assets/film/ring.mp4"},{"d":0.3,"pos":"48% 34%","label":"Glam","src":"/demo/yariiimakeup-01/assets/img/glam-teal-800.webp","l":["/demo/yariiimakeup-01/assets/img/bridal-profile-800.webp","56% 24%"],"r":["/demo/yariiimakeup-01/assets/img/soft-comb-800.webp","34% 40%"]},{"d":0.28,"pos":"50% 38%","label":"Bridal","src":"/demo/yariiimakeup-01/assets/img/bridal-waves-800.webp","l":["/demo/yariiimakeup-01/assets/img/look-10-800.webp","50% 30%"],"r":["/demo/yariiimakeup-01/assets/img/look-09-800.webp","55% 28%"]},{"d":0.26,"pos":"42% 30%","label":"Hair","src":"/demo/yariiimakeup-01/assets/img/hair-black-waves-800.webp","l":["/demo/yariiimakeup-01/assets/img/soft-hairpiece-800.webp","52% 26%"],"r":["/demo/yariiimakeup-01/assets/img/bridal-ring-800.webp","58% 22%"]},{"d":0.26,"pos":"64% 10%","label":"Pageant","src":"/demo/yariiimakeup-01/assets/img/look-12-800.webp","l":["/demo/yariiimakeup-01/assets/img/prom-lilac-800.webp","50% 20%"],"r":["/demo/yariiimakeup-01/assets/img/hair-long-waves-758.webp","55% 45%"]},{"clip":"gown","d":0.6,"pos":"50% 24%","label":"Events","src":"/demo/yariiimakeup-01/assets/img/film-gown.jpg","film":"/demo/yariiimakeup-01/assets/film/gown.mp4","l":["/demo/yariiimakeup-01/assets/img/bridal-ring-800.webp","58% 22%"],"r":["/demo/yariiimakeup-01/assets/img/look-11-800.webp","36% 16%"]},{"d":0.24,"pos":"50% 20%","label":"Bridal","src":"/demo/yariiimakeup-01/assets/img/bridal-bouquet-800.webp","l":["/demo/yariiimakeup-01/assets/img/soft-comb-800.webp","34% 40%"],"r":["/demo/yariiimakeup-01/assets/img/look-10-800.webp","50% 30%"]},{"d":0.24,"pos":"56% 28%","label":"Glam","src":"/demo/yariiimakeup-01/assets/img/look-02-800.webp","l":["/demo/yariiimakeup-01/assets/img/hair-long-waves-758.webp","55% 45%"],"r":["/demo/yariiimakeup-01/assets/img/prom-lilac-800.webp","50% 20%"]},{"d":0.22,"pos":"44% 32%","label":"Hair","src":"/demo/yariiimakeup-01/assets/img/hair-vine-800.webp","l":["/demo/yariiimakeup-01/assets/img/look-11-800.webp","36% 16%"],"r":["/demo/yariiimakeup-01/assets/img/bridal-profile-800.webp","56% 24%"]},{"d":0.22,"pos":"50% 28%","label":"Sweet 16","src":"/demo/yariiimakeup-01/assets/img/sweet16-crown-800.webp","l":["/demo/yariiimakeup-01/assets/img/look-09-800.webp","55% 28%"],"r":["/demo/yariiimakeup-01/assets/img/soft-hairpiece-800.webp","52% 26%"]},{"d":0.22,"pos":"56% 40%","label":"Glam","src":"/demo/yariiimakeup-01/assets/img/glam-bronze-800.webp","l":["/demo/yariiimakeup-01/assets/img/bridal-waves-800.webp","50% 38%"],"r":["/demo/yariiimakeup-01/assets/img/hair-black-waves-800.webp","42% 30%"]},{"clip":"mirror","d":0.66,"pos":"50% 14%","label":"","src":"/demo/yariiimakeup-01/assets/img/film-mirror.jpg","film":"/demo/yariiimakeup-01/assets/film/mirror.mp4","l":["/demo/yariiimakeup-01/assets/img/glam-teal-800.webp","48% 34%"],"r":["/demo/yariiimakeup-01/assets/img/bridal-bouquet-800.webp","50% 20%"]}]</script>
-<script>(function(h){if(h.classList.contains('intro'))setTimeout(function(){if(!window.__yariiIntro)h.classList.remove('intro')},4000)})(document.documentElement)</script>
+<!-- The hero's moving pictures, in order. Each beat: a photograph or clip, where to centre it, its title, and the two beside it on wide screens. -->
+<script type="application/json" id="montage-data">[{"pos":"48% 34%","label":"Glam","src":"/demo/yariiimakeup-01/assets/img/glam-teal-800.webp","l":["/demo/yariiimakeup-01/assets/img/bridal-profile-800.webp","56% 24%"],"r":["/demo/yariiimakeup-01/assets/img/soft-comb-800.webp","34% 40%"]},{"pos":"50% 38%","label":"Bridal","src":"/demo/yariiimakeup-01/assets/img/bridal-waves-800.webp","l":["/demo/yariiimakeup-01/assets/img/look-10-800.webp","50% 30%"],"r":["/demo/yariiimakeup-01/assets/img/look-09-800.webp","55% 28%"]},{"pos":"42% 30%","label":"Hair","src":"/demo/yariiimakeup-01/assets/img/hair-black-waves-800.webp","l":["/demo/yariiimakeup-01/assets/img/soft-hairpiece-800.webp","52% 26%"],"r":["/demo/yariiimakeup-01/assets/img/bridal-ring-800.webp","58% 22%"]},{"pos":"64% 10%","label":"Pageant","src":"/demo/yariiimakeup-01/assets/img/look-12-800.webp","l":["/demo/yariiimakeup-01/assets/img/prom-lilac-800.webp","50% 20%"],"r":["/demo/yariiimakeup-01/assets/img/hair-long-waves-758.webp","55% 45%"]},{"clip":"gown","pos":"50% 24%","label":"Events","src":"/demo/yariiimakeup-01/assets/img/film-gown.jpg","film":"/demo/yariiimakeup-01/assets/film/gown.mp4","l":["/demo/yariiimakeup-01/assets/img/bridal-ring-800.webp","58% 22%"],"r":["/demo/yariiimakeup-01/assets/img/look-11-800.webp","36% 16%"]},{"pos":"50% 20%","label":"Bridal","src":"/demo/yariiimakeup-01/assets/img/bridal-bouquet-800.webp","l":["/demo/yariiimakeup-01/assets/img/soft-comb-800.webp","34% 40%"],"r":["/demo/yariiimakeup-01/assets/img/look-10-800.webp","50% 30%"]},{"pos":"56% 28%","label":"Glam","src":"/demo/yariiimakeup-01/assets/img/look-02-800.webp","l":["/demo/yariiimakeup-01/assets/img/hair-long-waves-758.webp","55% 45%"],"r":["/demo/yariiimakeup-01/assets/img/prom-lilac-800.webp","50% 20%"]},{"pos":"44% 32%","label":"Hair","src":"/demo/yariiimakeup-01/assets/img/hair-vine-800.webp","l":["/demo/yariiimakeup-01/assets/img/look-11-800.webp","36% 16%"],"r":["/demo/yariiimakeup-01/assets/img/bridal-profile-800.webp","56% 24%"]},{"pos":"50% 28%","label":"Sweet 16","src":"/demo/yariiimakeup-01/assets/img/sweet16-crown-800.webp","l":["/demo/yariiimakeup-01/assets/img/look-09-800.webp","55% 28%"],"r":["/demo/yariiimakeup-01/assets/img/soft-hairpiece-800.webp","52% 26%"]},{"pos":"56% 40%","label":"Glam","src":"/demo/yariiimakeup-01/assets/img/glam-bronze-800.webp","l":["/demo/yariiimakeup-01/assets/img/bridal-waves-800.webp","50% 38%"],"r":["/demo/yariiimakeup-01/assets/img/hair-black-waves-800.webp","42% 30%"]},{"clip":"mirror","pos":"50% 14%","label":"Glam","src":"/demo/yariiimakeup-01/assets/img/film-mirror.jpg","film":"/demo/yariiimakeup-01/assets/film/mirror.mp4","l":["/demo/yariiimakeup-01/assets/img/glam-teal-800.webp","48% 34%"],"r":["/demo/yariiimakeup-01/assets/img/bridal-bouquet-800.webp","50% 20%"]}]</script>
+<script>(function(h){if(h.classList.contains('intro'))setTimeout(function(){if(!window.__yariiIntro)h.classList.remove('intro')},3200)})(document.documentElement)</script>
 
 <a class="skip" href="#main">Skip to content</a>
 
@@ -110,25 +107,16 @@
     </div>
   </div>
 
-  <div class="hero-stage">
-    <figure class="hero-film">
-      <video id="hero-film" muted loop playsinline preload="none" disablepictureinpicture disableremoteplayback poster="/demo/yariiimakeup-01/assets/img/hero-film.jpg" data-src="/demo/yariiimakeup-01/assets/film/hero.mp4" width="540" height="886" aria-label="Silent looping film of a finished glam look: a client with long waves and a jewelled hair comb, in a pale blue satin gown before white feather wings, then taking a mirror photo in a white fur stole."></video>
-      <button class="film-toggle" type="button" aria-pressed="false" aria-label="Pause the film">
-        <svg class="i-pause" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M8 6v12M16 6v12" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-        <svg class="i-play" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M9 6.5v11l9-5.5z" fill="currentColor"/></svg>
-      </button>
-      <figcaption class="hero-cap">Her work, on film</figcaption>
-    </figure>
-
-    <figure class="sat sat-a" aria-hidden="true">
-      <img src="/demo/yariiimakeup-01/assets/img/bridal-waves-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/bridal-waves-480.webp 480w, /demo/yariiimakeup-01/assets/img/bridal-waves-800.webp 800w" sizes="240px" width="800" height="800" alt="" loading="lazy" decoding="async">
-    </figure>
-    <figure class="sat sat-b" aria-hidden="true">
-      <img src="/demo/yariiimakeup-01/assets/img/glam-teal-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/glam-teal-480.webp 480w, /demo/yariiimakeup-01/assets/img/glam-teal-800.webp 800w" sizes="200px" width="800" height="800" alt="" loading="lazy" decoding="async">
-    </figure>
+  <div class="hero-stage" id="hero-stage" role="img" aria-label="A moving sequence of YariiiMakeup looks: full glam, bridal makeup, Hollywood waves, pageant and Sweet 16 looks, with two short clips of a finished look.">
+      <div class="reel-col is-side" data-col="l"><div class="shot is-on"><img src="/demo/yariiimakeup-01/assets/img/bridal-profile-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/bridal-profile-480.webp 480w, /demo/yariiimakeup-01/assets/img/bridal-profile-800.webp 800w, /demo/yariiimakeup-01/assets/img/bridal-profile-1200.webp 1200w" sizes="(min-width: 900px) 32vw, 1px" width="800" height="800" alt="" decoding="async" loading="lazy" style="object-position:56% 24%"></div></div>
+      <div class="reel-col is-lead" data-col="c"><div class="shot is-on"><img src="/demo/yariiimakeup-01/assets/img/glam-teal-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/glam-teal-480.webp 480w, /demo/yariiimakeup-01/assets/img/glam-teal-800.webp 800w, /demo/yariiimakeup-01/assets/img/glam-teal-1200.webp 1200w" sizes="(min-width: 900px) 36vw, 100vw" width="800" height="800" alt="" decoding="async" fetchpriority="high" style="object-position:48% 34%"></div></div>
+      <div class="reel-col is-side" data-col="r"><div class="shot is-on"><img src="/demo/yariiimakeup-01/assets/img/soft-comb-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/soft-comb-480.webp 480w, /demo/yariiimakeup-01/assets/img/soft-comb-800.webp 800w, /demo/yariiimakeup-01/assets/img/soft-comb-1080.webp 1080w" sizes="(min-width: 900px) 32vw, 1px" width="800" height="800" alt="" decoding="async" loading="lazy" style="object-position:34% 40%"></div></div>
   </div>
-
-  <a class="scroll-cue" href="#work" aria-label="Scroll to the portfolio"><span>Scroll</span><i aria-hidden="true"></i></a>
+  <p class="hero-tag" id="hero-tag" aria-hidden="true"></p>
+  <button class="film-toggle" type="button" aria-pressed="false" aria-label="Pause the moving pictures">
+    <svg class="i-pause" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M8 6v12M16 6v12" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+    <svg class="i-play" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M9 6.5v11l9-5.5z" fill="currentColor"/></svg>
+  </button>
 </section>
 
 <!-- ───────────── THE WORK ───────────── -->
