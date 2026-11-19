@@ -56,7 +56,7 @@ export const SITE = {
   ratingsAsOf: 'November 18, 2026',
 };
 
-/* ---------- the three sites ---------- */
+/* ---------- the sites ---------- */
 export const SITES = {
   veil: {
     id: 'veil', n: 1, name: 'Veil', theme: '#FAF7F3',
@@ -87,10 +87,10 @@ export const SITES = {
 Object.assign(SITES, {
   rouge: {
     id: 'rouge', n: 4, name: 'Rouge', theme: '#0D0D0D', prebuilt: true,
-    pages: ['', 'work', 'services', 'about', 'book'],   /* the first Sass by Kass build's own page set */
-    line: 'Red, black and white, on the first Sass by Kass build.',
-    intro: 'The first Sass by Kass layout, structure and motion, in her colours: black and white with a red lip of an accent.',
-    blurb: 'The first Sass by Kass build, done for her: a filmed-style hero of her work, the curved chapters, the work wall and the booking page, in red, black and white.',
+    pages: ['', 'work', 'services', 'about', 'book'],   /* its own project's page set (amairanymua-01-rouge/) */
+    line: 'Black and white with a soft rose-red. Bold and editorial.',
+    intro: 'Her name sets in big black-and-white type with a soft rose accent, then the page opens straight onto her work.',
+    blurb: 'Big type, curved chapters and a wall of her work, in black, white and a soft rose-red. Five tight pages that get a bride from her photographs to the inquiry fast.',
     swatch: ['#0D0D0D', '#FFFFFF', '#D9868C', '#F6E3E3'],
   },
   maison: {
@@ -102,12 +102,12 @@ Object.assign(SITES, {
     swatch: ['#0B0B0B', '#FFFFFF', '#D9868C', '#F6E3E3'],
   },
   darkroom: {
-    id: 'darkroom', n: 6, name: 'Darkroom', theme: '#140707',
+    id: 'darkroom', n: 6, name: 'Darkroom', theme: '#0E0B0B',
     pages: ['', 'portfolio', 'bridal', 'about', 'journal', 'journal/how-to-prepare', 'journal/destination-bride', 'bridal-inquiry'],
-    line: 'Red safelight, black and white prints. Warm and playful.',
-    intro: 'Under a red safelight a print develops in the tray: her photograph surfaces, then her name, and the print lifts out into the page.',
+    line: 'Black and white prints under a soft rose glow. Warm and playful.',
+    intro: 'Under a soft rose glow a print develops in the tray: her photograph surfaces, then her name, and the print lifts out into the page.',
     blurb: 'Red, black and white as a darkroom: prints develop as you scroll, the portfolio hangs on a line to dry, and the hero is a slideshow of prints coming up one after another.',
-    swatch: ['#140707', '#F7F3EE', '#D7263D', '#1A1A1A'],
+    swatch: ['#0E0B0B', '#F7F3EE', '#D9868C', '#F6E3E3'],
   },
 });
 export const SITE_IDS = PICK ? [PICK] : Object.keys(SITES);
@@ -297,18 +297,19 @@ export const head = (s, { path = '', title, description }) => {
 <link rel="stylesheet" href="${A}/css/marker.css">`;
 };
 /** The "Design preview · not the official site" marker: on every page of every site, always on
- *  screen, styled by assets/css/marker.css (studio chrome, the same in all three sites, never
- *  restyled by a site). During review it also carries the switch between the three sites: the
- *  same page in Veil, Noir or The Edit, and the way back to the chooser. A site that has a bar
+ *  screen, styled by assets/css/marker.css (studio chrome, the same in every site, never
+ *  restyled by a site). During review it also carries the switch between the sites: the same
+ *  page in each of them where that page exists, and the way back to the chooser. A site that has a bar
  *  fixed to the bottom of the screen lifts the marker above it by setting --marker-bottom. */
+const HOW_MANY = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'][Object.keys(SITES).length] || String(Object.keys(SITES).length);
 export const marker = (s, path = '') => {
-  const sw = PICK ? '' : `<span class="demo-dirs" role="navigation" aria-label="The three previews"><span class="demo-dirs-k" aria-hidden="true">Preview</span>${Object.values(SITES)
+  const sw = PICK ? '' : `<span class="demo-dirs" role="navigation" aria-label="The ${HOW_MANY} previews"><span class="demo-dirs-k" aria-hidden="true">Preview</span>${Object.values(SITES)
     .map((x) => `<a href="${BASE}/${x.id}${path && pagesOf(x.id).includes(path) ? `/${path}` : ''}"${x.id === s ? ' aria-current="true"' : ''} aria-label="Preview ${x.n}: ${x.name}">${x.n}</a>`)
-    .join('')}<a class="demo-all" href="${BASE}" aria-label="All three previews">All</a></span>`;
+    .join('')}<a class="demo-all" href="${BASE}" aria-label="All ${HOW_MANY} previews">All</a></span>`;
   return `<div class="demo-flag${PICK ? '' : ' demo-flag--review'}"><span class="demo-flag-t">Design preview &middot; not the official site</span>${sw}</div>`;
 };
 /** The footer's fine print, the same words in every site. */
-export const finePrint = () => `${FOOTER.fine}${PICK ? '' : ` <a href="${BASE}">See all three previews</a>.`}`;
+export const finePrint = () => `${FOOTER.fine}${PICK ? '' : ` <a href="${BASE}">See all ${HOW_MANY} previews</a>.`}`;
 
 /* ====================================================================
    COPY — the single copy source for every page. Her own words are kept

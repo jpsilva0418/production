@@ -1,0 +1,232 @@
+/* /demo/amairanymua-01 — site "darkroom": the Bridal Inquiry page and its skin for the shared inquiry.
+   Loaded AFTER assets/css/inquiry-core.css (structure only), so these single-class rules win.
+   The page: a title card in the dark room, then the table (--tray): the inquiry as a sheet of
+   photographic paper in the main column, a sticky side column beside it (the event card clipped to
+   the table, Destination bride?, How to prepare). Phones: the sheet first, then the side column.
+   The skin: paper, the dark room's ink, mono edge markings, a soft rose for marks and focus, and an
+   AA brick red for errors only (never a red fill, never white on red). Hooks: SKINNING.md. */
+
+/* ---------- page tokens (every colour still comes from site.css, except the error red) ---------- */
+.pg-iq{
+  --iq-rule:rgba(42,38,38,.5);   /* field and card borders on paper (3:1 or better against --paper) */
+  --iq-bad:#A12C35;              /* errors: 6.5:1 on --paper, 5.8:1 on --paper-2 */
+  --iq-bad-soft:rgba(161,44,53,.07);
+  --iq-tick:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 30'%3E%3Cpath d='M4 18l9 9L33 4' fill='none' stroke='%23000' stroke-width='4.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+/* ---------- 1. the title card ---------- */
+.iq-top{padding-top:calc(var(--hd-h) + env(safe-area-inset-top,0px) + clamp(40px,7vw,92px));padding-bottom:clamp(36px,6vw,80px)}
+.iq-top-in{display:grid;gap:40px;align-items:end}
+.iq-h{max-width:9.5em}
+.iq-lead{margin-top:clamp(18px,2.4vw,28px)}
+.iq-nowb{margin-top:clamp(20px,2.6vw,30px)}
+.iq-top-pr{display:none}
+@media(min-width:960px){
+  .iq-top-in{grid-template-columns:minmax(0,1fr) 300px;gap:clamp(48px,7vw,120px)}
+  .iq-top-pr{display:block;width:280px;justify-self:end;margin-bottom:-12px}
+}
+
+/* ---------- 2. the table ---------- */
+.iq-table{padding-top:clamp(40px,6vw,88px)}
+.iq-g{display:grid;gap:clamp(64px,9vw,96px)}
+.iq-main{min-width:0;position:relative}
+@media(min-width:960px){
+  .iq-g{grid-template-columns:minmax(0,46rem) minmax(0,21rem);justify-content:space-between;column-gap:clamp(40px,5vw,88px)}
+  .iq-main{align-self:start}
+}
+
+/* grease pencil above the sheet: "start here" and an arrow down to it (wide screens) */
+.iq-start{display:none}
+@media(min-width:760px){
+  .iq-start{display:flex;align-items:flex-end;gap:2px;position:absolute;right:clamp(8px,4%,40px);top:-46px;z-index:2;pointer-events:none}
+  .iq-start .gp{font-size:1.5rem}
+  .iq-start-ar{width:40px;height:26px;margin-bottom:-14px;transform:scale(1,-1) rotate(-20deg)}
+}
+
+/* the sheet: photographic paper with a faint shadow, a second sheet just askew beneath it, and a
+   print's bottom border carrying its frame number */
+.iq-sheet{position:relative;container-type:inline-size;background:var(--paper);color:var(--fixer);padding:clamp(20px,4.6vw,52px) clamp(18px,4.6vw,52px) 0;box-shadow:0 1px 1px var(--shadow-soft),0 22px 40px -18px var(--shadow),0 50px 90px -46px var(--shadow)}
+.iq-sheet::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper-2);transform:rotate(-1.3deg) translate(-4px,6px);box-shadow:0 18px 36px -18px var(--shadow)}
+.iq-sheet-hd{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding-bottom:16px;margin-bottom:clamp(20px,3vw,30px);border-bottom:1px solid var(--line-paper)}
+.iq-sheet-k{margin:0}
+.iq-sheet-e{white-space:nowrap;color:var(--fixer-dim)}
+.iq-sheet-b{display:flex;min-height:clamp(26px,3.4vw,40px);margin-top:clamp(18px,2.6vw,28px)}
+
+/* the two notes under the sheet: the not-a-booking line, and the demo line, clearly legible */
+.iq-notes{display:grid;gap:14px;margin-top:clamp(30px,4vw,40px);max-width:40rem}
+.iq-note{font-size:.92rem;line-height:1.55;color:var(--ink-dim)}
+.iq-demo{display:flex;align-items:baseline;gap:12px;padding:14px 16px;border:1px dashed var(--line);font-size:.95rem;line-height:1.5;color:var(--ink)}
+.iq-demo-dot{flex:none;width:8px;height:8px;border-radius:50%;background:var(--safelight);box-shadow:0 0 0 4px var(--glow-soft),0 0 14px 2px var(--glow);transform:translateY(-1px)}
+
+/* ---------- 3. beside it ---------- */
+.iq-side{min-width:0}
+.iq-side-in{display:grid;gap:clamp(44px,6vw,56px)}
+@media(min-width:640px) and (max-width:959.98px){
+  .iq-side-in{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:clamp(28px,5vw,56px)}
+  .iq-ev{grid-row:span 2;align-self:start}
+}
+@media(min-width:960px){
+  .iq-side-in{gap:40px}
+}
+/* sticky only where the whole column fits under the header */
+@media(min-width:960px) and (min-height:760px){
+  .iq-side-in{position:sticky;top:calc(var(--hd-h) + 28px)}
+}
+
+/* the event card, clipped to the table like a print */
+.iq-ev{position:relative;display:grid;justify-items:start;gap:10px;background:var(--paper);color:var(--fixer);padding:30px clamp(20px,2.4vw,26px) 12px;transform:rotate(-.7deg);box-shadow:0 1px 1px var(--shadow-soft),0 18px 34px -16px var(--shadow)}
+.iq-ev .clip{top:-14px}
+.iq-ev-k{font-size:.62rem;color:var(--fixer-dim)}
+.iq-ev-h{font-size:clamp(1.5rem,2.2vw,1.85rem)}
+.iq-ev-h .h-b{color:var(--fixer-dim)}
+.iq-ev-b{color:var(--fixer-dim);font-size:.95rem;line-height:1.55}
+.iq-ev-btn{margin-top:6px;white-space:normal;text-align:center;line-height:1.3;padding-top:10px;padding-bottom:10px}
+.iq-ev-n{display:flex;align-items:center;justify-content:space-between;align-self:stretch;width:100%;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line-paper)}
+
+/* her two notes on the table */
+.iq-blk{display:grid;justify-items:start;gap:12px}
+.iq-blk-h{font-size:clamp(1.3rem,1.9vw,1.55rem)}
+.iq-q{margin:0;display:grid;gap:10px;color:var(--ink-dim);line-height:1.6;max-width:30em}
+.iq-q-gp .gp{font-size:clamp(1.45rem,2.2vw,1.7rem);line-height:1.1;white-space:normal}
+.iq-cite{color:var(--ink-faint)}
+.iq-cite::before{content:"\2014\00a0"}
+.iq-steps{display:grid;gap:12px;max-width:30em}
+.iq-steps li{display:grid;grid-template-columns:3.4em minmax(0,1fr);gap:10px;align-items:baseline;color:var(--ink-dim);line-height:1.55}
+.iq-n{display:inline-flex;align-items:center;gap:4px;font:500 .7rem/1 var(--f-mono);letter-spacing:.12em;color:var(--safelight-lit)}
+.iq-tk{width:18px;height:15px}
+.iq-blk .more{margin-top:4px}
+
+/* =====================================================================
+   THE SKIN — every hook of the shared inquiry (inquiry-core.mjs)
+   ===================================================================== */
+.cf-inquiry{--cf-scroll-offset:calc(var(--hd-h) + env(safe-area-inset-top,0px) + 20px);color:var(--fixer);font:400 1rem/1.55 var(--f-body)}
+
+/* progress: four frames, numbered like a strip (01A … 04A), the current one in rose */
+.cf-prog{gap:6px;margin:0 0 clamp(26px,3.6vw,36px)}
+.cf-prog li{display:grid;gap:7px}
+.cf-prog li::before{content:"0" attr(data-n) "A";font:500 .6rem/1 var(--f-mono);letter-spacing:.14em;color:var(--fixer-dim)}
+.cf-prog li.now::before{color:var(--safelight-deep)}
+.cf-prog li.done::before{color:var(--fixer)}
+.cf-prog-bar{height:3px;background:var(--line-paper);border-radius:2px}
+.cf-prog li.done .cf-prog-bar{background:var(--fixer)}
+.cf-prog li.now .cf-prog-bar{background:var(--safelight-deep)}
+.cf-prog-lbl{font:500 .62rem/1.3 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--fixer-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cf-prog li.now .cf-prog-lbl,.cf-prog li.done .cf-prog-lbl{color:var(--fixer)}
+@container (max-width:439px){
+  .cf-prog-lbl{visibility:hidden}
+  .cf-prog li.now .cf-prog-lbl{visibility:visible;overflow:visible}
+}
+
+/* a step: its question as a Syne heading; a short develop when it arrives */
+.cf-step legend{display:block;font:700 clamp(1.55rem,3.2vw,2.2rem)/1.04 var(--f-display);letter-spacing:-.03em;color:var(--fixer);margin-bottom:clamp(20px,2.8vw,28px);text-wrap:balance}
+html.js .cf-step:not([hidden]),html.js .cf-handoff:not([hidden]){animation:iq-in .5s var(--e-out) both}
+@keyframes iq-in{from{opacity:0;transform:translate3d(0,10px,0)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){html.js .cf-step:not([hidden]),html.js .cf-handoff:not([hidden]){animation:none}}
+
+/* fields and labels */
+.cf-two{column-gap:18px}
+.cf-field{margin-bottom:24px}
+.cf-lbl{font:500 .95rem/1.4 var(--f-body);color:var(--fixer);margin-bottom:9px}
+.cf-req,.cf-opt{display:inline-block;margin-left:.5em;font:500 .58rem/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--fixer-dim);vertical-align:.15em}
+.cf-req{color:var(--safelight-deep)}
+
+/* text, email, tel, date, time, number and the textareas: a recessed box on the paper */
+.cf-input{padding:11px 14px;border:1px solid var(--iq-rule);border-radius:2px;background:var(--paper-2);color:var(--fixer);font-family:var(--f-body);transition:border-color .2s,background-color .2s}
+.cf-input::placeholder{color:var(--fixer-dim);opacity:1}
+.cf-input:hover{border-color:var(--fixer-dim)}
+.cf-input:focus{background:var(--paper);border-color:var(--fixer)}
+.cf-input:focus-visible{outline:2px solid var(--safelight-deep);outline-offset:2px}
+.cf-input[type="date"],.cf-input[type="time"]{min-height:48px}
+.cf-input[type="number"]{max-width:12rem;font-variant-numeric:tabular-nums}
+.cf-input::-webkit-calendar-picker-indicator{opacity:.7;cursor:pointer}
+textarea.cf-input{min-height:7.2em;line-height:1.5}
+.cf-input[aria-invalid="true"]{border-color:var(--iq-bad);box-shadow:inset 0 0 0 1px var(--iq-bad);background:var(--iq-bad-soft)}
+.cf-input[aria-invalid="true"]:focus-visible{outline-color:var(--iq-bad)}
+
+/* "Date not set yet": the native box, inked */
+.cf-check{gap:10px;margin-top:10px;min-height:44px;font-size:.93rem;color:var(--fixer)}
+.cf-check input{width:20px;height:20px;accent-color:var(--fixer)}
+.cf-check:has(input:checked){font-weight:500}
+.cf-check:has(input:focus-visible){outline:2px solid var(--safelight-deep);outline-offset:2px}
+.cf-check input:focus-visible{outline:none}
+
+/* choice cards: frames on a contact sheet. Rest: an empty circle. Chosen: the dark room's ink
+   with the rose grease-pencil tick of a pick. */
+.cf-cards{gap:8px}
+.cf-card{gap:10px;min-height:52px;padding:12px 44px 12px 14px;border:1px solid var(--iq-rule);border-radius:2px;background:var(--paper);color:var(--fixer);font-size:.95rem;line-height:1.35;transition:background-color .2s,border-color .2s,color .2s}
+.cf-card::before{content:"";position:absolute;right:15px;top:50%;width:15px;height:15px;margin-top:-7.5px;border:1.5px solid var(--iq-rule);border-radius:50%;transition:opacity .2s}
+.cf-card::after{content:"";position:absolute;right:9px;top:50%;width:28px;height:23px;margin-top:-13px;background:var(--safelight);-webkit-mask:var(--iq-tick) center/contain no-repeat;mask:var(--iq-tick) center/contain no-repeat;opacity:0;transform:scale(.6) rotate(-8deg);transition:opacity .2s,transform .35s var(--e-drop)}
+.cf-card:hover{background:var(--blush);border-color:var(--fixer-dim)}
+.cf-card:has(input:checked){background:var(--room);border-color:var(--room);color:var(--paper);font-weight:500}
+.cf-card:has(input:checked)::before{opacity:0}
+.cf-card:has(input:checked)::after{opacity:1;transform:none}
+.cf-card:has(input:focus-visible){outline:2px solid var(--safelight-deep);outline-offset:3px}
+.cf-field[data-invalid] .cf-card{border-color:var(--iq-bad)}
+/* an odd card alone on the last row of a two-column group takes the row */
+.cf-cards-2>.cf-card:last-child:nth-child(odd){grid-column:1/-1}
+/* the long answers read better one per row on a narrow sheet: "Right now I'm", and the three
+   ways to chat (the long one takes its own row, the two short ones share the next) */
+@container (max-width:519px){
+  .cf-field[aria-labelledby="cf-stage-label"] .cf-cards{grid-template-columns:minmax(0,1fr)}
+  .cf-cards-3{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cf-cards-3>.cf-card:first-child{grid-column:1/-1}
+}
+@container (max-width:299px){
+  .cf-cards-3{grid-template-columns:minmax(0,1fr)}
+}
+
+/* hints and errors */
+.cf-hint{font-size:.86rem;line-height:1.5;color:var(--fixer-dim);margin:10px 0 0}
+.cf-hint a,.cf-handoff-body a{color:var(--fixer);text-decoration-color:var(--safelight-deep);text-decoration-thickness:1.5px}
+.cf-err{display:flex;gap:8px;align-items:baseline;font-size:.88rem;font-weight:500;line-height:1.45;color:var(--iq-bad);margin:8px 0 0}
+.cf-err::before{content:"";flex:none;width:10px;height:2px;background:var(--iq-bad);transform:translateY(-.3em)}
+
+/* the review: each step as a strip of answers, Edit in mono with a rose underline */
+.cf-review{gap:0;margin-bottom:22px;border-top:1px solid var(--line-paper)}
+.cf-rev-group{padding:18px 0 20px;border-bottom:1px dashed var(--line-paper)}
+.cf-rev-head{gap:12px;margin-bottom:8px}
+.cf-rev-title{font:700 1.15rem/1.1 var(--f-display);letter-spacing:-.02em;color:var(--fixer)}
+.cf-rev-edit{display:inline-flex;align-items:center;min-height:44px;padding:0 4px;background:none;border:0;border-bottom:1px solid var(--safelight-deep);font:500 .68rem/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--fixer);cursor:pointer}
+.cf-rev-edit:hover{color:var(--safelight-deep)}
+.cf-rev-list{gap:10px}
+.cf-rev-row{flex-direction:column;row-gap:2px}
+.cf-rev-q{font:500 .6rem/1.4 var(--f-mono);letter-spacing:.13em;text-transform:uppercase;color:var(--fixer-dim)}
+.cf-rev-a{font-size:.97rem;font-weight:500;line-height:1.45;color:var(--fixer)}
+.cf-rev-none{margin:0;font-size:.92rem;color:var(--fixer-dim)}
+@container (min-width:460px){
+  .cf-rev-row{display:grid;grid-template-columns:minmax(0,13em) minmax(0,1fr);column-gap:18px;align-items:baseline}
+}
+.cf-consent{font-size:.88rem;line-height:1.55;color:var(--fixer-dim);padding-left:14px;border-left:2px solid var(--safelight-deep)}
+
+/* the two step buttons (Darkroom's own .btn--line and .btn--main, dark on paper) and Start over */
+.cf-nav{gap:12px;margin-top:clamp(26px,3.4vw,34px);padding-top:clamp(20px,2.6vw,26px);border-top:1px solid var(--line-paper)}
+.cf-btn,.cf-go,.cf-copy{white-space:normal;text-align:center;line-height:1.25}
+.cf-btn[disabled],.cf-copy[disabled]{opacity:.45;cursor:default;transform:none}
+@container (max-width:419px){
+  .cf-btn{flex:1 1 auto;padding:0 1rem}
+}
+.cf-reset{display:block;margin:12px 0 0 auto;min-height:44px;padding:0 4px;background:none;border:0;font:500 .66rem/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--fixer-dim);text-decoration:underline;text-decoration-color:var(--iq-rule);text-underline-offset:.35em;cursor:pointer}
+.cf-reset:hover{color:var(--fixer)}
+
+/* ---------- the hand-off: the sheet becomes the last step ---------- */
+.cf-strip{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin:0 0 clamp(24px,3.4vw,34px);padding:12px 16px;background:var(--room);color:var(--ink);font-size:.9rem;line-height:1.5}
+.cf-strip strong{font:500 .66rem/1.5 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--safelight-lit)}
+.cf-kick{display:flex;align-items:center;gap:.7em;margin-bottom:16px;font:500 .7rem/1.4 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--fixer-dim)}
+.cf-kick::before{content:"\25B8";color:var(--safelight-deep)}
+.cf-handoff h2{font:800 clamp(1.95rem,5vw,3.1rem)/.96 var(--f-display);letter-spacing:-.04em;color:var(--fixer);margin:0 0 18px;text-wrap:balance}
+.cf-handoff-body{max-width:34em;color:var(--fixer-dim);line-height:1.6}
+.cf-actions{gap:12px;margin-top:clamp(24px,3.2vw,32px)}
+.cf-go .arr{transition:transform .3s var(--e-out)}
+.cf-go:hover .arr{transform:translateX(4px)}
+.cf-back{display:inline-flex;align-items:center;min-height:44px;padding:0 4px;margin:0;background:none;border:0;font:500 .66rem/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--fixer-dim);text-decoration:underline;text-decoration-color:var(--iq-rule);text-underline-offset:.35em;cursor:pointer}
+.cf-back:hover{color:var(--fixer)}
+@container (max-width:479px){
+  .cf-go,.cf-copy{width:100%}
+}
+.cf-status{min-height:1.5em;margin:14px 0 0;font:500 .7rem/1.5 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--fixer)}
+.cf-copytext{margin-top:12px;padding:12px 14px;border:1px solid var(--iq-rule);border-radius:2px;background:var(--paper-2);color:var(--fixer)}
+.cf-copytext:focus-visible{outline:2px solid var(--safelight-deep);outline-offset:2px}
+
+/* without script: one line and her real form */
+.cf-noscript{margin:0;padding:18px 20px;border:1px dashed var(--iq-rule);font-size:1rem;line-height:1.55;color:var(--fixer)}
+.cf-noscript a{font-weight:600;color:var(--fixer);text-decoration-color:var(--safelight-deep);text-decoration-thickness:1.5px}

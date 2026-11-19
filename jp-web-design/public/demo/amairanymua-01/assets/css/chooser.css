@@ -56,3 +56,11 @@ a:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 .ch-foot code{font:400 .86em/1 ui-monospace,Menlo,Consolas,monospace;font-style:normal;background:rgba(29,23,20,.06);padding:.15em .4em;border-radius:4px}
 .ch-fine{margin:clamp(2.4rem,5vw,4rem) 0 0;max-width:76ch;font-size:.8rem;line-height:1.7;color:var(--mute)}
 @media (prefers-reduced-motion:reduce){.ch-wide img,.ch-phone,.ch-go{transition:none!important}}
+
+/* two rounds: each a short heading line over its own grid */
+.ch-round + .ch-round{margin-top:clamp(3.2rem,7vw,6rem)}
+.ch-round-head{display:grid;gap:.4rem 3rem;margin-bottom:clamp(1.3rem,2.6vw,2rem);padding-top:clamp(1.2rem,2.4vw,1.8rem);border-top:1px solid var(--hair2)}
+@media(min-width:900px){.ch-round-head{grid-template-columns:minmax(0,.6fr) minmax(0,1.4fr);align-items:end}.ch-round-k{grid-column:1/-1}}
+.ch-round-k{margin:0;font:600 .64rem/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
+.ch-round-h{margin:0;font:400 clamp(1.9rem,3.4vw,2.8rem)/1.02 var(--serif);color:var(--ink)}
+.ch-round-p{margin:0;max-width:46em;font-size:.98rem;line-height:1.62}
