@@ -162,6 +162,7 @@ export const portfolio = () => {
 <section class="pf-ig f-cream" aria-label="Instagram">
   <div class="wrap">
     <a class="pf-ig-a" href="${L.ig}" rel="external"><span class="pf-ig-k">More looks, more film</span><span class="pf-ig-t">${PORTFOLIO_PAGE.ig}</span><span class="pf-ig-go" aria-hidden="true">${arrow}</span></a>
+    <a class="pf-ig-a pf-ig-a--tt" href="${L.tiktok}" rel="external"><span class="pf-ig-k">Even more, on TikTok</span><span class="pf-ig-t">More on TikTok ${SITE.handle}</span><span class="pf-ig-go" aria-hidden="true">${arrow}</span></a>
   </div>
 </section>
 ${cta({ kick: PORTFOLIO_PAGE.noteKick, copy: PORTFOLIO_PAGE.note })}

@@ -149,6 +149,7 @@ ${groups}
     ${pearl('rv')}
     ${kick('On Instagram', 'rv')}
     <a class="lnk rv" style="--d:.1s" href="${L.ig}" rel="external">${PORTFOLIO_PAGE.ig} ${arrow}</a>
+    <a class="lnk rv" style="--d:.16s" href="${L.tiktok}" rel="external">More on TikTok ${SITE.handle} ${arrow}</a>
   </div>
 </section>
 ${cta({ kick: PORTFOLIO_PAGE.noteKick, copy: PORTFOLIO_PAGE.note })}

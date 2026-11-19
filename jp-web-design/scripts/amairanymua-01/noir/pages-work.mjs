@@ -127,6 +127,7 @@ ${reel()}
 ${slate(`${SITE.handle} <span class="sep"></span> Instagram`, 'slate--champ rv')}
 <h2 class="d-m rv-mask" id="igH">The reel <em>continues.</em></h2>
 <p class="rv" style="--d:.12s"><a class="lnk" href="${L.ig}" rel="external">${PORTFOLIO_PAGE.ig} ${arrow}</a></p>
+<p class="rv" style="--d:.18s"><a class="lnk" href="${L.tiktok}" rel="external">More on TikTok ${SITE.handle} ${arrow}</a></p>
 </div>
 </div>
 </section>

@@ -104,12 +104,13 @@ for (const f of html) {
   for (const m of s.matchAll(/\s(?:src|href|poster|data-src)="([^"]+\.(?:css|js|webp|jpg|jpeg|png|svg|woff2|mp4|webm))"/g)) {
     const u = m[1];
     if (/^https?:/.test(u)) { if (!u.startsWith('https://jpsilvadigital.com/demo/amairanymua-01/')) bad(name, `third-party file: ${u}`); continue; }
-    if (!u.startsWith(`${BASE}/assets/`)) { bad(name, `asset outside this demo's folder: ${u}`); continue; }
+    if (!u.startsWith(`${BASE}/assets/`) && !PREBUILT.some((pre) => u.startsWith(`${BASE}/${pre}/assets/`))) { bad(name, `asset outside this demo's folder: ${u}`); continue; }
     if (!existsSync(join(OUT, u.slice(BASE.length + 1)))) bad(name, `missing asset: ${u}`);
   }
   for (const m of s.matchAll(/srcset="([^"]+)"/g)) for (const part of m[1].split(',')) {
     const u = part.trim().split(/\s+/)[0];
-    if (!u.startsWith(`${BASE}/assets/`) || !existsSync(join(OUT, u.slice(BASE.length + 1)))) bad(name, `missing or foreign srcset file: ${u}`);
+    const okBase = u.startsWith(`${BASE}/assets/`) || PREBUILT.some((pre) => u.startsWith(`${BASE}/${pre}/assets/`));
+    if (!okBase || !existsSync(join(OUT, u.slice(BASE.length + 1)))) bad(name, `missing or foreign srcset file: ${u}`);
   }
   if (/<(script|link|img|iframe|video|source)\b[^>]*\s(?:src|href)="(?:https?:)?\/\/(?!jpsilvadigital\.com\/demo\/amairanymua-01)/i.test(s.replace(/<link rel="canonical"[^>]*>/g, ''))) bad(name, 'loads a third-party resource');
   /* inline scripts may not send anything either */

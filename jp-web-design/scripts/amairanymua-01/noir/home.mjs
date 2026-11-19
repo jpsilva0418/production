@@ -116,6 +116,7 @@ ${STRIP.map((it, i) => `<li class="strip-it">${it.film
 <div class="wrap strip-foot">
 <a class="lnk" href="${href(S, 'portfolio')}">${WORK.all} ${arrow}</a>
 <a class="lnk" href="${L.ig}" rel="external">Instagram ${SITE.handle} ${arrow}</a>
+<a class="lnk" href="${L.tiktok}" rel="external">TikTok ${SITE.handle} ${arrow}</a>
 </div>
 </section>`;
 

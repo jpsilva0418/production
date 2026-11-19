@@ -130,6 +130,7 @@ const looks = () => `<section class="sec looks" id="looks" aria-labelledby="look
   <div class="wrap looks-act rv">
     <a class="btn" href="${href(S, 'portfolio')}">${WORK.all}</a>
     <a class="lnk" href="${L.ig}" rel="external">${PORTFOLIO_PAGE.ig} ${arrow}</a>
+    <a class="lnk" href="${L.tiktok}" rel="external">More on TikTok ${SITE.handle} ${arrow}</a>
   </div>
 </section>`;
 

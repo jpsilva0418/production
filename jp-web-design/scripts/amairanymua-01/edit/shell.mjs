@@ -135,7 +135,7 @@ function header(path) {
   </nav>
   <div class="menu-foot">
     <div class="acts">${inquire(S, 'Bridal inquiry', 'btn btn--solid')}${book('event', 'Book event glam', 'btn btn--line')}</div>
-    <p class="menu-sub"><a href="${L.ig}" rel="external">Instagram ${SITE.handle}</a><a href="${L.mail}">Email ${SITE.first}</a>${book('bridal-services', 'Bridal services')}</p>
+    <p class="menu-sub"><a href="${L.ig}" rel="external">Instagram ${SITE.handle}</a><a href="${L.tiktok}" rel="external">TikTok</a><a href="${L.google}" rel="external">Google reviews</a><a href="${L.mail}">Email ${SITE.first}</a>${book('bridal-services', 'Bridal services')}</p>
   </div>
 </div>`;
 }
@@ -168,6 +168,8 @@ function footer() {
         <p class="ft-h">Reach ${SITE.first}</p>
         <ul>
           <li><a href="${L.ig}" rel="external">Instagram ${SITE.handle}</a></li>
+          <li><a href="${L.tiktok}" rel="external">TikTok ${SITE.handle}</a></li>
+          <li><a href="${L.google}" rel="external">Google reviews</a></li>
           <li><a href="${L.mail}" class="ft-mail">${SITE.email}</a></li>
           <li><span class="ft-k">${SITE.areaLong}</span></li>
         </ul>

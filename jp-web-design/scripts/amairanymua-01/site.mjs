@@ -35,6 +35,8 @@ export const L = {
   ww: 'https://www.weddingwire.com/biz/amairany-mua/cc8a47182a74f929.html',
   knot: 'https://www.theknot.com/marketplace/amairany-mua-kissimmee-fl-2075948',
   google: 'https://g.page/r/CcFKfY0wSWDnEAE/review',
+  /* her TikTok profile, @amairanymua (founder's screenshot of the profile, 2026-11-19) */
+  tiktok: 'https://www.tiktok.com/@amairanymua',
 };
 /* data-book value -> the only address it may carry */
 export const BOOK = { 'bridal-form': L.jot, 'bridal-services': L.bridal, event: L.event, schedule: L.sched };
@@ -462,7 +464,7 @@ export const REVIEWS = {
     { name: 'WeddingWire', score: '5.0', meta: '31 reviews', go: 'Read on WeddingWire', href: L.ww },
     { name: 'The Knot', score: '5.0', meta: '4 reviews', go: 'Read on The Knot', href: L.knot },
   ],
-  google: { name: 'Google', line: `Worked with ${SITE.first}?`, go: 'Leave a review', href: L.google },
+  google: { name: 'Google', line: `Worked with ${SITE.first}? Leave her a review on Google.`, go: 'Review on Google', href: L.google },
   emptyKick: 'Word for word',
   emptyHeading: 'Her clients’ words, published as they wrote them.',
   emptyBody: `Review excerpts will appear here once ${SITE.first} has chosen which ones to share. Until then, every review is one tap away, in full, on the site it was written on.`,

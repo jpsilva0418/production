@@ -97,7 +97,7 @@ const menu = (path) => `<div class="menu" id="menu" role="dialog" aria-modal="tr
 <ol class="menu-list">${PAGES_ALL.map((n, i) => `<li style="--i:${i}"><a href="${href(S, n.path)}"${cur(n.path, path)}><span class="n" aria-hidden="true">${pad(i + 1)}</span><span class="w">${n.menu}</span><span class="note">${n.note}</span></a></li>`).join('')}</ol>
 <div class="menu-foot">
 ${actions({ inq: 'Bridal inquiry', event: 'Book event glam' })}
-<div><p class="slate">${SITE.areaLong}</p><p><a class="slate slate--champ" href="${L.ig}" rel="external">Instagram ${SITE.handle}</a></p></div>
+<div><p class="slate">${SITE.areaLong}</p><p><a class="slate slate--champ" href="${L.ig}" rel="external">Instagram ${SITE.handle}</a></p><p><a class="slate slate--champ" href="${L.tiktok}" rel="external">TikTok ${SITE.handle}</a></p><p><a class="slate slate--champ" href="${L.google}" rel="external">Google reviews</a></p></div>
 </div>
 </nav>
 </div>`;
@@ -113,7 +113,7 @@ const footer = (path) => `<footer class="ft">
 <div class="ft-cols">
 <div class="ft-col"><h2 class="slate slate--champ">Pages</h2><ul>${PAGES_ALL.map((n) => `<li><a href="${href(S, n.path)}"${cur(n.path, path)}>${n.label}</a></li>`).join('')}</ul></div>
 <div class="ft-col"><h2 class="slate slate--champ">Book</h2><ul><li>${inquire(S, 'Bridal inquiry')}</li><li>${book('bridal-services', 'Bridal services')}</li><li>${book('event', 'Event makeup &amp; hair')}</li><li>${book('schedule', 'All services')}</li></ul></div>
-<div class="ft-col"><h2 class="slate slate--champ">Elsewhere</h2><ul><li><a href="${L.ig}" rel="external">Instagram</a></li><li><a href="${L.mail}">Email</a></li><li><a href="${L.ww}" rel="external">WeddingWire</a></li><li><a href="${L.knot}" rel="external">The Knot</a></li></ul></div>
+<div class="ft-col"><h2 class="slate slate--champ">Elsewhere</h2><ul><li><a href="${L.ig}" rel="external">Instagram</a></li><li><a href="${L.tiktok}" rel="external">TikTok</a></li><li><a href="${L.google}" rel="external">Google reviews</a></li><li><a href="${L.mail}">Email</a></li><li><a href="${L.ww}" rel="external">WeddingWire</a></li><li><a href="${L.knot}" rel="external">The Knot</a></li></ul></div>
 </div>
 </div>
 <p class="ft-fine">${finePrint()}</p>
