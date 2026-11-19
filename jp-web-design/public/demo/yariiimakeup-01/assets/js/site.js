@@ -374,20 +374,33 @@
     });
     $('#inq-again').addEventListener('click', function () { restart(); $('legend', step('type')).focus(); });
 
-    /* every Inquire button lands here; the ones that know their subject skip ahead */
-    $$('a[data-inquire]').forEach(function (a) {
-      a.addEventListener('click', function () {
-        var key = a.getAttribute('data-inquire');
-        if (!done.hidden) restart();
-        if (key && KEYS[key]) {
-          $('input[name="inquiryType"][value="' + KEYS[key] + '"]', inqForm).checked = true;
-          show(DETAILS[KEYS[key]], false);
-        }
-        setTimeout(function () { $('legend', step(at)).focus({ preventScroll: true }); }, reduce ? 0 : 700);
+    /* buttons that already know their subject say so: inquire?type=bridal */
+    var start = function (key) {
+      if (!done.hidden) restart();
+      if (key && KEYS[key]) {
+        $('input[name="inquiryType"][value="' + KEYS[key] + '"]', inqForm).checked = true;
+        show(DETAILS[KEYS[key]], false);
+        var kick = $('#iq-kick');
+        if (kick && FRAMES[key]) kick.textContent = FRAMES[key];
+      } else {
+        show('type', false);
+      }
+    };
+    var FRAMES = { bridal: 'Bridal inquiry', party: 'Sweet 16, prom & graduation', event: 'Event & photoshoot inquiry', hair: 'Hair inquiry', classes: 'Makeup class inquiry' };
+    var m = /[?&#]type=([a-z]+)/.exec(location.search + location.hash);
+    window.yariInquiry = { start: start };
+    /* "Ask about bridal" on this page switches the form without reloading it */
+    $$('a[data-type]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+        e.preventDefault();
+        try { history.replaceState(null, '', a.getAttribute('href')); } catch (err) {}
+        start(a.getAttribute('data-type'));
+        inqForm.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
+        setTimeout(function () { $('legend', step(at)).focus({ preventScroll: true }); }, reduce ? 0 : 600);
       });
     });
-
-    show('type', false);
+    start(m ? m[1] : '');
   })();
 
   /* ── Header ── */
@@ -491,7 +504,7 @@
   });
 
   /* ── Portfolio filter ── */
-  var looksEl = $('#looks');
+  var looksEl = $('#looks') || doc.createElement('ul');  /* the inquiry page has no gallery */
   var allLooks = $$('.look', looksEl);
   var chips = $$('.chip');
   var status = $('#work-status');
@@ -770,13 +783,11 @@
   }
 
   /* ── Sticky booking dock (phones): up once the hero button has scrolled
-        away, down again over the inquiry form and the final booking section ── */
+        away, down again when the final booking section is on screen ── */
   var dock = $('.dock');
-  if (dock && hasIO) {
-    var heroSeen = true, endSeen = false, formSeen = false;
-    var syncDock = function () { dock.classList.toggle('is-up', !heroSeen && !endSeen && !formSeen); };
-    /* the inquiry form has its own buttons: the bar steps aside so it never covers a field */
-    new IntersectionObserver(function (e) { formSeen = e[0].isIntersecting; syncDock(); }).observe($('.inq-shell'));
+  if (dock && hasIO && $('#hero-book')) {
+    var heroSeen = true, endSeen = false;
+    var syncDock = function () { dock.classList.toggle('is-up', !heroSeen && !endSeen); };
     new IntersectionObserver(function (e) { heroSeen = e[0].isIntersecting; syncDock(); }).observe($('#hero-book'));
     new IntersectionObserver(function (e) { endSeen = e[0].isIntersecting; syncDock(); }, { threshold: 0.35 }).observe($('.finale'));
   } else if (dock) {
@@ -795,6 +806,6 @@
         });
       });
     }, { rootMargin: '-40% 0px -55% 0px' });
-    $$('.hero, #work, #services, #about, #words, #motion, #inquire, #book').forEach(function (s) { navIO.observe(s); });
+    $$('.hero, #about, #work, #services, #words, #motion, #book').forEach(function (s) { navIO.observe(s); });
   }
 })();

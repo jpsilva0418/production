@@ -202,7 +202,10 @@ hero further.
 ## About
 
 Added 2026-11-19 at the founder's request ("it's missing her about me"), after
-Leti Silva Beauty's About. Everything in it is verified or clearly marked:
+Leti Silva Beauty's. It is the first section after the hero, so one short
+scroll reaches it, and her work follows: hero, About, The Work, Services,
+Kind Words, In Motion, Book. On phones the heading comes first, then her
+photo, then the words. Everything in it is verified or clearly marked:
 
 - **Photo:** the staff profile photo on her public Booksy listing
   (`resource_photos/3989d021a8f749aca01f994e334daf66.jpeg`), captioned as such.
@@ -220,7 +223,13 @@ Leti Silva Beauty's About. Everything in it is verified or clearly marked:
 ## Inquiry form
 
 Added 2026-11-19 at the founder's request, after Leti Silva Beauty's inquiry
-flow: one question at a time, with progress, Back that keeps every answer,
+flow, on its own page like hers: `/demo/yariiimakeup-01/inquire`, with the
+introduction and other ways to begin (Booksy, the work, bridal, classes,
+Instagram) beside the form. `?type=bridal` (or `party`, `event`, `hair`,
+`classes`, `other`) opens it on that service's questions. The page is built by
+`scripts/yariiimakeup-01-pages.py` from the home page's own head, header, menu
+and footer plus `scripts/yariiimakeup-01-inquire.html`, so the two pages
+cannot drift: edit those, then run the script. The form itself is one question at a time, with progress, Back that keeps every answer,
 and a review screen. The first step asks what it is about (Bridal; Sweet 16,
 prom or graduation; Event or photoshoot; Hair; Makeup classes; Something
 else); the second asks only what that service needs; then when and where,
@@ -234,20 +243,19 @@ approved destination and a privacy notice before it can go live; there is a
 hidden honeypot field ready for that day. Without JavaScript the form is
 hidden and a note points to Booksy and Instagram.
 
-"Inquire" sits next to every Book Now: in the desktop header, the phone menu,
-the hero, the phone's sticky bar (which steps aside while the form is on
-screen), each service ("Ask about bridal" and so on, which opens the form
-already on that service's questions), the About section and the final
-section.
+"Inquire" sits next to every Book Now and opens that page: the desktop
+header, the phone menu, the hero (Book Now and Send an Inquiry side by side),
+the phone's sticky bar, each service ("Ask about bridal" and so on, already on
+that service's questions), About and the final section.
 
 ## Booking
 
 Every booking control is a plain link to `https://yarimakeup.booksy.com/`,
 opening in the same tab (the one-tap handoff that proved right for in-app
-browsers on Sass by Kass). There are sixteen: header, mobile menu, hero,
-after the gallery, four services plus "every service", About, the inquiry
-introduction and its thank-you, the lightbox, the final section, the footer,
-and a sticky bar on phones. No service-level deep links are used because none
+browsers on Sass by Kass). On the home page there are fourteen: header,
+mobile menu, hero, About, after the gallery, four services plus "every
+service", the lightbox, the final section, the footer, and a sticky bar on
+phones; the inquiry page adds its own beside the form and on the thank-you. No service-level deep links are used because none
 has been confirmed.
 
 ## The Reel

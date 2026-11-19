@@ -1,0 +1,167 @@
+<!--
+  Body of /demo/yariiimakeup-01/inquire. scripts/yariiimakeup-01-pages.py wraps it
+  in the home page's own head, header, menu and footer, so the pages cannot drift.
+  Edit this file, not inquire/index.html, then run that script.
+-->
+<main id="main" class="inq-main">
+<section class="inquire inq-page" id="inquire" aria-labelledby="inquire-h">
+  <header class="sec-head inq-head">
+    <p class="eyebrow" id="iq-kick">Send an Inquiry</p>
+    <h1 class="sec-h" id="inquire-h">Tell Yari about <em>your day.</em></h1>
+    <p class="sec-lede">Planning a wedding, a group, a class, or not sure which service fits? Send a few details and she&rsquo;ll get back to you.</p>
+  </header>
+
+  <div class="inq-shell">
+    <p class="inq-demo" role="note"><span class="note-tag">Demo form</span> This is a design demo: nothing you enter here is sent or saved.</p>
+
+    <noscript><p class="inq-noscript">This form needs JavaScript. You can book on <a href="https://yarimakeup.booksy.com/">Booksy</a> or message <a href="https://www.instagram.com/yariiimakeup/">@yariiimakeup on Instagram</a>.</p></noscript>
+
+    <form class="inq-form" id="inq-form" novalidate>
+      <ol class="inq-prog" id="inq-prog" aria-label="Progress"></ol>
+      <p class="inq-err" id="inq-err" role="alert" aria-live="assertive"></p>
+
+      <fieldset class="inq-step" data-step="type" data-label="Service">
+        <legend tabindex="-1">What are you inquiring about?</legend>
+        <div class="inq-cards"><label class="inq-card"><input type="radio" name="inquiryType" value="Bridal" required><span>Bridal</span></label><label class="inq-card"><input type="radio" name="inquiryType" value="Sweet 16, prom or graduation"><span>Sweet 16, prom or graduation</span></label><label class="inq-card"><input type="radio" name="inquiryType" value="Event or photoshoot"><span>Event or photoshoot</span></label><label class="inq-card"><input type="radio" name="inquiryType" value="Hair"><span>Hair</span></label><label class="inq-card"><input type="radio" name="inquiryType" value="Makeup classes"><span>Makeup classes</span></label><label class="inq-card"><input type="radio" name="inquiryType" value="Something else"><span>Something else</span></label></div>
+      </fieldset>
+
+      <fieldset class="inq-step" data-step="details-bridal" data-label="Details" hidden>
+        <legend tabindex="-1">What does your wedding day need?</legend>
+        <div class="inq-field"><span class="inq-lbl" id="lbl-bscope">Bride, party or trial</span><div class="inq-cards"><label class="inq-card"><input type="radio" name="bridalScope" value="Bride only" required><span>Bride only</span></label><label class="inq-card"><input type="radio" name="bridalScope" value="Bride and bridal party"><span>Bride &amp; bridal party</span></label><label class="inq-card"><input type="radio" name="bridalScope" value="Trial only"><span>Trial only</span></label><label class="inq-card"><input type="radio" name="bridalScope" value="Trial and wedding day"><span>Trial &amp; wedding day</span></label></div></div>
+        <div class="inq-field"><span class="inq-lbl" id="lbl-bsvc">Services</span><div class="inq-cards inq-cards-row"><label class="inq-card"><input type="radio" name="bridalServices" value="Makeup" required><span>Makeup</span></label><label class="inq-card"><input type="radio" name="bridalServices" value="Hair"><span>Hair</span></label><label class="inq-card"><input type="radio" name="bridalServices" value="Makeup and hair"><span>Makeup &amp; hair</span></label></div></div>
+        <div class="inq-field"><label for="inq-bpeople">How many people need services?</label><select id="inq-bpeople" name="bridalPeople">
+              <option value="">Choose one (optional)</option>
+              <option>Just me</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6 or more</option><option>Not sure yet</option>
+            </select></div>
+      </fieldset>
+
+      <fieldset class="inq-step" data-step="details-party" data-label="Details" hidden>
+        <legend tabindex="-1">Tell her about the celebration</legend>
+        <div class="inq-field"><span class="inq-lbl">Occasion</span><div class="inq-cards inq-cards-row"><label class="inq-card"><input type="radio" name="occasion" value="Sweet 16" required><span>Sweet 16</span></label><label class="inq-card"><input type="radio" name="occasion" value="Prom"><span>Prom</span></label><label class="inq-card"><input type="radio" name="occasion" value="Graduation"><span>Graduation</span></label></div></div>
+        <div class="inq-field"><span class="inq-lbl">Services</span><div class="inq-cards inq-cards-row"><label class="inq-card"><input type="radio" name="partyServices" value="Makeup" required><span>Makeup</span></label><label class="inq-card"><input type="radio" name="partyServices" value="Hair"><span>Hair</span></label><label class="inq-card"><input type="radio" name="partyServices" value="Makeup and hair"><span>Makeup &amp; hair</span></label></div></div>
+        <div class="inq-field"><label for="inq-ppeople">How many people need services?</label><select id="inq-ppeople" name="partyPeople">
+              <option value="">Choose one (optional)</option>
+              <option>Just me</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6 or more</option><option>Not sure yet</option>
+            </select></div>
+      </fieldset>
+
+      <fieldset class="inq-step" data-step="details-event" data-label="Details" hidden>
+        <legend tabindex="-1">Tell her about your event</legend>
+        <div class="inq-field">
+          <label for="inq-eventType">What kind of event or shoot? <span class="inq-req">required</span></label>
+          <input id="inq-eventType" name="eventType" type="text" maxlength="120" list="inq-eventTypes" required placeholder="Birthday, photoshoot, pageant, night out…">
+          <datalist id="inq-eventTypes"><option value="Birthday"></option><option value="Photoshoot"></option><option value="Pageant"></option><option value="Wedding guest"></option><option value="Night out"></option></datalist>
+        </div>
+        <div class="inq-field"><span class="inq-lbl">Services</span><div class="inq-cards inq-cards-row"><label class="inq-card"><input type="radio" name="eventServices" value="Makeup" required><span>Makeup</span></label><label class="inq-card"><input type="radio" name="eventServices" value="Hair"><span>Hair</span></label><label class="inq-card"><input type="radio" name="eventServices" value="Makeup and hair"><span>Makeup &amp; hair</span></label></div></div>
+        <div class="inq-field"><label for="inq-epeople">How many people need services?</label><select id="inq-epeople" name="eventPeople">
+              <option value="">Choose one (optional)</option>
+              <option>Just me</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6 or more</option><option>Not sure yet</option>
+            </select></div>
+      </fieldset>
+
+      <fieldset class="inq-step" data-step="details-hair" data-label="Details" hidden>
+        <legend tabindex="-1">What would you like done with your hair?</legend>
+        <div class="inq-cards"><label class="inq-card"><input type="radio" name="hairService" value="Waves or blowout" required><span>Waves or a blowout</span></label><label class="inq-card"><input type="radio" name="hairService" value="Special-occasion style"><span>Special-occasion style</span></label><label class="inq-card"><input type="radio" name="hairService" value="Extensions install"><span>Extensions install</span></label><label class="inq-card"><input type="radio" name="hairService" value="Not sure yet"><span>Not sure yet</span></label></div>
+      </fieldset>
+
+      <fieldset class="inq-step" data-step="details-classes" data-label="Details" hidden>
+        <legend tabindex="-1">Which class interests you?</legend>
+        <div class="inq-cards"><label class="inq-card"><input type="radio" name="course" value="Beginner's makeup course" required><span>Beginner&rsquo;s makeup course</span></label><label class="inq-card"><input type="radio" name="course" value="Professional makeup course"><span>Professional makeup course</span></label><label class="inq-card"><input type="radio" name="course" value="Eyebrow tinting course"><span>Eyebrow tinting course</span></label><label class="inq-card"><input type="radio" name="course" value="Not sure yet"><span>Not sure yet</span></label></div>
+      </fieldset>
+
+      <fieldset class="inq-step" data-step="details-other" data-label="Details" hidden>
+        <legend tabindex="-1">What can Yari help you with?</legend>
+        <div class="inq-field">
+          <label for="inq-otherWhat">Tell her a little <span class="inq-req">required</span></label>
+          <textarea id="inq-otherWhat" name="otherWhat" rows="4" maxlength="1200" required></textarea>
+        </div>
+      </fieldset>
+
+      <fieldset class="inq-step" data-step="when" data-label="When" hidden>
+        <legend tabindex="-1" data-legend-classes="When would you like to start?">When is it?</legend>
+        <div class="inq-two">
+          <div class="inq-field">
+            <label for="inq-date">Date</label>
+            <input id="inq-date" name="date" type="date">
+          </div>
+          <div class="inq-field">
+            <label for="inq-time">Time of day</label>
+            <select id="inq-time" name="timeOfDay"><option value="">Flexible</option><option>Morning</option><option>Afternoon</option><option>Evening</option></select>
+          </div>
+        </div>
+        <div class="inq-field">
+          <label for="inq-where">Where will you be getting ready?</label>
+          <input id="inq-where" name="where" type="text" maxlength="160" placeholder="City or venue (optional)">
+        </div>
+        <label class="inq-check"><input type="checkbox" name="dateFlexible" value="Yes"> <span>My date isn&rsquo;t set yet</span></label>
+      </fieldset>
+
+      <fieldset class="inq-step" data-step="contact" data-label="You" hidden>
+        <legend tabindex="-1">How can Yari reach you?</legend>
+        <div class="inq-field">
+          <label for="inq-name">Full name <span class="inq-req">required</span></label>
+          <input id="inq-name" name="fullName" type="text" maxlength="120" autocomplete="name" required>
+        </div>
+        <div class="inq-two">
+          <div class="inq-field">
+            <label for="inq-phone">Phone <span class="inq-req">required</span></label>
+            <input id="inq-phone" name="phone" type="tel" maxlength="40" autocomplete="tel" inputmode="tel" required>
+          </div>
+          <div class="inq-field">
+            <label for="inq-email">Email <span class="inq-req">required</span></label>
+            <input id="inq-email" name="email" type="email" maxlength="160" autocomplete="email" required>
+          </div>
+        </div>
+        <div class="inq-field"><span class="inq-lbl">Best way to reach you</span><div class="inq-cards inq-cards-row"><label class="inq-card"><input type="radio" name="contactPref" value="Text" required><span>Text</span></label><label class="inq-card"><input type="radio" name="contactPref" value="Call"><span>Call</span></label><label class="inq-card"><input type="radio" name="contactPref" value="Email"><span>Email</span></label></div></div>
+        <div class="inq-field">
+          <label for="inq-ig">Instagram</label>
+          <input id="inq-ig" name="instagram" type="text" maxlength="60" autocomplete="off" placeholder="@yourhandle (optional)">
+        </div>
+        <div class="inq-hp" aria-hidden="true"><label for="inq-company">Company</label><input id="inq-company" name="company" type="text" tabindex="-1" autocomplete="off"></div>
+      </fieldset>
+
+      <fieldset class="inq-step" data-step="extras" data-label="Extras" hidden>
+        <legend tabindex="-1">Anything else she should know?</legend>
+        <div class="inq-field">
+          <label for="inq-msg">Your vision, inspiration or questions</label>
+          <textarea id="inq-msg" name="message" rows="5" maxlength="2000" placeholder="Soft and glowy, full glam, a look you saved on Instagram… (optional)"></textarea>
+        </div>
+        <div class="inq-field">
+          <label for="inq-heard">How did you find Yari?</label>
+          <select id="inq-heard" name="heardFrom"><option value="">Choose one (optional)</option><option>Instagram</option><option>Booksy</option><option>A friend or family</option><option>Google</option><option>Other</option></select>
+        </div>
+      </fieldset>
+
+      <fieldset class="inq-step" data-step="review" data-label="Review" hidden>
+        <legend tabindex="-1">Check your details</legend>
+        <dl class="inq-recap" id="inq-recap"></dl>
+      </fieldset>
+
+      <div class="inq-nav">
+        <button class="btn btn-line btn-lg inq-back" type="button" id="inq-back" hidden>Back</button>
+        <button class="btn btn-ink btn-lg inq-next" type="button" id="inq-next">Next</button>
+        <button class="btn btn-ink btn-lg inq-send" type="submit" id="inq-send" hidden>Send Inquiry</button>
+      </div>
+    </form>
+
+    <div class="inq-done" id="inq-done" tabindex="-1" hidden>
+      <svg class="inq-done-wing" viewBox="0 0 200 26" preserveAspectRatio="none" aria-hidden="true"><path d="M2 20 C 48 21, 118 20, 160 15 C 176 13, 190 7, 198 2 C 190 12, 176 19, 160 21 C 118 25, 48 23, 2 20 Z"/></svg>
+      <h3 class="inq-done-h">Thank you<span id="inq-done-name"></span>.</h3>
+      <p>This is a design demo, so your inquiry was <strong>not sent anywhere</strong>. On Yari&rsquo;s live site it would go straight to her, and she&rsquo;d reply by your preferred way.</p>
+      <div class="inq-done-cta">
+        <a class="btn btn-ink btn-lg" href="https://yarimakeup.booksy.com/" rel="noopener external" data-book="inquire-done">Book on Booksy</a>
+        <button class="btn btn-line btn-lg" type="button" id="inq-again">Start a new inquiry</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="inq-ways" aria-label="Other ways to begin">
+    <p class="inq-ways-k">Or begin another way</p>
+    <a href="https://yarimakeup.booksy.com/" rel="noopener external" data-book="inquire"><span class="num">01</span>Book an appointment<span class="inq-ways-on">Booksy</span></a>
+    <a href="/demo/yariiimakeup-01#work"><span class="num">02</span>See her work<span class="inq-ways-on">Portfolio</span></a>
+    <a href="/demo/yariiimakeup-01/inquire?type=bridal" data-type="bridal"><span class="num">03</span>Ask about bridal<span class="inq-ways-on">This form</span></a>
+    <a href="/demo/yariiimakeup-01/inquire?type=classes" data-type="classes"><span class="num">04</span>Ask about classes<span class="inq-ways-on">This form</span></a>
+    <a href="https://www.instagram.com/yariiimakeup/" rel="noopener external"><span class="num">05</span>Message her<span class="inq-ways-on">Instagram</span></a>
+  </nav>
+</section>
+</main>
