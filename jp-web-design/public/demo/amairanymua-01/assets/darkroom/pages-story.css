@@ -1,0 +1,155 @@
+/* /demo/amairanymua-01 — site "darkroom": the STORY pages (Bridal, About).
+   Built on the kit in site.css (tokens, prints, strips, the price board, the line). Every colour is
+   a token; red is the soft rose and only ever light or a grease-pencil mark, never a fill. */
+
+/* ---------- shared ---------- */
+.st-src{margin-top:14px}
+.st-src::before{content:"\2014  "}
+/* a line of edge markings: each item kept whole, the rose marker never opens a line */
+.spec{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.7em;row-gap:.2em}
+.spec-i{white-space:nowrap}
+.spec-s{color:var(--safelight-lit)}
+.band--paper .spec-s{color:var(--safelight-deep)}
+
+/* ======================================================================
+   BRIDAL
+   ====================================================================== */
+.pg-bridal .cover h1{font-size:clamp(2.3rem,6vw,5.3rem)}
+.cover-txt .bs-cover-nowb{display:flex;margin-top:30px}
+.cover-txt .bs-cover-nowb + .acts{margin-top:16px}
+
+/* ---------- the price board, in two groups ---------- */
+.bs-pk{display:grid;gap:clamp(52px,7vw,72px)}
+@media(min-width:900px){.bs-pk{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,4vw,60px);align-items:start}}
+.bs-grp-h{display:grid;gap:6px;margin-bottom:22px}
+.bs-grp .board{transform:rotate(var(--tilt,0deg))}
+@media(max-width:419px){.bs-grp .board{padding:22px 18px}.bs-grp .board-h{gap:8px}}
+.bs-pk-foot{margin-top:clamp(44px,6vw,64px);padding-top:20px;border-top:1px solid var(--line-paper);display:grid;gap:8px;max-width:56rem}
+.bs-pk-note{font:400 .7rem/1.65 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--fixer-dim)}
+.bs-pk-cur{display:flex;flex-wrap:wrap;align-items:center;gap:0 .45em;color:var(--fixer-dim)}
+.bs-pk-link{display:inline-flex;align-items:center;gap:.4em;min-height:44px;color:var(--fixer);font-weight:500;text-decoration:none;border-bottom:1px solid var(--safelight-deep);padding-top:2px;line-height:1.2}
+.bs-pk-link:hover .arr{transform:translateX(4px)}
+.bs-pk-link .arr{transition:transform .3s var(--e-out)}
+
+/* ---------- Destination bride? : a print on the table under the safelight ---------- */
+.bs-dest{display:grid;gap:64px;align-items:center}
+@media(min-width:900px){.bs-dest{grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(56px,8vw,120px)}}
+.bs-dest-q{margin:26px 0 0;padding:0}
+.bs-dest-q p{font:400 clamp(1.22rem,2.15vw,1.7rem)/1.45 var(--f-body);letter-spacing:-.008em;color:var(--ink);max-width:25em}
+.bs-dest-q .uline{white-space:normal}
+.bs-dest-edge{margin-top:26px;color:var(--ink-dim);line-height:1.9}
+.bs-dest-acts{margin-top:30px}
+.bs-dest-pr{position:relative;justify-self:center;width:min(74vw,400px)}
+.bs-dest-arrow{display:none}
+@media(min-width:900px){
+  .bs-dest-pr{width:100%;max-width:420px}
+  .bs-dest-arrow{display:block;position:absolute;left:-82px;bottom:24px;transform:rotate(6deg)}
+  .bs-dest-arrow .mk{width:62px;height:36px;stroke:var(--safelight)}
+}
+
+/* ---------- FAQ: native details rows; each answer comes up like a print ---------- */
+.bs-faq{display:grid;gap:0}
+.bs-faq .ch{margin-bottom:clamp(30px,4vw,44px)}
+@media(min-width:960px){
+  .bs-faq{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(48px,7vw,110px);align-items:start}
+  .bs-faq-hd{position:sticky;top:calc(var(--hd-h) + 40px)}
+}
+.bs-faq-l{border-bottom:1px solid var(--line-paper)}
+.faq{border-top:1px solid var(--line-paper)}
+.faq-q{list-style:none;display:grid;grid-template-columns:2.6rem minmax(0,1fr) 34px;align-items:center;gap:12px;min-height:68px;padding:12px 2px;cursor:pointer;color:var(--fixer);border-radius:2px;-webkit-tap-highlight-color:transparent}
+.faq-q::-webkit-details-marker{display:none}
+.faq-q::marker{content:""}
+.faq-n{font:500 .62rem/1 var(--f-mono);letter-spacing:.14em;color:var(--safelight-deep)}
+.faq-t{font:700 clamp(1.08rem,1.7vw,1.36rem)/1.18 var(--f-display);letter-spacing:-.02em;text-wrap:balance}
+.faq-q:hover .faq-t{text-decoration:underline;text-decoration-color:var(--safelight-deep);text-decoration-thickness:2px;text-underline-offset:.2em}
+/* the open/closed mark: a plus in a hairline ring; open, it becomes a minus and the ring takes the rose */
+.faq-mk{position:relative;width:34px;height:34px;border-radius:50%;border:1px solid var(--line-paper);transition:border-color .3s,transform .45s var(--e-out)}
+.faq-mk::before,.faq-mk::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:1.5px;margin:-.75px 0 0 -6px;background:var(--fixer);border-radius:1px;transition:transform .45s var(--e-out)}
+.faq-mk::after{transform:rotate(90deg)}
+.faq[open] .faq-mk{border-color:var(--safelight-deep);transform:rotate(180deg)}
+.faq[open] .faq-mk::after{transform:rotate(0deg)}
+.faq-q:focus-visible{outline-offset:2px}
+.faq-a{padding:0 46px 26px calc(2.6rem + 14px)}
+.faq-a p{font-size:1.02rem;line-height:1.66;color:var(--fixer-dim);max-width:36em}
+@media(max-width:419px){.faq-q{grid-template-columns:2.1rem minmax(0,1fr) 34px;gap:10px}.faq-a{padding:0 4px 24px calc(2.1rem + 10px)}}
+html.js .faq[open] .faq-a{animation:faq-up 1.1s both}
+@keyframes faq-up{
+  0%{opacity:0;transform:translate3d(0,-6px,0);animation-timing-function:cubic-bezier(.55,.06,.45,.94)}
+  45%{opacity:.38;transform:translate3d(0,-2px,0);animation-timing-function:cubic-bezier(.55,.06,.45,.94)}
+  100%{opacity:1;transform:none}
+}
+.bs-faq-src{margin-top:18px;margin-bottom:18px}
+
+/* ---------- how to prepare, beside a print and a strip of film ---------- */
+.bs-prep{display:grid;gap:60px;align-items:center;margin-top:clamp(80px,12vw,160px)}
+@media(min-width:900px){.bs-prep{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(56px,8vw,120px)}}
+.bs-prep-l{margin-top:30px;border-bottom:1px dashed var(--line-paper)}
+.bs-prep-l li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:18px;align-items:center;padding:20px 0;border-top:1px dashed var(--line-paper)}
+.bs-prep-n{font:800 clamp(2rem,4vw,2.8rem)/1 var(--f-display);letter-spacing:-.05em;min-width:1.4em}
+.bs-prep-t{font-size:1.08rem;line-height:1.5;color:var(--fixer)}
+.bs-prep-tk{width:26px;height:22px}
+.bs-prep .st-src{margin-bottom:22px}
+.bs-pair{display:grid;grid-template-columns:58fr 42fr;gap:clamp(14px,3vw,36px);align-items:center}
+.bs-pair-pr,.bs-pair-film{display:grid;gap:14px;min-width:0}
+.bs-pair-film{transform:rotate(1.4deg)}
+.bs-pair-cap{font-size:.6rem;color:var(--fixer-dim);min-height:2.8em}
+.bs-pair-n{color:var(--safelight-deep)}
+
+/* ======================================================================
+   ABOUT
+   ====================================================================== */
+/* "Hey Gorgeous!" in grease pencil over the Syne line */
+.ab-hey{display:block;width:max-content;max-width:100%;font:700 .7em/1 var(--f-hand);letter-spacing:0;color:var(--safelight-lit);transform:rotate(-3deg);transform-origin:0 100%;margin:0 0 .12em .04em}
+
+/* ---------- her words ---------- */
+.ab-spec{padding:14px 0;border-top:1px solid var(--line-paper);border-bottom:1px solid var(--line-paper);color:var(--fixer);letter-spacing:.2em;line-height:1.9;margin-bottom:clamp(48px,7vw,88px)}
+.ab-words-g{display:grid;gap:40px}
+@media(min-width:900px){.ab-words-g{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(56px,8vw,120px);align-items:start}}
+.ab-yrs{display:flex;gap:40px;margin:34px 0 0}
+.ab-yrs div{display:grid;gap:4px}
+.ab-yrs dt{order:2;font:500 .64rem/1.3 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--fixer-dim)}
+.ab-yrs dd{order:1;margin:0;font:800 clamp(2.8rem,5vw,4rem)/.9 var(--f-display);letter-spacing:-.05em}
+.ab-yrs dd span{font-size:.36em;letter-spacing:-.01em;font-weight:700;margin-left:.15em}
+.ab-badges{display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:26px}
+.ab-badges li{display:flex;align-items:center;gap:8px}
+.ab-badges .mk-tick{width:20px;height:18px}
+.ab-q{margin:0;padding:0}
+.ab-q p{font-size:1.06rem;line-height:1.7;color:var(--fixer);max-width:34em}
+.ab-q p+p{margin-top:1em}
+.ab-q .ab-q1{font:400 clamp(1.28rem,2.3vw,1.85rem)/1.42 var(--f-body);letter-spacing:-.012em;max-width:24em;margin-bottom:.4em}
+.ab-q .ring{font-weight:600}
+.ab-q1 .mk-ring{left:-6%;top:-8%;width:112%;height:118%}
+@media(max-width:379px){.ab-q .ring{white-space:normal}}
+
+/* ---------- her services, and the photography question kept apart ---------- */
+.ab-svc{display:grid;grid-template-columns:minmax(0,1fr);gap:56px;margin-top:clamp(80px,12vw,160px);align-items:start}
+@media(min-width:900px){.ab-svc{grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(56px,8vw,120px);align-items:end}}
+.ab-svc-l{border-bottom:1px solid var(--line-paper)}
+.ab-svc-l li{display:flex;align-items:baseline;gap:18px;padding:14px 0 16px;border-top:1px solid var(--line-paper)}
+.ab-svc-n{flex:0 0 3em;font:500 .62rem/1 var(--f-mono);letter-spacing:.14em;color:var(--safelight-deep)}
+.ab-svc-t{font:800 clamp(1.4rem,7.2vw,3.9rem)/1 var(--f-display);letter-spacing:-.045em}
+@media(min-width:900px){.ab-svc-t{font-size:clamp(2rem,4.2vw,3.9rem)}}
+.ab-svc-acts{display:flex;flex-wrap:wrap;gap:6px 30px;margin-top:26px}
+.ab-photo{position:relative;background:var(--room);color:var(--ink);padding:clamp(26px,3.4vw,42px);transform:rotate(.8deg);box-shadow:inset 0 0 0 1px var(--line),0 30px 60px -36px var(--shadow)}
+.ab-photo .edge,.ab-photo .ab-photo-k{color:var(--ink-dim)}
+.ab-photo-k{color:var(--safelight-lit)!important}
+.ab-photo-q{margin-top:14px}
+.ab-photo-a{margin-top:14px;font-size:1.02rem;line-height:1.62;color:var(--ink)}
+
+/* ---------- in motion: stills beside film ---------- */
+.ab-mo{display:grid;gap:clamp(64px,9vw,88px)}
+@media(min-width:900px){.ab-mo{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px,5vw,80px);align-items:start}.ab-mo-p--b{margin-top:clamp(70px,8vw,120px)}}
+.ab-mo-p{display:grid;gap:clamp(14px,3vw,30px);align-items:center}
+.ab-mo-p--a{grid-template-columns:58fr 42fr}
+.ab-mo-p--b{grid-template-columns:42fr 58fr}
+.ab-mo-pr,.ab-mo-film{display:grid;gap:14px;min-width:0}
+.ab-mo-p--a .ab-mo-film{transform:rotate(1.4deg)}
+.ab-mo-p--b .ab-mo-film{transform:rotate(-1.2deg)}
+.ab-mo-cap{font-size:.6rem;color:var(--ink-dim);min-height:2.8em}
+.ab-mo-n{color:var(--safelight-lit)}
+
+/* ---------- Love Notes: the line hung in a dark room on the paper page ---------- */
+.ab-love{position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(70% 90% at 50% 0%,var(--glow) 0%,var(--glow-soft) 40%,transparent 75%),var(--room);color:var(--ink);padding:clamp(52px,6vw,76px) clamp(22px,4vw,56px) clamp(44px,5vw,64px);box-shadow:0 30px 60px -36px var(--shadow)}
+.ab-love :focus-visible{outline-color:var(--safelight-lit)}
+.ab-love .line-wire{left:calc(-1 * clamp(22px,4vw,56px));right:calc(-1 * clamp(22px,4vw,56px))}
+@media(max-width:619px){.ab-love .ln-i::before{left:calc(-1 * clamp(22px,4vw,56px));right:calc(-1 * clamp(22px,4vw,56px))}}

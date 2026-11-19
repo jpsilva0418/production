@@ -1,0 +1,228 @@
+/* /demo/amairanymua-01 — COCOA: the Bridal Inquiry page, and its skin of the shared inquiry.
+   Loaded AFTER assets/css/inquiry-core.css (structure, iPhone fixes, hidden states), so every
+   single-class rule here wins. The form's markup and behaviour are shared and untouched
+   (inquiry-core.mjs, assets/js/inquiry.js); this file only dresses them. Guide: SKINNING.md.
+
+   Cocoa's manner, applied to a form: a milk sheet on cream with 1px hairlines; questions in
+   Manrope, each step's question in Libre Caslon; fields and choices are 6px boxes; a chosen card
+   turns espresso (like the most-popular package) with a latte dot; the step buttons are the site's
+   own 4px .btn. Every colour comes from the site.css tokens; the page adds two of its own:
+   --iq-line, a field boundary that keeps 3:1 on milk (sand alone is 1.8:1), and --iq-bad, the soft
+   rose (#A8505A, 5.2:1 on milk) for errors: soft, never a strong red. */
+
+.iq-page{
+  --iq-line:#998878;     /* field and card boundary, 3.3:1 on milk */
+  --iq-bad:#A8505A;      /* errors: the soft rose, 5.2:1 on milk */
+  --iq-bad-bg:#FBF1EF;   /* a whisper of it behind an invalid field */
+  --iq-pad:18px;
+  --iq-prog:62px;        /* the progress row and its gap, kept in view above a step */
+}
+@media(min-width:600px){.iq-page{--iq-pad:34px}}
+@media(min-width:1200px){.iq-page{--iq-pad:48px}}
+
+/* ===================== the title card ===================== */
+.iq-top{padding:clamp(28px,5vw,72px) 0 clamp(26px,4vw,52px);background:var(--cream)}
+.iq-top-in{display:grid;gap:0}
+.iq-top .chip{margin:0 0 20px}
+.iq-top .kick{margin-bottom:14px}
+.iq-top-h .d-xl{margin:0 0 18px}
+.iq-top-t .lede{margin:0 0 6px;max-width:34em}
+.iq-jump{margin:4px 0 0}
+.iq-top-r{display:none}
+@media(min-width:900px){
+  .iq-top-in{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);column-gap:clamp(40px,6vw,96px);align-items:end}
+  .iq-top-h .d-xl{margin:0}
+  .iq-jump{display:none}
+  .iq-top-r{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+}
+@media(max-width:379px){.iq-page .chip{font-size:10px;letter-spacing:.08em;padding:6px 12px}.iq-ev .btn{letter-spacing:.08em;padding:12px 12px}}
+@media(max-width:899px) and (max-height:700px){.iq-top .chip{margin-bottom:14px}.iq-top-h .d-xl{font-size:40px;margin-bottom:12px}.iq-top-t .lede{font-size:16px}}
+
+/* ===================== the spread: the sheet beside the side column ===================== */
+.iq{padding-top:0}
+.iq-g{display:grid;gap:56px}
+.iq-main{min-width:0}
+@media(min-width:900px){
+  .iq-g{grid-template-columns:minmax(0,1fr) clamp(290px,27vw,380px);column-gap:clamp(36px,5vw,80px);align-items:start}
+}
+@media(min-width:900px) and (min-height:820px){.iq-side{position:sticky;top:calc(var(--hd-h) + 24px)}}
+
+.iq-card{container-type:inline-size;min-width:0;padding:22px var(--iq-pad) var(--iq-pad);background:var(--milk);border:1px solid var(--oat);border-radius:var(--r);box-shadow:0 30px 60px -48px var(--shade)}
+.iq-card-hd{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding-bottom:16px;margin-bottom:24px;border-bottom:1px solid var(--oat)}
+.iq-card-k{margin:0}
+.iq-card-s{font:400 15px/1.2 var(--ital);font-style:italic;color:var(--mocha);white-space:nowrap}
+@media(max-width:359px){.iq-card-s{display:none}}
+@media(max-width:599px){.iq-card{margin:0 calc(-1 * var(--gut) + 8px)}}
+
+.iq-notes{display:grid;gap:12px;margin-top:20px}
+.iq-note{margin:0;font-size:14px;line-height:1.55;color:var(--mocha)}
+.iq-demo{display:flex;gap:12px;align-items:flex-start;margin:0;padding:14px 16px;border-radius:var(--r);background:var(--oat);font-size:14.5px;line-height:1.55;font-weight:650;color:var(--espresso)}
+.iq-demo-dot{flex:none;width:8px;height:8px;margin-top:.5em;border-radius:50%;background:var(--mocha)}
+
+/* ===================== the side column ===================== */
+.iq-side{display:grid;gap:0;align-content:start;min-width:0}
+.iq-blk p:not(.kick){font-size:15px;line-height:1.6}
+.iq-blk .kick{margin-bottom:12px}
+.iq-ev{padding:28px 24px 26px;border-radius:var(--r);background:var(--oat)}
+.iq-ev .d-m{margin:0 0 10px}
+.iq-ev p{color:var(--mocha);margin-bottom:20px}
+.iq-ev .btn{min-height:50px;height:auto;padding:12px 16px;letter-spacing:.12em}
+.iq-dest,.iq-prep{padding:28px 0 16px;border-bottom:1px solid var(--sand)}
+.iq-dest .d-s,.iq-prep .d-s{margin:0 0 14px}
+.iq-q{font-size:19px;line-height:1.45;margin-bottom:6px}
+.iq-q p::before{content:"\201C"}
+.iq-q p::after{content:"\201D"}
+.iq-q cite{margin-top:10px}
+.iq-steps{margin:0 0 6px;border-top:1px solid var(--oat)}
+.iq-steps li{display:grid;grid-template-columns:38px minmax(0,1fr);align-items:baseline;padding:12px 0;border-bottom:1px solid var(--oat);font-size:15px;line-height:1.55}
+.iq-n{font-size:22px;line-height:1;color:var(--mocha)}
+@media(min-width:600px) and (max-width:899px){
+  .iq-side{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:28px}
+  .iq-ev{grid-column:1/-1}
+}
+
+/* ===================== the shared inquiry, dressed ===================== */
+.cf-inquiry{
+  /* after Continue / Back / Edit a step's top rests under the sticky header with the progress
+     row still in view; the hand-off has no progress row */
+  --cf-scroll-offset:calc(var(--hd-h) + env(safe-area-inset-top,0px) + 18px + var(--iq-prog));
+  color:var(--espresso);font-family:var(--sans);font-size:16px;line-height:1.55
+}
+.cf-inquiry[data-view="handoff"]{--cf-scroll-offset:calc(var(--hd-h) + env(safe-area-inset-top,0px) + 24px)}
+
+/* ---------- progress: four columns. A hairline each; done: mocha; now: a thick espresso rule ---------- */
+.cf-prog{gap:8px;margin:0 0 30px}
+.cf-prog li{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:baseline;column-gap:9px}
+.cf-prog-bar{grid-column:1/-1;grid-row:1;height:3px;margin-bottom:10px;border-radius:2px;background:linear-gradient(var(--sand),var(--sand)) 0 100%/100% 1px no-repeat}
+.cf-prog li.done .cf-prog-bar{background:linear-gradient(var(--mocha),var(--mocha)) 0 100%/100% 1px no-repeat}
+.cf-prog li.now .cf-prog-bar{background:var(--espresso)}
+.cf-prog li::before{content:"0" attr(data-n);content:"0" attr(data-n) / "";grid-row:2;font:400 20px/1 var(--serif);font-variant-numeric:lining-nums;color:var(--mocha);opacity:.6}
+.cf-prog li.done::before,.cf-prog li.now::before{color:var(--espresso);opacity:1}
+.cf-prog-lbl{display:none;grid-row:2;min-width:0;font:650 10px/1.3 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--mocha);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cf-prog li.now .cf-prog-lbl{display:block;color:var(--espresso);overflow:visible}
+.cf-prog li.done .cf-prog-lbl{color:var(--espresso)}
+@container (min-width:480px){.cf-prog-lbl{display:block}}
+/* a narrow sheet: only the current step is named, on its own line under the numbers, so it never
+   runs into the next number; the last step's name sits flush right */
+@container (max-width:479.98px){
+  .cf-inquiry{--iq-prog:84px}
+  .cf-prog li.now .cf-prog-lbl{grid-row:3;grid-column:1/-1;width:max-content;margin-top:8px}
+  .cf-prog li.now:last-child .cf-prog-lbl{justify-self:end}
+}
+
+/* ---------- a step: its question in the serif ---------- */
+.cf-step>legend{float:left;width:100%;padding:0 0 24px;font:400 clamp(28px,3.2vw,38px)/1.1 var(--serif);color:var(--espresso);text-wrap:balance}
+.cf-step>legend+*{clear:both}
+@media (prefers-reduced-motion:no-preference){
+  .cf-form.ready .cf-step:not([hidden]),.cf-handoff:not([hidden]){animation:iqIn .5s var(--ease) both}
+}
+@keyframes iqIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.cf-two{column-gap:18px}
+.cf-two:has(#cf-makeupGuests){align-items:end}
+.cf-field{margin-bottom:24px}
+.cf-lbl{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.7em;margin-bottom:9px;font-size:14.5px;line-height:1.45;font-weight:650;color:var(--espresso)}
+.cf-req,.cf-opt{font-size:9.5px;font-weight:650;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;color:var(--mocha)}
+.cf-req{color:var(--espresso)}
+.cf-req::before{content:"";display:inline-block;width:5px;height:5px;margin-right:6px;border-radius:50%;background:var(--espresso);vertical-align:.15em}
+
+/* fields: 6px boxes with a 3:1 boundary; the active one takes an espresso ring */
+.cf-input{min-height:50px;padding:12px 14px;border:1px solid var(--iq-line);border-radius:var(--r);background:var(--milk);color:var(--espresso);font-family:var(--sans);font-size:16px;line-height:1.45;caret-color:var(--espresso);box-shadow:none;transition:border-color .25s var(--ease),box-shadow .25s var(--ease),background-color .25s}
+.cf-input::placeholder{color:var(--mocha);opacity:.72}
+.cf-input:hover{border-color:var(--mocha)}
+.cf-input:focus{outline:none;border-color:var(--espresso);box-shadow:0 0 0 1px var(--espresso),0 0 0 5px var(--oat)}
+.cf-input:focus-visible{outline:none}
+textarea.cf-input{min-height:118px;line-height:1.55}
+.cf-input[type="date"],.cf-input[type="time"]{min-height:50px}
+.cf-input::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer}
+.cf-input[type="number"]{-moz-appearance:textfield;appearance:textfield}
+.cf-input[type="number"]::-webkit-inner-spin-button,.cf-input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.cf-input[aria-invalid="true"]{border-color:var(--iq-bad);background:var(--iq-bad-bg)}
+.cf-input[aria-invalid="true"]:focus{box-shadow:0 0 0 1px var(--iq-bad),0 0 0 5px var(--iq-bad-bg)}
+.cf-err{display:flex;gap:8px;align-items:baseline;margin:8px 0 0;font-size:13.5px;line-height:1.45;font-weight:600;color:var(--iq-bad)}
+.cf-err::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:currentColor;transform:translateY(-.1em)}
+
+.cf-check{gap:10px;margin-top:6px;min-height:44px;font-size:14px;color:var(--mocha)}
+.cf-check input{width:18px;height:18px;accent-color:var(--espresso)}
+.cf-check:has(input:checked){color:var(--espresso);font-weight:650}
+.cf-check:has(input:focus-visible){outline:2px solid var(--espresso);outline-offset:2px;border-radius:var(--r-s)}
+
+/* choice cards: a ring at rest; chosen, the card turns espresso and the ring a latte dot */
+.cf-cards{gap:8px}
+.cf-card{gap:12px;min-height:52px;padding:12px 15px;border:1px solid var(--iq-line);border-radius:var(--r);background:var(--milk);color:var(--espresso);font-size:15px;line-height:1.35;font-weight:550;transition:border-color .25s var(--ease),background-color .25s var(--ease),color .25s var(--ease)}
+.cf-card::before{content:"";flex:none;width:14px;height:14px;border:1px solid currentColor;border-radius:50%;transition:background-color .25s var(--ease),box-shadow .25s var(--ease)}
+.cf-card:hover{border-color:var(--espresso);background:var(--cream)}
+.cf-card:has(input:checked){background:var(--espresso);border-color:var(--espresso);color:var(--cream)}
+.cf-card:has(input:checked)::before{background:var(--latte);border-color:var(--latte);box-shadow:inset 0 0 0 3px var(--espresso)}
+.cf-card:has(input:focus-visible){outline:2px solid var(--espresso);outline-offset:3px}
+.cf-field[data-invalid] .cf-card{border-color:var(--iq-bad)}
+/* an odd last card takes the whole row (the seven packages) */
+.cf-cards-2>.cf-card:last-child:nth-child(odd){grid-column:1/-1}
+/* her package names, set like the price list: the serif */
+.cf-field:has(#cf-package-label) .cf-card>span{font:400 18px/1.2 var(--serif)}
+/* the long answers take one column until the sheet is wide enough to set them side by side */
+.cf-cards-3,.cf-field:has(#cf-stage-label) .cf-cards{grid-template-columns:minmax(0,1fr)}
+@container (min-width:460px){.cf-field:has(#cf-stage-label) .cf-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@container (min-width:600px){
+  .cf-cards-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .cf-field:has(#cf-heardFrom-label) .cf-cards{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+/* two short answers (first look) and the eight sources stay two across even at 320 wide, set tighter */
+.cf-field:has(#cf-firstLook-label) .cf-cards,.cf-field:has(#cf-heardFrom-label) .cf-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+@container (max-width:300px){
+  .cf-field:has(#cf-heardFrom-label) .cf-card,.cf-field:has(#cf-firstLook-label) .cf-card{padding:10px 12px;font-size:14.5px}
+  .cf-field:has(#cf-heardFrom-label) .cf-card::before{display:none}
+}
+/* the seven packages: one name per row on a narrow sheet, like a price list, so none breaks */
+@container (max-width:419.98px){.cf-field:has(#cf-package-label) .cf-cards{grid-template-columns:minmax(0,1fr)}}
+.cf-hint{margin:10px 0 0;font-size:13.5px;line-height:1.55;color:var(--mocha)}
+.cf-hint a,.cf-noscript a{color:var(--espresso);font-weight:650;text-decoration:underline;text-decoration-color:var(--sand);text-underline-offset:.25em}
+.cf-hint a:hover,.cf-hint a:focus-visible,.cf-noscript a:hover,.cf-noscript a:focus-visible{text-decoration-color:currentColor}
+.cf-hint a{display:inline-block;padding:12px 0;margin:-12px 0}
+
+/* ---------- review: one bordered group per step, the step number in the serif ---------- */
+.cf-review{gap:12px;margin-bottom:18px;counter-reset:iqrv}
+.cf-rev-group{padding:16px 18px 18px;border:1px solid var(--oat);border-radius:var(--r);background:var(--cream);counter-increment:iqrv}
+.cf-rev-head{gap:12px;align-items:center;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--oat)}
+.cf-rev-title{display:flex;align-items:baseline;gap:10px;margin:0;font:400 21px/1.2 var(--serif)}
+.cf-rev-title::before{content:"0" counter(iqrv);content:"0" counter(iqrv) / "";font:650 10.5px/1 var(--sans);letter-spacing:.16em;color:var(--mocha)}
+.cf-rev-edit{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 4px;font:700 11.5px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--espresso);text-decoration:underline;text-decoration-color:var(--sand);text-underline-offset:.5em;cursor:pointer}
+.cf-rev-edit:hover,.cf-rev-edit:focus-visible{text-decoration-color:currentColor}
+.cf-rev-list{gap:10px;padding-top:4px}
+.cf-rev-row{display:grid;grid-template-columns:minmax(0,1fr);row-gap:1px}
+.cf-rev-q{font-size:12.5px;line-height:1.45;color:var(--mocha)}
+.cf-rev-a{font-size:15.5px;line-height:1.5;font-weight:600;color:var(--espresso)}
+.cf-rev-none{margin:4px 0 0;font-size:14px;color:var(--mocha);font-style:italic}
+@container (min-width:520px){.cf-rev-row{grid-template-columns:minmax(0,14rem) minmax(0,1fr);column-gap:20px}}
+.cf-consent{max-width:60ch;margin:0;font-size:13.5px;line-height:1.6;color:var(--mocha)}
+
+/* ---------- the step buttons (Cocoa's .btn, passed in) and Start over ---------- */
+.cf-nav{gap:10px;margin-top:30px;padding-top:22px;border-top:1px solid var(--oat)}
+.cf-nav .btn{flex:1 1 0;min-width:0;padding:0 16px}
+.cf-btn--primary::after{content:"\2192";content:"\2192" / "";font-size:14px;letter-spacing:0;transition:transform .3s var(--ease)}
+.cf-btn--primary:hover::after,.cf-btn--primary:focus-visible::after{transform:translateX(3px)}
+.cf-btn[disabled],.cf-btn[disabled]:hover{opacity:.45;cursor:default;background:var(--espresso);color:var(--cream)}
+@media(min-width:600px){.cf-nav .btn{flex:0 0 auto;min-width:168px;padding:0 28px}}
+.cf-reset{display:flex;align-items:center;margin:12px 0 0 auto;min-height:44px;padding:0 4px;font:700 10.5px/1.2 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--mocha);text-decoration:underline;text-decoration-color:var(--sand);text-underline-offset:.5em;cursor:pointer}
+.cf-reset:hover,.cf-reset:focus-visible{color:var(--espresso);text-decoration-color:currentColor}
+
+/* ---------- the hand-off ---------- */
+.cf-strip{position:relative;margin:0 0 26px;padding:12px 16px 12px 34px;border-radius:var(--r);background:var(--oat);color:var(--espresso);font-size:13.5px;line-height:1.5}
+.cf-strip::before{content:"";position:absolute;left:16px;top:calc(12px + .5em);width:8px;height:8px;border-radius:50%;background:var(--mocha)}
+.cf-strip strong{font-weight:750}
+.cf-kick{display:block;margin:0 0 14px;font:650 11.5px/1.4 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--mocha)}
+.cf-handoff h2{margin:0 0 16px;font:400 clamp(34px,4.6vw,54px)/1.04 var(--serif);text-wrap:balance}
+.cf-handoff-body{max-width:52ch;margin:0;font-size:16.5px;line-height:1.65;color:var(--mocha)}
+.cf-actions{gap:10px;margin-top:28px}
+.cf-actions .btn{flex:1 1 100%;min-height:50px;height:auto;padding:13px 18px}
+@media(max-width:429px){.cf-actions .btn{letter-spacing:.1em}}
+@media(min-width:600px){.cf-actions .btn{flex:0 0 auto}}
+.cf-back{display:inline-flex;align-items:center;min-height:44px;padding:0 4px;margin:0;font:700 11.5px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--espresso);text-decoration:underline;text-decoration-color:var(--sand);text-underline-offset:.5em;cursor:pointer}
+.cf-back:hover,.cf-back:focus-visible{text-decoration-color:currentColor}
+@media(min-width:600px){.cf-back{margin-left:10px}}
+.cf-status{min-height:1.5em;margin:14px 0 0;font-size:14px;font-weight:650;color:var(--espresso)}
+.cf-copytext{margin-top:12px;padding:12px 14px;border:1px solid var(--iq-line);border-radius:var(--r);background:var(--cream);color:var(--espresso)}
+.cf-copytext:focus{outline:2px solid var(--espresso);outline-offset:2px}
+
+/* without script: the line and her real form's link, nothing else */
+.cf-noscript{margin:0;padding:18px 20px;border:1px solid var(--iq-line);border-radius:var(--r);font-size:15px;line-height:1.6}

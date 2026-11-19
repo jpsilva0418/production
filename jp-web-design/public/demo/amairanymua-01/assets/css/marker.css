@@ -1,0 +1,23 @@
+/* /demo/amairanymua-01 — the "Design preview · not the official site" marker.
+   Studio chrome, identical in every site and never restyled by one: it must always be
+   legible, whatever is under it. During review it carries the switch between the previews.
+   A site with a bar fixed to the bottom of the screen lifts it with --marker-bottom. */
+.demo-flag{position:fixed;left:50%;bottom:calc(var(--marker-bottom,8px) + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:2147483000;
+  display:flex;align-items:center;justify-content:center;gap:2px 12px;flex-wrap:wrap;max-width:calc(100vw - 16px);box-sizing:border-box;
+  background:#17110f;color:#f6efe6;font:600 10px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;
+  padding:5px 12px;border-radius:20px;opacity:.95;pointer-events:none;box-shadow:0 0 0 1px rgba(255,255,255,.14),0 8px 20px -10px rgba(0,0,0,.5);transition:bottom .3s ease}
+.demo-flag *{box-sizing:border-box}
+.demo-flag-t{white-space:nowrap}
+.demo-dirs{display:inline-flex;align-items:center;gap:3px;pointer-events:auto}
+.demo-dirs-k{margin-right:5px;color:rgba(246,239,230,.62)}
+.demo-dirs a{display:inline-grid;place-items:center;min-width:30px;height:26px;padding:0 7px;border-radius:13px;color:#ead3b3;text-decoration:none;transition:background .25s,color .25s}
+.demo-dirs a:hover,.demo-dirs a:focus-visible{background:rgba(246,239,230,.16);color:#fff}
+.demo-dirs a:focus-visible{outline:2px solid #fff;outline-offset:1px}
+.demo-dirs a[aria-current="true"]{background:#f6efe6;color:#17110f}
+.demo-flag--review{padding:4px 8px 4px 12px}
+@media(max-width:560px){.demo-flag--review{flex-direction:column;border-radius:16px;padding:5px 8px 4px;gap:1px;width:min(calc(100vw - 16px),330px)}.demo-flag--review .demo-flag-t{font-size:9px}
+  /* nine previews: drop the "Preview" word and let the numbers wrap, so nothing runs off a 320 screen */
+  .demo-flag--review .demo-dirs{flex-wrap:wrap;justify-content:center;gap:2px;max-width:100%}.demo-flag--review .demo-dirs-k{display:none}.demo-flag--review .demo-dirs a{min-width:24px;height:24px;padding:0 3px}.demo-flag--review .demo-all{padding:0 6px}}
+@media(max-width:360px){.demo-flag--review .demo-flag-t{font-size:8.5px;letter-spacing:.08em}}
+@media (prefers-reduced-motion:reduce){.demo-flag,.demo-dirs a{transition:none}}
+@media print{.demo-flag{position:static;transform:none;margin:8px auto}}

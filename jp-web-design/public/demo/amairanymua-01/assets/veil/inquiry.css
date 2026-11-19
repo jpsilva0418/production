@@ -1,0 +1,193 @@
+/* /demo/amairanymua-01 — VEIL: the Bridal Inquiry page and its skin for the shared form.
+   Loaded after site.css and assets/css/inquiry-core.css (structure only), so every single-class
+   rule here wins on equal specificity. Colours come from site.css tokens; the one exception is
+   the error pair below, the only place a red may appear on this site. Motion: opacity and
+   transform only, none under prefers-reduced-motion (site.css stops every animation there).
+   Hooks and states: SKINNING.md (studio scratch folder). */
+:root{
+  --bad:#9A3A31;        /* error text, AA on tulle and sheen */
+  --bad-line:#B2473D;   /* error border */
+  --field-line:rgb(var(--espresso-rgb)/.26);
+  --field-base:rgb(var(--espresso-rgb)/.62);   /* the lower edge of a field: 3:1 against its ground */
+}
+
+/* ---------- the title card ---------- */
+.is-inquiry .cover{padding:calc(var(--hd-h) + clamp(2.2rem,5vw,4rem)) 0 clamp(2.2rem,5vw,3.6rem)}
+.is-inquiry .cover-h{max-width:12ch}
+/* "Not a bride?" under the card and its notes */
+.iq-alt{display:grid;justify-items:center;gap:.35rem;width:100%;max-width:30rem;margin:clamp(2.6rem,6vw,3.4rem) auto 0;text-align:center}
+.iq-alt::before{content:'';display:block;width:56px;height:7px;margin-bottom:1.1rem;background:radial-gradient(circle,var(--foil-3) 0 2px,rgb(var(--tulle-rgb)/0) 2.6px) center/7px 7px no-repeat,linear-gradient(90deg,rgb(var(--pearl-rgb)/0),var(--pearl) 30%,var(--pearl) 70%,rgb(var(--pearl-rgb)/0)) center/100% 1px no-repeat}
+.iq-alt-h{font:italic 400 clamp(1.55rem,4.4vw,1.85rem)/1.15 var(--ff-d);color:var(--espresso)}
+.iq-alt-p{font-size:1.12rem;line-height:1.5;max-width:24rem}
+.iq-alt-a{margin-top:.15rem}
+
+/* ---------- the band and the card ---------- */
+.iq{position:relative;padding:clamp(2.4rem,7vw,5rem) 0 clamp(3.6rem,8vw,6.5rem);border-top:1px solid var(--pearl);background:radial-gradient(70% 34rem at 50% 0,rgb(var(--sheen-rgb)/.6),rgb(var(--sheen-rgb)/0)),var(--satin);--ground:var(--satin)}
+.iq-grid{display:grid;justify-items:center}
+.iq-side{display:none}
+.iq-col{width:min(44rem,100%);min-width:0}
+@media(min-width:1200px){
+  .iq-grid{justify-items:stretch;grid-template-columns:minmax(0,24fr) minmax(0,44fr);max-width:calc(74rem + var(--gut)*2);align-items:start;column-gap:clamp(3.5rem,5.5vw,6.5rem)}
+  .iq-side{display:block;position:sticky;top:calc(var(--hd-h) + 2.6rem);min-width:0}
+  .iq-col{width:100%}
+}
+/* the mat: an outer hairline, a pearl-white margin, an inner hairline (the frames' language) */
+.iq-card{position:relative;padding:7px;border:1px solid var(--pearl);background:var(--tulle);--ground:var(--tulle)}
+.iq-card-in{position:relative;border:1px solid rgb(var(--pearl-rgb)/.9);padding:clamp(1.9rem,5vw,3rem) clamp(1rem,4.6vw,3.4rem) clamp(1.6rem,5vw,3rem)}
+@media(min-width:900px){.iq-card{padding:12px}}
+.iq-card-head{display:grid;justify-items:center;margin-bottom:clamp(1.6rem,4vw,2.2rem)}
+.iq-clasp{position:absolute;top:-6px;left:50%;margin:0 0 0 -5.5px}
+.iq-kick{text-align:center}
+
+/* ---------- the shared form: base ---------- */
+.cf-inquiry{
+  --iq-prog:63px;   /* the progress block (33px) and its margin (30px), so it shows above a step */
+  --cf-scroll-offset:calc(var(--hd-h) + env(safe-area-inset-top,0px) + var(--iq-prog) + 26px);
+  color:var(--espresso-soft);
+}
+.cf-inquiry[data-view="handoff"]{--cf-scroll-offset:calc(var(--hd-h) + env(safe-area-inset-top,0px) + 32px)}
+
+/* progress: a fine line per step. Done: a solid foil line closed by a foil diamond. Now: foil
+   drawn halfway to a pearl. To come: a bare hairline. Labels: bronze, espresso, soft. */
+.cf-prog{gap:8px;margin:0 0 30px}
+.cf-prog li{position:relative}
+.cf-prog-bar{position:relative;height:12px}
+.cf-prog-bar::before,.cf-prog-bar::after{content:'';position:absolute;left:0;right:0;top:50%}
+.cf-prog-bar::before{height:1px;margin-top:-.5px;background:rgb(var(--espresso-rgb)/.24)}
+.cf-prog-bar::after{height:2px;margin-top:-1px;background:var(--foil-ink);transform:scaleX(0);transform-origin:0 50%}
+.cf-prog li.done .cf-prog-bar::after{transform:none}
+.cf-prog li.now .cf-prog-bar::after{right:50%;transform:none;animation:iqDraw .9s var(--ease) both}
+.cf-prog li::after{content:'';position:absolute;top:6px;pointer-events:none}
+.cf-prog li.done::after{right:0;width:7px;height:7px;margin-top:-3.5px;transform:rotate(45deg);background:var(--foil-ink)}
+.cf-prog li.now::after{left:50%;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;background:radial-gradient(circle at 34% 30%,rgb(var(--sheen-rgb)) 0 18%,var(--satin) 46%,var(--pearl) 78%,var(--foil-3) 100%);box-shadow:0 0 0 1px rgb(var(--pearl-rgb)),0 0 0 4px var(--ground,var(--tulle)),0 0 0 5px rgb(var(--pearl-rgb));animation:iqPearl .5s var(--ease) .35s both}
+.cf-prog-lbl{margin-top:10px;font:500 .6rem/1.2 var(--ff-u);letter-spacing:.22em;text-transform:uppercase;color:var(--espresso-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cf-prog li.done .cf-prog-lbl{color:var(--bronze)}
+.cf-prog li.now .cf-prog-lbl{color:var(--espresso)}
+@media(max-width:599px){
+  .cf-prog li:not(.now) .cf-prog-lbl{visibility:hidden}
+  .cf-prog li.now .cf-prog-lbl{overflow:visible}
+}
+@keyframes iqDraw{from{transform:scaleX(0)}to{transform:none}}
+@keyframes iqPearl{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:none}}
+
+/* a step: its question set large and light, centred, a short foil hairline under it */
+.cf-step>legend{display:block;width:100%;margin:0 0 clamp(1.7rem,4.4vw,2.4rem);font:300 clamp(2rem,6.6vw,2.8rem)/1.08 var(--ff-d);letter-spacing:-.01em;color:var(--espresso);text-align:center;text-wrap:balance}
+.cf-step>legend::after{content:'';display:block;width:44px;height:1px;margin:1.05rem auto 0;background:var(--foil)}
+html.js .cf-form.ready .cf-step:not([hidden]),html.js .cf-handoff:not([hidden]){animation:iqStep .65s var(--ease) both}
+@keyframes iqStep{from{opacity:0;transform:translate3d(0,12px,0)}to{opacity:1;transform:none}}
+
+/* ---------- questions ---------- */
+.cf-field{margin:0 0 1.7rem}
+.cf-step>.cf-field:last-child,.cf-two:last-child>.cf-field{margin-bottom:0}
+.cf-two{column-gap:1.25rem}
+.cf-lbl{margin:0 0 .6rem;font:500 1.14rem/1.3 var(--ff-d);color:var(--espresso)}
+.cf-req,.cf-opt{display:inline-block;margin-left:.55em;font:500 .56rem/1 var(--ff-u);letter-spacing:.2em;text-transform:uppercase;vertical-align:.22em;white-space:nowrap}
+.cf-opt{color:var(--espresso-soft)}
+.cf-req{color:var(--bronze)}
+.cf-req::before{content:'';display:inline-block;width:4px;height:4px;margin:0 .55em .12em 0;transform:rotate(45deg);background:var(--foil-ink)}
+
+/* fields: pearl-white, a hairline round, a firmer line beneath (iPhone date and time keep the
+   core's fixes: full width, left-aligned, never collapsing; 16px+ so nothing zooms) */
+.cf-input{min-height:52px;padding:.72rem .95rem;border:1px solid var(--field-line);border-bottom-color:var(--field-base);border-radius:2px;background:rgb(var(--sheen-rgb));color:var(--espresso);font:500 1.18rem/1.4 var(--ff-d);color-scheme:light;font-variant-numeric:lining-nums;transition:border-color .3s,background-color .3s}
+.cf-input::placeholder{color:var(--espresso-soft);opacity:.8}
+@media(hover:hover){.cf-input:hover{border-color:rgb(var(--espresso-rgb)/.42);border-bottom-color:var(--espresso-soft)}}
+.cf-input:focus-visible{outline:2px solid var(--bronze);outline-offset:2px;border-color:var(--bronze)}
+.cf-input[type="date"],.cf-input[type="time"]{min-height:52px;font-variant-numeric:lining-nums}
+.cf-input::-webkit-calendar-picker-indicator{opacity:.55;cursor:pointer}
+textarea.cf-input{min-height:8.5rem;line-height:1.5}
+.cf-input[aria-invalid="true"]{border-color:var(--bad-line);box-shadow:inset 0 -1px 0 var(--bad-line)}
+.cf-input[aria-invalid="true"]:focus-visible{outline-color:var(--bad-line)}
+.cf-err{display:flex;align-items:baseline;gap:.6em;margin:.6rem 0 0;font:500 .86rem/1.45 var(--ff-u);color:var(--bad)}
+.cf-err::before{content:'';flex:none;width:6px;height:6px;transform:translateY(-1px) rotate(45deg);border:1px solid currentColor}
+
+.cf-check{gap:.7rem;min-height:44px;margin-top:.45rem;padding-right:.4rem;font:500 1.06rem/1.3 var(--ff-d);color:var(--espresso)}
+.cf-check input{width:20px;height:20px;accent-color:var(--espresso)}
+.cf-check input:focus-visible{outline:2px solid var(--bronze);outline-offset:3px}
+
+.cf-hint{margin:.8rem 0 0;font:400 .86rem/1.6 var(--ff-u);color:var(--espresso-soft)}
+.cf-hint a{color:var(--bronze);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.22em}
+
+/* ---------- choice cards ----------
+   Rest: pearl white, a hairline, an empty ring. Chosen: an espresso double line, the ring
+   filled to a dot, a champagne ground. Keyboard: the bronze ring every control here has. */
+.cf-cards{gap:10px}
+.cf-card{gap:.8rem;min-height:56px;padding:.8rem 1rem;border:1px solid var(--field-line);border-radius:2px;background:rgb(var(--sheen-rgb));color:var(--espresso);font:500 1.12rem/1.2 var(--ff-d);transition:border-color .3s,background-color .3s}
+.cf-card::before{content:'';flex:none;width:18px;height:18px;border-radius:50%;border:1px solid rgb(var(--espresso-rgb)/.5);background:rgb(var(--sheen-rgb));transition:border-color .3s}
+@media(hover:hover){.cf-card:hover{border-color:rgb(var(--espresso-rgb)/.55)}}
+.cf-card:has(input:checked){border-color:var(--espresso);box-shadow:inset 0 0 0 1px var(--espresso);background:linear-gradient(rgb(var(--foil-1-rgb)/.42),rgb(var(--foil-1-rgb)/.42)),rgb(var(--sheen-rgb))}
+.cf-card:has(input:checked)::before{border-color:var(--espresso);background:radial-gradient(circle,var(--espresso) 0 4px,rgb(var(--sheen-rgb)) 4.6px)}
+.cf-card:has(input:focus-visible){outline:2px solid var(--bronze);outline-offset:3px}
+.cf-field[data-invalid] .cf-card{border-color:var(--bad-line)}
+/* three-up groups: the ring above the word, centred (they read as small tiles) */
+.cf-cards-3 .cf-card{flex-direction:column;justify-content:flex-start;gap:.55rem;min-height:84px;padding:.85rem .45rem;text-align:center}
+/* a five-card group in a three-column hint: 3 then 2, the last two sharing the row */
+@media(min-width:340px){
+  .cf-cards-3{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .cf-cards-3>.cf-card{grid-column:span 2}
+  .cf-cards-3>.cf-card:nth-child(3n+1):nth-last-child(2),.cf-cards-3>.cf-card:nth-child(3n+2):last-child{grid-column:span 3}
+}
+/* the package group: a list of rows on phones (the names are long); on wider screens 2, 2,
+   then the last alone across the row */
+@media(max-width:599px){.cf-cards-2{grid-template-columns:minmax(0,1fr)}}
+.cf-cards-2>.cf-card:last-child:nth-child(odd){grid-column:1/-1}
+/* under 340px every group is one column (core); the tiles lie down again as rows */
+@media(max-width:339.98px){
+  .cf-cards-3 .cf-card{flex-direction:row;justify-content:flex-start;min-height:56px;padding:.8rem 1rem;text-align:left}
+}
+
+/* ---------- review ---------- */
+.cf-review{gap:0;margin:0 0 1.7rem;border-top:1px solid var(--pearl)}
+.cf-rev-group{padding:1.25rem 0 1.4rem;border-bottom:1px solid var(--pearl)}
+.cf-rev-head{align-items:center;gap:1rem;margin-bottom:.75rem}
+.cf-rev-title{font:400 1.55rem/1.1 var(--ff-d);color:var(--espresso)}
+.cf-rev-edit{display:inline-flex;align-items:center;min-height:44px;padding:0 .2rem;border:0;background:none;cursor:pointer;font:500 .66rem/1 var(--ff-u);letter-spacing:.24em;text-transform:uppercase;color:var(--bronze);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.55em}
+@media(hover:hover){.cf-rev-edit:hover{color:var(--espresso)}}
+.cf-rev-list{gap:.8rem}
+.cf-rev-row{display:grid;grid-template-columns:minmax(0,1fr);row-gap:.2rem}
+.cf-rev-q{font:500 .6rem/1.5 var(--ff-u);letter-spacing:.22em;text-transform:uppercase;color:var(--bronze)}
+.cf-rev-a{font:500 1.16rem/1.4 var(--ff-d);font-variant-numeric:lining-nums;color:var(--espresso)}
+.cf-rev-none{font-style:italic;font-size:1.1rem;color:var(--espresso-soft)}
+@media(min-width:600px){.cf-rev-row{grid-template-columns:minmax(0,10.5rem) minmax(0,1fr);column-gap:1.25rem;align-items:baseline}}
+.cf-consent{font:400 .86rem/1.65 var(--ff-u);color:var(--espresso-soft);text-align:center;max-width:30rem;margin-inline:auto}
+
+/* ---------- step buttons (the kit's .btn and .btn--line, passed in by the page) ---------- */
+.cf-nav{gap:12px;margin-top:2.2rem;padding-top:1.7rem;border-top:1px solid var(--pearl)}
+.cf-nav .cf-btn--secondary{flex:1 1 0}
+.cf-nav .cf-btn--primary{flex:1.7 1 0}
+@media(min-width:600px){.cf-nav .cf-btn--secondary,.cf-nav .cf-btn--primary{flex:0 0 auto;min-width:11rem}}
+.cf-inquiry .btn[disabled],.cf-inquiry button[disabled]{opacity:.45;cursor:default;pointer-events:none}
+.cf-reset{display:flex;align-items:center;min-height:44px;margin:1rem auto 0;padding:0 .5rem;border:0;background:none;cursor:pointer;font:500 .62rem/1 var(--ff-u);letter-spacing:.24em;text-transform:uppercase;color:var(--espresso-soft);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.55em}
+@media(hover:hover){.cf-reset:hover{color:var(--espresso)}}
+
+/* ---------- the hand-off ---------- */
+.cf-handoff{text-align:center}
+.cf-strip{display:block;margin:0 0 clamp(2rem,5vw,2.6rem);padding:.85rem 1rem;border-block:1px solid var(--pearl);background:var(--satin);font:400 .86rem/1.55 var(--ff-u);color:var(--espresso)}
+.cf-strip strong{margin-right:.35em;font-weight:500;font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--bronze)}
+.cf-kick{display:block;margin:0 0 1rem;font:500 .7rem/1.4 var(--ff-u);letter-spacing:.3em;text-transform:uppercase;color:var(--bronze)}
+.cf-handoff h2{max-width:15ch;margin:0 auto;font:300 clamp(2.3rem,7.4vw,3.5rem)/1.05 var(--ff-d);letter-spacing:-.01em;color:var(--espresso);text-wrap:balance}
+.cf-handoff h2::after{content:'';display:block;width:min(200px,60%);height:7px;margin:1.5rem auto 1.4rem;background:radial-gradient(circle,var(--foil-3) 0 2px,rgb(var(--tulle-rgb)/0) 2.6px) center/7px 7px no-repeat,linear-gradient(90deg,rgb(var(--pearl-rgb)/0),var(--pearl) 30%,var(--pearl) 70%,rgb(var(--pearl-rgb)/0)) center/100% 1px no-repeat}
+.cf-handoff-body{max-width:30rem;margin:0 auto}
+.cf-actions{display:grid;grid-template-columns:minmax(0,1fr);justify-content:center;gap:12px;width:100%;max-width:26rem;margin:2rem auto 0}
+.cf-go{min-height:52px;padding-block:.95em;line-height:1.5}
+.cf-go .arr{margin-left:.15em;transition:transform .4s var(--ease)}
+@media(hover:hover){.cf-go:hover .arr{transform:translateX(4px)}}
+.cf-back{justify-self:center;display:inline-flex;align-items:center;min-height:44px;margin-top:.2rem;padding:0 .4rem;border:0;background:none;cursor:pointer;font:500 .66rem/1 var(--ff-u);letter-spacing:.24em;text-transform:uppercase;color:var(--bronze);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.55em}
+@media(hover:hover){.cf-back:hover{color:var(--espresso)}}
+@media(min-width:600px){
+  .cf-actions{grid-template-columns:auto auto;max-width:none}
+  .cf-back{grid-column:1/-1}
+}
+.cf-status{display:flex;justify-content:center;align-items:baseline;gap:.6em;min-height:1.6em;margin:1rem auto 0;max-width:30rem;font:500 .86rem/1.6 var(--ff-u);letter-spacing:.02em;color:var(--espresso)}
+.cf-status:not(:empty)::before{content:'';flex:none;width:6px;height:6px;transform:translateY(-1px) rotate(45deg);background:var(--foil-ink)}
+.cf-copytext{margin-top:1rem;padding:.9rem 1rem;border:1px solid var(--field-line);border-bottom-color:var(--field-base);border-radius:2px;background:rgb(var(--sheen-rgb));color:var(--espresso);font-family:var(--ff-u);text-align:left}
+.cf-copytext:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
+
+/* ---------- without JavaScript: the line and her form ---------- */
+.cf-noscript{padding:.2rem 0 .4rem;text-align:center;font:500 1.18rem/1.55 var(--ff-d);color:var(--espresso)}
+.cf-noscript a{display:flex;align-items:center;justify-content:center;width:fit-content;max-width:100%;min-height:50px;margin:1.1rem auto 0;padding:.9em 1.7em;background:var(--espresso);color:var(--tulle);font:500 .72rem/1.4 var(--ff-u);letter-spacing:.24em;text-transform:uppercase;text-decoration:none;text-align:center;border-radius:2px}
+
+/* ---------- under the card ---------- */
+.iq-notes{display:grid;justify-items:center;gap:1rem;margin-top:1.7rem;text-align:center}
+.iq-note{max-width:32rem;font:400 .88rem/1.6 var(--ff-u);color:var(--espresso-soft)}
+.iq-demo{display:inline-flex;align-items:baseline;gap:.7rem;max-width:34rem;padding:.75rem 1.1rem;border:1px solid rgb(var(--espresso-rgb)/.24);background:rgb(var(--tulle-rgb)/.75);font:500 .84rem/1.55 var(--ff-u);color:var(--espresso);text-align:left}
+.iq-demo::before{content:'';flex:none;width:6px;height:6px;transform:translateY(-1px) rotate(45deg);background:var(--foil-ink)}

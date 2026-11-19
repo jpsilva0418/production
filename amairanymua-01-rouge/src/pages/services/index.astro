@@ -1,0 +1,227 @@
+---
+/** SERVICES — her four services as editorial rows: a photograph with a film frame set into its
+ *  corner (a marked slot until her clip exists), the description, what it covers, and the right
+ *  next step (the bridal inquiry for weddings, her own booking page for events). No pricing:
+ *  current packages and pricing live on her booking page. */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Plate from '../../components/Plate.astro';
+import Film from '../../components/Film.astro';
+import { getCollection } from 'astro:content';
+import { SITE, LINKS, SERVICES_C, SERVICE_BY_ID, PATHS, FILMS } from '../../lib/content';
+import { book, HER } from '../../consts';
+const services = (await getCollection('services')).filter((s) => !s.data.draft).sort((a, b) => a.data.order - b.data.order)
+  .map((s) => ({ ...SERVICE_BY_ID[s.data.key], numeral: s.data.numeral }));
+const roman = ['i', 'ii', 'iii'];
+const arr = ' <span class="arr" aria-hidden="true">&rarr;</span>';
+---
+<BaseLayout
+  title="Services"
+  description={`Bridal hair and makeup, trials and the bridal party, soft glam to full glam, and glam waves by ${SITE.name}, ${SITE.area}.`}>
+
+  <section class="cov ghostwrap">
+    <span class="ghost-w" aria-hidden="true">{SERVICES_C.ghost}</span>
+    <div class="cov-c">
+      <p class="cov-kick fade">{SERVICES_C.kick}</p>
+      <h1 class="disp rv">{SERVICES_C.heading[0]}<br /><span class="ital">{SERVICES_C.heading[1]}</span></h1>
+      <p class="cov-sub rv" style="--d:.08s">{SERVICES_C.sub} {SERVICES_C.pricing} <Fragment set:html={book('schedule', SERVICES_C.pricingLink)} />.</p>
+      <div class="cov-cta fade" style="--d:.16s">
+        <a class="btn btn--solid" href={LINKS.inquiry}>Bridal inquiry</a>
+        <a class="tlk" href="#how">{SERVICES_C.slateHow}</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="chapslate fade" role="presentation"><span class="cs-t">Hair, makeup or both</span></div>
+
+  <section class="sec lit" style="padding-top:clamp(40px,6vw,80px)">
+    <i class="lx-shaft" aria-hidden="true"></i>
+    <div class="wrap svc-rows">
+      {services.map((s) => (
+        <article class="svc" id={s.id}>
+          <figure class="svc-fig">
+            <div class="ph ph--framed rv-im svc-ph"><Plate id={s.plate} class="lv" sizes="(max-width:899px) 90vw, 46vw" /><i class="grain" aria-hidden="true"></i></div>
+            {s.film && <div class="svc-film fade" style="--d:.2s"><Film id={s.film} label={FILMS[s.film].label} /></div>}
+          </figure>
+          <div class="svc-copy">
+            <span class="caps-xs rv">No. {s.numeral}</span>
+            <h2 class="rv" style="--d:.06s" set:html={s.title} />
+            <p class="svc-sum rv" style="--d:.1s">{s.summary}</p>
+            {s.points.length > 0 && <ul class="svc-inc rv" style="--d:.14s">{s.points.map((p) => <li>{p}</li>)}</ul>}
+            <div class="svc-act fade" style="--d:.2s">
+              {s.group === 'weddings'
+                ? <><a class="btn btn--solid" href={LINKS.inquiry}>Bridal inquiry</a><Fragment set:html={book('bridal-services', 'Bridal services on her booking page', 'tlk')} /></>
+                : <><Fragment set:html={book('event', 'Book event glam', 'btn btn--solid')} /><Fragment set:html={book('schedule', 'Packages &amp; pricing', 'tlk')} /></>}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <div class="chapslate chapslate--linen fade" role="presentation"><span class="cs-t">Bridal packages</span></div>
+
+  <!-- PACKAGES · her bridal collections, with prices as listed on her booking page -->
+  <section class="sec sec--linen pk-sec" id="packages" aria-labelledby="pkH" style="padding-top:clamp(24px,4vw,48px)">
+    <div class="wrap">
+      <header class="pk-h">
+        <div>
+          <p class="kick rv">On her booking page</p>
+          <h2 class="disp rv" id="pkH" style="--d:.06s">Bridal packages <span class="ital">&amp; pricing.</span></h2>
+        </div>
+        <p class="pk-note fade" style="--d:.1s" set:html={HER.packagesNote} />
+      </header>
+      <div class="pk-grid" data-stag=".06">
+        {HER.packages.map((k, i) => (
+          <article class="pk rv">
+            <span class="caps-xs">No. {['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'][i]}</span>
+            <h3>{k.name}</h3>
+            <p class="pk-who" set:html={k.who} />
+            <p class="pk-price"><span>$</span>{k.price}</p>
+            <ul>{k.points.map((x) => <li set:html={x} />)}</ul>
+          </article>
+        ))}
+      </div>
+      <div class="pk-act fade">
+        <a class="btn btn--solid" href={LINKS.inquiry}>Bridal inquiry</a>
+        <Fragment set:html={book('schedule', 'Current prices on her booking page', 'tlk')} />
+      </div>
+    </div>
+  </section>
+
+  <!-- GOOD TO KNOW · destination brides, her answers, and how to arrive -->
+  <section class="sec gk" aria-labelledby="gkH">
+    <div class="wrap chap">
+      <div class="chap-l rv">
+        <p class="chap-rn">Good to know</p>
+        <h2 class="disp chap-t" id="gkH">Before you <span class="ital">inquire.</span></h2>
+        <div class="gk-dest">
+          <p class="caps-xs">{HER.destination.heading}</p>
+          <p set:html={HER.destination.body} />
+          <a class="tlk" href={LINKS.inquiry}>Start a bridal inquiry</a>
+        </div>
+      </div>
+      <div>
+        <div class="gk-faq">
+          {HER.faq.map(([q, a]) => (
+            <details class="gk-q rv">
+              <summary><span set:html={q} /><i aria-hidden="true"></i></summary>
+              <p set:html={a} />
+            </details>
+          ))}
+        </div>
+        <div class="gk-prep rv">
+          <p class="caps-xs">Before your appointment</p>
+          <ul>{HER.prepare.map((x) => <li>{x}</li>)}</ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="chapslate chapslate--dk fade" role="presentation" id="how"><span class="cs-t">{SERVICES_C.slateHow}</span></div>
+
+  <section class="sec sec--dk lit">
+    <i class="lx-dusk" aria-hidden="true"></i>
+    <div class="wrap how-grid" data-stag=".08" style="position:relative;z-index:1">
+      {PATHS.map((h, i) => (
+        <article class="how rv">
+          <span class="caps-xs">{roman[i]}. &middot; {h.kicker}</span>
+          <h2>{h.title}</h2>
+          <p>{h.body}</p>
+          <ul class="how-pts">{h.points.map((p) => <li>{p}</li>)}</ul>
+          {h.key === 'bridal'
+            ? <a class="arrow-link" href={LINKS.inquiry}>{h.cta} <span class="arr" aria-hidden="true">&rarr;</span></a>
+            : <Fragment set:html={book('event', h.cta + arr, 'arrow-link')} />}
+          <p class="how-note">{h.note}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="sec sec--linen sec--tight">
+    <div class="wrap">
+      <div class="note-card rv">
+        <span class="caps">Packages &amp; pricing</span>
+        <p class="note-copy">{SERVICES_C.pricing} {SERVICES_C.pricingLink}.</p>
+        <span class="note-rule" aria-hidden="true"></span>
+        <div class="note-act">
+          <Fragment set:html={book('schedule', 'Open her booking page', 'btn btn--solid')} />
+          <a class="tlk" href={LINKS.inquiry}>Bridal inquiry</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .svc-rows{display:grid;row-gap:clamp(4.5rem,8vw,7.5rem)}
+  .svc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:clamp(2.4rem,6vw,6rem);align-items:center;scroll-margin-top:90px}
+  .svc-fig{margin:0;position:relative;padding-right:18%;padding-bottom:10%}
+  .svc-ph{aspect-ratio:4/4.6}
+  .svc-ph :global(img){object-position:50% 22%}
+  .svc-film{position:absolute;right:0;bottom:0;width:38%;border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-lg);outline:6px solid var(--ivory)}
+  .svc:nth-child(even) .svc-fig{order:2;padding-right:0;padding-left:18%}
+  .svc:nth-child(even) .svc-film{right:auto;left:0}
+  .svc:nth-child(even) .svc-copy{order:1}
+  .svc-copy .caps-xs{display:block;margin-bottom:1.2rem}
+  .svc-copy h2{font-size:clamp(2rem,3.4vw,3.2rem);line-height:1.08;margin:0 0 1.2rem}
+  .svc-sum{max-width:30em;margin:0 0 1.4rem}
+  .svc-inc{list-style:none;margin:0 0 clamp(1.6rem,2.8vw,2.2rem);padding:0;display:grid;gap:.45rem;max-width:30em}
+  .svc-inc li{position:relative;padding-left:1.5rem;font-size:.95rem;color:var(--ink)}
+  .svc-inc li::before{content:"";position:absolute;left:0;top:.72em;width:9px;height:1px;background:var(--brass)}
+  .svc-act{display:flex;align-items:center;gap:1.8rem;flex-wrap:wrap}
+  @media(max-width:899px){
+    .svc{grid-template-columns:1fr;row-gap:1.8rem}
+    .svc:nth-child(even) .svc-fig,.svc:nth-child(even) .svc-copy{order:0}
+    .svc:nth-child(even) .svc-fig{padding-left:0;padding-right:18%}
+    .svc:nth-child(even) .svc-film{left:auto;right:0}
+    .svc-fig{width:min(520px,100%)}
+    .svc-ph{aspect-ratio:4/4.4}
+  }
+  .how-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(1.4rem,2.6vw,2.4rem)}
+  .how{border-top:1px solid var(--hairdk);padding-top:1.4rem}
+  .how .caps-xs{display:block;color:var(--gold-lt);margin-bottom:.9rem}
+  .how h2{font-size:clamp(1.4rem,2vw,1.8rem);color:var(--ivory);margin-bottom:.8rem}
+  .how p{color:color-mix(in srgb,var(--ivory) 80%,transparent);font-size:.95rem;margin-bottom:.8rem}
+.how-pts{list-style:none;margin:0 0 1rem;padding:0;display:grid;gap:.35rem}
+  .how-pts li{position:relative;padding-left:1.4rem;font-size:.92rem;color:color-mix(in srgb,var(--ivory) 86%,transparent)}
+  .how-pts li::before{content:"";position:absolute;left:0;top:.75em;width:9px;height:1px;background:var(--gold-lt)}
+  .how-note{font-family:var(--display);font-style:italic;font-size:.9rem!important;margin-top:.6rem}
+  .cov-sub :global(a){color:var(--brass);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--hair-strong)}
+.pk-h{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem 3rem;flex-wrap:wrap;margin-bottom:clamp(2rem,3.6vw,3rem)}
+  .pk-h .kick{margin-bottom:1.2rem}
+  .pk-h .disp{font-size:clamp(2.2rem,4.2vw,3.8rem);font-weight:300}
+  .pk-note{max-width:26em;font-family:var(--display);font-style:italic;font-size:1rem;color:var(--ink-soft)}
+  .pk-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1rem,2vw,1.6rem)}
+  .pk{position:relative;background:var(--paper);border:1px solid var(--hair);border-radius:var(--r);padding:clamp(1.5rem,2.4vw,2rem);display:flex;flex-direction:column;gap:.4rem}
+  .pk::after{content:"";position:absolute;inset:6px;border:1px solid var(--hair);border-radius:calc(var(--r) - 4px);pointer-events:none}
+  .pk:nth-child(2){border-top:3px solid var(--rouge)}
+  .pk h3{font-size:clamp(1.4rem,2vw,1.75rem);font-weight:350;color:var(--ink)}
+  .pk-who{font-family:var(--utility);font-weight:600;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--brass)}
+  .pk-price{font-family:var(--display);font-weight:300;font-size:clamp(2.4rem,3.4vw,3rem);line-height:1;color:var(--ink);margin:.6rem 0 .8rem}
+  .pk-price span{font-size:.5em;vertical-align:.7em;margin-right:.08em;color:var(--rosewood)}
+  .pk ul{list-style:none;margin:0;padding:.9rem 0 0;border-top:1px solid var(--hair);display:grid;gap:.4rem}
+  .pk li{position:relative;padding-left:1.3rem;font-size:.9rem;line-height:1.5;color:var(--ink-soft)}
+  .pk li::before{content:"";position:absolute;left:0;top:.72em;width:8px;height:1px;background:var(--brass)}
+  .pk-act{display:flex;justify-content:center;align-items:center;gap:1.4rem 2rem;flex-wrap:wrap;margin-top:clamp(2rem,4vw,3rem)}
+  @media(max-width:1023px){.pk-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:639px){.pk-grid{grid-template-columns:1fr}}
+  .gk-dest{margin-top:clamp(1.4rem,2.6vw,2rem);padding:clamp(1.3rem,2.2vw,1.7rem);background:var(--leaf);color:color-mix(in srgb,var(--ivory) 86%,transparent);border-radius:var(--r);display:grid;gap:.6rem}
+  .gk-dest .caps-xs{color:var(--gold-lt)}
+  .gk-dest p{font-size:.95rem}
+  .gk-dest .tlk{color:var(--gold-lt);justify-self:start;margin-top:.4rem}
+  .gk-dest .tlk:hover{color:var(--ivory)}
+  .gk-faq{border-top:1px solid var(--hair)}
+  .gk-q{border-bottom:1px solid var(--hair)}
+  .gk-q summary{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:56px;padding:1rem 0;cursor:pointer;list-style:none;font-family:var(--display);font-size:clamp(1.15rem,1.6vw,1.35rem);color:var(--ink)}
+  .gk-q summary::-webkit-details-marker{display:none}
+  .gk-q summary i{flex:none;position:relative;width:14px;height:14px}
+  .gk-q summary i::before,.gk-q summary i::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--brass);transition:transform .35s var(--ease)}
+  .gk-q summary i::after{transform:rotate(90deg)}
+  .gk-q[open] summary i::after{transform:rotate(0)}
+  .gk-q summary:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+  .gk-q p{margin:0 0 1.2rem;max-width:40em;color:var(--ink-soft)}
+  .gk-prep{margin-top:clamp(2rem,3.6vw,2.8rem);padding-left:1.2rem;border-left:2px solid var(--rouge)}
+  .gk-prep ul{margin:.4rem 0 0;padding-left:1.1rem;color:var(--ink)}
+  .note-act{display:flex;justify-content:center;align-items:center;gap:2rem;flex-wrap:wrap}
+  @media(max-width:899px){.how-grid{grid-template-columns:1fr}}
+</style>

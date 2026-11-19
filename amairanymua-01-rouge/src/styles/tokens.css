@@ -1,0 +1,74 @@
+/* ============ ROUGE — design tokens ============
+   Black and white carry the page. The red is a soft glam rose (founder, 2026-11-19: "a soft,
+   glam, little red, very light if anything. Nothing outlandish"): lines, rules, dots, the script
+   and accents on black. No saturated red, no red sections, bands or buttons, no white text on
+   red. The token ROLES are the source build's (names are historical, no colour is a literal):
+     --leaf       near-black: dark chapters, primary buttons, headings' deep tone
+     --leaf-2     the primary button's hover fill (charcoal)
+     --leaf-deep  the deepest black (hero ground, film frames)
+     --moss       progress bar and the hairline over the bridal band (rose)
+     --sage       the thin coloured lip on each curved chapter (rose)
+     --sage-band  the light band tint (a cool, faint grey)
+     --petal / --blush  the soft fill (blush): the white buttons' hover
+     --brass      small caps, links and hairline accents on white (neutral grey, AA)
+     --rosewood   the rare small red word on white (the script wordmark, prices, chapter numbers)
+     --gold-lt    accents on black (rose)
+     --rouge / --rouge-lt  the rose as a line or dot
+     --ivory / --linen / --paper  grounds, from page to card
+     --ink / --ink-soft  text
+   Measured (WCAG 2): ink #111111 on #FAFAFA 18.09:1 · ink-soft #4A4A4A on #FAFAFA 8.49:1, on
+   linen #EFEFF0 7.71:1 · brass #5E5E5E on #FAFAFA 6.21:1, on linen 5.64:1 · rosewood #A8505A on
+   #FFFFFF 5.30:1, on #FAFAFA 5.08:1 · rose #D9868C on #0E0E0E 7.11:1, on the footer #0B0B0B
+   7.25:1 · ivory on #0E0E0E 18.50:1 · ink on blush #F6E3E3 15.30:1. */
+:root{
+  /* grounds */
+  --ivory:#FAFAFA; --linen:#EFEFF0; --paper:#FFFFFF; --blush:#F6E3E3;
+  /* the anchor */
+  --leaf:#0E0E0E; --leaf-2:#2B2B2B; --leaf-deep:#070707;
+  --moss:#D9868C; --sage:#D9868C; --sage-band:#F3F3F4;
+  /* the rose */
+  --rouge:#D9868C; --rouge-lt:#D9868C; --rosewood:#A8505A;
+  /* the soft fill */
+  --petal:#F6E3E3; --petal-deep:#E9C3C6;
+  /* hairlines & engraved caps */
+  --brass:#5E5E5E;
+  --gold-lt:#D9868C;
+  /* ink */
+  --ink:#111111; --ink-soft:#4A4A4A;
+  --hair:rgba(14,14,14,.13); --hair-strong:rgba(14,14,14,.28);
+  --hairdk:rgba(255,255,255,.16); --hairdk-strong:rgba(255,255,255,.34);
+  /* type roles */
+  --display:'Fraunces Variable','Iowan Old Style',Georgia,'Times New Roman',serif;
+  --script:'Pinyon Script','Snell Roundhand','Apple Chancery',cursive;
+  --utility:'Figtree Variable','Avenir Next','Segoe UI',system-ui,-apple-system,sans-serif;
+  /* rhythm */
+  --wrap:min(90vw,1280px); --wrap-text:720px;
+  --pad:clamp(88px,12vw,160px);
+  --ease:cubic-bezier(.16,1,.3,1);
+  /* shape */
+  --r-sm:5px; --r:12px; --r-lg:20px;
+  --shadow-lg:0 50px 90px -46px rgba(0,0,0,.42);
+  --shadow:0 24px 48px -30px rgba(0,0,0,.34);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html,body{overflow-x:clip}
+body{margin:0;background:var(--ivory);color:var(--ink-soft);font-family:var(--utility);
+  font-size:1.06rem;line-height:1.72;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4{font-family:var(--display);font-weight:400;color:var(--ink);line-height:1.08;
+  text-wrap:balance;margin:0;font-variation-settings:'opsz' 144,'SOFT' 40}
+h3,h4{font-variation-settings:'opsz' 48,'SOFT' 30}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+img,video{max-width:100%;display:block}
+button{font:inherit}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{
+  outline:2px solid var(--ink);outline-offset:3px}
+/* on black grounds the ring turns rose (7.1:1 on black) */
+:is(.hd--lt,.menu,.foot,.plg,.sec--dk,.c7-ch--dk,.c7-band,.iq-l,.iq-r,.chapslate--dk) :is(a,button,[tabindex]):focus-visible{outline-color:var(--gold-lt)}
+.iq-r .cf-stage :is(a,button,input,textarea,[tabindex]):focus-visible{outline-color:var(--ink)}
+.skip-link{position:absolute;left:-9999px;top:0;background:var(--leaf);color:var(--ivory);padding:10px 16px;z-index:200;border-radius:0 0 var(--r-sm) 0}
+.skip-link:focus{left:8px;top:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.wrap{width:var(--wrap);margin-inline:auto}
+.wrap-text{width:min(90vw,var(--wrap-text));margin-inline:auto}

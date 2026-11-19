@@ -1,0 +1,127 @@
+/* /demo/amairanymua-01 — BLUSH: the story pages (Bridal, About). Tokens, type and the kit live
+   in site.css; this file only lays out what those two pages add. Every colour is a token. */
+
+/* ---------- shared: the round numerals ---------- */
+.st-n{display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:50%;border:1px solid var(--petal);background:var(--paper);font:400 1.05rem/1 var(--f-serif);color:var(--ink);font-variant-numeric:lining-nums}
+.sec--blush .st-n{border-color:var(--mauve);background:var(--cream)}
+
+/* ---------- the title card: one quiet extra link (event glam) under the chip ---------- */
+.st-cover-alt{display:flex;flex-wrap:wrap;align-items:center;gap:0 14px;margin:1rem 0 0}
+.st-cover-alt-l{font:italic 300 1.15rem/1.4 var(--f-serif);color:var(--ink-soft)}
+
+/* ============================== BRIDAL ============================== */
+/* packages: two groups, each with its own heading row */
+.st-grp + .st-grp{margin-top:clamp(48px,6vw,80px)}
+.st-grp-hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 18px;margin:0 0 clamp(30px,3.4vw,40px);padding-bottom:14px;border-bottom:1px solid var(--petal)}
+.st-grp-hd .d-s{font-size:clamp(1.38rem,1.15rem + .8vw,1.75rem)}
+.st-grp-hd p{margin:0;font:italic 300 1.08rem/1.4 var(--f-serif);color:var(--ink-soft)}
+.st-pkg .pk-n{font:400 1.55rem/1.15 var(--f-serif);color:var(--ink)}
+.st-pkg .pk--pop{margin-top:0}
+@media(max-width:759px){.st-pkg .pk--pop{margin-top:14px}}
+.st-live{margin:10px auto 0;text-align:center;font-size:.92rem;color:var(--ink-soft)}
+.st-live .lnk{display:inline-block;padding:10px 2px;margin:-10px 0}
+
+/* Destination bride?: the round picture with her seal, beside her words */
+.st-dest-in{display:grid;gap:clamp(40px,6vw,96px);align-items:center}
+.st-dest-art{position:relative;width:min(76vw,420px);margin-inline:auto}
+.st-dest-ph .fr-m{box-shadow:0 0 0 clamp(8px,1.2vw,14px) var(--cream)}
+.st-dest-seal{position:absolute;right:-6%;top:-4%;width:clamp(92px,26%,128px);z-index:2}
+.st-dest-seal .seal-disc{fill:var(--cream)}
+.st-dest-txt{container-type:inline-size;min-width:0}
+/* the caps are sized by their column so DESTINATION always fits on one line */
+.st-oc{font-size:clamp(1.5rem,10.8cqi,4.6rem);padding-bottom:.62em}
+.st-oc .oc-s{font-size:1.02em;bottom:-.1em}
+.st-dest-q{margin-top:clamp(22px,3vw,34px)}
+.st-dest-q p{font-size:clamp(1.4rem,1.1rem + 1.3vw,2.1rem)}
+@media(min-width:900px){
+  .st-dest-in{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}
+  .st-dest-art{width:100%;max-width:420px}
+}
+
+/* FAQ: the heading beside the questions on wide screens */
+.st-faq-in{display:grid;gap:clamp(8px,2vw,24px)}
+.st-faq-hd .sh{margin-bottom:0}
+.st-faq-next{margin-top:clamp(18px,2.4vw,30px)}
+.st-faq .faq-i summary{min-height:64px;padding:14px 0;border-radius:6px}
+.st-faq .faq-i summary span{flex:1 1 auto;min-width:0}
+.st-faq .faq-i summary:focus-visible{outline-offset:4px}
+.st-faq .faq-i summary:focus-visible i{background:var(--blush);border-color:var(--mauve)}
+.st-faq .faq-a p{max-width:40em;font-size:1rem;line-height:1.7}
+@media(max-width:899px){.st-faq-next{display:none}}
+@media(min-width:900px){
+  .st-faq-in{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(48px,6vw,112px);align-items:start}
+  .st-faq-hd{position:sticky;top:calc(var(--hd-h) + 32px)}
+}
+
+/* How to prepare, beside the picture-and-film pair */
+.st-prep-in{gap:clamp(48px,6vw,96px)}
+.sec--paper .pair-film .fr-m{box-shadow:0 0 0 clamp(6px,1vw,10px) var(--paper),var(--shadow)}
+.st-prep-txt .lede{margin:1rem 0 0}
+.st-steps{list-style:none;display:grid;gap:0;margin-top:clamp(24px,3vw,34px);border-top:1px solid var(--petal)}
+.st-steps li{display:flex;align-items:center;gap:18px;padding:18px 0;border-bottom:1px solid var(--petal);font:300 clamp(1.2rem,1.05rem + .6vw,1.5rem)/1.35 var(--f-serif);color:var(--ink)}
+.st-prep .next{margin-top:clamp(26px,3vw,40px)}
+
+/* ============================== ABOUT ============================== */
+/* the title card: her cut-out portrait standing in front of a blush disc (never clipped) */
+.st-chair{position:relative;margin:0 auto;width:min(84vw,460px);padding-top:3%}
+.st-chair-disc{position:absolute;left:5%;right:5%;top:11%;aspect-ratio:1;border-radius:50%;background:var(--blush)}
+.st-chair-disc::after{content:'';position:absolute;inset:-14px;border-radius:50%;border:1px solid var(--mauve);opacity:.55}
+.st-chair-img{position:relative;width:100%;height:auto}
+.st-chair .cap{text-align:center;margin-top:8px}
+.st-acover .d-xl em{white-space:nowrap}
+@media(min-width:900px){.st-acover .cover-art{max-width:470px}}
+
+/* her words, as a signed letter */
+.st-words-in{display:grid;gap:clamp(30px,5vw,88px);align-items:start}
+.st-words-hd .d-l{max-width:9.5em}
+.st-words-ph{width:min(56vw,300px);margin-top:clamp(26px,3vw,40px)}
+.st-words-ph .fr-m{box-shadow:0 0 0 10px var(--blush)}
+.st-letter{position:relative;margin:0;padding:clamp(26px,3.6vw,48px) clamp(22px,3.4vw,48px) clamp(24px,3vw,40px);border-radius:var(--r-lg);background:var(--cream);border:1px solid var(--petal)}
+.st-letter::before{content:'\201C';position:absolute;left:clamp(16px,2.4vw,30px);top:-.32em;font:300 5.2rem/1 var(--f-serif);color:var(--mauve)}
+.st-letter p{margin:0 0 1rem;max-width:34em;font-size:1.06rem;line-height:1.75;color:var(--ink)}
+.st-letter .st-letter-1{font:300 clamp(1.3rem,1.08rem + .9vw,1.7rem)/1.45 var(--f-serif);color:var(--ink)}
+.st-sign{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--petal)}
+.st-sign .scr{font-size:2.6rem;color:var(--rosewood)}
+.st-sign cite{font:800 .66rem/1.4 var(--f-sans);font-style:normal;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft)}
+.st-facts{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:18px 28px;margin-top:clamp(24px,3vw,36px)}
+.st-years{display:flex;flex-wrap:wrap;gap:12px 40px;margin:0}
+.st-years div{display:flex;flex-direction:column-reverse;gap:6px}
+.st-years dt{font:800 .66rem/1.3 var(--f-sans);letter-spacing:.18em;text-transform:uppercase;color:var(--rosewood)}
+.st-years dd{margin:0;font:300 clamp(2.3rem,1.9rem + 1.4vw,3rem)/1 var(--f-serif);color:var(--ink)}
+.st-badges{list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.st-badges li{padding:.5em 1.05em;border-radius:999px;background:var(--blush);font:800 .66rem/1.3 var(--f-sans);letter-spacing:.16em;text-transform:uppercase;color:var(--ink)}
+.st-words .next{margin-top:clamp(24px,3vw,36px)}
+@media(min-width:900px){
+  .st-words-in{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}
+  .st-words-hd{position:sticky;top:calc(var(--hd-h) + 32px)}
+}
+
+/* In motion: clips between stills, the even ones dropped like a contact strip */
+.st-strip{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px clamp(12px,2vw,28px);max-width:1140px;margin:0 auto}
+.st-strip li:nth-child(even){margin-top:clamp(28px,5vw,64px)}
+.st-strip .fr--tall .fr-m{border-radius:calc(var(--r) + 6px)}
+.st-strip .cap{padding-inline:4px}
+@media(min-width:900px){.st-strip{grid-template-columns:repeat(4,minmax(0,270px));justify-content:center}}
+.st-reach{display:flex;flex-direction:column;align-items:center;gap:14px;margin:clamp(40px,5vw,64px) auto 0;text-align:center}
+.st-reach-k{margin:0;font:800 .7rem/1.3 var(--f-sans);letter-spacing:.22em;text-transform:uppercase;color:var(--rosewood)}
+.st-reach-k span{display:block;margin-top:6px;font:italic 300 1rem/1.3 var(--f-serif);letter-spacing:0;text-transform:none;color:var(--ink-soft)}
+.st-reach dl{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 44px;margin:0}
+.st-reach dl div{display:flex;align-items:baseline;gap:.45em}
+.st-reach dt{order:2;font:italic 300 1.15rem/1 var(--f-serif);color:var(--ink-soft)}
+.st-reach dd{margin:0;font:300 clamp(2.4rem,1.9rem + 1.8vw,3.4rem)/1 var(--f-serif);color:var(--ink);font-variant-numeric:lining-nums}
+
+/* her services, and her note on photography */
+.st-svc-in{display:grid;gap:clamp(36px,5vw,80px);align-items:center}
+.st-svc-main .d-l{max-width:11em}
+.st-svc-l{list-style:none;display:grid;margin-top:clamp(24px,3vw,36px);border-top:1px solid var(--petal)}
+.st-svc-l li{display:flex;align-items:center;gap:18px;padding:14px 0;border-bottom:1px solid var(--petal)}
+.sec--blush .st-svc-l,.sec--blush .st-svc-l li{border-color:var(--petal)}
+.st-svc-w{font:300 clamp(1.7rem,1.3rem + 1.5vw,2.5rem)/1.1 var(--f-serif);color:var(--ink)}
+.st-svc .next-go{flex-direction:column;align-items:flex-start;gap:0}
+.st-photo{padding:clamp(26px,3.4vw,44px);border-radius:var(--r-lg);background:var(--cream);box-shadow:var(--shadow-sm)}
+.st-photo-l{margin:.8rem 0 1.2rem;font-size:.98rem;color:var(--ink-soft)}
+.st-photo-q p{font-size:clamp(1.25rem,1.1rem + .6vw,1.55rem)}
+@media(min-width:900px){.st-svc-in{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}}
+
+/* Love Notes */
+.st-notes .sh{margin-bottom:clamp(28px,3.4vw,44px)}

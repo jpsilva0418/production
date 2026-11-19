@@ -1,0 +1,128 @@
+/* /demo/amairanymua-01 — COCOA: the story pages (Bridal, About). Tokens and the kit live in
+   site.css (KIT.md); this file only lays out what those two pages add. Every colour is a token. */
+
+/* ---------- title cards ---------- */
+@media(max-width:379px){.cocoa .chip{font-size:10px;letter-spacing:.08em;padding:6px 12px}}
+.cv-after{display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px;margin-top:26px}
+.cover .fr .cap{margin-top:12px}
+.cover-m.fr{width:min(100%,420px)}
+
+/* About: the chair portrait (transparent cut-out) on an oat arch */
+.ac-in{align-items:center}
+.ac-badges{display:flex;flex-wrap:wrap;gap:6px 20px;margin:24px 0 0;font:650 10.5px/1.5 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--mocha)}
+.ac-fig{position:relative;margin:0;justify-self:center;width:min(100%,520px)}
+.ac-arch{position:absolute;left:9%;right:9%;top:5%;bottom:3.4em;border-radius:999px 999px var(--r) var(--r);background:var(--oat)}
+.ac-fig img{position:relative;width:100%;height:auto}
+.ac-fig .cap{position:relative;text-align:center}
+@media(min-width:900px){.ac-in{grid-template-columns:1.1fr .9fr}.ac-fig{justify-self:end}}
+
+/* ---------- Bridal: the packages ---------- */
+.bp-jump{margin:0}
+.bp-jump a{display:inline-flex;align-items:center;min-height:44px;font:700 11.5px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;text-decoration:underline;text-decoration-color:var(--sand);text-underline-offset:.5em;color:var(--espresso)}
+.bp-jump a:hover,.bp-jump a:focus-visible{text-decoration-color:currentColor}
+.bp-jump span{margin:0 8px;color:var(--sand)}
+.bp-g{scroll-margin-top:calc(var(--hd-h) + 20px)}
+.bp-g+.bp-g{margin-top:clamp(56px,7vw,96px)}
+.bp-gh{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;align-items:start;margin:0 0 clamp(30px,4vw,44px);padding-top:22px;border-top:1px solid var(--sand)}
+.bp-gn{font-size:clamp(30px,3.4vw,44px);line-height:1;color:var(--sand);min-width:1.4em}
+.bp-gh .kick{margin-bottom:10px}
+.bp-gl{margin:12px 0 0;max-width:38em;color:var(--mocha);font-size:15px}
+.bp .pks{gap:28px 16px}
+.bp .pks>.rv{display:flex}
+.bp .pk{flex:1}
+.bp-foot{margin-top:28px;display:grid;gap:6px}
+.bp-foot .pk-note{margin:0}
+.bp-live{margin:0;font-size:13px;color:var(--mocha)}
+.bp-live a{color:var(--espresso);font-weight:650;text-decoration-color:var(--sand)}
+.bp-live a:hover,.bp-live a:focus-visible{text-decoration-color:currentColor}
+@media(min-width:760px) and (max-width:1023px){.bp .pks--3>.rv:last-child{grid-column:1/-1}}
+
+/* ---------- Bridal: Destination bride? (a band of its own: the picture bleeds to the edge) ---------- */
+.dest{padding:0}
+.dest-in{display:grid}
+.dest-fig .fr-m{border-radius:0;aspect-ratio:4/3}
+.dest-fig .fr-m>img{object-position:42% 30%}
+.dest-fig .cap{position:absolute;left:max(var(--gut),env(safe-area-inset-left));bottom:14px;margin:0;padding:6px 12px;border-radius:var(--r-pill);background:var(--veil);color:var(--cream);font-size:10px}
+html.js .dest-fig.rv-im{clip-path:inset(0 0 100% 0)}
+html.js .dest-fig.rv-im.in{clip-path:inset(0 0 0 0)}
+.dest-txt{padding:clamp(48px,9vw,72px) max(var(--gut),env(safe-area-inset-right)) var(--sec-y) max(var(--gut),env(safe-area-inset-left));align-self:center}
+.dest-txt .d-xl{margin:0 0 28px}
+.dest-q{max-width:20em}
+.dest-q p::before{content:"\201C"}
+.dest-q p::after{content:"\201D"}
+.dest-faq{margin:28px 0 30px;padding-top:20px;border-top:1px solid var(--sand);max-width:34em;font:650 11px/1.5 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--mocha)}
+.dest-faq span{display:block;margin-top:6px;font:400 15px/1.6 var(--sans);letter-spacing:0;text-transform:none;color:var(--espresso)}
+.dest .next{margin-top:18px}
+@media(min-width:900px){
+  .dest-in{grid-template-columns:1fr 1fr;min-height:min(820px,92vh)}
+  .dest-fig{position:relative}
+  .dest-fig .fr-m{position:absolute;inset:0;aspect-ratio:auto}
+  .dest-txt{padding:var(--sec-y) max(var(--gut),calc((100vw - var(--wrap))/2 + var(--gut))) var(--sec-y) clamp(48px,6vw,96px);max-width:calc(var(--wrap)/2 + 96px)}
+}
+
+/* ---------- Bridal: the FAQ, heading beside the questions ---------- */
+.bq .faq-i summary{min-height:64px}
+.bq .faq-i summary:focus-visible{outline-offset:6px;border-radius:var(--r-s)}
+.bq .faq-i[open] summary{color:var(--espresso)}
+.bq .faq-a{font-size:16px;line-height:1.65}
+.bq .faq-a p::before{content:"\201C"}
+.bq .faq-a p::after{content:"\201D"}
+@media(min-width:1024px){.bq-g{display:grid;grid-template-columns:.8fr 1.2fr;gap:64px;align-items:start}.bq-g .sh{margin:0;position:sticky;top:calc(var(--hd-h) + 32px)}}
+
+/* ---------- Bridal: how to prepare, beside a picture and a clip ---------- */
+.bm-g{display:grid;gap:clamp(40px,6vw,72px);align-items:center}
+.bm-txt .sh{margin-bottom:28px}
+.steps{display:grid;gap:0;border-top:1px solid var(--sand);counter-reset:none}
+.steps li{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:baseline;padding:20px 0;border-bottom:1px solid var(--sand)}
+.steps-n{font-size:clamp(30px,3.4vw,42px);line-height:1;color:var(--mocha);min-width:1.4em}
+.steps p{margin:0;font:400 clamp(20px,2vw,24px)/1.35 var(--serif)}
+.bm-pic .pair{margin-left:auto;margin-right:auto}
+@media(min-width:960px){.bm-g{grid-template-columns:.9fr 1.1fr}}
+
+/* ---------- About: her words ---------- */
+.aw-g{display:grid;gap:28px}
+.aw-h .d-l{margin:0}
+.aw-note{margin:18px 0 0}
+.aw-q{margin:0;position:relative}
+.aw-q::before{content:"\201C";position:absolute;left:-.06em;top:-.32em;font:400 clamp(110px,14vw,180px)/1 var(--serif);color:var(--oat);pointer-events:none}
+.aw-q blockquote{position:relative;margin:0;font-family:var(--serif);font-size:clamp(19px,1.8vw,22px);line-height:1.6}
+.aw-q blockquote p{margin:0 0 1em}
+.aw-q blockquote p:first-child{font-size:clamp(25px,2.8vw,34px);line-height:1.3}
+.aw-q figcaption{display:flex;align-items:center;gap:12px;margin-top:6px;font:650 11px/1.4 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--mocha)}
+.aw-q figcaption::before{content:"";width:28px;height:1px;background:var(--sand)}
+@media(min-width:960px){.aw-g{grid-template-columns:.75fr 1.25fr;gap:72px;align-items:start}.aw-q{padding-top:8px}}
+
+/* ---------- About: services as a numbered list ---------- */
+.as-l{display:grid;border-top:1px solid var(--sand)}
+.as-i{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;padding:26px 0 22px;border-bottom:1px solid var(--sand)}
+.as-n{grid-row:1/span 3;font-size:clamp(22px,2.4vw,28px);line-height:1.5;color:var(--mocha);min-width:2ch}
+.as-t{margin:0}
+.as-i p{margin:6px 0 0;color:var(--mocha);max-width:34em}
+.as-a{display:flex;flex-wrap:wrap;gap:0 22px}
+@media(min-width:900px){
+  .as-l{grid-template-columns:repeat(3,1fr);gap:0 clamp(24px,3vw,44px);border-top:0}
+  .as-i{grid-template-columns:1fr;align-content:start;padding:28px 0 26px;border-top:1px solid var(--espresso);border-bottom:0}
+  .as-n{grid-row:auto;line-height:1;margin-bottom:22px}
+  .as-a{margin-top:auto;padding-top:10px}
+}
+.as-ph{display:grid;gap:18px;margin-top:clamp(40px,5vw,64px);padding:clamp(24px,3vw,36px);border-radius:var(--r);background:var(--milk);border:1px solid var(--oat)}
+.as-ph .kick{margin-bottom:10px}
+.as-q{font-size:clamp(20px,2vw,25px)}
+.as-q p::before{content:"\201C"}
+.as-q p::after{content:"\201D"}
+@media(min-width:900px){.as-ph{grid-template-columns:.75fr 1.25fr;gap:48px;align-items:center}}
+
+/* ---------- About: in motion, real clips beside stills ---------- */
+.am-asof{margin:0 0 4px}
+.am .sh--row>div:last-child{display:grid;justify-items:start}
+@media(min-width:760px){.am .sh--row>div:last-child{justify-items:end;text-align:right}}
+.am-g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 12px;align-items:start}
+.am-g .fr--tall .fr-m{aspect-ratio:9/16}
+.am-g .cap .cap-cr{margin-top:4px}
+@media(min-width:760px){
+  .am-g{grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(14px,1.8vw,24px)}
+  .am-g .fr--tall .fr-m{aspect-ratio:3/4}
+  .am-lo{margin-top:clamp(40px,6vw,88px)}
+  .am-lo2{margin-top:clamp(20px,3vw,44px)}
+  .am-hi{margin-top:clamp(56px,8vw,120px)}
+}

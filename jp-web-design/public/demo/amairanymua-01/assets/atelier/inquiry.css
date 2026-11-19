@@ -1,0 +1,248 @@
+/* /demo/amairanymua-01 — ATELIER: the Bridal Inquiry page, and its skin of the shared inquiry.
+   Loaded AFTER assets/css/inquiry-core.css (structure, iPhone fixes, hidden states), so every
+   single-class rule here wins. The form's markup and behaviour are shared and untouched
+   (inquiry-core.mjs, assets/js/inquiry.js); this file only dresses them. Guide: SKINNING.md.
+
+   Atelier's manner, applied to a form: a white sheet on the linen ground, like a client card in the
+   studio; each step's question in the tall caps; labels in quiet sans; fields and choices are square
+   boxes with a fine 3:1 rule; a chosen card turns espresso with a dusty-rose dot (the rose is only
+   ever on espresso); the progress row is four hairlines with tall numerals. Errors are a soft dusty
+   brick (--iq-bad, 5.2:1 on white), never a strong red, and always carry a rule as well as colour.
+   Two derived tokens are added here; every other colour is a site.css token. */
+
+.iq-page {
+  --iq-field: rgba(54, 48, 42, .58);   /* espresso at 58% on white: 3.5:1, the boundary of every field */
+  --iq-bad: #9C5A55;                   /* soft dusty brick: 5.2:1 on white, 4.7:1 on ivory */
+  --iq-pad: 20px;                      /* the sheet's inner gutter */
+  --iq-prog: 72px;                     /* the progress row and its gap, kept in view above each step */
+}
+@media (min-width: 600px) { .iq-page { --iq-pad: 36px; } }
+@media (min-width: 1200px) { .iq-page { --iq-pad: 56px; } }
+
+/* ===================== the title ===================== */
+.iq-top { padding: clamp(36px, 5.5vw, 76px) 0 clamp(36px, 4.5vw, 64px); background: var(--ivory); }
+.iq-top-in { display: grid; gap: 22px; }
+.iq-top-h .kick { margin-bottom: 20px; }
+@media (min-width: 600px) { .iq-top-h h1 .hl { white-space: nowrap; } }
+.iq-top-t { display: grid; gap: 20px; justify-items: start; }
+.iq-book { width: min(100%, 380px); }
+.iq-book::before { display: none; }
+.iq-alt { margin-top: -4px; }
+@media (max-width: 379px) { .iq-book { font-size: 9.5px; letter-spacing: .14em; } .iq-book::after { display: none; } }
+.iq-alt .more { letter-spacing: .16em; }
+@media (min-width: 900px) {
+  .iq-top-in { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); column-gap: clamp(40px, 6vw, 112px); align-items: end; }
+  .iq-top-h h1 { font-size: clamp(54px, 6.6vw, 112px); }
+  .iq-top-t { padding-bottom: 10px; }
+  .iq-alt { display: none; }   /* the side column carries it beside the form */
+}
+
+/* ===================== the spread: the sheet beside the side column ===================== */
+.iq { padding-top: clamp(24px, 4vw, 64px); padding-bottom: clamp(56px, 7vw, 104px); }
+/* the footer is linen too: a hairline marks where the spread ends and the footer's call begins */
+.iq::after { content: ''; position: absolute; bottom: 0; left: var(--gx); right: var(--gx); max-width: var(--maxw); margin: 0 auto; height: 1px; background: var(--line-soft); }
+.iq-g { display: grid; gap: 48px; }
+.iq-main { min-width: 0; }
+@media (min-width: 900px) {
+  .iq-g { grid-template-columns: minmax(0, 1fr) clamp(280px, 26vw, 360px); column-gap: clamp(32px, 4.5vw, 80px); align-items: start; }
+}
+/* the side column stays beside the form while it scrolls, wherever it fits under the header */
+@media (min-width: 1200px) and (min-height: 820px), (min-width: 900px) and (min-height: 1060px) {
+  .iq-side { position: sticky; top: calc(var(--hd-h) + 28px); }
+}
+
+/* the sheet: white paper on linen, a fine rule under its header */
+.iq-sheet { container-type: inline-size; min-width: 0; padding: 22px var(--iq-pad) calc(var(--iq-pad) - 2px); background: var(--paper); border: 1px solid var(--line-soft); }
+.iq-sheet-hd { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 18px; margin-bottom: 28px; border-bottom: 1px solid var(--line-soft); }
+.iq-sheet-k { margin: 0; }
+.iq-lk { --lk-w: 78px; color: var(--ink); flex: none; }
+@media (max-width: 479px) { .iq-lk { display: none; } }
+
+/* the two notes under the sheet; the design-preview line is set to be read, not skimmed */
+.iq-notes { display: grid; gap: 10px; margin-top: 20px; }
+.iq-note { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-2); }
+.iq-demo { display: flex; gap: 12px; align-items: baseline; margin: 0; font-size: 14.5px; line-height: 1.55; font-weight: 600; color: var(--ink); }
+.iq-demo::before { content: ''; flex: 0 0 24px; height: 1px; background: var(--ink); transform: translateY(-.3em); }
+
+/* ===================== the side column ===================== */
+.iq-side { display: grid; align-content: start; min-width: 0; }
+.iq-blk .kick { margin-bottom: 14px; }
+.iq-ev { padding: 28px 24px 26px; background: var(--espresso); color: var(--on-dark); }
+.iq-ev .kick { color: var(--on-dark-2); }
+.iq-ev .kick::before { background: var(--line-dark); }
+.iq-ev .d-m { margin: 0 0 12px; font-size: clamp(32px, 3.4vw, 44px); }
+.iq-ev-b { margin: 0 0 20px; font-size: 14.5px; line-height: 1.6; color: var(--on-dark-2); }
+.iq-ev .acts { display: block; }
+.iq-ev .btn { width: 100%; height: auto; min-height: 50px; padding: 14px 16px; white-space: normal; letter-spacing: .18em; }
+.iq-ev :focus-visible { outline-color: var(--ivory); }
+.iq-dest, .iq-prep { padding: 24px 0 14px; border-bottom: 1px solid var(--line-soft); }
+.iq-dest .d-s, .iq-prep .d-s { margin: 0 0 12px; }
+.iq-q { margin: 0 0 4px; }
+.iq-q p { margin: 0 0 10px; font-size: 14.5px; line-height: 1.65; color: var(--ink-2); }
+.iq-q cite { display: flex; align-items: center; gap: 10px; font-style: normal; font-size: 10px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--ink-2); }
+.iq-q cite::before { content: ''; flex: 0 0 18px; height: 1px; background: var(--line); }
+.iq-steps { list-style: none; margin: 0 0 6px; border-top: 1px solid var(--line-soft); }
+.iq-steps li { display: grid; grid-template-columns: 36px minmax(0, 1fr); align-items: baseline; padding: 11px 0; border-bottom: 1px solid var(--line-soft); font-size: 14.5px; line-height: 1.55; color: var(--ink-2); }
+.iq-n { font-family: var(--f-cap); font-weight: 300; font-size: 22px; line-height: 1; color: var(--taupe); }
+.iq-side .more { letter-spacing: .2em; }
+@media (min-width: 600px) and (max-width: 899px) {
+  /* tablets: the event panel across, the two notes side by side under it */
+  .iq-side { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 32px; }
+  .iq-ev { grid-column: 1 / -1; }
+}
+
+/* ===================== the shared inquiry, dressed ===================== */
+.cf-inquiry {
+  /* after Continue / Back / Edit the step's top rests below the sticky header with the progress row
+     (just above the step) still in view; the hand-off has no progress row */
+  --cf-scroll-offset: calc(var(--hd-h) + env(safe-area-inset-top, 0px) + 18px + var(--iq-prog));
+  color: var(--ink); font-family: var(--f-sans); font-size: 16px; line-height: 1.55;
+}
+.cf-inquiry[data-view="handoff"] { --cf-scroll-offset: calc(var(--hd-h) + env(safe-area-inset-top, 0px) + 28px); }
+.iq-sheet:has(.cf-inquiry[data-view="handoff"]) .iq-sheet-hd { margin-bottom: 22px; }
+
+/* ---------- progress: four hairlines with tall numerals; done in espresso, now a thicker rule ---------- */
+.cf-prog { gap: 8px; margin: 0 0 32px; }
+.cf-prog li { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: baseline; column-gap: 10px; }
+.cf-prog-bar { grid-column: 1 / -1; grid-row: 1; height: 2px; margin-bottom: 12px; background: linear-gradient(var(--line-soft), var(--line-soft)) 0 100% / 100% 1px no-repeat; }
+.cf-prog li.done .cf-prog-bar { background-image: linear-gradient(var(--ink), var(--ink)); }
+.cf-prog li.now .cf-prog-bar { background: var(--ink); }
+.cf-prog li::before { content: "0" attr(data-n); content: "0" attr(data-n) / ""; grid-row: 2; font-family: var(--f-cap); font-weight: 300; font-size: 22px; line-height: 1; color: var(--taupe); }
+.cf-prog li.done::before, .cf-prog li.now::before { color: var(--ink); }
+.cf-prog-lbl { display: none; grid-row: 2; min-width: 0; font-size: 9.5px; line-height: 1.3; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cf-prog li.now .cf-prog-lbl { color: var(--ink); }
+/* narrow sheets: only the current step is named, and its column widens to hold the name */
+@container (max-width: 519px) {
+  .cf-prog li.now .cf-prog-lbl { display: block; letter-spacing: .14em; white-space: normal; overflow: visible; line-height: 1.25; }
+  .cf-prog:has(> li:nth-child(1).now) { grid-template-columns: 3fr 1fr 1fr 1fr; }
+  .cf-prog:has(> li:nth-child(2).now) { grid-template-columns: 1fr 3fr 1fr 1fr; }
+  .cf-prog:has(> li:nth-child(3).now) { grid-template-columns: 1fr 1fr 3fr 1fr; }
+  .cf-prog:has(> li:nth-child(4).now) { grid-template-columns: 1fr 1fr 1fr 3fr; }
+}
+@container (min-width: 520px) { .cf-prog-lbl { display: block; } }
+
+/* ---------- a step: its question in the tall caps ---------- */
+.cf-step > legend { float: left; width: 100%; padding: 0 0 26px; font-family: var(--f-cap); font-weight: 240; font-size: clamp(30px, 3.4vw, 44px); line-height: 1; letter-spacing: .01em; text-transform: uppercase; color: var(--ink); text-wrap: balance; }
+.cf-step > legend + * { clear: both; }
+@media (prefers-reduced-motion: no-preference) {
+  .cf-form.ready .cf-step:not([hidden]), .cf-handoff:not([hidden]) { animation: iqIn .55s var(--ease) both; }
+}
+@keyframes iqIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+.cf-two { column-gap: 18px; }
+/* the two guest counts: their questions wrap differently, so the boxes line up along the bottom */
+.cf-two:has(#cf-makeupGuests) { align-items: end; }
+.cf-field { margin-bottom: 26px; }
+.cf-lbl { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: .7em; margin-bottom: 10px; font-size: 14.5px; line-height: 1.45; font-weight: 500; color: var(--ink); }
+.cf-req, .cf-opt { font-size: 9.5px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; white-space: nowrap; color: var(--ink-2); }
+.cf-req { color: var(--ink); }
+
+/* fields: square boxes with a 3:1 rule; the active one takes an espresso rule and a heavier underline */
+.cf-input { min-height: 50px; padding: 12px 14px; border: 1px solid var(--iq-field); border-radius: 0; background: var(--paper); color: var(--ink); font-family: var(--f-sans); font-size: 16px; line-height: 1.45; caret-color: var(--ink); box-shadow: none; transition: border-color .25s var(--ease), box-shadow .25s var(--ease); }
+.cf-input::placeholder { color: var(--ink-2); opacity: .8; }
+@media (hover: hover) { .cf-input:hover { border-color: var(--ink); } }
+.cf-input:focus { outline: none; border-color: var(--ink); box-shadow: inset 0 -2px 0 var(--ink); }
+.cf-input:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+textarea.cf-input { min-height: 120px; line-height: 1.6; }
+.cf-input[type="date"], .cf-input[type="time"] { min-height: 50px; }
+.cf-input::-webkit-calendar-picker-indicator { opacity: .6; cursor: pointer; }
+.cf-input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+.cf-input[type="number"]::-webkit-inner-spin-button, .cf-input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.cf-input[aria-invalid="true"] { border-color: var(--iq-bad); box-shadow: inset 0 -2px 0 var(--iq-bad); }
+.cf-input[aria-invalid="true"]:focus-visible { outline-color: var(--iq-bad); }
+.cf-err { display: flex; gap: 8px; align-items: baseline; margin: 8px 0 0; font-size: 13.5px; line-height: 1.45; font-weight: 600; color: var(--iq-bad); }
+.cf-err::before { content: ''; flex: 0 0 12px; height: 1px; background: currentColor; transform: translateY(-.3em); }
+
+.cf-check { gap: 10px; margin-top: 8px; min-height: 44px; font-size: 14px; color: var(--ink-2); }
+.cf-check input { width: 18px; height: 18px; accent-color: var(--espresso); }
+.cf-check:has(input:checked) { color: var(--ink); font-weight: 600; }
+.cf-check:has(input:focus-visible) { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* choice cards: a ring at rest; chosen, the card turns espresso and the ring becomes a dusty-rose dot */
+.cf-cards { gap: 8px; }
+.cf-card { gap: 12px; min-height: 52px; padding: 12px 16px; border: 1px solid var(--iq-field); background: var(--paper); color: var(--ink); font-size: 15px; line-height: 1.35; font-weight: 500; transition: border-color .25s var(--ease), background-color .25s var(--ease), color .25s var(--ease); }
+.cf-card::before { content: ''; flex: none; width: 12px; height: 12px; border: 1px solid currentColor; border-radius: 50%; transition: background-color .25s var(--ease), border-color .25s var(--ease); }
+@media (hover: hover) { .cf-card:hover { border-color: var(--ink); background: var(--ivory); } }
+.cf-card:has(input:checked) { background: var(--espresso); border-color: var(--espresso); color: var(--ivory); }
+.cf-card:has(input:checked)::before { background: var(--rose); border-color: var(--rose); box-shadow: inset 0 0 0 2px var(--espresso); }
+.cf-card:has(input:focus-visible) { outline: 2px solid var(--ink); outline-offset: 3px; }
+.cf-field[data-invalid] .cf-card { border-color: var(--iq-bad); }
+/* an odd last card takes the whole row (the seven packages) */
+.cf-cards-2 > .cf-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
+/* her package names are set like her price list: the tall caps */
+.cf-field:has(#cf-package-label) .cf-card > span { font-family: var(--f-cap); font-size: 19px; line-height: 1.1; font-weight: 300; letter-spacing: .04em; text-transform: uppercase; }
+/* the 2-option and 8-option groups keep two columns even at 320 wide: every answer is short */
+.cf-field:has(#cf-firstLook-label) .cf-cards, .cf-field:has(#cf-heardFrom-label) .cf-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.cf-field:has(#cf-firstLook-label) .cf-card, .cf-field:has(#cf-heardFrom-label) .cf-card { padding: 12px; gap: 10px; }
+/* the narrowest sheets (320 wide): those short answers go centred without the ring, so a word like
+   "WeddingWire" never breaks; chosen still reads at once (the card turns espresso) */
+@container (max-width: 359px) {
+  .cf-field:has(#cf-firstLook-label) .cf-card, .cf-field:has(#cf-heardFrom-label) .cf-card { justify-content: center; padding: 10px 8px; font-size: 14.5px; text-align: center; }
+  .cf-field:has(#cf-firstLook-label) .cf-card::before, .cf-field:has(#cf-heardFrom-label) .cf-card::before { display: none; }
+  .cf-field:has(#cf-firstLook-label) .cf-card > span, .cf-field:has(#cf-heardFrom-label) .cf-card > span { overflow-wrap: normal; }
+}
+/* her seven packages: one name per row until the sheet can hold two side by side on one line */
+@container (max-width: 439px) { .cf-field:has(#cf-package-label) .cf-cards { grid-template-columns: minmax(0, 1fr); } }
+/* the long answers ("Dating around: searching for quotes", "Email me! I never answer the phone")
+   take one column until the sheet is wide enough to set them side by side */
+.cf-cards-3, .cf-field:has(#cf-stage-label) .cf-cards { grid-template-columns: minmax(0, 1fr); }
+@container (min-width: 460px) { .cf-field:has(#cf-stage-label) .cf-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@container (min-width: 600px) {
+  .cf-cards-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cf-field:has(#cf-heardFrom-label) .cf-cards { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+.cf-hint { margin: 10px 0 0; font-size: 13.5px; line-height: 1.55; color: var(--ink-2); }
+.cf-hint a, .cf-noscript a { color: var(--ink); font-weight: 600; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .25em; }
+.cf-hint a { display: inline-block; padding: 12px 0; margin: -12px 0; } /* a 44px target inside the line */
+
+/* ---------- review: the answers as a client card, one numbered group per step ---------- */
+.cf-review { gap: 0; margin-bottom: 20px; border-top: 1px solid var(--ink); counter-reset: iqrv; }
+.cf-rev-group { padding: 16px 0 20px; border-bottom: 1px solid var(--line-soft); counter-increment: iqrv; }
+.cf-rev-head { gap: 12px; align-items: center; margin-bottom: 8px; }
+.cf-rev-title { display: flex; align-items: baseline; gap: 12px; margin: 0; font-size: 10.5px; line-height: 1.4; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--ink); }
+.cf-rev-title::before { content: "0" counter(iqrv); content: "0" counter(iqrv) / ""; font-family: var(--f-cap); font-weight: 300; font-size: 22px; line-height: 1; letter-spacing: 0; color: var(--taupe); }
+.cf-rev-edit { display: inline-flex; align-items: center; min-height: 44px; padding: 0 2px; border: 0; font-family: var(--f-sans); font-size: 10.5px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--ink); background: linear-gradient(currentColor, currentColor) 0 calc(100% - 11px) / 100% 1px no-repeat; cursor: pointer; transition: background-size .45s var(--ease); }
+@media (hover: hover) { .cf-rev-edit:hover { background-size: 0 1px; background-position: 100% calc(100% - 11px); } }
+.cf-rev-edit:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.cf-rev-list { gap: 10px; }
+.cf-rev-row { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 2px; }
+.cf-rev-q { font-size: 12.5px; line-height: 1.45; color: var(--ink-2); }
+.cf-rev-a { font-size: 15.5px; line-height: 1.5; font-weight: 500; color: var(--ink); }
+.cf-rev-none { margin: 0; font-size: 14px; color: var(--ink-2); }
+@container (min-width: 520px) { .cf-rev-row { grid-template-columns: minmax(0, 14rem) minmax(0, 1fr); column-gap: 20px; } }
+.cf-consent { max-width: 60ch; margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-2); }
+
+/* ---------- the step buttons (Atelier's own .btn, passed in) and Start over ---------- */
+.cf-nav { gap: 10px; margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--line-soft); }
+.cf-nav .btn { flex: 1 1 0; min-width: 0; padding: 0 18px; }
+.cf-btn--primary::after { content: "\2192"; content: "\2192" / ""; font-size: 14px; letter-spacing: 0; transition: transform .35s var(--ease); }
+@media (hover: hover) { .cf-btn--primary:hover::after { transform: translateX(4px); } }
+.cf-btn[disabled], .cf-btn[disabled]:hover { opacity: .45; cursor: default; color: var(--ivory); background: var(--espresso); }
+.cf-btn[disabled]::before { transform: scaleY(0) !important; }
+@media (min-width: 600px) { .cf-nav .btn { flex: 0 0 auto; min-width: 180px; padding: 0 30px; } }
+.cf-reset { display: block; margin: 14px 0 0 auto; min-height: 44px; padding: 0 2px; border: 0; font-family: var(--f-sans); font-size: 10.5px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-2); background: linear-gradient(var(--line), var(--line)) 0 calc(100% - 12px) / 100% 1px no-repeat; cursor: pointer; transition: color .25s; }
+@media (hover: hover) { .cf-reset:hover { color: var(--ink); } }
+.cf-reset:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/* ---------- the hand-off ---------- */
+.cf-strip { margin: 0 0 28px; padding: 12px 16px; background: var(--espresso); color: var(--ivory); border-left: 3px solid var(--rose); font-size: 13.5px; line-height: 1.55; }
+.cf-strip strong { font-size: 10px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; }
+.cf-kick { display: flex; align-items: center; gap: 14px; margin: 0 0 18px; font-size: 10.5px; line-height: 1.4; font-weight: 500; letter-spacing: .3em; text-transform: uppercase; color: var(--ink-2); }
+.cf-kick::before { content: ''; flex: 0 0 28px; height: 1px; background: var(--line); }
+.cf-handoff h2 { margin: 0 0 20px; font-family: var(--f-cap); font-weight: 220; font-size: clamp(38px, 5vw, 64px); line-height: .96; letter-spacing: .005em; text-transform: uppercase; text-wrap: balance; color: var(--ink); }
+.cf-handoff-body { max-width: 54ch; margin: 0; font-size: 16px; line-height: 1.75; color: var(--ink-2); }
+.cf-actions { gap: 10px; margin-top: 28px; }
+.cf-actions .btn { flex: 1 1 100%; height: auto; padding: 14px 18px; }
+@media (max-width: 429px) { .cf-actions .btn { letter-spacing: .14em; } }
+@media (min-width: 600px) { .cf-actions .btn { flex: 0 0 auto; } }
+.cf-go .arr { transition: transform .35s var(--ease); }
+@media (hover: hover) { .cf-go:hover .arr { transform: translateX(4px); } }
+.cf-back { display: inline-flex; align-items: center; min-height: 44px; padding: 0 2px; margin: 0; border: 0; font-family: var(--f-sans); font-size: 10.5px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--ink); background: linear-gradient(currentColor, currentColor) 0 calc(100% - 11px) / 100% 1px no-repeat; cursor: pointer; }
+.cf-back:focus-visible, .cf-go:focus-visible, .cf-copy:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+@media (min-width: 600px) { .cf-back { margin-left: 14px; } }
+.cf-status { min-height: 1.5em; margin: 14px 0 0; font-size: 14px; font-weight: 600; color: var(--ink); }
+.cf-copytext { margin-top: 12px; padding: 12px 14px; border: 1px solid var(--iq-field); border-radius: 0; background: var(--ivory); color: var(--ink); }
+.cf-copytext:focus { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* without script: the line and her real form's link, nothing else */
+.cf-noscript { margin: 0; padding: 18px 20px; border: 1px solid var(--iq-field); font-size: 15px; line-height: 1.6; color: var(--ink); }

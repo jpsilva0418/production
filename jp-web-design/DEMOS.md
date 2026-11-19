@@ -14,6 +14,7 @@ normal Vercel deploy. No subdomains, no DNS, no separate project.
 | `magnolia-07` | Magnolia Healthcare, Inc. (MA) | Concept 07 · Family, at Home · Evolved | same |
 | `sass-by-kass-01` | Sass by Kass — Kassandra, hair stylist (MA) | Revision 03 · logo hero, signature entrance, bridal inquiry (republished 2026-11-11) | `jpsilva0418/production` → `sass-by-kass/`, see `DEMO.json` |
 | `yariiimakeup-01` | YariiiMakeup — makeup & hair artist (Poinciana / Kissimmee, FL) | Concept 01 · All eyes on you: her logo draws and its eyes open onto a hero of her work in motion, portfolio of stills and film, About, demo-only inquiry form, Booksy booking (prospect concept, 2026-11-19) | hand-built, in this folder; notes in `docs/demo-yariiimakeup-01.md` |
+| `amairanymua-01` | Amairany Sierra — @amairanymua, bridal hair & makeup (FL) | Nine complete sites to choose from (2026-11-19), in three rounds: Atelier, Blush, Cocoa (lighter, after four reference sites); Rouge, Maison, Darkroom (her red, black and white, softened to a rose); Veil, Noir, The Edit. Each has its own opening, an on-site bridal inquiry in demo mode with her JotForm's questions, and her real clips. Published for review 2026-11-19; awaiting founder's pick | hand-built by `scripts/amairanymua-01-build.mjs` + `scripts/amairanymua-01/`; Rouge from `amairanymua-01-rouge/` (Astro). See `docs/demo-amairanymua-01.md` |
 
 Each generated demo has a `DEMO.json` that records its client, concept, source
 commit and build time.

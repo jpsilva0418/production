@@ -1,0 +1,163 @@
+/* /demo/amairanymua-01 — MAISON: the STORY pages (Bridal, About).
+   Written against the tone variables (--bg --fg --mut --line --accent-t) so each block works on its
+   section's ground. Every colour comes from a token in site.css. Breakpoints: 600 / 900 / 1200. */
+
+/* ===================================================================
+   BRIDAL
+   =================================================================== */
+
+/* ---------- the title card: booking line + an index of the page ---------- */
+.b-after { display: grid; gap: 26px; margin-top: 30px; }
+.b-idx ol { list-style: none; display: flex; flex-wrap: wrap; border-top: 1px solid var(--line-soft); }
+.b-idx li { flex: 1 1 50%; border-bottom: 1px solid var(--line-soft); }
+.b-idx a { display: flex; align-items: center; gap: 10px; min-height: 48px; padding-right: 12px; font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; text-decoration: none; color: var(--fg); transition: color .3s var(--ease); }
+.b-idx a span { font-family: var(--f-cap); font-size: 14px; letter-spacing: .08em; color: var(--mut); }
+.b-idx a:hover { color: var(--accent-t); }
+@media (min-width: 600px) { .b-idx li { flex: 0 0 auto; margin-right: 28px; border-bottom: 0; } .b-idx ol { border-bottom: 1px solid var(--line-soft); } }
+.bridal .cover .d-xl { font-size: clamp(40px, 6vw, 88px); }
+
+/* ---------- packages (both groups) ---------- */
+.b-pk .pk-l li { padding: 9px 0; }
+.b-pk--lt .pk-g, .b-pk--lt .pk-g > *, .b-pk--lt .pk, .b-pk--lt .pk-l, .b-pk--lt .pk-l li { border-color: var(--line-soft); }
+.b-pk--lt .pk-g { border-top-color: var(--noir); }
+.b-pk--lt .pk-l { border-top-color: var(--noir); }
+@media (min-width: 900px) {
+  .b-pk--lt .pk-g > * { border-top-color: var(--noir); }
+}
+.b-pk-ft { display: grid; gap: 26px; margin-top: clamp(32px, 4vw, 48px); }
+.b-pk-note p { margin: 0 0 .6em; max-width: 60ch; font-size: 14.5px; line-height: 1.65; color: var(--mut); }
+.b-pk-note a { padding: 12px 0; color: var(--fg); text-decoration-color: var(--rouge); }
+.b-pk-note a:hover { color: var(--accent-t); }
+@media (min-width: 900px) { .b-pk-ft { grid-template-columns: 1fr auto; align-items: end; gap: 48px; } }
+
+/* ---------- Destination bride? (the centred moment) ---------- */
+.b-dest-in { display: grid; grid-template-columns: 1fr 1fr; grid-template-areas: 't t' 'a b'; gap: 48px 12px; align-items: start; }
+.b-dest-t { grid-area: t; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.b-dest-t .kick::after { content: ''; flex: 0 0 24px; height: 1px; background: currentColor; }
+.b-dest-t .d-xl { margin-bottom: 30px; font-size: clamp(36px, 10.4vw, 64px); }
+@media (min-width: 900px) { .b-dest-t .d-xl { font-size: clamp(44px, 4.6vw, 76px); } }
+.b-dest-q { margin: 0 0 6px; padding: 0; max-width: 40ch; }
+.b-dest-q p { font-size: clamp(18px, 1.7vw, 22px); line-height: 1.6; margin-bottom: 14px; }
+.b-dest-q cite { font-style: normal; font-size: 10.5px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--mut); }
+.b-dest .note { transform-origin: center; margin: 14px 0 30px; color: var(--rouge); }
+.b-dest .acts { justify-content: center; width: 100%; max-width: 520px; }
+.b-dest-a { grid-area: a; }
+.b-dest-b { grid-area: b; margin-top: 56px; }
+@media (min-width: 900px) {
+  .b-dest-in { grid-template-columns: minmax(0, .9fr) minmax(0, 1.8fr) minmax(0, .9fr); grid-template-areas: 'a t b'; gap: clamp(32px, 4vw, 64px); align-items: center; }
+  .b-dest-a { align-self: end; }
+  .b-dest-b { align-self: start; margin-top: 0; }
+  .b-dest .acts .btn { flex: 0 0 auto; }
+}
+
+/* ---------- the FAQ: native details, her answers ---------- */
+.b-faq-g { display: grid; gap: 36px; }
+.b-faq-hd .lede { margin-top: 22px; }
+@media (min-width: 900px) {
+  .b-faq-g { grid-template-columns: 5fr 7fr; gap: clamp(48px, 7vw, 120px); align-items: start; }
+  .b-faq-hd { position: sticky; top: calc(var(--hd-h) + 32px); }
+}
+.b-faq-l { counter-reset: q; }
+.b-faq-l .faq-i { counter-increment: q; }
+.b-faq-l .faq-i summary { min-height: 72px; padding: 18px 0; gap: 18px; justify-content: flex-start; font-size: clamp(17px, 1.5vw, 20px); outline-offset: -2px; transition: color .3s var(--ease); }
+.b-faq-l .faq-i summary::before { content: counter(q, decimal-leading-zero); flex: 0 0 34px; font-family: var(--f-cap); font-size: 15px; letter-spacing: .08em; color: var(--mut); }
+.b-faq-l .faq-i summary > span { flex: 1; }
+.b-faq-l .faq-i summary i { flex: 0 0 32px; height: 32px; border: 1px solid var(--line-soft); transition: border-color .3s var(--ease), background-color .3s var(--ease); }
+.b-faq-l .faq-i summary i::before, .b-faq-l .faq-i summary i::after { left: 9px; right: 9px; }
+.b-faq-l .faq-i summary:focus-visible { outline-color: var(--rouge-deep); }
+.b-faq-l .faq-i summary:hover i { border-color: var(--fg); }
+.b-faq-l .faq-i[open] summary::before { color: var(--accent-t); }
+.b-faq-l .faq-i[open] summary i { border-color: var(--rouge); }
+.b-faq-l .faq-a { padding: 0 0 26px 52px; }
+.b-faq-l .faq-a p { margin: 0; font-size: 16.5px; line-height: 1.7; }
+.b-faq-l .faq-a p::before { content: '\201C'; }
+.b-faq-l .faq-a p::after { content: '\201D'; }
+
+/* ---------- How to prepare ---------- */
+.b-prep-l { list-style: none; display: grid; gap: 0; border-top: 1px solid var(--noir); margin-bottom: 28px; }
+.b-prep-l li { display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: start; padding: 26px 0 30px; border-bottom: 1px solid var(--line-soft); }
+.b-prep-n { font-family: var(--f-cap); font-size: clamp(56px, 7vw, 104px); line-height: .82; letter-spacing: .02em; }
+.b-prep-l p { margin: 0; max-width: 26ch; font-size: clamp(20px, 2.1vw, 30px); line-height: 1.35; font-weight: 400; }
+@media (min-width: 900px) {
+  .b-prep-l { grid-template-columns: 1fr 1fr; border-top: 0; }
+  .b-prep-l li { border-top: 1px solid var(--noir); border-bottom: 0; padding: 34px 40px 36px 0; gap: 28px; }
+  .b-prep-l li + li { padding-left: 40px; border-left: 1px solid var(--line-soft); }
+}
+
+/* ---------- picture beside film ---------- */
+.b-pair-g { display: grid; gap: 36px; }
+@media (min-width: 900px) {
+  .b-pair-g { grid-template-columns: 4fr 7fr; gap: clamp(48px, 6vw, 104px); align-items: end; }
+  .b-pair-t { padding-bottom: 36px; }
+}
+.b-pair-t .lede { margin: 22px 0 18px; }
+
+/* a narrow film frame on phones: keep every word of the marked slot inside it */
+@media (max-width: 599px) {
+  .b-pair .slot, .a-mo .slot { gap: 7px; padding: 18px 8px; }
+  .b-pair .slot-ic, .a-mo .slot-ic { width: 38px; height: 38px; }
+  .b-pair .slot-t, .a-mo .slot-t { font-size: 13.5px; }
+  .b-pair .slot-n, .b-pair .slot-s, .a-mo .slot-n, .a-mo .slot-s { font-size: 8.5px; letter-spacing: .18em; }
+}
+
+/* ===================================================================
+   ABOUT
+   =================================================================== */
+
+/* ---------- the title card ---------- */
+.about .cover .d-xl { font-size: clamp(30px, 9vw, 72px); }
+@media (min-width: 900px) { .about .cover .d-xl { font-size: clamp(44px, 5vw, 76px); } }
+.about .cover .hl--in { padding-left: .9em; }
+.a-book { margin-top: 26px; }
+
+/* ---------- her words ---------- */
+.a-words-hd { margin-bottom: clamp(32px, 4vw, 56px); }
+.a-q { margin: 0; padding: 0; }
+.a-q-lead { max-width: 30ch; margin: 0 0 clamp(28px, 4vw, 48px); font-size: clamp(23px, 2.9vw, 40px); line-height: 1.34; font-weight: 300; letter-spacing: -.005em; }
+.a-q-cols { display: grid; gap: 0; max-width: 980px; }
+.a-q-cols p { font-size: 17px; line-height: 1.75; max-width: 46ch; }
+@media (min-width: 900px) {
+  .a-q-cols { grid-template-columns: 1fr 1fr; gap: 56px; padding-left: 0; border-top: 1px solid var(--line-soft); padding-top: 28px; }
+}
+.a-sign { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 28px; margin: 12px 0 28px; }
+.a-sign .cap { margin: 0; }
+.a-words .spec { max-width: 980px; }
+
+/* ---------- her services, an index on black ---------- */
+.a-sv-l { list-style: none; border-top: 1px solid var(--line); }
+.a-sv-i { display: grid; grid-template-columns: 40px 1fr; gap: 6px 14px; padding: 26px 0 28px; border-bottom: 1px solid var(--line); }
+.a-sv-n { font-family: var(--f-cap); font-size: 15px; letter-spacing: .08em; color: var(--mut); padding-top: .35em; }
+.a-sv-t { margin: 0; font-size: clamp(30px, 4.4vw, 60px); line-height: 1; }
+.a-sv-d { grid-column: 2; }
+.a-sv-d:empty { display: none; }
+.a-sv-d p { margin: 12px 0 4px; max-width: 46ch; font-size: 15.5px; color: var(--mut); }
+.a-sv-d .more { margin-top: 4px; }
+.a-ph { display: grid; gap: 10px; margin-top: clamp(36px, 5vw, 56px); max-width: 640px; }
+.a-ph-q { margin: 0; font-size: 10.5px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--mut); }
+.a-ph-a { margin: 0; padding: 0 0 0 18px; border-left: 2px solid var(--rouge); }
+.a-ph-a p { margin: 0 0 8px; font-size: 16px; line-height: 1.65; color: var(--fg); }
+.a-ph-a cite { font-style: normal; font-size: 10.5px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--mut); }
+@media (min-width: 900px) { .a-ph { margin-left: calc(64px + 28px); } }
+@media (min-width: 900px) {
+  .a-sv-i { grid-template-columns: 64px minmax(0, 1.1fr) minmax(0, 1fr); gap: 28px; align-items: start; padding: 36px 0 38px; }
+  .a-sv-d { grid-column: 3; }
+  .a-sv-d p:first-child { margin-top: .3em; }
+}
+
+/* ---------- In motion: film beside stills (the centred moment) ---------- */
+.a-mo-hd { display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: clamp(36px, 5vw, 64px); }
+.a-mo-hd .kick::after { content: ''; flex: 0 0 24px; height: 1px; background: currentColor; }
+.a-mo-hd .lede { margin-top: 20px; }
+.a-mo-g { display: grid; grid-template-columns: 1.15fr .85fr; gap: 28px 10px; align-items: end; }
+.a-mo-3 { order: 4; }
+.a-mo-4 { order: 3; }
+.a-mo-ft { display: flex; justify-content: center; margin-top: clamp(28px, 4vw, 48px); }
+@media (min-width: 900px) {
+  .a-mo-g { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.3fr); gap: 20px; }
+  .a-mo-3, .a-mo-4 { order: 0; }
+  .a-mo-1 { margin-bottom: 120px; }
+  .a-mo-3 { margin-bottom: 64px; }
+}
+
+/* ---------- Love Notes ---------- */
+.a-love .lede { color: var(--mut); }

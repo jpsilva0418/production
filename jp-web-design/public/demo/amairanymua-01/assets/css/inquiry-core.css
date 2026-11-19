@@ -1,0 +1,81 @@
+/* /demo/amairanymua-01 — the shared bridal inquiry: STRUCTURE ONLY.
+   What must hold on an iPhone whatever a site's skin does: hidden states, the visually hidden
+   (still focusable) choice inputs, the no-flash reveal, grids that can never widen their card,
+   iPhone date/time fixes, 16px inputs (no zoom on focus). No colours, fonts, borders or spacing
+   a site would choose. Load it BEFORE the site's stylesheet; everything a skin overrides is a
+   single class. Guide: SKINNING.md. Markup: scripts/amairanymua-01/inquiry-core.mjs. */
+
+.cf-inquiry{min-width:0;max-width:100%}
+.cf-inquiry [hidden]{display:none!important}
+.cf-inquiry *,.cf-inquiry *::before,.cf-inquiry *::after{box-sizing:border-box}
+
+/* nothing flashes: the form keeps its space but is invisible until the script has restored and rendered */
+.cf-form{visibility:hidden;min-width:0;max-width:100%;scroll-margin-top:var(--cf-scroll-offset,88px)}
+.cf-form.ready{visibility:visible}
+/* without script the form cannot work: the <noscript> line and her real form's link stand alone */
+@media (scripting:none){.cf-form{display:none}}
+.cf-handoff{min-width:0;max-width:100%;scroll-margin-top:var(--cf-scroll-offset,88px)}
+
+.cf-sr{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+
+/* progress: one equal column per step */
+.cf-prog{list-style:none;margin:0;padding:0;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);min-width:0}
+.cf-prog li{min-width:0;margin:0;padding:0}
+.cf-prog-bar,.cf-prog-lbl{display:block}
+
+/* steps: fieldset defaults removed so they can never force a minimum width */
+.cf-step{border:0;padding:0;margin:0;min-width:0;min-inline-size:0;max-width:100%;scroll-margin-top:var(--cf-scroll-offset,88px)}
+.cf-step>legend{padding:0;max-width:100%;white-space:normal}
+.cf-step>legend:focus,#cfHandoffHead:focus{outline:none}
+
+.cf-field{min-width:0;max-width:100%}
+.cf-lbl{display:block;overflow-wrap:anywhere}
+
+/* zero-minimum tracks: no control's intrinsic width can widen the card */
+.cf-two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));min-width:0}
+.cf-cards{display:grid;grid-template-columns:minmax(0,1fr);min-width:0}
+.cf-cards-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cf-cards-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:339.98px){
+  .cf-two,.cf-cards-2,.cf-cards-3{grid-template-columns:minmax(0,1fr)}
+}
+
+/* a choice card: the <label> is the target; its radio is invisible but still focusable */
+.cf-card{position:relative;display:flex;align-items:center;min-width:0;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.cf-card>input{position:absolute;top:50%;left:50%;width:1px;height:1px;margin:0;padding:0;opacity:0;pointer-events:none}
+.cf-card>span{min-width:0;overflow-wrap:anywhere}
+.cf-check{display:inline-flex;align-items:center;max-width:100%;cursor:pointer;touch-action:manipulation}
+.cf-check>input{flex:none;margin:0}
+
+/* text-like controls: full width, never narrower than a tap, never under 16px (iPhone zooms otherwise) */
+.cf-input{display:block;width:100%;min-width:0;max-width:100%;min-height:44px;margin:0;font:inherit;font-size:max(16px,1em);line-height:1.4}
+textarea.cf-input{resize:vertical;min-height:0}
+/* iPhone draws type=date / type=time with an intrinsic width that ignores width:100% and centres the
+   value: drop the native chrome so they size like every other field, keep the value left-aligned,
+   and keep an empty one from collapsing (Sass by Kass carried these from real devices) */
+.cf-input[type="date"],.cf-input[type="time"]{-webkit-appearance:none;appearance:none;text-align:left}
+.cf-input[type="date"]::-webkit-date-and-time-value,.cf-input[type="time"]::-webkit-date-and-time-value{text-align:left;margin:0;min-height:1.4em}
+.cf-input[type="date"]::-webkit-datetime-edit,.cf-input[type="time"]::-webkit-datetime-edit{padding:0}
+
+.cf-hint,.cf-err{overflow-wrap:anywhere}
+
+/* review */
+.cf-review{display:grid;min-width:0}
+.cf-rev-group{min-width:0}
+.cf-rev-head{display:flex;align-items:baseline;justify-content:space-between;min-width:0}
+.cf-rev-title{min-width:0}
+.cf-rev-edit{flex:none;touch-action:manipulation}
+.cf-rev-list{display:grid;margin:0;min-width:0}
+.cf-rev-row{display:flex;flex-wrap:wrap;column-gap:.5em;min-width:0}
+.cf-rev-q,.cf-rev-a{margin:0;min-width:0;overflow-wrap:anywhere}
+.cf-rev-a{white-space:pre-line}
+
+/* actions */
+.cf-nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.cf-btn--primary{margin-inline-start:auto}
+.cf-btn,.cf-reset,.cf-go,.cf-copy,.cf-back{touch-action:manipulation;max-width:100%}
+.cf-actions{display:flex;flex-wrap:wrap;align-items:center}
+.cf-go,.cf-copy,.cf-strip,.cf-handoff-body{overflow-wrap:anywhere}
+
+/* last-resort manual copy box */
+.cf-copytext{display:block;width:100%;max-width:100%;min-height:10em;margin:0;font:inherit;font-size:16px;line-height:1.45;white-space:pre-wrap;resize:vertical}
