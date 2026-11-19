@@ -241,7 +241,7 @@ ${quote(EXT.split('. ')[0] + '.', SITE.first)}
 <div class="tu-r tu-hd" role="row"><span role="columnheader">Package</span><span role="columnheader">Touch-ups and kits</span></div>
 ${TOUCH.map((t) => `<div class="tu-r" role="row"><span class="tu-n" role="rowheader">${t.name}<small>${t.who}</small></span><span role="cell"><ul>${t.pts.map((x) => `<li>${x}</li>`).join('')}</ul></span></div>`).join('')}
 </div>
-<p class="tu-note">${more(href(S, 'bridal'), 'All six packages, with what each includes')}</p>`;
+<p class="tu-note">${more(href(S, 'bridal'), 'All six packages')}</p>`;
   return page({
     path: p.path,
     title: `${p.title} · Journal`,
