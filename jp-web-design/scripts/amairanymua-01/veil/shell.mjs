@@ -203,7 +203,8 @@ const bar = () => `<div class="bar" id="bookBar" role="group" aria-label="Book" 
  *  description  meta description
  *  main         the contents of <main>
  *  head         extra markup for <head> (preloads)
- *  css, js      extra file names in assets/veil/, without extension (['home'] -> home.css / home.js)
+ *  css, js      extra file names in assets/veil/, without extension (['home'] -> home.css / home.js);
+ *               an entry starting with '/' is used as a full path (`${A}/css/inquiry-core.css`)
  *  bodyClass    extra classes on <body>: 'no-bar' hides the phone booking bar on that page
  *  pre          markup placed first in <body> (the home page's opening uses it) */
 export function page({ path = '', title, description, main, head: extra = '', css = [], js = [], bodyClass = '', pre = '' }) {
@@ -214,7 +215,7 @@ ${head(S, { path, title, description })}
 <link rel="preload" as="font" type="font/woff2" href="${A}/fonts/cormorant-garamond-var.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="${A}/fonts/jost-var.woff2" crossorigin>
 <link rel="stylesheet" href="${VA}/site.css">
-${css.map((c) => `<link rel="stylesheet" href="${VA}/${c}.css">`).join('\n')}
+${css.map((c) => `<link rel="stylesheet" href="${c.startsWith('/') ? c : `${VA}/${c}.css`}">`).join('\n')}
 <script>(function(d){d.classList.add('js');setTimeout(function(){if(!window.__veil)d.classList.remove('js')},3500)})(document.documentElement)</script>
 ${extra}
 </head>
@@ -230,7 +231,7 @@ ${footer()}
 ${bodyClass.includes('no-bar') ? '' : bar()}
 ${marker(S, path)}
 <script src="${VA}/site.js" defer></script>
-${js.map((s) => `<script src="${VA}/${s}.js" defer></script>`).join('\n')}
+${js.map((x) => `<script src="${x.startsWith('/') ? x : `${VA}/${x}.js`}" defer></script>`).join('\n')}
 </body>
 </html>
 `;

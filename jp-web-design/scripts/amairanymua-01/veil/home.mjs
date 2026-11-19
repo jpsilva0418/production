@@ -92,7 +92,8 @@ const railItem = (it, i) => {
   const inner = it.film
     ? filmFrame(it.film, { cap: `${FILMS[it.film].label} &middot; Film`, ar: '3/4' })
     : frame(it.photo, { cap: true, ar: '3/4', sizes: '(max-width:599px) 74vw, (max-width:1099px) 42vw, 380px' });
-  return `<li class="rail-it" style="--d:${(Math.min(i, 3) * 0.08).toFixed(2)}s">${inner}</li>`;
+  /* the rail unveils as one when it comes into view (home.js), not frame by frame sideways */
+  return `<li class="rail-it" style="--d:${(Math.min(i, 4) * 0.12).toFixed(2)}s">${inner.replace(' rv-im"', ' rv-im" data-hold')}</li>`;
 };
 
 const looks = () => `<section class="sec looks" id="looks" aria-labelledby="looks-h">

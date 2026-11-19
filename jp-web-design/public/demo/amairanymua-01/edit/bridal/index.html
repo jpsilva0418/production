@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en"><head>
+<html lang="en" data-site="edit">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Bridal · Amairany Sierra · design preview</title>
@@ -16,10 +17,95 @@
 <link rel="icon" type="image/svg+xml" href="/demo/amairanymua-01/assets/img/favicon.svg">
 <meta name="theme-color" content="#F9C7A8">
 <link rel="stylesheet" href="/demo/amairanymua-01/assets/css/marker.css">
-</head><body style="font-family:system-ui;margin:0;padding:24px 20px 90px;max-width:760px">
-<a href="#main">Skip to content</a>
-<header><p><a href="/demo/amairanymua-01/edit">Amairany Sierra</a> · <a href="/demo/amairanymua-01/edit/about">About</a> · <a href="/demo/amairanymua-01/edit/bridal">Bridal</a> · <a href="/demo/amairanymua-01/edit/services">Services</a> · <a href="/demo/amairanymua-01/edit/portfolio">Portfolio</a> · <a href="/demo/amairanymua-01/edit/reviews">Reviews</a> · <a href="/demo/amairanymua-01/edit/bridal-inquiry">Bridal Inquiry</a></p></header>
-<main id="main"><h1>Bridal</h1><p>Not built yet.</p><p><a href="/demo/amairanymua-01/edit/bridal-inquiry" data-inquire>Bridal inquiry</a> · <a href="https://amairanymua.as.me/?appointmentType=category:Hair%20%26%2For%20Makeup%20%28%20Travel%2F%20In%20Studio%29" data-book="event" rel="external">Book event glam</a></p></main>
-<footer><p style="font-size:12px">Design preview by JP Silva Digital for Amairany Sierra. This is a concept, not her official website. Photography from @amairanymua, shown with her permission. Booking buttons open her own inquiry form and booking pages. The wordmark is concept styling, not an official logo. <a href="/demo/amairanymua-01">See all three previews</a>.</p></footer>
+<link rel="preload" as="font" type="font/woff2" href="/demo/amairanymua-01/assets/fonts/bricolage-grotesque-var.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/demo/amairanymua-01/assets/fonts/newsreader-italic-var.woff2" crossorigin>
+<link rel="stylesheet" href="/demo/amairanymua-01/assets/edit/site.css">
+
+<script>(function(d){d.classList.add('js');setTimeout(function(){if(!window.__edit)d.classList.remove('js')},3500)})(document.documentElement)</script>
+
+</head>
+<body class="pg-bridal">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="hd" id="siteHeader">
+  <div class="hd-in">
+    <a class="hd-logo" href="/demo/amairanymua-01/edit" aria-label="Amairany Sierra, luxury hair + makeup, home"><span class="wm wm--hd" aria-hidden="true"><span class="wm-a">Amairany</span><span class="wm-b">Sierra</span><span class="wm-c"><span>hair +</span><span>makeup</span></span></span></a>
+    <nav class="hd-nav" aria-label="Primary">
+      <a href="/demo/amairanymua-01/edit/about">About</a><a href="/demo/amairanymua-01/edit/bridal" aria-current="page">Bridal</a><a href="/demo/amairanymua-01/edit/services">Services</a><a href="/demo/amairanymua-01/edit/portfolio">Portfolio</a><a href="/demo/amairanymua-01/edit/reviews">Reviews</a>
+    </nav>
+    <div class="hd-tools">
+      <a class="btn btn--solid btn--sm hd-cta" href="/demo/amairanymua-01/edit/bridal-inquiry" data-inquire>Bridal inquiry</a>
+      <button class="hd-menu" id="menuOpen" type="button" aria-expanded="false" aria-controls="menu"><span class="hd-menu-t">Menu</span><span class="hd-menu-i" aria-hidden="true"><i></i><i></i></span></button>
+    </div>
+  </div>
+</header>
+<div class="menu f-peach" id="menu" role="dialog" aria-modal="true" aria-label="Menu" aria-hidden="true" inert>
+  <div class="menu-top">
+    <span class="menu-wm"><span class="wm" aria-hidden="true"><span class="wm-a">Amairany</span><span class="wm-b">Sierra</span><span class="wm-c"><span>hair +</span><span>makeup</span></span></span></span>
+    <button class="menu-close" id="menuClose" type="button">Close <span class="menu-x" aria-hidden="true"></span></button>
+  </div>
+  <nav class="menu-body" aria-label="Pages">
+    <ol class="menu-list">
+      <li><a href="/demo/amairanymua-01/edit"><span class="menu-l">Home</span><span class="menu-n">Start here</span></a></li>
+      <li><a href="/demo/amairanymua-01/edit/about"><span class="menu-l">About Amairany</span><span class="menu-n">The artist behind the brushes</span></a></li>
+      <li><a href="/demo/amairanymua-01/edit/bridal" aria-current="page"><span class="menu-l">Bridal</span><span class="menu-n">Your wedding day glam</span></a></li>
+      <li><a href="/demo/amairanymua-01/edit/services"><span class="menu-l">Services</span><span class="menu-n">Brides, events, photoshoots</span></a></li>
+      <li><a href="/demo/amairanymua-01/edit/portfolio"><span class="menu-l">Portfolio</span><span class="menu-n">Photographs and film</span></a></li>
+      <li><a href="/demo/amairanymua-01/edit/reviews"><span class="menu-l">Reviews</span><span class="menu-n">Where her clients wrote them</span></a></li>
+      <li><a href="/demo/amairanymua-01/edit/bridal-inquiry"><span class="menu-l">Bridal Inquiry</span><span class="menu-n">Weddings start here</span></a></li>
+    </ol>
+  </nav>
+  <div class="menu-foot">
+    <div class="acts"><a class="btn btn--solid" href="/demo/amairanymua-01/edit/bridal-inquiry" data-inquire>Bridal inquiry</a><a class="btn btn--line" href="https://amairanymua.as.me/?appointmentType=category:Hair%20%26%2For%20Makeup%20%28%20Travel%2F%20In%20Studio%29" data-book="event" rel="external">Book event glam</a></div>
+    <p class="menu-sub"><a href="https://www.instagram.com/amairanymua/" rel="external">Instagram @amairanymua</a><a href="mailto:amairanysmua@gmail.com">Email Amairany</a><a href="https://amairanymua.as.me/?appointmentType=category:Bridal%20Services" data-book="bridal-services" rel="external">Bridal services</a></p>
+  </div>
+</div>
+<main id="main">
+<h1>Bridal</h1><p>Not built yet.</p>
+</main>
+<footer class="ft f-char">
+  <div class="wrap">
+    <p class="ft-wm"><span class="wm wm--ft" aria-hidden="true"><span class="wm-a">Amairany</span><span class="wm-b">Sierra</span><span class="wm-c"><span>hair +</span><span>makeup</span></span></span><span class="sr">Amairany Sierra, hair and makeup</span></p>
+    <div class="ft-grid">
+      <div class="ft-about">
+        <p class="ft-line">Luxury hair and makeup by Amairany Sierra: soft-to-full glam, glam waves and real-life-filter skin for brides and events across Orlando + Tampa.</p>
+        <div class="acts"><a class="btn btn--cream" href="/demo/amairanymua-01/edit/bridal-inquiry" data-inquire>Bridal inquiry</a><a class="btn btn--line-cream" href="https://amairanymua.as.me/?appointmentType=category:Hair%20%26%2For%20Makeup%20%28%20Travel%2F%20In%20Studio%29" data-book="event" rel="external">Book event glam</a></div>
+      </div>
+      <nav class="ft-col" aria-label="Footer">
+        <p class="ft-h">Pages</p>
+        <ul>
+          <li><a href="/demo/amairanymua-01/edit">Home</a></li>
+          <li><a href="/demo/amairanymua-01/edit/about">About Amairany</a></li>
+          <li><a href="/demo/amairanymua-01/edit/bridal">Bridal</a></li>
+          <li><a href="/demo/amairanymua-01/edit/services">Services</a></li>
+          <li><a href="/demo/amairanymua-01/edit/portfolio">Portfolio</a></li>
+          <li><a href="/demo/amairanymua-01/edit/reviews">Reviews</a></li>
+          <li><a href="/demo/amairanymua-01/edit/bridal-inquiry">Bridal Inquiry</a></li>
+        </ul>
+      </nav>
+      <div class="ft-col">
+        <p class="ft-h">Book</p>
+        <ul>
+          <li><a href="/demo/amairanymua-01/edit/bridal-inquiry" data-inquire>Bridal inquiry</a></li>
+          <li><a href="https://amairanymua.as.me/?appointmentType=category:Bridal%20Services" data-book="bridal-services" rel="external">Explore bridal services</a></li>
+          <li><a href="https://amairanymua.as.me/?appointmentType=category:Hair%20%26%2For%20Makeup%20%28%20Travel%2F%20In%20Studio%29" data-book="event" rel="external">Book event makeup &amp; hair</a></li>
+        </ul>
+      </div>
+      <div class="ft-col">
+        <p class="ft-h">Reach Amairany</p>
+        <ul>
+          <li><a href="https://www.instagram.com/amairanymua/" rel="external">Instagram @amairanymua</a></li>
+          <li><a href="mailto:amairanysmua@gmail.com" class="ft-mail">amairanysmua@gmail.com</a></li>
+          <li><span class="ft-k">Orlando + Tampa, Florida</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="ft-fine">Design preview by JP Silva Digital for Amairany Sierra. This is a concept, not her official website. Photography from @amairanymua, shown with her permission. Booking buttons open her own inquiry form and booking pages. The wordmark is concept styling, not an official logo. <a href="/demo/amairanymua-01">See all three previews</a>.</p>
+  </div>
+</footer>
+<div class="dock" id="dock" role="group" aria-label="Book" aria-hidden="true"><a class="btn btn--cream btn--sm" href="/demo/amairanymua-01/edit/bridal-inquiry" data-inquire tabindex="-1">Bridal inquiry</a><a class="btn btn--line-cream btn--sm" href="https://amairanymua.as.me/?appointmentType=category:Hair%20%26%2For%20Makeup%20%28%20Travel%2F%20In%20Studio%29" data-book="event" rel="external" tabindex="-1">Book event glam</a></div>
 <div class="demo-flag demo-flag--review"><span class="demo-flag-t">Design preview &middot; not the official site</span><span class="demo-dirs" role="navigation" aria-label="The three previews"><span class="demo-dirs-k" aria-hidden="true">Preview</span><a href="/demo/amairanymua-01/veil/bridal" aria-label="Preview 1: Veil">1</a><a href="/demo/amairanymua-01/noir/bridal" aria-label="Preview 2: Noir">2</a><a href="/demo/amairanymua-01/edit/bridal" aria-current="true" aria-label="Preview 3: The Edit">3</a><a class="demo-all" href="/demo/amairanymua-01" aria-label="All three previews">All</a></span></div>
-</body></html>
+<script src="/demo/amairanymua-01/assets/edit/site.js" defer></script>
+
+</body>
+</html>

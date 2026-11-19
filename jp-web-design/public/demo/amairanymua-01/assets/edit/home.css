@@ -3,7 +3,7 @@
 
 /* ================================================================ the opening */
 .op{display:none}
-html.intro .op{position:fixed;inset:0;z-index:955;display:grid;place-items:center;overflow:hidden;pointer-events:auto;touch-action:none}
+html.intro .op{position:fixed;inset:0;z-index:955;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);place-items:center;overflow:hidden;pointer-events:auto;touch-action:none}
 .op-bg{position:absolute;inset:0;background:var(--cream)}
 .op-sws{position:relative;grid-area:1 / 1;width:min(128vw,58vw + 300px,1120px);aspect-ratio:1600 / 900}
 .op-sw{position:absolute;left:0;width:100%;aspect-ratio:1600 / 420;transform-origin:34% 50%}
@@ -14,7 +14,7 @@ html.intro .op{position:fixed;inset:0;z-index:955;display:grid;place-items:cente
 .op-sw1 i{background:var(--bronze)}
 .op-sw2 i{background:var(--peach-deep);-webkit-mask-image:url(swatch-2.webp);mask-image:url(swatch-2.webp)}
 .op-sw3 i{background:var(--peach);-webkit-mask-image:url(swatch-3.webp);mask-image:url(swatch-3.webp)}
-.op-wm{position:relative;grid-area:1 / 1;color:var(--charcoal);transform-origin:0 0}
+.op-wm{position:relative;display:grid;grid-area:1 / 1;color:var(--charcoal);transform-origin:0 0}
 .wm--op{font-size:clamp(58px,17vw,176px)}
 /* pre-state: nothing of the hero shows until the opening hands over */
 html.intro .op-sw{clip-path:inset(0 100% 0 0)}
@@ -25,7 +25,7 @@ html.intro .hl-i{transform:translate3d(0,110%,0)}
 html.intro .hd{background:transparent;box-shadow:none}
 
 /* ================================================================ the hero: a story */
-.hero{position:relative;display:flex;min-height:100vh;min-height:100svh;padding:calc(var(--hd-h) + env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) calc(60px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left))}
+.hero{position:relative;overflow-x:clip;display:flex;min-height:100vh;min-height:100svh;padding:calc(var(--hd-h) + env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) calc(60px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left))}
 .hero-in{flex:1;display:flex;flex-direction:column;min-height:0;width:100%}
 .hero-story{position:relative;flex:1 1 0;min-height:230px;display:flex}
 .hero-back{display:none}
@@ -43,10 +43,10 @@ html:not(.js) .st-f:first-child{opacity:1;visibility:visible}
 .st-bar i{display:block;height:100%;border-radius:inherit;background:var(--cream);transform-origin:0 50%;transform:scaleX(0)}
 .st-bar.done i{transform:scaleX(1)}
 html:not(.js) .st-bar:first-child i{transform:scaleX(1)}
-.st-top{position:absolute;left:10px;right:8px;top:20px;z-index:4;display:flex;align-items:center;gap:6px;pointer-events:none}
+.st-top{position:absolute;left:10px;right:8px;top:15px;z-index:4;display:flex;align-items:center;gap:6px;pointer-events:none}
 .st-top>*{pointer-events:auto}
-.st-chip{position:relative;display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:6px 12px 6px 10px;border-radius:999px;background:var(--cream);color:var(--charcoal);font:700 13px/1 var(--f-body);text-decoration:none}
-.st-chip::after{content:"";position:absolute;inset:-6px -2px}
+.st-chip{display:inline-flex;align-items:center;min-height:44px;color:var(--charcoal);text-decoration:none;border-radius:999px}
+.st-chip-p{display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:6px 12px 6px 10px;border-radius:999px;background:var(--cream);font:700 13px/1 var(--f-body)}
 .st-dot{width:8px;height:8px;border-radius:50%;background:var(--lip);box-shadow:0 0 0 3px rgba(194,84,92,.18)}
 .st-lbl{display:inline-flex;align-items:center;min-height:28px;padding:4px 11px;border-radius:999px;background:rgba(255,247,238,.78);color:var(--charcoal);font:600 12px/1 var(--f-body);pointer-events:none}
 .st-pause{display:grid;place-items:center;width:44px;height:44px;margin-left:auto;border-radius:50%}
@@ -85,18 +85,19 @@ html:not(.js) .st-tap,html:not(.js) .st-pause{display:none}
 .hero-acts .btn{flex:1 1 auto}
 @media(max-width:899px) and (max-height:700px){.hero-line{display:none}}
 @media(max-width:360px){.hero-acts .btn{padding-inline:14px;font-size:15px}}
+@media(min-width:600px) and (max-width:899px){.hero{padding-inline:20px}.hero-acts .btn{flex:none;min-width:200px}.hero-h{font-size:clamp(56px,9vw,76px)}.hero-copy{margin-top:-40px;padding-inline:12px}}
 
 /* wide screens (and a phone held sideways): the 9:16 story beside the headline */
 @media(min-width:900px),(orientation:landscape) and (min-width:560px) and (max-height:620px){
   .hero{align-items:center;padding:calc(var(--hd-h) + env(safe-area-inset-top) + 20px) var(--gut) 56px}
   .hero-in{flex-direction:row-reverse;align-items:center;justify-content:center;gap:clamp(36px,7vw,120px);max-width:var(--max);margin:0 auto}
   .hero-story{flex:none;height:min(76vh,780px);height:min(76svh,780px);width:calc(min(76vh,780px) * 9 / 16);width:calc(min(76svh,780px) * 9 / 16);min-height:0}
-  .hero-back{display:block;position:absolute;inset:0;border-radius:32px;background:var(--gulf);transform:translate(9%,4%) rotate(5deg)}
+  .hero-back{display:block;position:absolute;inset:0;border-radius:32px;background:var(--gulf);transform:translate(6%,3%) rotate(4deg)}
   .story{border-radius:32px;box-shadow:0 40px 80px -40px rgba(43,37,35,.55)}
-  .hero-copy{flex:1;max-width:640px;margin:0;padding:0;gap:22px}
+  .hero-copy{flex:1;max-width:min(760px,54vw);margin:0;padding:0;gap:22px}
   .hero-kick{display:inline-flex}
   .hero-tag{padding:0;background:none;box-shadow:none;border-radius:0;max-width:none}
-  .hero-h{font-size:clamp(60px,7.4vw,124px)}
+  .hero-h{font-size:clamp(56px,7.6vw,128px)}
   .hero-line{font-size:clamp(18px,1.5vw,21px);padding:0;color:var(--charcoal-soft)}
   .hero-acts .btn{flex:none}
 }
@@ -213,4 +214,10 @@ html.js .pal-panels[data-ready] .look{min-height:0}
 /* ================================================================ reduced motion */
 @media(prefers-reduced-motion:reduce){
   .st-f.enter,.look.enter,.pan.glint .pan-dish::after{animation:none}
+}
+
+/* phones: the swatches land inside the screen and are dragged off its right edge */
+@media(max-width:699px){
+  .op-sws{width:124vw;transform:translateX(14vw) rotate(-8deg)}
+  .wm--op{font-size:clamp(50px,15.5vw,96px)}
 }

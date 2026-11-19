@@ -49,7 +49,7 @@ const hero = `<section class="hero f-peach" data-dock-after aria-labelledby="her
         <button class="st-tap st-prev" type="button" aria-label="Previous look"></button>
         <button class="st-tap st-next" type="button" aria-label="Next look"></button>
         <div class="st-top">
-          <a class="st-chip" href="${L.ig}" rel="external"><span class="st-dot" aria-hidden="true"></span>${SITE.handle}</a>
+          <a class="st-chip" href="${L.ig}" rel="external"><span class="st-chip-p"><span class="st-dot" aria-hidden="true"></span>${SITE.handle}</span></a>
           <span class="st-lbl" aria-hidden="true">${MONTAGE[0].label}</span>
           <button class="st-pause" type="button" aria-pressed="false" aria-label="Pause the story"><span class="st-pi" aria-hidden="true"></span></button>
         </div>
@@ -95,7 +95,7 @@ const lookPanel = (p, i) => {
       </header>
       <p class="look-line">${p.line}</p>
       <div class="look-grid${p.films ? ' look-grid--film' : ''}">${items}</div>
-      <p class="look-more"><a class="lnk" href="${href(S, 'portfolio')}">${p.films ? 'Photographs and film in the portfolio' : `See every look in the portfolio`} ${arrow}</a></p>
+      <p class="look-more"><a class="lnk" href="${href(S, 'portfolio')}">${p.films ? 'Film in the portfolio' : `See every look in the portfolio`} ${arrow}</a></p>
     </section>`;
 };
 const palette = `<section class="sec f-cream pal" id="looks" aria-labelledby="looks-h">

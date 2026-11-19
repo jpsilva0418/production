@@ -17,7 +17,7 @@ const E = `${A}/edit`;
 /** The concept wordmark: AMAIRANY over SIERRA, heavy condensed caps, with "hair + makeup"
  *  in Newsreader italic tucked beside SIERRA. Sized by font-size on .wm (everything inside is em). */
 export const wordmark = (cls = '') =>
-  `<span class="wm${cls ? ` ${cls}` : ''}" aria-hidden="true"><span class="wm-a">Amairany</span><span class="wm-b">Sierra</span><span class="wm-c">hair + makeup</span></span>`;
+  `<span class="wm${cls ? ` ${cls}` : ''}" aria-hidden="true"><span class="wm-a">Amairany</span><span class="wm-b">Sierra</span><span class="wm-c"><span>hair +</span><span>makeup</span></span></span>`;
 
 /** A headline: heavy Bricolage with the second part in Newsreader italic.
  *  hed(['Soft glam to', 'full glam.'], { tag: 'h1', size: 'xxl' }) */
