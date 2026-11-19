@@ -1,0 +1,1 @@
+/* inquiry.js — stub */
