@@ -58,7 +58,7 @@
   }
 
   /* ================= the hero picture =================
-     One tall picture that cross-dissolves slowly through her work, film beats among the
+     One tall picture that unveils, one still over the last, through her work, film beats among the
      stills (the marked slot until a clip exists). Paused when off screen, when the tab is
      hidden, and by the pause control. Under reduced motion it stays on the first still. */
   var reel = doc.querySelector('[data-reel]');
@@ -66,10 +66,10 @@
   if (reel && !reduced) {
     var beats = $$('.beat', reel);
     var lblN = $$('.hero-n'), lblL = $$('.hero-l');
-    /* one still every 2.6 s (a 1.1 s dissolve inside it), so a bride sees her range, not one
+    /* one still every 2.6 s (a 1.1 s unveil inside it), so a bride sees her range, not one
        photograph; the first change after the opening comes sooner, because the lead picture
        has already been on screen since the veil lifted */
-    var period = 2600, firstHold = 1700, fade = 1100;
+    var period = 2600, firstHold = 1700, fade = 1200;
     var idx = 0, hold = period, tmr = 0, userPaused = false, visible = true, started = false;
     var pad = function (n) { return (n < 10 ? '0' : '') + n; };
     var prime = function (b) {

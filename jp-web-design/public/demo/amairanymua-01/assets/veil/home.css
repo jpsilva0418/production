@@ -96,6 +96,13 @@ html.intro .hd{animation:opDown .6s var(--ease) 2.4s both}
 .beat{position:absolute;inset:0;opacity:0;transition:opacity 1.1s cubic-bezier(.4,0,.2,1)}
 .beat.is-on{opacity:1;z-index:2}
 .beat.is-prev{opacity:1;z-index:1;transition:none}
+/* a new still is UNVEILED over the last one, never dissolved through it: both stay fully opaque,
+   so two faces are never blended. The incoming frame is lifted into view from its lower edge. */
+.beat.is-on.moved{transition:none;-webkit-mask-image:linear-gradient(to top,#000 47.5%,transparent 52.5%);mask-image:linear-gradient(to top,#000 47.5%,transparent 52.5%);
+  -webkit-mask-size:100% 230%;mask-size:100% 230%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;animation:beatUnveil 1.2s cubic-bezier(.55,0,.25,1) both}
+/* the mask is 2.3x the frame: at 0% the frame sees only its clear top, at 100% only its solid foot,
+   so the soft edge (a band of tulle-like feather) travels up the picture once */
+@keyframes beatUnveil{from{-webkit-mask-position:0 0;mask-position:0 0}to{-webkit-mask-position:0 100%;mask-position:0 100%}}
 .beat>img{width:100%;height:100%;object-fit:cover}
 /* each new still drifts to rest over its whole time on screen: one slow breath, not a zoom */
 .beat.is-on.moved>img{animation:beatSettle 3.8s cubic-bezier(.25,.45,.35,1) both}
@@ -284,6 +291,7 @@ html.js .rail-btns{display:none}
    reduced, the picture is one still and the counter is not shown */
 html:not(.js) .hero-lbl{visibility:hidden}
 @media (prefers-reduced-motion:reduce){
+  .beat.is-on.moved{animation:none!important}
   .op{display:none!important}
   .hero-cue i{animation:none}
   .hero-lbl{visibility:hidden}
