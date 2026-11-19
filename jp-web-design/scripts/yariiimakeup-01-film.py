@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 """Logo layers and films for the /demo/yariiimakeup-01 design concept.
 
-    python3 -I scripts/yariiimakeup-01-film.py <logo.jpg> <reel.mov> <path-to>/photos
+    python3 -I scripts/yariiimakeup-01-film.py <logo.jpg> <reel.mov>
 
 Inputs (none of them is stored in this repository):
   logo.jpg   her public logo, 600x600, from her Booksy listing
   reel.mov   the transformation reel supplied by the founder (a screen recording)
-  photos/    the eleven portfolio photographs from the content package
 
 Writes into public/demo/yariiimakeup-01/assets/:
   img/logo-ink.webp, img/logo-gold.webp   the logo split into its black line
@@ -15,14 +14,15 @@ Writes into public/demo/yariiimakeup-01/assets/:
   img/logo-wordmark.webp                  the YARIIIMAKEUP line of that same
                                           logo, for the header
   img/logo-full.webp                      the whole logo on the page's ivory
-  film/intro.mp4                          the opening montage (silent)
+  film/ring.mp4, gown.mp4, mirror.mp4     three short silent clips, with a
+                                          poster frame each (img/film-*.jpg)
   film/hero.mp4, img/hero-film.jpg        the looping hero film and its poster
 
 Nothing is redrawn or retouched. The logo is the published bitmap with its
 cream ground removed, so it can sit on the page's ivory. The films are cuts,
-crops and speed changes of the supplied reel plus stills of real portfolio
-photographs; the crop also removes the editing app's corner watermark. No
-audio is kept.
+crops and speed changes of the supplied reel; the crop also removes the
+editing app's corner watermark. The reel's bare-faced "before" shot is not
+used. No audio is kept.
 """
 import os
 import subprocess
@@ -31,7 +31,7 @@ import tempfile
 
 from PIL import Image
 
-LOGO, REEL, PHOTOS = sys.argv[1:4]
+LOGO, REEL = sys.argv[1:3]
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "public", "demo", "yariiimakeup-01", "assets")
 IMG = os.path.join(ROOT, "img")
 FILM = os.path.join(ROOT, "film")
@@ -96,39 +96,17 @@ def clip(name, ss, to, speed, extra=""):
     return out
 
 
-def still(name, photo, cx, frames, box=None):
-    """A portfolio photograph as a few frames, cropped to the film's shape around the face."""
-    im = Image.open(os.path.join(PHOTOS, photo)).convert("RGB")
-    if box:
-        im = im.crop(tuple(round(v * s) for v, s in zip(box, (im.width, im.height, im.width, im.height))))
-    cw = min(im.width, round(im.height * W / H))
-    ch = round(cw * H / W)
-    left = max(0, min(im.width - cw, round(im.width * cx - cw / 2)))
-    im = im.crop((left, 0, left + cw, ch)).resize((W, H), Image.LANCZOS)
-    png = os.path.join(tmp, name + ".png")
-    im.save(png)
-    out = os.path.join(tmp, name + ".mp4")
-    run(["-loop", "1", "-t", str(frames / 30), "-i", png, "-vf", "fps=30,format=yuv420p", "-c:v", "libx264", "-crf", "14", "-preset", "fast", out])
-    return out
+# Three short clips, used as moving tiles in the gallery and as the film
+# beats of the opening montage (where the two slowed ones play at double speed).
+def publish(src, name, crf=27):
+    out = os.path.join(FILM, name + ".mp4")
+    run(["-i", src, "-an", "-c:v", "libx264", "-profile:v", "high", "-pix_fmt", "yuv420p", "-crf", str(crf), "-preset", "slow", "-movflags", "+faststart", out])
+    run(["-ss", "0.05", "-i", out, "-frames:v", "1", "-q:v", "4", os.path.join(IMG, "film-" + name + ".jpg")])
 
 
-# The opening: ring light, the bare-faced beat, a flash, the finished look,
-# a strobe of portfolio looks, and the mirror shot.
-parts = [
-    clip("a-ring", 0.55, 1.45, 2.6, ",fade=t=in:st=0:d=0.12"),
-    clip("b-before", 3.5, 4.6, 1.9),
-    clip("c-gown", 5.85, 6.85, 1.0, ",fade=t=in:st=0:d=0.22:color=white"),
-    still("d1", "12-instagram-portfolio.jpeg", 0.63, 4),
-    still("d2", "02-booksy-portfolio.jpeg", 0.56, 4, (0, 0.035, 1, 1)),
-    still("d3", "10-instagram-portfolio.jpeg", 0.5, 4, (0.03, 0, 0.97, 0.965)),
-    still("d4", "09-booksy-portfolio.jpeg", 0.55, 4),
-    still("d5", "04-booksy-portfolio.jpeg", 0.42, 4),
-    clip("e-mirror", 7.45, 8.5, 1.15),
-]
-lst = os.path.join(tmp, "list.txt")
-open(lst, "w").write("".join(f"file '{p}'\n" for p in parts))
-run(["-f", "concat", "-safe", "0", "-i", lst, "-an", "-c:v", "libx264", "-profile:v", "high", "-pix_fmt", "yuv420p",
-     "-crf", "25", "-preset", "slow", "-movflags", "+faststart", os.path.join(FILM, "intro.mp4")])
+publish(clip("ring", 0.55, 1.45, 1.0, ",fade=t=in:st=0:d=0.1"), "ring")
+publish(clip("gown", 5.85, 6.95, 0.5), "gown")
+publish(clip("mirror", 7.45, 8.55, 0.5), "mirror")
 
 # The hero loop: the finished look and the mirror shot, slowed and cross-faded so
 # the last frame meets the first.
@@ -140,7 +118,7 @@ run(["-i", a, "-i", b, "-i", a, "-filter_complex",
      "-an", "-c:v", "libx264", "-profile:v", "high", "-crf", "27", "-preset", "slow", "-movflags", "+faststart", os.path.join(FILM, "hero.mp4")])
 run(["-ss", "0", "-i", os.path.join(FILM, "hero.mp4"), "-frames:v", "1", "-q:v", "4", os.path.join(IMG, "hero-film.jpg")])
 
-for f in ("intro.mp4", "hero.mp4"):
+for f in ("ring.mp4", "gown.mp4", "mirror.mp4", "hero.mp4"):
     p = os.path.join(FILM, f)
     d = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", p], capture_output=True, text=True).stdout.strip()
     print(f, round(os.path.getsize(p) / 1024), "KB", d, "s")

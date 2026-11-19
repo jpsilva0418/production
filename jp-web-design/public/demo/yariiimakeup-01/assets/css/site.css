@@ -245,7 +245,8 @@ html.rv-on .film-toggle{display:inline-flex}
 
 /* ==========================================================================
    THE OPENING
-   A short film of her work plays full screen, a cat-eye of light opens over
+   A montage of her work cuts across the screen (stills and short clips; one
+   column on phones, three on wide screens), a cat-eye of light opens over
    it, her logo draws itself, and the YARIIIMAKEUP line of that logo travels
    up into the header and stays there.
 
@@ -257,24 +258,36 @@ html.rv-on .film-toggle{display:inline-flex}
 .curtain,.curtain-skip{display:none}
 html.intro .curtain{display:block;position:fixed;inset:0;z-index:60;background:#0C0A08;overflow:hidden;animation:curtain-safety .5s linear 9.5s forwards}
 @keyframes curtain-safety{to{opacity:0;visibility:hidden}}
-.curtain-film{position:absolute;inset:0;display:grid;place-items:center;opacity:0;transition:opacity .4s linear}
-.curtain-film video{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 16%}
+.curtain-film{position:absolute;inset:0;isolation:isolate;display:flex;gap:3px;opacity:0;transition:opacity .3s linear}
 html.intro-film .curtain-film{opacity:1}
-.curtain-film::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(12,10,8,.5),rgba(12,10,8,0) 18%,rgba(12,10,8,0) 68%,rgba(12,10,8,.72))}
-.curtain-cap{position:absolute;left:0;right:0;bottom:calc(64px + env(safe-area-inset-bottom));text-align:center;line-height:1.9;font-size:10px;font-weight:600;font-stretch:110%;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,239,230,.9);opacity:0;transition:opacity .5s linear .2s}
+.reel-col{position:relative;flex:1;min-width:0;overflow:hidden;background:#0C0A08}
+.reel-col.is-side{display:none}
+.shot{position:absolute;inset:0;opacity:0;overflow:hidden}
+.shot img,.shot video{display:block;width:100%;height:100%;object-fit:cover}
+/* each shot is on screen only for its own beat; the last one holds for the light */
+html.intro-film .shot{animation:shot-on var(--d) linear var(--t)}
+html.intro-film .shot.is-last{animation-fill-mode:forwards}
+html.intro-film .shot>*{animation:shot-push calc(var(--d) + .1s) linear var(--t) both}
+@keyframes shot-on{from{opacity:1}to{opacity:1}}
+@keyframes shot-push{0%{transform:scale(1.03);filter:brightness(1.4)}22%{filter:brightness(1)}100%{transform:scale(1.11);filter:brightness(1)}}
+.curtain-label{position:absolute;left:0;right:0;bottom:calc(112px + env(safe-area-inset-bottom));z-index:2;text-align:center;font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(44px,14vw,64px);line-height:1;letter-spacing:-.01em;color:var(--ivory);text-shadow:0 2px 28px rgba(0,0,0,.55);opacity:0;pointer-events:none}
+html.intro-film .curtain-label{opacity:1}
+html.intro-logo .curtain-label,html.intro-out .curtain-label{opacity:0}
+.curtain-film::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(12,10,8,.5),rgba(12,10,8,0) 18%,rgba(12,10,8,0) 56%,rgba(12,10,8,.78))}
+.curtain-cap{position:absolute;left:0;right:0;bottom:calc(64px + env(safe-area-inset-bottom));z-index:2;text-align:center;line-height:1.9;font-size:10px;font-weight:600;font-stretch:110%;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,239,230,.9);opacity:0;transition:opacity .5s linear .2s}
 html.intro-film .curtain-cap{opacity:1}
 .curtain-cap span{display:block}
 .curtain-cap i{display:none;font-style:normal}
-.curtain-bar{position:absolute;left:50%;bottom:calc(48px + env(safe-area-inset-bottom));width:min(44vw,220px);height:1px;margin-left:calc(min(44vw,220px) / -2);background:rgba(245,239,230,.26)}
+.curtain-bar{position:absolute;left:50%;z-index:2;bottom:calc(48px + env(safe-area-inset-bottom));width:min(44vw,220px);height:1px;margin-left:calc(min(44vw,220px) / -2);background:rgba(245,239,230,.26)}
 .curtain-bar i{display:block;height:100%;background:var(--gold-on-ink);transform:scaleX(0);transform-origin:left}
 html.intro-logo .curtain-cap,html.intro-logo .curtain-bar,html.intro-out .curtain-cap,html.intro-out .curtain-bar{opacity:0;transition:opacity .2s linear}
 
 /* the light: a cat-eye that opens from nothing to past every corner */
-.curtain-cream{position:absolute;left:50%;top:46%;width:140vmax;height:140vmax;margin:-70vmax 0 0 -70vmax;background:var(--ivory);clip-path:var(--eye-shut)}
+.curtain-cream{z-index:3;position:absolute;left:50%;top:46%;width:140vmax;height:140vmax;margin:-70vmax 0 0 -70vmax;background:var(--ivory);clip-path:var(--eye-shut)}
 html.intro-logo .curtain-cream,html.intro-out .curtain-cream{clip-path:var(--eye-open);transition:clip-path .8s cubic-bezier(.72,0,.2,1)}
 
 /* her logo, in its own colours, split only so it can draw itself */
-.curtain-logo{--ls:min(90vw,54vh,500px);position:absolute;left:50%;top:46%;width:var(--ls);height:var(--ls);margin:calc(var(--ls) / -2) 0 0 calc(var(--ls) / -2);transform-origin:0 0;opacity:0}
+.curtain-logo{z-index:4;--ls:min(90vw,54vh,500px);position:absolute;left:50%;top:46%;width:var(--ls);height:var(--ls);margin:calc(var(--ls) / -2) 0 0 calc(var(--ls) / -2);transform-origin:0 0;opacity:0}
 html.intro-logo .curtain-logo,html.intro-out .curtain-logo{opacity:1}
 .lg,.lg-rest,.lg-gold{position:absolute;inset:0}
 .lg i{position:absolute;inset:0;background:url(/demo/yariiimakeup-01/assets/img/logo-ink.webp) center/100% 100% no-repeat}
@@ -286,12 +299,12 @@ html.intro-logo .curtain-logo,html.intro-out .curtain-logo{opacity:1}
 .lg-rule{clip-path:inset(77.4% 0 20.4% 0)}
 .lg-tag{clip-path:inset(79.6% 0 12% 0)}
 .lg-bot{clip-path:inset(88% 0 0 0)}
-html.intro-logo .lg-eyes i{animation:lg-wipe .72s cubic-bezier(.5,0,.2,1) .34s both}
-html.intro-logo .lg-word i{animation:lg-rise .6s var(--ease) .7s both}
-html.intro-logo .lg-script i{animation:lg-wipe .5s cubic-bezier(.5,0,.2,1) .92s both}
-html.intro-logo .lg-rule i{animation:lg-rule .45s cubic-bezier(.5,0,.2,1) 1.04s both}
-html.intro-logo .lg-tag i{animation:fade .45s linear 1.14s both}
-html.intro-logo .lg-gold,html.intro-logo .lg-top i,html.intro-logo .lg-bot i{animation:lg-dust .9s ease-out .8s both}
+html.intro-logo .lg-eyes i{animation:lg-wipe .64s cubic-bezier(.5,0,.2,1) .28s both}
+html.intro-logo .lg-word i{animation:lg-rise .55s var(--ease) .58s both}
+html.intro-logo .lg-script i{animation:lg-wipe .45s cubic-bezier(.5,0,.2,1) .78s both}
+html.intro-logo .lg-rule i{animation:lg-rule .4s cubic-bezier(.5,0,.2,1) .88s both}
+html.intro-logo .lg-tag i{animation:fade .4s linear .96s both}
+html.intro-logo .lg-gold,html.intro-logo .lg-top i,html.intro-logo .lg-bot i{animation:lg-dust .8s ease-out .66s both}
 @keyframes lg-wipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
 @keyframes lg-rise{from{opacity:0;transform:translateY(2.2%)}to{opacity:1;transform:none}}
 @keyframes lg-rule{from{clip-path:inset(0 50% 0 50%)}to{clip-path:inset(0 0 0 0)}}
@@ -318,13 +331,13 @@ html.intro-out .curtain-skip{opacity:0;pointer-events:none}
 .curtain-skip:focus-visible{outline-color:var(--gold-on-ink)}
 
 @media (min-width:900px){
-  /* desktop: the film runs in a tall gate, not stretched across the screen */
-  .curtain-film{background:radial-gradient(60% 70% at 50% 46%,rgba(205,170,112,.16),transparent 70%)}
-  .curtain-film video{width:auto;height:min(84vh,1000px);aspect-ratio:720/1180;object-position:50% 50%;box-shadow:0 0 0 1px rgba(205,170,112,.4),0 60px 140px -40px #000}
-  .curtain-film::after{display:none}
-  .curtain-cap{bottom:calc(8vh - 34px);color:rgba(245,239,230,.72)}
+  /* desktop: three columns of her work cutting together, the middle one leading */
+  .reel-col.is-side{display:block;filter:brightness(.72) saturate(.92)}
+  .reel-col.is-lead{flex:1.12}
+  .curtain-label{bottom:128px;font-size:clamp(64px,7vw,104px)}
+  .curtain-cap{bottom:60px;color:rgba(245,239,230,.86)}
   .curtain-cap span,.curtain-cap i{display:inline}
-  .curtain-bar{bottom:calc(8vh - 50px)}
+  .curtain-bar{bottom:44px}
   html.intro .curtain-skip{left:auto;right:var(--pad);bottom:22px;transform:none}
 }
 
@@ -378,7 +391,10 @@ html.intro-out .curtain-skip{opacity:0;pointer-events:none}
 .looks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 10px;margin-top:22px;padding-inline:var(--gut);max-width:var(--max);margin-inline:auto;transition:opacity .28s linear}
 .looks.is-swapping{opacity:0}
 .look[hidden]{display:none}
-.look a{display:block;-webkit-tap-highlight-color:transparent}
+.look a,.look-box{display:block;-webkit-tap-highlight-color:transparent}
+.look-img video{display:block;width:100%;height:100%;object-fit:cover}
+.film-tag{position:absolute;left:10px;top:10px;display:inline-flex;align-items:center;gap:7px;padding:5px 9px 4px;background:rgba(21,17,14,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:var(--ivory);font-size:9.5px;font-weight:600;font-stretch:110%;letter-spacing:.18em;text-transform:uppercase;border-radius:1px}
+.film-tag::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--gold-on-ink)}
 .look-img{display:block;position:relative;overflow:hidden;aspect-ratio:3/4;background:var(--glow)}
 .look-img img{width:100%;height:100%;object-fit:cover;transition:scale 1.2s var(--ease)}
 .look-meta{display:grid;grid-template-columns:auto 1fr;column-gap:10px;row-gap:1px;align-items:baseline;padding-top:10px}
@@ -401,14 +417,14 @@ html.intro-out .curtain-skip{opacity:0;pointer-events:none}
   .look,.look:nth-child(3n+1 of :not([hidden])){grid-column:span 3}
   .look .look-img,.look:nth-child(3n+1 of :not([hidden])) .look-img{aspect-ratio:3/4}
   .look .look-t,.look:nth-child(3n+1 of :not([hidden])) .look-t{font-size:20px}
-  /* row one: a lead image and two portraits; row two: four, stepped */
-  .look:nth-child(1 of :not([hidden])){grid-column:span 6}
-  .look:nth-child(1 of :not([hidden])) .look-img{aspect-ratio:1/.95}
-  .look:nth-child(1 of :not([hidden])) .look-t{font-size:28px}
-  .look:nth-child(2 of :not([hidden])){margin-top:96px}
-  .look:nth-child(2 of :not([hidden])) .look-img{aspect-ratio:3/4.15}
-  .look:nth-child(3 of :not([hidden])) .look-img{aspect-ratio:3/4.7}
-  .look:nth-child(5 of :not([hidden])),.look:nth-child(7 of :not([hidden])){margin-top:56px}
+  /* every seven tiles: a lead image and two portraits, then four, stepped */
+  .look:nth-child(7n+1 of :not([hidden])){grid-column:span 6}
+  .look:nth-child(7n+1 of :not([hidden])) .look-img{aspect-ratio:1/.95}
+  .look:nth-child(7n+1 of :not([hidden])) .look-t{font-size:28px}
+  .look:nth-child(7n+2 of :not([hidden])){margin-top:96px}
+  .look:nth-child(7n+2 of :not([hidden])) .look-img{aspect-ratio:3/4.15}
+  .look:nth-child(7n+3 of :not([hidden])) .look-img{aspect-ratio:3/4.7}
+  .look:nth-child(7n+5 of :not([hidden])),.look:nth-child(7n+7 of :not([hidden])){margin-top:56px}
   .looks[data-count="2"] .look{grid-column:span 6;margin-top:0}
   .looks[data-count="2"] .look:nth-child(n of :not([hidden])) .look-img{aspect-ratio:1/.95}
   .looks[data-count="2"] .look:nth-child(2 of :not([hidden])){margin-top:84px}

@@ -14,25 +14,30 @@ script all live in its own folder, and it reads nothing from `/demo/_shared/`.
 
 Her logo is a pair of winged-liner eyes, so the site is built on that: the
 headline is "All eyes on you." and the opening ends on her logo. On a first
-visit a short silent film of her work plays full screen (ring light, the
-bare-faced beat, a flash, the finished look, a strobe of portfolio looks, the
-mirror shot). A cat-eye of light opens over it, her logo draws itself in its
+visit a montage of her work cuts across the screen: eleven beats of
+photographs and three short clips, each titled with what it is (Glam, Bridal,
+Hair, Pageant, Events, Sweet 16). Phones get one full-screen column; wide
+screens get three columns cutting together, thirty-one photographs in under
+four seconds. A cat-eye of light opens over it, her logo draws itself in its
 own colours, and the YARIIIMAKEUP line of that logo travels up into the header
-and stays there. The hero behind it is the same work on film: full screen
-under the headline on phones, in a tall frame beside it on desktop. Ivory, ink
-and a restrained gold are the logo's own colours.
+and stays there. Stills and film are mixed through the page the same way: a
+film hero, and two moving tiles among the eighteen photographs of the gallery.
+Ivory, ink and a restrained gold are the logo's own colours.
 
-The opening runs about 6.4 seconds (film 3.5, logo 1.9, handoff 0.9). Book Now
-is on screen for all of it. Any tap, key or scroll ends it at once, there is a
-Skip control, it plays once per session, and it never plays for reduced motion
-or Save-Data. If the film cannot play (autoplay refused, file unreachable) the
-opening goes straight to the logo; if the script never loads, the curtain
-removes itself.
+The opening runs about 6.5 seconds (montage 3.9, logo 1.6, handoff 0.9). Book
+Now is on screen for all of it. Any tap, key or scroll ends it at once, there
+is a Skip control, it plays once per session, and it never plays for reduced
+motion or Save-Data. The montage is mostly photographs on purpose: if a phone
+refuses to autoplay video, the clips simply show their still frame and the
+montage runs unchanged. If pictures are slow it starts anyway after 1.6
+seconds; if the script never loads, the curtain removes itself.
 
-This replaced the first revision's opening (a cat-eye window onto a close-up
-portfolio photograph) at the founder's direction on 2026-11-19: the close-up
-was not liked, and the brief became a cinematic launch that resolves into her
-logo, after the first Sass by Kass entrance.
+Founder direction, 2026-11-19, in two steps. First: the close-up hero
+photograph was not liked, and the opening should be a cinematic launch that
+resolves into her logo, after the first Sass by Kass entrance. Then: make it
+a montage of many pictures and clips rather than one video, pull better
+pictures, and mix photographs with video through the page the way Leti Silva
+Beauty does.
 
 Directions considered and dropped:
 
@@ -59,19 +64,21 @@ large PNG) is still needed, and "Profesional" is spelled as in her logo.
 
 ## The films
 
-Both are cut from one 9.5-second transformation reel supplied by the founder
-as a screen recording (`scripts/yariiimakeup-01-film.py` documents every cut):
+All cut from one 9.5-second transformation reel supplied by the founder as a
+screen recording (`scripts/yariiimakeup-01-film.py` documents every cut):
 
-- `film/intro.mp4`, 3.5s, the opening montage: reel footage plus five real
-  portfolio photographs as a strobe.
-- `film/hero.mp4`, 3.4s, the looping hero: the finished look and the mirror
-  shot, slowed, cross-faded so the loop has no seam.
+- `film/ring.mp4`, `gown.mp4`, `mirror.mp4`: three short silent clips. They
+  are the film beats of the opening montage and, slowed, the two moving tiles
+  in the gallery.
+- `film/hero.mp4`: the looping hero, the finished look and the mirror shot
+  cross-faded so the loop has no seam.
 
-Silent. The crop removes the editing app's corner watermark. The reel shows a
-client before and after her makeup; that is her own transformation, not an
-effect made here. Whose reel it is, and the client's consent to appear on a
-website, are Yaribel's to confirm, and her original file would look
-considerably better than a screen recording.
+Silent. The crop removes the editing app's corner watermark. The reel's
+bare-faced "before" shot is not used anywhere. Whose reel it is and the
+client's consent to appear on a website are Yaribel's to confirm, and her
+original files would look considerably better than a screen recording. More
+clips would make the montage and the gallery richer: Instagram could not be
+reached from the build environment, so the only video is this one reel.
 
 ## What is verified, proposed, and pending
 
@@ -91,8 +98,8 @@ line, the service descriptions, the look titles in the gallery.
 - Portrait and biography. Both are visible, labelled placeholders. Nothing has
   been written on her behalf.
 - Photo selection, usage rights and photographer credits for every image.
-- Bridal portfolio images. None of the supplied photographs is bridal, so the
-  gallery has no Bridal filter; a concept note marks where it goes.
+- Which of the gallery photographs are her own work, and the captions and
+  categories we gave them.
 - Which review excerpts she wants shown. No star rating or count is displayed.
 - Service priorities, travel area, current prices (Booksy stays the source).
 - Whether "Yaribel Vasquez" is the name she wants on the site.
@@ -101,30 +108,54 @@ line, the service descriptions, the look titles in the gallery.
 
 ## Photographs
 
-Eleven sources were supplied. Seven are used; four are not.
+Eighteen photographs in the gallery, a nineteenth beside the Classes service.
+They come from two places:
 
-| Look | Source file | Where | Notes |
-| --- | --- | --- | --- |
-| 01 | `10-instagram-portfolio` | gallery lead, services, opening film | her caption: makeup and blowout; Instagram's blurred padding trimmed |
-| 02 | `12-instagram-portfolio` | gallery, hero still, opening film | pageant client; her caption covers makeup and styling |
-| 03 | `04-booksy-portfolio` | gallery, services, opening film | |
-| 04 | `02-booksy-portfolio` | gallery, opening film | black bar baked into the top of the source trimmed |
-| 05 | `09-booksy-portfolio` | gallery, services, hero still, opening film | studio photograph; photographer credit needed |
-| 06 | `03-booksy-portfolio` | gallery, services | no longer the hero or the gallery lead: the founder did not like the close-up |
-| 07 | `11-instagram-portfolio` | gallery | pageant client; tagged makeup only |
+- **The founder's content package** (her Instagram and Booksy): `look-02`,
+  `look-09`, `look-10`, `look-11`, `look-12`.
+- **Her public Booksy listing**, fetched 2026-11-19. The listing publishes
+  about a hundred photographs against her services; these fourteen were
+  chosen. Each is at
+  `https://d2zdpiztbgorvt.cloudfront.net/region1/us/844702/service_photos/<file>`:
 
-**Not used: `05`, `06`, `07`, `08`.** These are studio-style images whose
-production method and subject are unverified (the package's manifest flags them
-the same way). A makeup portfolio has to show makeup that was really applied,
-so they stay out until Yaribel says what they are. None is presented as her
-portrait.
+| Name here | Booksy file |
+| --- | --- |
+| `bridal-profile` | `72060b99f3444ecaa90a42d86ef77d54.jpeg` |
+| `bridal-bouquet` | `9c4305a6cee245b3abcfa4baae7801f2.jpeg` |
+| `bridal-ring` | `71a81954dd1d408493c8eadf63320dc9.jpeg` |
+| `bridal-waves` | `ed0a6f8f773d41aba145c60a6bbf3657.jpeg` |
+| `soft-hairpiece` | `2d593107ff46404bb0ddfdd5e845931e.jpeg` |
+| `soft-comb` | `f2a368dc401e43f08e12b81f7682e95e.jpeg` |
+| `glam-teal` | `22f3d1cb0a5549f297dfd1307c348673.jpeg` |
+| `glam-bronze` | `b4819f6e7d56494ba33fdc1c0fc762b3.jpeg` |
+| `hair-black-waves` | `18e7aba1747b495988ba6e167f777ae3.jpeg` |
+| `hair-vine` | `52c5693d2c06456889c6451f870337a9.jpeg` |
+| `hair-long-waves` | `fe8eb86826914a3bb36341c64e0e1978.jpeg` |
+| `sweet16-crown` | `0cd3847a0591412fb6a3e642051d6dcb.jpeg` |
+| `prom-lilac` | `c5712bfd9a83482dba42415e4c454f0a.jpeg` |
+| `studio-station` | `fd708f4ed3684027b3996be5b99a9bd3.jpeg` |
 
-Derivatives are produced by `scripts/yariiimakeup-01-assets.py`: crop,
-downscale, re-encode. No retouching, grading, sharpening or upscaling.
+How they were chosen: real, well lit, one clear subject, high enough
+resolution, and a spread across bridal, soft glam, full glam, hair,
+Sweet 16 / prom and pageant.
 
-The three small dots beside each look are its lip, lid and glow tones, read
-from the pixels of that photograph. They are colour samples, not product
-shades, and the lightbox says so.
+Left out on purpose:
+
+- the studio-style images whose production method and subject are unverified
+  (package `05`-`08` and their matches on Booksy);
+- product graphics and promotional cards;
+- photographs that read as reposted inspiration rather than her own work
+  (very polished editorial images at screenshot sizes). She may well have done
+  them; they stay out until she says so;
+- the close-up the founder did not like (package `03`);
+- photographs her clients attached to their reviews.
+
+**Everything here is hers to confirm.** Booksy does not say which photograph
+belongs to which service for most of them, so the categories and captions are
+our reading of what each picture shows ("Bridal" only where there is a veil,
+bouquet, ring or wedding-morning robe, or where Booksy ties it to her wedding
+service). Derivatives are produced by `scripts/yariiimakeup-01-assets.py`:
+crop, downscale, re-encode, nothing else.
 
 ## Booking
 
@@ -149,11 +180,14 @@ hosted, downloaded or extracted.
 - Logo master arrives: re-run `scripts/yariiimakeup-01-film.py` with it (the
   band and wordmark measurements in the script and in `site.css` assume the
   same artwork at 600px).
-- Her original reel arrives: re-run the same script with it; adjust the cut
-  times at the top of the films section.
+- Her original reel, or more clips, arrive: re-run the same script; adjust the
+  cut times in its films section.
 - New photographs: add them to `scripts/yariiimakeup-01-assets.py`, re-run it,
-  and add a `<li class="look">` with its categories and sampled tones. Update
-  the counts on the filter chips.
+  add a `<li class="look">` with its categories, and update the counts on the
+  filter chips.
+- The montage is a list: the JSON in `#montage-data` in `index.html`. Each beat
+  names a picture or clip, its length, where to centre it, its title, and the
+  two pictures beside it on wide screens.
 - The opening is the `.curtain` block in `index.html`, "THE OPENING" in
   `assets/css/site.css`, and the intro section of `assets/js/site.js`. Append
   `?intro=1` to the URL to replay it, `?intro=0` to skip it.

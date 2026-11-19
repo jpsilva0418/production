@@ -50,20 +50,76 @@
   if (root.classList.contains('intro') && curtain) {
     window.__yariiIntro = true;
     (function () {
-      var film = $('#intro-film');
+      var stage = $('#montage');
+      var label = $('#montage-label');
       var line = $('#intro-bar');
       var logo = $('#intro-logo');
-      var state = 0; /* 0 waiting · 1 film · 2 logo · 3 handoff */
+      var shots = [];
+      try { shots = JSON.parse($('#montage-data').textContent); } catch (e) {}
+      var wide = window.matchMedia('(min-width: 900px)').matches;
+      var state = 0; /* 0 loading · 1 montage · 2 logo · 3 handoff */
       var timers = [];
       var later = function (fn, ms) { timers.push(setTimeout(fn, ms)); };
       /* where the wordmark sits inside the logo, as fractions of its box */
       var WM = { x: 0.03083, y: 0.55, w: 0.93 - 0.03083 };
 
+      /* Build the montage: one column of stills and clips on phones, three on
+         wide screens. Each shot carries its own start and length; CSS shows it
+         for exactly that beat. */
+      var clips = [];
+      var waiting = 0;
+      var loaded = function () { if (--waiting <= 0) begin(); };
+      var picture = function (src, pos) {
+        var im = new Image();
+        waiting++;
+        im.onload = im.onerror = loaded;
+        im.decoding = 'sync';
+        im.alt = '';
+        im.style.objectPosition = pos;
+        im.src = src;
+        return im;
+      };
+      var column = function (kind) {
+        var col = doc.createElement('div');
+        col.className = 'reel-col ' + (kind === 'c' ? 'is-lead' : 'is-side');
+        var t = 0;
+        shots.forEach(function (sh, n) {
+          var item = kind === 'c' ? [sh.src, sh.pos] : sh[kind];
+          if (item) {
+            var el = doc.createElement('div');
+            el.className = 'shot' + (n === shots.length - 1 ? ' is-last' : '');
+            el.style.setProperty('--t', t.toFixed(2) + 's');
+            el.style.setProperty('--d', sh.d + 's');
+            if (kind === 'c' && sh.film) {
+              var v = doc.createElement('video');
+              v.muted = true;
+              v.defaultMuted = true;
+              v.playsInline = true;
+              v.setAttribute('muted', '');
+              v.setAttribute('playsinline', '');
+              v.preload = 'auto';
+              v.poster = sh.src;
+              v.style.objectPosition = sh.pos;
+              v.src = sh.film;
+              picture(sh.src, sh.pos); /* make sure its poster is ready too */
+              clips.push({ v: v, at: t, rate: sh.clip === 'ring' ? 1 : 2 });
+              el.appendChild(v);
+            } else {
+              el.appendChild(picture(item[0], item[1]));
+            }
+            col.appendChild(el);
+          }
+          t += sh.d;
+        });
+        return col;
+      };
+      var total = shots.reduce(function (a, sh) { return a + sh.d; }, 0);
+
       var handoff = function (fast) {
         if (state === 3) return;
         state = 3;
         timers.forEach(clearTimeout);
-        try { film.pause(); } catch (e) {}
+        clips.forEach(function (c) { try { c.v.pause(); } catch (e) {} });
         var to = $('.bar .brand img').getBoundingClientRect();
         var from = logo.getBoundingClientRect();
         var k = to.width / (from.width * WM.w);
@@ -78,9 +134,26 @@
       var showLogo = function () {
         if (state >= 2) return;
         state = 2;
-        root.classList.add('intro-logo');
-        root.classList.remove('intro-film');
-        later(function () { handoff(false); }, 1900);
+        root.classList.add('intro-logo'); /* intro-film stays: the last shot holds under the light */
+        later(function () { handoff(false); }, 1620);
+      };
+      var begin = function () {
+        if (state !== 0) return;
+        state = 1;
+        root.classList.add('intro-film');
+        var t = 0;
+        shots.forEach(function (sh) {
+          later(function () { label.textContent = sh.label || ''; }, t * 1000);
+          t += sh.d;
+        });
+        clips.forEach(function (c) {
+          later(function () {
+            try { c.v.currentTime = 0; c.v.playbackRate = c.rate; var pr = c.v.play(); if (pr && pr.catch) pr.catch(function () {}); } catch (e) {}
+          }, Math.max(0, c.at * 1000 - 60));
+        });
+        line.style.transition = 'transform ' + total + 's linear';
+        line.style.transform = 'scaleX(1)';
+        later(showLogo, total * 1000 - 140);
       };
       var skip = function () { handoff(true); };
       var skipClick = function (e) {
@@ -88,22 +161,15 @@
         handoff(true);
       };
 
-      film.addEventListener('playing', function () {
-        if (state !== 0) return;
-        state = 1;
-        root.classList.add('intro-film');
-      });
-      film.addEventListener('timeupdate', function () {
-        if (!film.duration) return;
-        line.style.transform = 'scaleX(' + Math.min(1, film.currentTime / film.duration) + ')';
-        if (film.currentTime >= film.duration - 0.16) showLogo();
-      });
-      film.addEventListener('ended', showLogo);
-      film.addEventListener('error', showLogo);
-      var pr = film.play();
-      if (pr && pr.catch) pr.catch(showLogo);
-      later(function () { if (state === 0) showLogo(); }, 1500);   /* the film never started */
-      later(showLogo, 6500);                                       /* the film stalled */
+      if (!shots.length) { showLogo(); }
+      else {
+        waiting++; /* hold the start until every column is built */
+        if (wide) stage.appendChild(column('l'));
+        stage.appendChild(column('c'));
+        if (wide) stage.appendChild(column('r'));
+        loaded();
+        later(begin, 1600); /* slow connection: start with whatever has arrived */
+      }
 
       skipBtn.addEventListener('click', skip);
       curtain.addEventListener('click', skip);
@@ -134,21 +200,33 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  /* ── Tone dots: lip, lid and glow, sampled from each photograph ── */
-  $$('.look').forEach(function (li) {
-    var tones = (li.getAttribute('data-tones') || '').split(',');
-    var c = $('.look-c', li);
-    if (tones.length !== 3 || !c) return;
-    var wrap = doc.createElement('span');
-    wrap.className = 'tones';
-    wrap.setAttribute('aria-hidden', 'true');
-    tones.forEach(function (t) {
-      var i = doc.createElement('i');
-      i.style.background = t;
-      wrap.appendChild(i);
-    });
-    c.insertBefore(wrap, c.firstChild);
-  });
+  /* ── Moving tiles in the gallery: play while on screen, rest when not ── */
+  var tileFilms = $$('.look-film video');
+  if (tileFilms.length && hasIO && !reduce && !(navigator.connection && navigator.connection.saveData)) {
+    var tileIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        var v = e.target;
+        if (e.isIntersecting) {
+          if (!v.getAttribute('src')) v.src = v.getAttribute('data-src');
+          var pr = v.play();
+          if (pr && pr.catch) pr.catch(function () {});
+        } else {
+          v.pause();
+        }
+      });
+    }, { rootMargin: '0px', threshold: 0.15 });
+    /* fetch each clip a screen early, so it is ready by the time it arrives */
+    var warmIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var v = e.target;
+        if (!v.getAttribute('src')) { v.preload = 'auto'; v.src = v.getAttribute('data-src'); }
+        warmIO.unobserve(v);
+      });
+    }, { rootMargin: '900px 0px' });
+    tileFilms.forEach(function (v) { warmIO.observe(v); });
+    tileFilms.forEach(function (v) { tileIO.observe(v); });
+  }
 
   /* ── Scroll reveals ── */
   if (hasIO && !reduce) {
@@ -257,7 +335,6 @@
     var lbTitle = $('#lb-title');
     var lbI = $('#lb-i');
     var lbN = $('#lb-n');
-    var lbDots = $$('#lb-dots i');
     var items = [];
     var idx = 0;
     var opener = null;
@@ -265,7 +342,7 @@
     var pad = function (n) { return (n < 10 ? '0' : '') + n; };
 
     var collect = function () {
-      items = allLooks.filter(function (li) { return !li.hidden; }).map(function (li) {
+      items = allLooks.filter(function (li) { return !li.hidden && $('a[data-look]', li); }).map(function (li) {
         var a = $('a', li);
         return {
           a: a,
@@ -273,8 +350,7 @@
           w: +a.getAttribute('data-w'),
           h: +a.getAttribute('data-h'),
           alt: $('img', li).getAttribute('alt'),
-          title: $('.look-t', li).textContent,
-          tones: (li.getAttribute('data-tones') || '').split(',')
+          title: $('.look-t', li).textContent
         };
       });
     };
@@ -299,7 +375,6 @@
       lbTitle.textContent = it.title;
       lbI.textContent = pad(idx + 1);
       lbN.textContent = pad(items.length);
-      lbDots.forEach(function (d, k) { d.style.background = it.tones[k] || 'transparent'; });
       var pre = new Image();
       var done = false;
       var go = function () {

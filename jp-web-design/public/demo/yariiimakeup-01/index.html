@@ -29,7 +29,8 @@
 
 <!-- The opening. Present in the page only as decoration; html.intro switches it on. -->
 <div class="curtain" id="curtain" aria-hidden="true">
-  <div class="curtain-film"><video id="intro-film" muted playsinline preload="auto" disablepictureinpicture disableremoteplayback tabindex="-1" data-src="/demo/yariiimakeup-01/assets/film/intro.mp4"></video></div>
+  <div class="curtain-film" id="montage"></div>
+  <p class="curtain-label" id="montage-label"></p>
   <p class="curtain-cap"><span>Makeup &amp; Hair Artistry</span><i> · </i><span>Poinciana &amp; Kissimmee, FL</span></p>
   <span class="curtain-bar"><i id="intro-bar"></i></span>
   <div class="curtain-cream"></div>
@@ -47,7 +48,8 @@
   </div>
 </div>
 <button class="curtain-skip" id="intro-skip" type="button">Skip intro</button>
-<script>(function(h){var v=document.getElementById('intro-film');if(h.classList.contains('intro')){if(v){v.src=v.getAttribute('data-src');v.load()}setTimeout(function(){if(!window.__yariiIntro)h.classList.remove('intro')},4000)}})(document.documentElement)</script>
+<script type="application/json" id="montage-data">[{"clip":"ring","d":0.4,"pos":"50% 40%","src":"/demo/yariiimakeup-01/assets/img/film-ring.jpg","film":"/demo/yariiimakeup-01/assets/film/ring.mp4"},{"d":0.3,"pos":"48% 34%","label":"Glam","src":"/demo/yariiimakeup-01/assets/img/glam-teal-800.webp","l":["/demo/yariiimakeup-01/assets/img/bridal-profile-800.webp","56% 24%"],"r":["/demo/yariiimakeup-01/assets/img/soft-comb-800.webp","34% 40%"]},{"d":0.28,"pos":"50% 38%","label":"Bridal","src":"/demo/yariiimakeup-01/assets/img/bridal-waves-800.webp","l":["/demo/yariiimakeup-01/assets/img/look-10-800.webp","50% 30%"],"r":["/demo/yariiimakeup-01/assets/img/look-09-800.webp","55% 28%"]},{"d":0.26,"pos":"42% 30%","label":"Hair","src":"/demo/yariiimakeup-01/assets/img/hair-black-waves-800.webp","l":["/demo/yariiimakeup-01/assets/img/soft-hairpiece-800.webp","52% 26%"],"r":["/demo/yariiimakeup-01/assets/img/bridal-ring-800.webp","58% 22%"]},{"d":0.26,"pos":"64% 10%","label":"Pageant","src":"/demo/yariiimakeup-01/assets/img/look-12-800.webp","l":["/demo/yariiimakeup-01/assets/img/prom-lilac-800.webp","50% 20%"],"r":["/demo/yariiimakeup-01/assets/img/hair-long-waves-758.webp","55% 45%"]},{"clip":"gown","d":0.6,"pos":"50% 24%","label":"Events","src":"/demo/yariiimakeup-01/assets/img/film-gown.jpg","film":"/demo/yariiimakeup-01/assets/film/gown.mp4","l":["/demo/yariiimakeup-01/assets/img/bridal-ring-800.webp","58% 22%"],"r":["/demo/yariiimakeup-01/assets/img/look-11-800.webp","36% 16%"]},{"d":0.24,"pos":"50% 20%","label":"Bridal","src":"/demo/yariiimakeup-01/assets/img/bridal-bouquet-800.webp","l":["/demo/yariiimakeup-01/assets/img/soft-comb-800.webp","34% 40%"],"r":["/demo/yariiimakeup-01/assets/img/look-10-800.webp","50% 30%"]},{"d":0.24,"pos":"56% 28%","label":"Glam","src":"/demo/yariiimakeup-01/assets/img/look-02-800.webp","l":["/demo/yariiimakeup-01/assets/img/hair-long-waves-758.webp","55% 45%"],"r":["/demo/yariiimakeup-01/assets/img/prom-lilac-800.webp","50% 20%"]},{"d":0.22,"pos":"44% 32%","label":"Hair","src":"/demo/yariiimakeup-01/assets/img/hair-vine-800.webp","l":["/demo/yariiimakeup-01/assets/img/look-11-800.webp","36% 16%"],"r":["/demo/yariiimakeup-01/assets/img/bridal-profile-800.webp","56% 24%"]},{"d":0.22,"pos":"50% 28%","label":"Sweet 16","src":"/demo/yariiimakeup-01/assets/img/sweet16-crown-800.webp","l":["/demo/yariiimakeup-01/assets/img/look-09-800.webp","55% 28%"],"r":["/demo/yariiimakeup-01/assets/img/soft-hairpiece-800.webp","52% 26%"]},{"d":0.22,"pos":"56% 40%","label":"Glam","src":"/demo/yariiimakeup-01/assets/img/glam-bronze-800.webp","l":["/demo/yariiimakeup-01/assets/img/bridal-waves-800.webp","50% 38%"],"r":["/demo/yariiimakeup-01/assets/img/hair-black-waves-800.webp","42% 30%"]},{"clip":"mirror","d":0.66,"pos":"50% 14%","label":"","src":"/demo/yariiimakeup-01/assets/img/film-mirror.jpg","film":"/demo/yariiimakeup-01/assets/film/mirror.mp4","l":["/demo/yariiimakeup-01/assets/img/glam-teal-800.webp","48% 34%"],"r":["/demo/yariiimakeup-01/assets/img/bridal-bouquet-800.webp","50% 20%"]}]</script>
+<script>(function(h){if(h.classList.contains('intro'))setTimeout(function(){if(!window.__yariiIntro)h.classList.remove('intro')},4000)})(document.documentElement)</script>
 
 <a class="skip" href="#main">Skip to content</a>
 
@@ -119,10 +121,10 @@
     </figure>
 
     <figure class="sat sat-a" aria-hidden="true">
-      <img src="/demo/yariiimakeup-01/assets/img/look-12-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-12-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-12-800.webp 800w" sizes="220px" width="800" height="800" alt="" loading="lazy" decoding="async">
+      <img src="/demo/yariiimakeup-01/assets/img/bridal-waves-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/bridal-waves-480.webp 480w, /demo/yariiimakeup-01/assets/img/bridal-waves-800.webp 800w" sizes="240px" width="800" height="800" alt="" loading="lazy" decoding="async">
     </figure>
     <figure class="sat sat-b" aria-hidden="true">
-      <img src="/demo/yariiimakeup-01/assets/img/look-09-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-09-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-09-800.webp 800w" sizes="170px" width="800" height="800" alt="" loading="lazy" decoding="async">
+      <img src="/demo/yariiimakeup-01/assets/img/glam-teal-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/glam-teal-480.webp 480w, /demo/yariiimakeup-01/assets/img/glam-teal-800.webp 800w" sizes="200px" width="800" height="800" alt="" loading="lazy" decoding="async">
     </figure>
   </div>
 
@@ -134,65 +136,146 @@
   <header class="sec-head">
     <p class="eyebrow" data-rv>The Work</p>
     <h2 class="sec-h" id="work-h" data-rv>The work, <em>up close.</em></h2>
-    <p class="sec-lede" data-rv>Every look below is from YariiiMakeup&rsquo;s own portfolio. Tap one to see it full size.</p>
+    <p class="sec-lede" data-rv>Eighteen looks and two films from YariiiMakeup&rsquo;s own pages. Tap a photograph to see it full size.</p>
   </header>
 
   <div class="chips" role="group" aria-label="Filter the portfolio" data-rv>
-    <button class="chip is-on" type="button" data-filter="all" aria-pressed="true">All looks <sup>7</sup></button>
+    <button class="chip is-on" type="button" data-filter="all" aria-pressed="true">All <sup>20</sup></button>
+    <button class="chip" type="button" data-filter="bridal" aria-pressed="false">Bridal <sup>4</sup></button>
     <button class="chip" type="button" data-filter="soft" aria-pressed="false">Soft Glam <sup>3</sup></button>
-    <button class="chip" type="button" data-filter="glam" aria-pressed="false">Full Glam &amp; Events <sup>4</sup></button>
-    <button class="chip" type="button" data-filter="hair" aria-pressed="false">Hair <sup>3</sup></button>
+    <button class="chip" type="button" data-filter="glam" aria-pressed="false">Full Glam <sup>4</sup></button>
+    <button class="chip" type="button" data-filter="hair" aria-pressed="false">Hair <sup>9</sup></button>
+    <button class="chip" type="button" data-filter="party" aria-pressed="false">Sweet 16 &amp; Prom <sup>2</sup></button>
     <button class="chip" type="button" data-filter="stage" aria-pressed="false">Pageant &amp; Stage <sup>2</sup></button>
+    <button class="chip" type="button" data-filter="film" aria-pressed="false">On Film <sup>2</sup></button>
   </div>
   <p class="sr-only" aria-live="polite" id="work-status"></p>
 
   <ul class="looks" id="looks">
-    <li class="look" data-cats="soft hair" data-tones="#e67982,#c58e78,#f8b195">
-      <a href="/demo/yariiimakeup-01/assets/img/look-10-1354.webp" data-w="1354" data-h="1758" data-look>
-        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/look-10-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-10-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-10-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-10-1200.webp 1200w" sizes="(min-width: 900px) 46vw, 92vw" width="800" height="1039" loading="lazy" decoding="async" style="object-position:50% 32%" alt="Soft glam with a sleek blowout: bronze eyeshadow with a touch of blue liner, rosy lip and long straight blonde hair."></span>
-        <span class="look-meta"><span class="look-n">01</span><span class="look-t">Soft glam &amp; blowout</span><span class="look-c">Soft Glam · Hair</span></span>
+    <li class="look" data-cats="bridal hair">
+      <a href="/demo/yariiimakeup-01/assets/img/bridal-waves-1080.webp" data-w="1080" data-h="1080" data-look>
+        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/bridal-waves-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/bridal-waves-480.webp 480w, /demo/yariiimakeup-01/assets/img/bridal-waves-800.webp 800w, /demo/yariiimakeup-01/assets/img/bridal-waves-1080.webp 1080w" sizes="(min-width: 900px) 46vw, 92vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:52% 40%" alt="Wedding-day glam: a smoky bronze eye, long lashes and a nude lip, with dark side-swept waves and a small jewelled hairpiece."></span>
+        <span class="look-meta"><span class="look-n">01</span><span class="look-t">Wedding-day glam, side-swept waves</span><span class="look-c">Bridal · Hair</span></span>
       </a>
     </li>
-    <li class="look" data-cats="glam stage hair" data-tones="#a85451,#653f35,#e6936e">
-      <a href="/demo/yariiimakeup-01/assets/img/look-12-1440.webp" data-w="1440" data-h="1440" data-look>
-        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/look-12-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-12-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-12-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-12-1200.webp 1200w" sizes="(min-width: 900px) 30vw, 46vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:66% 12%" alt="Pageant glam: a smoky bronze eye, defined lashes and a warm lip, with long side-swept waves and a jewelled green gown, photographed backstage."></span>
-        <span class="look-meta"><span class="look-n">02</span><span class="look-t">Pageant glam &amp; styled waves</span><span class="look-c">Pageant &amp; Stage · Hair</span></span>
+    <li class="look" data-cats="glam">
+      <a href="/demo/yariiimakeup-01/assets/img/glam-teal-1200.webp" data-w="1200" data-h="1200" data-look>
+        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/glam-teal-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/glam-teal-480.webp 480w, /demo/yariiimakeup-01/assets/img/glam-teal-800.webp 800w, /demo/yariiimakeup-01/assets/img/glam-teal-1200.webp 1200w" sizes="(min-width: 900px) 23vw, 46vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:48% 36%" alt="Full glam close-up: a sharp bronze and teal cut crease, sculpted brows and a matte nude lip, with sleek dark hair and an emerald satin robe."></span>
+        <span class="look-meta"><span class="look-n">02</span><span class="look-t">Full glam, teal cut crease</span><span class="look-c">Full Glam</span></span>
       </a>
     </li>
-    <li class="look" data-cats="soft hair" data-tones="#b2646d,#84544c,#ab8977">
-      <a href="/demo/yariiimakeup-01/assets/img/look-04-1080.webp" data-w="1080" data-h="1080" data-look>
-        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/look-04-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-04-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-04-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-04-1080.webp 1080w" sizes="(min-width: 900px) 30vw, 46vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:42% 38%" alt="Soft glam with curls: rosy eyeshadow, soft lashes and a full rose lip, with long dark hair set in loose curls."></span>
-        <span class="look-meta"><span class="look-n">03</span><span class="look-t">Soft glam with curls</span><span class="look-c">Soft Glam · Hair</span></span>
+    <li class="look" data-cats="hair">
+      <a href="/demo/yariiimakeup-01/assets/img/hair-black-waves-1043.webp" data-w="1043" data-h="1043" data-look>
+        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/hair-black-waves-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/hair-black-waves-480.webp 480w, /demo/yariiimakeup-01/assets/img/hair-black-waves-800.webp 800w, /demo/yariiimakeup-01/assets/img/hair-black-waves-1043.webp 1043w" sizes="(min-width: 900px) 23vw, 46vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:46% 30%" alt="Long glossy black hair set in deep Hollywood waves, seen from the side with soft glam makeup."></span>
+        <span class="look-meta"><span class="look-n">03</span><span class="look-t">Hollywood waves</span><span class="look-c">Hair</span></span>
       </a>
     </li>
-    <li class="look" data-cats="glam" data-tones="#6e181e,#ab7e6b,#ce9476">
+    <li class="look" data-cats="bridal">
+      <a href="/demo/yariiimakeup-01/assets/img/bridal-bouquet-1048.webp" data-w="1048" data-h="1048" data-look>
+        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/bridal-bouquet-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/bridal-bouquet-480.webp 480w, /demo/yariiimakeup-01/assets/img/bridal-bouquet-800.webp 800w, /demo/yariiimakeup-01/assets/img/bridal-bouquet-1048.webp 1048w" sizes="(min-width: 900px) 23vw, 92vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:52% 24%" alt="A bride in a white satin robe holding her bouquet: soft bronze glam, glossy nude lip, and a pearl vine pinned into dark waves."></span>
+        <span class="look-meta"><span class="look-n">04</span><span class="look-t">Bridal soft glam</span><span class="look-c">Bridal</span></span>
+      </a>
+    </li>
+    <li class="look" data-cats="soft hair">
+      <a href="/demo/yariiimakeup-01/assets/img/look-10-1200.webp" data-w="1200" data-h="1558" data-look>
+        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/look-10-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-10-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-10-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-10-1200.webp 1200w" sizes="(min-width: 900px) 23vw, 46vw" width="800" height="1039" loading="lazy" decoding="async" style="object-position:50% 32%" alt="Soft glam with a sleek blowout: bronze eyeshadow with a touch of blue liner, rosy lip and long straight blonde hair."></span>
+        <span class="look-meta"><span class="look-n">05</span><span class="look-t">Soft glam &amp; blowout</span><span class="look-c">Soft Glam · Hair</span></span>
+      </a>
+    </li>
+    <li class="look look-film" data-cats="film">
+      <div class="look-box">
+        <span class="look-img"><video muted loop playsinline preload="none" disablepictureinpicture disableremoteplayback poster="/demo/yariiimakeup-01/assets/img/film-gown.jpg" data-src="/demo/yariiimakeup-01/assets/film/gown.mp4" width="720" height="1180" style="object-position:50% 30%" aria-label="Silent looping clip: a client with long waves and a jewelled hair comb, in a pale blue satin gown in front of white feather wings."></video><span class="film-tag" aria-hidden="true">Film</span></span>
+        <span class="look-meta"><span class="look-n">06</span><span class="look-t">The finished look, on film</span><span class="look-c">On Film</span></span>
+      </div>
+    </li>
+    <li class="look" data-cats="party">
+      <a href="/demo/yariiimakeup-01/assets/img/sweet16-crown-1200.webp" data-w="1200" data-h="1200" data-look>
+        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/sweet16-crown-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/sweet16-crown-480.webp 480w, /demo/yariiimakeup-01/assets/img/sweet16-crown-800.webp 800w, /demo/yariiimakeup-01/assets/img/sweet16-crown-1200.webp 1200w" sizes="(min-width: 900px) 23vw, 92vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:50% 30%" alt="Sweet 16 glam: a smoky blue eye and soft pink lip under a tall crystal crown, with dark curls and a blush ruffled gown."></span>
+        <span class="look-meta"><span class="look-n">07</span><span class="look-t">Sweet 16 glam</span><span class="look-c">Sweet 16 & Prom</span></span>
+      </a>
+    </li>
+    <li class="look" data-cats="bridal hair">
+      <a href="/demo/yariiimakeup-01/assets/img/bridal-profile-1200.webp" data-w="1200" data-h="1200" data-look>
+        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/bridal-profile-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/bridal-profile-480.webp 480w, /demo/yariiimakeup-01/assets/img/bridal-profile-800.webp 800w, /demo/yariiimakeup-01/assets/img/bridal-profile-1200.webp 1200w" sizes="(min-width: 900px) 46vw, 46vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:56% 26%" alt="A bride in profile on her wedding morning, in a white robe: long dark waves pinned back with a crystal hairpiece, soft shimmer on the eye."></span>
+        <span class="look-meta"><span class="look-n">08</span><span class="look-t">Wedding morning, waves &amp; hairpiece</span><span class="look-c">Bridal · Hair</span></span>
+      </a>
+    </li>
+    <li class="look" data-cats="stage hair">
+      <a href="/demo/yariiimakeup-01/assets/img/look-12-1200.webp" data-w="1200" data-h="1200" data-look>
+        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/look-12-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-12-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-12-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-12-1200.webp 1200w" sizes="(min-width: 900px) 23vw, 46vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:66% 12%" alt="Pageant glam: a smoky bronze eye, defined lashes and a warm lip, with long side-swept waves and a jewelled green gown, photographed backstage."></span>
+        <span class="look-meta"><span class="look-n">09</span><span class="look-t">Pageant glam &amp; styled waves</span><span class="look-c">Pageant & Stage · Hair</span></span>
+      </a>
+    </li>
+    <li class="look" data-cats="soft hair">
+      <a href="/demo/yariiimakeup-01/assets/img/soft-hairpiece-931.webp" data-w="931" data-h="931" data-look>
+        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/soft-hairpiece-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/soft-hairpiece-480.webp 480w, /demo/yariiimakeup-01/assets/img/soft-hairpiece-800.webp 800w, /demo/yariiimakeup-01/assets/img/soft-hairpiece-931.webp 931w" sizes="(min-width: 900px) 23vw, 92vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:52% 28%" alt="Soft golden glam with winged liner and a nude lip, long dark waves and a pearl hairpiece along one side."></span>
+        <span class="look-meta"><span class="look-n">10</span><span class="look-t">Soft glam, waves &amp; hairpiece</span><span class="look-c">Soft Glam · Hair</span></span>
+      </a>
+    </li>
+    <li class="look" data-cats="glam">
       <a href="/demo/yariiimakeup-01/assets/img/look-02-1080.webp" data-w="1080" data-h="1042" data-look>
-        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/look-02-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-02-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-02-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-02-1080.webp 1080w" sizes="(min-width: 900px) 30vw, 92vw" width="800" height="772" loading="lazy" decoding="async" style="object-position:58% 30%" alt="Full glam in profile: dramatic lashes, three small face gems beside the eye, sharp brows and a deep red matte lip."></span>
-        <span class="look-meta"><span class="look-n">04</span><span class="look-t">Full glam, deep red lip</span><span class="look-c">Full Glam &amp; Events</span></span>
+        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/look-02-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-02-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-02-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-02-1080.webp 1080w" sizes="(min-width: 900px) 23vw, 46vw" width="800" height="772" loading="lazy" decoding="async" style="object-position:58% 30%" alt="Full glam in profile: dramatic lashes, three small face gems beside the eye, sharp brows and a deep red matte lip."></span>
+        <span class="look-meta"><span class="look-n">11</span><span class="look-t">Full glam, deep red lip</span><span class="look-c">Full Glam</span></span>
       </a>
     </li>
-    <li class="look" data-cats="glam" data-tones="#9f5647,#a77953,#cd9b77">
+    <li class="look" data-cats="hair">
+      <a href="/demo/yariiimakeup-01/assets/img/hair-vine-1200.webp" data-w="1200" data-h="1200" data-look>
+        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/hair-vine-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/hair-vine-480.webp 480w, /demo/yariiimakeup-01/assets/img/hair-vine-800.webp 800w, /demo/yariiimakeup-01/assets/img/hair-vine-1200.webp 1200w" sizes="(min-width: 900px) 23vw, 46vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:46% 34%" alt="Seen from behind: dark hair in brushed waves with a gold and blush floral vine pinned across the crown, a ring light glowing beyond."></span>
+        <span class="look-meta"><span class="look-n">12</span><span class="look-t">Waves with a floral vine</span><span class="look-c">Hair</span></span>
+      </a>
+    </li>
+    <li class="look" data-cats="bridal">
+      <a href="/demo/yariiimakeup-01/assets/img/bridal-ring-1200.webp" data-w="1200" data-h="1200" data-look>
+        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/bridal-ring-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/bridal-ring-480.webp 480w, /demo/yariiimakeup-01/assets/img/bridal-ring-800.webp 800w, /demo/yariiimakeup-01/assets/img/bridal-ring-1200.webp 1200w" sizes="(min-width: 900px) 23vw, 92vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:58% 24%" alt="A smiling bride in a white corset dress showing her ring: warm bronze glam, long loose highlighted waves and a small hairpiece."></span>
+        <span class="look-meta"><span class="look-n">13</span><span class="look-t">Bridal glam, loose waves</span><span class="look-c">Bridal</span></span>
+      </a>
+    </li>
+    <li class="look look-film" data-cats="film">
+      <div class="look-box">
+        <span class="look-img"><video muted loop playsinline preload="none" disablepictureinpicture disableremoteplayback poster="/demo/yariiimakeup-01/assets/img/film-mirror.jpg" data-src="/demo/yariiimakeup-01/assets/film/mirror.mp4" width="720" height="1180" style="object-position:50% 20%" aria-label="Silent looping clip: the same client taking a mirror photo, smiling, in a white fur stole with long waves over one shoulder."></video><span class="film-tag" aria-hidden="true">Film</span></span>
+        <span class="look-meta"><span class="look-n">14</span><span class="look-t">Glam &amp; waves, on film</span><span class="look-c">On Film</span></span>
+      </div>
+    </li>
+    <li class="look" data-cats="glam">
+      <a href="/demo/yariiimakeup-01/assets/img/glam-bronze-950.webp" data-w="950" data-h="950" data-look>
+        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/glam-bronze-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/glam-bronze-480.webp 480w, /demo/yariiimakeup-01/assets/img/glam-bronze-800.webp 800w, /demo/yariiimakeup-01/assets/img/glam-bronze-950.webp 950w" sizes="(min-width: 900px) 46vw, 46vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:54% 42%" alt="Bronze smoky glam on deep skin: a soft black smoky eye, glowing complexion and glossy nude lip, framed by long defined curls."></span>
+        <span class="look-meta"><span class="look-n">15</span><span class="look-t">Bronze smoky glam</span><span class="look-c">Full Glam</span></span>
+      </a>
+    </li>
+    <li class="look" data-cats="party">
+      <a href="/demo/yariiimakeup-01/assets/img/prom-lilac-1080.webp" data-w="1080" data-h="1080" data-look>
+        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/prom-lilac-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/prom-lilac-480.webp 480w, /demo/yariiimakeup-01/assets/img/prom-lilac-800.webp 800w, /demo/yariiimakeup-01/assets/img/prom-lilac-1080.webp 1080w" sizes="(min-width: 900px) 23vw, 92vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:50% 22%" alt="Prom glam: rosy lip and soft shimmer, dark hair in pinned curls, with a lilac beaded corset gown and satin gloves."></span>
+        <span class="look-meta"><span class="look-n">16</span><span class="look-t">Prom glam &amp; curls</span><span class="look-c">Sweet 16 & Prom</span></span>
+      </a>
+    </li>
+    <li class="look" data-cats="glam">
       <a href="/demo/yariiimakeup-01/assets/img/look-09-1080.webp" data-w="1080" data-h="1080" data-look>
-        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/look-09-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-09-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-09-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-09-1080.webp 1080w" sizes="(min-width: 900px) 30vw, 46vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:55% 30%" alt="Evening glam for a formal portrait: a client in a black sequined gown with curled hair, standing in a round studio spotlight."></span>
-        <span class="look-meta"><span class="look-n">05</span><span class="look-t">Evening glam, in the spotlight</span><span class="look-c">Full Glam &amp; Events</span></span>
+        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/look-09-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-09-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-09-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-09-1080.webp 1080w" sizes="(min-width: 900px) 23vw, 46vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:55% 30%" alt="Evening glam for a formal portrait: a client in a black sequined gown with curled hair, standing in a round studio spotlight."></span>
+        <span class="look-meta"><span class="look-n">17</span><span class="look-t">Evening glam, in the spotlight</span><span class="look-c">Full Glam</span></span>
       </a>
     </li>
-    <li class="look" data-cats="soft" data-tones="#e27270,#d0947e,#f3b196">
-      <a href="/demo/yariiimakeup-01/assets/img/look-03-1600.webp" data-w="1600" data-h="1600" data-look>
-        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/look-03-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-03-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-03-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-03-1200.webp 1200w" sizes="(min-width: 900px) 30vw, 46vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:38% 40%" alt="Soft glam on a client with long dark hair: sculpted brown eyeshadow, long lashes, glowing skin and a glossy pink lip, photographed at the makeup station."></span>
-        <span class="look-meta"><span class="look-n">06</span><span class="look-t">Soft glam, sculpted eye</span><span class="look-c">Soft Glam</span></span>
+    <li class="look" data-cats="soft hair">
+      <a href="/demo/yariiimakeup-01/assets/img/soft-comb-1080.webp" data-w="1080" data-h="1080" data-look>
+        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/soft-comb-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/soft-comb-480.webp 480w, /demo/yariiimakeup-01/assets/img/soft-comb-800.webp 800w, /demo/yariiimakeup-01/assets/img/soft-comb-1080.webp 1080w" sizes="(min-width: 900px) 23vw, 46vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:34% 40%" alt="Soft glam close-up: taupe shimmer on the eyes and a nude lip, brunette waves swept back with a pearl comb."></span>
+        <span class="look-meta"><span class="look-n">18</span><span class="look-t">Soft glam &amp; pearl comb</span><span class="look-c">Soft Glam · Hair</span></span>
       </a>
     </li>
-    <li class="look" data-cats="glam stage" data-tones="#e69394,#824d45,#e6997a">
-      <a href="/demo/yariiimakeup-01/assets/img/look-11-1440.webp" data-w="1440" data-h="1440" data-look>
-        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/look-11-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-11-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-11-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-11-1200.webp 1200w" sizes="(min-width: 900px) 30vw, 92vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:36% 18%" alt="Pageant glam in profile: smoky eye and bright smile, with a voluminous blonde updo and a beaded gold gown, photographed backstage."></span>
-        <span class="look-meta"><span class="look-n">07</span><span class="look-t">Pageant glam, gold gown</span><span class="look-c">Pageant &amp; Stage</span></span>
+    <li class="look" data-cats="stage">
+      <a href="/demo/yariiimakeup-01/assets/img/look-11-1200.webp" data-w="1200" data-h="1200" data-look>
+        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/look-11-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-11-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-11-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-11-1200.webp 1200w" sizes="(min-width: 900px) 23vw, 92vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:36% 18%" alt="Pageant glam in profile: smoky eye and bright smile, with a voluminous blonde updo and a beaded gold gown, photographed backstage."></span>
+        <span class="look-meta"><span class="look-n">19</span><span class="look-t">Pageant glam, gold gown</span><span class="look-c">Pageant & Stage</span></span>
+      </a>
+    </li>
+    <li class="look" data-cats="hair">
+      <a href="/demo/yariiimakeup-01/assets/img/hair-long-waves-758.webp" data-w="758" data-h="757" data-look>
+        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/hair-long-waves-758.jpg" srcset="/demo/yariiimakeup-01/assets/img/hair-long-waves-480.webp 480w, /demo/yariiimakeup-01/assets/img/hair-long-waves-758.webp 758w" sizes="(min-width: 900px) 23vw, 46vw" width="758" height="757" loading="lazy" decoding="async" style="object-position:55% 45%" alt="Seen from behind in the studio: very long dark hair brushed out into uniform glossy waves."></span>
+        <span class="look-meta"><span class="look-n">20</span><span class="look-t">Long brushed-out waves</span><span class="look-c">Hair</span></span>
       </a>
     </li>
   </ul>
 
   <div class="work-foot">
-    <p class="note" data-rv><span class="note-tag">Concept note</span> Bridal looks join this gallery once Yaribel chooses her wedding photos.</p>
+    <p class="note" data-rv><span class="note-tag">Concept note</span> Photographs are from her public Booksy and Instagram pages. The selection and captions are ours, for her to confirm.</p>
     <a class="btn btn-ink btn-lg" href="https://yarimakeup.booksy.com/" rel="noopener external" data-book="work" data-rv>Book your look <span class="btn-sub">on Booksy</span></a>
   </div>
 </section>
@@ -208,16 +291,16 @@
   <div class="svc-wrap">
     <div class="svc-stage" aria-hidden="true">
       <div class="svc-frame">
-        <img class="is-on" data-svc-img="bridal" src="/demo/yariiimakeup-01/assets/img/look-04-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-04-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-04-1080.webp 1080w" sizes="38vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:42% 38%" alt="">
-        <img data-svc-img="glam" src="/demo/yariiimakeup-01/assets/img/look-09-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-09-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-09-1080.webp 1080w" sizes="38vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:55% 30%" alt="">
-        <img data-svc-img="hair" src="/demo/yariiimakeup-01/assets/img/look-10-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-10-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-10-1200.webp 1200w" sizes="38vw" width="800" height="1039" loading="lazy" decoding="async" style="object-position:50% 30%" alt="">
-        <img data-svc-img="classes" src="/demo/yariiimakeup-01/assets/img/look-03-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-03-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-03-1200.webp 1200w" sizes="38vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:60% 40%" alt="">
+        <img class="is-on" data-svc-img="bridal" src="/demo/yariiimakeup-01/assets/img/bridal-bouquet-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/bridal-bouquet-800.webp 800w, /demo/yariiimakeup-01/assets/img/bridal-bouquet-1048.webp 1048w" sizes="38vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:52% 22%" alt="">
+        <img data-svc-img="glam" src="/demo/yariiimakeup-01/assets/img/glam-teal-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/glam-teal-800.webp 800w, /demo/yariiimakeup-01/assets/img/glam-teal-1200.webp 1200w" sizes="38vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:48% 36%" alt="">
+        <img data-svc-img="hair" src="/demo/yariiimakeup-01/assets/img/hair-black-waves-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/hair-black-waves-800.webp 800w, /demo/yariiimakeup-01/assets/img/hair-black-waves-1043.webp 1043w" sizes="38vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:46% 30%" alt="">
+        <img data-svc-img="classes" src="/demo/yariiimakeup-01/assets/img/studio-station-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/studio-station-800.webp 800w, /demo/yariiimakeup-01/assets/img/studio-station-1200.webp 1200w" sizes="38vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:40% 38%" alt="">
       </div>
-      <p class="svc-shown">Shown: <span id="svc-shown">soft glam with curls</span></p>
+      <p class="svc-shown">Shown: <span id="svc-shown">bridal soft glam</span></p>
     </div>
 
     <ol class="svc-list">
-      <li class="svc is-on" data-svc="bridal" data-shown="soft glam with curls">
+      <li class="svc is-on" data-svc="bridal" data-shown="bridal soft glam">
         <span class="svc-n" aria-hidden="true">01</span>
         <div class="svc-body">
           <h3 class="svc-h">Bridal makeup &amp; hair</h3>
@@ -225,9 +308,9 @@
           <ul class="svc-tags"><li>Bridal makeup with skin prep</li><li>Bridal trials</li><li>Bridal hairstyling &amp; hair trials</li></ul>
           <a class="arrow" href="https://yarimakeup.booksy.com/" rel="noopener external" data-book="svc-bridal">Book bridal <span class="arrow-on">on Booksy</span></a>
         </div>
-        <img class="svc-thumb" src="/demo/yariiimakeup-01/assets/img/look-04-480.webp" width="480" height="480" loading="lazy" decoding="async" style="object-position:42% 38%" alt="">
+        <img class="svc-thumb" src="/demo/yariiimakeup-01/assets/img/bridal-bouquet-480.webp" width="480" height="480" loading="lazy" decoding="async" style="object-position:52% 22%" alt="">
       </li>
-      <li class="svc" data-svc="glam" data-shown="evening glam for a formal portrait">
+      <li class="svc" data-svc="glam" data-shown="full glam with a teal cut crease">
         <span class="svc-n" aria-hidden="true">02</span>
         <div class="svc-body">
           <h3 class="svc-h">Soft glam &amp; special events</h3>
@@ -235,9 +318,9 @@
           <ul class="svc-tags"><li>Soft glam</li><li>Full glam</li><li>Photoshoot makeup</li><li>Prom &amp; special events</li></ul>
           <a class="arrow" href="https://yarimakeup.booksy.com/" rel="noopener external" data-book="svc-glam">Book glam <span class="arrow-on">on Booksy</span></a>
         </div>
-        <img class="svc-thumb" src="/demo/yariiimakeup-01/assets/img/look-09-480.webp" width="480" height="480" loading="lazy" decoding="async" style="object-position:55% 30%" alt="">
+        <img class="svc-thumb" src="/demo/yariiimakeup-01/assets/img/glam-teal-480.webp" width="480" height="480" loading="lazy" decoding="async" style="object-position:48% 36%" alt="">
       </li>
-      <li class="svc" data-svc="hair" data-shown="soft glam with a blowout">
+      <li class="svc" data-svc="hair" data-shown="Hollywood waves">
         <span class="svc-n" aria-hidden="true">03</span>
         <div class="svc-body">
           <h3 class="svc-h">Hair &amp; makeup, together</h3>
@@ -245,9 +328,9 @@
           <ul class="svc-tags"><li>Waves &amp; blowouts</li><li>Special-occasion styling</li><li>Selected extension installs</li></ul>
           <a class="arrow" href="https://yarimakeup.booksy.com/" rel="noopener external" data-book="svc-hair">Book hair <span class="arrow-on">on Booksy</span></a>
         </div>
-        <img class="svc-thumb" src="/demo/yariiimakeup-01/assets/img/look-10-480.webp" width="480" height="623" loading="lazy" decoding="async" style="object-position:50% 30%" alt="">
+        <img class="svc-thumb" src="/demo/yariiimakeup-01/assets/img/hair-black-waves-480.webp" width="480" height="480" loading="lazy" decoding="async" style="object-position:46% 30%" alt="">
       </li>
-      <li class="svc" data-svc="classes" data-shown="soft glam, at the makeup station">
+      <li class="svc" data-svc="classes" data-shown="glam, at her makeup station">
         <span class="svc-n" aria-hidden="true">04</span>
         <div class="svc-body">
           <h3 class="svc-h">Makeup classes</h3>
@@ -255,7 +338,7 @@
           <ul class="svc-tags"><li>Beginner&rsquo;s makeup course</li><li>Professional makeup course</li><li>Eyebrow tinting course</li></ul>
           <a class="arrow" href="https://yarimakeup.booksy.com/" rel="noopener external" data-book="svc-classes">See classes <span class="arrow-on">on Booksy</span></a>
         </div>
-        <img class="svc-thumb" src="/demo/yariiimakeup-01/assets/img/look-03-480.webp" width="480" height="480" loading="lazy" decoding="async" style="object-position:60% 40%" alt="">
+        <img class="svc-thumb" src="/demo/yariiimakeup-01/assets/img/studio-station-480.webp" width="480" height="480" loading="lazy" decoding="async" style="object-position:40% 38%" alt="">
       </li>
     </ol>
   </div>
@@ -372,7 +455,7 @@
       <a href="https://yarimakeup.booksy.com/" rel="noopener external" data-book="footer">Book on Booksy</a>
     </nav>
   </div>
-  <p class="foot-fine">This is an unlisted design concept created by JP&nbsp;Silva&nbsp;Digital for review. It is not YariiiMakeup&rsquo;s official website and has not been commissioned or endorsed by the artist. Photographs come from the artist&rsquo;s public portfolio and are shown for concept review only, pending her approval. The logo is the public copy from her Booksy listing, and the films are cut from a reel of her work; both await her approval and her original files. All booking happens on Booksy.</p>
+  <p class="foot-fine">This is an unlisted design concept created by JP&nbsp;Silva&nbsp;Digital for review. It is not YariiiMakeup&rsquo;s official website and has not been commissioned or endorsed by the artist. Photographs come from her public Booksy and Instagram pages, the logo is the public copy from her Booksy listing, and the films are cut from a reel of her work. All are shown for concept review only and await her approval and her original files. All booking happens on Booksy.</p>
 </footer>
 
 <a class="dock" href="https://yarimakeup.booksy.com/" rel="noopener external" data-book="dock" aria-label="Book Now on Booksy">
@@ -400,7 +483,7 @@
   <div class="lb-bot">
     <div class="lb-info">
       <p class="lb-title" id="lb-title"></p>
-      <p class="lb-tones"><span class="lb-dots" id="lb-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>Lip, lid and glow tones sampled from this photo</span></p>
+
     </div>
     <a class="btn btn-ivory" href="https://yarimakeup.booksy.com/" rel="noopener external" data-book="lightbox">Book this look</a>
   </div>
