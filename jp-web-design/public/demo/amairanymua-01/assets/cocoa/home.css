@@ -1,0 +1,155 @@
+/* /demo/amairanymua-01 — COCOA home: the opening, the hero and its stack of reels, and the home
+   sections. Tokens and the kit live in site.css. */
+
+/* ---------- the hero ---------- */
+.hero{position:relative;background:var(--cream);padding:clamp(14px,3vw,28px) 0 clamp(44px,6vw,72px);overflow-x:clip}
+.hero-in{display:grid;gap:26px;align-items:center}
+.hero-k{margin-bottom:14px}
+.hero-h{display:flex;flex-direction:column}
+.hero-h2{padding-left:.42em}
+.hero-sub{margin:16px 0 18px;font:600 12px/1.6 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--mocha)}
+.hero-sub i{font-style:normal;margin:0 .3em}
+.hero-chip{margin:0 0 22px}
+.hero-acts .btn{padding:0 20px}
+@media(max-width:899px){
+  .hero-txt{text-align:left}
+}
+@media(min-width:380px) and (max-width:899px){.hero-acts{flex-wrap:nowrap}.hero-acts .btn{flex:1 1 auto;padding:0 12px;font-size:11.5px;letter-spacing:.12em}}
+@media(max-width:379px){.hero-acts{flex-wrap:nowrap;gap:8px}.hero-acts .btn{flex:1 1 0;min-width:0;padding:0 6px;font-size:10.5px;letter-spacing:.07em}.hero-chip{font-size:10px;letter-spacing:.08em}}
+@media(max-width:899px) and (max-height:700px){.hero-h{font-size:clamp(46px,13vw,60px)}.hero-sub{margin:10px 0 12px}.hero-chip{margin-bottom:14px}}
+
+/* the stack: data-k 0 front, 1 behind right, -1 behind left, h hidden behind */
+.hero-st{display:grid;justify-items:center;gap:22px;min-width:0}
+.hs-wrap{--cw:min(47vw,210px);position:relative;width:100%;display:grid;justify-items:center}
+.hs{position:relative;width:var(--cw);touch-action:pan-y;-webkit-user-select:none;user-select:none}
+.hs-deck{position:relative;width:var(--cw);aspect-ratio:9/16}
+.hs-c{position:absolute;inset:0;transition:transform .95s var(--ease),opacity .7s var(--ease),visibility 0s linear 0s;will-change:transform}
+.hs-in{width:100%;height:100%}
+.hs-in .reel{height:100%}
+.hs-in .reel-m{height:100%;aspect-ratio:auto;box-shadow:0 26px 50px -30px var(--shade),0 8px 18px -12px var(--shade)}
+.hs-c[data-k="0"]{z-index:3;transform:none}
+.hs-c[data-k="1"]{z-index:2;transform:translate3d(54%,4%,0) scale(.82) rotate(4deg);cursor:pointer}
+.hs-c[data-k="-1"]{z-index:1;transform:translate3d(-54%,4%,0) scale(.82) rotate(-4deg);cursor:pointer}
+.hs-c[data-k="h"]{z-index:0;transform:translate3d(0,6%,0) scale(.66);opacity:0;visibility:hidden;transition:transform .95s var(--ease),opacity .6s var(--ease),visibility 0s linear .95s;pointer-events:none}
+.hs-c:not([data-k="0"]) .reel-v,.hs-c:not([data-k="0"]) .reel-p,.hs-c:not([data-k="0"]) .film-credit{opacity:0;transition:opacity .3s}
+.hs-c .reel-v,.hs-c .reel-p,.hs-c .film-credit{transition:opacity .4s .35s}
+.hs-rate{position:relative;z-index:4;margin-top:26px;white-space:nowrap}
+.hs-ctl{display:grid;justify-items:center;gap:12px;width:100%;max-width:420px;text-align:center}
+.hs-cap{margin:0;min-height:2.9em;font:500 12.5px/1.45 var(--sans);color:var(--mocha)}
+.hs-btns{display:flex;gap:10px}
+.hs-btns[hidden]{display:none}
+.hs-pi{position:relative;width:12px;height:12px}
+.hs-pi::before,.hs-pi::after{content:"";position:absolute;top:0;bottom:0;width:3px;background:currentColor}
+.hs-pi::before{left:2px}.hs-pi::after{right:2px}
+.hs-pause.is-paused .hs-pi::before{left:3px;width:0;height:0;top:0;bottom:auto;background:none;border:6px solid transparent;border-left:10px solid currentColor;border-right:0}
+.hs-pause.is-paused .hs-pi::after{display:none}
+@media(min-width:900px){
+  .hero{padding:0}
+  .hero-in{grid-template-columns:1.08fr .92fr;gap:40px;min-height:calc(100vh - var(--hd-h));min-height:calc(100svh - var(--hd-h));padding-top:24px;padding-bottom:40px}
+  .hero-sub{font-size:12.5px;margin:22px 0 22px}
+  .hs-wrap{--cw:min(300px,calc((100vh - var(--hd-h) - 210px)*.5625));--cw:min(300px,calc((100svh - var(--hd-h) - 210px)*.5625))}
+  .hs-rate{position:absolute;margin:0;top:auto;right:auto;left:calc(50% - var(--cw)*.78);bottom:9%;transform:translateX(-50%)}
+  .hs-ctl{max-width:460px}
+}
+@media(min-width:900px) and (max-height:620px){.hs-wrap{--cw:max(150px,calc((100vh - var(--hd-h) - 150px)*.5625))}.hero-h{font-size:clamp(58px,9vw,96px)}}
+@media(min-width:1280px){.hero-in{grid-template-columns:1.1fr .9fr}}
+/* a phone on its side: text beside the stack, both on the first screen */
+@media(min-width:600px) and (max-width:899px) and (orientation:landscape) and (max-height:520px){
+  .hero{padding:8px 0 28px}
+  .hero-in{grid-template-columns:1.15fr .85fr;gap:24px}
+  .hero-h{font-size:clamp(40px,13vh,68px)}
+  .hero-k{margin-bottom:8px}.hero-sub{margin:8px 0 10px;font-size:11px}.hero-chip{margin-bottom:12px}
+  .hero-acts{flex-wrap:nowrap}.hero-acts .btn{min-height:44px}
+  .hs-wrap{--cw:calc((100vh - var(--hd-h) - 60px)*.5625);--cw:calc((100svh - var(--hd-h) - 60px)*.5625)}
+  .hs-rate{position:absolute;margin:0;top:10%;right:auto;bottom:auto;left:calc(50% - var(--cw)*.9);transform:translateX(-50%) scale(.86)}
+  .hero-st{gap:12px}.hs-cap{display:none}
+}
+@media (prefers-reduced-motion:reduce){.hs-c,.hs-c[data-k="h"],.hs-c .reel-v,.hs-c .reel-p,.hs-c .film-credit{transition:none}}
+
+/* ---------- the opening (only while html.intro; home.js runs the timeline) ----------
+   The panel and its pane counter-move (translateY -100% / +100%) so the espresso's bottom edge
+   rises like a lifted card while what is printed on it stays still: transform only, compositor
+   only. The reel cards in the fan are the hero's own cards, lifted above the panel. */
+.op{display:none}
+html.intro .op{display:block;position:fixed;inset:0;z-index:80;pointer-events:none}
+.op-bg{position:absolute;inset:0;overflow:hidden;pointer-events:auto}
+.op-pane{position:absolute;inset:0;background:var(--espresso);color:var(--cream)}
+.op-hd{position:relative}
+.op-hd .hd-logo,.op-hd .hd-ev,.op-hd .menu-btn{visibility:hidden}
+.op-hd .hd-tools{margin-left:auto}
+.op-hd .hd-cta{background:var(--cream);color:var(--espresso);pointer-events:auto}
+.op-lk{--lks:2.6;--lky:24vh;position:absolute;left:0;top:0;transform-origin:0 0;color:var(--cream);
+  transform:translate(calc(50vw - 50% * var(--lks)),calc(var(--lky) - 50% * var(--lks))) scale(var(--lks))}
+.op-mid{--top:calc(24vh + 62px);position:absolute;left:0;right:0;top:var(--top);display:grid;justify-items:center;padding:0 16px}
+.op-rule{display:block;width:56px;height:1px;background:var(--latte);margin:0 0 26px;transform-origin:center}
+.op-nums{display:grid;grid-template-columns:repeat(3,auto);gap:0 clamp(22px,7vw,64px);justify-content:center;text-align:center}
+.op-n{display:grid;justify-items:center}
+.op-v{position:relative;display:block;font:400 clamp(36px,10.4vw,68px)/1 var(--serif);font-variant-numeric:lining-nums tabular-nums;letter-spacing:-.01em}
+.op-v-f{visibility:hidden}
+.op-v-c{position:absolute;left:-1em;right:-1em;top:0;text-align:center}
+.op-l{display:block;max-width:9.5em;margin-top:10px;font:650 9.5px/1.4 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--latte)}
+.op-date{margin:18px 0 0;font:500 10.5px/1.4 var(--sans);letter-spacing:.06em;color:var(--latte);opacity:.85}
+html.intro .hs{z-index:90}
+/* painted before home.js takes over, so its first frame is already the opening's own */
+html.intro .op-n,html.intro .op-date{opacity:0}
+html.intro .op-rule{transform:scaleX(0)}
+@media(max-width:379px){.op-lk{--lks:2.2}.op-mid{--top:calc(24vh + 52px)}.op-v{font-size:31px}.op-nums{gap:0 16px}}
+html.intro .hs-in{transform:translate3d(0,110vh,0)}
+@media(min-width:1024px){.op-lk{--lks:3.6;--lky:21vh}.op-mid{--top:calc(21vh + 96px)}.op-v{font-size:clamp(60px,5.8vw,86px)}.op-l{font-size:10.5px}.op-nums{gap:0 clamp(48px,6vw,96px)}}
+@media(max-height:560px){.op-lk{--lks:1.8;--lky:20vh}.op-mid{--top:calc(20vh + 40px)}.op-rule{margin-bottom:12px}.op-v{font-size:34px}.op-date{margin-top:8px}}
+
+/* ---------- numbers band: a touch of air after the hero ---------- */
+#numbers{scroll-margin-top:var(--hd-h)}
+
+/* ---------- What brings you here? ---------- */
+.pt-g{display:grid;gap:18px}
+.pt{display:flex;flex-direction:column;background:var(--milk);border:1px solid var(--oat);border-radius:var(--r);overflow:hidden}
+.pt .fr-m{border-radius:0}
+.pt-b{position:relative;display:flex;flex-direction:column;flex:1;padding:24px 22px 22px}
+.pt-b .kick{margin-bottom:10px}
+.pt-n{position:absolute;right:20px;top:18px;margin:0;font-size:34px;line-height:1;color:var(--sand)}
+.pt-x{margin:12px 0 10px}
+.pt-note{margin:0 0 22px;font-size:13px;line-height:1.55;color:var(--mocha)}
+.pt-b .btn{margin-top:auto}
+@media(max-width:759px){.pt .fr--port .fr-m{aspect-ratio:5/4}}
+@media(min-width:760px){.pt-g{grid-template-columns:repeat(3,1fr);gap:16px}}
+@media(min-width:1024px){.pt-g{gap:22px}.pt-b{padding:28px 26px 26px}}
+
+/* About, directly under the paths */
+.about{padding-top:calc(var(--sec-y)*.8)}
+
+/* ---------- viral grid ---------- */
+.viral-asof{margin:0 0 4px}
+.viral .sh--row>div:last-child{display:grid;justify-items:start;gap:0}
+@media(min-width:760px){.viral .sh--row>div:last-child{justify-items:end;text-align:right}}
+
+/* ---------- services ---------- */
+.svc-top{display:grid;gap:12px}
+.svc-l{border-top:1px solid var(--sand)}
+.svc-l>li{border-bottom:1px solid var(--sand)}
+.svc-i summary{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:18px;min-height:76px;padding:14px 0;cursor:pointer;list-style:none}
+.svc-i summary::-webkit-details-marker{display:none}
+.svc-n{font-size:clamp(22px,2.4vw,28px);color:var(--mocha);min-width:2ch}
+.svc-t{font:400 clamp(30px,4vw,48px)/1.05 var(--serif)}
+.svc-i[open] .faq-x::after{transform:rotate(0)}
+.svc-a{display:grid;gap:4px;justify-items:start;padding:0 0 24px calc(2ch + 18px + .2em);max-width:40em;color:var(--mocha)}
+.svc-a p{margin:0}
+.svc-pk{margin-top:clamp(64px,8vw,104px)}
+.svc-pk-h{margin-bottom:34px}
+.svc-pk-h .kick{margin-bottom:12px}
+@media(min-width:1024px){.svc-top{grid-template-columns:.8fr 1.2fr;gap:64px;align-items:start}.svc-top .sh{margin:0;position:sticky;top:calc(var(--hd-h) + 32px)}}
+
+/* ---------- the looks ---------- */
+.looks .sh{margin-bottom:28px}
+.looks-chips{max-width:var(--wrap);margin:0 auto 22px;padding:0 max(var(--gut),env(safe-area-inset-left))}
+@media(max-width:759px){
+  .looks-chips{padding:0}
+  .looks-chips .fchips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding:2px max(var(--gut),env(safe-area-inset-left));-webkit-overflow-scrolling:touch}
+  .looks-chips .fchips::-webkit-scrollbar{display:none}
+  .looks-chips .fchip{flex:none}
+}
+
+/* ---------- journal teaser ---------- */
+.jt .post .fr-m{aspect-ratio:16/10}
+.jt .post .fr-m img{object-position:50% 30%}
+@media(min-width:760px){.jt .post .fr-m{aspect-ratio:4/3}}

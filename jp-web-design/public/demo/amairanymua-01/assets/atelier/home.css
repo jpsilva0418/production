@@ -1,0 +1,154 @@
+/* /demo/amairanymua-01 — ATELIER home: the opening, the gallery-wall hero and the home sections.
+   Every colour comes from the tokens in site.css. */
+
+/* ===================== the opening (only while html.intro) =====================
+   Pre-states painted from the first frame (the gate runs first in <body>): an ivory sheet over the
+   page; the header's own lockup with its script wiped away and its caps below their mask (home.js
+   carries it to the centre); the hero's centre arch closed to a sliver and lifted above the sheet
+   (home.js carries it under the lockup). The header's links and actions are faded but still
+   clickable, and so is everything under the sheet. Without html.intro none of this exists. */
+.op { display: none; }
+html.intro .op { display: block; position: fixed; inset: 0; z-index: 70; background: var(--ivory); pointer-events: none; }
+.op-ln { position: absolute; left: 50%; top: var(--ly, 34%); width: 1px; height: var(--lh, 50%); margin-left: -.5px; background: var(--espresso); transform: scaleY(0); transform-origin: 50% 0; }
+.op-b { position: absolute; left: 0; right: 0; top: var(--by, 30%); margin: 0; padding: 0 20px; text-align: center; font-size: 9.5px; font-weight: 500; letter-spacing: .32em; line-height: 1.4; text-transform: uppercase; color: var(--cocoa); opacity: 0; }
+html.intro .hd { z-index: 80; background: transparent; }
+html.intro .hd-nav, html.intro .hd-tools { opacity: 0; }
+html.intro .hd .lk { transform-origin: 0 0; }
+html.intro .hd .lk-s { clip-path: inset(-10% 100% -10% 0); }
+html.intro .hd .lk-c span { transform: translateY(115%); }
+html.intro .wall-c { position: relative; z-index: 75; }
+html.intro .wall-c .arch-m { transform-origin: 0 0; clip-path: inset(0 50% 0 50% round 999px 999px 0 0); }
+html.intro .wall-c-cap { opacity: 0; }
+
+/* ===================== the hero: a gallery wall of arches ===================== */
+.hero { position: relative; background: var(--ivory); }
+/* phone: the tall arch with her clip, then the words and both actions, then the small row */
+.hero-in { --ah: clamp(170px, calc(100svh - var(--hd-h) - 330px), 540px); display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-areas: 'c c' 't t' 'side ctl'; justify-items: center; padding: 12px var(--gx) 44px; }
+.hero-w, .wall-side { display: contents; }
+.wall-c { grid-area: c; width: min(76vw, calc(var(--ah) * .6)); }
+.wall-c-cap { display: none; }
+.hero-t { grid-area: t; display: grid; justify-items: center; text-align: center; padding-top: 20px; }
+.hero-k { margin-bottom: 10px; font-size: 9.5px; letter-spacing: .28em; }
+.hero-k::before { display: none; }
+.d-hero { margin: 0 0 14px; }
+.hero-line { display: none; }
+.hero-book { width: min(100%, 360px); justify-content: center; margin-bottom: 16px; }
+.hero-acts { justify-content: center; }
+.wall-l, .wall-r { grid-area: side; margin-top: 40px; align-self: end; }
+.wall-l { width: 80px; justify-self: start; }
+.wall-r { width: 88px; justify-self: start; margin-left: 92px; }
+.hero-ctl { grid-area: ctl; justify-self: stretch; align-self: end; display: grid; gap: 2px; padding-left: 24px; margin-top: 40px; }
+.hero-ctl .wall-ctl { flex-wrap: wrap; gap: 0 10px; }
+.hero-ctl .wall-cap { flex-basis: 100%; margin-top: 0; }
+.hero-ctl .pause { padding-left: 0; }
+.hero-more { justify-self: start; }
+@media (max-width: 599px) { .hero-more { display: none; } .hero-ctl .wall-cap { letter-spacing: .18em; } }
+
+/* wide screens and landscape phones: the words on the left, the wall of three arches on the right */
+@media (min-width: 900px), (min-width: 600px) and (orientation: landscape) and (max-height: 620px) {
+  .hero-in { --H: calc(100svh - var(--hd-h) - 170px); grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); grid-template-areas: 't w'; justify-items: stretch; align-items: center; gap: clamp(28px, 4.5vw, 96px); min-height: 600px; min-height: calc(100vh - var(--hd-h)); min-height: calc(100svh - var(--hd-h)); max-width: calc(1600px + 2 * var(--gx)); margin: 0 auto; padding: 24px var(--gx) 64px; }
+  .hero-t { justify-items: start; text-align: left; padding-top: 0; }
+  .hero-k { font-size: 10.5px; margin-bottom: 22px; }
+  .hero-k::before { display: block; }
+  .d-hero { margin-bottom: 26px; }
+  .hero-line { display: block; max-width: 36ch; margin: 0 0 26px; font-size: 16px; color: var(--ink-2); }
+  .hero-book { justify-content: flex-start; margin-bottom: 26px; width: min(100%, 380px); }
+  .hero-book::before { display: none; }
+  .hero-acts { justify-content: flex-start; }
+  .hero-w { grid-area: w; display: grid; grid-template-columns: .5fr 1fr .56fr; grid-template-areas: 'l c r' 'ctl ctl ctl'; align-items: end; column-gap: clamp(12px, 1.4vw, 24px); justify-self: end; width: min(100%, calc(var(--H) * .6 * 2.06 + 48px)); }
+  .wall-l, .wall-c, .wall-r { width: auto; margin: 0; justify-self: stretch; align-self: end; }
+  .wall-l { grid-area: l; } .wall-c { grid-area: c; } .wall-r { grid-area: r; }
+  .wall-c-cap { display: block; position: absolute; left: -40px; right: -40px; top: 100%; }
+  .hero-ctl { grid-area: ctl; display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-top: 56px; padding: 10px 0 0; border-top: 1px solid var(--line-soft); }
+  .hero-ctl .wall-ctl { flex-wrap: nowrap; gap: 14px; }
+  .hero-ctl .wall-cap { flex-basis: auto; }
+}
+@media (min-width: 600px) and (orientation: landscape) and (max-height: 620px) {
+  .hero-in { --H: calc(100svh - var(--hd-h) - 56px); min-height: 280px; padding-top: 12px; padding-bottom: 52px; }
+  .d-hero { font-size: clamp(36px, 10vh, 54px); margin-bottom: 12px; }
+  .hero-k, .hero-line { display: none; }
+  .hero-book { margin-bottom: 12px; }
+  .hero-acts { flex-wrap: nowrap; }
+  .hero-acts .btn { min-height: 44px; padding: 0 12px; font-size: 10px; letter-spacing: .12em; }
+  .hero-book { font-size: 9.5px; letter-spacing: .14em; }
+  .hero-book::after { display: none; }
+  .hero-ctl, .wall-c-cap { display: none; }
+}
+
+/* ===================== two ways to book ===================== */
+.ways { padding-top: clamp(56px, 7vw, 104px); padding-bottom: clamp(64px, 8vw, 112px); }
+@media (max-width: 599px) { .way .kick::before, .way .kick::after { display: none; } }
+.ways-g { display: grid; gap: 16px; }
+.way { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 44px 22px 30px; background: var(--paper); border: 1px solid var(--line-soft); }
+.way-ph { width: 132px; margin-bottom: 26px; }
+.way-n { position: absolute; top: 18px; left: 22px; font-family: var(--f-cap); font-weight: 200; font-size: 44px; line-height: 1; color: var(--taupe); }
+.way .kick { margin-bottom: 12px; }
+.way .d-m { margin-bottom: 18px; }
+.way-b { max-width: 40ch; margin-bottom: 26px; color: var(--ink-2); }
+.way-q { margin: 28px 0 0; padding-top: 22px; border-top: 1px solid var(--line-soft); width: 100%; font-size: 14px; line-height: 1.65; color: var(--ink-2); }
+.way-qk { margin-bottom: 6px; font-size: 10px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--ink); }
+.way-pts { list-style: none; width: 100%; margin-top: 28px; border-top: 1px solid var(--line-soft); }
+.way-pts li { padding: 11px 0; font-size: 13.5px; color: var(--ink-2); border-bottom: 1px solid var(--line-soft); }
+@media (min-width: 900px) {
+  .ways-g { grid-template-columns: 1fr 1fr; gap: 22px; }
+  .way { padding: 60px clamp(32px, 4vw, 64px) 44px; }
+  .way-ph { width: 156px; }
+  .way-n { top: 26px; left: 32px; font-size: 56px; }
+}
+
+/* ===================== About, directly under, on linen ===================== */
+.hello-g { display: grid; gap: 40px; }
+.hello-ph { justify-self: center; width: min(100%, 520px); }
+.hello-ph img { width: 100%; height: auto; }
+.hello-q { margin: 28px 0 0; }
+.hello-q p { max-width: 54ch; font-size: 16px; line-height: 1.8; }
+.hello-q p + p { margin-top: 14px; }
+.hello-q p:first-child { font-size: clamp(18px, 1.8vw, 21px); line-height: 1.6; }
+.hello-sig { margin: 14px 0 22px; }
+.hello-yrs { display: flex; gap: 0; margin: 0 0 22px; border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); }
+.hello-yrs > div { flex: 1 1 0; display: flex; align-items: baseline; gap: 12px; padding: 14px 0; }
+.hello-yrs > div + div { padding-left: 20px; border-left: 1px solid var(--line-soft); }
+.hello-yrs dd { margin: 0; font-family: var(--f-cap); font-weight: 200; font-size: clamp(54px, 7vw, 84px); line-height: .9; }
+.hello-yrs dt { font-size: 10px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-2); line-height: 1.5; max-width: 7em; }
+.hello .spec { margin-bottom: 30px; }
+.hello-next { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; }
+@media (min-width: 900px) {
+  .hello-g { grid-template-columns: 5fr 6fr; gap: clamp(48px, 7vw, 120px); align-items: center; }
+}
+
+/* ===================== The Experience ===================== */
+
+/* ===================== The Looks ===================== */
+.looks-hd { display: grid; gap: 22px; margin-bottom: clamp(28px, 4vw, 52px); }
+@media (min-width: 900px) { .looks-hd { grid-template-columns: 1.2fr 1fr; align-items: end; } .looks-hd .lede { justify-self: end; margin-bottom: 1em; } }
+
+/* ===================== the collections ===================== */
+.pkgs-note { margin: 34px auto 0; max-width: 64ch; text-align: center; font-size: 13.5px; color: var(--on-dark-2); }
+.pkgs .next .btn--pri { background: var(--ivory); color: var(--espresso); border-color: var(--ivory); }
+.pkgs .next .btn--pri::before { background: var(--linen); }
+
+/* ===================== her words, then Love Notes ===================== */
+.words-q { margin-bottom: clamp(64px, 9vw, 120px); }
+.words-q .pq p { font-size: clamp(44px, 11.5vw, 132px); }
+.words-ln { max-width: 1100px; margin: 0 auto; }
+.words-ln .kick { margin-bottom: 12px; }
+.words-lede { margin: 0 auto 30px; text-align: center; }
+
+/* ===================== the journal ===================== */
+.jr-hd { margin-bottom: clamp(32px, 4vw, 56px); }
+.jr-g { display: grid; gap: 52px; }
+@media (min-width: 900px) { .jr-g { grid-template-columns: minmax(0, 560px) minmax(0, 500px); justify-content: space-between; gap: clamp(32px, 5vw, 80px); align-items: start; } .jc:nth-child(2) { margin-top: 120px; } }
+.jc-a { display: block; text-decoration: none; }
+.jc-a .fr-m > img { transition: transform 1.4s var(--ease); }
+@media (hover: hover) { .jc-a:hover .fr-m > img { transform: scale(1.035); } .jc-a:hover .jc-t { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .1em; } }
+.jc-k { margin: 20px 0 12px; font-size: 10px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-2); }
+.jc-t { margin-bottom: 14px; }
+.jc-d { max-width: 50ch; margin-bottom: 4px; color: var(--ink-2); }
+.jc-more { background: none; }
+@media (min-width: 900px) and (max-width: 1179px) {
+  .hero-acts { flex-wrap: nowrap; }
+  .hero-acts .btn { padding: 0 16px; letter-spacing: .15em; }
+  .hero-k { letter-spacing: .2em; }
+}
+/* short phones (320×568): give the two actions air above the preview marker */
+@media (max-width: 599px) and (max-height: 640px) { .hero-k { display: none; } .hero-t { padding-top: 14px; } }

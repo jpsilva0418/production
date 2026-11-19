@@ -108,8 +108,8 @@ Object.assign(SITES, {
     id: 'cocoa', n: 9, name: 'Cocoa', theme: '#36302A',
     pages: ['', 'portfolio', 'bridal', 'about', 'journal', 'journal/how-to-prepare', 'journal/destination-bride', 'bridal-inquiry'],
     line: 'Her espresso and cream. Confident, social, proven.',
-    intro: 'TBD',
-    blurb: 'TBD',
+    intro: 'Her lockup on espresso, her real numbers counting up, three of her most-viewed reels rising into a fan, then the espresso lifts away onto the cream hero.',
+    blurb: 'Built to convert: a hero of her reels that moves on its own, her numbers, &ldquo;What brings you here?&rdquo;, her About, the viral grid with real view counts, packages with prices, The Looks with filters and Love Notes.',
     swatch: ['#F4EDE4', '#36302A', '#5A4A3F', '#D9B8A8'],
   },
 });
@@ -287,6 +287,28 @@ export const LOOKS = [
 ];
 /** The looks in one category, in LOOKS order. */
 export const looksIn = (cat) => LOOKS.filter((x) => x.cats.includes(cat));
+/* Round three's portfolio (Atelier, Blush, Cocoa only; sites 1–6 keep LOOKS): her newest work first,
+   frames from her own clips (576 wide), then the ten earlier photographs. Two more categories: hair
+   (styles shown from behind, bridal parties) and editorial (colour and transformations). `credit`
+   comes from PHOTOS where her caption names a collaborator: show it with the caption. */
+export const LOOK_CATS3 = { bridal: 'Bridal', soft: 'Soft glam', full: 'Full glam', hair: 'Hair', editorial: 'Editorial', wedding: 'Wedding day' };
+export const LOOKS3 = [
+  { photo: 'reel-morning-veil', cats: ['bridal', 'soft'], cap: 'Bridal · Morning veil', film: 'f7' },
+  { photo: 'reel-bride-pearls-updo', cats: ['bridal', 'full', 'hair'], cap: 'Bridal · Sleek updo &amp; pearls', film: 'f5' },
+  { photo: 'reel-veil-reveal', cats: ['bridal', 'soft'], cap: 'Bridal · The reveal', film: 'f1' },
+  { photo: 'reel-bride-gown', cats: ['bridal', 'full'], cap: 'Bridal · Glam waves', film: 'f4' },
+  { photo: 'reel-burgundy', cats: ['bridal', 'full'], cap: 'Bridal · Burgundy waves, red lip', film: 'f6' },
+  { photo: 'reel-final-touch', cats: ['bridal', 'soft'], cap: 'Bridal · Final touches', film: 'f3' },
+  { photo: 'reel-curly-updo', cats: ['hair', 'bridal'], cap: 'Hair · Curly updo with pearl pins', film: 'f9' },
+  { photo: 'reel-bridesmaid-half-up', cats: ['hair'], cap: 'Bridal party · Half-up curls', film: 'f8' },
+  { photo: 'reel-bridesmaid-waves', cats: ['hair'], cap: 'Bridal party · Vintage waves', film: 'f8' },
+  { photo: 'reel-copper', cats: ['full', 'editorial'], cap: 'Full glam · Copper', film: 'f2', credit: PHOTOS['reel-copper'].credit },
+  { photo: 'reel-red-waves', cats: ['full', 'editorial'], cap: 'Transformation · Red waves', film: 'f13' },
+  { photo: 'reel-pink', cats: ['editorial'], cap: 'Editorial · Pink', film: 'f10', credit: PHOTOS['reel-pink'].credit },
+  { photo: 'reel-editorial', cats: ['editorial', 'full'], cap: 'Editorial · Graphic colour', film: 'f12' },
+  ...LOOKS.map((l) => ({ ...l, cats: l.cats.map((c) => (c === 'waves' ? 'hair' : c)).filter((c, i, a) => a.indexOf(c) === i) })),
+];
+export const looksIn3 = (cat) => LOOKS3.filter((x) => x.cats.includes(cat));
 
 /* ---------- film ----------
    Every film below has a real clip of her own work (2026-11-19). A film with `file: null` would
@@ -314,7 +336,7 @@ export const FILMS = {
   f11: { n: 11, file: 'pink-glam', label: 'Editorial', title: 'Pink glam', pos: '50% 34%', credit: 'With Alejandro Lopez', alt: 'Silent clip: close-ups of hot-pink hair and glam, then the chair reveal.' },
   f12: { n: 12, file: 'editorial-glam', label: 'Editorial', title: 'Editorial colour', pos: '50% 32%', alt: 'Silent clip: a graphic orange and pink eye with long dark curls.' },
   f13: { n: 13, file: 'transformation', label: 'Transformation', title: 'The transformation', pos: '50% 30%', views: '1.1M', alt: 'Silent clip: full glam and red waves outdoors, the end of a transformation.' },
-  f14: { n: 14, file: 'copper-finish', label: 'Full glam', title: 'The finish', pos: '50% 35%', views: '1.5M', alt: 'Silent clip: the finished copper glam, close to camera.' },
+  f14: { n: 14, file: 'copper-finish', label: 'Full glam', title: 'The finish', pos: '50% 35%', views: '1.5M', credit: 'Hair by @.artistic.aestheticss' /* same copper look as f2, whose caption credits the hair; this post has no caption, so the credit is carried over: confirm with her */, alt: 'Silent clip: the finished copper glam, close to camera.' },
 };
 export const filmSrc = (id) => (FILMS[id].file ? { mp4: `${A}/film/${FILMS[id].file}.mp4`, poster: `${A}/film/${FILMS[id].file}.jpg` } : null);
 /** One film frame. With a file: a muted, looping, playsinline <video data-film> with its poster
