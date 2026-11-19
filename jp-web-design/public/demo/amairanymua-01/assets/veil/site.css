@@ -269,9 +269,9 @@ body.menu-open .hd{visibility:hidden}
   .ft-col:last-child{grid-column:auto}
   .ft-rule,.ft-fine{grid-column:1/-1}
 }
-/* between 900 and 1199px three columns are too narrow for the email address (it broke
+/* between 900 and 1359px three columns are too narrow for the email address (it broke
    mid-word at 1024): two columns, the contact column full width beneath */
-@media(min-width:900px) and (max-width:1199px){.ft-cols{grid-template-columns:1fr 1fr}.ft-col:last-child{grid-column:1/-1}}
+@media(min-width:900px) and (max-width:1359px){.ft-cols{grid-template-columns:1fr 1fr}.ft-col:last-child{grid-column:1/-1}}
 
 /* ---------- the phone booking bar ---------- */
 .bar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;gap:10px;padding:10px var(--gut) calc(10px + env(safe-area-inset-bottom,0px));background:rgb(var(--tulle-rgb)/.97);box-shadow:0 -1px 0 rgb(var(--pearl-rgb));transform:translate3d(0,110%,0);transition:transform .55s var(--ease)}

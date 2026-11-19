@@ -129,7 +129,7 @@ html.intro .hr-l{clip-path:inset(0 0 100% 0)}
   .scn-h{font-size:clamp(5rem,10.5vw,10.5rem)}
 }
 @media(max-width:899px) and (max-height:520px){
-  .scn-txt{padding-top:calc(var(--hd) + 3rem);padding-bottom:calc(6.5rem + env(safe-area-inset-bottom,0px))}
+  .scn-txt{padding-top:calc(var(--hd) + 2.4rem);padding-bottom:calc(8.8rem + env(safe-area-inset-bottom,0px))}
   .scn-h{font-size:clamp(3rem,17vh,4.6rem)}
   .scn-p{margin-top:.7rem}
 }

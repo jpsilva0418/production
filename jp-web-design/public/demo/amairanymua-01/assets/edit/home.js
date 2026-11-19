@@ -210,27 +210,25 @@
     A(wm, [{ transform: 'scale(1.07)' }, { transform: 'scale(1)' }], { duration: 360, delay: 950, easing: 'cubic-bezier(.2,.9,.25,1)' });
     A(wmC, [{ opacity: 0, transform: 'translate3d(-.3em,0,0)' }, { opacity: 1, transform: 'translate3d(0,0,0)' }], { duration: 420, delay: 1150, easing: 'cubic-bezier(.22,.9,.3,1)' });
 
-    /* 1.68–2.20 s: the peach floods out of its own stroke, the other two wipe away, the
-       wordmark travels home. The flood is a plain peach field opened by an ellipse that starts
-       inside the peach stroke and ends past the corners of the screen; the stroke itself only
-       swells a little as it melts into it. (An earlier cut scaled the masked stroke ~15x: a
-       130-170 ms raster stall at the start of the flood under a 4x CPU throttle.) */
+    /* 1.68–2.24 s: the peach stroke floods: it swells across the screen while a flat peach
+       field (a plain colour layer, free to draw at any size) rises under it and fills whatever
+       the streaks leave open; the other two strokes are swept away; the wordmark travels home.
+       The stroke's swell is capped at 4x. (An earlier cut scaled the masked stroke up to ~15x
+       on phones, which made the browser raster a texture that big as the flood began: about
+       twice the raster work during the hand-off, measured under a 4x CPU throttle.) */
     var flood = $('.op-flood', op);
     var r3 = sw[2].getBoundingClientRect();
-    var cx = Math.min(Math.max(r3.left + r3.width / 2, vw * 0.3), vw * 0.7);
-    var cy = Math.min(Math.max(r3.top + r3.height / 2, vh * 0.2), vh * 0.8);
-    var dx = Math.max(cx, vw - cx), dy = Math.max(cy, vh - cy);
-    var ell = function (rx, ry) { return 'ellipse(' + rx.toFixed(1) + 'px ' + ry.toFixed(1) + 'px at ' + cx.toFixed(1) + 'px ' + cy.toFixed(1) + 'px)'; };
-    A(flood, [{ clipPath: ell(Math.min(r3.width, vw) * 0.22, r3.height * 0.16) }, { clipPath: ell(dx * 1.45, dy * 1.45) }], { duration: 520, delay: 1680, easing: 'cubic-bezier(.62,0,.24,1)' });
+    var grow = Math.min(4, Math.max(2.4, 1.25 * vh / Math.max(r3.height, 1), 1.5 * vw / Math.max(r3.width, 1)));
+    A(sw[2], [{ transform: base[2] }, { transform: 'translateX(-2%) rotate(-1deg) scale(' + grow.toFixed(2) + ')' }], { duration: 560, delay: 1680, easing: 'cubic-bezier(.62,0,.22,1)', fill: 'forwards' });
+    A(flood, [{ opacity: 0 }, { opacity: 1 }], { duration: 360, delay: 1800, easing: 'cubic-bezier(.45,0,.55,1)' });
     /* the bronze and deep strokes are swept off to the right (transform + opacity only: a
-       clip-path wipe re-rasters a masked layer every frame) */
+       clip-path wipe re-rasters a masked layer on every frame) */
     [0, 1].forEach(function (j) {
-      A(sw[j], [{ transform: base[j], opacity: 1 }, { opacity: 1, offset: 0.35 }, { transform: base[j].replace(/translateX\([^)]*\)/, 'translateX(' + (j ? 34 : 28) + '%)'), opacity: 0 }], { duration: 440, delay: 1680 + j * 50, easing: 'cubic-bezier(.55,0,.6,1)', fill: 'forwards' });
+      A(sw[j], [{ transform: base[j], opacity: 1 }, { opacity: 1, offset: 0.3 }, { transform: base[j].replace(/translateX\([^)]*\)/, 'translateX(' + (j ? 34 : 28) + '%)'), opacity: 0 }], { duration: 440, delay: 1680 + j * 50, easing: 'cubic-bezier(.55,0,.6,1)', fill: 'forwards' });
     });
-    A(sw[2], [{ transform: base[2], opacity: 1 }, { transform: base[2] + ' scale(1.28)', opacity: 0 }], { duration: 440, delay: 1700, easing: 'cubic-bezier(.45,0,.55,1)', fill: 'forwards' });
     /* 2.20 s: the screen is all peach, and so is the hero underneath: the overlay's fields go in
        one frame, so the story rises on the real hero ground with no veil across it */
-    [bg, flood, sws].forEach(function (el) { A(el, [{ opacity: 1 }, { opacity: 0 }], { duration: 1, delay: 2210, fill: 'forwards' }); });
+    [bg, flood, sws].forEach(function (el) { A(el, [{ opacity: 1 }, { opacity: 0 }], { duration: 1, delay: 2240, fill: 'forwards' }); });
     if (hdWm && wm) {
       var a = wmBox.getBoundingClientRect(), b = hdWm.getBoundingClientRect();
       if (a.width > 0 && b.width > 0) {
