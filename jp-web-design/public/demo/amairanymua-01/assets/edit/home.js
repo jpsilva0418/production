@@ -243,7 +243,7 @@
     /* where the story sits beside the headline (wide screens, phones held sideways) it is clear
        of the wordmark's path and may rise sooner */
     var beside = vw >= 900 || (vw > vh && vh <= 620);
-    var stAt = beside ? 1980 : 2100;
+    var stAt = beside ? 1980 : 2140;
     A($('.hero-story'), [{ opacity: 0, transform: 'translate3d(0,56px,0) scale(.95)' }, { opacity: 1, offset: 0.4 }, { opacity: 1, transform: 'none' }], { duration: 820, delay: stAt, easing: 'cubic-bezier(.22,.9,.3,1)' });
     A($('.st-top'), [{ opacity: 0 }, { opacity: 1 }], { duration: 320, delay: stAt + 300, easing: 'linear' });
     A($('.st-bars'), [{ opacity: 0 }, { opacity: 1 }], { duration: 320, delay: stAt + 300, easing: 'linear' });

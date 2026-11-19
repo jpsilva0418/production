@@ -28,7 +28,7 @@
   .pf-jump-a:nth-child(odd) .pf-jump-t{top:auto;bottom:10px;transform-origin:0 100%}
   .pf-jump-c{width:28px;height:28px;background:var(--charcoal)}
   .pf-jump-c::after{border-color:var(--cream)}
-  .pf-jump-a:hover{transform:rotate(var(--t)) translateY(-8px);background:var(--peach-deep);z-index:4}
+  @media(hover:hover){.pf-jump-a:hover{transform:rotate(var(--t)) translateY(-8px);background:var(--peach-deep);z-index:4}}
   .pf-jump-a:focus-visible{outline-offset:6px;border-radius:var(--r-l)}
 }
 
@@ -94,7 +94,7 @@ html:not(.js) .pf-side{display:none}
   .pf-pan{display:grid;justify-items:center;gap:8px;min-height:0;padding:6px 2px 8px;border-radius:20px;background:none;box-shadow:none;white-space:normal;text-align:center}
   .pf-pan[aria-pressed="true"]{background:none;color:var(--charcoal)}
   .pf-pan .pf-dish{width:100%;height:auto;aspect-ratio:1;border-radius:18px}
-  .pf-pan:hover .pf-dish{transform:translateY(-2px)}
+  @media(hover:hover){.pf-pan:hover .pf-dish{transform:translateY(-2px)}}
   .pf-pan[aria-pressed="true"] .pf-dish{transform:translateY(2px) scale(.94);box-shadow:inset 0 0 0 1px rgba(43,37,35,.1),inset 0 7px 14px rgba(43,37,35,.38),0 0 0 3px var(--cream),0 0 0 5.5px var(--charcoal)}
   .pf-pan-n{font:700 14px/1.15 var(--f-body)}
   .pf-pan-c{position:absolute;right:6px;top:8px;display:grid;place-items:center;min-width:24px;height:24px;padding:0 6px;border-radius:999px;background:var(--cream);font:700 12px/1 var(--f-body);color:var(--charcoal)}

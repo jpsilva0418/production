@@ -18,8 +18,10 @@ const BEATS = [{ photo: LEAD, label: 'Soft glam' }, ...MONTAGE.filter((b) => b.p
 
 /* The decision, inline and before anything paints: play the opening only when motion is
    allowed, Save-Data is off and it has not played this session, or when ?intro=1 asks.
-   ?intro=0 never plays. If home.js has not taken over within 2.5 s, the class is removed. */
-const decide = `<script>(function(h){var p=false,k='am01-intro-veil',m=/[?&]intro=([01])/.exec(location.search);try{if(m)p=m[1]==='1';else{var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,sd=navigator.connection&&navigator.connection.saveData,seen=false;try{seen=!!sessionStorage.getItem(k)}catch(e){}p=!rm&&!sd&&!seen}}catch(e){p=false}if(!p)return;h.classList.add('intro');window.__veilT0=(window.performance&&performance.now)?performance.now():0;try{sessionStorage.setItem(k,'1')}catch(e){}setTimeout(function(){if(!window.__veilOp)h.classList.remove('intro')},2500)})(document.documentElement)</script>`;
+   ?intro=0 never plays. If home.js has not taken over within 2.5 s, the class is removed.
+   The opening's clock starts at the first frame (__veilT0), not here: on a slow phone first
+   paint can come a second after this script, and the CSS timeline only starts when it does. */
+const decide = `<script>(function(h){var p=false,k='am01-intro-veil',m=/[?&]intro=([01])/.exec(location.search);try{if(m)p=m[1]==='1';else{var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,sd=navigator.connection&&navigator.connection.saveData,seen=false;try{seen=!!sessionStorage.getItem(k)}catch(e){}p=!rm&&!sd&&!seen}}catch(e){p=false}if(!p)return;h.classList.add('intro');if(window.requestAnimationFrame)requestAnimationFrame(function(){requestAnimationFrame(function(){window.__veilT0=(window.performance&&performance.now)?performance.now():0})});try{sessionStorage.setItem(k,'1')}catch(e){}setTimeout(function(){if(!window.__veilOp)h.classList.remove('intro')},2500)})(document.documentElement)</script>`;
 
 /* The veil: three layers of tulle, the monogram on the front one. Pure CSS paints it; the
    specular light is a band moving inside the monogram's own outline. */

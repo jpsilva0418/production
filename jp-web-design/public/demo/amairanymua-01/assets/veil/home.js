@@ -18,7 +18,6 @@
   if (playing) {
     window.__veilOp = true;
     var T_END = 3150;
-    var t0 = typeof window.__veilT0 === 'number' ? window.__veilT0 : now();
     var ended = false, timer = 0;
     var evs = ['wheel', 'touchmove', 'pointerdown', 'keydown'];
     var onInput = function (e) {
@@ -45,7 +44,15 @@
       reelStart();
     };
     evs.forEach(function (t) { window.addEventListener(t, onInput, { capture: true, passive: true }); });
-    timer = setTimeout(function () { end(false); }, Math.max(0, T_END - (now() - t0)));
+    /* The CSS timeline starts when the first frame is actually painted, which on a slow phone
+       can be a second after the page began. So this count starts from the opening animation's
+       own start time (exact); failing that, from the frame stamp the inline script took. */
+    var arm = function (t0) { if (!ended) timer = setTimeout(function () { end(false); }, Math.max(0, T_END - (now() - t0))); };
+    var opAnim = doc.getAnimations ? doc.getAnimations().filter(function (a) { return /^op[A-Z]/.test(a.animationName || ''); })[0] : null;
+    if (opAnim && opAnim.ready) {
+      opAnim.ready.then(function () { arm(typeof opAnim.startTime === 'number' ? opAnim.startTime : now()); }, function () { arm(now()); });
+    } else if (typeof window.__veilT0 === 'number') arm(window.__veilT0);
+    else requestAnimationFrame(function () { arm(typeof window.__veilT0 === 'number' ? window.__veilT0 : now()); });
     /* a tab opened in the background: do not play to nobody */
     if (doc.hidden) end(false);
   }

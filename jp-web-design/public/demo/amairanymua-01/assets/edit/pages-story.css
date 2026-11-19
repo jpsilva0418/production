@@ -3,7 +3,7 @@
 
 /* an inline text link inside running copy (answers, small lines) */
 .tx{font-weight:600;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px;text-decoration-color:var(--line-strong);transition:text-decoration-color .2s}
-.tx:hover{text-decoration-color:var(--lip)}
+@media(hover:hover){.tx:hover{text-decoration-color:var(--lip)}}
 
 /* covers: the print a touch bigger on wide screens */
 @media(min-width:900px){.st-cover .cover-print{width:min(100%,460px)}}
@@ -60,7 +60,7 @@
 /* ================================================================ SERVICES */
 .jump{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
 .jump-a{display:inline-flex;align-items:center;gap:9px;min-height:44px;padding:8px 16px 8px 14px;border-radius:999px;background:var(--cream);color:var(--charcoal);font:600 15px/1.2 var(--f-body);text-decoration:none;transition:background-color .2s}
-.jump-a:hover{background:var(--white)}
+@media(hover:hover){.jump-a:hover{background:var(--white)}}
 .jump-a .spark{width:11px;height:11px;color:var(--bronze)}
 
 .svc-list{display:grid;gap:clamp(72px,10vw,140px)}
@@ -140,7 +140,7 @@
 .qa-q{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:64px;padding:16px 4px;cursor:pointer;list-style:none;font:700 clamp(19px,1.8vw,24px)/1.2 var(--f-display);font-stretch:90%;letter-spacing:-.015em;color:var(--charcoal);-webkit-tap-highlight-color:transparent}
 .qa-q::-webkit-details-marker{display:none}
 .qa-q::marker{content:""}
-.qa-q:hover .qa-t{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:5px;text-decoration-color:var(--line-strong)}
+@media(hover:hover){.qa-q:hover .qa-t{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:5px;text-decoration-color:var(--line-strong)}}
 .qa-m{position:relative;flex:none;width:44px;height:44px;border-radius:50%;background:var(--peach);transition:background-color .25s,transform .35s var(--ease)}
 .qa-m::before,.qa-m::after{content:"";position:absolute;left:50%;top:50%;width:16px;height:2px;margin:-1px 0 0 -8px;border-radius:2px;background:var(--charcoal);transition:transform .35s var(--ease)}
 .qa-m::after{transform:rotate(90deg)}

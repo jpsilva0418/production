@@ -8,7 +8,7 @@ html.intro .op{position:fixed;inset:0;z-index:955;display:grid;grid-template-col
 /* the flood: a plain peach field (a solid colour layer, free to draw) under the swelling stroke
    that fills whatever its streaks leave open */
 .op-flood{position:absolute;inset:0;background:var(--peach);opacity:0}
-.op-sws{position:relative;grid-area:1 / 1;width:min(128vw,58vw + 300px,1120px);aspect-ratio:1600 / 900}
+.op-sws{position:relative;grid-area:1 / 1;width:min(128vw,58vw + 300px,1120px,160vh);aspect-ratio:1600 / 900}
 .op-sw{position:absolute;left:0;width:100%;aspect-ratio:1600 / 420;transform-origin:34% 50%}
 .op-sw i{position:absolute;inset:0;-webkit-mask:url(swatch-1.webp) center / 100% 100% no-repeat;mask:url(swatch-1.webp) center / 100% 100% no-repeat}
 .op-sw1{top:0;transform:translateX(-5%) rotate(-7deg)}
@@ -18,7 +18,8 @@ html.intro .op{position:fixed;inset:0;z-index:955;display:grid;grid-template-col
 .op-sw2 i{background:var(--peach-deep);-webkit-mask-image:url(swatch-2.webp);mask-image:url(swatch-2.webp)}
 .op-sw3 i{background:var(--peach);-webkit-mask-image:url(swatch-3.webp);mask-image:url(swatch-3.webp)}
 .op-wm{position:relative;display:grid;grid-area:1 / 1;color:var(--charcoal);transform-origin:0 0}
-.wm--op{font-size:clamp(58px,17vw,176px)}
+/* sized by the shorter side too, so a phone held sideways is not filled edge to edge by it */
+.wm--op{font-size:min(clamp(58px,17vw,176px),24vh)}
 /* pre-state: nothing of the hero shows until the opening hands over */
 html.intro .op-sw{clip-path:inset(0 100% 0 0)}
 html.intro .op-wm{opacity:0}
@@ -228,5 +229,5 @@ html.js .pal-panels[data-ready] .look{min-height:0}
 /* phones: the swatches land inside the screen and are dragged off its right edge */
 @media(max-width:699px){
   .op-sws{width:124vw;transform:translateX(14vw) rotate(-8deg)}
-  .wm--op{font-size:clamp(50px,15.5vw,96px)}
+  .wm--op{font-size:min(clamp(50px,15.5vw,96px),24vh)}
 }

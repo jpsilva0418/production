@@ -89,6 +89,9 @@ html.js .fl.in::after{animation:flNarrow 1.5s var(--ease) calc(var(--d,0s) + .6s
 .lnk{display:inline-flex;align-items:center;gap:.7em;min-height:44px;font:500 .72rem/1.2 var(--ff-u);letter-spacing:.24em;text-transform:uppercase;color:var(--bronze);text-decoration:none;position:relative;-webkit-tap-highlight-color:transparent}
 .lnk::after{content:'';position:absolute;left:0;right:0;bottom:10px;height:1px;background:currentColor;opacity:.45;transform-origin:left;transition:transform .5s var(--ease),opacity .3s}
 .lnk .arr{transition:transform .4s var(--ease)}
+/* the narrowest phones: long caps links and buttons tighten their tracking a little rather
+   than breaking onto a second line ("… · / 31 reviews") */
+@media(max-width:379px){.lnk{letter-spacing:.15em;gap:.5em}.btn{letter-spacing:.16em;padding-inline:1.1em}}
 .lnk:focus-visible::after,.lnk:active::after{opacity:1}
 .lnk:active .arr{transform:translateX(4px)}
 .prose a,.ft a,.menu-sub a{text-underline-offset:.2em;text-decoration-thickness:1px}
@@ -249,7 +252,7 @@ body.menu-open .hd{visibility:hidden}
 .ft-brand{text-align:center;display:grid;justify-items:center;gap:.7rem}
 .ft-mono{width:96px;height:auto;margin-bottom:.4rem}
 .ft-name{font:400 1.25rem/1 var(--ff-d);letter-spacing:.34em;text-transform:uppercase;color:var(--espresso);padding-left:.34em}
-.ft-sub{font:500 .6rem/1.4 var(--ff-u);letter-spacing:.3em;text-transform:uppercase;color:var(--bronze)}
+.ft-sub{font:500 .6rem/1.4 var(--ff-u);letter-spacing:.3em;text-transform:uppercase;color:var(--bronze);text-wrap:balance}
 .ft-line{max-width:34rem;margin-top:.8rem;font-size:1.15rem;line-height:1.55}
 .ft-cols{display:grid;gap:2rem;grid-template-columns:1fr 1fr}
 .ft-col:last-child{grid-column:1/-1}
