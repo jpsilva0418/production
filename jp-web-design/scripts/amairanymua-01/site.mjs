@@ -555,11 +555,11 @@ export const REVIEWS = {
   note: 'Getting married? Start a bridal inquiry. Dressing for an event? Choose a time on her calendar.',
 };
 
-/* The on-site bridal inquiry. It asks the questions her own JotForm asks (as listed by the
-   founder, 2026-11-19); nothing typed here is sent anywhere, and the last step hands the
-   bride to her real form. The option lists (first look, package, party size, preferred
-   contact) are OUR reading: her form could not be opened from the build environment, so
-   she confirms them. */
+/* The on-site bridal inquiry. It asks the questions her own JotForm asks, with its answer
+   choices, as shown in the founder's screen recording of the form (2026-11-19); nothing typed
+   here is sent anywhere, and the last step hands the bride to her real form. Her form could
+   not be opened from the build environment, so the recording is the only source: she
+   confirms which questions are required. */
 export const INQUIRY = {
   label: 'Bridal Inquiry',
   heading: 'Tell her about your day.',
