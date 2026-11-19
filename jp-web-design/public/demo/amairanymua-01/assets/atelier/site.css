@@ -208,6 +208,7 @@ html:not(.js) .film video::-webkit-media-controls, html:not(.js) .film video::-w
 .lk-c span { display: inline-block; }
 .lk--ivory { color: var(--ivory); }
 .lk--lg { --lk-w: 200px; }
+.lk--xl { --lk-w: clamp(260px, 74vw, 640px); }   /* the wordmark set large in the footer (Galya) */
 @media (min-width: 900px) { .hd .lk { --lk-w: 124px; } }
 @media (max-width: 359px) { .hd .lk { --lk-w: 94px; } .hd-cta { padding: 0 12px; letter-spacing: .16em; } }
 
@@ -253,6 +254,7 @@ body.menu-open { overflow: hidden; }
 .ft-h { color: var(--ink); }
 .ft-cta .lede { max-width: 44ch; }
 .ft-cta .booking { width: min(100%, 420px); justify-content: center; }
+.ft-mark { display: flex; justify-content: center; padding: clamp(56px, 8vw, 104px) 0 0; }
 .ft-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 36px 20px; padding: clamp(48px, 6vw, 80px) 0; }
 .ft-brand { grid-column: 1 / -1; display: grid; gap: 22px; justify-items: start; }
 .ft-logo { display: inline-flex; text-decoration: none; color: var(--ink); }

@@ -11,7 +11,7 @@
    Two derived tokens are added here; every other colour is a site.css token. */
 
 .iq-page {
-  --iq-field: rgba(20, 18, 17, .5);    /* ink at 50% on white: 3.6:1, the boundary of every field */
+  --iq-field: rgba(20, 18, 17, .5);    /* ink at 50% on white: 3.5:1, the boundary of every field */
   --iq-bad: #9C5A55;                   /* soft dusty brick: 5.2:1 on white, 4.7:1 on ivory */
   --iq-pad: 20px;                      /* the sheet's inner gutter */
   --iq-prog: 72px;                     /* the progress row and its gap, kept in view above each step */

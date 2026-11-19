@@ -19,7 +19,7 @@
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { dirname, join, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { BASE, BOOK, L, PICK, SITES, BUILT_IDS, outFile, pagesOf } from './amairanymua-01/site.mjs';
+import { BASE, BOOK, L, FILM_POST, PICK, SITES, BUILT_IDS, outFile, pagesOf } from './amairanymua-01/site.mjs';
 
 const OUT = join(dirname(fileURLToPath(import.meta.url)), '..', 'public', 'demo', 'amairanymua-01');
 const fail = [];
@@ -46,7 +46,7 @@ const resolve = (path) => {
   if (p === '' && existsSync(join(OUT, 'index.html'))) return join(OUT, 'index.html');
   return null;
 };
-const EXTERNAL_OK = new Set(Object.values(L));
+const EXTERNAL_OK = new Set([...Object.values(L), ...Object.values(FILM_POST)]); /* her links, and the public TikTok post of each clip */
 const BOOK_HOSTS = ['form.jotform.com', 'amairanymua.as.me'];
 const ids = new Map();
 for (const f of html) ids.set(f, new Set([...readFileSync(f, 'utf8').matchAll(/\sid="([^"]+)"/g)].map((m) => m[1])));

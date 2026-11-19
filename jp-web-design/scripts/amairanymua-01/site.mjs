@@ -237,7 +237,7 @@ export const PHOTOS = {
   'studio-updo': { w: 709, h: 901, pos: '50% 30%', widths: [480, 709], alt: 'Studio portrait on black: a sleek updo with face-framing tendrils and radiant glam.' },
 };
 export const srcset = (k) => (PHOTOS[k].widths ?? [480, 800, 1280]).map((w) => `${A}/img/${k}-${w}.webp ${w}w`).join(', ');
-export const src = (k, w) => `${A}/img/${k}-${w ?? ((PHOTOS[k].widths ?? [480, 800])[1] ?? 480)}.webp`;
+export const src = (k, w) => { const ws = PHOTOS[k].widths ?? [480, 800]; return `${A}/img/${k}-${w ?? ws[1] ?? ws[ws.length - 1]}.webp`; };
 /** An <img> for one of her photographs. `alt: ''` marks it decorative. `pos` overrides the focal point. */
 export const pic = (k, { alt, sizes = '(max-width:899px) 90vw, 50vw', cls = '', eager = false, pos, attrs = '' } = {}) => {
   const p = PHOTOS[k];

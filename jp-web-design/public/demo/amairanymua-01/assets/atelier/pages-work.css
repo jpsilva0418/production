@@ -69,7 +69,7 @@ html.js .lk-bar { display: flex; flex-wrap: wrap; justify-content: center; gap: 
 .lt-m > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.4s var(--ease); }
 .lt-n { position: absolute; left: 10px; top: 10px; padding: 4px 7px 3px; background: var(--ivory); font-family: var(--f-cap); font-size: 14px; font-weight: 300; line-height: 1; letter-spacing: .04em; }
 .lt-fi { position: absolute; right: 10px; top: 10px; display: inline-flex; align-items: center; gap: 6px; padding: 5px 8px 4px; background: var(--ivory); font-size: 9px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; line-height: 1.3; }
-.lt-fi::before { content: ''; border-left: 6px solid currentColor; border-top: 4px solid transparent; border-bottom: 4px solid transparent; }
+.lt-fi::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }   /* a dot, never a play icon (founder, round four) */
 .lt-a:focus-visible { outline-offset: 4px; }
 @media (hover: hover) { .lt-a:hover .lt-m > img { transform: scale(1.04); } }
 .lt-cap { margin-top: 12px; text-align: left; }
@@ -188,3 +188,12 @@ body.vw-open { overflow: hidden; }
 }
 @media print { .vw, .lk-bar { display: none !important; } }
 .vw-img[hidden] { display: none; }
+
+/* round four: the named galleries' targets, and her booking-page photographs (small files, shown small) */
+.pf-anchor { display: block; position: relative; top: calc(-1 * var(--hd-h) - 24px); height: 0; }
+.pf-sheets { margin-top: clamp(56px, 7vw, 96px); }
+.pf-sh { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 22px 12px; }
+.pf-sh li { width: min(120px, calc(50% - 6px)); }
+.pf-sh-m { position: relative; display: block; overflow: hidden; aspect-ratio: 4 / 5; background: var(--linen); }
+.pf-sh-m > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+@media (min-width: 600px) { .pf-sh { gap: 30px 20px; } .pf-sh li { width: 200px; } }

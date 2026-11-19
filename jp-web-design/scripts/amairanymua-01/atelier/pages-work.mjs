@@ -18,6 +18,37 @@ import { page, S, AT, kicker, h, lede, spec, actions, more, next, arch, archFilm
 import { SITE, HER, L, PHOTOS, FILMS, SOCIAL, LOOKS3, LOOK_CATS3, looksIn3, PORTFOLIO_PAGE, href, inquire, book, film, filmSrc, pic, src, srcset, esc } from '../site.mjs';
 
 const pad2 = (k) => String(k).padStart(2, '0');
+
+/* Round four (2026-11-19): more of her work. Atelier's portfolio is LOOKS3 plus the new frames from her
+   clips and the client photographs from her own booking-page graphics (site.mjs is unchanged; the
+   categories are our reading of each picture, as in LOOKS3). A frame from a clip carries that clip's
+   id, so the viewer can play it. The four sheet-* photographs are small files (≈270 px): they never go
+   in the big grid or the viewer; they have their own small strip under it. */
+const EXTRA = [
+  { photo: 'reel-pearls-updo-2', cats: ['bridal', 'full', 'hair'], cap: 'Bridal &middot; Sleek updo, pearls', film: 'f5' },
+  { photo: 'reel-morning-veil-2', cats: ['bridal', 'soft'], cap: 'Bridal &middot; Morning veil', film: 'f7' },
+  { photo: 'tile-bridal', cats: ['bridal', 'hair'], cap: 'Bridal &middot; Over the shoulder' },
+  { photo: 'reel-burgundy-2', cats: ['bridal', 'full', 'hair'], cap: 'Bridal &middot; Burgundy waves, red lip', film: 'f6' },
+  { photo: 'reel-curly-updo-2', cats: ['hair', 'bridal'], cap: 'Hair &middot; Curly updo with pearl pins', film: 'f9' },
+  { photo: 'reel-bridesmaid-updo', cats: ['hair'], cap: 'Bridal party &middot; Textured updo', film: 'f8' },
+  { photo: 'studio-updo', cats: ['hair', 'full'], cap: 'Hair &middot; Sleek updo, tendrils' },
+  { photo: 'studio-waves', cats: ['hair', 'full'], cap: 'Glam &middot; Short glam waves' },
+  { photo: 'tile-event-glam', cats: ['full'], cap: 'Event glam &middot; Gold shimmer' },
+  { photo: 'tile-engagement', cats: ['soft'], cap: 'Engagement &middot; Soft glam' },
+  { photo: 'reel-copper-2', cats: ['full', 'editorial'], cap: 'Full glam &middot; Copper', film: 'f2', credit: PHOTOS['reel-copper-2'].credit },
+  { photo: 'reel-pink-2', cats: ['editorial'], cap: 'Editorial &middot; Pink', film: 'f10', credit: PHOTOS['reel-pink-2'].credit },
+  { photo: 'reel-editorial-2', cats: ['editorial', 'full'], cap: 'Editorial &middot; Sunset eye', film: 'f12' },
+];
+/* her newest work first: LOOKS3's clip frames, then the new ones, then the earlier photographs */
+const FIRST = LOOKS3.findIndex((l) => !l.photo.startsWith('reel-'));
+const ALL = [...LOOKS3.slice(0, FIRST), ...EXTRA, ...LOOKS3.slice(FIRST)];
+const allIn = (cat) => ALL.filter((x) => x.cats.includes(cat));
+const SHEETS = [
+  { photo: 'sheet-luxe-bride', cap: 'Bridal &middot; Soft waves' },
+  { photo: 'sheet-signature', cap: 'Bridal &middot; Natural curls' },
+  { photo: 'sheet-luxe-gala', cap: 'Bridal &middot; Glossy waves' },
+  { photo: 'sheet-luxe-glam', cap: 'Bridal &middot; Vintage waves' },
+];
 const plain = (s) => String(s).replace(/&amp;/g, '&').replace(/&rsquo;|’/g, '’').replace(/<[^>]+>/g, '');
 /** the largest file of a photograph (the no-script target of every tile, and the viewer's "Full size") */
 const largest = (k) => { const ws = PHOTOS[k].widths ?? [480, 800, 1280]; return src(k, ws[ws.length - 1]); };
@@ -81,13 +112,16 @@ const tile = (l, i) => {
 };
 
 const chips = () => {
-  const all = `<button class="chip" type="button" data-cat="" aria-pressed="true">All <span class="chip-n">${LOOKS3.length}</span></button>`;
-  return `<div class="lk-bar" role="group" aria-label="Show looks by category">${all}${Object.entries(LOOK_CATS3).map(([k, v]) => `<button class="chip" type="button" data-cat="${k}" aria-pressed="false">${v} <span class="chip-n">${looksIn3(k).length}</span></button>`).join('')}</div>`;
+  const all = `<button class="chip" type="button" data-cat="" aria-pressed="true">All <span class="chip-n">${ALL.length}</span></button>`;
+  /* the home page's named galleries link to #bridal, #full, #hair: without script the fragment lands
+     here; with script pages-work.js also selects that category */
+  const anchors = Object.keys(LOOK_CATS3).map((k) => `<span class="pf-anchor" id="${k}"></span>`).join('');
+  return `${anchors}<div class="lk-bar" role="group" aria-label="Show looks by category">${all}${Object.entries(LOOK_CATS3).map(([k, v]) => `<button class="chip" type="button" data-cat="${k}" aria-pressed="false">${v} <span class="chip-n">${allIn(k).length}</span></button>`).join('')}</div>`;
 };
 
 const viewer = () => `<div class="vw" id="lookViewer" role="dialog" aria-modal="true" aria-labelledby="vwH" hidden>
 <div class="vw-top">
-<p class="ctr vw-ctr" aria-hidden="true"><span data-vw-n>01</span><i></i><span data-vw-t>${pad2(LOOKS3.length)}</span></p>
+<p class="ctr vw-ctr" aria-hidden="true"><span data-vw-n>01</span><i></i><span data-vw-t>${pad2(ALL.length)}</span></p>
 <h2 class="vh" id="vwH">Look viewer</h2>
 <button class="vw-x" type="button" data-vw-close>Close <span aria-hidden="true">&times;</span></button>
 </div>
@@ -104,7 +138,7 @@ export const portfolio = () => {
   const coverMain = cover({
     kick: PORTFOLIO_PAGE.kick,
     heading: PORTFOLIO_PAGE.heading,
-    sub: `${LOOKS3.length} looks, photographs and her own film, from soft glam to full glam.`,
+    sub: `${ALL.length + SHEETS.length} looks, photographs and her own film, from soft glam to full glam.`,
     film: COVER_FILM,
     after: `<nav class="pf-jump rv" aria-label="On this page"><a href="#looks">The Looks</a><a href="#reel">The Reel</a><a href="#all">Every look</a></nav>`,
   });
@@ -131,10 +165,12 @@ ${rail({ id: 'pfRail', items: RAIL, label: 'The Looks', auto: 3400 })}
 ${next(`<a class="btn btn--pri" href="${L.tiktok}" rel="external"><span>Watch more on TikTok</span></a>`, more(L.ig, 'Instagram @amairanymua'))}`);
 
   const every = section({ id: 'all', tone: 'ivory', cls: 'pf-all', labelledby: 'allH' }, `
-${sectionHead({ kick: 'The lookbook, in full', heading: ['Every', 'look'], size: 'd-xl', id: 'allH', line: `All ${LOOKS3.length}: her newest work first, then her photographs. Choose a category, or tap a look to see it larger.` })}
+${sectionHead({ kick: 'The lookbook, in full', heading: ['Every', 'look'], size: 'd-xl', id: 'allH', line: `All ${ALL.length}: her newest work first, then her photographs. Choose a category, or tap a look to see it larger.` })}
 ${chips()}
 <p class="vh" data-all-status aria-live="polite"></p>
-<ul class="lk-g" data-all>${LOOKS3.map(tile).join('')}</ul>
+<ul class="lk-g" data-all>${ALL.map(tile).join('')}</ul>
+<div class="pf-sheets rv"><h3 class="pf-sub"><span>From her own booking page</span></h3>
+<ul class="pf-sh">${SHEETS.map((x) => `<li><figure class="pf-sh-f"><span class="pf-sh-m">${pic(x.photo, { sizes: '(max-width:599px) 120px, 200px' })}</span><figcaption class="cap">${x.cap}</figcaption></figure></li>`).join('')}</ul></div>
 ${next(inquire(S, '<span>Begin your inquiry</span>', 'btn btn--pri'), book('event', '<span>Book event glam</span>', 'btn btn--sec'))}`);
 
   const follow = section({ id: 'follow', tone: 'espresso', cls: 'pf-follow', labelledby: 'followH' }, `
@@ -148,7 +184,7 @@ ${sectionHead({ kick: PORTFOLIO_PAGE.noteKick, heading: ['Follow', 'the work'], 
   return page({
     path: 'portfolio',
     title: 'Portfolio · The Looks & The Reel',
-    description: `Every look by ${SITE.name}, luxury bridal hair and makeup artist in Orlando and Tampa: ${LOOKS3.length} looks, photographs and her own film, from soft glam to full glam.`,
+    description: `Every look by ${SITE.name}, luxury bridal hair and makeup artist in Orlando and Tampa: ${ALL.length + SHEETS.length} looks, photographs and her own film, from soft glam to full glam.`,
     head: `<link rel="preload" as="image" href="${filmSrc(COVER_FILM).poster}" fetchpriority="high">`,
     css: ['pages-work'],
     js: ['pages-work'],
