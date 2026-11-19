@@ -6,18 +6,64 @@
   "sites": {
     "veil": "1 · Veil — Pearl and champagne. Bridal luxury.",
     "noir": "2 · Noir — Espresso black. Cinematic.",
-    "edit": "3 · The Edit — Peach, cream and Gulf blue. Modern and social."
+    "edit": "3 · The Edit — Peach, cream and Gulf blue. Modern and social.",
+    "rouge": "4 · Rouge — Red, black and white, on the first Sass by Kass build.",
+    "maison": "5 · Maison — Glam By Amairanymua, as a fashion house. Black, white and one red.",
+    "darkroom": "6 · Darkroom — Red safelight, black and white prints. Warm and playful."
   },
-  "pages": [
-    "home",
-    "about",
-    "bridal",
-    "services",
-    "portfolio",
-    "reviews",
-    "bridal-inquiry"
-  ],
-  "files": 22,
+  "pages": {
+    "veil": [
+      "home",
+      "about",
+      "bridal",
+      "services",
+      "portfolio",
+      "reviews",
+      "bridal-inquiry"
+    ],
+    "noir": [
+      "home",
+      "about",
+      "bridal",
+      "services",
+      "portfolio",
+      "reviews",
+      "bridal-inquiry"
+    ],
+    "edit": [
+      "home",
+      "about",
+      "bridal",
+      "services",
+      "portfolio",
+      "reviews",
+      "bridal-inquiry"
+    ],
+    "rouge": [
+      "(prebuilt)"
+    ],
+    "maison": [
+      "home",
+      "portfolio",
+      "bridal",
+      "about",
+      "journal",
+      "journal/how-to-prepare",
+      "journal/destination-bride",
+      "bridal-inquiry"
+    ],
+    "darkroom": [
+      "home",
+      "portfolio",
+      "bridal",
+      "about",
+      "journal",
+      "journal/how-to-prepare",
+      "journal/destination-bride",
+      "bridal-inquiry"
+    ]
+  },
+  "files": 38,
   "filmSlotsOpen": [
     "f1",
     "f2",

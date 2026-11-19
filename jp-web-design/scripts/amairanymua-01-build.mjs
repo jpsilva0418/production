@@ -17,7 +17,7 @@
 import { mkdirSync, writeFileSync, renameSync, rmSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { PICK, BASE, ORIGIN, SITES, SITE_IDS, PAGES, FILMS, outFile } from './amairanymua-01/site.mjs';
+import { PICK, BASE, ORIGIN, SITES, BUILT_IDS, PAGES, FILMS, outFile, pagesOf } from './amairanymua-01/site.mjs';
 
 const OUT = join(dirname(fileURLToPath(import.meta.url)), '..', 'public', 'demo', 'amairanymua-01');
 /* --dev: for working on one page family while others are mid-edit. A module that fails to
@@ -27,7 +27,7 @@ const DEV = process.argv.includes('--dev');
 if (!DEV) {
   /* Clear what earlier builds wrote: generated pages only, never assets/. The three single-page
      directions of 2026-11-18 (premiere, cover, golden) are retired; they remain in git history. */
-  for (const stale of ['index.html', 'premiere.html', 'cover.html', 'golden.html', 'a', 'b', 'c', ...Object.keys(SITES), ...PAGES.filter(Boolean)]) {
+  for (const stale of ['index.html', 'premiere.html', 'cover.html', 'golden.html', 'a', 'b', 'c', ...BUILT_IDS, ...PAGES.filter(Boolean)]) { /* prebuilt sites (rouge) are never cleared here */
     rmSync(join(OUT, stale), { recursive: true, force: true });
   }
 }
@@ -49,10 +49,10 @@ const attempt = async (what, fn) => {
     console.warn(`  skipped ${what}: ${String(e && e.message || e).split('\n')[0]}`);
   }
 };
-for (const id of SITE_IDS) {
+for (const id of BUILT_IDS) {
   await attempt(`site ${id}`, async () => {
     const { render } = await import(`./amairanymua-01/${id}/index.mjs`);
-    for (const path of PAGES) {
+    for (const path of pagesOf(id)) {
       await attempt(`${id} → ${path || 'home'}`, async () => {
         if (typeof render[path] !== 'function') throw new Error(`${id}/index.mjs has no renderer for "${path}"`);
         write(outFile(id, path), render[path]());
@@ -69,7 +69,7 @@ writeFileSync(join(OUT, 'DEMO.json'), JSON.stringify({
   client: 'Amairany Sierra (@amairanymua)',
   state: PICK ? `client build: ${SITES[PICK].name}` : 'review build: three different sites, awaiting the founder\'s pick',
   sites: Object.fromEntries(Object.values(SITES).map((x) => [x.id, `${x.n} · ${x.name} — ${x.line}`])),
-  pages: PAGES.map((p) => p || 'home'),
+  pages: Object.fromEntries(Object.keys(SITES).map((id) => [id, (SITES[id].prebuilt ? ['(prebuilt)'] : pagesOf(id).map((p) => p || 'home'))])),
   files: written.length,
   filmSlotsOpen: slots,
   source: 'jp-web-design/scripts/amairanymua-01-build.mjs + scripts/amairanymua-01/',

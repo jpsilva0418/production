@@ -4,7 +4,7 @@
    home page (a screenshot of the built page, phone and wide screen), how it opens,
    what it feels like, and a way in. Once one is picked (PICK in site.mjs) this page,
    its stylesheet and the preview images are no longer built or needed. */
-import { A, BASE, ORIGIN, SITES, NAV, SITE, FILMS } from './site.mjs';
+import { A, BASE, ORIGIN, SITES, SITE, FILMS, pagesOf, PAGE_LABEL } from './site.mjs';
 
 const PREVIEW = { phone: [780, 1688], wide: [1440, 900] };
 const shot = (id, kind, alt) => {
@@ -27,7 +27,7 @@ export function chooser() {
         <p class="ch-intro"><span>The opening</span> ${x.intro}</p>
         <p class="ch-sw" aria-hidden="true">${x.swatch.map((c) => `<i style="background:${c}"></i>`).join('')}</p>
         <a class="ch-go" href="${BASE}/${x.id}?intro=1">Open ${x.name} <span aria-hidden="true">&rarr;</span></a>
-        <p class="ch-pages"><span class="ch-pages-k">Jump to</span> ${NAV.map((n) => `<a href="${BASE}/${x.id}/${n.path}">${n.label}</a>`).join('')}</p>
+        <p class="ch-pages"><span class="ch-pages-k">Jump to</span> ${pagesOf(x.id).filter((p) => p && PAGE_LABEL[p]).map((p) => `<a href="${BASE}/${x.id}/${p}">${PAGE_LABEL[p]}</a>`).join('')}</p>
       </div>
     </article>`).join('\n    ');
 

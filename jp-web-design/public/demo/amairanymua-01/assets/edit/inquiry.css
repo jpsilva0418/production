@@ -263,3 +263,7 @@ textarea.cf-input{min-height:132px;line-height:1.5}
   .cf-prog li.now .cf-prog-bar::after,html.js .cf-form.ready .cf-step:not([hidden]),.cf-handoff:not([hidden]),.cf-handoff:not([hidden]) h2::before{animation:none}
   .cf-card:active,.cf-rev-edit:active{transform:none}
 }
+
+/* "How did you hear about her?" has single long words (WeddingWire): never break inside a word */
+[aria-labelledby="cf-heardFrom-label"] .cf-card span{overflow-wrap:normal;word-break:normal;hyphens:none}
+@media(max-width:430px){[aria-labelledby="cf-heardFrom-label"] .cf-card{padding-inline:12px;gap:8px}[aria-labelledby="cf-heardFrom-label"] .cf-card span{font-size:15px}}

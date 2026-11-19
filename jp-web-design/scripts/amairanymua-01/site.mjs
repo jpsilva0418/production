@@ -80,7 +80,43 @@ export const SITES = {
     swatch: ['#FFF7EE', '#F9C7A8', '#9CC4E4', '#C2545C', '#2B2523'],
   },
 };
+/* Round two (founder, 2026-11-19): three more previews built from his zip of references — her
+   current booking site, her JotForm, Faces by Clara, Leti Silva Beauty — and the first Sass by Kass
+   build. `prebuilt` sites are built by their own project and copied in whole (the build skips them;
+   the checker still applies every rule to their pages). `pages` overrides the default page list. */
+Object.assign(SITES, {
+  rouge: {
+    id: 'rouge', n: 4, name: 'Rouge', theme: '#0D0D0D', prebuilt: true,
+    pages: ['', 'work', 'services', 'about', 'book'],   /* the first Sass by Kass build's own page set */
+    line: 'Red, black and white, on the first Sass by Kass build.',
+    intro: 'The first Sass by Kass layout, structure and motion, in her colours: black and white with a red lip of an accent.',
+    blurb: 'The first Sass by Kass build, done for her: a filmed-style hero of her work, the curved chapters, the work wall and the booking page, in red, black and white.',
+    swatch: ['#0D0D0D', '#FFFFFF', '#B3132B', '#F2F2F2'],
+  },
+  maison: {
+    id: 'maison', n: 5, name: 'Maison', theme: '#0B0B0B',
+    pages: ['', 'portfolio', 'bridal', 'about', 'journal', 'journal/how-to-prepare', 'journal/destination-bride', 'bridal-inquiry'],
+    line: 'Glam By Amairanymua, as a fashion house. Black, white and one red.',
+    intro: 'Her "Glam By" script writes itself in red on black, the caps set beneath it, and the page opens like a curtain onto her work.',
+    blurb: 'Built on her own brand, the way a fashion house would present it: editorial black and white, red used like a lipstick, a runway of her looks with film among them, her journal, and the inquiry beside the booking.',
+    swatch: ['#0B0B0B', '#FFFFFF', '#C1121F', '#EDEDED'],
+  },
+  darkroom: {
+    id: 'darkroom', n: 6, name: 'Darkroom', theme: '#140707',
+    pages: ['', 'portfolio', 'bridal', 'about', 'journal', 'journal/how-to-prepare', 'journal/destination-bride', 'bridal-inquiry'],
+    line: 'Red safelight, black and white prints. Warm and playful.',
+    intro: 'Under a red safelight a print develops in the tray: her photograph surfaces, then her name, and the print lifts out into the page.',
+    blurb: 'Red, black and white as a darkroom: prints develop as you scroll, the portfolio hangs on a line to dry, and the hero is a slideshow of prints coming up one after another.',
+    swatch: ['#140707', '#F7F3EE', '#D7263D', '#1A1A1A'],
+  },
+});
 export const SITE_IDS = PICK ? [PICK] : Object.keys(SITES);
+/** A short label for any page path of any site. */
+export const PAGE_LABEL = { '': 'Home', about: 'About', bridal: 'Bridal', services: 'Services', portfolio: 'Portfolio', reviews: 'Reviews', 'bridal-inquiry': 'Bridal Inquiry', work: 'Work', book: 'Book', journal: 'Journal' };
+/** Sites this build writes (not the prebuilt ones). */
+export const BUILT_IDS = SITE_IDS.filter((id) => !SITES[id].prebuilt);
+/** The pages of one site. */
+export const pagesOf = (id) => SITES[id].pages ?? PAGES;
 
 /* ---------- addresses ---------- */
 export const PAGES = ['', 'about', 'bridal', 'services', 'portfolio', 'reviews', 'bridal-inquiry'];
@@ -140,6 +176,50 @@ export const pic = (k, { alt, sizes = '(max-width:899px) 90vw, 50vw', cls = '', 
   const p = PHOTOS[k];
   if (!p) throw new Error(`photo "${k}" is not in PHOTOS`);
   return `<img src="${src(k)}" srcset="${srcset(k)}" sizes="${sizes}" width="${p.w}" height="${p.h}" alt="${esc(alt ?? p.alt)}"${cls ? ` class="${cls}"` : ''} style="object-position:${pos ?? p.pos}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async"${attrs ? ` ${attrs}` : ''}>`;
+};
+
+/* ====================================================================
+   FROM HER OWN SITE — the founder's screen recording of amairanymua.as.me
+   and of her JotForm bridal inquiry, 2026-11-19. Her words, kept as she
+   wrote them (light punctuation fixes only). Prices are as listed on her
+   booking page that day and can change.
+   ==================================================================== */
+export const HER = {
+  brand: { script: 'Glam By', caps: 'AMAIRANYMUA' },   /* her own logo lockup, set as type (no logo file) */
+  badges: ['Licensed &amp; insured', 'Central Florida'],
+  hello: 'Hey Gorgeous! I’m Amairany.',
+  about: [
+    'With 13 years in makeup and 4 in hair, I specialize in customizable soft-full glam “CAKE FREE” makeup that makes you feel effortlessly radiant.',
+    'My work has spanned Disney sets, celebrity clients, and dream destination weddings worldwide, but my favorite role is being your ultimate hype woman on your big day.',
+    'I bring warm vibes &amp; total devotion to making you look and feel your absolute best. Let’s create magic together!',
+  ],
+  years: [['In makeup', '13 years'], ['In hair', '4 years']],
+  services: ['Bridal', 'Engagement', 'Event glam', 'Film photography'],
+  /* now booking (founder: "2026, 2027 bookings"; her form asks 2027–2028 brides to specify their date) */
+  booking: 'Now booking 2026 &amp; 2027 weddings',
+  packages: [
+    { name: 'The Luxe Bride', price: '1,300', who: 'Bride only · hair &amp; makeup', points: ['Two-part bridal artistry: private preview session + wedding-day application', 'Signature skin prep + guide', 'Lashes included', 'Deluxe touch-up kit', '30 min post-ceremony touch-ups', 'Travel included'] },
+    { name: 'The Signature Soiree', price: '2,600', who: 'Bride + 3 · most popular', points: ['Two-part bridal artistry', 'Signature skin prep', 'Premium hair, makeup &amp; lashes for 3 VIP guests', '1 hour post-ceremony touch-ups', 'Luxury touch-up kits', 'Timeline management', 'Travel included'] },
+    { name: 'The Luxe Gala', price: '3,300', who: 'Bride + 5', points: ['Two-part bridal artistry', 'Premium hair, makeup &amp; lashes for 5 VIP guests', 'An additional professional artist to keep your morning on schedule', '1 hour post-ceremony touch-ups', 'Hair extension rental included', 'Timeline management', 'Travel included'] },
+    { name: 'The Radiant Bride', price: '750', who: 'Bride only · makeup only', points: ['Makeup preview &amp; wedding-day makeup', 'Body glow', 'Luxury skin prep + guide', 'Strip lashes / individuals', '1 hour touch-up', 'Luxury touch-up kit', 'Wedding content of your wedding-day glam'] },
+    { name: 'The Luxe Glam', price: '1,500', who: 'Bride + 4 · makeup only', points: ['Makeup preview &amp; wedding-day makeup', 'Body glow', 'Luxury skin prep + guide', 'Strip lashes / individuals for all', '1 hour touch-up', 'Wedding content of your wedding-day glam'] },
+    { name: 'Glam Hair', price: '1,500', who: 'Bride + 4 · hair only', points: ['Hair preview &amp; wedding-day hair', '4 hair services', 'Extension install for the bride', 'Hair touch-ups'] },
+  ],
+  packagesNote: 'Bridal party services &amp; custom upgrades are available. Prices as listed on her booking page, November 2026.',
+  destination: { heading: 'Destination bride?', body: 'I travel worldwide for my brides. Reach out directly to discuss travel availability &amp; receive a custom quote. I’d love to have you in my chair!' },
+  faq: [
+    ['Do you travel?', 'Yes, I travel all across Central Florida &amp; out of state.'],
+    ['Can you hold my date?', 'Unfortunately no. Dates cannot be held without a signed contract &amp; a non-refundable retainer.'],
+    ['Do you recommend hair extensions?', 'For max volume &amp; longevity with glam waves, hair extensions are highly recommended. You can either rent them directly with me or I can guide you toward the best extensions to purchase.'],
+    ['Is there a booking minimum?', 'I do not have a booking minimum for hair &amp; makeup.'],
+    ['Do you offer trials?', 'Yes! Preview sessions are available for both hair and makeup. Our packages already include your preview, but you are always welcome to book a trial session prior to signing if you prefer.'],
+    ['Do you offer photography?', 'Yes, my fiancé is a photographer. He offers film / polaroid photography for weddings &amp; special events.'],
+  ],
+  prepare: ['Please come in with a clean face.', 'Hair should be washed and blown out a day before your appointment.'],
+  /* what her form says after it is sent */
+  afterInquiry: 'Thank you for reaching out! A custom investment proposal &amp; availability confirmation will be sent within the next 24 to 48 hours.',
+  /* her link page */
+  links: { reviewsName: 'Love Notes', reviewsLine: 'Client reviews' },
 };
 
 /* Every look, with what it shows. `cats` is our reading of each picture (a look is "bridal" only
@@ -222,7 +302,7 @@ export const head = (s, { path = '', title, description }) => {
  *  fixed to the bottom of the screen lifts the marker above it by setting --marker-bottom. */
 export const marker = (s, path = '') => {
   const sw = PICK ? '' : `<span class="demo-dirs" role="navigation" aria-label="The three previews"><span class="demo-dirs-k" aria-hidden="true">Preview</span>${Object.values(SITES)
-    .map((x) => `<a href="${BASE}/${x.id}${path ? `/${path}` : ''}"${x.id === s ? ' aria-current="true"' : ''} aria-label="Preview ${x.n}: ${x.name}">${x.n}</a>`)
+    .map((x) => `<a href="${BASE}/${x.id}${path && pagesOf(x.id).includes(path) ? `/${path}` : ''}"${x.id === s ? ' aria-current="true"' : ''} aria-label="Preview ${x.n}: ${x.name}">${x.n}</a>`)
     .join('')}<a class="demo-all" href="${BASE}" aria-label="All three previews">All</a></span>`;
   return `<div class="demo-flag${PICK ? '' : ' demo-flag--review'}"><span class="demo-flag-t">Design preview &middot; not the official site</span>${sw}</div>`;
 };
@@ -493,16 +573,18 @@ export const INQUIRY = {
     { key: 'contact', label: 'Your contact', legend: `How can ${SITE.first} reach you?` },
     { key: 'review', label: 'Review', legend: 'Review your bridal inquiry' },
   ],
-  firstLook: ['Yes', 'No', 'Not sure yet'],
-  packages: [...['The Luxe Bride', 'The Signature Soiree', 'The Luxe Gala', 'The Radiant Bride'], 'Not sure yet'],
-  party: [['Just me', 'Just me'], ['2–4 people', '2&ndash;4'], ['5–8 people', '5&ndash;8'], ['9 or more', '9 or more'], ['Not sure yet', 'Not sure yet']],
-  contactBy: ['Text', 'Call', 'Email'],
+  /* answer choices exactly as her JotForm offers them (founder's recording, 2026-11-19) */
+  firstLook: ['Absolutely, DUH!', 'No'],
+  packages: ['The Luxe Bride', 'The Signature Soiree', 'The Luxe Gala', 'The Radiant Bride', 'The Luxe Glam', 'Glam Hair', 'Not sure yet'],
+  stage: ['Dating around: searching for quotes', 'Ready to commit: looking to book my dream HMUA'],
+  contactBy: ['Email me! I never answer the phone', 'Call me!', 'Text me!'],
+  heardFrom: ['Instagram', 'Facebook', 'TikTok', 'Google', 'WeddingWire', 'The Knot', 'Zola', 'Other'],
   consent: `Sending an inquiry does not book your date or take any payment. ${SITE.first} replies to talk through your day.`,
   handoff: {
     strip: '<strong>Design preview</strong> &mdash; nothing was sent. Your answers never left this browser.',
     kick: 'One last step',
     heading: `Finish on ${SITE.first}’s own form.`,
-    body: `Bridal inquiries reach ${SITE.first} through her own inquiry form. Copy your answers, open her form and paste them in. It asks the same questions.`,
+    body: `Bridal inquiries reach ${SITE.first} through her own inquiry form. Copy your answers, open her form and paste them in: it asks the same questions, and there you can add photos of the hair and makeup you love. She sends a custom proposal and her availability within 24 to 48 hours.`,
     go: `Open ${SITE.first}’s inquiry form`,
     copy: 'Copy my answers',
     back: 'Back to my answers',

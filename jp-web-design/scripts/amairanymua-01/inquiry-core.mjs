@@ -68,9 +68,13 @@ export const INQUIRY_FIELDS = [
   { name: 'firstLook', step: 'day', short: 'First look' },
   { name: 'readyBy', step: 'day', short: 'Ready by', kind: 'time' },
   { name: 'package', step: 'glam', short: 'Package' },
-  { name: 'partySize', step: 'glam', short: 'Hair and makeup for' },
+  { name: 'makeupGuests', step: 'glam', short: 'Guests needing makeup (not counting the bride)' },
+  { name: 'hairGuests', step: 'glam', short: 'Guests needing hair (not counting the bride)' },
   { name: 'inspiration', step: 'glam', short: 'Inspiration' },
-  { name: 'contactBy', step: 'contact', short: 'Preferred contact' },
+  { name: 'stage', step: 'contact', short: 'Right now I’m' },
+  { name: 'contactBy', step: 'contact', short: 'Preferred way to chat' },
+  { name: 'questions', step: 'contact', short: 'Questions' },
+  { name: 'heardFrom', step: 'contact', short: 'Heard about her on' },
 ];
 
 const OPT = '<span class="cf-opt">optional</span>';
@@ -105,7 +109,7 @@ const data = () => JSON.stringify({
 
 /**
  * The whole inquiry component for one page of one site.
- * @param {'veil'|'noir'|'edit'} site
+ * @param {string} site any id in SITES (prebuilt sites included)
  * @param {{primary?: string, secondary?: string}} [classes] the site's own button classes, appended
  * @returns {string} HTML
  */
@@ -130,17 +134,21 @@ export const inquiryForm = (site, { primary = '', secondary = '' } = {}) => {
 ${input({ name: 'ceremonyTime', label: 'Ceremony time', type: 'time' })}
 </div>
 ${input({ name: 'gettingReady', label: 'Getting-ready location', attrs: 'maxlength="160" placeholder="Venue, hotel or address" autocomplete="off" enterkeyhint="next"' })}
-${cards({ name: 'firstLook', label: 'First look?', options: same(INQUIRY.firstLook), cols: 3 })}
+${cards({ name: 'firstLook', label: 'Do you plan on doing a first look?', options: same(INQUIRY.firstLook), cols: 2 })}
 ${input({ name: 'readyBy', label: 'What time do you need to be ready by?', type: 'time' })}
 </fieldset>
 
 <fieldset class="cf-step" data-step="${glam.key}" hidden>
 <legend tabindex="-1">${glam.legend}</legend>
 ${cards({ name: 'package', label: 'Package you are interested in', options: same(INQUIRY.packages), cols: 2, hint: `Packages and what they include are on ${book('schedule', 'her booking page')}.` })}
-${cards({ name: 'partySize', label: 'How many people need hair and makeup, including you?', options: INQUIRY.party, cols: 3 })}
+<div class="cf-two">
+${input({ name: 'makeupGuests', label: 'How many guests need makeup? (not counting you)', type: 'number', attrs: 'min="0" max="40" step="1" inputmode="numeric" enterkeyhint="next"' })}
+${input({ name: 'hairGuests', label: 'How many guests need hair? (not counting you)', type: 'number', attrs: 'min="0" max="40" step="1" inputmode="numeric" enterkeyhint="next"' })}
+</div>
 <div class="cf-field">
 <label class="cf-lbl" for="cf-inspiration">Inspiration ${OPT}</label>
-<textarea class="cf-input" id="cf-inspiration" name="inspiration" rows="4" maxlength="1500" placeholder="The look you have in mind, or links to photos you love"></textarea>
+<textarea class="cf-input" id="cf-inspiration" name="inspiration" rows="4" maxlength="1500" placeholder="The hair and makeup you are obsessing over, or links to photos you love"></textarea>
+<p class="cf-hint">Photos of the looks you love (and of your hair) are added on her own form at the last step.</p>
 </div>
 </fieldset>
 
@@ -151,7 +159,13 @@ ${input({ name: 'fullName', label: 'Full name', required: true, error: 'Please e
 ${input({ name: 'email', label: 'Email', type: 'email', required: true, error: 'Please enter your email address, like name@example.com.', attrs: 'maxlength="160" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" enterkeyhint="next"' })}
 ${input({ name: 'phone', label: 'Phone', type: 'tel', error: 'That phone number does not look complete.', attrs: 'maxlength="40" autocomplete="tel" inputmode="tel" enterkeyhint="next"' })}
 </div>
-${cards({ name: 'contactBy', label: 'Preferred contact', options: same(INQUIRY.contactBy), cols: 3 })}
+${cards({ name: 'stage', label: 'Right now I’m', options: same(INQUIRY.stage), cols: 2 })}
+${cards({ name: 'contactBy', label: 'My preferred way to chat', options: same(INQUIRY.contactBy), cols: 3 })}
+<div class="cf-field">
+<label class="cf-lbl" for="cf-questions">Any questions for ${SITE.first}? ${OPT}</label>
+<textarea class="cf-input" id="cf-questions" name="questions" rows="3" maxlength="1500"></textarea>
+</div>
+${cards({ name: 'heardFrom', label: 'How did you hear about her?', options: same(INQUIRY.heardFrom), cols: 2 })}
 </fieldset>
 
 <fieldset class="cf-step" data-step="${review.key}" hidden>
