@@ -170,7 +170,7 @@ textarea.cf-input { min-height: 120px; line-height: 1.55; }
 }
 .cf-hint { margin: 10px 0 0; font-size: 13.5px; line-height: 1.55; color: var(--ash); }
 .cf-hint a, .cf-noscript a { color: var(--noir); font-weight: 600; text-decoration: underline; text-decoration-color: var(--rouge); text-underline-offset: .25em; }
-.cf-hint a { display: inline-block; padding: 10px 0; margin: -10px 0; } /* a 44px target inside the line, with no change to the line */
+.cf-hint a { display: inline-block; padding: 12px 0; margin: -12px 0; } /* a 44px target inside the line, with no change to the line */
 
 /* ---------- review: the answers as a spec sheet, one numbered group per step ---------- */
 .cf-review { gap: 0; margin-bottom: 18px; border-top: 1px solid var(--noir); counter-reset: iqrv; }
