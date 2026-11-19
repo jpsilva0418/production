@@ -225,14 +225,14 @@ ${actions({ tone: 'dark' })}
 </div>`;
 }
 
-function footer() {
+function footer(path = '') {
   return `<footer class="ft">
 <div class="wrap">
 <div class="ft-cta">
 ${kicker(FINAL.label, 'kick--c rv')}
 <p class="d-xl ft-h rv-mask">${FINAL.heading.map((l) => `<span class="hl"><span>${l}</span></span>`).join(' ')}</p>
 <p class="lede rv">${FINAL.line}</p>
-<div class="rv">${actions({ align: 'c' })}</div>
+<div class="rv">${path === 'bridal-inquiry' ? `<div class="acts acts--light acts--c"><a class="btn btn--pri" href="#inquiry"><span>Back to your inquiry</span></a>${book('event', '<span>Book event glam</span>', 'btn btn--sec')}</div>` : actions({ align: 'c' })}</div>
 ${bookingLine('rv')}
 </div>
 <div class="ft-grid">
@@ -277,7 +277,7 @@ ${header(path)}
 <main id="main">
 ${main}
 </main>
-${footer()}
+${footer(path)}
 ${marker(S, path)}
 <script src="${AT}/site.js" defer></script>
 ${js.map((j) => `<script src="${asset(j, 'js')}" defer></script>`).join('\n')}

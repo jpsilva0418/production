@@ -6,8 +6,8 @@
        node scripts/amairanymua-01-bundle.mjs <site id> <out.html> [--img 480|800]
 
    Everything the site needs travels inside the file: the pages, their stylesheets and scripts,
-   the fonts, her photographs and her clips (as data URIs; clips re-encoded to 360 wide, at most
-   8 s, so a preview file stays small enough to send). Page text is gzip-compressed and
+   the fonts, her photographs and her clips (as data URIs; clips re-encoded to 360 wide, whole,
+   so a preview file stays small enough to send). Page text is gzip-compressed and
    unpacked in the browser (DecompressionStream; iPhone iOS 16.4+). The pages run in a
    full-screen frame; tapping a link to another page of the same site swaps the page inside
    the file, so the whole site can be clicked through offline. Links to her booking pages and
@@ -60,9 +60,9 @@ const token = (url) => {
     assets.set(url, t);
     let bytes = readFileSync(f), mime = MIME[ext] || 'application/octet-stream';
     if (ext === 'mp4') {
-      // her clips ride inside the file at phone-preview size: 360 wide, at most 8 s, silent
+      // her clips ride inside the file whole (the finished look is often at the end) at phone-preview size: 360 wide, silent
       const tmp = join(tmpdir(), `am01-${process.pid}-${assets.size}.mp4`);
-      execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', f, '-t', '8', '-an', '-vf', 'scale=360:-2', '-c:v', 'libx264', '-preset', 'slow', '-crf', '33', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', tmp]);
+      execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', f, '-an', '-vf', 'scale=360:-2', '-c:v', 'libx264', '-preset', 'slow', '-crf', '34', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', tmp]);
       bytes = readFileSync(tmp); rmSync(tmp, { force: true });
     }
     if (/^(webp|jpe?g|png)$/.test(ext) && bytes.length > 110 * 1024) {
@@ -157,9 +157,11 @@ wrap(HTMLImageElement.prototype,'src',function(v){return fw(v)});
 wrap(HTMLImageElement.prototype,'srcset',function(v,el){return (v==null||String(v).indexOf(B)>-1)?'':v});
 /* clips: a data: video becomes an in-memory blob before it plays (iPhone Safari is unreliable with
    data: video); one blob per clip, made only when a page asks for that clip */
-var BC=new Map(),vid=function(v){if(typeof v!=='string'||v.indexOf('data:video/')!==0)return v;if(BC.has(v))return BC.get(v);try{var b=atob(v.slice(v.indexOf(',')+1)),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);var url=URL.createObjectURL(new Blob([u],{type:'video/mp4'}));BC.set(v,url);return url}catch(e){return v}};
+var BC=new Map(),vid=function(v){if(typeof v!=='string'||v.indexOf('data:video/')!==0)return v;var h=v.indexOf('#'),frag=h>-1?v.slice(h):'',d=h>-1?v.slice(0,h):v;if(BC.has(d))return BC.get(d)+frag;try{var b=atob(d.slice(d.indexOf(',')+1)),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);var url=URL.createObjectURL(new Blob([u],{type:'video/mp4'}));BC.set(d,url);return url+frag}catch(e){return v}};
 if(window.HTMLSourceElement)wrap(HTMLSourceElement.prototype,'src',function(v){return vid(fw(v))});
 if(window.HTMLVideoElement)wrap(HTMLVideoElement.prototype,'src',function(v){return vid(fw(v))});
+/* clips written straight into the page (a src already in the markup) get the same treatment */
+document.addEventListener('DOMContentLoaded',function(){[].forEach.call(document.querySelectorAll('source[src^="data:video/"],video[src^="data:video/"]'),function(el){var v=el.tagName==='VIDEO'?el:el.parentNode,was=v&&!v.paused;el.src=ga.call(el,'src');if(v&&v.load){v.load();if(was){var p=v.play();if(p&&p.catch)p.catch(function(){})}}})});
 if(window.HTMLVideoElement)wrap(HTMLVideoElement.prototype,'poster',function(v){return fw(v)});
 /* style properties set in script (el.style.backgroundImage = ...) are per-element accessors in
    Chromium, so they are caught after the fact: the rewrite lands before the next style pass */

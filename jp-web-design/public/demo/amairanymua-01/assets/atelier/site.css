@@ -260,7 +260,7 @@ body.menu-open { overflow: hidden; }
 .ft-l a:hover { text-decoration: underline; }
 .ft-base { display: grid; gap: 18px; padding-top: 28px; border-top: 1px solid var(--line-soft); }
 .ft-fine { max-width: 92ch; font-size: 12px; line-height: 1.7; color: var(--ink-2); }
-.ft-fine a { display: inline-block; padding: 6px 0; }
+.ft-fine a { display: inline-block; padding: 12px 0; }
 @media (min-width: 900px) {
   .ft-grid { grid-template-columns: 1.6fr repeat(4, 1fr); }
   .ft-brand { grid-column: auto; }
