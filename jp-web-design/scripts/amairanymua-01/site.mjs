@@ -88,9 +88,9 @@ Object.assign(SITES, {
   rouge: {
     id: 'rouge', n: 4, name: 'Rouge', theme: '#0D0D0D', prebuilt: true,
     pages: ['', 'work', 'services', 'about', 'book'],   /* its own project's page set (amairanymua-01-rouge/) */
-    line: 'Black and white with a soft rose-red. Bold and editorial.',
-    intro: 'Her name sets in big black-and-white type with a soft rose accent, then the page opens straight onto her work.',
-    blurb: 'Big type, curved chapters and a wall of her work, in black, white and a soft rose-red. Five tight pages that get a bride from her photographs to the inquiry fast.',
+    line: 'Black and white with a soft rose-red. Warm and polished.',
+    intro: 'Her AS seal draws itself, &ldquo;Glam By&rdquo; writes on in rose, the caps set beneath, and the black lifts away as the headline rises.',
+    blurb: 'A warm dark hero where her looks change on their own, curved chapters, a wall of her work, her six packages with prices, and the inquiry beside the event booking. Five tight pages from her photographs to booking.',
     swatch: ['#0D0D0D', '#FFFFFF', '#D9868C', '#F6E3E3'],
   },
   maison: {

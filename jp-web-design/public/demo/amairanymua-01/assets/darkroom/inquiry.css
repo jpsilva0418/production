@@ -99,7 +99,7 @@
 /* =====================================================================
    THE SKIN — every hook of the shared inquiry (inquiry-core.mjs)
    ===================================================================== */
-.cf-inquiry{--cf-scroll-offset:calc(var(--hd-h) + env(safe-area-inset-top,0px) + 20px);color:var(--fixer);font:400 1rem/1.55 var(--f-body)}
+.cf-inquiry{--cf-scroll-offset:calc(var(--hd-h) + env(safe-area-inset-top,0px) + 32px);color:var(--fixer);font:400 1rem/1.55 var(--f-body)}
 
 /* progress: four frames, numbered like a strip (01A … 04A), the current one in rose */
 .cf-prog{gap:6px;margin:0 0 clamp(26px,3.6vw,36px)}
@@ -137,6 +137,8 @@ html.js .cf-step:not([hidden]),html.js .cf-handoff:not([hidden]){animation:iq-in
 .cf-input:focus{background:var(--paper);border-color:var(--fixer)}
 .cf-input:focus-visible{outline:2px solid var(--safelight-deep);outline-offset:2px}
 .cf-input[type="date"],.cf-input[type="time"]{min-height:48px}
+/* Chrome moves focus to the picker button inside a date/time field without matching :focus-visible */
+.cf-input[type="date"]:focus,.cf-input[type="time"]:focus{outline:2px solid var(--safelight-deep);outline-offset:2px}
 .cf-input[type="number"]{max-width:12rem;font-variant-numeric:tabular-nums}
 .cf-input::-webkit-calendar-picker-indicator{opacity:.7;cursor:pointer}
 textarea.cf-input{min-height:7.2em;line-height:1.5}
