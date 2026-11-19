@@ -1,0 +1,103 @@
+/* Direction B — "The Cover": Amairany as the cover star of her own bridal
+   issue. Blush, cream and a berry lip. Entrance: a camera flash, the photo
+   pulls into focus and the masthead sets letter by letter. */
+@font-face{font-family:"Playfair Display";font-weight:400 900;font-style:normal;font-display:swap;src:url(../fonts/playfair-var.woff2) format("woff2")}
+@font-face{font-family:"Playfair Display";font-weight:400 900;font-style:italic;font-display:swap;src:url(../fonts/playfair-italic-var.woff2) format("woff2")}
+@font-face{font-family:"Pinyon Script";font-weight:400;font-display:swap;src:url(../fonts/pinyon-script.woff2) format("woff2")}
+@font-face{font-family:"DM Sans";font-weight:300 800;font-display:swap;src:url(../fonts/dm-sans-var.woff2) format("woff2")}
+
+.t-cover{color-scheme:light;
+  --bg:#fbf0ea;--bg2:#f5d9d0;--card:#fffaf6;--ink:#2a1717;--muted:#6b4b48;--line:rgba(42,23,23,.16);
+  --accent:#8a2440;--accent-hover:#a32c4d;--accent-ink:#fff4ee;--accent-text:#8a2440;
+  --f-display:"Playfair Display",Georgia,"Times New Roman",serif;--f-body:"DM Sans",system-ui,-apple-system,sans-serif;
+  --flag-bg:#8a2440;--flag-ink:#fbe6df;--nav-bg:rgba(251,240,234,.9);
+  --brand-font:italic 700 1.4375rem/1 "Playfair Display",serif;
+  --brand-fs-s:1.125rem;--radius:22px;--btn-r:999px;--dock-bg:rgba(251,240,234,.93);
+  --reel-bg:linear-gradient(165deg,#b8566c,#8a2440 70%,#5e1630);--reel-ink:#fff4ee;
+  --foot-bg:#8a2440;--foot-ink:#fbe6df;--foot-line:rgba(251,230,223,.28);--mq-bg:#8a2440;--mq-ink:#fbe6df;--mq-font:italic 500 1.1875rem/1 "Playfair Display",serif}
+.t-cover .mq{border:0}
+.t-cover .mq__track span::after{color:#f3bdb5}
+.t-cover .h2{font-style:italic;font-weight:500}
+.t-cover .h2 b{font-style:normal;font-weight:700;color:var(--accent)}
+.t-cover .kicker{font:400 clamp(1.875rem,4.6vw,2.625rem)/1 "Pinyon Script",cursive;letter-spacing:0;text-transform:none}
+.t-cover .sec__head{text-align:center;justify-items:center;margin-inline:auto}
+.t-cover .cta-row{justify-content:center}
+.t-cover .foot .foot__mark{font-family:"Pinyon Script",cursive}
+
+/* hero: the magazine cover */
+.hero--cov{padding:calc(var(--nav-h) + 6px) 0 clamp(40px,7vw,90px);overflow:hidden;background:radial-gradient(120% 70% at 85% 0,#f6d0c6 0,rgba(246,208,198,0) 62%),var(--bg)}
+.cov{display:grid;gap:16px}
+.cov__card{position:relative;isolation:isolate;container-type:inline-size;height:calc(100svh - 28px - var(--nav-h) - 160px);min-height:300px;max-height:700px;border-radius:14px;overflow:hidden;background:#d9c3bb}
+.cov__card>img{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;object-position:50% 26%}
+.cov__card::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(70,20,34,.4),rgba(70,20,34,0) 30%,rgba(70,20,34,0) 55%,rgba(56,14,24,.78))}
+.cov__flash{position:absolute;inset:0;z-index:4;background:#fff;opacity:0;pointer-events:none}
+.cov__issue{position:absolute;top:13px;left:16px;right:16px;display:flex;justify-content:space-between;gap:10px;color:#fff;font:600 .625rem/1 var(--f-body);letter-spacing:.2em;text-transform:uppercase;white-space:nowrap}
+@media (max-width:379px){.cov__issue{font-size:.5rem;letter-spacing:.14em}.cov__lines{right:112px}}
+.cov__mast{position:absolute;top:26px;left:0;right:0;text-align:center;color:#fff;font:italic 800 19vw/1 var(--f-display);font-size:21.5cqw;letter-spacing:-.035em;text-shadow:0 2px 34px rgba(70,20,34,.4)}
+.cov__letters{display:inline-flex;overflow:hidden;padding:.04em .1em .2em}
+.cov__letters i{display:inline-block;font-style:inherit}
+.cov__lines{position:absolute;left:16px;right:124px;bottom:16px;display:grid;gap:8px;color:#fff;font:600 .625rem/1.4 var(--f-body);letter-spacing:.18em;text-transform:uppercase}
+.cov__lines b{display:block;font:italic 500 clamp(1.25rem,6.4cqw,1.875rem)/1.08 var(--f-display);letter-spacing:0;text-transform:none}
+.cov__badge{position:absolute;right:12px;bottom:12px;width:104px;height:104px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink);text-decoration:none;transition:transform .3s}
+.cov__badge:hover{transform:scale(1.06)}
+.cov__badge svg{position:absolute;inset:0;width:100%;height:100%;animation:spin 24s linear infinite}
+.cov__badge b{font:italic 600 1.0625rem/1 var(--f-display)}
+@keyframes spin{to{transform:rotate(1turn)}}
+.cov__text{display:flex;flex-direction:column;gap:14px}
+.cov__text .hero__act{order:-1;margin-bottom:12px}
+.cov__h{font:italic 500 clamp(2.25rem,9.4vw,4.5rem)/1.02 var(--f-display);letter-spacing:-.01em}
+.cov__h b{font-style:normal;font-weight:700;color:var(--accent)}
+.hero--cov .hero__sub{color:var(--muted)}
+.cov__toc{margin-top:10px;border-top:1px solid var(--line);counter-reset:toc}
+.cov__toc a{display:flex;justify-content:space-between;gap:12px;min-height:48px;align-items:center;border-bottom:1px solid var(--line);text-decoration:none;font:600 .75rem/1.3 var(--f-body);letter-spacing:.16em;text-transform:uppercase}
+.cov__toc a::after{counter-increment:toc;content:"p. 0" counter(toc);font:italic 500 .9375rem/1 var(--f-display);letter-spacing:0;text-transform:none;color:var(--accent)}
+.cov__toc a:hover{color:var(--accent)}
+@media (min-width:900px){
+  .cov{grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(36px,5vw,76px);align-items:center}
+  .cov__card{height:min(calc(100svh - 28px - var(--nav-h) - 56px),700px);border-radius:18px}
+  .cov__text .hero__act{order:0;margin:8px 0}
+}
+/* entrance: flash, focus pull, masthead (about 2s) */
+.intro-play .cov__card>img{animation:develop 1.6s cubic-bezier(.2,.6,.2,1) both}
+@keyframes develop{0%{filter:blur(18px) brightness(1.8) saturate(.5);transform:scale(1.12)}}
+.intro-play .cov__flash{animation:flash 1.15s ease-out both}
+@keyframes flash{0%{opacity:1}16%{opacity:.1}24%{opacity:.85}100%{opacity:0}}
+.intro-play .cov__letters i{animation:rise .8s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(.55s + var(--i,0)*.06s)}
+.intro-play .cov__issue,.intro-play .cov__lines{animation:fade .8s ease 1.2s both}
+.intro-play .cov__badge{animation:stamp .6s cubic-bezier(.2,1.4,.4,1) 1.5s both}
+@keyframes stamp{from{opacity:0;transform:scale(.3) rotate(-40deg)}}
+.intro-play .cov__text>*{animation:fadeUp .7s ease .95s both}
+.intro-play .cov__text .hero__act{animation-delay:.35s}
+
+/* lookbook: taped prints */
+.t-cover .chips{justify-content:center}
+.t-cover .gal{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(18px,2.6vw,30px) clamp(12px,2vw,24px)}
+.t-cover .gal__it{width:calc(50% - 6px);padding:7px 7px 0;overflow:visible;border-radius:3px;background:#fff;box-shadow:0 14px 30px -12px rgba(90,30,40,.32);transform:rotate(var(--r,0deg));transition:transform .35s,box-shadow .35s}
+.t-cover .gal__it:nth-child(3n+1){--r:-1.6deg}
+.t-cover .gal__it:nth-child(3n+2){--r:1.3deg}
+.t-cover .gal__it:nth-child(3n){--r:-.5deg}
+.t-cover .gal__it:hover,.t-cover .gal__it:focus-visible{transform:rotate(0deg) scale(1.03);z-index:2;box-shadow:0 24px 44px -14px rgba(90,30,40,.45)}
+.t-cover .gal__fr{height:auto}
+.t-cover .gal__it img{height:auto;aspect-ratio:4/5}
+.t-cover .gal__cap{display:block;padding:5px 4px 7px;text-align:center;font:400 1.5rem/1.15 "Pinyon Script",cursive;color:var(--accent)}
+.t-cover .gal__it:nth-child(4n+1)::before{content:"";position:absolute;top:-9px;left:50%;z-index:1;width:56px;height:18px;margin-left:-28px;background:rgba(232,163,157,.78);transform:rotate(-3deg)}
+@media (min-width:700px){.t-cover .gal__it{width:calc(33.333% - 16px)}}
+@media (min-width:1040px){.t-cover .gal__it{width:calc(20% - 20px)}}
+
+.t-cover .path{border-radius:28px}
+.t-cover .path__img{margin:16px 16px 0;aspect-ratio:1/1;border-radius:999px 999px 14px 14px}
+.t-cover .path--b{background:var(--accent);color:var(--accent-ink);--path-muted:#f6d8d2;--accent-text:#f5c3bb}
+.t-cover .path--b .btn--pri{background:#fbf0ea;color:#8a2440}
+.t-cover .svc{border:0;padding:clamp(10px,3vw,40px) clamp(18px,3vw,40px);border-radius:28px;background:var(--card);box-shadow:0 24px 50px -34px rgba(90,30,40,.45)}
+.t-cover .svc__it:last-child{border-bottom:0}
+.t-cover .svc__n{font-style:italic;font-weight:500}
+.t-cover .pk{justify-content:center}
+.t-cover .sec .note{margin-inline:auto;text-align:center}
+.t-cover .about__main{border-radius:999px 999px 22px 22px}
+.t-cover .about__sub{border-radius:50%}
+.t-cover .rev{border-radius:26px;text-align:center;justify-items:center}
+.t-cover .reel{border-radius:26px}
+.t-cover .faq{margin-inline:auto}
+.t-cover .fin{--fin-pos:62% 30%;--fin-scrim:linear-gradient(180deg,rgba(138,36,64,.05) 30%,rgba(66,14,30,.86))}
+.t-cover .fin__t{font-style:italic;font-weight:500}
+.t-cover .path--b,.t-cover .foot{--focus:#fbe6df}

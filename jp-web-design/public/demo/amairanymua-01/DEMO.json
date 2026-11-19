@@ -1,0 +1,19 @@
+{
+  "slug": "amairanymua-01",
+  "url": "https://jpsilvadigital.com/demo/amairanymua-01",
+  "client": "Amairany Sierra (@amairanymua)",
+  "pages": [
+    "index",
+    "premiere",
+    "cover",
+    "golden"
+  ],
+  "directions": {
+    "premiere": "Première — A night at the movies",
+    "cover": "The Cover — Her own bridal issue",
+    "golden": "Golden Hour — Warm, luminous, quiet"
+  },
+  "source": "jp-web-design/scripts/amairanymua-01-build.mjs",
+  "shared": "none — fonts, images, CSS and script all live in this folder",
+  "note": "Unlisted design preview — not the official website. noindex. No forms: booking buttons link to the artist's own JotForm and Acuity pages."
+}
