@@ -1,5 +1,5 @@
 /* /demo/amairanymua-01 — the "Design preview · not the official site" marker.
-   Studio chrome, identical in all three sites and never restyled by one: it must always be
+   Studio chrome, identical in every site and never restyled by one: it must always be
    legible, whatever is under it. During review it carries the switch between the previews.
    A site with a bar fixed to the bottom of the screen lifts it with --marker-bottom. */
 .demo-flag{position:fixed;left:50%;bottom:calc(var(--marker-bottom,8px) + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:2147483000;
@@ -15,6 +15,9 @@
 .demo-dirs a:focus-visible{outline:2px solid #fff;outline-offset:1px}
 .demo-dirs a[aria-current="true"]{background:#f6efe6;color:#17110f}
 .demo-flag--review{padding:4px 8px 4px 12px}
-@media(max-width:560px){.demo-flag--review{flex-direction:column;border-radius:16px;padding:5px 10px 4px;gap:1px}.demo-flag--review .demo-flag-t{font-size:9px}}
+@media(max-width:560px){.demo-flag--review{flex-direction:column;border-radius:16px;padding:5px 8px 4px;gap:1px;width:min(calc(100vw - 16px),330px)}.demo-flag--review .demo-flag-t{font-size:9px}
+  /* nine previews: drop the "Preview" word and let the numbers wrap, so nothing runs off a 320 screen */
+  .demo-flag--review .demo-dirs{flex-wrap:wrap;justify-content:center;gap:2px;max-width:100%}.demo-flag--review .demo-dirs-k{display:none}.demo-flag--review .demo-dirs a{min-width:24px;height:24px;padding:0 3px}.demo-flag--review .demo-all{padding:0 6px}}
+@media(max-width:360px){.demo-flag--review .demo-flag-t{font-size:8.5px;letter-spacing:.08em}}
 @media (prefers-reduced-motion:reduce){.demo-flag,.demo-dirs a{transition:none}}
 @media print{.demo-flag{position:static;transform:none;margin:8px auto}}

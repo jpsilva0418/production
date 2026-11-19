@@ -154,13 +154,25 @@
   /* A clip loads only once it has been chosen to play and has stayed chosen for a moment, so a fast
      scroll past it costs nothing (and never leaves a half-finished download to be cancelled). */
   var schedTimer = 0;
+  /* rest a clip; one still downloading finishes its download first (the browser fires 'suspend'
+     when it stops fetching), so no request is ever cut off half-way */
+  var rest = function (v) {
+    if (v.networkState === 2 && !v.__waitSuspend && !v.__settled) {
+      v.__waitSuspend = true;
+      var settle = function () { if (!v.__waitSuspend) return; v.removeEventListener('suspend', settle); v.__waitSuspend = false; v.__settled = true; schedule(); };
+      v.addEventListener('suspend', settle);
+      setTimeout(settle, 3000); /* never left playing off screen for long, whatever the network does */
+      return;
+    }
+    if (!v.__waitSuspend) v.pause();
+  };
   var schedule = function () {
     var ranked = films.filter(function (v) { return (v.__ratio || 0) > 0; }).sort(function (a, b) { return (b.__ratio || 0) - (a.__ratio || 0); });
     var playing = doc.hidden ? [] : ranked.slice(0, 3);
     films.forEach(function (v) {
       if (playing.indexOf(v) > -1) {
         if (v.__loaded) { var p = v.play(); if (p && p.catch) p.catch(function () { /* autoplay refused: the poster stands */ }); }
-      } else if (!v.paused) v.pause();
+      } else if (!v.paused) rest(v);
     });
     if (!schedTimer && playing.some(function (v) { return !v.__loaded; })) {
       schedTimer = setTimeout(function () {

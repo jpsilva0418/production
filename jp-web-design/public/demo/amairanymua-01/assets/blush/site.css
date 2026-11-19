@@ -183,6 +183,8 @@ button{font:inherit;color:inherit}
 .film{position:relative;width:100%;height:100%;overflow:hidden;background:var(--petal)}
 .fr-m>.film{position:absolute;inset:0}
 .film video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* no script: the clip cannot load (its source is lazy), so the poster stands alone, without the controls a browser forces on */
+html:not(.js) .film video::-webkit-media-controls,html:not(.js) .film video::-webkit-media-controls-enclosure{display:none!important}
 .film-lbl{position:absolute;left:12px;top:12px;z-index:2;padding:.45em .9em;border-radius:999px;background:rgb(var(--blush-rgb)/.92);font:800 .62rem/1.2 var(--f-sans);letter-spacing:.16em;text-transform:uppercase;color:var(--ink)}
 .fr--circle .film-lbl{left:50%;top:9%;transform:translateX(-50%);white-space:nowrap}
 .film-credit{max-width:calc(100% - 16px);text-align:right}

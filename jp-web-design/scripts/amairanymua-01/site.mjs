@@ -92,8 +92,8 @@ Object.assign(SITES, {
     id: 'atelier', n: 7, name: 'Atelier', theme: '#F6F1EA',
     pages: ['', 'portfolio', 'bridal', 'about', 'journal', 'journal/how-to-prepare', 'journal/destination-bride', 'bridal-inquiry'],
     line: 'Ivory and espresso. Quiet, editorial luxury.',
-    intro: 'TBD',
-    blurb: 'TBD',
+    intro: 'A fine line draws down the ivory page, her &ldquo;Glam By&rdquo; writes on above it, and an arched window opens out of the line onto her bridal film, then travels into the page.',
+    blurb: 'Ivory and espresso with tall couture caps: her clips play in arched windows like portraits on a gallery wall, beside the inquiry, her packages, her journal and Love Notes.',
     swatch: ['#F6F1EA', '#EAE1D6', '#36302A', '#C9A9A0'],
   },
   blush: {

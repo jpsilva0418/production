@@ -257,15 +257,17 @@ const extra = (list, ext) => list.map((c) => (c.includes('/') ? c : `${B}/${c}.$
 
 /** A whole Blush document.
  *  path, title, description: as head() in site.mjs.  main: the page's content (inside <main id="main">).
- *  head: extra <head> markup (a preload for the page's lead image, say).  css / js: extra file names
+ *  head: extra <head> markup (a preload for the page's lead image, say).  preHead: markup placed
+ *  BEFORE site.css (the Bridal Inquiry passes inquiryHead() here, as inquiry-core.mjs asks).  css / js: extra file names
  *  in assets/blush/ without extension (or full paths), e.g. css: ['pages-work'], js: ['pages-work'].
  *  bodyClass: extra classes on <body>.  opening: markup placed first in <body> (home only: the
  *  opening's gate script and overlay).  foot: extra markup after the scripts (e.g. inquiryFoot()). */
-export const page = ({ path = '', title, description, main, head = '', css = [], js = [], bodyClass = '', opening = '', foot = '' }) => `<!doctype html>
+export const page = ({ path = '', title, description, main, head = '', preHead = '', css = [], js = [], bodyClass = '', opening = '', foot = '' }) => `<!doctype html>
 <html lang="en">
 <head>
 ${stdHead(S, { path, title, description })}
 ${FONT_PRELOAD}
+${preHead}
 <link rel="stylesheet" href="${B}/site.css">
 ${extra(css, 'css').map((c) => `<link rel="stylesheet" href="${c}">`).join('\n')}
 <script>(function(d){d.classList.add('js');setTimeout(function(){if(!window.__blush)d.classList.remove('js');},3500);})(document.documentElement);</script>

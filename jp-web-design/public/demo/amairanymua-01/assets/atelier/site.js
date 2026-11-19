@@ -103,14 +103,28 @@
      (the poster then stands as a still). A film inside a paused group carries data-held. */
   var MAX = 3;
   var films = $$('video[data-film]');
-  /* data-start="4.4": play from that moment, and loop back to it (a media fragment for the first
-     frame, so the clip never flashes its opening seconds; then a seek on every end) */
+  /* data-start="4.4": play from that moment and loop back to it. The clip is buffered whole first
+     (preload auto) while the poster stands; the seek then happens inside the buffer, so it never
+     aborts a request or flashes the clip's opening seconds. Every end seeks back the same way. */
   var load = function (el) {
     var start = parseFloat(el.getAttribute('data-start')) || 0;
-    $$('source', el).forEach(function (s) { var u = s.getAttribute('data-src'); if (u) s.src = u + (start ? '#t=' + start : ''); });
+    $$('source', el).forEach(function (s) { var u = s.getAttribute('data-src'); if (u) s.src = u; });
     if (start) {
       el.loop = false;
-      el.addEventListener('loadedmetadata', function () { if (el.currentTime < start - 0.2) { try { el.currentTime = start; } catch (e) {} } });
+      el.preload = 'auto';
+      el.__wait = true;
+      var whole = function () { var b = el.buffered; return el.duration > 0 && b.length > 0 && b.end(b.length - 1) >= el.duration - 0.15; };
+      var arm = function () {
+        if (!el.__wait || !whole()) return;
+        el.__wait = false;
+        var onSeeked = function () { el.removeEventListener('seeked', onSeeked); sync(); };
+        el.addEventListener('seeked', onSeeked);
+        try { el.currentTime = start; } catch (e) { sync(); }
+      };
+      el.addEventListener('progress', arm);
+      el.addEventListener('canplaythrough', arm);
+      /* a slow network: never wait more than 6 s; play from the beginning rather than not at all */
+      setTimeout(function () { if (el.__wait) { el.__wait = false; sync(); } }, 6000);
       el.addEventListener('ended', function () { try { el.currentTime = start; } catch (e) {} if (el.hasAttribute('data-held')) return; var p = el.play(); if (p && p.catch) p.catch(function () {}); });
     }
     el.load();
@@ -123,7 +137,7 @@
       var want = on.indexOf(v) !== -1;
       if (want) {
         if (!v.loaded) { load(v.el); v.loaded = true; }
-        if (v.el.paused) { var p = v.el.play(); if (p && p.catch) p.catch(function () {}); }
+        if (v.el.paused && !v.el.__wait) { var p = v.el.play(); if (p && p.catch) p.catch(function () {}); }
       } else if (!v.el.paused) v.el.pause();
     });
   };

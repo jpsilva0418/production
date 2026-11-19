@@ -93,7 +93,7 @@ ${next({ cls: 'next--left rv', go: [more(href(S, 'about'), `More about ${SITE.fi
 </div>`);
 
 /* ---------- 3. her reels ---------- */
-const REEL_IDS = ['f5', 'f6', 'f8', 'f14'];
+const REEL_IDS = ['f5', 'f1', 'f6', 'f8'];
 const reelsSec = () => section({ id: 'reels', tone: 'cream', cls: 'rl', labelledby: 'rlH' }, `
 ${secHead({ kick: 'Her reels', heading: 'Fresh from *her chair.*', id: 'rlH', line: 'Silent clips of her brides and her glam, from her own TikTok.' })}
 ${reels({ ids: REEL_IDS })}
@@ -110,7 +110,7 @@ const LOOK_ITEMS = [
   { photo: 'bride-gold-waves', cap: 'Bridal &middot; Gold shimmer' },
   { photo: 'reel-burgundy', cap: 'Bridal &middot; Big glam waves' },
   { photo: 'glam-sculpt', cap: 'Full glam &middot; Sculpted bronze' },
-  { film: 'f2', cap: 'Full glam' },
+  { film: 'f3', cap: 'Final moments before the aisle' },
   { photo: 'bride-ruby', cap: 'Bridal &middot; Full glam' },
   { photo: 'reel-bridesmaid-waves', cap: 'Bridal party &middot; Vintage waves' },
   { photo: 'waves-blonde', cap: 'Glam waves &middot; Smoky eye' },
