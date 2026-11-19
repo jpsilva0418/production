@@ -110,7 +110,8 @@ the client's consent to appear on a website are Yaribel's to confirm.
 **Verified from her public sources** (as collected in the founder's package,
 2026-11-17/18): the name YariiiMakeup; Instagram `@yariiimakeup` with display
 name Yaribel Vasquez; Poinciana on Instagram and Kissimmee on Booksy; the
-booking link `https://yarimakeup.booksy.com/`; the service names used in the
+booking link `https://yarimakeup.booksy.com/` (her Instagram bio link, which
+redirects to her Booksy page); the service names used in the
 Services section; the three review excerpts and their sources; the Reel URL.
 
 **Proposed creative copy** (ours, for her approval): every headline, the hero
@@ -250,13 +251,26 @@ that service's questions), About and the final section.
 
 ## Booking
 
-Every booking control is a plain link to `https://yarimakeup.booksy.com/`,
-opening in the same tab (the one-tap handoff that proved right for in-app
-browsers on Sass by Kass). On the home page there are fourteen: header,
-mobile menu, hero, About, after the gallery, four services plus "every
-service", the lightbox, the final section, the footer, and a sticky bar on
-phones; the inquiry page adds its own beside the form and on the thank-you. No service-level deep links are used because none
-has been confirmed.
+Every booking control goes straight to Booksy's booking address for her,
+`https://booksy.com/en-us/844702_yariiimakeup_makeup_134766_kissimmee?do=open-widget`,
+opening in the same tab. That is the "Reserve" address Booksy itself
+publishes on her page (schema.org ReserveAction), and it skips the redirect
+her short link `yarimakeup.booksy.com` makes (founder request, 2026-11-19:
+every link should take you directly there). Booksy publishes one per service
+too (`&variantId=…`, 36 of them); they are not used, because each service row
+on the site covers several of her Booksy services. Booksy could not be
+rendered from the build environment (its scripts load from blocked hosts), so
+the booking screen opening was not seen here; if the parameter were ignored,
+the visitor would land on her Booksy page, which is where the old link went.
+
+Same tab is the one-tap handoff that proved right for in-app browsers on Sass
+by Kass. On the home page there are fourteen booking buttons: header, mobile
+menu, hero, About, after the gallery, four services plus "every service", the
+lightbox, the final section, the footer, and a sticky bar on phones; the
+inquiry page adds its own beside the form and on the thank-you. Instagram
+links go straight to `instagram.com/yariiimakeup/` (the app opens on phones
+that have it). No Google Business listing for her was found, so there is no
+Google link.
 
 ## The Reel
 
