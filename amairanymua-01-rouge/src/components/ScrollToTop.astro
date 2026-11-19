@@ -5,9 +5,10 @@
 </button>
 <style>
   #toTop{position:fixed;right:18px;bottom:18px;z-index:40;width:46px;height:46px;border-radius:50%;background:var(--leaf);color:var(--ivory);
-    border:1px solid var(--leaf);display:grid;place-items:center;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .35s,transform .35s var(--ease);
+    border:1px solid rgba(255,255,255,.22);display:grid;place-items:center;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .35s,transform .35s var(--ease);
     box-shadow:0 10px 24px -12px rgba(0,0,0,.55)}
   #toTop.show{opacity:.92;pointer-events:auto}
+  @media(max-width:700px){#toTop{bottom:calc(84px + env(safe-area-inset-bottom,0px));right:12px}}
   #toTop:hover{opacity:1;transform:translateY(-2px)}
   @media(prefers-reduced-motion:reduce){#toTop{transition:none}}
 </style>

@@ -263,7 +263,8 @@ body.menu-open{overflow:hidden}
   font-family:var(--utility);font-weight:600;text-transform:uppercase;letter-spacing:.16em;font-size:.55rem;color:color-mix(in srgb,var(--gold-lt) 78%,transparent)}
 .foot-bar a:hover{color:var(--ivory)}
 @media(max-width:899px){.foot-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){.foot-grid{grid-template-columns:1fr}.foot-bar{justify-content:center;text-align:center}}
+.foot-bar{padding-bottom:calc(1.6rem + 40px)}
+@media(max-width:560px){.foot-grid{grid-template-columns:1fr}.foot-bar{justify-content:center;text-align:center;padding-bottom:calc(1.6rem + 64px)}}
 
 /* ---- light layers · max one per viewport ---- */
 .lit{position:relative;overflow:clip}
