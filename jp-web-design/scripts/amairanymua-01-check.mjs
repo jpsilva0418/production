@@ -32,6 +32,10 @@ const html = all.filter((f) => f.endsWith('.html'));
 
 /* every page the build promises is there, and nothing else */
 const expected = new Set([...SITE_IDS.flatMap((d) => PAGES.map((p) => outFile(d, p))), ...(PICK ? [] : ['index.html'])]);
+/* Prebuilt sites (built elsewhere and copied in whole, e.g. rouge from ../amairanymua-01-rouge):
+   every page they ship is expected, and every per-page rule below applies to them too. */
+const PREBUILT = ['rouge'];
+for (const pre of PREBUILT) if (existsSync(join(OUT, pre))) for (const f of all.filter((x) => x.startsWith(join(OUT, pre) + '/') && x.endsWith('.html'))) expected.add(rel(f));
 for (const e of expected) if (!existsSync(join(OUT, e))) bad(e, 'expected page was not built');
 for (const f of html) if (!expected.has(rel(f))) bad(rel(f), 'unexpected page in the demo folder');
 
