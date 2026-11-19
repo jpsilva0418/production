@@ -103,7 +103,10 @@ const token = (url) => {
   return assets.get(url);
 };
 const ASSET_RE = new RegExp(`${BASE.replace(/[/.]/g, '\\$&')}/(?:[a-z]+/)?assets/[A-Za-z0-9_./-]+\\.(?:webp|jpg|jpeg|png|svg|woff2|mp4)`, 'g');
-const tokenize = (text) => text.replace(ASSET_RE, (u) => token(u));
+/* --no-clips: leave the video files out (for viewers that never play video, e.g. the iOS file
+   viewer); each clip's address becomes empty, so the page shows the still underneath it */
+const NOCLIPS = process.argv.includes('--no-clips');
+const tokenize = (text) => text.replace(ASSET_RE, (u) => (NOCLIPS && /\.mp4$/.test(u) ? '' : token(u)));
 
 /* ---- stylesheets and scripts: stored once, spliced into each page at run time ---- */
 const css = {}, js = {};
