@@ -544,7 +544,8 @@ export const REVIEWS = {
     { name: 'WeddingWire', score: '5.0', meta: '31 reviews', go: 'Read on WeddingWire', href: L.ww },
     { name: 'The Knot', score: '5.0', meta: '4 reviews', go: 'Read on The Knot', href: L.knot },
   ],
-  google: { name: 'Google', line: `Worked with ${SITE.first}? Leave her a review on Google.`, go: 'Review on Google', href: L.google },
+  /* her Google Business listing "Amairanymua": 5.0 from 2 reviews, as seen in the founder's screenshot, 2026-11-19 */
+  google: { name: 'Google', score: '5.0', meta: '2 reviews', asOf: 'November 19, 2026', line: `Rated 5.0 on Google from 2 reviews. Worked with ${SITE.first}? Leave her a review there.`, go: 'Review on Google', href: L.google },
   emptyKick: 'Word for word',
   emptyHeading: 'Her clients’ words, published as they wrote them.',
   emptyBody: `Review excerpts will appear here once ${SITE.first} has chosen which ones to share. Until then, every review is one tap away, in full, on the site it was written on.`,

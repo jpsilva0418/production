@@ -137,7 +137,7 @@ h=h.replace(/<head>/i,'<head>'+(hash?'<script>window.__am01hash='+JSON.stringify
 return fill(h)}
 function show(path,hash){var h=build(path,hash);if(h==null){say('That page is not in this preview file.');return}
 frame.srcdoc=h;frame.hidden=false;msg.hidden=true;try{history.replaceState(null,'','#'+(path||'home'))}catch(e){}}
-function route(href){var m=href.match(/^https?:|^mailto:/);if(m){var w=null;try{w=window.open(href,'_blank','noopener')}catch(e){}if(!w){try{window.top.location.href=href}catch(e){say('Links to her booking pages open outside this preview file.')}}return}
+function route(href){var m=href.match(/^https?:|^mailto:/);if(m){/* straight to the site, in the same window, as the live site does; a new window only if the viewer forbids that */var ok=false;try{window.top.location.href=href;ok=true}catch(e){}if(!ok){var w=null;try{w=window.open(href,'_blank','noopener')}catch(e){}if(!w)say('Links to her booking pages open outside this preview file.')}return}
 var u=href.split('#'),hash=u[1]||'',p=u[0].split('?')[0];
 if(p===BASE||p===BASE+'/'){say('The chooser lives on the demo site. This file holds the '+${JSON.stringify(S.name)}+' preview only.');return}
 var rest=p.slice(BASE.length+1),seg=rest.split('/'),s=seg[0],path=seg.slice(1).join('/').replace(/\\/$/,'');

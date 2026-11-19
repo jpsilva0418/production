@@ -275,8 +275,43 @@ const bookPoints = [PATHS[1].points[2], 'Brides & events', SITE.area];
   .c7-ch--dk::after{box-shadow:0 -26px 60px -30px rgba(0,0,0,.5)}
   .c7-after{--lip:8px;padding-top:0;padding-bottom:0;margin-top:-1px}
 
-  /* ===== I · meet Kass ===== */
-  .c7-mis{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:clamp(2.4rem,6vw,6.5rem);align-items:center;position:relative}
+  /* ===== I · two ways to book, side by side ===== */
+  .c7-two-h{display:flex;align-items:center;gap:1.4rem 2rem;flex-wrap:wrap}
+  .c7-two-h .kick{flex:1;margin:0 0 clamp(1.2rem,2.2vw,1.8rem)}
+  .c7-two-h .chap-rn{margin-bottom:clamp(1.2rem,2.2vw,1.8rem)}
+  .c7-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1rem,2.2vw,1.8rem)}
+  .c7-way{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);background:var(--paper);border:1px solid var(--hair);border-radius:var(--r);overflow:hidden;position:relative;transition:box-shadow .45s var(--ease),border-color .45s var(--ease)}
+  .c7-way::after{content:"";position:absolute;inset:6px;border:1px solid var(--hair);border-radius:calc(var(--r) - 4px);pointer-events:none}
+  .c7-way:hover{box-shadow:0 26px 50px -32px rgba(0,0,0,.42);border-color:var(--hair-strong)}
+  .c7-way:first-child{border-top:3px solid var(--rouge)}
+  .c7-way-ph{border-radius:0;min-height:100%}
+  .c7-way-ph :global(img){position:absolute;inset:0;transition:transform 1s var(--ease)}
+  .c7-way:hover .c7-way-ph :global(img){transform:scale(1.04)}
+  .c7-way-b{padding:clamp(1.4rem,2.4vw,2rem) clamp(1.3rem,2.2vw,1.9rem);display:flex;flex-direction:column;gap:.55rem}
+  .c7-way-b .caps-xs{color:var(--brass)}
+  .c7-way-t{font-size:clamp(1.5rem,2.2vw,2rem);font-weight:350;line-height:1.1;color:var(--ink)}
+  .c7-way-body{font-size:.95rem;color:var(--ink-soft)}
+  .c7-way-pts{list-style:none;margin:.2rem 0 0;padding:0;display:grid;gap:.3rem}
+  .c7-way-pts li{position:relative;padding-left:1.3rem;font-size:.88rem;color:var(--ink)}
+  .c7-way-pts li::before{content:"";position:absolute;left:0;top:.75em;width:8px;height:1px;background:var(--brass)}
+  .c7-way-a{margin-top:auto;padding-top:.8rem}
+  .c7-way-note{font-family:var(--display);font-style:italic;font-size:.86rem;color:var(--ink-soft)}
+  @media(max-width:1023px){.c7-two{grid-template-columns:1fr}}
+  @media(max-width:599px){.c7-way{grid-template-columns:1fr}.c7-way-ph{aspect-ratio:16/10;min-height:0}}
+
+  /* ===== I · meet Amairany ===== */
+  .c7-mis{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:clamp(2.4rem,6vw,6.5rem);align-items:center;position:relative;margin-top:clamp(4.5rem,9vw,8rem);scroll-margin-top:80px}
+  .c7-her{margin:0;padding:0}
+  .c7-her-hi{font-family:var(--script);font-size:clamp(2.2rem,3.6vw,3.2rem);line-height:1.05;color:var(--brass);margin:0 0 .6rem}
+  .c7-her-by{font-family:var(--utility);font-weight:600;font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft);margin-top:.2rem}
+  .c7-her-by::before{content:"";display:inline-block;width:28px;height:1px;background:var(--brass);vertical-align:middle;margin-right:.8em}
+  .c7-facts{display:flex;flex-wrap:wrap;gap:1rem clamp(1.6rem,3vw,2.8rem);margin:clamp(1.6rem,2.6vw,2.2rem) 0 0}
+  .c7-facts div{display:flex;flex-direction:column-reverse;gap:.15rem}
+  .c7-facts dt{font-family:var(--utility);font-weight:600;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--brass)}
+  .c7-facts dd{margin:0;font-family:var(--display);font-weight:300;font-size:clamp(1.6rem,2.4vw,2.2rem);line-height:1;color:var(--ink)}
+  .c7-duo{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(.8rem,1.6vw,1.2rem);align-items:end}
+  .c7-duo-ph{aspect-ratio:4/5.4}
+  .c7-duo-film{border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-lg);transform:translateY(clamp(1rem,3vw,2.4rem))}
   .c7-mis-h{font-size:clamp(2.6rem,5.2vw,4.8rem);font-weight:300;margin:0 0 clamp(1rem,1.8vw,1.4rem)}
   .c7-mis .kick{margin-bottom:clamp(1.6rem,2.8vw,2.4rem)}
   .c7-mis-s{font-family:var(--display);font-weight:300;font-size:clamp(1.12rem,1.5vw,1.42rem);line-height:1.5;color:var(--ink);max-width:25em;margin:0 0 1.1em;font-variation-settings:'opsz' 48,'SOFT' 50}
@@ -285,10 +320,9 @@ const bookPoints = [PATHS[1].points[2], 'Brides & events', SITE.area];
   .c7-vals{list-style:none;display:flex;gap:.6rem 2rem;flex-wrap:wrap;margin:0;padding:0;font-family:var(--utility);font-weight:600;font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
   .c7-vals b{font-family:var(--display);font-style:italic;font-weight:400;font-size:.95rem;letter-spacing:0;text-transform:none;color:var(--brass);margin-right:.3em}
   .c7-mis-f{margin:0}
-  .c7-mis-f .ph{aspect-ratio:4/5}
   .c7-mis-f .ph :global(img){object-position:50% 20%}
-  .c7-mis-f figcaption{margin-top:1.4rem;text-align:center;font-family:var(--display);font-style:italic;font-size:1rem;color:var(--ink-soft)}
-  @media(max-width:899px){.c7-mis{grid-template-columns:1fr;gap:2.6rem}.c7-mis-f{width:min(520px,100%);margin-inline:auto}.c7-mis-f .ph{aspect-ratio:4/4.4}}
+  .c7-mis-f figcaption{margin-top:clamp(2.2rem,4.4vw,3.6rem);text-align:center;font-family:var(--display);font-style:italic;font-size:1rem;color:var(--ink-soft)}
+  @media(max-width:899px){.c7-mis{grid-template-columns:1fr;gap:2.6rem}.c7-mis-f{width:min(520px,100%);margin-inline:auto}}
 
   /* ===== II · the work ===== */
   .c7-work{padding-bottom:calc(var(--pad) * .8)}
@@ -354,6 +388,13 @@ const bookPoints = [PATHS[1].points[2], 'Brides & events', SITE.area];
   .c7-rows h3{font-size:clamp(1.3rem,1.9vw,1.62rem);font-weight:350;color:var(--ink);margin-bottom:.4rem}
   .c7-rows p{font-size:.98rem;max-width:44em;color:var(--ink-soft);margin-bottom:.6rem}
   .c7-row-k{display:block;margin-bottom:.35rem}
+  .c7-how-note{font-size:.88rem;color:var(--ink-soft);margin:0 0 1.6rem;max-width:26em}
+  .c7-pk li{padding:clamp(1rem,1.8vw,1.4rem) 0!important}
+  .c7-pk-r{display:flex;align-items:baseline;justify-content:space-between;gap:1rem 2rem}
+  .c7-pk-r h3{margin-bottom:.15rem!important}
+  .c7-pk-r p{margin:0!important;font-size:.9rem!important}
+  .c7-pk-p{font-family:var(--display);font-weight:300;font-size:clamp(1.5rem,2.2vw,2rem)!important;line-height:1;color:var(--ink)!important;white-space:nowrap}
+  .c7-pk-p span{font-size:.55em;vertical-align:.55em;margin-right:.1em;color:var(--brass)}
   .c7-row-note{font-family:var(--display);font-style:italic;font-size:.92rem!important;color:var(--ink-soft);margin:.5rem 0 0!important}
   @media(max-width:899px){.c7-how{grid-template-columns:1fr;gap:2rem}.c7-how-l{position:static}}
 
@@ -387,6 +428,17 @@ const bookPoints = [PATHS[1].points[2], 'Brides & events', SITE.area];
   .c7-beg-cta .tlk{max-width:100%;overflow-wrap:anywhere;line-height:1.6}
 
   /* ===== after · follow along + brides ===== */
+  .c7-love{padding-top:var(--pad)}
+  .c7-love-g{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1rem,2vw,1.6rem)}
+  .c7-love-g li{display:flex}
+  .c7-note{flex:1;display:flex;flex-direction:column;gap:1.2rem;padding:clamp(1.5rem,2.4vw,2rem);background:var(--paper);border:1px solid var(--hair);border-radius:var(--r);position:relative;transition:transform .5s var(--ease),box-shadow .5s var(--ease),border-color .5s}
+  .c7-note::before{content:"";position:absolute;left:clamp(1.5rem,2.4vw,2rem);top:-1px;width:36px;height:3px;background:var(--rouge)}
+  .c7-note:hover,.c7-note:focus-visible{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--hair-strong)}
+  .c7-note-s{font-family:var(--display);font-weight:300;font-size:clamp(2.4rem,3.6vw,3.2rem);line-height:1;color:var(--ink);display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap}
+  .c7-note-s small{font-family:var(--utility);font-weight:600;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft)}
+  .c7-note-s--q{font-style:italic;font-size:clamp(1.6rem,2.4vw,2.1rem)}
+  .c7-note .arrow-link{margin-top:auto}
+  @media(max-width:899px){.c7-love-g{grid-template-columns:1fr}}
   .c7-mom{padding-top:var(--pad)}
   .c7-mom-h{margin-bottom:clamp(2rem,3.6vw,3rem);display:flex;align-items:flex-end;justify-content:space-between;gap:1rem 3rem;flex-wrap:wrap}
   .c7-mom-h .caps{display:block;margin-bottom:.6rem}
