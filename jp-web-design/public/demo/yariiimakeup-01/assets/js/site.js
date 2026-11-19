@@ -199,6 +199,197 @@
     heroReel.start(false);
   }
 
+  /* ── Inquiry: a few short steps; answers survive Back and Next.
+        DEMO MODE: nothing is sent anywhere and nothing is stored. ── */
+  var inqForm = $('#inq-form');
+  if (inqForm) (function () {
+    var steps = $$('.inq-step', inqForm);
+    var prog = $('#inq-prog');
+    var err = $('#inq-err');
+    var back = $('#inq-back');
+    var next = $('#inq-next');
+    var send = $('#inq-send');
+    var done = $('#inq-done');
+    var recap = $('#inq-recap');
+    var DETAILS = {
+      'Bridal': 'details-bridal',
+      'Sweet 16, prom or graduation': 'details-party',
+      'Event or photoshoot': 'details-event',
+      'Hair': 'details-hair',
+      'Makeup classes': 'details-classes',
+      'Something else': 'details-other'
+    };
+    var KEYS = { bridal: 'Bridal', party: 'Sweet 16, prom or graduation', event: 'Event or photoshoot', hair: 'Hair', classes: 'Makeup classes', other: 'Something else' };
+    var LABELS = {
+      inquiryType: 'Inquiry', bridalScope: 'Wedding', bridalServices: 'Services', bridalPeople: 'People',
+      occasion: 'Occasion', partyServices: 'Services', partyPeople: 'People',
+      eventType: 'Event', eventServices: 'Services', eventPeople: 'People',
+      hairService: 'Hair', course: 'Class', otherWhat: 'Details',
+      date: 'Date', dateFlexible: 'Date not set yet', timeOfDay: 'Time of day', where: 'Getting ready at',
+      fullName: 'Name', phone: 'Phone', email: 'Email', contactPref: 'Reach me by', instagram: 'Instagram',
+      message: 'Notes', heardFrom: 'Found Yari via'
+    };
+    var at = 'type';
+    var step = function (n) { return steps.filter(function (s) { return s.getAttribute('data-step') === n; })[0]; };
+    var type = function () { var c = $('input[name="inquiryType"]:checked', inqForm); return c ? c.value : ''; };
+    var flow = function () { return ['type', DETAILS[type()] || 'details-other', 'when', 'contact', 'extras', 'review']; };
+
+    /* no dates in the past */
+    var d0 = new Date();
+    $('#inq-date').min = d0.getFullYear() + '-' + String(d0.getMonth() + 1).padStart(2, '0') + '-' + String(d0.getDate()).padStart(2, '0');
+
+    function drawProgress() {
+      var f = flow();
+      var i = f.indexOf(at);
+      prog.innerHTML = '';
+      f.forEach(function (n, k) {
+        var li = doc.createElement('li');
+        var sp = doc.createElement('span');
+        sp.textContent = step(n).getAttribute('data-label');
+        li.appendChild(sp);
+        if (k < i) li.className = 'is-done';
+        if (k === i) li.setAttribute('aria-current', 'step');
+        prog.appendChild(li);
+      });
+      prog.setAttribute('aria-label', 'Progress: step ' + (i + 1) + ' of ' + f.length);
+    }
+
+    function clearErrors() {
+      err.textContent = '';
+      $$('[aria-invalid]', inqForm).forEach(function (el) { el.removeAttribute('aria-invalid'); el.removeAttribute('aria-describedby'); });
+      $$('.inq-fe', inqForm).forEach(function (el) { el.parentNode.removeChild(el); });
+    }
+
+    function fieldError(el, msg) {
+      var id = (el.id || el.name) + '-err';
+      var p = doc.createElement('p');
+      p.className = 'inq-fe';
+      p.id = id;
+      p.textContent = msg;
+      var cardsBox = el.closest('.inq-cards');
+      (cardsBox ? cardsBox.parentNode : el.closest('.inq-field') || el.closest('fieldset')).appendChild(p);
+      el.setAttribute('aria-invalid', 'true');
+      el.setAttribute('aria-describedby', id);
+    }
+
+    function validate(n) {
+      var s = step(n);
+      var bad = [];
+      $$('input[type="radio"][required]', s).forEach(function (r) {
+        if (!$('input[name="' + r.name + '"]:checked', s)) bad.push([r, 'Please choose one.']);
+      });
+      $$('input[required]:not([type="radio"]), textarea[required]', s).forEach(function (el) {
+        var v = el.value.trim();
+        if (!v) bad.push([el, 'Please fill this in.']);
+        else if (el.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) bad.push([el, 'Please check the email address.']);
+        else if (el.type === 'tel' && v.replace(/\D/g, '').length < 10) bad.push([el, 'Please include the area code.']);
+      });
+      if (!bad.length) return true;
+      bad.forEach(function (b) { fieldError(b[0], b[1]); });
+      err.textContent = bad.length === 1 ? 'One answer needs your attention.' : bad.length + ' answers need your attention.';
+      bad[0][0].focus();
+      return false;
+    }
+
+    function values() {
+      var out = [];
+      flow().forEach(function (n) {
+        if (n === 'review') return;
+        $$('input, select, textarea', step(n)).forEach(function (el) {
+          if (!LABELS[el.name]) return;
+          if ((el.type === 'radio' || el.type === 'checkbox') && !el.checked) return;
+          var v = el.value.trim();
+          if (!v) return;
+          if (el.type === 'date') {
+            var dt = new Date(v + 'T12:00:00');
+            if (!isNaN(dt)) v = dt.toLocaleDateString('en-US', { weekday: 'short', month: 'long', day: 'numeric', year: 'numeric' });
+          }
+          out.push([LABELS[el.name], v]);
+        });
+      });
+      return out;
+    }
+
+    function buildRecap() {
+      recap.innerHTML = '';
+      values().forEach(function (kv) {
+        var row = doc.createElement('div');
+        var dt = doc.createElement('dt');
+        var dd = doc.createElement('dd');
+        dt.textContent = kv[0];
+        dd.textContent = kv[1];
+        row.appendChild(dt);
+        row.appendChild(dd);
+        recap.appendChild(row);
+      });
+    }
+
+    function show(n, focus) {
+      at = n;
+      steps.forEach(function (s) { s.hidden = s.getAttribute('data-step') !== n; });
+      var i = flow().indexOf(n);
+      back.hidden = i <= 0;
+      next.hidden = n === 'review';
+      send.hidden = n !== 'review';
+      if (n === 'when') $('legend', step('when')).textContent = type() === 'Makeup classes' ? 'When would you like to start?' : 'When is it?';
+      if (n === 'review') buildRecap();
+      clearErrors();
+      drawProgress();
+      if (focus) {
+        if (inqForm.getBoundingClientRect().top < 0) inqForm.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
+        $('legend', step(n)).focus({ preventScroll: true });
+      }
+    }
+
+    function restart() {
+      inqForm.reset();
+      done.hidden = true;
+      inqForm.hidden = false;
+      show('type', false);
+    }
+
+    next.addEventListener('click', function () {
+      if (!validate(at)) return;
+      var f = flow();
+      show(f[f.indexOf(at) + 1], true);
+    });
+    back.addEventListener('click', function () {
+      var f = flow();
+      show(f[Math.max(0, f.indexOf(at) - 1)], true);
+    });
+    $$('input[name="inquiryType"]', inqForm).forEach(function (r) { r.addEventListener('change', drawProgress); });
+
+    inqForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (at !== 'review') { next.click(); return; } /* Enter in a text box means Next */
+      if ($('#inq-company').value) return;            /* the hidden field was filled: a bot */
+      /* DEMO MODE. A live site would send values() to an approved inbox here,
+         with a privacy notice. This demo makes no network request at all. */
+      var first = $('#inq-name').value.trim().split(/\s+/)[0] || '';
+      $('#inq-done-name').textContent = first ? ', ' + first : '';
+      inqForm.hidden = true;
+      done.hidden = false;
+      if (done.getBoundingClientRect().top < 0) done.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
+      done.focus({ preventScroll: true });
+    });
+    $('#inq-again').addEventListener('click', function () { restart(); $('legend', step('type')).focus(); });
+
+    /* every Inquire button lands here; the ones that know their subject skip ahead */
+    $$('a[data-inquire]').forEach(function (a) {
+      a.addEventListener('click', function () {
+        var key = a.getAttribute('data-inquire');
+        if (!done.hidden) restart();
+        if (key && KEYS[key]) {
+          $('input[name="inquiryType"][value="' + KEYS[key] + '"]', inqForm).checked = true;
+          show(DETAILS[KEYS[key]], false);
+        }
+        setTimeout(function () { $('legend', step(at)).focus({ preventScroll: true }); }, reduce ? 0 : 700);
+      });
+    });
+
+    show('type', false);
+  })();
+
   /* ── Header ── */
   var bar = $('.bar');
   var stuck = false;
@@ -579,11 +770,13 @@
   }
 
   /* ── Sticky booking dock (phones): up once the hero button has scrolled
-        away, down again when the final booking section is on screen ── */
+        away, down again over the inquiry form and the final booking section ── */
   var dock = $('.dock');
   if (dock && hasIO) {
-    var heroSeen = true, endSeen = false;
-    var syncDock = function () { dock.classList.toggle('is-up', !heroSeen && !endSeen); };
+    var heroSeen = true, endSeen = false, formSeen = false;
+    var syncDock = function () { dock.classList.toggle('is-up', !heroSeen && !endSeen && !formSeen); };
+    /* the inquiry form has its own buttons: the bar steps aside so it never covers a field */
+    new IntersectionObserver(function (e) { formSeen = e[0].isIntersecting; syncDock(); }).observe($('.inq-shell'));
     new IntersectionObserver(function (e) { heroSeen = e[0].isIntersecting; syncDock(); }).observe($('#hero-book'));
     new IntersectionObserver(function (e) { endSeen = e[0].isIntersecting; syncDock(); }, { threshold: 0.35 }).observe($('.finale'));
   } else if (dock) {
@@ -602,6 +795,6 @@
         });
       });
     }, { rootMargin: '-40% 0px -55% 0px' });
-    $$('.hero, #work, #services, #words, #artist, #motion, #book').forEach(function (s) { navIO.observe(s); });
+    $$('.hero, #work, #services, #about, #words, #motion, #inquire, #book').forEach(function (s) { navIO.observe(s); });
   }
 })();

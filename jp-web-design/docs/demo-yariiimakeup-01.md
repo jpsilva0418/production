@@ -120,14 +120,20 @@ line, the service descriptions, the look titles in the gallery.
 
 - Her logo's master file, and her say on how it is used.
 - The reel: that it is hers to use, the client's consent, and the original file.
-- Portrait and biography. Both are visible, labelled placeholders. Nothing has
-  been written on her behalf.
+- Her portrait: the About photo is her own Booksy staff profile picture (a
+  560px mirror selfie). She may prefer another, and a larger file would be
+  sharper on high-density screens.
+- Her story in her own words: a marked slot in About. The About copy around it
+  is built only from verified facts (see "About" below).
+- The name. Her logo and Instagram say Yaribel Vasquez; Booksy lists the one
+  staff member as "Iranya Vasquez" with this same photo. The page uses
+  Yaribel and "Yari" (what her clients call her in their reviews). Confirm.
+- Where inquiries should go, and a privacy notice, before the form is live.
 - Photo selection, usage rights and photographer credits for every image.
 - Which of the gallery photographs are her own work, and the captions and
   categories we gave them.
 - Which review excerpts she wants shown. No star rating or count is displayed.
 - Service priorities, travel area, current prices (Booksy stays the source).
-- Whether "Yaribel Vasquez" is the name she wants on the site.
 - Spanish. Nothing is translated; no unreviewed translation is published.
 - Phone number. Public on her Instagram, deliberately not on the page.
 
@@ -193,15 +199,56 @@ the rest of the Booksy photographs are 1000-1440px and are kept to the gallery
 and the desktop side columns. Larger originals from her would sharpen the
 hero further.
 
+## About
+
+Added 2026-11-19 at the founder's request ("it's missing her about me"), after
+Leti Silva Beauty's About. Everything in it is verified or clearly marked:
+
+- **Photo:** the staff profile photo on her public Booksy listing
+  (`resource_photos/3989d021a8f749aca01f994e334daf66.jpeg`), captioned as such.
+- **Name:** "Yaribel Vasquez" is in her logo's script line and her Instagram
+  display name; "Yari" is what her clients call her in their Booksy reviews.
+- **What she does:** her own Booksy description ("We do makeup, hairstyles,
+  eyebrows and lashes and moree") and her service names (bridal, Sweet 16,
+  prom, graduation, photoshoot, hair, extensions, courses). Pageant work is
+  from her Instagram posts. "Mobile appointments" is from her Booksy listing,
+  which marks services as travelling; the area is to be confirmed.
+- **Client quote:** Ingrid's Booksy review of 2026-09-21, quoted verbatim.
+- **Not written:** her background, years of experience, training or feelings.
+  Her own story has a marked slot ("In her words").
+
+## Inquiry form
+
+Added 2026-11-19 at the founder's request, after Leti Silva Beauty's inquiry
+flow: one question at a time, with progress, Back that keeps every answer,
+and a review screen. The first step asks what it is about (Bridal; Sweet 16,
+prom or graduation; Event or photoshoot; Hair; Makeup classes; Something
+else); the second asks only what that service needs; then when and where,
+contact details (name, phone, email, best way to reach, Instagram), notes,
+and the review. No prices appear anywhere.
+
+**It is in demo mode and sends nothing.** Following the demo library's rule,
+it ends on a thank-you that says the inquiry was not sent anywhere, and it
+makes no network request at all (the test suite checks this). It needs an
+approved destination and a privacy notice before it can go live; there is a
+hidden honeypot field ready for that day. Without JavaScript the form is
+hidden and a note points to Booksy and Instagram.
+
+"Inquire" sits next to every Book Now: in the desktop header, the phone menu,
+the hero, the phone's sticky bar (which steps aside while the form is on
+screen), each service ("Ask about bridal" and so on, which opens the form
+already on that service's questions), the About section and the final
+section.
+
 ## Booking
 
 Every booking control is a plain link to `https://yarimakeup.booksy.com/`,
 opening in the same tab (the one-tap handoff that proved right for in-app
-browsers on Sass by Kass). There are fourteen: header, mobile menu, hero,
-after the gallery, four services plus "every service", the artist facts, the
-lightbox, the final section, the footer, and a sticky dock on phones. No
-service-level deep links are used because none has been confirmed. There is no
-form on the page and nothing is collected or sent.
+browsers on Sass by Kass). There are sixteen: header, mobile menu, hero,
+after the gallery, four services plus "every service", About, the inquiry
+introduction and its thank-you, the lightbox, the final section, the footer,
+and a sticky bar on phones. No service-level deep links are used because none
+has been confirmed.
 
 ## The Reel
 

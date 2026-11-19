@@ -6,7 +6,8 @@
 Two source folders, neither stored in this repository:
   <package>/photos   the eleven photographs in the founder's content package
   <booksy-photos>    photographs published on her public Booksy listing
-                     (services and portfolio), saved under the short names
+                     (services, portfolio and her staff profile photo), saved
+                     under the short names
                      below; docs/demo-yariiimakeup-01.md lists each address
 
 Only geometric operations are applied: crop, downscale, re-encode. No
@@ -50,6 +51,8 @@ LOOKS = {
     "prom-lilac": (BOOKSY, "prom-lilac.jpeg", (0.0, 0.0, 1.0, 1.0)),
     "studio-station": (BOOKSY, "studio-station.jpeg", (0.0, 0.0, 1.0, 1.0)),
     "hair-bride-back": (BOOKSY, "hair-bride-back.jpeg", (0.0, 0.0, 1.0, 1.0)),       # hero only
+    # the artist herself: the staff profile photo on her Booksy listing (560px), 4:5 around her face
+    "artist": (BOOKSY, "artist-profile.jpeg", (0.0, 0.0, 0.8, 1.0)),
 }
 HERO_ONLY = {"hair-bride-back"}
 
