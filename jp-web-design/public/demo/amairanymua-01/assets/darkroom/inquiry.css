@@ -9,8 +9,8 @@
 /* ---------- page tokens (every colour still comes from site.css, except the error red) ---------- */
 .pg-iq{
   --iq-rule:rgba(42,38,38,.5);   /* field and card borders on paper (3:1 or better against --paper) */
-  --iq-bad:#A12C35;              /* errors: 6.5:1 on --paper, 5.8:1 on --paper-2 */
-  --iq-bad-soft:rgba(161,44,53,.07);
+  --iq-bad:var(--safelight-deep); /* errors in the soft rosewood, like Maison and Rouge (founder: no strong red): 4.8:1 on --paper for the message text; 4.3:1 as a border on --paper-2 */
+  --iq-bad-soft:rgba(168,80,90,.08);
   --iq-tick:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 30'%3E%3Cpath d='M4 18l9 9L33 4' fill='none' stroke='%23000' stroke-width='4.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 

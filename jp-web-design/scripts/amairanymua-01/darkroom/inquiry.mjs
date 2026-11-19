@@ -63,7 +63,7 @@ const side = () => `<aside class="iq-side" aria-label="Other ways to book, and h
 <div class="iq-side-in">
 <section class="iq-ev on-paper" aria-labelledby="iqEvH">
 <span class="clip" aria-hidden="true"></span>
-<p class="edge iq-ev-k">${PATHS[1].kicker} &middot; her booking page</p>
+<p class="edge iq-ev-k">${PATHS[1].kicker}</p>
 <h2 class="d-m iq-ev-h" id="iqEvH">${INQUIRY.qHeading} <span class="h-b">Book event glam.</span></h2>
 <p class="iq-ev-b">${INQUIRY.qBody}</p>
 ${book('event', `${INQUIRY.qLink} ${arrow}`, 'btn btn--line iq-ev-btn')}

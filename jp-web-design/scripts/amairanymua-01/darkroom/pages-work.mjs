@@ -99,15 +99,20 @@ const loupe = () => {
 <button class="lp-x" id="lpClose" type="button"><span>Close</span><i aria-hidden="true"></i></button>
 </div>
 <div class="lp-stage" id="lpStage">
-<button class="lp-nav lp-prev" id="lpPrev" type="button" aria-label="Previous look"><span aria-hidden="true">&larr;</span></button>
 <figure class="pr pr--nat pr--dvm lp-pr" id="lpPr" style="--tilt:-1deg;--r:${(p.w / p.h).toFixed(4)}">
-<span class="pr-im" id="lpIm" style="--pos:${p.pos};aspect-ratio:${p.w}/${p.h}"><img id="lpImg" src="${src(l.photo, 800)}" sizes="(max-width:759px) 86vw, 640px" width="${p.w}" height="${p.h}" alt="" decoding="async"><span class="dv" aria-hidden="true"><i class="dv-m"></i><i class="dv-l"></i><i class="dv-p"></i></span></span>
+<span class="pr-im" id="lpIm" style="--pos:${p.pos};aspect-ratio:${p.w}/${p.h}"><img id="lpImg" src="${src(l.photo, 800)}" sizes="(max-width:759px) 88vw, 720px" width="${p.w}" height="${p.h}" alt="${esc(p.alt)}" loading="lazy" decoding="async"><span class="dv" aria-hidden="true"><i class="dv-m"></i><i class="dv-l"></i><i class="dv-p"></i></span></span>
 <span class="pr-b" aria-hidden="true"><span class="pr-n" id="lpFr">&#9656; ${fr(0)}</span></span>
 </figure>
-<button class="lp-nav lp-next" id="lpNext" type="button" aria-label="Next look"><span aria-hidden="true">&rarr;</span></button>
 </div>
-<p class="lp-cap" id="lpCap" aria-live="polite"><span class="lp-cn edge" id="lpCn">&#9656; ${fr(0)}</span> <span class="lp-ct" id="lpCt">${l.cap}</span></p>
-<p class="lp-hint edge" aria-hidden="true">Swipe or use the arrow keys &middot; Esc closes</p>
+<div class="lp-bar">
+<button class="lp-nav" id="lpPrev" type="button" aria-label="Previous look"><span aria-hidden="true">&larr;</span></button>
+<p class="lp-cap" id="lpCap" aria-live="polite"><span class="lp-cn edge" id="lpCn">&#9656; ${fr(0)}</span><span class="lp-ct" id="lpCt">${l.cap}</span></p>
+<button class="lp-nav" id="lpNext" type="button" aria-label="Next look"><span aria-hidden="true">&rarr;</span></button>
+</div>
+<div class="lp-foot">
+<button class="lp-zoom" id="lpZoom" type="button" aria-pressed="false"><i aria-hidden="true"></i>Loupe</button>
+<p class="lp-hint edge" aria-hidden="true"><span class="lp-h-t">Swipe for the next look</span><span class="lp-h-k">Arrow keys move &middot; Esc closes</span></p>
+</div>
 </div>`;
 };
 

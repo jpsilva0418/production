@@ -22,6 +22,8 @@ const preload = (key) => `<link rel="preload" as="image" href="${src(key, 800)}"
 const pkg = (name) => HER.packages.find((p) => p.name === name);
 /* "— Amairany, in her own words": the attribution under anything quoted from her */
 const hers = (cls = '') => `<p class="edge st-src${cls ? ` ${cls}` : ''}">${SITE.first}, in her own words</p>`;
+/* a line of edge markings (true information only), each item kept whole */
+const specLine = (items, cls) => `<p class="edge spec ${cls}">${items.map((t) => `<span class="spec-i">${t}</span>`).join('<span class="spec-s" aria-hidden="true">&#9656;</span>')}</p>`;
 
 /* ======================================================================
    BRIDAL
@@ -53,12 +55,12 @@ ${kick('Travel', { n: '03', cls: 'rv' })}
 ${h(2, HER.destination.heading, 'd-l bs-dest-h rv', 'style="--d:.06s"')}
 <blockquote class="bs-dest-q rv" style="--d:.12s"><p>&ldquo;${HER.destination.body.replace('worldwide', underline('worldwide'))}&rdquo;</p></blockquote>
 ${hers('rv')}
-<p class="edge bs-dest-edge rv" style="--d:.18s">Central Florida <span aria-hidden="true">&#9656;</span> out of state <span aria-hidden="true">&#9656;</span> worldwide</p>
+${specLine(['Central Florida', 'out of state', 'worldwide'], 'bs-dest-edge rv')}
 <div class="acts bs-dest-acts rv" style="--d:.22s">${inquire(S, `Start your bridal inquiry ${arrow}`, 'btn btn--main')}<a class="btn btn--line" href="${L.mail}">Email ${SITE.first}</a></div>
 </div>
 <div class="bs-dest-pr rv" style="--d:.1s">
 ${print('golden-hour', { n: '03A', tilt: -2.2, note: 'worldwide', sizes: '(max-width:759px) 74vw, 34vw' })}
-<span class="bs-dest-arrow" aria-hidden="true">${scrawlArrow('sw')}</span>
+<span class="bs-dest-arrow" aria-hidden="true">${scrawlArrow('se')}</span>
 </div>
 </div>`, { tone: 'tray', id: 'destination', cls: 'bs-dest-b', label: HER.destination.heading });
 
@@ -88,7 +90,7 @@ ${hers('rv')}
 <div class="bs-pair">
 <div class="bs-pair-pr">
 ${print('bride-pearls', { n: '05A', tilt: -1.6, sizes: '(max-width:759px) 50vw, 30vw', stage: 480 })}
-<p class="edge bs-pair-cap"><span class="bs-pair-n">&#9656; 05A</span> Bridal &middot; the morning of</p>
+<p class="edge bs-pair-cap"><span class="bs-pair-n">&#9656; 05A</span> Bridal &middot; getting ready</p>
 </div>
 <div class="bs-pair-film">
 ${strip('f1', { n: '06A', label: 'Bridal' })}
@@ -127,11 +129,11 @@ ${cta({ copy: FINAL.line, scrawl: 'Let’s create magic together!' })}`,
    ABOUT
    ====================================================================== */
 const [hey, iam] = HER.hello.split(/(?<=!)\s+/);
-const SPEC = `${HER.years.map(([k, v]) => `${v} ${k.toLowerCase()}`).join(' <span aria-hidden="true">&#9656;</span> ')} <span aria-hidden="true">&#9656;</span> ${HER.badges.join(' <span aria-hidden="true">&#9656;</span> ')}`;
+const SPEC = [...HER.years.map(([k, v]) => `${v} ${k.toLowerCase()}`), ...HER.badges];
 const photoQ = HER.faq.find(([q]) => /photography/i.test(q));
 
 const words = () => `<div class="ab-words">
-<p class="ab-spec edge rv">${SPEC}</p>
+${specLine(SPEC, 'ab-spec rv')}
 <div class="ab-words-g">
 <div class="ab-words-side">
 ${kick('Her About Me', { n: '02', cls: 'rv' })}
