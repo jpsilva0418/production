@@ -11,18 +11,11 @@ html.op-out .op{opacity:0;transition:opacity .4s ease}
    arch, taken up at the centre with the sides still hanging (the ellipse --hem, in the layer's
    own proportions so the arch reads the same on a phone and at 1920). The mask feathers only
    the last few pixels inside the hem, so the edge reads as cloth, not as a soft hole; a sheen
-   band rides just outside it, where gathered tulle catches the light.
-   Cost: the layer is two boxes. The body (.op-b) is a plain rectangle; only the hem strip
-   (.op-h, the lowest 31vh) carries the mask. Both paint the same full-height background
-   (--bg, sized to the whole layer and anchored top or bottom), so they meet without a seam,
-   and the compositor blends a masked surface a quarter of the size. */
-.op-l{--hem:ellipse 58% 19% at 50% 100%;--hh:31vh;position:absolute;left:-5vw;right:-5vw;top:0;height:128vh;transform-origin:50% 0;backface-visibility:hidden}
+   band (--band) rides just outside it, where gathered tulle catches the light. */
+.op-l{--hem:ellipse 58% 19% at 50% 100%;position:absolute;left:-5vw;right:-5vw;top:0;height:128vh;transform-origin:50% 0;backface-visibility:hidden;background:var(--band),var(--bg);
+  -webkit-mask-image:radial-gradient(var(--hem),rgb(0 0 0/0) 86%,rgb(0 0 0/1) 100%);
+  mask-image:radial-gradient(var(--hem),rgb(0 0 0/0) 86%,rgb(0 0 0/1) 100%)}
 html.intro .op-l{will-change:transform}
-.op-b,.op-h{position:absolute;left:0;right:0;display:block;background:var(--bg);background-size:100% 128vh;background-repeat:no-repeat}
-.op-b{top:0;bottom:var(--hh);background-position:0 0}
-.op-h{bottom:0;height:var(--hh);background:var(--band),var(--bg);background-size:100% 128vh;background-repeat:no-repeat;background-position:0 100%;
-  -webkit-mask:radial-gradient(var(--hem),rgb(0 0 0/0) 86%,rgb(0 0 0/1) 100%) 0 100%/100% 128vh no-repeat;
-  mask:radial-gradient(var(--hem),rgb(0 0 0/0) 86%,rgb(0 0 0/1) 100%) 0 100%/100% 128vh no-repeat}
 .op-folds{position:absolute;inset:0;display:block}
 /* back layer: the densest tulle, pearl white */
 .op-l3{
