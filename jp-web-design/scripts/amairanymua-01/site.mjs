@@ -100,8 +100,8 @@ Object.assign(SITES, {
     id: 'blush', n: 8, name: 'Blush', theme: '#FBF6F2',
     pages: ['', 'portfolio', 'bridal', 'about', 'journal', 'journal/how-to-prepare', 'journal/destination-bride', 'bridal-inquiry'],
     line: 'Warm cream and blush. Soft, romantic, personal.',
-    intro: 'TBD',
-    blurb: 'TBD',
+    intro: 'Her monogram seal draws itself on cream, its centre opens onto her film, and the round window settles into the page.',
+    blurb: 'Soft cream and blush with her espresso as the ink: a round hero playing her film, two ways to book with her About right under, her reels in round windows, and an inquiry that starts with your wedding date.',
     swatch: ['#FBF6F2', '#F3E2DC', '#B88A82', '#3B3330'],
   },
   cocoa: {
