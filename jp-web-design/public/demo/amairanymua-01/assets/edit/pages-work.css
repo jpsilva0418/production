@@ -19,12 +19,13 @@
   .pf-cover .cover-copy>*{grid-column:1}
   .pf-cover .pf-jump{grid-column:2;grid-row:1 / span 5;align-self:center;position:relative;display:block;width:420px;height:440px;margin:0}
   .pf-jump-a{position:absolute;display:block;width:196px;padding:0;border-radius:var(--r-l);background:var(--peach-deep);box-shadow:0 30px 50px -30px rgba(43,37,35,.5);transform:rotate(var(--t))}
-  .pf-jump-a:nth-child(1){--t:-5deg;left:0;top:70px;z-index:1}
-  .pf-jump-a:nth-child(2){--t:3deg;left:118px;top:4px;z-index:2}
-  .pf-jump-a:nth-child(3){--t:-1.5deg;left:224px;top:132px;z-index:3}
+  .pf-jump-a:nth-child(1){--t:-5deg;left:0;top:70px;z-index:2}
+  .pf-jump-a:nth-child(2){--t:3deg;left:118px;top:4px;z-index:1}
+  .pf-jump-a:nth-child(3){--t:-1.5deg;left:224px;top:184px;z-index:3}
   .pf-jump-ph{display:block;overflow:hidden;aspect-ratio:4 / 5;border-radius:inherit}
   .pf-jump-ph img{width:100%;height:100%;object-fit:cover}
   .pf-jump-t{position:absolute;left:10px;top:10px;gap:8px;padding:4px 4px 4px 14px;border-radius:999px;background:var(--cream);font:700 14px/1.1 var(--f-body);transform:rotate(calc(-1 * var(--t)));transform-origin:0 0}
+  .pf-jump-a:nth-child(odd) .pf-jump-t{top:auto;bottom:10px;transform-origin:0 100%}
   .pf-jump-c{width:28px;height:28px;background:var(--charcoal)}
   .pf-jump-c::after{border-color:var(--cream)}
   .pf-jump-a:hover{transform:rotate(var(--t)) translateY(-8px);background:var(--peach-deep);z-index:4}

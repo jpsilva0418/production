@@ -2,7 +2,10 @@
 
    A title card (kicker, her question as the <h1>, the intro, and the small "Not a bride?" way
    out to her event booking page) with one of her dark-ground bridal portraits dissolving into
-   the black behind it, then the shared inquiry as the centrepiece, then the two notes.
+   the black behind it, then the shared inquiry as the centrepiece, then the two notes, then
+   the end card every Noir page closes on (her line; back to the inquiry, or the event page).
+   On phones the "Not a bride?" aside is left to the end card, so the inquiry's first step
+   reaches the first screen.
 
    The form's markup and behaviour are SHARED by the three sites and are not written here:
    inquiryForm() (scripts/amairanymua-01/inquiry-core.mjs), assets/js/inquiry.js and the
@@ -10,8 +13,8 @@
    assets/noir/inquiry.css (guide: SKINNING.md). The core stylesheet is linked BEFORE the skin so
    the skin's single-class rules win; both are placed in `head` (after site.css) for that order.
    The step buttons and the hand-off's two actions reuse Noir's own button classes. */
-import { page, S, kick } from './shell.mjs';
-import { INQUIRY, A, book, pic, src, srcset, arrow } from '../site.mjs';
+import { page, S, kick, cta } from './shell.mjs';
+import { INQUIRY, FINAL, A, book, pic, src, srcset, arrow } from '../site.mjs';
 import { inquiryForm, inquiryHead, inquiryFoot } from '../inquiry-core.mjs';
 
 /* bride-gold-waves: shot on a grey backdrop, so it dissolves into the black without grading */
@@ -43,7 +46,7 @@ ${kick(INQUIRY.label, 'rv')}
 </aside>
 </div>
 </section>
-<section class="iq" aria-labelledby="iqCardH">
+<section class="iq" id="inquiry" aria-labelledby="iqCardH">
 <div class="wrap">
 <div class="iq-card">
 <h2 class="slate slate--champ kick iq-kick" id="iqCardH">${INQUIRY.cardKick}</h2>
@@ -54,5 +57,11 @@ ${inquiryForm(S, { primary: 'btn btn--solid', secondary: 'btn btn--line' })}
 </div>
 </div>
 </div>
-</section>`,
+</section>
+${cta({
+  kick: 'Ready when you are',
+  heading: FINAL.heading,
+  copy: `${INQUIRY.qHeading} ${INQUIRY.qBody}`,
+  actions: `<div class="acts"><a class="btn btn--solid" href="#inquiry">Back to your inquiry <span class="arr" aria-hidden="true">&uarr;</span></a>${book('event', INQUIRY.qLink, 'btn btn--line')}</div>`,
+})}`,
 });

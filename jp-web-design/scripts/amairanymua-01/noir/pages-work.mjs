@@ -12,6 +12,8 @@
    empty state. No quotation, paraphrase or reviewer is written or implied anywhere. */
 import { page, cover, chapter, cta, kick, slate, h, S } from './shell.mjs';
 import { PORTFOLIO, PORTFOLIO_PAGE, LOOKS, FILMS, PHOTOS, REVIEWS, SITE, L, href, pic, film, src, srcset, esc, arrow } from '../site.mjs';
+/* the bright-ground rule shared by every interior page (defined, with its reasons, in pages-story.mjs) */
+import { isPrint } from './pages-story.mjs';
 
 const pad = (n) => String(n).padStart(2, '0');
 const N_ALL = PORTFOLIO.reduce((n, g) => n + g.items.length, 0);
@@ -48,9 +50,10 @@ const tile = (it, n, i) => {
   const p = PHOTOS[k];
   const look = lookOf(k);
   const j = lbIndex++;
-  return `<li class="rl-t rl-t--${i} rl-k--${kind}">
+  const pr = isPrint(k);
+  return `<li class="rl-t rl-t--${i} rl-k--${kind}${pr ? ' rl-pr' : ''}">
 <a class="rl-a" href="${src(k, 1280)}" data-lb="${j}" data-srcset="${srcset(k)}" data-w="${p.w}" data-h="${p.h}" data-cap="${esc(look.cap)}" data-n="${pad(n)}">
-<span class="rl-ph">${pic(k, { sizes: '(min-width:900px) 46vw, (min-width:600px) 60vw, 92vw' })}</span>
+<span class="rl-ph${pr ? ' print' : ''}">${pic(k, { sizes: '(min-width:900px) 46vw, (min-width:600px) 60vw, 92vw' })}</span>
 <span class="vh">, open large</span>
 </a>
 <p class="slate rl-cap">${num}<span class="sep"></span><span>${look.cap}</span></p>
@@ -159,7 +162,7 @@ export const reviews = () => page({
   main: `${cover({ kick: REVIEWS.kick, heading: REVIEWS.heading, sub: REVIEWS.sub, image: REV_COVER })}
 <section class="sec sec--join rs-sec" aria-labelledby="rsH">
 <div class="wrap">
-${chapter({ kick: 'Where to read them', heading: ['Where to', 'read them.'], id: 'rsH-wrap' }).replace('<h2 class="', '<h2 id="rsH" class="')}
+${chapter({ kick: REVIEWS.sites.map((r) => r.name).join(' &middot; '), heading: ['Where to', 'read them.'], id: 'rsH-wrap' }).replace('<h2 class="', '<h2 id="rsH" class="')}
 <ul class="rs-list">
 ${REVIEWS.sites.map(siteLink).join('\n')}
 </ul>

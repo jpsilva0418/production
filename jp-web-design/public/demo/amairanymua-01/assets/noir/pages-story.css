@@ -3,24 +3,23 @@
 
 /* =========================== ABOUT =========================== */
 /* The title card. artist-brushes is shot on white, so it does not dissolve into the black
-   (that would turn its edges into a grey rectangle): it hangs like a lit print, inside a
-   fine champagne frame, with its caption slate beneath. */
+   (that would turn its edges into a grey rectangle): it hangs like a lit print (.print, at the
+   foot of this file), with its caption slate beneath. */
 .ab-cv{position:relative;padding:calc(var(--hd) + env(safe-area-inset-top,0px) + 2.2rem) 0 clamp(3.5rem,9vh,6rem);overflow:hidden;isolation:isolate}
 .ab-cv::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(55% 45% at 70% 40%,rgba(192,138,91,.10),transparent 70%)}
 .ab-cv-g{display:grid;gap:clamp(2.6rem,6vh,3.6rem)}
 .ab-cv-fig{order:-1;margin:0;justify-self:center;width:min(calc(100% - 24px),calc((52vh - 20px) * .8),calc((52svh - 20px) * .8))}
 .ab-cv-ph{position:relative;aspect-ratio:4/5;background:var(--cocoa)}
 .ab-cv-ph img{width:100%;height:100%;object-fit:cover}
-.ab-cv-ph::after{content:"";position:absolute;inset:-11px;border:1px solid rgba(230,207,166,.38);pointer-events:none}
-.ab-cv-fig figcaption{margin-top:calc(11px + 1rem);display:flex;flex-wrap:wrap;row-gap:.2em}
+.ab-cv-fig figcaption{margin-top:calc(var(--pr) + 1rem);display:flex;flex-wrap:wrap;row-gap:.2em}
 .ab-cv .d-xl{max-width:9ch}
 .ab-cv .acts{margin-top:2rem}
 @media(min-width:900px){
   .ab-cv{min-height:100vh;min-height:100svh;display:flex;align-items:flex-end}
   .ab-cv > .wrap{width:100%}
   .ab-cv-g{grid-template-columns:1.1fr .9fr;align-items:end;gap:clamp(2rem,5vw,6rem)}
-  .ab-cv-fig{order:0;justify-self:end;width:min(100%,calc((100vh - var(--hd) - 9rem) * .8),calc((100svh - var(--hd) - 9rem) * .8));margin-right:11px}
-  .ab-cv-txt{padding-bottom:calc(11px + 2.4rem)}
+  .ab-cv-fig{order:0;justify-self:end;width:min(100%,calc((100vh - var(--hd) - 9rem) * .8),calc((100svh - var(--hd) - 9rem) * .8));margin-right:var(--pr)}
+  .ab-cv-txt{padding-bottom:calc(var(--pr) + 2.4rem)}
 }
 
 /* the story */
@@ -53,10 +52,20 @@
 .ab-mo-g figure{margin:0}
 .ab-mo-g .ph,.ab-mo-g .film{width:100%}
 .ab-mo-g figcaption{display:flex;flex-wrap:wrap;row-gap:.25em;margin-top:.9rem}
+.ab-mo-g .print + figcaption{margin-top:calc(var(--pr) + .9rem)}
+.ab-mo-g .ph--fade-b + figcaption{margin-top:-.2rem}
 .ab-mo .slot{gap:.6rem;padding:1.4rem .9rem}
 .ab-mo .slot-ic{width:42px;height:42px}
 .ab-mo .slot-t{font-size:clamp(1.12rem,3.8vw,1.75rem)}
-.ab-mo .slot-s{letter-spacing:.14em}
+.ab-mo .slot-s{letter-spacing:.14em;line-height:1.5}
+/* phones: two narrow columns. The count on one line, the look on the next; the slot's
+   small print set tighter so "Slot · clip to come" never breaks inside a word group */
+@media(max-width:599px){
+  .ab-mo-g figcaption{flex-direction:column;align-items:flex-start;gap:.15em}
+  .ab-mo-g figcaption .sep{display:none}
+  .ab-mo .slot{padding:1.2rem .7rem;gap:.5rem}
+  .ab-mo .slot-s{font-size:.54rem;letter-spacing:.1em}
+}
 @media(min-width:900px){
   .ab-mo-g{grid-template-columns:repeat(4,1fr);gap:clamp(14px,1.6vw,24px)}
   .ab-mo-g > li:nth-child(even){margin-top:5rem}
@@ -76,12 +85,17 @@
 .sv-it{display:grid;gap:2rem;scroll-margin-top:var(--hd)}
 .sv-media{position:relative;margin:0 calc(var(--gut-r) * -1) 0 calc(var(--gut-l) * -1)}
 .ph.sv-ph{-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 64%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 64%,transparent 100%)}
-.sv-film{position:relative;z-index:1;width:46%;margin:-37.5% var(--gut-r) 0 auto}
+/* phones: the film plate is laid over the plate's lower corner and ends just below it, so it
+   reads as a frame placed on a print, not as something hanging off it */
+.sv-film{position:relative;z-index:1;width:44%;margin:-66% var(--gut-r) 0 auto}
+.sv-it--print .sv-media{margin-inline:var(--pr)}
+.sv-it--print .sv-film{width:42%;margin:-62% calc(var(--pr) * -1 - 1px) 0 auto}
 .sv-film .film{width:100%;box-shadow:none}
 .sv-film .slot{gap:.6rem;padding:1.4rem .8rem}
 .sv-film .slot-ic{width:42px;height:42px}
 .sv-film .slot-t{font-size:clamp(1.1rem,3.8vw,1.75rem)}
-.sv-film .slot-s{letter-spacing:.14em}
+.sv-film .slot-s{letter-spacing:.12em;line-height:1.5}
+@media(max-width:379px){.sv-film .slot{padding:1rem .6rem}.sv-film .slot-s{font-size:.54rem;letter-spacing:.1em}}
 .sv-txt > .slate{display:flex;flex-wrap:wrap;row-gap:.25em;margin-bottom:1.1rem}
 .sv-txt .d-m{margin-bottom:1.2rem;max-width:12ch}
 .sv-txt .lead{max-width:30em}
@@ -91,13 +105,16 @@
 @media(min-width:900px){
   .sv-it{grid-template-columns:1fr 1fr;gap:clamp(2.5rem,6vw,7rem);align-items:center}
   .sv-it--flip .sv-media{order:2}
-  .sv-media{margin:0}
+  .sv-media,.sv-it--print .sv-media{margin:0}
   .sv-ph{width:86%}
   .ph.sv-ph{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 11%,#000 89%,transparent 100%),linear-gradient(180deg,transparent 0,#000 8%,#000 64%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,#000 11%,#000 89%,transparent 100%),linear-gradient(180deg,transparent 0,#000 8%,#000 64%,transparent 100%);mask-composite:intersect}
   .sv-it--flip .sv-ph{margin-left:auto}
   .sv-it--film .sv-ph{width:76%}
   .sv-it--film .sv-media{padding-bottom:9%}
-  .sv-film{position:absolute;right:0;bottom:0;width:36%;margin:0}
+  .sv-film,.sv-it--print .sv-film{position:absolute;right:0;bottom:0;width:36%;margin:0}
+  .sv-it--print .sv-ph{width:78%;margin-left:var(--pr)}
+  .sv-it--print.sv-it--flip .sv-ph{margin-left:auto;margin-right:var(--pr)}
+  .sv-it--print.sv-it--film .sv-ph{width:70%}
   .sv-it--flip .sv-film{right:auto;left:0}
   .sv-go{grid-template-columns:1fr auto;align-items:center}
 }
@@ -165,3 +182,12 @@
   .br-faq-g > .ch{position:sticky;top:calc(var(--hd) + 2rem)}
 }
 @media(prefers-reduced-motion:reduce){.br-q i::after,.br-q .q{transition:none}}
+
+/* =========================== PRINTS ===========================
+   ONE RULE on all six interior pages (same block in pages-work.css): a photograph shot on a
+   bright ground is never edge-faded on the black (that reads as a grey vignette). It hangs
+   like a lit print: the whole rectangle, unmasked, in a fine champagne hairline set a few
+   pixels off its edge. Which photographs: PRINT in pages-story.mjs. The outline is drawn
+   outside the box and is not clipped by the frame's own overflow. */
+:root{--pr:clamp(6px,.8vw,11px)}
+.print,.ph.print,.ph.sv-ph.print{-webkit-mask-image:none;mask-image:none;background:var(--cocoa);outline:1px solid rgba(230,207,166,.38);outline-offset:var(--pr)}

@@ -1,0 +1,58 @@
+/* /demo/amairanymua-01 — the founder's chooser (review build only).
+   A neutral studio page so no preview is favoured: warm grey ground, Instrument Serif
+   for the one heading voice, the system sans for everything else. */
+@font-face{font-family:'Instrument Serif';font-style:normal;font-display:swap;font-weight:400;src:url(../fonts/instrument-serif.woff2) format('woff2')}
+@font-face{font-family:'Instrument Serif';font-style:italic;font-display:swap;font-weight:400;src:url(../fonts/instrument-serif-italic.woff2) format('woff2')}
+:root{--bg:#F7F4F0;--card:#FFFFFF;--ink:#1D1714;--soft:#5A504A;--mute:#6E625A;--hair:rgba(29,23,20,.13);--hair2:rgba(29,23,20,.26);
+  --serif:'Instrument Serif',Georgia,'Times New Roman',serif;--sans:system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--ease:cubic-bezier(.16,1,.3,1)}
+*{box-sizing:border-box}
+body.ch{margin:0;background:var(--bg);color:var(--soft);font:400 1rem/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+a:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.ch-wrap{width:min(100% - 40px,1320px);margin-inline:auto;padding:clamp(36px,7vw,96px) 0 clamp(72px,9vw,120px)}
+.ch-head{max-width:860px;margin-bottom:clamp(2.2rem,5vw,4rem)}
+.ch-flag{display:inline-block;font:600 .64rem/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--bg);background:var(--ink);border-radius:999px;padding:.8em 1.3em .74em;margin:0 0 clamp(1.4rem,3vw,2.2rem)}
+.ch-h{font:400 clamp(2.7rem,7.4vw,6rem)/.98 var(--serif);letter-spacing:-.01em;color:var(--ink);margin:0 0 clamp(1rem,2vw,1.4rem);text-wrap:balance}
+.ch-h em{font-style:italic}
+.ch-lede{font-size:clamp(1.04rem,1.4vw,1.2rem);line-height:1.6;color:var(--soft);max-width:44em;margin:0}
+
+.ch-grid{display:grid;gap:clamp(1.2rem,2.4vw,2rem)}
+@media(min-width:1040px){.ch-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.ch-card{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--hair);border-radius:18px;overflow:hidden;box-shadow:0 34px 60px -48px rgba(29,23,20,.45)}
+/* the wide screenshot as the ground, the phone standing in front of it */
+.ch-shots{position:relative;display:block;aspect-ratio:16/11.4;background:var(--ground,#ddd);overflow:hidden;text-decoration:none}
+.ch-wide{position:absolute;inset:0}
+.ch-wide img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 0;transition:transform 1.1s var(--ease)}
+.ch-phone{position:absolute;right:6%;bottom:-10%;width:27%;border-radius:16px;overflow:hidden;border:3px solid #15100d;background:#15100d;box-shadow:0 24px 44px -16px rgba(0,0,0,.55);transition:transform .7s var(--ease)}
+.ch-phone img{display:block;width:100%;height:auto}
+.ch-shots:focus-visible{outline:3px solid var(--ink);outline-offset:-6px}
+@media(hover:hover){.ch-shots:hover .ch-wide img{transform:scale(1.03)}.ch-shots:hover .ch-phone{transform:translateY(-8px)}}
+.ch-body{display:flex;flex-direction:column;align-items:flex-start;gap:.65rem;padding:clamp(1.3rem,2.2vw,1.9rem);flex:1}
+.ch-k{display:flex;align-items:center;gap:.7rem;margin:0;font:600 .64rem/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
+.ch-n{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;border:1px solid var(--hair2);font:italic 400 1.1rem/1 var(--serif);letter-spacing:0;text-transform:none;color:var(--ink)}
+.ch-t{font:400 clamp(2rem,3vw,2.6rem)/1 var(--serif);color:var(--ink);margin:.1rem 0 0}
+.ch-line{margin:0;font:italic 400 1.18rem/1.35 var(--serif);color:var(--ink)}
+.ch-p{margin:0;font-size:.96rem;line-height:1.62}
+.ch-intro{margin:.2rem 0 0;padding-top:.75rem;border-top:1px solid var(--hair);font-size:.92rem;line-height:1.55;width:100%}
+.ch-intro span{display:block;font:600 .6rem/1.8 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
+.ch-sw{display:flex;gap:7px;margin:.3rem 0 .4rem}
+.ch-sw i{width:26px;height:26px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(29,23,20,.18)}
+.ch-go{margin-top:auto;display:flex;align-items:center;justify-content:center;gap:.5em;width:100%;min-height:50px;border-radius:999px;background:var(--ink);color:var(--bg);text-decoration:none;font:600 .78rem/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;transition:background .3s}
+@media(hover:hover){.ch-go:hover{background:#3a2f29}}
+.ch-pages{display:flex;flex-wrap:wrap;align-items:center;gap:0 .9rem;margin:.3rem 0 0;font-size:.84rem}
+.ch-pages-k{font:600 .58rem/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--mute);margin-right:.1rem}
+.ch-pages a{display:inline-flex;align-items:center;min-height:44px;color:var(--ink);text-decoration:underline;text-decoration-color:var(--hair2);text-underline-offset:4px}
+@media(hover:hover){.ch-pages a:hover{text-decoration-color:currentColor}}
+
+.ch-same{margin-top:clamp(3.2rem,7vw,6rem);padding-top:clamp(1.8rem,4vw,3rem);border-top:1px solid var(--hair2);display:grid;gap:1.2rem 4rem}
+@media(min-width:900px){.ch-same{grid-template-columns:minmax(0,.6fr) minmax(0,1.4fr)}.ch-foot{grid-column:2}}
+.ch-same-h{font:400 clamp(1.9rem,3vw,2.6rem)/1.05 var(--serif);color:var(--ink);margin:0}
+.ch-list{list-style:none;margin:0;padding:0}
+.ch-list li{display:grid;grid-template-columns:minmax(0,10em) minmax(0,1fr);gap:.2rem 1.5rem;padding:1rem 0;border-bottom:1px solid var(--hair);font-size:.96rem;line-height:1.6}
+.ch-list li:first-child{border-top:1px solid var(--hair)}
+.ch-list b{font:600 .62rem/2.4 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
+@media(max-width:560px){.ch-list li{grid-template-columns:1fr}}
+.ch-foot{margin:0;font:italic 400 1.08rem/1.55 var(--serif);color:var(--soft);max-width:40em}
+.ch-foot code{font:400 .86em/1 ui-monospace,Menlo,Consolas,monospace;font-style:normal;background:rgba(29,23,20,.06);padding:.15em .4em;border-radius:4px}
+.ch-fine{margin:clamp(2.4rem,5vw,4rem) 0 0;max-width:76ch;font-size:.8rem;line-height:1.7;color:var(--mute)}
+@media (prefers-reduced-motion:reduce){.ch-wide img,.ch-phone,.ch-go{transition:none!important}}

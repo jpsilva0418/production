@@ -12,6 +12,16 @@ const pad = (n) => String(n).padStart(2, '0');
 const preload = (key, sizes, w = 800) =>
   `<link rel="preload" as="image" href="${src(key, w)}" imagesrcset="${srcset(key)}" imagesizes="${sizes}" fetchpriority="high">`;
 const capOf = (k) => (LOOKS.find((x) => x.photo === k) || {}).cap || '';
+
+/* ONE RULE for every interior page (About, Services, Bridal, Portfolio, Reviews, Inquiry):
+   a photograph shot on a BRIGHT ground (white wall, window, sky, beach) is never edge-faded on
+   the black, because a fade turns its bright edges into a grey vignette. It hangs like a lit
+   print instead: the whole rectangle, unmasked, inside a fine champagne hairline set a few
+   pixels off its edge (class "print"; the same block is in pages-story.css and pages-work.css).
+   Photographs shot on dark or grey grounds keep the dissolve. Measured from the files: these
+   seven have a mean edge luminance above 120 of 255; the rest sit between 40 and 118. */
+export const PRINT = new Set(['artist-brushes', 'artist-spotlight-crop', 'bride-pearls', 'glam-sculpt', 'waves-blonde', 'wedding-florals', 'golden-hour']);
+export const isPrint = (k) => PRINT.has(k);
 /* A title split for the roman/italic mix: before "&amp;" or after " to ", else before the last word. */
 const split = (t) => {
   if (t.includes(' &amp; ')) { const i = t.indexOf(' &amp; '); return [t.slice(0, i), t.slice(i + 1)]; }
@@ -32,7 +42,7 @@ ${h(1, ABOUT.heading, 'd-xl rv-mask', 'id="abH"')}
 <div class="rv" style="--d:.25s">${actions()}</div>
 </div>
 <figure class="ab-cv-fig rv-fade">
-<div class="ab-cv-ph">${pic('artist-brushes', { sizes: COVER_AB, eager: true })}</div>
+<div class="ab-cv-ph print">${pic('artist-brushes', { sizes: COVER_AB, eager: true })}</div>
 <figcaption class="slate">${ABOUT.figKick}</figcaption>
 </figure>
 </div>
@@ -72,7 +82,7 @@ ${chapter({ kick: 'Film and stills', heading: ['In', 'motion.'] }).replace('<h2 
 <ul class="ab-mo-g" data-stag=".1">
 ${MOTION.map((m, i) => `<li class="rv"><figure>${m.film
     ? film(m.film, { label: FILMS[m.film].label, cls: 'ph--vert' })
-    : frame(m.photo, { shape: 'vert', sizes: '(min-width:900px) 22vw, 44vw', rv: '' })}<figcaption class="slate"><span><b>${pad(i + 1)}</b> / ${pad(MOTION.length)}</span><span class="sep"></span><span>${m.film ? `Film &middot; ${FILMS[m.film].label}` : m.cap}</span></figcaption></figure></li>`).join('\n')}
+    : frame(m.photo, { shape: 'vert', fade: isPrint(m.photo) ? '' : 'fade-b', cls: isPrint(m.photo) ? 'print' : '', sizes: '(min-width:900px) 22vw, 44vw', rv: '' })}<figcaption class="slate"><span class="n"><b>${pad(i + 1)}</b> / ${pad(MOTION.length)}</span><span class="sep"></span><span>${m.film ? `Film &middot; ${FILMS[m.film].label}` : m.cap}</span></figcaption></figure></li>`).join('\n')}
 </ul>
 </div>
 </section>`;
@@ -111,9 +121,10 @@ const GROUP_ACTS = {
 const svItem = (it, g, flip) => {
   const n = items.indexOf(it) + 1;
   const [a, b] = split(it.title);
-  return `<article class="sv-it${flip ? ' sv-it--flip' : ''}${it.film ? ' sv-it--film' : ''}" id="${it.id}" aria-labelledby="${it.id}-h">
+  const pr = isPrint(it.plate);
+  return `<article class="sv-it${flip ? ' sv-it--flip' : ''}${it.film ? ' sv-it--film' : ''}${pr ? ' sv-it--print' : ''}" id="${it.id}" aria-labelledby="${it.id}-h">
 <div class="sv-media">
-${frame(it.plate, { shape: 'tall', fade: 'fade-b', sizes: '(min-width:900px) 40vw, 100vw', cls: 'sv-ph' })}
+${frame(it.plate, { shape: 'tall', fade: pr ? '' : 'fade-b', sizes: pr ? '(min-width:900px) 34vw, 92vw' : '(min-width:900px) 40vw, 100vw', cls: `sv-ph${pr ? ' print' : ''}` })}
 ${it.film ? `<div class="sv-film rv" style="--d:.2s">${film(it.film, { label: FILMS[it.film].label, cls: 'ph--vert' })}</div>` : ''}
 </div>
 <div class="sv-txt">

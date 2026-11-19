@@ -28,13 +28,14 @@ const beat = (b, i) => {
    by the opening itself), then the lead photograph (already preloaded) where it locks, then
    one spare frame below it for the settle */
 const PASS = ['glam-bronze', 'bride-pearls', 'bride-ruby', 'waves-blonde', 'bride-gold-waves', 'glam-sculpt'];
-const strip = () => `<div class="op-strip">${PASS.map((k) => `<div class="op-f"><img data-src="${src(k, 480)}" alt="" width="480" height="${Math.round((480 * PHOTOS[k].h) / PHOTOS[k].w)}" style="object-position:${PHOTOS[k].pos}" decoding="async"></div>`).join('')}<div class="op-f op-f--lock"><img data-src="${src(lead, 800)}" data-srcset="${srcset(lead)}" sizes="${HERO_SIZES}" alt="" width="${PHOTOS[lead].w}" height="${PHOTOS[lead].h}" style="object-position:${PHOTOS[lead].pos}" decoding="async"></div><div class="op-f"><img data-src="${src('bride-ruby', 480)}" alt="" width="480" height="558" style="object-position:${PHOTOS['bride-ruby'].pos}" decoding="async"></div></div>`;
+const strip = () => `<div class="op-strip">${PASS.map((k) => `<div class="op-f"><img data-src="${src(k, 480)}" alt="" width="480" height="${Math.round((480 * PHOTOS[k].h) / PHOTOS[k].w)}" style="object-position:${PHOTOS[k].pos}" decoding="async" fetchpriority="low"></div>`).join('')}<div class="op-f op-f--lock"><img data-src="${src(lead, 800)}" data-srcset="${srcset(lead)}" sizes="${HERO_SIZES}" alt="" width="${PHOTOS[lead].w}" height="${PHOTOS[lead].h}" style="object-position:${PHOTOS[lead].pos}" decoding="async"></div><div class="op-f"><img data-src="${src('bride-ruby', 480)}" alt="" width="480" height="558" style="object-position:${PHOTOS['bride-ruby'].pos}" decoding="async" fetchpriority="low"></div></div>`;
 
 const hero = () => `${gate}
 <section class="hr" id="top" data-hero aria-labelledby="hrT">
 <div class="hr-frame hr-reel" id="reel" data-n="${MONTAGE.length}">${MONTAGE.map(beat).join('')}</div>
 <div class="op" aria-hidden="true">
 <div class="hr-frame op-gate"><div class="op-st">${strip()}</div></div>
+<script>(function(){var d=document;if(!d.documentElement.classList.contains('intro'))return;[].forEach.call(d.querySelectorAll('.op-strip img[data-src]'),function(m){var s=m.getAttribute('data-srcset');if(s)m.srcset=s;m.src=m.getAttribute('data-src');m.removeAttribute('data-src')})})();</script>
 <i class="op-rule"></i>
 <p class="op-line">Hair + Makeup <span>&mdash;</span> ${SITE.area}</p>
 </div>
@@ -61,14 +62,14 @@ const SCENES = [
 ];
 const scenes = () => `<section class="sc" id="scenes" aria-label="What she is known for" data-scenes>
 <div class="sc-stage">
-${SCENES.map((s, i) => `<div class="scn${i === 0 ? ' on' : ''}" data-i="${i}">
+${SCENES.map((s, i) => `<div class="scn${i === 0 ? ' on' : ''}" data-i="${i}"><div class="scn-in">
 <div class="scn-ph"><div class="scn-im">${pic(s.photo, { sizes: '(min-width:900px) 68vw, 100vw' })}</div></div>
 <div class="wrap scn-txt">
 <p class="slate slate--champ scn-sl">Sc. ${pad(i + 1)} / ${pad(SCENES.length)}</p>
 <h2 class="scn-h"><em>${s.name}</em></h2>
 <p class="scn-p">${svc(s.item).summary}</p>
 </div>
-</div>`).join('\n')}
+</div>${i ? '<i class="scn-edge" aria-hidden="true"></i>' : ''}</div>`).join('\n')}
 <div class="sc-ui" aria-hidden="true"><span class="sc-prog"><i></i></span><span class="slate sc-n">Sc. <b>01</b> / ${pad(SCENES.length)}</span></div>
 </div>
 </section>`;
@@ -76,7 +77,7 @@ ${SCENES.map((s, i) => `<div class="scn${i === 0 ? ' on' : ''}" data-i="${i}">
 /* ---------- 3. the artist ---------- */
 const artist = () => `<section class="sec art" id="artist" aria-labelledby="artH">
 <div class="wrap art-g">
-<figure class="art-ph rv-im">${pic('artist-brushes', { sizes: '(min-width:900px) 46vw, 100vw' })}</figure>
+<figure class="art-fig rv-fade"><div class="art-ph">${pic('artist-brushes', { sizes: '(min-width:900px) 40vw, 86vw' })}</div><figcaption class="slate">${INTRO.caption}</figcaption></figure>
 <div class="art-txt">
 ${kick(INTRO.eyebrow, 'rv')}
 ${h(2, INTRO.heading, 'd-l rv-mask', 'id="artH"')}

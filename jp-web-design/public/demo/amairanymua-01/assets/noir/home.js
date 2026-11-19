@@ -168,39 +168,55 @@
   };
   if (!intro()) Reel.start();
 
-  /* ===================== scenes: one rAF loop, opacity and transform only ===================== */
+  /* ===================== scenes: one rAF loop, transforms only =====================
+     Each scene after the first is a window (.scn) that rises from the bottom edge while its
+     contents (.scn-in) counter-move to stay almost still: the new frame wipes up over the old
+     one like film through a gate. The outgoing frame drifts up a little as it is covered, the
+     incoming one settles a little as it arrives; a champagne hairline rides the cut. No frame
+     is ever drawn at partial opacity. Scroll is mapped to f in [0, N-1+END]: each cut takes
+     CUT of a scene's scroll, then the frame holds while its slow push-in continues. */
   var sc = q('[data-scenes]');
   var sticky = sc && !reduced && root.classList.contains('js');
   if (sticky) {
     var stage = q('.sc-stage', sc), scn = $$('.scn', sc), N = scn.length;
+    var inner = scn.map(function (s) { return q('.scn-in', s); });
     var ims = scn.map(function (s) { return q('.scn-im', s); });
+    var edges = scn.map(function (s) { return q('.scn-edge', s); });
     var prog = q('.sc-prog i', sc), num = q('.sc-n b', sc);
-    var active = 0, ticking = false, last = -1;
-    var smooth = function (x) { return x * x * (3 - 2 * x); };
+    var CUT = 0.6, LEAD = 0.18, END = 0.35, SETTLE = 12, DRIFT = 9;
+    var active = 0, ticking = false, last = -1, vis = [];
+    var ease = function (x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(2 - 2 * x, 3) / 2; };
+    var wipe = function (f, k) { return k === 0 ? 1 : ease(clamp((f - (k - 1) - LEAD) / CUT, 0, 1)); };
     var frame = function () {
       ticking = false;
       var r = sc.getBoundingClientRect(), vh = window.innerHeight;
       if (r.bottom < -50 || r.top > vh + 50) return;
       var total = Math.max(1, sc.offsetHeight - stage.offsetHeight);
       var p = clamp(-r.top / total, 0, 1);
-      if (Math.abs(p - last) < 0.0004) return;
+      if (Math.abs(p - last) < 0.0002) return;
       last = p;
-      var f = p * (N - 0.4);
+      var f = p * (N - 1 + END);
       var a = 0;
       for (var k = 0; k < N; k++) {
-        var op = k === 0 ? 1 : smooth(clamp((f - (k - 0.3)) / 0.22, 0, 1));
-        var next = k + 1 < N ? smooth(clamp((f - (k + 1 - 0.3)) / 0.22, 0, 1)) : 0;
-        if (k > 0 && op >= 0.5) a = k;
-        var s = scn[k].style;
-        s.opacity = op.toFixed(3);
-        /* fully covered or not yet arrived: skip painting it */
-        s.visibility = (op <= 0 || next >= 1) ? 'hidden' : 'visible';
-        var lp = clamp((f - (k - 0.35)) / 1.35, 0, 1);
-        if (op > 0 && next < 1) ims[k].style.transform = 'scale(' + (1 + 0.075 * lp).toFixed(4) + ')';
+        var w = wipe(f, k), wn = k + 1 < N ? wipe(f, k + 1) : 0;
+        var show = w > 0 && wn < 1;
+        if (show !== vis[k]) { scn[k].style.visibility = show ? 'visible' : 'hidden'; vis[k] = show; }
+        if (w >= 0.5) a = k;
+        if (k > 0) scn[k].classList.toggle('on', w >= 0.4);
+        if (!show) continue;
+        /* the window rises; its contents counter-move (settling SETTLE% as they arrive) and
+           drift up DRIFT% while the next frame covers them */
+        if (k > 0) scn[k].style.transform = w >= 1 ? 'none' : 'translate3d(0,' + ((1 - w) * 100).toFixed(3) + '%,0)';
+        var iy = (k > 0 ? (w - 1) * (100 - SETTLE) : 0) - wn * DRIFT;
+        inner[k].style.transform = Math.abs(iy) < 0.001 ? 'none' : 'translate3d(0,' + iy.toFixed(3) + '%,0)';
+        if (edges[k]) edges[k].style.opacity = (w > 0 && w < 1 ? Math.min(1, Math.min(w, 1 - w) * 8) * 0.75 : 0).toFixed(3);
+        /* a slow push-in across the frame's whole life on screen */
+        var lp = clamp((f - (k - 1) - LEAD) / (1 + CUT), 0, 1);
+        ims[k].style.transform = 'scale(' + (1 + 0.07 * lp).toFixed(4) + ')';
       }
       if (prog) prog.style.transform = 'scaleX(' + p.toFixed(4) + ')';
       if (a !== active) {
-        scn[active].classList.remove('on'); scn[a].classList.add('on'); active = a;
+        active = a;
         if (num) num.textContent = (a + 1 < 10 ? '0' : '') + (a + 1);
       }
     };

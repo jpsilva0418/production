@@ -126,8 +126,10 @@ const bar = () => `<div class="bar" id="bookBar">${inquire(S, 'Bridal inquiry', 
 /** A whole Noir document.
  *  path: '' | 'about' | ...; title/description: this page's own; main: the page's markup
  *  (inside <main id="main">); head: extra <head> markup (preloads); css/js: extra file names
- *  in assets/noir without extension (e.g. css:['pages'], js:['pages']); bodyClass. */
-export const page = ({ path = '', title, description, main, head: extra = '', css = [], js = [], bodyClass = '' }) => `<!doctype html>
+ *  in assets/noir without extension (e.g. css:['pages'], js:['pages']); bodyClass.
+ *  bookBar: the phone booking bar. Off on the bridal inquiry itself, where its "Bridal
+ *  inquiry" would only jump to the form the visitor is already filling in. */
+export const page = ({ path = '', title, description, main, head: extra = '', css = [], js = [], bodyClass = '', bookBar = path !== 'bridal-inquiry' }) => `<!doctype html>
 <html lang="en" class="noir">
 <head>
 ${head(S, { path, title, description })}
@@ -146,7 +148,7 @@ ${menu(path)}
 ${main}
 </main>
 ${footer(path)}
-${bar()}
+${bookBar ? bar() : ''}
 ${marker(S, path)}
 <script src="${N}/site.js" defer></script>
 ${js.map((s) => `<script src="${N}/${s}.js" defer></script>`).join('\n')}

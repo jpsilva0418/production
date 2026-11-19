@@ -455,7 +455,7 @@ export const ABOUT = {
 export const REVIEWS = {
   ghost: 'kind words',
   kick: 'Reviews',
-  heading: ['Five stars,', 'in their own words.'],
+  heading: ['Five stars,', 'read them in full.'],
   sub: `${SITE.first}’s reviews live where her clients wrote them. Ratings and review counts are as shown on each site on ${SITE.ratingsAsOf}.`,
   /* no review is quoted until she chooses which ones to share */
   sites: [

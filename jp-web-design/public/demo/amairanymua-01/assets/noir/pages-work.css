@@ -79,6 +79,10 @@
 .rl-t--1 .rl-cap .sep,.rl-t--2 .rl-cap .sep,.rl-t--3 .rl-cap .sep{display:none}
 .rl-t--1 .slot,.rl-t--2 .slot{padding:1.2rem .8rem;gap:.6rem}
 .rl-t--1 .slot-s,.rl-t--2 .slot-s{letter-spacing:.12em;line-height:1.5}
+/* a print never runs to the screen's edge: its hairline needs the gutter */
+.rl-pr.rl-t--0 .rl-ph,.rl-pr.rl-t--4 .rl-ph{margin-inline:0}
+.rl-pr .rl-cap{margin-top:calc(var(--pr) + .85rem)}
+.rl-pr .rl-a:focus-visible{outline-offset:calc(var(--pr) + 5px)}
 @media(min-width:600px) and (max-width:899px){
   .rl-t--0 .rl-ph,.rl-t--0 .rl-f,.rl-t--4 .rl-ph,.rl-t--4 .rl-f{margin-inline:0}
   .rl-t--0{grid-column:1/span 5}
@@ -196,3 +200,12 @@
   .rs-e-in{margin-top:0}
   .rs-e-txt{max-width:min(44%,36rem)}
 }
+
+/* =====================================================================
+   PRINTS — ONE RULE on all six interior pages (same block in pages-story.css): a photograph
+   shot on a bright ground is never edge-faded on the black (that reads as a grey vignette).
+   It hangs like a lit print: the whole rectangle, unmasked, in a fine champagne hairline set
+   a few pixels off its edge. Which photographs: PRINT in pages-story.mjs.
+   ===================================================================== */
+:root{--pr:clamp(6px,.8vw,11px)}
+.print,.rl-ph.print{-webkit-mask-image:none;mask-image:none;background:var(--cocoa);outline:1px solid rgba(230,207,166,.38);outline-offset:var(--pr)}
