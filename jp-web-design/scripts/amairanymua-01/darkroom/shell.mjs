@@ -73,7 +73,7 @@ export const booking = (cls = '') => `<p class="nowb${cls ? ` ${cls}` : ''}"><sp
 /** Both ways to book, as a button pair: the on-site bridal inquiry (primary) and her event booking page.
  *  size: '' | 'btn--sm'; tone: '' (on the dark room) | 'on-paper'. */
 export const actions = ({ inq = 'Bridal inquiry', event = 'Book event glam', size = '', cls = '', tone = '' } = {}) =>
-  `<div class="acts${tone ? ` acts--${tone}` : ''}${cls ? ` ${cls}` : ''}">${inquire(S, `${inq} ${arrow}`, `btn btn--red${size ? ` ${size}` : ''}`)}${book('event', event, `btn btn--line${size ? ` ${size}` : ''}`)}</div>`;
+  `<div class="acts${tone ? ` acts--${tone}` : ''}${cls ? ` ${cls}` : ''}">${inquire(S, `${inq} ${arrow}`, `btn btn--main${size ? ` ${size}` : ''}`)}${book('event', event, `btn btn--line${size ? ` ${size}` : ''}`)}</div>`;
 /** A plain text link with an arrow. tone '' (red-lit on dark) or 'on-paper'. */
 export const more = (url, label, cls = '') => `<a class="more${cls ? ` ${cls}` : ''}" href="${url}">${label} ${arrow}</a>`;
 
@@ -243,7 +243,7 @@ const header = (path) => `<header class="hd" id="siteHeader">
 <a class="hd-wm" href="${href(S)}" aria-label="${SITE.name}, home"${path === '' ? ' aria-current="page"' : ''}>${wordmark()}</a>
 <nav class="hd-nav" aria-label="Main">${PAGES_NAV.filter((n) => n.path && !n.cta).map((n) => `<a href="${href(S, n.path)}"${cur(n.path, path)}>${n.label}</a>`).join('')}</nav>
 <span class="hd-ev">${book('event', 'Book event glam', 'btn btn--line btn--sm')}</span>
-<span class="hd-inq">${inquire(S, '<span class="l-long">Bridal inquiry</span><span class="l-short">Inquire</span>', 'btn btn--red btn--sm', path === 'bridal-inquiry' ? 'aria-current="page"' : '')}</span>
+<span class="hd-inq">${inquire(S, '<span class="l-long">Bridal inquiry</span><span class="l-short">Inquire</span>', 'btn btn--main btn--sm', path === 'bridal-inquiry' ? 'aria-current="page"' : '')}</span>
 <button class="hd-menu" id="menuOpen" type="button" aria-expanded="false" aria-controls="menu"><span class="hd-menu-t">Menu</span><i aria-hidden="true"></i></button>
 </div>
 </header>`;

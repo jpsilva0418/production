@@ -136,7 +136,7 @@ ${print(PATHS[0].plate, { shape: 'land', n: '02A', note: 'the bride', tilt: -1.4
 <h3 class="d-m way-h">${PATHS[0].title}</h3>
 <p class="way-body">${PATHS[0].body}</p>
 <p class="way-promise"><span class="edge">From her inquiry form</span><span class="way-q">&ldquo;${promise}&rdquo;</span></p>
-${inquire(S, `<span class="l-long">Start your bridal inquiry</span><span class="l-short">Inquire</span> ${arrow}`, 'btn btn--red way-btn')}
+${inquire(S, `<span class="l-long">Start your bridal inquiry</span><span class="l-short">Inquire</span> ${arrow}`, 'btn btn--main way-btn')}
 </div>
 </article>
 <article class="way way--event rv" style="--d:.2s">
@@ -198,7 +198,7 @@ const prices = () => band(`<div class="pb">
 ${kick('The price board', { n: '05', cls: 'rv' })}
 ${h(2, ['Three bridal', 'packages, as listed.'], 'd-l rv', 'style="--d:.06s"')}
 <p class="lead rv" style="--d:.12s">Three of her six bridal packages, with the prices on her booking page. All six, with everything they include, are on the Bridal page.</p>
-<div class="pb-acts rv" style="--d:.18s">${inquire(S, `Bridal inquiry ${arrow}`, 'btn btn--red')}${more(href(S, 'bridal'), 'See all six packages')}</div>
+<div class="pb-acts rv" style="--d:.18s">${inquire(S, `Bridal inquiry ${arrow}`, 'btn btn--main')}${more(href(S, 'bridal'), 'See all six packages')}</div>
 </div>
 <div class="pb-board rv" style="--d:.1s">${board({ pkgs: pick, points: 3 })}</div>
 </div>`, { tone: 'paper', id: 'packages', label: 'Bridal packages' });

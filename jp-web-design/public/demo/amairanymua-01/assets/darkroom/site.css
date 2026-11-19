@@ -1,12 +1,14 @@
 /* /demo/amairanymua-01 — site "darkroom": tokens, type, base, buttons, the shell and the page kit.
-   Red, black and white as a darkroom: the dark room, photographic paper, and red as LIGHT (the
-   safelight glow) and as grease-pencil marks. Page authors: read KIT.md before adding a class. */
+   Red, black and white as a darkroom: the dark room, photographic paper, and a SOFT rose safelight:
+   a faint warm glow and a few grease-pencil marks, never a red field, never a red button (founder:
+   "a soft, glam, little red, very light if anything"). Page authors: read KIT.md before adding a class. */
 
 /* ---------- tokens: every colour on this site comes from here ---------- */
 :root{
-  --safelight:#D7263D;          /* the red: glow, grease pencil, primary buttons, active states */
-  --safelight-deep:#8E0F1F;     /* red text on paper (AA), pressed */
-  --safelight-lit:#FF6170;      /* small red text on the dark room (AA on --room) */
+  --safelight:#D9868C;          /* the soft rose: the glow's colour, grease-pencil marks and accents on dark (7.2:1 on black) */
+  --safelight-deep:#A8505A;     /* small rose text and marks on paper only (5.3:1) */
+  --safelight-lit:#D9868C;      /* small rose text on the dark room */
+  --blush:#F6E3E3;              /* soft fills: hover, selection, a pressed frame number */
   --room:#0E0B0B;               /* the dark ground */
   --tray:#1A1414;               /* raised dark surfaces */
   --tray-2:#241C1C;             /* a step lighter: film frames, slots */
@@ -15,15 +17,14 @@
   --paper-2:#EDE6DE;            /* paper in shadow: alternating light surfaces */
   --fixer:#2A2626;              /* text on paper */
   --fixer-dim:#5E5654;          /* secondary text on paper (AA) */
-  --bright:#FFFFFF;             /* text on the safelight button */
   --ink:#F2ECE6;                /* text on the dark room */
   --ink-dim:rgba(242,236,230,.68); /* secondary text on the dark room (AA) */
   --ink-faint:rgba(242,236,230,.42);
   --line:rgba(242,236,230,.16);  /* hairlines on dark */
   --line-paper:rgba(42,38,38,.16);/* hairlines on paper */
-  --glow:rgba(215,38,61,.34);   /* the safelight's light on the walls */
-  --glow-soft:rgba(215,38,61,.14);
-  --wash:rgba(196,22,40,.86);   /* the safelight on wet paper (transitions only) */
+  --glow:rgba(217,134,140,.17); /* the safelight's faint light on the walls (radial gradients only) */
+  --glow-soft:rgba(217,134,140,.07);
+  --wash:rgba(217,134,140,.34); /* the safelight on wet paper (opening only, a transition) */
   --shadow:rgba(8,4,4,.42);     /* a print's shadow */
   --shadow-soft:rgba(8,4,4,.18);
   --sheen:rgba(255,236,236,.42);/* liquid shimmer on paper (transitions only) */
@@ -71,7 +72,7 @@ h1,h2,h3,h4,p,ul,ol,figure{margin:0}
 ul,ol{padding:0;list-style:none}
 :focus-visible{outline:2px solid var(--safelight-lit);outline-offset:3px;border-radius:2px}
 .band--paper :focus-visible,.on-paper :focus-visible{outline-color:var(--safelight-deep)}
-::selection{background:var(--safelight);color:var(--bright)}
+::selection{background:var(--blush);color:var(--fixer)}
 .sprite{position:absolute;width:0;height:0;overflow:hidden}
 .skip{position:fixed;left:12px;top:-60px;z-index:200;background:var(--paper);color:var(--fixer);padding:12px 16px;font:500 .8rem/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:top .2s}
 .skip:focus{top:12px}
@@ -97,7 +98,7 @@ ul,ol{padding:0;list-style:none}
 .band--paper .kick,.on-paper .kick{color:var(--fixer-dim)}
 .band--paper .kick-m,.on-paper .kick-m{color:var(--safelight-deep)}
 .gp{display:inline-block;font:700 1.55rem/1 var(--f-hand);color:var(--safelight-lit);transform:rotate(var(--rot,-4deg));letter-spacing:.005em;text-transform:none}
-.band--paper .gp,.on-paper .gp,.pr .gp{color:var(--safelight)}
+.band--paper .gp,.on-paper .gp,.pr .gp{color:var(--safelight-deep)}
 .gp--lg{font-size:clamp(2rem,3.6vw,2.9rem)}
 .gp--sm{font-size:1.25rem}
 .prose p+p{margin-top:1em}
@@ -106,6 +107,8 @@ ul,ol{padding:0;list-style:none}
 /* hand-drawn marks (rings, underlines, arrows, ticks): single red strokes */
 .mk{max-width:none;fill:none;stroke:var(--safelight);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;overflow:visible;pointer-events:none}
 .mk path{vector-effect:non-scaling-stroke}
+.band--paper .mk,.on-paper .mk,.pr .mk,.ln-pr .mk{stroke:var(--safelight-deep)}
+.band--paper .board .mk{stroke:var(--safelight)}
 .ring{position:relative;display:inline-block;padding:0 .2em;white-space:nowrap}
 .mk-ring{position:absolute;left:-14%;top:-38%;width:128%;height:176%}
 .uline{position:relative;display:inline-block;white-space:nowrap}
@@ -120,10 +123,11 @@ ul,ol{padding:0;list-style:none}
 /* ---------- buttons and links ---------- */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:50px;padding:0 1.5rem;border-radius:2px;font:500 .78rem/1.1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;white-space:nowrap;cursor:pointer;border:1px solid transparent;transition:background-color .25s,color .25s,border-color .25s,transform .25s var(--e-out)}
 .btn:active{transform:translateY(1px)}
-.btn--red{background:var(--safelight);color:var(--bright);box-shadow:0 0 0 0 var(--glow)}
-.btn--red:hover{background:var(--safelight-deep)}
-.btn--red:focus-visible{outline-color:var(--ink)}
-.band--paper .btn--red:focus-visible,.on-paper .btn--red:focus-visible{outline-color:var(--fixer)}
+/* primary: paper on the dark room, the dark room on paper. Never red. */
+.btn--main{background:var(--paper);color:var(--room);border-color:var(--paper)}
+.btn--main:hover{background:var(--blush);border-color:var(--blush)}
+.band--paper .btn--main,.on-paper .btn--main,.acts--on-paper .btn--main{background:var(--room);color:var(--paper);border-color:var(--room)}
+.band--paper .btn--main:hover,.on-paper .btn--main:hover,.acts--on-paper .btn--main:hover{background:var(--fixer);border-color:var(--fixer)}
 .btn--line{border-color:var(--line);color:var(--ink);background:transparent}
 .btn--line:hover{border-color:var(--ink);background:rgba(242,236,230,.06)}
 .band--paper .btn--line,.on-paper .btn--line,.acts--on-paper .btn--line{border-color:var(--line-paper);color:var(--fixer)}
@@ -181,7 +185,7 @@ html.js .pr--dv.dv-done .dv{display:none}
 .pr--noted .pr-b{min-height:clamp(30px,3.4vw,42px)}
 .pr--noted::after{height:2px}
 .pr-n{margin-left:auto;font:500 .6rem/1 var(--f-mono);letter-spacing:.14em;color:var(--fixer-dim);white-space:nowrap}
-.pr-note{font:700 clamp(1.15rem,1.7vw,1.45rem)/1 var(--f-hand);color:var(--safelight);transform:rotate(-2deg);white-space:nowrap}
+.pr-note{font:700 clamp(1.15rem,1.7vw,1.45rem)/1 var(--f-hand);color:var(--safelight-deep);transform:rotate(-2deg);white-space:nowrap}
 .pr-cap{position:absolute;left:0;right:0;top:calc(100% + 12px);font:500 .66rem/1.45 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim)}
 .band--paper .pr-cap,.on-paper .pr-cap{color:var(--fixer-dim)}
 
@@ -278,7 +282,7 @@ html.js .ln-i{animation:sway 6s ease-in-out calc(var(--i) * -1.7s) infinite alte
 .ln-pr:hover{transform:translateY(-3px)}
 .ln-src{font:500 .7rem/1.2 var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--fixer-dim)}
 .ln-sc{font:800 clamp(3.4rem,6vw,4.6rem)/.9 var(--f-display);letter-spacing:-.05em;margin-top:8px}
-.ln-st{color:var(--safelight);letter-spacing:.18em;font-size:.95rem}
+.ln-st{color:var(--safelight-deep);letter-spacing:.18em;font-size:.95rem}
 .ln-meta{font:500 .74rem/1.3 var(--f-mono);letter-spacing:.12em;text-transform:uppercase}
 .ln-go{margin-top:14px;font:500 .7rem/1.2 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--safelight-deep);border-bottom:1px solid var(--safelight-deep);padding-bottom:3px}
 .ln-asof{margin-top:6px;font:400 .58rem/1.3 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--fixer-dim)}
@@ -298,7 +302,7 @@ html.js .ln-i{animation:sway 6s ease-in-out calc(var(--i) * -1.7s) infinite alte
 .post-h{text-wrap:balance}
 .post-dek{color:var(--fixer-dim);max-width:30em}
 .band--room .post-dek,.band--tray .post-dek{color:var(--ink-dim)}
-.post-a:hover .post-h{text-decoration:underline;text-decoration-color:var(--safelight);text-decoration-thickness:2px}
+.post-a:hover .post-h{text-decoration:underline;text-decoration-color:var(--safelight-deep);text-decoration-thickness:2px}
 .post .pr{transition:transform .5s var(--e-out)}
 .post-a:hover .pr{transform:rotate(-1deg) translateY(-4px)}
 
