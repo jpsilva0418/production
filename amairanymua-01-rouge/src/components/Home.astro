@@ -13,16 +13,17 @@ import { getCollection } from 'astro:content';
 import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import { SITE, L, LINKS, INTRO, WORK_C, SERVICES_C, SECTION_LABELS, PATHS, FINAL, INQUIRY, BRIDAL_C, FEATURED, SERVICE_BY_ID, FILMS, capOf } from '../lib/content';
-import { book } from '../consts';
+import { book, HER, LOVE, RATINGS_AS_OF } from '../consts';
 
 const services = (await getCollection('services')).filter((s) => !s.data.draft).sort((a, b) => a.data.order - b.data.order)
   .map((s) => ({ ...SERVICE_BY_ID[s.data.key], numeral: s.data.numeral }));
-const roman = ['i', 'ii', 'iii', 'iv', 'v', 'vi'];
+const roman = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii'];
 const chapters = [
+  { id: 'start', label: 'Book' },
   { id: 'meet', label: SITE.first },
   { id: 'work', label: 'Work' },
   { id: 'services', label: 'Services' },
-  { id: 'book', label: 'Book' },
+  { id: 'notes', label: 'Love Notes' },
 ];
 const ring = 'M27 89.84A46 46 0 1 1 73 89.84';
 const plates = import.meta.glob<{ default: ImageMetadata }>('../assets/plates/*.jpg', { eager: true });
@@ -38,23 +39,58 @@ const bookPoints = [PATHS[1].points[2], 'Brides & events', SITE.area];
 <!-- ① THE OPENING -->
 <Hero />
 
-<!-- ② CHAPTER I · MEET AMAIRANY -->
-<section class="c7-ch c7-ch--first" id="meet" data-chapter="meet" data-tone="light" data-curve>
+<!-- ② CHAPTER I · TWO WAYS TO BOOK, side by side, and directly under them: meet Amairany -->
+<section class="c7-ch c7-ch--first" id="start" data-chapter="start" data-tone="light" data-curve>
   <div class="c7-light" aria-hidden="true"><i class="lx-shaft"></i></div>
-  <div class="wrap c7-mis">
-    <div class="c7-mis-t">
+  <div class="wrap">
+    <div class="c7-two-h">
       <p class="chap-rn rv">Chapter i.</p>
+      <p class="kick rv" style="--d:.04s">{FINAL.label}</p>
+    </div>
+    <div class="c7-two" data-stag=".1">
+      {PATHS.map((p) => (
+        <article class="c7-way rv">
+          <div class="ph c7-way-ph"><Plate id={p.plate} alt="" sizes="(max-width:899px) 90vw, 300px" widths={[480, 800]} /><i class="grain" aria-hidden="true"></i></div>
+          <div class="c7-way-b">
+            <p class="caps-xs">{p.kicker}</p>
+            <h2 class="c7-way-t">{p.title}</h2>
+            <p class="c7-way-body">{p.body}</p>
+            <ul class="c7-way-pts">{p.points.map((x) => <li>{x}</li>)}</ul>
+            <div class="c7-way-a">
+              {p.key === 'bridal'
+                ? <a class="btn btn--solid" href={LINKS.inquiry}>{p.cta}</a>
+                : <Fragment set:html={book('event', p.cta, 'btn btn--line')} />}
+            </div>
+            <p class="c7-way-note">{p.note}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <div class="wrap c7-mis" id="meet" data-chapter="meet" data-tone="light">
+    <div class="c7-mis-t">
+      <p class="kick rv">{INTRO.eyebrow}</p>
       <h2 class="disp c7-mis-h rv" style="--d:.06s">{INTRO.heading[0]} <span class="ital">{INTRO.heading[1]}</span></h2>
-      <p class="kick rv" style="--d:.1s">{INTRO.eyebrow}</p>
-      <p class="c7-mis-s c7-mis-s--lead rv" style="--d:.16s">{INTRO.lead}</p>
-      {INTRO.sentences.map((s: string, i: number) => <p class="c7-mis-s rv" style={`--d:${(0.28 + i * 0.12).toFixed(2)}s`}>{s}</p>)}
+      <blockquote class="c7-her">
+        <p class="c7-her-hi rv" style="--d:.12s">{HER.hello}</p>
+        {HER.about.map((t, i) => <p class="c7-mis-s rv" style={`--d:${(0.2 + i * 0.1).toFixed(2)}s`} set:html={t} />)}
+        <footer class="c7-her-by fade" style="--d:.5s">{SITE.first}, in her own words</footer>
+      </blockquote>
+      <dl class="c7-facts fade" style="--d:.55s">
+        {HER.years.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+        <div><dt>Based in</dt><dd>{SITE.area}</dd></div>
+      </dl>
       <div class="c7-mis-foot fade" style="--d:.62s">
-        <ul class="c7-vals" aria-label="Signatures">{INTRO.values.map((v: string, i: number) => <li><b>{roman[i]}.</b> {v}</li>)}</ul>
+        <ul class="c7-vals" aria-label="Badges">{HER.badges.map((v, i) => <li><b>{roman[i]}.</b> <span set:html={v} /></li>)}</ul>
         <a class="tlk" href={LINKS.about}>{INTRO.more}</a>
       </div>
     </div>
     <figure class="c7-mis-f">
-      <div class="ph ph--framed rv-im" style="--d:.2s"><Plate id="artist-brushes" class="lv lv--rise" sizes="(max-width:899px) 90vw, 520px" widths={[480, 800, 1200]} /><i class="grain" aria-hidden="true"></i></div>
+      <div class="c7-duo">
+        <div class="ph ph--framed rv-im c7-duo-ph" style="--d:.2s"><Plate id="artist-brushes" class="lv lv--rise" sizes="(max-width:899px) 56vw, 330px" widths={[480, 800]} /><i class="grain" aria-hidden="true"></i></div>
+        <div class="c7-duo-film rv-im" style="--d:.32s"><Film id="f3" label={FILMS.f3.label} /></div>
+      </div>
       <figcaption class="fade" style="--d:.3s" set:html={INTRO.caption} />
     </figure>
   </div>
@@ -113,19 +149,18 @@ const bookPoints = [PATHS[1].points[2], 'Brides & events', SITE.area];
     ))}
   </div>
 
-  <div class="wrap c7-how">
+  <div class="wrap c7-how" id="packages-teaser">
     <div class="c7-how-l rv">
-      <p class="kick">{SECTION_LABELS.how}</p>
-      <h2 class="disp c7-how-h">Two ways <span class="ital">to book.</span></h2>
+      <p class="kick">On her booking page</p>
+      <h2 class="disp c7-how-h">Bridal packages <span class="ital">&amp; pricing.</span></h2>
+      <p class="c7-how-note" set:html={HER.packagesNote} />
       <div class="c7-how-cta">
         <a class="btn btn--solid" href={LINKS.inquiry}>Bridal inquiry</a>
-        <a class="tlk" href={LINKS.services}>All services</a>
+        <a class="tlk" href={`${LINKS.services}#packages`}>What each includes</a>
       </div>
     </div>
-    <ol class="c7-rows" data-stag=".1">
-      {PATHS.map((h, i) => <li class="fade"><span class="c7-row-n">{roman[i]}.</span><div><p class="caps-xs c7-row-k">{h.kicker}</p><h3>{h.title}</h3><p>{h.body}</p>{h.key === 'bridal'
-        ? <a class="arrow-link" href={LINKS.inquiry}>{h.cta} <span class="arr" aria-hidden="true">&rarr;</span></a>
-        : <Fragment set:html={book('event', `${h.cta} <span class="arr" aria-hidden="true">&rarr;</span>`, 'arrow-link')} />}<p class="c7-row-note">{h.note}</p></div></li>)}
+    <ol class="c7-rows c7-pk" data-stag=".08">
+      {HER.packages.map((k, i) => <li class="fade"><span class="c7-row-n">{roman[i] ?? i + 1}.</span><div class="c7-pk-r"><div><h3>{k.name}</h3><p set:html={k.who} /></div><p class="c7-pk-p"><span>$</span>{k.price}</p></div></li>)}
     </ol>
   </div>
 </section>
@@ -156,6 +191,15 @@ const bookPoints = [PATHS[1].points[2], 'Brides & events', SITE.area];
 
 <!-- ⑦ after the resolution · Follow along and the bridal experience, back on the light ground -->
 <div class="c7-ch c7-after" data-chapter="book" data-tone="light" data-curve>
+  <section class="wrap c7-love" id="notes" data-chapter="notes" data-tone="light" aria-labelledby="c7LoveH">
+    <header class="c7-mom-h">
+      <div><p class="caps rv">{HER.links.reviewsLine}</p><h2 class="disp rv" id="c7LoveH" style="--d:.06s">{HER.links.reviewsName}</h2></div>
+      <p class="c7-mom-line fade" style="--d:.1s">Her clients’ reviews, in full, where they wrote them. Ratings as shown on each site on {RATINGS_AS_OF}.</p>
+    </header>
+    <ul class="c7-love-g" data-stag=".08">
+      {LOVE.map((x) => <li class="rv"><a class="c7-note" href={x.href} rel="external"><span class="caps-xs">{x.name}</span>{x.score ? <span class="c7-note-s">{x.score}<small>{x.meta}</small></span> : <span class="c7-note-s c7-note-s--q">Worked with her?</span>}<span class="arrow-link">{x.go} <span class="arr" aria-hidden="true">&rarr;</span></span></a></li>)}
+    </ul>
+  </section>
   <section class="wrap c7-mom" aria-labelledby="c7FolH">
     <header class="c7-mom-h">
       <div><p class="caps rv">{SECTION_LABELS.follow}</p><h2 class="disp rv" id="c7FolH" style="--d:.06s">{SITE.handle}</h2></div>
