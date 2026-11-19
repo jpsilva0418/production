@@ -14,18 +14,40 @@
 <meta name="theme-color" content="#F5EFE6">
 <link rel="icon" href="/demo/yariiimakeup-01/assets/img/favicon.svg" type="image/svg+xml">
 <!--
-  The opening only plays when this script runs, motion is welcome, and the
-  visitor has not already seen it this session. Without it the page is simply
-  in its finished state: nothing waits on JavaScript to become visible.
+  The opening film plays once per session, and only when motion is welcome.
+  Without this script the page is simply in its finished state: nothing
+  waits on JavaScript to become visible.
 -->
-<script>(function(h){try{h.classList.add('js');var seen=false;try{seen=sessionStorage.getItem('yarii:opened')==='1';sessionStorage.setItem('yarii:opened','1')}catch(e){}if(!seen&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&!/[?&]intro=0/.test(location.search))h.classList.add('opening');if(/[?&]intro=1/.test(location.search))h.classList.add('opening')}catch(e){}})(document.documentElement)</script>
+<script>(function(h){try{h.classList.add('js');var q=location.search,seen=false;try{seen=sessionStorage.getItem('yarii:opened')==='1';sessionStorage.setItem('yarii:opened','1')}catch(e){}var calm=matchMedia('(prefers-reduced-motion: reduce)').matches||!!(navigator.connection&&navigator.connection.saveData);if((!seen&&!calm&&!/[?&]intro=0/.test(q))||/[?&]intro=1/.test(q))h.classList.add('intro')}catch(e){}})(document.documentElement)</script>
 <link rel="preload" href="/demo/yariiimakeup-01/assets/fonts/bodoni-moda-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/demo/yariiimakeup-01/assets/fonts/bodoni-moda-italic-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" as="image" href="/demo/yariiimakeup-01/assets/img/hero-sq-760.webp" imagesrcset="/demo/yariiimakeup-01/assets/img/hero-sq-480.webp 480w, /demo/yariiimakeup-01/assets/img/hero-sq-760.webp 760w, /demo/yariiimakeup-01/assets/img/hero-sq-1006.webp 1006w" imagesizes="(min-width: 600px) 520px, 92vw" media="(max-width: 899px)" fetchpriority="high">
-<link rel="preload" as="image" href="/demo/yariiimakeup-01/assets/img/hero-tall-760.webp" imagesrcset="/demo/yariiimakeup-01/assets/img/hero-tall-520.webp 520w, /demo/yariiimakeup-01/assets/img/hero-tall-760.webp 760w, /demo/yariiimakeup-01/assets/img/hero-tall-968.webp 968w" imagesizes="(min-width: 1400px) 500px, 36vw" media="(min-width: 900px)" fetchpriority="high">
+<link rel="preload" as="image" href="/demo/yariiimakeup-01/assets/img/logo-wordmark.webp" fetchpriority="high">
+<link rel="preload" as="image" href="/demo/yariiimakeup-01/assets/img/hero-film.jpg" fetchpriority="high">
 <link rel="stylesheet" href="/demo/yariiimakeup-01/assets/css/site.css">
 </head>
 <body>
+
+<!-- The opening. Present in the page only as decoration; html.intro switches it on. -->
+<div class="curtain" id="curtain" aria-hidden="true">
+  <div class="curtain-film"><video id="intro-film" muted playsinline preload="auto" disablepictureinpicture disableremoteplayback tabindex="-1" data-src="/demo/yariiimakeup-01/assets/film/intro.mp4"></video></div>
+  <p class="curtain-cap"><span>Makeup &amp; Hair Artistry</span><i> · </i><span>Poinciana &amp; Kissimmee, FL</span></p>
+  <span class="curtain-bar"><i id="intro-bar"></i></span>
+  <div class="curtain-cream"></div>
+  <div class="curtain-logo" id="intro-logo">
+    <div class="lg-rest">
+      <span class="lg lg-top"><i></i></span>
+      <span class="lg lg-eyes"><i></i></span>
+      <span class="lg lg-script"><i></i></span>
+      <span class="lg lg-rule"><i></i></span>
+      <span class="lg lg-tag"><i></i></span>
+      <span class="lg lg-bot"><i></i></span>
+      <span class="lg-gold"></span>
+    </div>
+    <span class="lg lg-word"><i></i></span>
+  </div>
+</div>
+<button class="curtain-skip" id="intro-skip" type="button">Skip intro</button>
+<script>(function(h){var v=document.getElementById('intro-film');if(h.classList.contains('intro')){if(v){v.src=v.getAttribute('data-src');v.load()}setTimeout(function(){if(!window.__yariiIntro)h.classList.remove('intro')},4000)}})(document.documentElement)</script>
 
 <a class="skip" href="#main">Skip to content</a>
 
@@ -35,9 +57,7 @@
 </p>
 
 <header class="bar" id="top">
-  <a class="wm" href="#top" aria-label="YariiiMakeup, back to top">
-    <span class="wm-a" aria-hidden="true">Yar<span class="i">ı</span><span class="i">ı</span><span class="i">ı</span></span><span class="wm-b" aria-hidden="true">Makeup</span>
-  </a>
+  <a class="brand" href="#top" aria-label="YariiiMakeup, back to top"><img src="/demo/yariiimakeup-01/assets/img/logo-wordmark.webp" width="720" height="83" alt="YariiiMakeup"></a>
 
   <nav class="nav" aria-label="Primary">
     <a href="#work">The Work</a>
@@ -83,27 +103,19 @@
     </h1>
     <p class="hero-sub">Soft glam, full glam and hairstyling for weddings, celebrations, photoshoots and the stage.</p>
     <div class="hero-cta">
-      <a class="btn btn-ink btn-lg" href="https://yarimakeup.booksy.com/" rel="noopener external" data-book="hero" id="hero-book">Book Now <span class="btn-sub">on Booksy</span></a>
+      <a class="btn btn-ink btn-lg hero-book" href="https://yarimakeup.booksy.com/" rel="noopener external" data-book="hero" id="hero-book">Book Now <span class="btn-sub">on Booksy</span></a>
       <a class="btn btn-line btn-lg hero-second" href="#work">View Portfolio</a>
     </div>
   </div>
 
   <div class="hero-stage">
-    <figure class="hero-photo">
-      <div class="aperture">
-        <picture>
-          <source media="(min-width: 900px)" type="image/webp" srcset="/demo/yariiimakeup-01/assets/img/hero-tall-520.webp 520w, /demo/yariiimakeup-01/assets/img/hero-tall-760.webp 760w, /demo/yariiimakeup-01/assets/img/hero-tall-968.webp 968w" sizes="(min-width: 1400px) 500px, 36vw" width="968" height="1210">
-          <source media="(min-width: 900px)" srcset="/demo/yariiimakeup-01/assets/img/hero-tall-760.jpg" width="760" height="950">
-          <source type="image/webp" srcset="/demo/yariiimakeup-01/assets/img/hero-sq-480.webp 480w, /demo/yariiimakeup-01/assets/img/hero-sq-760.webp 760w, /demo/yariiimakeup-01/assets/img/hero-sq-1006.webp 1006w" sizes="(min-width: 600px) 520px, 92vw" width="1006" height="1007">
-          <img src="/demo/yariiimakeup-01/assets/img/hero-sq-760.jpg" width="760" height="761" alt="Close-up of a soft glam look: a sculpted, softly winged eye with long lashes, glowing skin and a glossy rose lip." fetchpriority="high" decoding="async">
-        </picture>
-        <span class="sweep" aria-hidden="true"></span>
-      </div>
-      <svg class="liner" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        <path class="liner-ink" d="M6.2 47.2 C 22 25.4, 66 24.4, 98 29.6 L 100.5 26.2 C 96 26.9, 92 26.6, 88 26.2 C 62 22.6, 26 24.6, 6.2 47.2 Z"/>
-        <path class="liner-gold" pathLength="1" d="M7 46.5 C 36 58, 82 51, 97 30.5"/>
-      </svg>
-      <figcaption class="hero-cap"><span class="hero-cap-a">Soft glam <span aria-hidden="true">—</span> </span>from the YariiiMakeup portfolio</figcaption>
+    <figure class="hero-film">
+      <video id="hero-film" muted loop playsinline preload="none" disablepictureinpicture disableremoteplayback poster="/demo/yariiimakeup-01/assets/img/hero-film.jpg" data-src="/demo/yariiimakeup-01/assets/film/hero.mp4" width="540" height="886" aria-label="Silent looping film of a finished glam look: a client with long waves and a jewelled hair comb, in a pale blue satin gown before white feather wings, then taking a mirror photo in a white fur stole."></video>
+      <button class="film-toggle" type="button" aria-pressed="false" aria-label="Pause the film">
+        <svg class="i-pause" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M8 6v12M16 6v12" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        <svg class="i-play" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M9 6.5v11l9-5.5z" fill="currentColor"/></svg>
+      </button>
+      <figcaption class="hero-cap">Her work, on film</figcaption>
     </figure>
 
     <figure class="sat sat-a" aria-hidden="true">
@@ -135,10 +147,10 @@
   <p class="sr-only" aria-live="polite" id="work-status"></p>
 
   <ul class="looks" id="looks">
-    <li class="look" data-cats="soft" data-tones="#e27270,#d0947e,#f3b196">
-      <a href="/demo/yariiimakeup-01/assets/img/look-03-1600.webp" data-w="1600" data-h="1600" data-look>
-        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/look-03-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-03-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-03-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-03-1200.webp 1200w" sizes="(min-width: 900px) 46vw, 92vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:38% 40%" alt="Soft glam on a client with long dark hair: sculpted brown eyeshadow, long lashes, glowing skin and a glossy pink lip, photographed at the makeup station."></span>
-        <span class="look-meta"><span class="look-n">01</span><span class="look-t">Soft glam, sculpted eye</span><span class="look-c">Soft Glam</span></span>
+    <li class="look" data-cats="soft hair" data-tones="#e67982,#c58e78,#f8b195">
+      <a href="/demo/yariiimakeup-01/assets/img/look-10-1354.webp" data-w="1354" data-h="1758" data-look>
+        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/look-10-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-10-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-10-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-10-1200.webp 1200w" sizes="(min-width: 900px) 46vw, 92vw" width="800" height="1039" loading="lazy" decoding="async" style="object-position:50% 32%" alt="Soft glam with a sleek blowout: bronze eyeshadow with a touch of blue liner, rosy lip and long straight blonde hair."></span>
+        <span class="look-meta"><span class="look-n">01</span><span class="look-t">Soft glam &amp; blowout</span><span class="look-c">Soft Glam · Hair</span></span>
       </a>
     </li>
     <li class="look" data-cats="glam stage hair" data-tones="#a85451,#653f35,#e6936e">
@@ -147,15 +159,15 @@
         <span class="look-meta"><span class="look-n">02</span><span class="look-t">Pageant glam &amp; styled waves</span><span class="look-c">Pageant &amp; Stage · Hair</span></span>
       </a>
     </li>
-    <li class="look" data-cats="soft hair" data-tones="#e67982,#c58e78,#f8b195">
-      <a href="/demo/yariiimakeup-01/assets/img/look-10-1354.webp" data-w="1354" data-h="1758" data-look>
-        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/look-10-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-10-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-10-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-10-1200.webp 1200w" sizes="(min-width: 900px) 30vw, 46vw" width="800" height="1039" loading="lazy" decoding="async" style="object-position:50% 32%" alt="Soft glam with a sleek blowout: bronze eyeshadow with a touch of blue liner, rosy lip and long straight blonde hair."></span>
-        <span class="look-meta"><span class="look-n">03</span><span class="look-t">Soft glam &amp; blowout</span><span class="look-c">Soft Glam · Hair</span></span>
+    <li class="look" data-cats="soft hair" data-tones="#b2646d,#84544c,#ab8977">
+      <a href="/demo/yariiimakeup-01/assets/img/look-04-1080.webp" data-w="1080" data-h="1080" data-look>
+        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/look-04-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-04-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-04-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-04-1080.webp 1080w" sizes="(min-width: 900px) 30vw, 46vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:42% 38%" alt="Soft glam with curls: rosy eyeshadow, soft lashes and a full rose lip, with long dark hair set in loose curls."></span>
+        <span class="look-meta"><span class="look-n">03</span><span class="look-t">Soft glam with curls</span><span class="look-c">Soft Glam · Hair</span></span>
       </a>
     </li>
     <li class="look" data-cats="glam" data-tones="#6e181e,#ab7e6b,#ce9476">
       <a href="/demo/yariiimakeup-01/assets/img/look-02-1080.webp" data-w="1080" data-h="1042" data-look>
-        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/look-02-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-02-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-02-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-02-1080.webp 1080w" sizes="(min-width: 900px) 38vw, 92vw" width="800" height="772" loading="lazy" decoding="async" style="object-position:58% 30%" alt="Full glam in profile: dramatic lashes, three small face gems beside the eye, sharp brows and a deep red matte lip."></span>
+        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/look-02-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-02-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-02-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-02-1080.webp 1080w" sizes="(min-width: 900px) 30vw, 92vw" width="800" height="772" loading="lazy" decoding="async" style="object-position:58% 30%" alt="Full glam in profile: dramatic lashes, three small face gems beside the eye, sharp brows and a deep red matte lip."></span>
         <span class="look-meta"><span class="look-n">04</span><span class="look-t">Full glam, deep red lip</span><span class="look-c">Full Glam &amp; Events</span></span>
       </a>
     </li>
@@ -165,16 +177,16 @@
         <span class="look-meta"><span class="look-n">05</span><span class="look-t">Evening glam, in the spotlight</span><span class="look-c">Full Glam &amp; Events</span></span>
       </a>
     </li>
-    <li class="look" data-cats="glam stage" data-tones="#e69394,#824d45,#e6997a">
-      <a href="/demo/yariiimakeup-01/assets/img/look-11-1440.webp" data-w="1440" data-h="1440" data-look>
-        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/look-11-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-11-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-11-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-11-1200.webp 1200w" sizes="(min-width: 900px) 30vw, 46vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:36% 18%" alt="Pageant glam in profile: smoky eye and bright smile, with a voluminous blonde updo and a beaded gold gown, photographed backstage."></span>
-        <span class="look-meta"><span class="look-n">06</span><span class="look-t">Pageant glam, gold gown</span><span class="look-c">Pageant &amp; Stage</span></span>
+    <li class="look" data-cats="soft" data-tones="#e27270,#d0947e,#f3b196">
+      <a href="/demo/yariiimakeup-01/assets/img/look-03-1600.webp" data-w="1600" data-h="1600" data-look>
+        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/look-03-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-03-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-03-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-03-1200.webp 1200w" sizes="(min-width: 900px) 30vw, 46vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:38% 40%" alt="Soft glam on a client with long dark hair: sculpted brown eyeshadow, long lashes, glowing skin and a glossy pink lip, photographed at the makeup station."></span>
+        <span class="look-meta"><span class="look-n">06</span><span class="look-t">Soft glam, sculpted eye</span><span class="look-c">Soft Glam</span></span>
       </a>
     </li>
-    <li class="look" data-cats="soft hair" data-tones="#b2646d,#84544c,#ab8977">
-      <a href="/demo/yariiimakeup-01/assets/img/look-04-1080.webp" data-w="1080" data-h="1080" data-look>
-        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/look-04-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-04-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-04-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-04-1080.webp 1080w" sizes="(min-width: 900px) 38vw, 92vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:42% 38%" alt="Soft glam with curls: rosy eyeshadow, soft lashes and a full rose lip, with long dark hair set in loose curls."></span>
-        <span class="look-meta"><span class="look-n">07</span><span class="look-t">Soft glam with curls</span><span class="look-c">Soft Glam · Hair</span></span>
+    <li class="look" data-cats="glam stage" data-tones="#e69394,#824d45,#e6997a">
+      <a href="/demo/yariiimakeup-01/assets/img/look-11-1440.webp" data-w="1440" data-h="1440" data-look>
+        <span class="look-img"><img src="/demo/yariiimakeup-01/assets/img/look-11-800.jpg" srcset="/demo/yariiimakeup-01/assets/img/look-11-480.webp 480w, /demo/yariiimakeup-01/assets/img/look-11-800.webp 800w, /demo/yariiimakeup-01/assets/img/look-11-1200.webp 1200w" sizes="(min-width: 900px) 30vw, 92vw" width="800" height="800" loading="lazy" decoding="async" style="object-position:36% 18%" alt="Pageant glam in profile: smoky eye and bright smile, with a voluminous blonde updo and a beaded gold gown, photographed backstage."></span>
+        <span class="look-meta"><span class="look-n">07</span><span class="look-t">Pageant glam, gold gown</span><span class="look-c">Pageant &amp; Stage</span></span>
       </a>
     </li>
   </ul>
@@ -349,9 +361,7 @@
 
 <footer class="foot">
   <div class="foot-top">
-    <a class="wm wm-lg" href="#top" aria-label="YariiiMakeup, back to top">
-      <span class="wm-a" aria-hidden="true">Yar<span class="i">ı</span><span class="i">ı</span><span class="i">ı</span></span><span class="wm-b" aria-hidden="true">Makeup</span>
-    </a>
+    <a class="foot-logo" href="#top" aria-label="YariiiMakeup, back to top"><img src="/demo/yariiimakeup-01/assets/img/logo-full.webp" width="600" height="600" loading="lazy" decoding="async" alt="YariiiMakeup logo: two eyes drawn with winged liner above the name, Yaribel Vasquez, professional makeup artist."></a>
     <p class="foot-loc">Makeup &amp; Hair Artistry<br>Poinciana &amp; Kissimmee, Florida</p>
     <nav class="foot-nav" aria-label="Footer">
       <a href="#work">The Work</a>
@@ -362,7 +372,7 @@
       <a href="https://yarimakeup.booksy.com/" rel="noopener external" data-book="footer">Book on Booksy</a>
     </nav>
   </div>
-  <p class="foot-fine">This is an unlisted design concept created by JP&nbsp;Silva&nbsp;Digital for review. It is not YariiiMakeup&rsquo;s official website and has not been commissioned or endorsed by the artist. Photographs come from the artist&rsquo;s public portfolio and are shown for concept review only, pending her approval. The wordmark is a temporary typographic stand-in, not her logo. All booking happens on Booksy.</p>
+  <p class="foot-fine">This is an unlisted design concept created by JP&nbsp;Silva&nbsp;Digital for review. It is not YariiiMakeup&rsquo;s official website and has not been commissioned or endorsed by the artist. Photographs come from the artist&rsquo;s public portfolio and are shown for concept review only, pending her approval. The logo is the public copy from her Booksy listing, and the films are cut from a reel of her work; both await her approval and her original files. All booking happens on Booksy.</p>
 </footer>
 
 <a class="dock" href="https://yarimakeup.booksy.com/" rel="noopener external" data-book="dock" aria-label="Book Now on Booksy">

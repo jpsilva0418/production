@@ -13,9 +13,115 @@
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var hasIO = 'IntersectionObserver' in window;
 
-  /* The opening runs once; drop its class so a later resize can't replay it. */
-  if (root.classList.contains('opening')) {
-    setTimeout(function () { root.classList.remove('opening'); }, 2600);
+  /* ── The hero film: plays quietly, pauses off screen, and can be stopped ── */
+  var heroFilm = $('#hero-film');
+  var filmToggle = $('.film-toggle');
+  var saveData = !!(navigator.connection && navigator.connection.saveData);
+  var filmWanted = !reduce && !saveData;
+  var filmOnScreen = true;
+  function syncFilm() {
+    if (!heroFilm) return;
+    if (filmWanted && !heroFilm.getAttribute('src')) heroFilm.src = heroFilm.getAttribute('data-src');
+    if (filmWanted && filmOnScreen) { var pr = heroFilm.play(); if (pr && pr.catch) pr.catch(function () {}); }
+    else heroFilm.pause();
+    if (filmToggle) {
+      filmToggle.setAttribute('aria-pressed', String(!filmWanted));
+      filmToggle.setAttribute('aria-label', filmWanted ? 'Pause the film' : 'Play the film');
+    }
+  }
+  if (filmToggle) filmToggle.addEventListener('click', function () { filmWanted = !filmWanted; syncFilm(); });
+  if (heroFilm && hasIO) {
+    new IntersectionObserver(function (e) { filmOnScreen = e[0].isIntersecting; syncFilm(); }, { threshold: 0.05 }).observe(heroFilm);
+  }
+
+  /* ── The opening: film, then her logo, then the logo's wordmark flies up
+        into the header. Driven by the film itself, with a fallback at every
+        step: a film that will not play goes straight to the logo, and any
+        tap, key or scroll ends the opening at once. ── */
+  var curtain = $('#curtain');
+  var skipBtn = $('#intro-skip');
+  function endIntro() {
+    root.classList.remove('intro', 'intro-film', 'intro-logo', 'intro-out', 'intro-fast');
+    if (curtain && curtain.parentNode) curtain.parentNode.removeChild(curtain);
+    if (skipBtn && skipBtn.parentNode) skipBtn.parentNode.removeChild(skipBtn);
+    setTimeout(function () { root.classList.remove('hero-in'); }, 2600);
+    syncFilm();
+  }
+  if (root.classList.contains('intro') && curtain) {
+    window.__yariiIntro = true;
+    (function () {
+      var film = $('#intro-film');
+      var line = $('#intro-bar');
+      var logo = $('#intro-logo');
+      var state = 0; /* 0 waiting · 1 film · 2 logo · 3 handoff */
+      var timers = [];
+      var later = function (fn, ms) { timers.push(setTimeout(fn, ms)); };
+      /* where the wordmark sits inside the logo, as fractions of its box */
+      var WM = { x: 0.03083, y: 0.55, w: 0.93 - 0.03083 };
+
+      var handoff = function (fast) {
+        if (state === 3) return;
+        state = 3;
+        timers.forEach(clearTimeout);
+        try { film.pause(); } catch (e) {}
+        var to = $('.bar .brand img').getBoundingClientRect();
+        var from = logo.getBoundingClientRect();
+        var k = to.width / (from.width * WM.w);
+        logo.style.setProperty('--fs', k);
+        logo.style.setProperty('--fx', (to.left - from.left - from.width * WM.x * k) + 'px');
+        logo.style.setProperty('--fy', (to.top - from.top - from.height * WM.y * k) + 'px');
+        if (fast) root.classList.add('intro-fast');
+        root.classList.add('intro-out', 'hero-in');
+        root.classList.remove('intro-film', 'intro-logo');
+        setTimeout(endIntro, fast ? 540 : 900);
+      };
+      var showLogo = function () {
+        if (state >= 2) return;
+        state = 2;
+        root.classList.add('intro-logo');
+        root.classList.remove('intro-film');
+        later(function () { handoff(false); }, 1900);
+      };
+      var skip = function () { handoff(true); };
+      var skipClick = function (e) {
+        if (e.target.closest && e.target.closest('a')) return; /* Book Now is a booking, not a skip */
+        handoff(true);
+      };
+
+      film.addEventListener('playing', function () {
+        if (state !== 0) return;
+        state = 1;
+        root.classList.add('intro-film');
+      });
+      film.addEventListener('timeupdate', function () {
+        if (!film.duration) return;
+        line.style.transform = 'scaleX(' + Math.min(1, film.currentTime / film.duration) + ')';
+        if (film.currentTime >= film.duration - 0.16) showLogo();
+      });
+      film.addEventListener('ended', showLogo);
+      film.addEventListener('error', showLogo);
+      var pr = film.play();
+      if (pr && pr.catch) pr.catch(showLogo);
+      later(function () { if (state === 0) showLogo(); }, 1500);   /* the film never started */
+      later(showLogo, 6500);                                       /* the film stalled */
+
+      skipBtn.addEventListener('click', skip);
+      curtain.addEventListener('click', skip);
+      var head = $('.bar');
+      head.addEventListener('click', function barSkip(e) {
+        head.removeEventListener('click', barSkip);
+        if (state !== 3 && root.classList.contains('intro')) skipClick(e);
+      });
+      ['wheel', 'touchmove', 'keydown'].forEach(function (t) {
+        window.addEventListener(t, function once(e) {
+          if (t === 'keydown' && (e.key === 'Tab' || e.key === 'Shift')) return;
+          window.removeEventListener(t, once);
+          if (state !== 3) skip();
+        }, { passive: true });
+      });
+    })();
+  } else {
+    syncFilm();
   }
 
   /* ── Header ── */
@@ -100,7 +206,7 @@
   menu.addEventListener('keydown', function (e) {
     if (e.key !== 'Tab') return;
     var f = $$('a, button', menu);
-    if (!e.shiftKey && doc.activeElement === f[f.length - 1]) { e.preventDefault(); $('.wm', bar).focus(); }
+    if (!e.shiftKey && doc.activeElement === f[f.length - 1]) { e.preventDefault(); $('.brand', bar).focus(); }
   });
   window.matchMedia('(min-width: 900px)').addEventListener('change', function (m) {
     if (m.matches && menuBtn.getAttribute('aria-expanded') === 'true') setMenu(false);

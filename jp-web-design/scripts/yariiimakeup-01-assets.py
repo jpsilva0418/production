@@ -36,14 +36,6 @@ LOOKS = {
 }
 WIDTHS = (480, 800, 1200, 1600)
 
-# Art-directed hero crops of 03, placed so the eyes sit at the same point
-# (54% across, 40% down) in both, which is where the opening aperture is.
-HERO = {
-    "hero-sq": ("03-booksy-portfolio.jpeg", (0.11, 0.162, 0.63, 0.682), (480, 760, 1006)),
-    "hero-tall": ("03-booksy-portfolio.jpeg", (0.12, 0.12, 0.62, 0.745), (520, 760, 968)),
-}
-
-
 def crop(im, box):
     w, h = im.size
     return im.crop((round(w * box[0]), round(h * box[1]), round(w * box[2]), round(h * box[3])))
@@ -68,7 +60,3 @@ def save(im, name, widths, jpg_width):
 for name, (f, box) in LOOKS.items():
     im = crop(Image.open(os.path.join(SRC, f)).convert("RGB"), box)
     print(name, *save(im, name, WIDTHS, 800))
-
-for name, (f, box, widths) in HERO.items():
-    im = crop(Image.open(os.path.join(SRC, f)).convert("RGB"), box)
-    print(name, *save(im, name, widths, widths[1]))
