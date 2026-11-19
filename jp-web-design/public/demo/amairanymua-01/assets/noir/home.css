@@ -1,0 +1,192 @@
+/* /demo/amairanymua-01 — NOIR home: the opening, the hero reel, scenes, the artist, the strip,
+   two ways to book. Tokens come from site.css. */
+
+/* =================== 1. HERO: her work as a full-screen vertical reel =================== */
+.hr{position:relative;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;isolation:isolate;background:var(--blackout)}
+.hr-frame{position:absolute;inset:0}
+.hr-reel{z-index:0;background:var(--blackout);overflow:hidden}
+.hb{position:absolute;inset:0;opacity:0;transition:opacity .2s linear}
+.hb.on{opacity:1;z-index:2}
+.hb.was{opacity:1;z-index:1;transition:none}
+.hb-i{position:absolute;inset:0;transform-origin:50% 32%;backface-visibility:hidden}
+.hb-img{width:100%;height:100%;object-fit:cover}
+.hb .film{position:absolute;inset:0}
+.hb .slot{padding-bottom:42vh}
+@media(prefers-reduced-motion:no-preference){
+  .hr-reel.playing .hb.on .hb-i,.hr-reel.playing .hb.was .hb-i{animation:hrPush 3.4s cubic-bezier(.3,.3,.4,1) both}
+  .hr-reel.paused .hb .hb-i{animation-play-state:paused}
+}
+@keyframes hrPush{from{transform:scale(1)}to{transform:scale(1.07)}}
+
+/* edge fades: the frame dissolves into the ground (never across a face) */
+.hr-fade{position:absolute;inset:0;z-index:4;pointer-events:none;
+  background:linear-gradient(180deg,rgba(14,10,9,.55) 0,rgba(14,10,9,0) 16%),linear-gradient(180deg,rgba(14,10,9,0) 42%,rgba(14,10,9,.62) 64%,var(--blackout) 97%)}
+.hr-place{position:absolute;z-index:5;left:var(--gut-l);top:calc(var(--hd) + env(safe-area-inset-top,0px) + 6px);color:var(--bone)}
+.hr-copy{position:relative;z-index:5;padding-top:calc(var(--hd) + 4rem);padding-bottom:calc(68px + env(safe-area-inset-bottom,0px))}
+.hr-meta{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem;min-height:44px}
+.hr-meta .slate{color:var(--champagne)}
+.hr-meta .slate b{color:var(--bone)}
+.hr-meta #reelL{display:inline-block;min-width:8em}
+.hr-pause{display:inline-flex;align-items:center;gap:10px;min-height:44px;min-width:44px;margin-right:-8px;padding:0 8px;font:400 .64rem/1 var(--f-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--bone)}
+.hr-pause i{position:relative;width:10px;height:12px;border-left:2px solid currentColor;border-right:2px solid currentColor}
+.hr-pause.is-paused i{border:0;width:0;height:0;border-style:solid;border-width:6px 0 6px 10px;border-color:transparent transparent transparent currentColor}
+.hr-pause[hidden]{display:none}
+.hr-t{max-width:12ch;text-shadow:0 2px 30px rgba(14,10,9,.35)}
+.hr-l{display:block}
+.hr-l2{padding-left:.04em}
+.hr-line{margin-top:1.1rem;max-width:27em;font-size:clamp(.98rem,1.5vw,1.12rem);line-height:1.55;color:var(--bone)}
+.hr-acts{margin-top:1.6rem;display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:440px}
+.hr-acts .btn{padding-inline:.7rem;font-size:.68rem;letter-spacing:.15em}
+@media(max-width:359px){.hr-acts{grid-template-columns:1fr}.hr-acts .btn{letter-spacing:.14em}}
+@media(min-width:900px){
+  .hr-frame{left:34%}
+  .hr-fade{left:34%;background:
+    linear-gradient(90deg,var(--blackout) 0,rgba(14,10,9,.82) 10%,rgba(14,10,9,.35) 24%,rgba(14,10,9,0) 38%),
+    linear-gradient(180deg,rgba(14,10,9,.5) 0,rgba(14,10,9,0) 15%),
+    linear-gradient(180deg,rgba(14,10,9,0) 66%,rgba(14,10,9,.7) 88%,var(--blackout) 100%)}
+  .hb .slot{padding-bottom:2rem}
+  .hr-copy{padding-bottom:clamp(3.6rem,9vh,6rem)}
+  .hr-meta{max-width:440px}
+  .hr-acts{display:flex;max-width:none}
+  .hr-acts .btn{padding-inline:1.6rem;font-size:.74rem;letter-spacing:.18em}
+  .hr-place{top:auto;bottom:clamp(3.6rem,9vh,6rem);left:auto;right:var(--gut-r);writing-mode:vertical-rl;transform:rotate(180deg);transform-origin:center}
+  .hr-place .sep{width:1px;height:2.2em}
+}
+@media(max-width:899px) and (max-height:520px){
+  .hr-copy{padding-top:calc(var(--hd) + 1.5rem);padding-bottom:calc(58px + env(safe-area-inset-bottom,0px))}
+  .hr-t{font-size:clamp(2.6rem,15vh,4rem)}
+  .hr-line{display:none}
+  .hr-acts{margin-top:1rem}
+  .hr-place{display:none}
+}
+
+/* =================== THE OPENING (only while html.intro is set) ===================
+   Pre-state painted before home.js runs, so the first frame is already frame 0 of the
+   storyboard (black, a few pixels of champagne rule). Everything here is removed in the same
+   frame as the animations are cancelled, leaving the page on its plain static styles. */
+.op{display:none}
+html.intro .op{display:block;position:absolute;inset:0;z-index:3;background:var(--blackout);pointer-events:none}
+html.intro .op-gate{opacity:0;overflow:hidden}
+.op-st{position:absolute;inset:0;transform-origin:50% 50%}
+.op-strip{position:absolute;left:0;right:0;top:0;height:100%;will-change:transform}
+.op-f{position:relative;height:100%;overflow:hidden;background:var(--cocoa)}
+.op-f::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--blackout)}
+.op-f--lock{background:var(--blackout)}
+.op-f--lock::after{display:none}
+.op-f img{width:100%;height:100%;object-fit:cover}
+.op-rule{position:absolute;left:50%;top:var(--ry,56%);width:var(--rw,min(84vw,760px));height:1px;transform:translateX(-50%);background:var(--champagne);clip-path:inset(0 calc(50% - 3px))}
+.op-line{position:absolute;left:0;right:0;top:calc(var(--ry,56%) + 18px);text-align:center;font:400 .64rem/1.4 var(--f-mono);letter-spacing:.3em;text-indent:.3em;text-transform:uppercase;color:var(--bone-soft);opacity:0}
+.op-line span{color:var(--champagne)}
+@media(min-width:900px){.op-line{font-size:.72rem;top:calc(var(--ry,56%) + 24px)}}
+html.intro .wm-s{display:block}
+html.intro .hd .wm-g{opacity:0}
+html.intro .hd .wm{transform-origin:0 0}
+html.intro .hd-nav,html.intro .hd-cta,html.intro .hd-menu,html.intro .hd::before{opacity:0}
+html.intro .hr-place,html.intro .hr-meta,html.intro .hr-line,html.intro .hr-acts{opacity:0}
+html.intro .hr-l{clip-path:inset(0 0 100% 0)}
+
+/* =================== 2. SCENES: a scroll-driven sequence on a sticky stage ===================
+   Default (no script, reduced motion): four plain stacked sections, each complete. */
+.sc{position:relative;background:var(--blackout)}
+.scn{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden;isolation:isolate}
+.scn-ph{position:absolute;inset:0;z-index:-1;overflow:hidden}
+.scn-ph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,10,9,.5) 0,rgba(14,10,9,0) 18%,rgba(14,10,9,0) 46%,rgba(14,10,9,.66) 70%,var(--blackout) 98%)}
+.scn-im{position:absolute;inset:0;transform-origin:50% 35%}
+.scn-im img{width:100%;height:100%;object-fit:cover}
+.scn-txt{padding-top:40vh;padding-bottom:calc(5rem + env(safe-area-inset-bottom,0px))}
+.scn-sl{margin-bottom:.6rem}
+.scn-h{font:italic 400 clamp(3.6rem,19vw,11rem)/.88 var(--f-display);letter-spacing:-.02em;color:var(--bone);text-shadow:0 2px 34px rgba(14,10,9,.35)}
+.scn-p{margin-top:1.2rem;max-width:25em;color:var(--bone);font-size:clamp(1rem,1.6vw,1.15rem)}
+.sc-ui{display:none}
+@media(min-width:900px){
+  .scn-ph{left:33%}
+  .scn-ph::after{background:
+    linear-gradient(90deg,var(--blackout) 0,rgba(14,10,9,.8) 10%,rgba(14,10,9,.3) 24%,rgba(14,10,9,0) 40%),
+    linear-gradient(180deg,rgba(14,10,9,0) 70%,var(--blackout) 100%)}
+  .scn{align-items:center}
+  .scn-txt{padding-top:var(--hd);padding-bottom:0}
+  .scn-txt > *{max-width:46%}
+  .scn-h{font-size:clamp(5rem,10.5vw,10.5rem)}
+}
+@media(prefers-reduced-motion:no-preference){
+  html.js .sc{height:440vh}
+  html.js .sc-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+  html.js .scn{position:absolute;inset:0;min-height:0;opacity:0}
+  html.js .scn:first-child{opacity:1}
+  html.js .scn-im{will-change:transform}
+  html.js .sc-ui{display:flex;position:absolute;z-index:3;left:var(--gut-l);right:var(--gut-r);top:calc(var(--hd) + env(safe-area-inset-top,0px) + 10px);align-items:center;gap:16px;pointer-events:none}
+  html.js .sc-prog{position:relative;flex:1;height:1px;background:rgba(243,234,223,.18);overflow:hidden}
+  html.js .sc-prog i{position:absolute;inset:0;background:var(--champagne);transform:scaleX(0);transform-origin:left}
+  html.js .sc-n{color:var(--bone);flex:none}
+  html.js .sc-n b{color:var(--champagne)}
+  html.js .scn-sl,html.js .scn-p{opacity:0;transform:translate3d(0,18px,0);transition:opacity .5s var(--ease),transform .7s var(--ease)}
+  html.js .scn-h{clip-path:inset(0 0 100% 0);transform:translate3d(0,.32em,0);transition:clip-path .55s var(--ease),transform .55s var(--ease)}
+  html.js .scn.on .scn-sl,html.js .scn.on .scn-p{opacity:1;transform:none;transition:opacity .8s var(--ease) .18s,transform 1s var(--ease) .18s}
+  html.js .scn.on .scn-sl{transition-delay:.05s}
+  html.js .scn.on .scn-h{clip-path:inset(-.25em -.3em -.3em -.3em);transform:none;transition:clip-path 1s var(--ease) .08s,transform 1.05s var(--ease) .08s}
+  html.js .scn .scn-sl{display:none}
+}
+
+/* =================== 3. THE ARTIST =================== */
+.art{overflow:hidden}
+.art-g{display:grid;gap:2.6rem;align-items:center}
+.art-ph{position:relative;margin:0 calc(var(--gut-l) * -1) 0 calc(var(--gut-r) * -1);aspect-ratio:4/5;max-height:86svh;
+  -webkit-mask-image:radial-gradient(ellipse 66% 60% at 50% 40%,#000 46%,transparent 100%);mask-image:radial-gradient(ellipse 66% 60% at 50% 40%,#000 46%,transparent 100%)}
+.art-ph img{width:100%;height:100%;object-fit:cover;object-position:50% 24%}
+.art-body{margin-top:1.4rem}
+.art-txt .lnk{margin-top:1.6rem}
+.art-pull{margin-top:clamp(4rem,12vh,8rem);font:italic 400 clamp(3rem,12.5vw,9.8rem)/.9 var(--f-display);letter-spacing:-.02em;color:var(--bone);text-wrap:balance}
+.art-pull em + em{color:var(--champagne)}
+@media(min-width:900px){
+  .art-g{grid-template-columns:1.05fr .95fr;gap:clamp(2rem,5vw,6rem)}
+  .art-ph{margin:0 0 0 calc(var(--gut-l) * -1);max-height:none}
+  .art-pull{max-width:13ch}
+}
+
+/* =================== 4. THE STRIP =================== */
+.strip{padding-bottom:calc(var(--sec) * .8)}
+.strip-head{display:grid;gap:1.6rem;margin-bottom:clamp(2.4rem,6vh,3.6rem)}
+.strip-side{display:grid;gap:1.4rem;align-content:end}
+.strip-arrows{display:none}
+.strip-vp{overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scroll-padding-left:var(--gut-l);cursor:grab;outline-offset:-2px}
+.strip-vp::-webkit-scrollbar{display:none}
+.strip-vp.drag{scroll-snap-type:none;cursor:grabbing;user-select:none}
+.strip-vp.drag *{pointer-events:none}
+.strip-track{display:flex;gap:clamp(12px,1.6vw,22px);padding:0 var(--gut-r) 0 var(--gut-l);width:max-content}
+.strip-it{flex:none;width:min(72vw,340px);scroll-snap-align:start}
+.strip-fig{margin:0}
+.strip-ph{position:relative;aspect-ratio:3/4;overflow:hidden;background:var(--cocoa)}
+.strip-ph img{width:100%;height:100%;object-fit:cover;-webkit-user-drag:none;user-select:none;transition:transform 1.2s var(--ease)}
+.strip-ph.film{position:relative}
+.strip-fig figcaption{margin-top:.9rem;color:var(--bone-soft)}
+.strip-fig figcaption b{color:var(--champagne)}
+.strip-foot{display:flex;flex-wrap:wrap;gap:.5rem 2.4rem;margin-top:2.4rem}
+@media(hover:hover){.strip-it:hover .strip-ph img{transform:scale(1.035)}}
+@media(min-width:900px){
+  .strip-head{grid-template-columns:1.1fr .9fr;align-items:end}
+  .strip-arrows{display:flex;gap:10px}
+  .strip-arrows[hidden]{display:none}
+  .strip-it{width:clamp(280px,25vw,400px)}
+}
+.strip-btn{display:inline-grid;place-items:center;width:52px;height:52px;border:1px solid rgba(230,207,166,.5);color:var(--champagne);font-size:1.1rem;transition:background-color .3s,color .3s,opacity .3s}
+.strip-btn:hover{background:var(--champ-a);color:var(--bone)}
+.strip-btn:disabled{opacity:.3;cursor:default;background:none}
+
+/* =================== 5. TWO WAYS TO BOOK =================== */
+.bk{border-top:1px solid var(--umber)}
+.bk-head{margin-bottom:clamp(2.6rem,7vh,4.4rem)}
+.bk-head .lead{max-width:30em}
+.bk-g{display:grid;border-top:1px solid var(--champagne)}
+.bk-s{display:flex;flex-direction:column;gap:1.3rem;padding:2.4rem 0 2.8rem}
+.bk-s + .bk-s{border-top:1px solid var(--umber)}
+.bk-s .d-l{margin-top:.2rem}
+.bk-ask{display:grid;gap:.8rem;margin-top:.4rem}
+.bk-s .acts{margin-top:.6rem}
+.bk-note{margin-top:-.2rem}
+.bk-pts{margin-top:.2rem}
+.bk-proof{margin-top:2.6rem}
+@media(min-width:900px){
+  .bk-g{grid-template-columns:1fr 1fr}
+  .bk-s{padding:3rem clamp(1.5rem,4vw,4rem) 3rem 0}
+  .bk-s + .bk-s{border-top:0;border-left:1px solid var(--umber);padding-left:clamp(1.5rem,4vw,4rem);padding-right:0}
+}
