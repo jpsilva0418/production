@@ -1087,7 +1087,7 @@ video::-webkit-media-controls,video::-webkit-media-controls-start-playback-butto
     };
     const req = () => { if (!tick) { tick = true; requestAnimationFrame(frame); } };
     const mode = () => {
-      const on = wide.matches && !reduced;
+      const on = false; // results row is an automatic slideshow everywhere (founder request)
       runway.classList.toggle('rw-js', on);
       if (on) {
         const overflow = Math.max(0, track.scrollWidth - vp.clientWidth);
