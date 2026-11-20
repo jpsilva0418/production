@@ -169,6 +169,29 @@
   }
   waStatic(); d.addEventListener('ks:lang', waStatic);
 
+  /* ---------- opening: hand over when it ends; any scroll, tap or key skips it ---------- */
+  if (root.classList.contains('intro')) {
+    var endIntro = function () { root.classList.add('intro-done'); };
+    setTimeout(endIntro, +(root.getAttribute('data-intro-ms') || 3000));
+    ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function (ev) { addEventListener(ev, endIntro, { once: true, passive: true }); });
+  }
+
+  /* ---------- scroll progress line ---------- */
+  var bar = d.querySelector('[data-progress]');
+  if (bar) {
+    var pf = function () { var m = root.scrollHeight - innerHeight; bar.style.transform = 'scaleX(' + (m > 0 ? Math.min(1, scrollY / m) : 0) + ')'; };
+    addEventListener('scroll', pf, { passive: true }); pf();
+  }
+
+  /* ---------- count-up numbers ($80 …) ---------- */
+  d.querySelectorAll('[data-count]').forEach(function (el) {
+    var to = +el.getAttribute('data-count'); if (reduced) return;
+    el.textContent = '$0';
+    var run = function () { var t0 = performance.now(); (function f(t) { var k = Math.min(1, (t - t0) / 1100), e = 1 - Math.pow(1 - k, 3); el.textContent = '$' + Math.round(to * e); if (k < 1) requestAnimationFrame(f); })(t0); };
+    var wait = function () { if (!root.classList.contains('intro') || root.classList.contains('intro-done')) setTimeout(run, 500); else setTimeout(wait, 120); };
+    wait();
+  });
+
   /* ---------- reveals ---------- */
   var rv = d.querySelectorAll('.rv');
   if (reduced || !('IntersectionObserver' in window)) rv.forEach(function (e) { e.classList.add('in'); });

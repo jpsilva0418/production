@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-lang="en">
+<html lang="en" data-lang="en" data-intro-ms="3000">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -269,6 +269,55 @@ svg.draw .lashes path{animation:lash .55s var(--ease) both;animation-delay:calc(
   .lock{align-items:center;width:100%;margin-bottom:1.1rem}.hero-t{text-align:center}.hero h1{font-size:clamp(2rem,8.4vw,2.8rem);margin-bottom:1.2rem}.hero .ctas{justify-content:center}.frame figcaption{display:none}}
 @media(max-width:560px){.brand b,.brand small{display:block}.brand b{font-size:.62rem;letter-spacing:.2em}.brand small{font-size:.5rem}}
 
+/* ===== motion ===== */
+.prog{position:fixed;top:0;left:0;right:0;height:2px;z-index:80;transform:scaleX(0);transform-origin:left;pointer-events:none}
+html.intro:not(.intro-done) body{overflow:hidden}
+html.intro:not(.intro-done) .hero .rv{opacity:0!important;transform:translateY(26px)!important;transition:none!important}
+html.intro:not(.intro-done) .hero img{animation-play-state:paused!important}
+html.intro-done .intro{display:none}
+.rb{overflow:hidden;padding:clamp(1rem,2vw,1.5rem) 0}
+.rb-t{display:flex;width:max-content;animation:rbMove 46s linear infinite}
+.rb-run{display:flex;align-items:center;gap:clamp(1.4rem,3vw,2.6rem);padding-right:clamp(1.4rem,3vw,2.6rem);white-space:nowrap}
+.rb em{font-size:clamp(1.3rem,2.6vw,2.2rem)}
+.rb i{font-style:normal;font-size:.6rem}
+@keyframes rbMove{to{transform:translateX(-50%)}}
+@media(max-width:760px){.dock{animation:dockIn .9s var(--ease) 1s both}html.intro .dock{animation-delay:3.6s}}
+@keyframes dockIn{from{transform:translateY(140%)}to{transform:none}}
+
+.prog{background:var(--gold)}
+.rb{border-block:1px solid var(--line);background:var(--paper);margin-bottom:clamp(4.5rem,10vw,8rem)}
+.rb em{font-family:var(--serif);font-weight:300;color:var(--ink)}
+.rb em:nth-of-type(odd){font-style:italic;color:var(--gold)}
+.rb i{color:var(--gold)}
+/* opening: the atelier doors */
+.intro-b{display:none}
+html.intro .intro-b{display:block;position:fixed;inset:0;z-index:200}
+.ib-l,.ib-r{position:absolute;top:0;bottom:0;width:50.5%;background:var(--paper)}
+.ib-l{left:0;border-right:1px solid var(--line);animation:ibL 1s cubic-bezier(.76,0,.24,1) 2s forwards}
+.ib-r{right:0;animation:ibR 1s cubic-bezier(.76,0,.24,1) 2s forwards}
+.ib-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;color:var(--ink);animation:ibOut .45s ease 1.75s forwards}
+.ib-c .ks{--s:clamp(96px,22vw,150px);opacity:0;animation:ibKs 1.1s var(--ease) .15s forwards}
+.ib-rule{width:min(240px,50vw);height:1px;background:var(--gold);transform:scaleX(0);animation:ibRule 1s var(--ease) .55s forwards}
+.ib-c b{font:500 clamp(1rem,2.6vw,1.35rem)/1 var(--serif);letter-spacing:.6em;text-indent:.6em;text-transform:uppercase;opacity:0;animation:ibName 1.2s var(--ease) .7s forwards}
+.ib-c span{font:500 .64rem/1 var(--sans);letter-spacing:.4em;text-indent:.4em;text-transform:uppercase;color:var(--gold);opacity:0;animation:ibFade .8s ease 1.1s forwards}
+@keyframes ibKs{from{opacity:0;transform:scale(.86) translateY(10px)}to{opacity:1;transform:none}}
+@keyframes ibRule{to{transform:none}}
+@keyframes ibName{from{opacity:0;letter-spacing:.6em}to{opacity:1;letter-spacing:.24em;text-indent:.24em}}
+@keyframes ibFade{to{opacity:1}}
+@keyframes ibOut{to{opacity:0;transform:scale(1.04)}}
+@keyframes ibL{to{transform:translateX(-101%)}}
+@keyframes ibR{to{transform:translateX(101%)}}
+/* photos wipe in */
+.sv.rv .sv-ph,.gal figure.rv{clip-path:inset(0 0 100% 0 round 24px);transition:clip-path 1.2s var(--ease) calc(var(--d,0s) + .1s)}
+.sv.rv.in .sv-ph,.gal figure.rv.in{clip-path:inset(0 0 0 0 round 24px)}
+.sv.rv .sv-ph{clip-path:inset(0 0 100% 0)}.sv.rv.in .sv-ph{clip-path:inset(0)}
+.sv.rv .sv-ph img,.gal figure.rv img{transform:scale(1.14);transition:transform 1.8s var(--ease) var(--d,0s)}
+.sv.rv.in .sv-ph img,.gal figure.rv.in img{transform:none}
+.frame-img img{animation:heroIn 1.6s var(--ease) both,drift 20s ease-in-out 1.6s infinite alternate}
+.ch-h h2 em{display:inline-block}
+.gl a{transition:background .4s}.gl a:hover{background:var(--ivory)}
+.pk-ph{transition:transform .6s var(--ease)}
+
 /* sticky mobile bar */
 .dock{display:none}
 @media(max-width:760px){
@@ -280,12 +329,15 @@ svg.draw .lashes path{animation:lash .55s var(--ease) both;animation-delay:calc(
 }
 .flag{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom));z-index:55;font:500 .6rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;background:var(--ink);color:var(--paper);padding:.55em 1em;border-radius:999px;opacity:.85;pointer-events:none;white-space:nowrap}
 @media(max-width:760px){.flag{bottom:calc(84px + env(safe-area-inset-bottom))}}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}.sv.rv .sv-ph,.gal figure.rv{clip-path:none}.sv.rv .sv-ph img,.gal figure.rv img{transform:none}}
 </style>
+<script>(function(){var d=document.documentElement;try{if(matchMedia('(prefers-reduced-motion: reduce)').matches||sessionStorage.getItem('ks-B-intro'))return;sessionStorage.setItem('ks-B-intro','1');d.classList.add('intro');setTimeout(function(){d.classList.add('intro-done')},4800)}catch(e){}})();</script>
 </head>
 <body>
 <span hidden data-title-en="Karolayne Souza · Lashes &amp; Brows in Milford, MA" data-title-pt="Karolayne Souza · Cílios e Sobrancelhas em Milford, MA"></span>
 
+<div class="intro intro-b" aria-hidden="true"><i class="ib-l"></i><i class="ib-r"></i><div class="ib-c"><i class="ks"></i><i class="ib-rule"></i><b>Karolayne Souza</b><span>Lashes &amp; Brows</span></div></div>
+<i class="prog" data-progress aria-hidden="true"></i>
 <header class="hd" data-header>
   <div class="hd-in">
     <a class="brand" href="#top" aria-label="Karolayne Souza — home"><i class="ks"></i><span><b>Karolayne Souza</b><small>Lashes &amp; Brows</small></span></a>
@@ -418,6 +470,8 @@ svg.draw .lashes path{animation:lash .55s var(--ease) both;animation-delay:calc(
       </div>
     </div>
   </section>
+
+  <div class="rb" aria-hidden="true"><div class="rb-t"><span class="rb-run"><em><span data-l="en">Classic</span><span data-l="pt">Fio a fio</span></em><i>✦</i><em><span data-l="en">Hybrid</span><span data-l="pt">Híbrido</span></em><i>✦</i><em><span data-l="en">Brazilian volume</span><span data-l="pt">Volume brasileiro</span></em><i>✦</i><em><span data-l="en">Russian volume</span><span data-l="pt">Volume russo</span></em><i>✦</i><em><span data-l="en">Brow design</span><span data-l="pt">Design de sobrancelhas</span></em><i>✦</i><em><span data-l="en">Henna</span><span data-l="pt">Henna</span></em><i>✦</i><em><span data-l="en">Milford, MA</span><span data-l="pt">Milford, MA</span></em><i>✦</i></span><span class="rb-run"><em><span data-l="en">Classic</span><span data-l="pt">Fio a fio</span></em><i>✦</i><em><span data-l="en">Hybrid</span><span data-l="pt">Híbrido</span></em><i>✦</i><em><span data-l="en">Brazilian volume</span><span data-l="pt">Volume brasileiro</span></em><i>✦</i><em><span data-l="en">Russian volume</span><span data-l="pt">Volume russo</span></em><i>✦</i><em><span data-l="en">Brow design</span><span data-l="pt">Design de sobrancelhas</span></em><i>✦</i><em><span data-l="en">Henna</span><span data-l="pt">Henna</span></em><i>✦</i><em><span data-l="en">Milford, MA</span><span data-l="pt">Milford, MA</span></em><i>✦</i></span></div></div>
 
   <section class="ch" id="gallery" style="padding-top:0">
     <div class="wrap">

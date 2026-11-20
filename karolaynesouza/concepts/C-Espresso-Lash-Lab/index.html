@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-lang="en">
+<html lang="en" data-lang="en" data-intro-ms="3000">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -260,6 +260,61 @@ svg.draw .lashes path{animation:sweepIn .6s var(--ease) both;animation-delay:cal
 
 @media(max-width:560px){.sc{display:grid;grid-template-columns:38% 1fr;column-gap:.9rem;row-gap:.5rem;align-content:center;padding:.6rem}.sc-ph{grid-row:1/span 4;align-self:stretch;aspect-ratio:auto;min-height:170px}.sc>h3,.sc>.pt,.sc>.chips,.sc>.sc-go{margin-inline:0}.sc h3{font-size:1.3rem;align-self:end}.chips{margin-top:0}.chip{padding:.4rem .5rem;font-size:.62rem}.chip b{font-size:.85rem}}
 
+/* ===== motion ===== */
+.prog{position:fixed;top:0;left:0;right:0;height:2px;z-index:80;transform:scaleX(0);transform-origin:left;pointer-events:none}
+html.intro:not(.intro-done) body{overflow:hidden}
+html.intro:not(.intro-done) .hero .rv{opacity:0!important;transform:translateY(26px)!important;transition:none!important}
+html.intro:not(.intro-done) .hero img{animation-play-state:paused!important}
+html.intro-done .intro{display:none}
+.rb{overflow:hidden;padding:clamp(1rem,2vw,1.5rem) 0}
+.rb-t{display:flex;width:max-content;animation:rbMove 46s linear infinite}
+.rb-run{display:flex;align-items:center;gap:clamp(1.4rem,3vw,2.6rem);padding-right:clamp(1.4rem,3vw,2.6rem);white-space:nowrap}
+.rb em{font-size:clamp(1.3rem,2.6vw,2.2rem)}
+.rb i{font-style:normal;font-size:.6rem}
+@keyframes rbMove{to{transform:translateX(-50%)}}
+@media(max-width:760px){.dock{animation:dockIn .9s var(--ease) 1s both}html.intro .dock{animation-delay:3.6s}}
+@keyframes dockIn{from{transform:translateY(140%)}to{transform:none}}
+
+.prog{background:var(--caramel2)}
+.rb{border-block:1px solid var(--line);margin-bottom:clamp(4.5rem,10vw,8rem)}
+.rb em{font-family:var(--serif);font-weight:350;font-style:normal;color:var(--cream)}
+.rb em:nth-of-type(odd){font-style:italic;font-weight:300;color:var(--caramel2)}
+.rb i{color:var(--caramel2)}
+/* opening: a closed eye that opens */
+.intro-c{display:none}
+html.intro .intro-c{display:block;position:fixed;inset:0;z-index:200;overflow:hidden}
+.ic-t,.ic-b{position:absolute;left:-12vw;right:-12vw;background:#120C08}
+.ic-t{top:0;height:58vh;z-index:1;border-radius:0 0 50% 50%/0 0 22% 22%;animation:icT 1.1s cubic-bezier(.76,0,.24,1) 1.95s forwards}
+.ic-b{top:40vh;bottom:0;background:#1A120C;animation:icB 1.1s cubic-bezier(.76,0,.24,1) 1.95s forwards}
+.ic-lash{position:absolute;z-index:2;left:-12vw;top:38.9vh;width:124vw;height:35vh;overflow:visible;fill:none;animation:icOut .5s ease 1.75s forwards}
+.ic-lash path{stroke:var(--caramel2);stroke-width:1.3;stroke-linecap:round;vector-effect:non-scaling-stroke;stroke-dasharray:1 1;stroke-dashoffset:1;animation:icDraw .5s ease forwards;animation-delay:calc(.55s + var(--k) * 13ms)}
+.ic-lash .l{stroke-width:1.8;animation:icDraw 1s cubic-bezier(.45,.05,.25,1) .1s forwards}
+.ic-c{position:absolute;z-index:3;left:0;right:0;top:0;height:50vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.9rem;color:var(--cream);animation:icOut .45s ease 1.7s forwards}
+.ic-c .ks{--s:clamp(84px,20vw,130px);color:var(--nude);opacity:0;animation:icKs 1s var(--ease) .5s forwards}
+.ic-c b{font:500 clamp(.85rem,2.2vw,1.05rem)/1 var(--sans);letter-spacing:.34em;text-indent:.34em;text-transform:uppercase;opacity:0;animation:icUp .8s var(--ease) .9s forwards}
+.ic-c span{font:700 .6rem/1 var(--sans);letter-spacing:.3em;text-indent:.3em;text-transform:uppercase;color:var(--caramel2);opacity:0;animation:icUp .8s var(--ease) 1.05s forwards}
+@keyframes icDraw{to{stroke-dashoffset:0}}
+@keyframes icKs{from{opacity:0;transform:scale(.8);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+@keyframes icUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes icOut{to{opacity:0}}
+@keyframes icT{to{transform:translateY(-104%)}}
+@keyframes icB{to{transform:translateY(104%)}}
+/* photos wipe in, cards lift */
+.sc.rv .sc-ph,.gal figure.rv,.hero-ph{clip-path:inset(0 0 100% 0 round 16px);transition:clip-path 1.1s var(--ease) calc(var(--d,0s) + .1s)}
+.sc.rv.in .sc-ph,.gal figure.rv.in{clip-path:inset(0 0 0 0 round 16px)}
+.hero-ph{clip-path:none}
+.sc.rv .sc-ph img,.gal figure.rv img{transform:scale(1.16);transition:transform 1.8s var(--ease) var(--d,0s)}
+.sc.rv.in .sc-ph img,.gal figure.rv.in img{transform:none}
+.hero-ph img{animation:heroIn 1.6s var(--ease) both,kb 22s ease-in-out 1.6s infinite alternate}
+.hero-ph::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 40%,rgba(255,244,232,.18) 50%,transparent 60%);transform:translateX(-120%);animation:sheen 1.6s ease 1.2s both;pointer-events:none}
+html.intro .hero-ph::after{animation-delay:3.4s}
+@keyframes sheen{to{transform:translateX(120%)}}
+.btn--c{position:relative;overflow:hidden}
+.btn--c::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.35) 50%,transparent 65%);transform:translateX(-120%);animation:sheen 3.6s ease 4s infinite}
+.tag::before{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 8px rgba(208,154,108,0)}}
+.gl a.rv{transition:opacity .8s var(--ease),transform 1s var(--ease),border-color .3s}
+
 /* dock */
 .dock{display:none}
 @media(max-width:760px){
@@ -271,12 +326,16 @@ svg.draw .lashes path{animation:sweepIn .6s var(--ease) both;animation-delay:cal
 }
 .flag{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom));z-index:55;font:800 .58rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;background:var(--nude);color:var(--esp);padding:.55em 1em;border-radius:999px;opacity:.85;pointer-events:none;white-space:nowrap}
 @media(max-width:760px){.flag{bottom:calc(84px + env(safe-area-inset-bottom))}}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}.sweep path{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}.sweep path{stroke-dashoffset:0}.sc.rv .sc-ph,.gal figure.rv{clip-path:none}.sc.rv .sc-ph img,.gal figure.rv img{transform:none}}
 </style>
+<script>(function(){var d=document.documentElement;try{if(matchMedia('(prefers-reduced-motion: reduce)').matches||sessionStorage.getItem('ks-C-intro'))return;sessionStorage.setItem('ks-C-intro','1');d.classList.add('intro');setTimeout(function(){d.classList.add('intro-done')},4800)}catch(e){}})();</script>
 </head>
 <body>
 <span hidden data-title-en="Karolayne Souza · Lash Lab · Milford, MA" data-title-pt="Karolayne Souza · Lash Lab · Milford, MA"></span>
 
+<div class="intro intro-c" aria-hidden="true"><i class="ic-t"></i><i class="ic-b"></i><svg class="ic-lash" id="icLash" viewBox="0 0 1200 220" preserveAspectRatio="none"></svg><div class="ic-c"><i class="ks"></i><b>Karolayne Souza</b><span>Lash Lab · Milford, MA</span></div></div>
+<script>(function(){var s=document.getElementById('icLash'),h='<path class="l" d="M0 40Q600 200 1200 40" pathLength="1"/>';for(var i=0;i<54;i++){var t=.03+.94*i/53,x=1200*t,y=(1-t)*(1-t)*40+2*(1-t)*t*200+t*t*40,dy=2*(1-t)*160-2*t*160,a=Math.atan2(dy,1200)+Math.PI/2+(t-.5)*.5,L=14+34*Math.sin(t*Math.PI);h+='<path style="--k:'+i+'" pathLength="1" d="M'+x.toFixed(1)+' '+y.toFixed(1)+'Q'+(x+Math.cos(a)*L*.5).toFixed(1)+' '+(y+Math.sin(a)*L*.5).toFixed(1)+' '+(x+Math.cos(a)*L+(t-.5)*L*.5).toFixed(1)+' '+(y+Math.sin(a)*L).toFixed(1)+'"/>';}s.innerHTML=h;})();</script>
+<i class="prog" data-progress aria-hidden="true"></i>
 <header class="hd" data-header>
   <div class="hd-in">
     <a class="brand" href="#top" aria-label="Karolayne Souza — home"><i class="ks"></i><span>Karolayne Souza</span></a>
@@ -308,7 +367,7 @@ svg.draw .lashes path{animation:sweepIn .6s var(--ease) both;animation-delay:cal
       </div>
       <figure class="hero-ph">
         <img src="{{img:portrait.webp}}" alt="Karolayne Souza, lash and brow artist">
-        <figcaption class="glass"><div><small><span data-l="en">Full sets from</span><span data-l="pt">Aplicação a partir de</span></small><b>$80</b></div><div><small><span data-l="en">Brows from</span><span data-l="pt">Sobrancelhas a partir de</span></small><b>$25</b></div></figcaption>
+        <figcaption class="glass"><div><small><span data-l="en">Full sets from</span><span data-l="pt">Aplicação a partir de</span></small><b data-count="80">$80</b></div><div><small><span data-l="en">Brows from</span><span data-l="pt">Sobrancelhas a partir de</span></small><b data-count="25">$25</b></div></figcaption>
       </figure>
     </div>
   </section>
@@ -400,6 +459,8 @@ svg.draw .lashes path{animation:sweepIn .6s var(--ease) both;animation-delay:cal
       </div>
     </div>
   </section>
+
+  <div class="rb" aria-hidden="true"><div class="rb-t"><span class="rb-run"><em><span data-l="en">Classic</span><span data-l="pt">Fio a fio</span></em><i>✦</i><em><span data-l="en">Hybrid</span><span data-l="pt">Híbrido</span></em><i>✦</i><em><span data-l="en">Brazilian volume</span><span data-l="pt">Volume brasileiro</span></em><i>✦</i><em><span data-l="en">Russian volume</span><span data-l="pt">Volume russo</span></em><i>✦</i><em><span data-l="en">Brow design</span><span data-l="pt">Design de sobrancelhas</span></em><i>✦</i><em><span data-l="en">Henna</span><span data-l="pt">Henna</span></em><i>✦</i><em><span data-l="en">Milford, MA</span><span data-l="pt">Milford, MA</span></em><i>✦</i></span><span class="rb-run"><em><span data-l="en">Classic</span><span data-l="pt">Fio a fio</span></em><i>✦</i><em><span data-l="en">Hybrid</span><span data-l="pt">Híbrido</span></em><i>✦</i><em><span data-l="en">Brazilian volume</span><span data-l="pt">Volume brasileiro</span></em><i>✦</i><em><span data-l="en">Russian volume</span><span data-l="pt">Volume russo</span></em><i>✦</i><em><span data-l="en">Brow design</span><span data-l="pt">Design de sobrancelhas</span></em><i>✦</i><em><span data-l="en">Henna</span><span data-l="pt">Henna</span></em><i>✦</i><em><span data-l="en">Milford, MA</span><span data-l="pt">Milford, MA</span></em><i>✦</i></span></div></div>
 
   <section class="sec" id="results" style="padding-top:0">
     <div class="wrap">
