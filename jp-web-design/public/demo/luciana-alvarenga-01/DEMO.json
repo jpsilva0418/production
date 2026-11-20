@@ -4,10 +4,10 @@
   "client": "Studio Luciana Alvarenga",
   "sourceRepo": "jpsilva0418/production",
   "sourceDir": "luciana-alvarenga",
-  "sourceCommit": "73a1d738eb018ef968c42b5f0db3f89ab19201dd",
+  "sourceCommit": "f23383efa22f05c1feb75f7bb5cf483cbfe42ec9",
   "sourceDirty": true,
-  "builtAt": "2026-11-20T20:41:05.780Z",
-  "pages": 3,
+  "builtAt": "2026-11-20T21:04:33.346Z",
+  "pages": 5,
   "shared": {
     "media": "/demo/_shared/luciana-alvarenga/"
   },
@@ -23,6 +23,14 @@
     "III": {
       "name": "Atelier Porcelana",
       "path": "/demo/luciana-alvarenga-01/atelier-porcelana"
+    },
+    "IV": {
+      "name": "Preto & Branco",
+      "path": "/demo/luciana-alvarenga-01/preto-e-branco"
+    },
+    "V": {
+      "name": "Rosé",
+      "path": "/demo/luciana-alvarenga-01/rose"
     }
   },
   "note": "Unlisted design demo — not the live website. noindex. Booking buttons open her real WhatsApp; nothing is sent by the page itself."

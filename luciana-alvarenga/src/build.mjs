@@ -106,9 +106,78 @@ const VARIANTS = [
   { n: 3, path: '/atelier-porcelana', slug: 'variacao-3-atelier-porcelana', name: 'Atelier Porcelana', roman: 'III', hero: 'arch', h: 'v3',
     tones: { artist: 'lt', runway: 'alt', sig: 'dk', svc: 'lt', lash: 'alt', studio: 'lt', pol: 'alt', depo: 'lt' },
     note: 'Luminosa: o arco da sua marca como portal do vídeo, como no render "VEM AÍ".' },
+  { n: 4, path: '/preto-e-branco', slug: 'variacao-4-preto-e-branco', name: 'Preto & Branco', roman: 'IV', hero: 'mono', h: 'v1',
+    tones: { artist: 'lt', runway: 'alt', sig: 'dk', svc: 'lt', lash: 'alt', studio: 'lt', pol: 'lt', depo: 'alt' },
+    note: 'Básica e atemporal: branco puro, preto e um fio de dourado. Nada de cor forte.' },
+  { n: 5, path: '/rose', slug: 'variacao-5-rose', name: 'Rosé', roman: 'V', hero: 'mosaic', h: 'v2',
+    tones: { artist: 'alt', runway: 'lt', sig: 'dk', svc: 'alt', lash: 'lt', studio: 'dk', pol: 'alt', depo: 'lt' },
+    note: 'Diferente em tudo: rosé e vinho suaves, mosaico de vídeo, cantos arredondados, outra tipografia.' },
 ];
 
 const VARIANT_CSS = {
+  4: `
+:root{--porcelain:#FFFFFF;--sand:#F3F2EF;--linen:#E4E2DD;--noir:#0E0E0E;--noir-2:#161616;--cocoa:#111111;--cocoa-soft:#4A4A48;
+  --gold-text:#7A6440;--gold-text-sand:#6E5A39;--champagne:#E6D7BF;--gold:#A8915F;
+  --hairlt:rgba(17,17,17,.16);--hairlt-strong:rgba(17,17,17,.34);--hairdk:rgba(255,255,255,.16);--hairdk-strong:rgba(255,255,255,.3);
+  --on-dark:rgba(255,255,255,.88);--on-dark-soft:rgba(255,255,255,.68)}
+.tone-alt{--hair:rgba(17,17,17,.16);--hair-s:rgba(17,17,17,.32)}
+.disp{text-transform:uppercase;letter-spacing:.06em;line-height:1.08}
+.chap-t,.rw-head .disp,.svc-head .disp,.lash-copy .disp,.studio-head .disp{font-size:clamp(2.2rem,3.8vw,3.6rem)}
+.lx-glow,.lx-shaft,.grain{display:none}
+.ph img,.ph video{filter:saturate(.82) contrast(1.02)}
+.arch-fr,.arch-fr>.ph{border-radius:0!important;clip-path:none!important}
+.arch-fr{border-color:var(--hair-s)}
+.btnv--solid{background:#111;border-color:#111;color:#fff}.btnv--solid::after{background:#333}.btnv--solid:hover{color:#fff}
+.tone-dk .btnv--ink,.finale .btnv--champ{border-color:#fff;color:#fff}.tone-dk .btnv--ink::after,.finale .btnv--champ::after{background:#fff}
+.tone-dk .btnv--ink:hover,.finale .btnv--champ:hover{color:#111}
+.hero--mono{background:#fff;color:#111;display:block;text-align:left;padding:0}
+.mono-in{width:var(--wrapv);margin:0 auto;padding:clamp(7rem,15vh,9rem) 0 clamp(3rem,6vh,4.5rem);display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(2rem,5vw,5rem);align-items:end;min-height:100svh}
+.mono-copy .hero-h{color:#111;text-indent:0;letter-spacing:.08em;font-size:clamp(2rem,4.4vw,4.4rem);line-height:1.08}
+.mono-copy .hero-it{margin-left:0;color:#4A4A48}
+.mono-copy .hero-cta{justify-content:flex-start}
+.mono-copy .tlk{color:#111}
+.mono-media{position:relative;aspect-ratio:4/5;background:#111;overflow:hidden;opacity:0;animation:fadeIn 1.2s ease .4s both}
+.mono-media img,.mono-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 38%;filter:saturate(.8) contrast(1.03)}
+.mono-media video{opacity:0;transition:opacity 1.4s}.mono-media video.on{opacity:1}
+.mono-meta{display:flex;justify-content:space-between;gap:1rem;border-top:1px solid #111;margin-top:clamp(2rem,4vh,3rem);padding-top:1rem;font-family:var(--utility);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:#4A4A48}
+@media(max-width:899px){.mono-in{grid-template-columns:1fr;align-items:start;min-height:0;padding-top:6.5rem}.mono-media{aspect-ratio:4/5;order:-1}.mono-copy .hero-h{font-size:clamp(1.7rem,8vw,2.4rem)}}`,
+  5: `
+:root{--porcelain:#F6ECE7;--sand:#EEDCD3;--linen:#E0C4B8;--noir:#3A1D24;--noir-2:#4A2630;--cocoa:#3A1D24;--cocoa-soft:#6B4A4E;
+  --gold-text:#9A4F45;--gold-text-sand:#8C463D;--champagne:#F1C7B8;--gold:#C98E7E;--glow:#FBD9CC;
+  --display:'Gilda Display',Georgia,serif;--engraved:'Jost',system-ui,sans-serif;--utility:'Jost',system-ui,sans-serif;
+  --hairlt:rgba(154,79,69,.22);--hairlt-strong:rgba(154,79,69,.4);--hairdk:rgba(241,199,184,.2);--hairdk-strong:rgba(241,199,184,.36);
+  --on-dark:rgba(250,238,233,.9);--on-dark-soft:rgba(250,238,233,.72);--r:22px}
+.tone-alt{--hair:rgba(140,70,61,.24);--hair-s:rgba(140,70,61,.42)}
+.capsv,.caps-xs,.kick,.cap,.plaque,.rw-plaque,.cert,.tags,.coll-rows .nm,.chapslate .cs-t{letter-spacing:.18em}
+.disp{letter-spacing:0}
+.ph,.ph--framed,.arch-fr,.arch-fr>.ph,.svc,.depo,.hours,.rw-end{border-radius:var(--r)}
+.ph--framed{outline:0;box-shadow:0 30px 60px -34px rgba(58,29,36,.45)}
+.arch-fr{border:0;padding:0}.arch-fr>.ph{clip-path:inset(0 round var(--r))!important;border-radius:var(--r)!important}
+.ph{clip-path:inset(0 round var(--r))}
+.rw-fig .ph{outline:0;box-shadow:0 26px 50px -30px rgba(58,29,36,.5)}
+.rw-fig:nth-child(even){transform:none}
+.btnv{border-radius:999px}.btnv::after{border-radius:999px}
+.btnv--solid{background:var(--champagne);border-color:var(--champagne)}
+.svc{background:var(--porcelain);border:0;padding:14px 14px 18px;box-shadow:0 20px 40px -30px rgba(58,29,36,.35)}
+.svc .ph{margin-bottom:1.2rem}
+.svc-foot{border-top-color:var(--hair)}
+.tone-alt .svc{background:#F8EFEA}
+.depo{border-style:solid;background:rgba(255,255,255,.4)}
+.ghost-w{display:none}
+.hero--mosaic{display:block;background:var(--noir);padding:0;text-align:left}
+.mos{position:relative;width:100%;display:grid;grid-template-columns:1.25fr .75fr;grid-template-rows:1fr 1fr;gap:12px;padding:12px;min-height:100svh}
+.mos .t{position:relative;overflow:hidden;border-radius:var(--r);background:#2a1418}
+.mos .t img,.mos .t video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.9) sepia(.06)}
+.mos .t video{opacity:0;transition:opacity 1.4s}.mos .t video.on{opacity:1}
+.mos .t1{grid-row:1/3}
+.mos .t1::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(58,29,36,.15),rgba(58,29,36,.25) 45%,rgba(58,29,36,.85))}
+.mos-c{position:absolute;left:12px;bottom:12px;z-index:5;padding:clamp(1.6rem,4vw,3.6rem);max-width:min(720px,62vw)}
+.mos-c .hero-h{text-indent:0;text-transform:none;letter-spacing:0;font-size:clamp(2.4rem,5.4vw,5.2rem);line-height:1.02;color:#FAEEE9}
+.mos-c .hero-h .lo:nth-child(2) .li{color:var(--champagne);font-style:italic}
+.mos-c .hero-it{margin-left:0;color:rgba(250,238,233,.9)}
+.mos-c .hero-cta{justify-content:flex-start}
+.mos-tag{position:absolute;left:14px;bottom:14px;z-index:3;font-family:var(--utility);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:#FAEEE9;background:rgba(58,29,36,.55);backdrop-filter:blur(6px);padding:.55em 1em;border-radius:999px}
+@media(max-width:899px){.mos{grid-template-columns:1fr 1fr;grid-template-rows:62svh 34vw;min-height:0}.mos .t1{grid-column:1/3;grid-row:1}.mos-c{max-width:none;right:12px;bottom:auto;top:calc(62svh - 2rem);transform:translateY(-100%)}.mos-c .hero-h{font-size:clamp(2rem,9vw,2.8rem)}.mos .t1::after{background:linear-gradient(rgba(58,29,36,.35),rgba(58,29,36,.6) 40%,rgba(58,29,36,.9))}.mos-c .hero-it{font-size:1rem}.mos .t2,.mos .t3{min-height:150px}}`,
   1: ``,
   2: `
 :root{--engraved:'Marcellus','Trajan Pro',Georgia,serif}
@@ -197,6 +266,33 @@ function hero(v) {
     </div>
     <div class="hero-media" aria-hidden="true">${HERO_MEDIA()}<i class="grain"></i><i class="lx-glow"></i><i class="hero-frame"></i></div>
     ${CUE}
+  </section>`;
+  if (v.hero === 'mono') return `
+  <section class="hero hero--mono" id="inicio" aria-label="Início">
+    <div class="mono-in">
+      <div class="mono-copy">
+        <p class="capsv hero-kick" data-i18n="h.kick">${t('h.kick')}</p>
+        ${HEADLINE(v)}
+        <p class="hero-it" data-i18n="h.it">${t('h.it')}</p>
+        <div class="ctas hero-cta"><a class="btnv btnv--solid" href="${WA_DEFAULT}" target="_blank" rel="noopener">${T('h.cta')}</a><a class="tlk" href="#resultados">${T('h.link')}</a></div>
+        <div class="mono-meta"><span>Studio Luciana Alvarenga</span><span>Goiânia · GO</span></div>
+      </div>
+      <div class="mono-media" aria-hidden="true">${HERO_MEDIA()}</div>
+    </div>
+  </section>`;
+  if (v.hero === 'mosaic') return `
+  <section class="hero hero--mosaic hero--dark" id="inicio" aria-label="Início">
+    <div class="mos">
+      <div class="t t1" aria-hidden="true">${HERO_MEDIA()}</div>
+      <div class="t t2">${img('r11', { alt: 'Resultado de design de sobrancelhas e lash lifting', sizes: '(max-width:899px) 50vw, 36vw', eager: true })}<span class="mos-tag" data-i18n="r.7">${t('r.7')}</span></div>
+      <div class="t t3">${img('r04', { alt: 'Resultado de lash lifting em close', sizes: '(max-width:899px) 50vw, 36vw', eager: true })}<span class="mos-tag" data-i18n="r.3">${t('r.3')}</span></div>
+      <div class="mos-c">
+        <p class="capsv hero-kick" style="color:var(--champagne)" data-i18n="h.kick">${t('h.kick')}</p>
+        ${HEADLINE(v)}
+        <p class="hero-it" data-i18n="h.it">${t('h.it')}</p>
+        ${HERO_CTA}
+      </div>
+    </div>
   </section>`;
   return `
   <section class="hero hero--arch" id="inicio" aria-label="Início">
@@ -497,7 +593,7 @@ function footer(v) {
 }
 
 function header(v) {
-  const light = v.hero !== 'arch';
+  const light = !['arch', 'mono'].includes(v.hero);
   return `
   <header class="hd${light ? ' hd--lt' : ''} hd--intro">
     <div class="hd-in">
@@ -537,6 +633,7 @@ function fontCSS(v) {
     f('Cormorant Garamond', 'cormorant-garamond-latin-400-italic.woff2', 400, 'italic'),
     f('Montserrat', 'montserrat-latin-400-normal.woff2'), f('Montserrat', 'montserrat-latin-500-normal.woff2', 500),
     f('Parisienne', 'parisienne-latin-400-normal.woff2'),
+    v.n === 5 ? f('Gilda Display', 'gilda-display-latin-400-normal.woff2') + f('Jost', 'jost-latin-400-normal.woff2') + f('Jost', 'jost-latin-500-normal.woff2', 500) : '',
   ].join('\n');
 }
 
