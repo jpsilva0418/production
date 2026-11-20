@@ -105,7 +105,7 @@ const swash = () => `<svg class="swash" viewBox="0 0 420 40" aria-hidden="true">
 
 /* ---------------- variations ---------------- */
 const VARIANTS = [
-  { n: 1, path: '', slug: 'variacao-1-champagne-glow', name: 'Champagne Glow', roman: 'I', hero: 'cinema', h: 'v1',
+  { n: 1, path: '/champagne-glow', slug: 'variacao-1-champagne-glow', name: 'Champagne Glow', roman: 'I', hero: 'cinema', h: 'v1',
     tones: { artist: 'lt', runway: 'alt', sig: 'dk', svc: 'lt', lash: 'alt', studio: 'fade', pol: 'lt', depo: 'alt' },
     note: 'A direção do briefing: vídeo cinematográfico, porcelana e noir.' },
   { n: 2, path: '/noir-dourado', slug: 'variacao-2-noir-dourado', name: 'Noir Dourado', roman: 'II', hero: 'split', h: 'v2',
@@ -644,7 +644,7 @@ ${body}
   <a class="btnv btnv--solid" href="${WA_DEFAULT}" target="_blank" rel="noopener">${T('bar.cta')}</a>
 </div>
 <button id="toTop" type="button" aria-label="${t('top')}" data-i18n-label="top">&uarr;</button>
-<div class="pv-flag" aria-hidden="true">Prévia · Variação ${v.roman} — ${v.name}</div>
+<div class="demo-bar" role="navigation" aria-label="As cinco prévias"><span class="demo-bar-t">Prévia de design · não é o site oficial</span><span class="demo-bar-n">${VARIANTS.map((o) => `<a href="${variantHref(o)}"${o.n === v.n ? ' aria-current="true"' : ''} aria-label="Prévia ${o.n}: ${o.name}">${o.n}</a>`).join('')}<a class="demo-bar-all" href="${MODE === 'publish' ? `/demo/${SLUG}` : 'index.html'}">Todas</a></span></div>
 <script>window.__DICT=${JSON.stringify(dict)};</script>
 <script>${JS}</script>
 </body>
