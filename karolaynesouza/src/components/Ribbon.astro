@@ -1,0 +1,18 @@
+---
+/** A slow, continuous ribbon of her services in gold italic — a quiet moving line between chapters.
+ *  Two identical runs make the loop seamless; it stops under reduced motion. */
+const items = ['Classic set', 'Hybrid volume', 'Brazilian volume', 'Russian volume', 'Eyebrow design', 'Henna brows', 'Lash fills', 'Milford, MA'];
+---
+<div class="rb" aria-hidden="true">
+  <div class="rb-t">{[0, 1].map(() => <span class="rb-run">{items.map((t) => <><em>{t}</em><i>✦</i></>)}</span>)}</div>
+</div>
+<style>
+  .rb{position:relative;z-index:1;overflow:hidden;background:var(--leaf);border-block:1px solid var(--hairdk);padding:clamp(.9rem,1.6vw,1.2rem) 0}
+  .rb-t{display:flex;width:max-content;animation:rbMove 48s linear infinite}
+  .rb-run{display:flex;align-items:center;gap:clamp(1.4rem,3vw,2.4rem);padding-right:clamp(1.4rem,3vw,2.4rem);white-space:nowrap}
+  .rb em{font-family:var(--display);font-size:clamp(1.15rem,2vw,1.6rem);color:var(--ivory);font-variation-settings:'opsz' 48}
+  .rb em:nth-of-type(odd){font-style:italic;color:var(--gold-lt)}
+  .rb i{font-style:normal;font-size:.6rem;color:var(--gold-lt);opacity:.8}
+  @keyframes rbMove{to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion:reduce){.rb-t{animation:none}}
+</style>

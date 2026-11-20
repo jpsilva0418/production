@@ -2,6 +2,8 @@
 /** SERVICES & PRICES — her official price list as a real, readable table (English, with her
  *  Portuguese names), then brows, then what she offers but hasn't priced ("Ask"). */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import LashArt from '../components/LashArt.astro';
+import BrowArt from '../components/BrowArt.astro';
 import { SITE, ext, LASHES, BROWS, EXTRAS, PRICE_NOTE, money } from '../lib/content';
 import { serviceJsonLd } from '../lib/seo';
 const ld = [...LASHES.rows.map((r) => serviceJsonLd({ name: `${r.name} lash extensions`, description: r.line, path: '/services', serviceType: 'Eyelash extensions' })),
@@ -27,9 +29,9 @@ const ld = [...LASHES.rows.map((r) => serviceJsonLd({ name: `${r.name} lash exte
           <span role="columnheader" class="pr-name">Set</span>
           {LASHES.cols.map((c, i) => <span role="columnheader" class="pr-c">{c}{LASHES.colsNote[i] && <em>{LASHES.colsNote[i]}</em>}</span>)}
         </div>
-        {LASHES.rows.map((r) => (
+        {LASHES.rows.map((r, i) => (
           <div class="pr-row" role="row">
-            <span role="rowheader" class="pr-name"><b>{r.name}</b><em lang="pt-BR">{r.pt}</em><small>{r.line}</small></span>
+            <span role="rowheader" class="pr-name"><span class="pr-art"><LashArt style={(['classic', 'hybrid', 'brazilian', 'russian'] as const)[i]} label={`${r.name}: line drawing of how the extensions are placed`} /></span><b>{r.name}</b><em lang="pt-BR">{r.pt}</em><small>{r.line}</small></span>
             {r.prices.map((p, i) => <span role="cell" class="pr-c" data-col={LASHES.cols[i]}>{money(p)}</span>)}
           </div>
         ))}
@@ -41,6 +43,7 @@ const ld = [...LASHES.rows.map((r) => serviceJsonLd({ name: `${r.name} lash exte
     <div class="wrap pr-two">
       <div class="fade">
         <header class="pr-h"><h2 class="disp" id="prBrow">{BROWS.title}</h2><p class="ital" lang="pt-BR">{BROWS.pt}</p></header>
+        <div class="pr-brow"><BrowArt /></div>
         <ul class="pr-list">
           {BROWS.rows.map((b) => <li><span><b>{b.name}</b><em lang="pt-BR">{b.pt}</em></span><span class="pr-dots" aria-hidden="true"></span><span class="pr-v">{money(b.price)}</span></li>)}
         </ul>
@@ -83,6 +86,8 @@ const ld = [...LASHES.rows.map((r) => serviceJsonLd({ name: `${r.name} lash exte
   .pr-row--h{padding-block:.9rem}
   .pr-row--h span{font-family:var(--utility);font-weight:600;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--brass)}
   .pr-row--h em{display:block;font-style:normal;font-weight:500;letter-spacing:.08em;text-transform:none;font-size:.7rem;color:var(--ink-soft);margin-top:.2rem}
+  .pr-art{display:block;width:min(220px,60%);margin-bottom:.9rem;padding:1.1rem .9rem .7rem;border-radius:var(--r);background:radial-gradient(90% 90% at 50% 100%,var(--leaf-2),var(--leaf) 60%,var(--leaf-deep))}
+  .pr-brow{margin:0 0 1.4rem;padding:1.4rem 1.2rem 1rem;border-radius:var(--r);background:radial-gradient(90% 100% at 30% 50%,var(--leaf-2),var(--leaf) 55%,var(--leaf-deep))}
   .pr-name b{display:block;font-family:var(--display);font-weight:400;font-size:clamp(1.3rem,2vw,1.65rem);color:var(--ink);line-height:1.15}
   .pr-name em{display:block;font-family:var(--display);font-size:.95rem;color:var(--ink-soft);margin-top:.15rem}
   .pr-name small{display:block;font-size:.88rem;color:var(--ink-soft);margin-top:.45rem;max-width:30em}

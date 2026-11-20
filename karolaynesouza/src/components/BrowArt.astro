@@ -1,0 +1,30 @@
+---
+/** An animated brow-mapping drawing: the three guide lines (start · arch · tail) draw first, then
+ *  the brow fills in hair by hair (see lib/lashart.ts). */
+import { browMap } from '../lib/lashart';
+interface Props { class?: string }
+const { class: cls } = Astro.props;
+const b = browMap();
+---
+<figure class:list={['ba fade', cls]} role="img" aria-label="Brow mapping: guide lines from the nose to the start, arch and tail of the brow">
+  <svg viewBox={b.viewBox} aria-hidden="true" focusable="false">
+    <g class="ba-map">
+      {b.map.map((m, i) => <><path d={m.d} pathLength="1" style={`--k:${i}`} /><circle cx={m.to[0]} cy={m.to[1]} r="2.4" style={`--k:${i}`} /><text x={m.lx} y={m.ly} style={`--k:${i}`}>{m.label}</text></>)}
+    </g>
+    <path class="ba-eye" d={b.eye} pathLength="1" />
+    <g class="ba-hairs">{b.hairs.map((d, i) => <path d={d} pathLength="1" style={`--k:${i}`} />)}</g>
+  </svg>
+</figure>
+<style is:global>
+  .ba{margin:0;color:var(--gold-lt)}
+  .ba svg{display:block;width:100%;height:auto;overflow:visible}
+  .ba path{fill:none;stroke:currentColor;stroke-linecap:round;stroke-dasharray:1 1;stroke-dashoffset:1}
+  .ba-map path{stroke-width:.7;stroke-dasharray:.012 .012;stroke-dashoffset:0;opacity:0;transition:opacity .6s ease calc(var(--k) * .18s)}
+  .ba-map circle{fill:currentColor;opacity:0;transition:opacity .4s ease calc(.3s + var(--k) * .18s)}
+  .ba-map text{font-family:var(--utility);font-weight:600;font-size:8px;letter-spacing:.2em;text-transform:uppercase;fill:currentColor;opacity:0;transition:opacity .5s ease calc(.4s + var(--k) * .18s)}
+  .ba-eye{stroke-width:1;opacity:.45;transition:stroke-dashoffset 1s var(--ease) .3s}
+  .ba-hairs path{stroke-width:.55;transition:stroke-dashoffset .35s ease calc(.9s + var(--k) * 3ms)}
+  .ba.in .ba-map path{opacity:.7}.ba.in .ba-map circle,.ba.in .ba-map text{opacity:1}
+  .ba.in .ba-eye,.ba.in .ba-hairs path{stroke-dashoffset:0}
+  @media (prefers-reduced-motion:reduce){.ba *{transition:none!important}.ba path{stroke-dashoffset:0}.ba-map path,.ba-map circle,.ba-map text{opacity:.8}}
+</style>
