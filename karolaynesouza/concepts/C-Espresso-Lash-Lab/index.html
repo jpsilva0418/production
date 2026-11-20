@@ -220,6 +220,46 @@ svg.draw .lashes path{animation:sweepIn .6s var(--ease) both;animation-delay:cal
 .ft ul a:hover{color:var(--cream)}
 .ft small{display:block;margin-top:2rem;color:var(--mute);font-size:.74rem}
 
+/* lockup */
+.lock{display:inline-flex;flex-direction:column;align-items:flex-start;gap:.7rem;color:var(--cream);margin-bottom:1.6rem}
+.lock .ks{--s:clamp(60px,6.4vw,86px);color:var(--nude)}
+.lock b{font:500 clamp(.9rem,1.3vw,1.1rem)/1 var(--sans);letter-spacing:.3em;text-transform:uppercase}
+.lock span{font:700 .6rem/1 var(--sans);letter-spacing:.34em;text-transform:uppercase;color:var(--caramel2)}
+/* entrance: her portrait, her logo, what she does, how to book */
+.hero{min-height:0;display:block;padding:clamp(7rem,13vh,9rem) 0 clamp(3rem,6vw,5rem);background:radial-gradient(90% 70% at 80% 20%,var(--esp3),var(--esp) 70%)}
+.hero::before{display:none}
+.hero-in{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);align-items:center;gap:clamp(2rem,5vw,5rem);padding:0}
+.hero h1{font-size:clamp(2.6rem,5.6vw,5rem);margin:0 0 1.2rem}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.8rem}
+.hero-ph{position:relative;margin:0;justify-self:end;width:min(100%,460px);aspect-ratio:4/5;border-radius:30px;overflow:hidden;border:1px solid var(--line2);box-shadow:0 50px 100px -50px rgba(0,0,0,.9)}
+.hero-ph img{width:100%;height:100%;object-fit:cover;object-position:50% 22%;animation:heroIn 1.6s var(--ease) both}
+@keyframes heroIn{from{opacity:0;transform:scale(1.1)}to{opacity:1;transform:none}}
+.hero-ph figcaption{position:absolute;left:12px;right:12px;bottom:12px;display:grid;grid-template-columns:1fr 1fr;border-radius:16px;background:rgba(26,18,12,.6)}
+.hero-ph figcaption div{padding:.8rem 1rem}
+.hero-ph figcaption div+div{border-left:1px solid var(--line)}
+.hero-ph small{display:block;font:700 .56rem/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--text)}
+.hero-ph b{font:400 1.7rem/1.1 var(--serif);color:var(--cream)}
+/* at a glance */
+.glance{padding:clamp(2rem,4vw,3rem) 0 0}
+.gl{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.gl a{display:flex;flex-direction:column;gap:.35rem;padding:1.3rem 1.4rem;border-radius:20px;background:var(--esp2);border:1px solid var(--line);transition:border-color .3s}
+.gl a:hover{border-color:var(--line2)}
+.gl small{font:800 .58rem/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--caramel2)}
+.gl b{font:400 1.25rem/1.2 var(--serif);color:var(--cream)}
+.gl span{font-size:.82rem;color:var(--mute)}
+/* about */
+.ab-t{flex-direction:row;align-items:flex-start;gap:clamp(1.2rem,4vw,3rem)}
+.ab-face{flex:none;width:clamp(100px,15vw,170px);aspect-ratio:1;border-radius:50%;object-fit:cover;border:3px solid #fff}
+.ab-t h2{margin-top:.8rem}
+@media(max-width:900px){.hero{padding-top:5.4rem}.hero-in{grid-template-columns:1fr;gap:1.3rem;padding:0}.hero-ph{order:-1;justify-self:stretch;width:100%;aspect-ratio:5/4;border-radius:24px}
+  .hero-t{display:flex;flex-direction:column}.hero .ctas{order:3}.hero .lede{order:4;margin-top:1.2rem}
+  .hero-t{text-align:center}.lock{align-items:center;width:100%;margin-bottom:1rem}.hero h1{font-size:clamp(2rem,8.6vw,2.9rem)}.hero .ctas{justify-content:center;margin-top:1.2rem}.hero .lede{margin-inline:auto}
+  .gl{grid-template-columns:1fr}}
+@media(max-width:640px){.ab-t{flex-direction:column}}
+@media(max-width:560px){.brand span{display:inline;font-size:.58rem;letter-spacing:.18em}}
+
+@media(max-width:560px){.sc{display:grid;grid-template-columns:38% 1fr;column-gap:.9rem;row-gap:.5rem;align-content:center;padding:.6rem}.sc-ph{grid-row:1/span 4;align-self:stretch;aspect-ratio:auto;min-height:170px}.sc>h3,.sc>.pt,.sc>.chips,.sc>.sc-go{margin-inline:0}.sc h3{font-size:1.3rem;align-self:end}.chips{margin-top:0}.chip{padding:.4rem .5rem;font-size:.62rem}.chip b{font-size:.85rem}}
+
 /* dock */
 .dock{display:none}
 @media(max-width:760px){
@@ -256,28 +296,32 @@ svg.draw .lashes path{animation:sweepIn .6s var(--ease) both;animation-delay:cal
 
 <main id="top">
   <section class="hero">
-    <div class="hero-media"><img src="{{img:hero-russian.webp}}" alt="Russian volume lashes and laminated brows by Karolayne Souza"></div>
     <div class="hero-in">
-      <div>
-        <p class="tag rv"><span data-l="en">Milford, MA · Lashes &amp; brows</span><span data-l="pt">Milford, MA · Cílios e sobrancelhas</span></p>
-        <h1 class="rv" style="--d:.08s"><span data-l="en">Lashes, <em>made to measure.</em></span><span data-l="pt">Cílios <em>sob medida.</em></span></h1>
-        <p class="lede rv" style="--d:.16s"><span data-l="en">Brazilian lash &amp; brow artist Karolayne Souza — a premium finish and perfect symmetry, from a private studio on Main Street.</span><span data-l="pt">Karolayne Souza, lash designer brasileira — acabamento premium e simetria perfeita, em um estúdio privado na Main Street.</span></p>
-      </div>
-      <div class="hcard glass rv" style="--d:.22s">
-        <dl>
-          <div><dt><span data-l="en">Full sets from</span><span data-l="pt">Aplicação a partir de</span></dt><dd>$80</dd></div>
-          <div><dt><span data-l="en">Brows from</span><span data-l="pt">Sobrancelhas a partir de</span></dt><dd>$25</dd></div>
-        </dl>
-        <div class="ctas">
+      <div class="hero-t">
+        <div class="lock rv"><i class="ks"></i><b>Karolayne Souza</b><span>Lashes &amp; Brows</span></div>
+        <h1 class="rv" style="--d:.08s"><span data-l="en">Lashes &amp; brows, <em>made to measure.</em></span><span data-l="pt">Cílios e sobrancelhas <em>sob medida.</em></span></h1>
+        <p class="lede rv" style="--d:.14s"><span data-l="en">Karolayne Souza is a Brazilian lash &amp; brow artist with a private studio in Milford, MA.</span><span data-l="pt">Karolayne Souza é lash designer brasileira, com estúdio privado em Milford, MA.</span></p>
+        <div class="ctas rv" style="--d:.2s">
           <a class="btn btn--c" href="https://squareup.com/appointments/book/LR6ZD40XEYFP5" rel="external"><span data-l="en">Book now</span><span data-l="pt">Agendar</span></a>
           <a class="btn btn--g" data-wa href="https://wa.me/message/TUZVGBQYHKYWP1" rel="external">WhatsApp</a>
         </div>
-        <p><span data-l="en">English &amp; Português · Online booking on Square</span><span data-l="pt">Português e inglês · Agendamento online pelo Square</span></p>
       </div>
+      <figure class="hero-ph">
+        <img src="{{img:portrait.webp}}" alt="Karolayne Souza, lash and brow artist">
+        <figcaption class="glass"><div><small><span data-l="en">Full sets from</span><span data-l="pt">Aplicação a partir de</span></small><b>$80</b></div><div><small><span data-l="en">Brows from</span><span data-l="pt">Sobrancelhas a partir de</span></small><b>$25</b></div></figcaption>
+      </figure>
     </div>
   </section>
 
   <svg class="sweep rv" viewBox="0 0 1200 70" preserveAspectRatio="none" aria-hidden="true" id="sweep"></svg>
+
+  <section class="glance" aria-label="At a glance">
+    <div class="wrap gl">
+      <a class="rv" href="#services"><small><span data-l="en">What</span><span data-l="pt">O quê</span></small><b><span data-l="en">Lash extensions &amp; brow design</span><span data-l="pt">Extensão de cílios e design de sobrancelhas</span></b><span><span data-l="en">Full sets from $80 · Brows from $25</span><span data-l="pt">Aplicação a partir de US$80 · Sobrancelhas a partir de US$25</span></span></a>
+      <a class="rv" style="--d:.06s" href="https://maps.app.goo.gl/biwgyD9JFyAWDFcA9" rel="external"><small><span data-l="en">Where</span><span data-l="pt">Onde</span></small><b>153 Main St, Milford, MA</b><span><span data-l="en">Private studio · Get directions →</span><span data-l="pt">Estúdio privado · Como chegar →</span></span></a>
+      <a class="rv" style="--d:.12s" href="https://squareup.com/appointments/book/LR6ZD40XEYFP5" rel="external"><small><span data-l="en">How to book</span><span data-l="pt">Como agendar</span></small><b><span data-l="en">Online or WhatsApp</span><span data-l="pt">Online ou WhatsApp</span></b><span><span data-l="en">English &amp; Português · Book now →</span><span data-l="pt">Português e inglês · Agendar →</span></span></a>
+    </div>
+  </section>
 
   <section class="sec" id="services">
     <div class="wrap">
@@ -304,7 +348,7 @@ svg.draw .lashes path{animation:sweepIn .6s var(--ease) both;animation-delay:cal
     <div class="wrap">
       <div class="sh sh--c">
         <p class="tag rv">Lash Lab</p>
-        <h2 class="rv" style="--d:.06s"><span data-l="en">Design <em>your set.</em></span><span data-l="pt">Monte <em>o seu volume.</em></span></h2>
+        <h2 class="rv" style="--d:.06s"><span data-l="en">Not sure? <em>Design your set.</em></span><span data-l="pt">Em dúvida? <em>Monte o seu.</em></span></h2>
         <p class="rv" style="--d:.1s"><span data-l="en">Tap a style to see it on one of her clients, with your price and a button that books it.</span><span data-l="pt">Toque em uma técnica para ver em uma cliente dela, com o valor e o botão para agendar.</span></p>
       </div>
       <div class="lab rv" data-picker data-start="hybrid">
@@ -375,14 +419,16 @@ svg.draw .lashes path{animation:sweepIn .6s var(--ease) both;animation-delay:cal
   </section>
 
   <section class="sec" id="about" style="padding-top:0">
-    <div class="wrap ab">
-      <div class="ab-photo rv"><img src="{{img:portrait.webp}}" alt="Karolayne Souza, long dark hair, black top and gold necklace" loading="lazy"><div class="glass"><i class="ks" style="--s:30px;color:var(--nude)"></i><div><b>Karolayne Souza</b><span>Lashes • Eyebrow designer</span></div></div></div>
-      <div class="ab-t rv" style="--d:.08s">
-        <p class="tag"><span data-l="en">Meet Karolayne</span><span data-l="pt">Conheça a Karolayne</span></p>
-        <h2><span data-l="en">Brazilian artist, <em>Milford studio.</em></span><span data-l="pt">Artista brasileira, <em>estúdio em Milford.</em></span></h2>
-        <p><span data-l="en">Karolayne is a Brazilian lash &amp; brow artist working from her own private studio in Milford, Massachusetts.</span><span data-l="pt">Karolayne é lash designer e designer de sobrancelhas brasileira, com estúdio privado em Milford, Massachusetts.</span></p>
-        <p><span data-l="en">Her line, straight from her Instagram: “acabamento premium e simetria perfeita” — a premium finish and perfect symmetry.</span><span data-l="pt">A frase dela, direto do Instagram: “acabamento premium e simetria perfeita”.</span></p>
-        <div class="facts"><span data-l="en">Private studio</span><span data-l="pt">Estúdio privado</span><span>English &amp; Português</span><span data-l="en">Lashes &amp; brows</span><span data-l="pt">Cílios e sobrancelhas</span></div>
+    <div class="wrap">
+      <div class="ab-t rv">
+        <img class="ab-face" src="{{img:portrait-face.webp}}" alt="Karolayne Souza" loading="lazy">
+        <div>
+          <p class="tag"><span data-l="en">About</span><span data-l="pt">Sobre</span></p>
+          <h2><span data-l="en">Meet <em>Karolayne.</em></span><span data-l="pt">Conheça a <em>Karolayne.</em></span></h2>
+          <p><span data-l="en">Karolayne is a Brazilian lash &amp; brow artist working from her own private studio in Milford, Massachusetts.</span><span data-l="pt">Karolayne é lash designer e designer de sobrancelhas brasileira, com estúdio privado em Milford, Massachusetts.</span></p>
+          <p><span data-l="en">Her line, straight from her Instagram: “acabamento premium e simetria perfeita” — a premium finish and perfect symmetry.</span><span data-l="pt">A frase dela, direto do Instagram: “acabamento premium e simetria perfeita”.</span></p>
+          <div class="facts"><span data-l="en">Private studio</span><span data-l="pt">Estúdio privado</span><span>English &amp; Português</span><span data-l="en">Lashes &amp; brows</span><span data-l="pt">Cílios e sobrancelhas</span></div>
+        </div>
       </div>
     </div>
   </section>
