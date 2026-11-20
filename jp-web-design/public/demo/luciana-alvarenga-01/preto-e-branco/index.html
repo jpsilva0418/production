@@ -26,6 +26,7 @@
 @font-face{font-family:'Montserrat';src:url(/demo/_shared/luciana-alvarenga/fonts/montserrat-latin-400-normal.woff2) format('woff2');font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:'Montserrat';src:url(/demo/_shared/luciana-alvarenga/fonts/montserrat-latin-500-normal.woff2) format('woff2');font-weight:500;font-style:normal;font-display:swap}
 @font-face{font-family:'Parisienne';src:url(/demo/_shared/luciana-alvarenga/fonts/parisienne-latin-400-normal.woff2) format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Jost';src:url(/demo/_shared/luciana-alvarenga/fonts/jost-latin-400-normal.woff2) format('woff2');font-weight:400;font-style:normal;font-display:swap}@font-face{font-family:'Jost';src:url(/demo/_shared/luciana-alvarenga/fonts/jost-latin-500-normal.woff2) format('woff2');font-weight:500;font-style:normal;font-display:swap}
 
 /* Studio Luciana Alvarenga — demo foundation.
    Ported from the Leti Silva Beauty "La Maison" v2 system (tokens.css + v2.css):
@@ -548,31 +549,89 @@ img.lv{animation:lvRise 14s ease-in-out infinite alternate;will-change:transform
 }
 
 
-:root{--porcelain:#FFFFFF;--sand:#F3F2EF;--linen:#E4E2DD;--noir:#0E0E0E;--noir-2:#161616;--cocoa:#111111;--cocoa-soft:#4A4A48;
-  --gold-text:#7A6440;--gold-text-sand:#6E5A39;--champagne:#E6D7BF;--gold:#A8915F;
-  --hairlt:rgba(17,17,17,.16);--hairlt-strong:rgba(17,17,17,.34);--hairdk:rgba(255,255,255,.16);--hairdk-strong:rgba(255,255,255,.3);
-  --on-dark:rgba(255,255,255,.88);--on-dark-soft:rgba(255,255,255,.68)}
-.tone-alt{--hair:rgba(17,17,17,.16);--hair-s:rgba(17,17,17,.32)}
-.disp{text-transform:uppercase;letter-spacing:.06em;line-height:1.08}
-.chap-t,.rw-head .disp,.svc-head .disp,.lash-copy .disp,.studio-head .disp{font-size:clamp(2.2rem,3.8vw,3.6rem)}
-.lx-glow,.lx-shaft,.grain{display:none}
-.ph img,.ph video{filter:saturate(.82) contrast(1.02)}
-.arch-fr,.arch-fr>.ph{border-radius:0!important;clip-path:none!important}
-.arch-fr{border-color:var(--hair-s)}
-.btnv--solid{background:#111;border-color:#111;color:#fff}.btnv--solid::after{background:#333}.btnv--solid:hover{color:#fff}
-.tone-dk .btnv--ink,.finale .btnv--champ{border-color:#fff;color:#fff}.tone-dk .btnv--ink::after,.finale .btnv--champ::after{background:#fff}
-.tone-dk .btnv--ink:hover,.finale .btnv--champ:hover{color:#111}
-.hero--mono{background:#fff;color:#111;display:block;text-align:left;padding:0}
-.mono-in{width:var(--wrapv);margin:0 auto;padding:clamp(7rem,15vh,9rem) 0 clamp(3rem,6vh,4.5rem);display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(2rem,5vw,5rem);align-items:end;min-height:100svh}
-.mono-copy .hero-h{color:#111;text-indent:0;letter-spacing:.08em;font-size:clamp(2rem,4.4vw,4.4rem);line-height:1.08}
-.mono-copy .hero-it{margin-left:0;color:#4A4A48}
-.mono-copy .hero-cta{justify-content:flex-start}
-.mono-copy .tlk{color:#111}
-.mono-media{position:relative;aspect-ratio:4/5;background:#111;overflow:hidden;opacity:0;animation:fadeIn 1.2s ease .4s both}
-.mono-media img,.mono-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 38%;filter:saturate(.8) contrast(1.03)}
-.mono-media video{opacity:0;transition:opacity 1.4s}.mono-media video.on{opacity:1}
-.mono-meta{display:flex;justify-content:space-between;gap:1rem;border-top:1px solid #111;margin-top:clamp(2rem,4vh,3rem);padding-top:1rem;font-family:var(--utility);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:#4A4A48}
-@media(max-width:899px){.mono-in{grid-template-columns:1fr;align-items:start;min-height:0;padding-top:6.5rem}.mono-media{aspect-ratio:4/5;order:-1}.mono-copy .hero-h{font-size:clamp(1.7rem,8vw,2.4rem)}}
+:root{--porcelain:#fff;--noir:#0E0E0E;--cocoa:#111;--cocoa-soft:#4b4b49;--gold-text:#7A6440;--champagne:#E6D7BF;--gold:#A8915F;--hairlt:rgba(17,17,17,.14);--hairlt-strong:rgba(17,17,17,.3)}
+body{background:#fff;color:#2a2a28;font-family:'Jost',system-ui,sans-serif;font-size:1rem;line-height:1.7}
+.edge{display:none}
+.bar{position:sticky;top:0;z-index:70;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid #e9e9e6}
+.bar-in{width:min(92vw,1320px);margin:auto;display:flex;align-items:center;gap:2rem;height:72px}
+.bar-logo svg{height:40px;width:auto}
+.bar-nav{display:flex;gap:2rem;margin-left:auto;font-size:.82rem;letter-spacing:.04em}
+.bar-nav a{color:#111;position:relative;padding:.4rem 0}.bar-nav a:hover{color:#7A6440}
+.bar-tools{display:flex;align-items:center;gap:1rem}
+.bar .lang{color:#111}.bar .menu-btn .bars i{background:#111}
+.bar-menu{display:none}
+@media(max-width:899px){.bar-nav,.bar-book{display:none}.bar-menu{display:inline-flex}.bar-tools{margin-left:auto}}
+.pill{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 1.6rem;border-radius:999px;font-size:.8rem;font-weight:500;letter-spacing:.06em;transition:background .3s,color .3s,transform .3s}
+.pill:hover{transform:translateY(-1px)}
+.pill--dark{background:#111;color:#fff}.pill--dark:hover{background:#7A6440}
+.pill--light{background:#fff;color:#111}.pill--light:hover{background:#E6D7BF}
+.m-hero{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100svh - 72px);place-items:stretch;text-align:left;overflow:visible}
+.m-hero-copy{display:flex;flex-direction:column;justify-content:center;padding:clamp(3rem,6vw,6rem) clamp(1.4rem,5vw,5rem) clamp(3rem,6vw,5rem) max(4vw,calc((100vw - 1320px)/2))}
+.m-eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:#7A6440;margin-bottom:1.2rem}
+.m-h1{font-family:'Bodoni Moda',Georgia,serif;font-weight:400;font-size:clamp(2.6rem,5.6vw,5.6rem);line-height:1.02;letter-spacing:-.01em;color:#111}
+.m-h1 em{font-style:italic;color:#7A6440}
+.m-sub{font-size:1.1rem;max-width:30em;margin-top:1.6rem;color:#4b4b49}
+.m-ctas{display:flex;align-items:center;gap:1.6rem;flex-wrap:wrap;margin-top:2.2rem}
+.m-link{display:inline-flex;align-items:center;min-height:44px;font-size:.85rem;color:#111;border-bottom:1px solid #111;width:fit-content}
+.m-link:hover{color:#7A6440;border-color:#7A6440}
+.m-facts{display:flex;gap:2.6rem;margin:3rem 0 0;padding-top:1.4rem;border-top:1px solid #e3e3e0}
+.m-facts div{display:flex;flex-direction:column-reverse}.m-facts dt{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#77756f}
+.m-facts dd{margin:0;font-family:'Bodoni Moda',Georgia,serif;font-size:1.8rem;color:#111}
+.m-hero-img{margin:0;position:relative;overflow:hidden;background:#111}
+.m-hero-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(.15) contrast(1.03);animation:lvBreathe 14s ease-in-out infinite alternate}
+@media(max-width:899px){.m-hero{grid-template-columns:1fr;min-height:0}.m-hero-img{aspect-ratio:4/5;order:-1}.m-hero-copy{padding:2.4rem 6vw 3rem}.m-facts{gap:1.6rem}}
+.m-marquee{overflow:hidden;background:#111;color:#fff;padding:1rem 0;font-family:'Bodoni Moda',Georgia,serif;font-size:1.3rem;white-space:nowrap}
+.m-mq-in{display:inline-block;animation:mq 40s linear infinite}
+@keyframes mq{to{transform:translateX(-50%)}}
+.m-sec{padding:clamp(80px,10vw,140px) 0}
+.m-sec--grey{background:#F4F4F1}.m-sec--black{background:#0E0E0E;color:#d9d9d4}
+.m-sec--black .m-h2{color:#fff}.m-sec--black .m-eyebrow{color:#E6D7BF}
+.m-wrap{width:min(92vw,1320px);margin:auto}
+.m-head{margin-bottom:clamp(2rem,4vw,3.4rem)}
+.m-h2{font-family:'Bodoni Moda',Georgia,serif;font-weight:400;font-size:clamp(2.2rem,4vw,3.8rem);line-height:1.05;color:#111}
+.m-note{margin-top:1rem;max-width:24em;color:#4b4b49}
+.m-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:clamp(180px,20vw,300px);gap:12px;margin-bottom:2rem}
+.m-tile{position:relative;margin:0;overflow:hidden;background:#eee}
+.m-tile--tall{grid-row:span 2}.m-tile--wide{grid-column:span 2}
+.m-tile img,.m-tile video{width:100%;height:100%;object-fit:cover;transition:transform 1s var(--ease)}
+.m-tile:hover img,.m-tile:hover video{transform:scale(1.04)}
+.m-tile figcaption{position:absolute;left:0;right:0;bottom:0;padding:2.4rem 1rem .9rem;font-size:.74rem;letter-spacing:.08em;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.65))}
+.m-tile figcaption .tr{display:none!important}
+@media(max-width:719px){.m-grid{grid-template-columns:1fr 1fr;grid-auto-rows:44vw}.m-tile--wide{grid-column:span 2}}
+.m-split{display:grid;grid-template-columns:minmax(240px,380px) 1fr;gap:clamp(2rem,6vw,6rem)}
+.m-sticky{position:sticky;top:110px;align-self:start}
+@media(max-width:899px){.m-split{grid-template-columns:1fr}.m-sticky{position:static}}
+.m-menu{border-top:1px solid #111}
+.m-menu li{display:grid;grid-template-columns:3.2rem 1fr auto;gap:1.2rem;align-items:start;padding:1.6rem 0;border-bottom:1px solid #d9d9d4}
+.m-n{font-family:'Bodoni Moda',Georgia,serif;font-size:1.1rem;color:#7A6440;padding-top:.3rem}
+.m-mi h3{font-family:'Bodoni Moda',Georgia,serif;font-weight:400;font-size:1.55rem;color:#111;margin:0}
+.m-mi p{margin:.4rem 0 .8rem;color:#4b4b49;max-width:34em}
+.m-meta{display:flex;gap:.5rem;color:#77756f}
+.m-book{display:inline-flex;align-items:center;min-height:44px;font-size:.82rem;font-weight:500;color:#111;white-space:nowrap}
+.m-book:hover{color:#7A6440}
+@media(max-width:599px){.m-menu li{grid-template-columns:2.2rem 1fr}.m-book{grid-column:2}}
+.m-about{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(2rem,6vw,6rem);align-items:center}
+.m-about-img{margin:0;aspect-ratio:4/5;overflow:hidden}.m-about-img img{width:100%;height:100%;object-fit:cover}
+.m-quote{font-family:'Bodoni Moda',Georgia,serif;font-size:clamp(1.3rem,2vw,1.7rem);line-height:1.4;color:#111;margin:1.6rem 0}
+.m-cert{margin-top:1.4rem;font-size:.82rem;letter-spacing:.06em;color:#7A6440}
+.m-sign{font-family:'Parisienne',cursive;font-size:2.2rem;color:#111;margin-top:1rem}
+@media(max-width:899px){.m-about{grid-template-columns:1fr}}
+.m-studio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.m-studio figure{margin:0}.m-studio img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover}
+.m-studio figcaption{margin-top:.8rem;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:#a9a9a3}
+@media(max-width:719px){.m-studio{grid-template-columns:repeat(3,72vw);overflow-x:auto;scroll-snap-type:x mandatory}.m-studio figure{scroll-snap-align:start}}
+.m-wall{font-family:'Parisienne',cursive;font-size:clamp(2rem,4vw,3.2rem);color:#E6D7BF;text-align:center;margin-top:3rem}
+.m-wall .tr{font-family:'Jost',sans-serif;font-size:.9rem;color:#a9a9a3}
+.m-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:3rem}
+.m-steps li{border:1px solid #e3e3e0;padding:1.8rem}
+.m-steps span{font-family:'Bodoni Moda',Georgia,serif;font-size:2.4rem;color:#7A6440}
+.m-steps h3{font-family:'Bodoni Moda',Georgia,serif;font-weight:400;font-size:1.35rem;color:#111;margin:.6rem 0}
+.m-steps p{color:#4b4b49}
+@media(max-width:799px){.m-steps{grid-template-columns:1fr}}
+.m-cta{background:#111;color:#fff;text-align:center;padding:clamp(80px,10vw,130px) 6vw}
+.m-cta h2{font-family:'Bodoni Moda',Georgia,serif;font-weight:400;font-size:clamp(2.2rem,4.6vw,4.2rem);margin-bottom:2rem}
+.pfaq summary{font-family:'Bodoni Moda',Georgia,serif}
+
 </style>
 </head>
 <body class="v4">
@@ -580,25 +639,28 @@ img.lv{animation:lvRise 14s ease-in-out infinite alternate;will-change:transform
 <div class="edge edge--l" aria-hidden="true">Studio Luciana Alvarenga — Goiânia · GO</div>
 <div class="edge edge--r" aria-hidden="true">Designer de sobrancelhas — Aqui seu olhar é minha responsabilidade</div>
 
-  <header class="hd hd--intro">
-    <div class="hd-in">
-      <a class="hd-logo" href="#inicio" aria-label="Studio Luciana Alvarenga — início"><!-- recreated, replace with the vector --><svg viewBox="0 0 372 96" role="img" aria-label="Studio Luciana Alvarenga"><defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#B08F66"/><stop offset="1" stop-color="#7A572C"/></linearGradient></defs>
-    <g transform="translate(-20 -26) scale(.82)"><path d="M50 96A72 72 0 0 1 190 96" fill="none" stroke="url(#lg1)" stroke-width="1.1"/>
-      <text x="92" y="122" text-anchor="middle" font-family="'Bodoni Moda',Didot,Georgia,serif" font-size="98" fill="url(#lg1)">L</text>
-      <text x="139" y="126" text-anchor="middle" font-family="'Bodoni Moda',Didot,Georgia,serif" font-size="88" fill="url(#lg1)">A</text>
-      <path d="M40 100C70 74 100 78 122 90S164 112 200 80" fill="none" stroke="url(#lg1)" stroke-width="1.7" stroke-linecap="round"/>
-      <path d="M58 104C86 90 106 92 124 99" fill="none" stroke="url(#lg1)" stroke-width=".8" stroke-linecap="round" opacity=".8"/></g>
+<header class="bar">
+  <div class="bar-in">
+    <a class="bar-logo" href="#inicio" aria-label="Studio Luciana Alvarenga — início"><!-- recreated, replace with the vector --><svg viewBox="0 0 372 96" role="img" aria-label="Studio Luciana Alvarenga"><defs><linearGradient id="lg3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#B08F66"/><stop offset="1" stop-color="#7A572C"/></linearGradient></defs>
+    <g transform="translate(-20 -26) scale(.82)"><path d="M50 96A72 72 0 0 1 190 96" fill="none" stroke="url(#lg3)" stroke-width="1.1"/>
+      <text x="92" y="122" text-anchor="middle" font-family="'Bodoni Moda',Didot,Georgia,serif" font-size="98" fill="url(#lg3)">L</text>
+      <text x="139" y="126" text-anchor="middle" font-family="'Bodoni Moda',Didot,Georgia,serif" font-size="88" fill="url(#lg3)">A</text>
+      <path d="M40 100C70 74 100 78 122 90S164 112 200 80" fill="none" stroke="url(#lg3)" stroke-width="1.7" stroke-linecap="round"/>
+      <path d="M58 104C86 90 106 92 124 99" fill="none" stroke="url(#lg3)" stroke-width=".8" stroke-linecap="round" opacity=".8"/></g>
     <text x="178" y="47" font-family="Cinzel,'Trajan Pro',Georgia,serif" font-size="15.5" letter-spacing="3.2" fill="#312017">STUDIO LUCIANA</text>
     <text x="178" y="69" font-family="Cinzel,'Trajan Pro',Georgia,serif" font-size="15.5" letter-spacing="3.2" fill="#312017">ALVARENGA</text>
-    <path d="M178 84H372" stroke="url(#lg1)" stroke-width=".8" opacity=".7"/></svg></a>
-      <div class="hd-tools">
-        <a class="hd-link hd-book" href="https://api.whatsapp.com/send?phone=5562993055281&text=Ol%C3%A1%2Cgostaria+de+agendar+um+hor%C3%A1rio%21" target="_blank" rel="noopener"><span data-i18n="nav.book">Agendar</span></a>
-        <div class="lang" role="group" aria-label="Idioma / Language"><button type="button" data-lang="pt" aria-pressed="true">PT</button><i aria-hidden="true">|</i><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
-        <button class="menu-btn" id="menuOpen" aria-expanded="false" aria-controls="menu"><span class="mb-l" data-i18n="nav.menu">Menu</span><span class="sr">Abrir menu</span><span class="bars" aria-hidden="true"><i></i><i></i></span></button>
-      </div>
+    <path d="M178 84H372" stroke="url(#lg3)" stroke-width=".8" opacity=".7"/></svg></a>
+    <nav class="bar-nav" aria-label="Seções">
+      <a href="#resultados"><span data-i18n="x.nav1">Resultados</span></a><a href="#servicos"><span data-i18n="x.nav2">Serviços</span></a><a href="#artista"><span data-i18n="x.nav3">Sobre</span></a><a href="#como-agendar"><span data-i18n="x.nav4">Como agendar</span></a>
+    </nav>
+    <div class="bar-tools">
+      <div class="lang" role="group" aria-label="Idioma / Language"><button type="button" data-lang="pt" aria-pressed="true">PT</button><i aria-hidden="true">|</i><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
+      <a class="pill pill--dark bar-book" href="https://api.whatsapp.com/send?phone=5562993055281&text=Ol%C3%A1%2Cgostaria+de+agendar+um+hor%C3%A1rio%21" target="_blank" rel="noopener"><span data-i18n="nav.book">Agendar</span></a>
+      <button class="menu-btn bar-menu" id="menuOpen" aria-expanded="false" aria-controls="menu"><span class="sr">Abrir menu</span><span class="bars" aria-hidden="true"><i></i><i></i></span></button>
     </div>
-  </header>
-  <nav class="menu" id="menu" aria-label="Menu principal" aria-hidden="true" inert>
+  </div>
+</header>
+<nav class="menu" id="menu" aria-label="Menu principal" aria-hidden="true" inert>
     <i class="lx-glow" aria-hidden="true"></i>
     <div class="menu-top"><!-- recreated, replace with the vector --><svg viewBox="0 0 372 96" role="img" aria-label="Studio Luciana Alvarenga"><defs><linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FEE8B0"/><stop offset="1" stop-color="#C9A06E"/></linearGradient></defs>
     <g transform="translate(-20 -26) scale(.82)"><path d="M50 96A72 72 0 0 1 190 96" fill="none" stroke="url(#lg2)" stroke-width="1.1"/>
@@ -622,270 +684,84 @@ img.lv{animation:lvRise 14s ease-in-out infinite alternate;will-change:transform
     <div class="menu-foot"><span data-i18n="m.foot1">Goiânia · Goiás</span><span data-i18n="m.foot2">Segunda a sábado · [HORÁRIO]</span></div>
   </nav>
 <main id="conteudo">
+  <section class="m-hero hero" id="inicio" aria-label="Início">
+    <div class="m-hero-copy">
+      <p class="m-eyebrow fade in"><span data-i18n="h.kick">Designer de Sobrancelhas · Goiânia</span></p>
+      <h1 class="m-h1 rv in">Aqui seu olhar é minha <em>responsabilidade.</em></h1>
+      <p class="m-sub" data-i18n="x.sub">Design de sobrancelhas, brow lamination e lash lifting no novo estúdio em Goiânia.</p>
+      <div class="m-ctas"><a class="pill pill--dark" href="https://api.whatsapp.com/send?phone=5562993055281&text=Ol%C3%A1%2Cgostaria+de+agendar+um+hor%C3%A1rio%21" target="_blank" rel="noopener"><span data-i18n="h.cta">Agendar pelo WhatsApp</span></a><a class="m-link" href="#resultados"><span data-i18n="h.link">Ver resultados</span> &rarr;</a></div>
+      <dl class="m-facts">
+        <div><dt><span data-i18n="x.svct">Procedimentos</span></dt><dd>6</dd></div><div><dt>Goiânia</dt><dd>GO</dd></div><div><dt><span data-i18n="x.open">Novo estúdio · Nov 2026</span></dt><dd>✦</dd></div>
+      </dl>
+    </div>
+    <figure class="m-hero-img"><img src="/demo/_shared/luciana-alvarenga/img/luciana-blazer-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/luciana-blazer-480.webp 480w, /demo/_shared/luciana-alvarenga/img/luciana-blazer-800.webp 800w, /demo/_shared/luciana-alvarenga/img/luciana-blazer-1280.webp 1280w" sizes="(max-width:899px) 100vw, 50vw" width="1280" height="1707" alt="Luciana Alvarenga, designer de sobrancelhas" loading="eager" fetchpriority="high" style="object-position:50% 18%"></figure>
+  </section>
 
-  <section class="hero hero--mono" id="inicio" aria-label="Início">
-    <div class="mono-in">
-      <div class="mono-copy">
-        <p class="capsv hero-kick" data-i18n="h.kick">Designer de Sobrancelhas · Goiânia</p>
-        <h1 class="hero-h"><span class="lo"><span class="li" data-i18n="h.v1.1">Aqui seu olhar</span></span><span class="lo"><span class="li" data-i18n="h.v1.2">é minha responsabilidade</span></span></h1>
-        <p class="hero-it" data-i18n="h.it">Design de sobrancelhas, brow lamination e lash lifting em Goiânia.</p>
-        <div class="ctas hero-cta"><a class="btnv btnv--solid" href="https://api.whatsapp.com/send?phone=5562993055281&text=Ol%C3%A1%2Cgostaria+de+agendar+um+hor%C3%A1rio%21" target="_blank" rel="noopener"><span data-i18n="h.cta">Agendar pelo WhatsApp</span></a><a class="tlk" href="#resultados"><span data-i18n="h.link">Ver resultados</span></a></div>
-        <div class="mono-meta"><span>Studio Luciana Alvarenga</span><span>Goiânia · GO</span></div>
+  <div class="m-marquee" aria-hidden="true"><div class="m-mq-in">Design personalizado ✦ Design com henna ✦ Design com tintura ✦ Brow lamination ✦ Lash lifting ✦ Design masculino ✦ Design personalizado ✦ Design com henna ✦ Design com tintura ✦ Brow lamination ✦ Lash lifting ✦ Design masculino ✦ </div></div>
+
+  <section class="m-sec" id="resultados" aria-labelledby="iv-res">
+    <div class="m-wrap">
+      <div class="m-head"><p class="m-eyebrow"><span data-i18n="x.res">Trabalho recente</span></p><h2 class="m-h2" id="iv-res" data-i18n="x.rest">Resultados reais</h2></div>
+      <div class="m-grid" data-stag=".05">
+        <figure class="m-tile m-tile--tall fade"><video muted playsinline loop preload="none" disablepictureinpicture poster="/demo/_shared/luciana-alvarenga/video/v04-process-poster.webp" data-src="/demo/_shared/luciana-alvarenga/video/v04-process.mp4" aria-label="Vídeo: o processo do design com tintura"></video><figcaption><span data-i18n="r.8">O processo · Design com tintura</span></figcaption></figure>
+        <figure class="m-tile fade"><img src="/demo/_shared/luciana-alvarenga/img/r01-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/r01-480.webp 480w, /demo/_shared/luciana-alvarenga/img/r01-800.webp 800w, /demo/_shared/luciana-alvarenga/img/r01-1280.webp 1280w" sizes="(max-width:719px) 50vw, 25vw" width="1280" height="1280" alt="Design com henna em close" loading="lazy" decoding="async"><figcaption><span data-i18n="r.1">Design com henna</span></figcaption></figure>
+        <figure class="m-tile fade"><img src="/demo/_shared/luciana-alvarenga/img/r04-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/r04-480.webp 480w, /demo/_shared/luciana-alvarenga/img/r04-800.webp 800w, /demo/_shared/luciana-alvarenga/img/r04-1280.webp 1280w" sizes="(max-width:719px) 50vw, 25vw" width="1280" height="1707" alt="Lash lifting em close" loading="lazy" decoding="async"><figcaption><span data-i18n="r.3">Lash lifting</span></figcaption></figure>
+        <figure class="m-tile fade"><img src="/demo/_shared/luciana-alvarenga/img/r09-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/r09-480.webp 480w, /demo/_shared/luciana-alvarenga/img/r09-800.webp 800w, /demo/_shared/luciana-alvarenga/img/r09-1280.webp 1280w" sizes="(max-width:719px) 50vw, 25vw" width="1280" height="1143" alt="Brow lamination no rosto da cliente" loading="lazy" decoding="async"><figcaption><span data-i18n="r.2">Brow lamination</span></figcaption></figure>
+        <figure class="m-tile fade"><img src="/demo/_shared/luciana-alvarenga/img/r11-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/r11-480.webp 480w, /demo/_shared/luciana-alvarenga/img/r11-800.webp 800w, /demo/_shared/luciana-alvarenga/img/r11-1280.webp 1280w" sizes="(max-width:719px) 50vw, 25vw" width="1280" height="1279" alt="Design e lash lifting" loading="lazy" decoding="async"><figcaption><span data-i18n="r.7">Design + lash lifting</span></figcaption></figure>
+        <figure class="m-tile m-tile--wide fade"><video muted playsinline loop preload="none" disablepictureinpicture poster="/demo/_shared/luciana-alvarenga/video/v03-six-weeks-poster.webp" data-src="/demo/_shared/luciana-alvarenga/video/v03-six-weeks.mp4" aria-label="Vídeo: brow lamination com quase seis semanas"></video><figcaption><span data-i18n="r.2">Brow lamination</span> · <span class=""><span class="q">Brow lamination com quase 1 mês e meio de procedimento… fios íntegros e saudáveis!</span><span class="tr">Brow lamination almost a month and a half after the treatment… intact, healthy hairs!</span></span></figcaption></figure>
+        <figure class="m-tile fade"><img src="/demo/_shared/luciana-alvarenga/img/r19-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/r19-480.webp 480w, /demo/_shared/luciana-alvarenga/img/r19-800.webp 800w, /demo/_shared/luciana-alvarenga/img/r19-1280.webp 1280w" sizes="(max-width:719px) 50vw, 25vw" width="1280" height="1280" alt="Brow lamination com tintura" loading="lazy" decoding="async"><figcaption><span data-i18n="r.10">Brow lamination com tintura</span></figcaption></figure>
+        <figure class="m-tile fade"><img src="/demo/_shared/luciana-alvarenga/img/r07-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/r07-480.webp 480w, /demo/_shared/luciana-alvarenga/img/r07-800.webp 800w, /demo/_shared/luciana-alvarenga/img/r07-1280.webp 1280w" sizes="(max-width:719px) 50vw, 25vw" width="1280" height="1280" alt="Close de brow lamination" loading="lazy" decoding="async"><figcaption><span data-i18n="r.6">Brow lamination</span></figcaption></figure>
+        <figure class="m-tile m-tile--wide fade"><img src="/demo/_shared/luciana-alvarenga/img/r17-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/r17-480.webp 480w, /demo/_shared/luciana-alvarenga/img/r17-800.webp 800w, /demo/_shared/luciana-alvarenga/img/r17-1280.webp 1280w" sizes="(max-width:719px) 100vw, 50vw" width="1280" height="1280" alt="Brow lamination no rosto da cliente" loading="lazy" decoding="async"><figcaption><span data-i18n="r.4">Brow lamination</span></figcaption></figure>
       </div>
-      <div class="mono-media" aria-hidden="true"><img src="/demo/_shared/luciana-alvarenga/img/hero1-poster-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/hero1-poster-480.webp 480w, /demo/_shared/luciana-alvarenga/img/hero1-poster-800.webp 800w, /demo/_shared/luciana-alvarenga/img/hero1-poster-1280.webp 1280w" sizes="100vw" width="1280" height="720" alt="" loading="eager" fetchpriority="high">
-      <video class="hero-v" muted playsinline preload="none" disablepictureinpicture poster="/demo/_shared/luciana-alvarenga/video/hero1-poster.webp" data-src="/demo/_shared/luciana-alvarenga/video/hero1.mp4" aria-hidden="true"></video>
-      <video class="hero-v" muted playsinline preload="none" disablepictureinpicture poster="/demo/_shared/luciana-alvarenga/video/hero2-poster.webp" data-src="/demo/_shared/luciana-alvarenga/video/hero2.mp4" aria-hidden="true"></video></div>
+      <a class="m-link" href="https://www.instagram.com/studiolucianaalvarenga/" target="_blank" rel="noopener">@studiolucianaalvarenga &rarr;</a>
     </div>
   </section>
 
-  <section class="sec tone-lt ghostwrap" id="artista" aria-labelledby="t-artista">
-    <i class="lx-shaft" aria-hidden="true"></i>
-    <div class="wrapv chap">
-      <div class="chap-l rv">
-        <p class="kick kick--short" data-i18n="a.kick">Conheça a Luciana</p>
-        <h2 class="disp chap-t" id="t-artista" data-i18n="a.t">A Artista</h2>
-        <a class="tlk" href="https://api.whatsapp.com/send?phone=5562993055281&text=Ol%C3%A1%2Cgostaria+de+agendar+um+hor%C3%A1rio%21" target="_blank" rel="noopener"><span data-i18n="a.link">Agendar com a Luciana</span>&nbsp;&rarr;</a>
-      </div>
-      <div class="artist-r">
-        <div class="artist-copy">
-          <p class="lede ital rv"><span class="q">Minha imagem é o reflexo da profissional que escolhi ser.</span><span class="tr">My image is the reflection of the professional I chose to be.</span></p>
-          <div class="body rv" style="--d:.08s">
-            <p class=""><span class="q">Mais do que sobrancelhas, meu propósito é realçar olhares, valorizar a beleza individual e proporcionar experiências que transmitam confiança e autoestima.</span><span class="tr">More than brows, my purpose is to enhance the gaze, honor individual beauty and create experiences that convey confidence and self-esteem.</span></p>
-            <p data-i18n="a.p2">Aqui, cada detalhe é planejado de acordo com o seu rosto — do design personalizado ao brow lamination e ao lash lifting, agora no novo estúdio em Goiânia.</p>
-          </div>
-          <p class="cert fade" style="--d:.12s" data-i18n="a.cert">Profissional certificada em Design de Sobrancelhas</p>
-          <p class="tags rv" style="--d:.16s" data-i18n="a.tags">Design <i>✦</i> Henna <i>✦</i> Tintura <i>✦</i> Brow lamination <i>✦</i> Lash lifting</p>
-        </div>
-        <figure class="artist-fig">
-          <div class="arch-fr rv"><div class="ph"><img class="lv" src="/demo/_shared/luciana-alvarenga/img/luciana-portrait-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/luciana-portrait-480.webp 480w, /demo/_shared/luciana-alvarenga/img/luciana-portrait-800.webp 800w, /demo/_shared/luciana-alvarenga/img/luciana-portrait-1280.webp 1280w" sizes="(max-width:899px) 90vw, 560px" width="1280" height="1707" alt="Luciana Alvarenga, designer de sobrancelhas, segurando a pinça junto à sobrancelha" loading="lazy" decoding="async"><i class="grain" aria-hidden="true"></i></div></div>
-          <figcaption class="cap fade" style="--d:.18s" data-i18n="a.cap">Luciana Alvarenga · Designer de Sobrancelhas</figcaption>
-        </figure>
-      </div>
+  <section class="m-sec m-sec--grey" id="servicos" aria-labelledby="iv-svc">
+    <div class="m-wrap m-split">
+      <div class="m-head m-sticky"><p class="m-eyebrow"><span data-i18n="x.svc">O menu</span></p><h2 class="m-h2" id="iv-svc" data-i18n="x.svct">Procedimentos</h2><p class="m-note" data-i18n="sv.it">Cada procedimento pensado para o seu rosto. Valores sob consulta pelo WhatsApp.</p></div>
+      <ol class="m-menu">
+        <li class="fade"><span class="m-n">01</span><div class="m-mi"><h3 data-i18n="sv.1">Design personalizado</h3><p data-i18n="sv.1d">Pensado para o formato do seu rosto, preservando a naturalidade que encanta.</p><span class="m-meta"><span class="ph-tag">[DURAÇÃO]</span> <span class="ph-tag">[PREÇO]</span></span></div><a class="m-book" href="https://api.whatsapp.com/send?phone=5562993055281&text=Ol%C3%A1%2C%20Luciana!%20Gostaria%20de%20agendar%20Design%20personalizado." target="_blank" rel="noopener" aria-label="Agendar Design personalizado"><span data-i18n="sv.book">Agendar</span> &rarr;</a></li><li class="fade"><span class="m-n">02</span><div class="m-mi"><h3 data-i18n="sv.2">Design com henna</h3><p data-i18n="sv.2d">Tons castanho claro, médio, escuro ou preta — e o delicado efeito ombré.</p><span class="m-meta"><span class="ph-tag">[DURAÇÃO]</span> <span class="ph-tag">[PREÇO]</span></span></div><a class="m-book" href="https://api.whatsapp.com/send?phone=5562993055281&text=Ol%C3%A1%2C%20Luciana!%20Gostaria%20de%20agendar%20Design%20com%20henna." target="_blank" rel="noopener" aria-label="Agendar Design com henna"><span data-i18n="sv.book">Agendar</span> &rarr;</a></li><li class="fade"><span class="m-n">03</span><div class="m-mi"><h3 data-i18n="sv.3">Design com tintura</h3><p data-i18n="sv.3d">O design personalizado com cor para definir e realçar os fios.</p><span class="m-meta"><span class="ph-tag">[DURAÇÃO]</span> <span class="ph-tag">[PREÇO]</span></span></div><a class="m-book" href="https://api.whatsapp.com/send?phone=5562993055281&text=Ol%C3%A1%2C%20Luciana!%20Gostaria%20de%20agendar%20Design%20com%20tintura." target="_blank" rel="noopener" aria-label="Agendar Design com tintura"><span data-i18n="sv.book">Agendar</span> &rarr;</a></li><li class="fade"><span class="m-n">04</span><div class="m-mi"><h3 data-i18n="sv.4">Brow lamination</h3><p data-i18n="sv.4d">Com ou sem tintura: fios alinhados, preenchidos e do seu jeito.</p><span class="m-meta"><span class="ph-tag">[DURAÇÃO]</span> <span class="ph-tag">[PREÇO]</span></span></div><a class="m-book" href="https://api.whatsapp.com/send?phone=5562993055281&text=Ol%C3%A1%2C%20Luciana!%20Gostaria%20de%20agendar%20Brow%20lamination." target="_blank" rel="noopener" aria-label="Agendar Brow lamination"><span data-i18n="sv.book">Agendar</span> &rarr;</a></li><li class="fade"><span class="m-n">05</span><div class="m-mi"><h3 data-i18n="sv.5">Lash lifting</h3><p data-i18n="sv.5d">Curvatura, alongamento e definição nos seus cílios naturais, sem extensões.</p><span class="m-meta"><span class="ph-tag">[DURAÇÃO]</span> <span class="ph-tag">[PREÇO]</span></span></div><a class="m-book" href="https://api.whatsapp.com/send?phone=5562993055281&text=Ol%C3%A1%2C%20Luciana!%20Gostaria%20de%20agendar%20Lash%20lifting." target="_blank" rel="noopener" aria-label="Agendar Lash lifting"><span data-i18n="sv.book">Agendar</span> &rarr;</a></li><li class="fade"><span class="m-n">06</span><div class="m-mi"><h3 data-i18n="sv.6">Design masculino & infantil</h3><p data-i18n="sv.6d">Simetria e harmonia para eles; para elas, o primeiro design respeitando a naturalidade.</p><span class="m-meta"><span class="ph-tag">[DURAÇÃO]</span> <span class="ph-tag">[PREÇO]</span></span></div><a class="m-book" href="https://api.whatsapp.com/send?phone=5562993055281&text=Ol%C3%A1%2C%20Luciana!%20Gostaria%20de%20agendar%20Design%20masculino." target="_blank" rel="noopener" aria-label="Agendar Design masculino"><span data-i18n="sv.book">Agendar</span> &rarr;</a></li>
+      </ol>
     </div>
   </section>
 
-  <section class="runway tone-alt" id="resultados" aria-labelledby="t-res">
-    <div class="rw-pin">
-      <div class="rw-head">
-        <div>
-          <p class="caps-xs" data-i18n="r.kick">Resultados reais</p>
-          <h2 class="disp" id="t-res" data-i18n="r.t">O Olhar</h2>
-          <p class="ital" data-i18n="r.it">Cada detalhe planejado de acordo com o seu rosto.</p>
-        </div>
-        <p class="rw-count" data-i18n="r.count">dez olhares — um só cuidado</p>
-      </div>
-      <div class="rw-vp">
-        <div class="rw-track" data-stag=".05">
-          <figure class="rw-fig"><div class="ph rv-im sheen"><img src="/demo/_shared/luciana-alvarenga/img/r01-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/r01-480.webp 480w, /demo/_shared/luciana-alvarenga/img/r01-800.webp 800w, /demo/_shared/luciana-alvarenga/img/r01-1280.webp 1280w" sizes="(max-width:899px) 70vw, 340px" width="1280" height="1280" alt="Resultado de design de sobrancelhas com henna, em close" loading="lazy" decoding="async"><i class="shn" aria-hidden="true"></i></div><figcaption class="rw-plaque"><span class="n">No. I</span> <span data-i18n="r.1">Design com henna</span></figcaption></figure>
-          <figure class="rw-fig"><div class="ph rv-im sheen"><video muted playsinline loop preload="none" disablepictureinpicture poster="/demo/_shared/luciana-alvarenga/video/v01-lamination-poster.webp" data-src="/demo/_shared/luciana-alvarenga/video/v01-lamination.mp4" aria-label="Vídeo: resultado de brow lamination"></video><span class="vid-badge" data-i18n="r.vid">Vídeo</span><i class="shn" aria-hidden="true"></i></div><figcaption class="rw-plaque"><span class="n">No. II</span> <span data-i18n="r.2">Brow lamination</span></figcaption></figure>
-          <figure class="rw-fig"><div class="ph rv-im sheen"><img src="/demo/_shared/luciana-alvarenga/img/r04-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/r04-480.webp 480w, /demo/_shared/luciana-alvarenga/img/r04-800.webp 800w, /demo/_shared/luciana-alvarenga/img/r04-1280.webp 1280w" sizes="(max-width:899px) 70vw, 340px" width="1280" height="1707" alt="Resultado de lash lifting nos cílios naturais, em close" loading="lazy" decoding="async"><i class="shn" aria-hidden="true"></i></div><figcaption class="rw-plaque"><span class="n">No. III</span> <span data-i18n="r.3">Lash lifting</span></figcaption></figure>
-          <figure class="rw-fig"><div class="ph rv-im sheen"><img src="/demo/_shared/luciana-alvarenga/img/r09-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/r09-480.webp 480w, /demo/_shared/luciana-alvarenga/img/r09-800.webp 800w, /demo/_shared/luciana-alvarenga/img/r09-1280.webp 1280w" sizes="(max-width:899px) 70vw, 340px" width="1280" height="1143" alt="Resultado de brow lamination no rosto da cliente" loading="lazy" decoding="async"><i class="shn" aria-hidden="true"></i></div><figcaption class="rw-plaque"><span class="n">No. IV</span> <span data-i18n="r.4">Brow lamination</span></figcaption></figure>
-          <figure class="rw-fig rw-reel"><div class="arch-fr rv"><div class="ph sheen"><video muted playsinline loop preload="none" disablepictureinpicture poster="/demo/_shared/luciana-alvarenga/video/v05-lash-poster.webp" data-src="/demo/_shared/luciana-alvarenga/video/v05-lash.mp4" aria-label="Vídeo: resultado de lash lifting em close"></video><span class="vid-badge" data-i18n="r.vid">Vídeo</span><i class="grain" aria-hidden="true"></i><i class="shn" aria-hidden="true"></i></div></div><figcaption class="rw-plaque"><span class="n">No. V</span> <span data-i18n="r.5">Lash lifting</span></figcaption></figure>
-          <figure class="rw-fig"><div class="ph rv-im sheen"><img src="/demo/_shared/luciana-alvarenga/img/r07-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/r07-480.webp 480w, /demo/_shared/luciana-alvarenga/img/r07-800.webp 800w, /demo/_shared/luciana-alvarenga/img/r07-1280.webp 1280w" sizes="(max-width:899px) 70vw, 340px" width="1280" height="1280" alt="Close de brow lamination com os fios alinhados" loading="lazy" decoding="async"><i class="shn" aria-hidden="true"></i></div><figcaption class="rw-plaque"><span class="n">No. VI</span> <span data-i18n="r.6">Brow lamination</span></figcaption></figure>
-          <figure class="rw-fig"><div class="ph rv-im sheen"><img src="/demo/_shared/luciana-alvarenga/img/r11-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/r11-480.webp 480w, /demo/_shared/luciana-alvarenga/img/r11-800.webp 800w, /demo/_shared/luciana-alvarenga/img/r11-1280.webp 1280w" sizes="(max-width:899px) 70vw, 340px" width="1280" height="1279" alt="Resultado de design de sobrancelhas e lash lifting" loading="lazy" decoding="async"><i class="shn" aria-hidden="true"></i></div><figcaption class="rw-plaque"><span class="n">No. VII</span> <span data-i18n="r.7">Design + lash lifting</span></figcaption></figure>
-          <figure class="rw-fig"><div class="ph rv-im sheen"><video muted playsinline loop preload="none" disablepictureinpicture poster="/demo/_shared/luciana-alvarenga/video/v04-process-poster.webp" data-src="/demo/_shared/luciana-alvarenga/video/v04-process.mp4" aria-label="Vídeo: o processo do design com tintura"></video><span class="vid-badge" data-i18n="r.vid">Vídeo</span><i class="shn" aria-hidden="true"></i></div><figcaption class="rw-plaque"><span class="n">No. VIII</span> <span data-i18n="r.8">O processo · Design com tintura</span></figcaption></figure>
-          <figure class="rw-fig"><div class="ph rv-im sheen"><img src="/demo/_shared/luciana-alvarenga/img/r03-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/r03-480.webp 480w, /demo/_shared/luciana-alvarenga/img/r03-800.webp 800w, /demo/_shared/luciana-alvarenga/img/r03-1280.webp 1280w" sizes="(max-width:899px) 70vw, 340px" width="1280" height="1280" alt="Lash lifting com a sobrancelha desenhada" loading="lazy" decoding="async"><i class="shn" aria-hidden="true"></i></div><figcaption class="rw-plaque"><span class="n">No. IX</span> <span data-i18n="r.9">Lash lifting</span></figcaption></figure>
-          <figure class="rw-fig"><div class="ph rv-im sheen"><img src="/demo/_shared/luciana-alvarenga/img/r19-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/r19-480.webp 480w, /demo/_shared/luciana-alvarenga/img/r19-800.webp 800w, /demo/_shared/luciana-alvarenga/img/r19-1280.webp 1280w" sizes="(max-width:899px) 70vw, 340px" width="1280" height="1280" alt="Resultado de brow lamination com tintura" loading="lazy" decoding="async"><i class="shn" aria-hidden="true"></i></div><figcaption class="rw-plaque"><span class="n">No. X</span> <span data-i18n="r.10">Brow lamination com tintura</span></figcaption></figure>
-          <a class="rw-end" href="https://www.instagram.com/studiolucianaalvarenga/" target="_blank" rel="noopener">
-            <p class="disp" data-i18n="r.end">Veja mais no Instagram</p>
-            <p class="handle">@studiolucianaalvarenga</p>
-            <span class="tlk"><span data-i18n="r.endl">Abrir o Instagram</span></span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="chapslate tone-dk fade" role="presentation"><span class="cs-t"><b>✦</b><span data-i18n="s.slate">Assinatura</span><b>✦</b></span></div>
-  <section class="sec tone-dk" id="brow-lamination" aria-labelledby="t-sig" style="padding-top:clamp(40px,6vw,90px)">
-    <i class="lx-glow" aria-hidden="true" style="opacity:.55"></i>
-    <div class="wrapv chap" style="position:relative;z-index:5">
-      <div class="chap-l rv">
-        <h2 class="disp chap-t" id="t-sig">Brow Lamination</h2>
-        <p class="chap-line" data-i18n="s.line">Fios alinhados, preenchidos e do seu jeito.</p>
-        <a class="tlk" href="#servicos"><span data-i18n="s.link">Ver todos os serviços</span></a>
-      </div>
+  <section class="m-sec" id="artista" aria-labelledby="iv-about">
+    <div class="m-wrap m-about">
+      <figure class="m-about-img fade"><img src="/demo/_shared/luciana-alvarenga/img/luciana-seated-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/luciana-seated-480.webp 480w, /demo/_shared/luciana-alvarenga/img/luciana-seated-800.webp 800w, /demo/_shared/luciana-alvarenga/img/luciana-seated-1280.webp 1280w" sizes="(max-width:899px) 100vw, 45vw" width="1280" height="1349" alt="Luciana Alvarenga sentada com a pinça" loading="lazy" decoding="async"></figure>
       <div>
-        <p class="sig-quote rv"><span class="q">Sempre pergunto se quer mais grossas ou não, se quer que deixe o pelo mais para cima ou um pouco mais “deitadinho”… atende todos os tipos de gostos! Além de preencher falhas.</span><span class="tr">I always ask whether you want them thicker or not, whether to set the hairs more upward or a little more “laid down”… it suits every taste! It also fills in gaps.</span></p>
-        <span class="sig-attr fade" data-i18n="s.attr">Luciana, sobre brow lamination</span>
-        <ul class="coll-rows" data-stag=".05">
-          <li class="fade"><span class="rn">i.</span><span class="nm" data-i18n="s.i1">Brow lamination com tintura</span><span class="note" data-i18n="s.n1">sobrancelhas mais preenchidas e volumosas</span></li><li class="fade"><span class="rn">ii.</span><span class="nm" data-i18n="s.i2">Brow lamination sem tintura</span><span class="note" data-i18n="s.n2">para quem prefere o tom natural dos fios</span></li><li class="fade"><span class="rn">iii.</span><span class="nm" data-i18n="s.i3">Design com tintura</span><span class="note" data-i18n="s.n3">desenho e cor em harmonia</span></li><li class="fade"><span class="rn">iv.</span><span class="nm" data-i18n="s.i4">Brow lamination + lash lifting</span><span class="note" data-i18n="s.n4">o combo do olhar completo</span></li>
-        </ul>
-        <div class="sig-media">
-          <figure>
-            <div class="ph ph-v ph--framed rv-im sheen"><video muted playsinline loop preload="none" disablepictureinpicture poster="/demo/_shared/luciana-alvarenga/video/v03-six-weeks-poster.webp" data-src="/demo/_shared/luciana-alvarenga/video/v03-six-weeks.mp4" aria-label="Vídeo: brow lamination com quase seis semanas de procedimento"></video><span class="vid-badge" data-i18n="r.vid">Vídeo</span><i class="grain" aria-hidden="true"></i><i class="shn" aria-hidden="true"></i></div>
-            <figcaption class="sig-cap"><span class=""><span class="q">Brow lamination com quase 1 mês e meio de procedimento… fios íntegros e saudáveis!</span><span class="tr">Brow lamination almost a month and a half after the treatment… intact, healthy hairs!</span></span><small data-i18n="s.capsmall">Resultado de uma cliente · não é uma garantia de duração</small></figcaption>
-          </figure>
-          <figure><div class="ph ph-s ph--framed rv-im"><img src="/demo/_shared/luciana-alvarenga/img/r17-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/r17-480.webp 480w, /demo/_shared/luciana-alvarenga/img/r17-800.webp 800w, /demo/_shared/luciana-alvarenga/img/r17-1280.webp 1280w" sizes="(max-width:719px) 70vw, 300px" width="1280" height="1280" alt="Resultado de brow lamination no rosto da cliente" loading="lazy" decoding="async"></div></figure>
-        </div>
-        <div class="ctas sig-cta fade">
-          <a class="btnv btnv--ink" href="https://api.whatsapp.com/send?phone=5562993055281&text=Ol%C3%A1%2C%20Luciana!%20Gostaria%20de%20agendar%20Brow%20lamination." target="_blank" rel="noopener"><span data-i18n="s.cta">Agendar brow lamination</span></a>
-        </div>
+        <p class="m-eyebrow"><span data-i18n="x.about">Sobre</span></p>
+        <h2 class="m-h2" id="iv-about">Luciana Alvarenga</h2>
+        <p class="m-quote"><span class="q">Mais do que sobrancelhas, meu propósito é realçar olhares, valorizar a beleza individual e proporcionar experiências que transmitam confiança e autoestima.</span><span class="tr">More than brows, my purpose is to enhance the gaze, honor individual beauty and create experiences that convey confidence and self-esteem.</span></p>
+        <p data-i18n="a.p2">Aqui, cada detalhe é planejado de acordo com o seu rosto — do design personalizado ao brow lamination e ao lash lifting, agora no novo estúdio em Goiânia.</p>
+        <p class="m-cert">✦ <span data-i18n="a.cert">Profissional certificada em Design de Sobrancelhas</span></p>
+        <p class="m-sign">Luciana Alvarenga</p>
       </div>
     </div>
   </section>
 
-  <section class="sec services tone-lt ghostwrap" id="servicos" aria-labelledby="t-svc">
-    <span class="ghost-w" aria-hidden="true">sobrancelhas</span>
-    <div class="wrapv" style="position:relative;z-index:1">
-      <div class="svc-head">
-        <div><p class="kick kick--short" data-i18n="sv.kick">Goiânia · Goiás</p><h2 class="disp rv" id="t-svc" data-i18n="sv.t">Serviços</h2></div>
-        <p class="ital rv" style="--d:.08s" data-i18n="sv.it">Cada procedimento pensado para o seu rosto. Valores sob consulta pelo WhatsApp.</p>
+  <section class="m-sec m-sec--black" id="estudio" aria-labelledby="iv-st">
+    <div class="m-wrap">
+      <div class="m-head"><p class="m-eyebrow"><span data-i18n="st.kick">Um novo capítulo · Nov 2026</span></p><h2 class="m-h2" id="iv-st" data-i18n="x.studio">O novo estúdio</h2></div>
+      <div class="m-studio" data-stag=".08">
+        <figure class="fade"><img src="/demo/_shared/luciana-alvarenga/img/studio-room-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/studio-room-480.webp 480w, /demo/_shared/luciana-alvarenga/img/studio-room-800.webp 800w, /demo/_shared/luciana-alvarenga/img/studio-room-1280.webp 1280w" sizes="(max-width:719px) 80vw, 30vw" width="1280" height="1692" alt="A sala de atendimento" loading="lazy" decoding="async"><figcaption><span data-i18n="st.c1">A sala de atendimento</span></figcaption></figure><figure class="fade"><img src="/demo/_shared/luciana-alvarenga/img/studio-mirror-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/studio-mirror-480.webp 480w, /demo/_shared/luciana-alvarenga/img/studio-mirror-800.webp 800w, /demo/_shared/luciana-alvarenga/img/studio-mirror-1280.webp 1280w" sizes="(max-width:719px) 80vw, 30vw" width="1280" height="1693" alt="O espelho" loading="lazy" decoding="async"><figcaption><span data-i18n="st.c2">O espelho</span></figcaption></figure><figure class="fade"><img src="/demo/_shared/luciana-alvarenga/img/studio-lounge-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/studio-lounge-480.webp 480w, /demo/_shared/luciana-alvarenga/img/studio-lounge-800.webp 800w, /demo/_shared/luciana-alvarenga/img/studio-lounge-1280.webp 1280w" sizes="(max-width:719px) 80vw, 30vw" width="1280" height="1693" alt="O lounge" loading="lazy" decoding="async"><figcaption><span data-i18n="st.c4">O lounge</span></figcaption></figure>
       </div>
-      <div class="svc-grid" data-stag=".06">
-        
-        <article class="svc rv">
-          <div class="ph rv-im"><img src="/demo/_shared/luciana-alvarenga/img/r06-800.webp" srcset="/demo/_shared/luciana-alvarenga/img/r06-480.webp 480w, /demo/_shared/luciana-alvarenga/img/r06-800.webp 800w" sizes="(max-width:599px) 90vw, (max-width:1023px) 45vw, 400px" width="800" height="1064" alt="Design de sobrancelhas personalizado, em close" loading="lazy" decoding="async"></div>
-          <span class="caps-xs no">No. i</span>
-          <h3 data-i18n="sv.1">Design personalizado</h3>
-          <div><span class="plaque">[DURAÇÃO]</span></div>
-          <p data-i18n="sv.1d">Pensado para o formato do seu rosto, preservando a naturalidade que encanta.</p>
-          <div class="svc-foot"><span class="svc-price"><span data-i18n="sv.price">Valor sob consulta</span> <span class="ph-tag">[PREÇO]</span></span>
-            <a class="tlk" href="https://api.whatsapp.com/send?phone=5562993055281&text=Ol%C3%A1%2C%20Luciana!%20Gostaria%20de%20agendar%20Design%20personalizado." target="_blank" rel="noopener" aria-label="Agendar Design personalizado pelo WhatsApp"><span data-i18n="sv.book">Agendar</span></a></div>
-        </article>
-        <article class="svc rv">
-          <div class="ph rv-im"><img src="/demo/_shared/luciana-alvarenga/img/r16-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/r16-480.webp 480w, /demo/_shared/luciana-alvarenga/img/r16-800.webp 800w, /demo/_shared/luciana-alvarenga/img/r16-1280.webp 1280w" sizes="(max-width:599px) 90vw, (max-width:1023px) 45vw, 400px" width="1280" height="1600" alt="Design com henna bem alinhado, em close" loading="lazy" decoding="async"></div>
-          <span class="caps-xs no">No. ii</span>
-          <h3 data-i18n="sv.2">Design com henna</h3>
-          <div><span class="plaque">[DURAÇÃO]</span></div>
-          <p data-i18n="sv.2d">Tons castanho claro, médio, escuro ou preta — e o delicado efeito ombré.</p>
-          <div class="svc-foot"><span class="svc-price"><span data-i18n="sv.price">Valor sob consulta</span> <span class="ph-tag">[PREÇO]</span></span>
-            <a class="tlk" href="https://api.whatsapp.com/send?phone=5562993055281&text=Ol%C3%A1%2C%20Luciana!%20Gostaria%20de%20agendar%20Design%20com%20henna." target="_blank" rel="noopener" aria-label="Agendar Design com henna pelo WhatsApp"><span data-i18n="sv.book">Agendar</span></a></div>
-        </article>
-        <article class="svc rv">
-          <div class="ph rv-im"><img src="/demo/_shared/luciana-alvarenga/img/r18-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/r18-480.webp 480w, /demo/_shared/luciana-alvarenga/img/r18-800.webp 800w, /demo/_shared/luciana-alvarenga/img/r18-1280.webp 1280w" sizes="(max-width:599px) 90vw, (max-width:1023px) 45vw, 400px" width="1280" height="1280" alt="Cliente com design de sobrancelhas com tintura" loading="lazy" decoding="async"></div>
-          <span class="caps-xs no">No. iii</span>
-          <h3 data-i18n="sv.3">Design com tintura</h3>
-          <div><span class="plaque">[DURAÇÃO]</span></div>
-          <p data-i18n="sv.3d">O design personalizado com cor para definir e realçar os fios.</p>
-          <div class="svc-foot"><span class="svc-price"><span data-i18n="sv.price">Valor sob consulta</span> <span class="ph-tag">[PREÇO]</span></span>
-            <a class="tlk" href="https://api.whatsapp.com/send?phone=5562993055281&text=Ol%C3%A1%2C%20Luciana!%20Gostaria%20de%20agendar%20Design%20com%20tintura." target="_blank" rel="noopener" aria-label="Agendar Design com tintura pelo WhatsApp"><span data-i18n="sv.book">Agendar</span></a></div>
-        </article>
-        <article class="svc rv">
-          <div class="ph rv-im"><img src="/demo/_shared/luciana-alvarenga/img/r08-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/r08-480.webp 480w, /demo/_shared/luciana-alvarenga/img/r08-800.webp 800w, /demo/_shared/luciana-alvarenga/img/r08-1280.webp 1280w" sizes="(max-width:599px) 90vw, (max-width:1023px) 45vw, 400px" width="1280" height="959" alt="Brow lamination na altura dos olhos" loading="lazy" decoding="async"></div>
-          <span class="caps-xs no">No. iv</span>
-          <h3 data-i18n="sv.4">Brow lamination</h3>
-          <div><span class="plaque">[DURAÇÃO]</span></div>
-          <p data-i18n="sv.4d">Com ou sem tintura: fios alinhados, preenchidos e do seu jeito.</p>
-          <div class="svc-foot"><span class="svc-price"><span data-i18n="sv.price">Valor sob consulta</span> <span class="ph-tag">[PREÇO]</span></span>
-            <a class="tlk" href="https://api.whatsapp.com/send?phone=5562993055281&text=Ol%C3%A1%2C%20Luciana!%20Gostaria%20de%20agendar%20Brow%20lamination." target="_blank" rel="noopener" aria-label="Agendar Brow lamination pelo WhatsApp"><span data-i18n="sv.book">Agendar</span></a></div>
-        </article>
-        <article class="svc rv">
-          <div class="ph rv-im"><img src="/demo/_shared/luciana-alvarenga/img/r05-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/r05-480.webp 480w, /demo/_shared/luciana-alvarenga/img/r05-800.webp 800w, /demo/_shared/luciana-alvarenga/img/r05-1280.webp 1280w" sizes="(max-width:599px) 90vw, (max-width:1023px) 45vw, 400px" width="1280" height="1280" alt="Lash lifting nos cílios naturais" loading="lazy" decoding="async"></div>
-          <span class="caps-xs no">No. v</span>
-          <h3 data-i18n="sv.5">Lash lifting</h3>
-          <div><span class="plaque">[DURAÇÃO]</span></div>
-          <p data-i18n="sv.5d">Curvatura, alongamento e definição nos seus cílios naturais, sem extensões.</p>
-          <div class="svc-foot"><span class="svc-price"><span data-i18n="sv.price">Valor sob consulta</span> <span class="ph-tag">[PREÇO]</span></span>
-            <a class="tlk" href="https://api.whatsapp.com/send?phone=5562993055281&text=Ol%C3%A1%2C%20Luciana!%20Gostaria%20de%20agendar%20Lash%20lifting." target="_blank" rel="noopener" aria-label="Agendar Lash lifting pelo WhatsApp"><span data-i18n="sv.book">Agendar</span></a></div>
-        </article>
-        <article class="svc rv">
-          <div class="ph rv-im"><img src="/demo/_shared/luciana-alvarenga/img/masculino-800.webp" srcset="/demo/_shared/luciana-alvarenga/img/masculino-480.webp 480w, /demo/_shared/luciana-alvarenga/img/masculino-800.webp 800w" sizes="(max-width:599px) 90vw, (max-width:1023px) 45vw, 400px" width="800" height="644" alt="Design de sobrancelhas masculino" loading="lazy" decoding="async"></div>
-          <span class="caps-xs no">No. vi</span>
-          <h3 data-i18n="sv.6">Design masculino & infantil</h3>
-          <div><span class="plaque">[DURAÇÃO]</span></div>
-          <p data-i18n="sv.6d">Simetria e harmonia para eles; para elas, o primeiro design respeitando a naturalidade.</p>
-          <div class="svc-foot"><span class="svc-price"><span data-i18n="sv.price">Valor sob consulta</span> <span class="ph-tag">[PREÇO]</span></span>
-            <a class="tlk" href="https://api.whatsapp.com/send?phone=5562993055281&text=Ol%C3%A1%2C%20Luciana!%20Gostaria%20de%20agendar%20Design%20masculino." target="_blank" rel="noopener" aria-label="Agendar Design masculino pelo WhatsApp"><span data-i18n="sv.book">Agendar</span></a></div>
-        </article>
-      </div>
-      <div class="svc-cta ctas fade">
-        <a class="btnv btnv--ink" href="https://api.whatsapp.com/send?phone=5562993055281&text=Ol%C3%A1%2Cgostaria+de+agendar+um+hor%C3%A1rio%21" target="_blank" rel="noopener"><span data-i18n="sv.cta">Agendar pelo WhatsApp</span></a>
-        <p class="svc-combos" data-i18n="sv.combos"><b>Combos</b> &nbsp;Design + lash lifting <b>✦</b> Brow lamination + lash lifting</p>
-      </div>
+      <p class="m-wall"><span class="q">Apaixone-se pelo ato de se cuidar.</span><span class="tr">Fall in love with taking care of yourself.</span></p>
     </div>
   </section>
 
-  <section class="sec tone-alt" id="lash-lifting" aria-labelledby="t-lash">
-    <div class="wrapv lash-grid">
-      <figure class="lash-reel">
-        <div class="arch-fr rv"><div class="ph sheen"><video muted playsinline loop preload="none" disablepictureinpicture poster="/demo/_shared/luciana-alvarenga/video/v06-lash-poster.webp" data-src="/demo/_shared/luciana-alvarenga/video/v06-lash.mp4" aria-label="Vídeo: resultado de lash lifting com naturalidade"></video><i class="grain" aria-hidden="true"></i><i class="shn" aria-hidden="true"></i></div></div>
-        <figcaption class="cap" data-i18n="l.cap">Naturalidade e delicadeza</figcaption>
-      </figure>
-      <div class="lash-copy">
-        <p class="kick kick--short" data-i18n="l.kick">Cílios naturais</p>
-        <h2 class="disp rv" id="t-lash">Lash Lifting</h2>
-        <p class="lash-def rv"><span class="q">O lash lifting é um procedimento estético realizado nos cílios naturais para dar curvatura, alongamento e definição, sem a necessidade de cílios postiços ou extensões.</span><span class="tr">Lash lifting is a treatment on your natural lashes that adds curl, length and definition, with no need for false lashes or extensions.</span></p>
-        <p class="lash-def2 fade"><span class="q">…podendo ser usado rímel normalmente para deixar ainda mais curvado e pigmentado. Fica lindo demais, ideal para quem gosta de naturalidade e delicadeza!</span><span class="tr">…and you can wear mascara as usual to make it even curlier and darker. It looks beautiful — ideal if you love a natural, delicate look!</span></p>
-        <div class="lash-stills" data-stag=".08">
-          <div class="ph ph--framed rv-im"><img src="/demo/_shared/luciana-alvarenga/img/r14-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/r14-480.webp 480w, /demo/_shared/luciana-alvarenga/img/r14-800.webp 800w, /demo/_shared/luciana-alvarenga/img/r14-1280.webp 1280w" sizes="(max-width:899px) 44vw, 250px" width="1280" height="1280" alt="Lash lifting em close, cílios curvados" loading="lazy" decoding="async"></div>
-          <div class="ph ph--framed rv-im"><img src="/demo/_shared/luciana-alvarenga/img/r05-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/r05-480.webp 480w, /demo/_shared/luciana-alvarenga/img/r05-800.webp 800w, /demo/_shared/luciana-alvarenga/img/r05-1280.webp 1280w" sizes="(max-width:899px) 44vw, 250px" width="1280" height="1280" alt="Resultado de lash lifting" loading="lazy" decoding="async"></div>
-        </div>
-        <div class="ctas fade" style="margin-top:clamp(2rem,4vw,3rem)">
-          <a class="btnv btnv--ink" href="https://api.whatsapp.com/send?phone=5562993055281&text=Ol%C3%A1%2C%20Luciana!%20Gostaria%20de%20agendar%20Lash%20lifting." target="_blank" rel="noopener"><span data-i18n="l.cta">Agendar lash lifting</span></a>
-          <a class="tlk" href="#servicos"><span data-i18n="l.link">Combos com design</span></a>
-        </div>
-      </div>
+  <section class="m-sec" id="como-agendar" aria-labelledby="iv-how">
+    <div class="m-wrap">
+      <div class="m-head"><p class="m-eyebrow"><span data-i18n="x.how">Como agendar</span></p><h2 class="m-h2" id="iv-how" data-i18n="x.howt">Três passos, tudo pelo WhatsApp</h2></div>
+      <ol class="m-steps" data-stag=".08"><li class="fade"><span>01</span><h3 data-i18n="x.s1">Chame no WhatsApp</h3><p data-i18n="x.s1d">Conte qual procedimento deseja e receba os horários disponíveis.</p></li><li class="fade"><span>02</span><h3 data-i18n="x.s2">Garanta com o sinal</h3><p data-i18n="x.s2d">Sinal de 50% via Pix, descontado do valor total no dia.</p></li><li class="fade"><span>03</span><h3 data-i18n="x.s3">Confirmação no dia</h3><p data-i18n="x.s3d">Você recebe uma mensagem para confirmar. Chegue 10 a 15 minutos antes.</p></li></ol>
+      <div class="pfaq faq"><details><summary><span class="t" data-i18n="p.q1">Sinal de 50% via Pix</span></summary><p class="ans" style="padding-left:0" data-i18n="p.a1">Para garantir o seu horário, é necessário um sinal de 50% por Pix do valor do procedimento desejado. O sinal é uma garantia da reserva e é descontado do valor total do seu atendimento.</p></details><details><summary><span class="t" data-i18n="p.q2">Tolerância de 10 minutos</span></summary><p class="ans" style="padding-left:0" data-i18n="p.a2">A tolerância é de 10 minutos. Após esse tempo, o seu horário será cancelado e reagendado. Chegue de 10 a 15 minutos antes.</p></details><details><summary><span class="t" data-i18n="p.q3">Reagendamento com 48h</span></summary><p class="ans" style="padding-left:0" data-i18n="p.a3">Para reagendar, é necessário avisar com pelo menos 48 horas de antecedência. Em caso de falta ou cancelamento em cima da hora, o sinal não será reembolsado.</p></details><details><summary><span class="t" data-i18n="p.q4">Formas de pagamento</span></summary><p class="ans" style="padding-left:0" data-i18n="p.a4">Aceitamos Pix, dinheiro e cartão (crédito ou débito).</p></details><details><summary><span class="t" data-i18n="p.q5">Confirmação pelo WhatsApp</span></summary><p class="ans" style="padding-left:0" data-i18n="p.a5">No dia do seu atendimento, você recebe uma mensagem pelo WhatsApp para a confirmação do seu horário.</p></details>
+  <!-- [CONFIRMAR: políticas 2027] --></div>
     </div>
   </section>
 
-  <section class="sec tone-lt" id="estudio" aria-labelledby="t-studio" style="overflow:hidden">
-    
-    <i class="lx-glow lx-glow--lt" aria-hidden="true"></i>
-    <div class="wrapv" style="position:relative;z-index:5">
-      <div class="studio-head">
-        <p class="kick kick--c" data-i18n="st.kick">Um novo capítulo · Nov 2026</p>
-        <h2 class="disp rv" id="t-studio" data-i18n="st.t">O Estúdio</h2>
-        <p class="ital rv" style="--d:.08s;font-size:1.2rem" data-i18n="st.it">Mais que um estúdio — uma nova experiência para você.</p>
-      </div>
-      <div class="studio-row" data-stag=".08">
-        <figure><div class="ph ph--framed rv-im"><img src="/demo/_shared/luciana-alvarenga/img/studio-room-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/studio-room-480.webp 480w, /demo/_shared/luciana-alvarenga/img/studio-room-800.webp 800w, /demo/_shared/luciana-alvarenga/img/studio-room-1280.webp 1280w" sizes="(max-width:899px) 45vw, 300px" width="1280" height="1692" alt="Sala de atendimento do novo estúdio, com o logo LA iluminado" loading="lazy" decoding="async"></div><figcaption class="cap" data-i18n="st.c1">A sala de atendimento</figcaption></figure>
-        <figure><div class="ph ph--framed rv-im"><img src="/demo/_shared/luciana-alvarenga/img/studio-mirror-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/studio-mirror-480.webp 480w, /demo/_shared/luciana-alvarenga/img/studio-mirror-800.webp 800w, /demo/_shared/luciana-alvarenga/img/studio-mirror-1280.webp 1280w" sizes="(max-width:899px) 45vw, 300px" width="1280" height="1693" alt="Espelho orgânico com iluminação de LED no estúdio" loading="lazy" decoding="async"></div><figcaption class="cap" data-i18n="st.c2">O espelho</figcaption></figure>
-        <figure><div class="ph ph--framed rv-im"><img src="/demo/_shared/luciana-alvarenga/img/studio-cart-800.webp" srcset="/demo/_shared/luciana-alvarenga/img/studio-cart-480.webp 480w, /demo/_shared/luciana-alvarenga/img/studio-cart-800.webp 800w" sizes="(max-width:899px) 45vw, 300px" width="800" height="1058" alt="Carrinho dourado com os produtos do estúdio" loading="lazy" decoding="async"></div><figcaption class="cap" data-i18n="st.c3">Os detalhes</figcaption></figure>
-        <figure><div class="ph ph--framed rv-im"><img src="/demo/_shared/luciana-alvarenga/img/studio-lounge-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/studio-lounge-480.webp 480w, /demo/_shared/luciana-alvarenga/img/studio-lounge-800.webp 800w, /demo/_shared/luciana-alvarenga/img/studio-lounge-1280.webp 1280w" sizes="(max-width:899px) 45vw, 300px" width="1280" height="1693" alt="Lounge do estúdio com a frase na parede e o certificado" loading="lazy" decoding="async"></div><figcaption class="cap" data-i18n="st.c4">O lounge</figcaption></figure>
-      </div>
-      <div class="">
-        <p class="studio-note fade"><span class="q">Hoje meu coração transborda gratidão… cada coisa que hoje faz parte desse espaço, já foi motivo de muita oração.</span><span class="tr">Today my heart overflows with gratitude… everything that is part of this space was once the subject of many prayers.</span></p>
-        <div class="orn fade" aria-hidden="true"><span>✦</span></div>
-        <p class="script studio-script fade"><span class="q" lang="pt-BR">Apaixone-se pelo ato de se cuidar.</span><span class="tr" style="font-family:var(--poetry);font-size:1rem">Fall in love with taking care of yourself.</span></p>
-        <p class="cap fade" style="margin-top:2rem" data-i18n="st.addr">Goiânia · GO — [ENDEREÇO]</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec tone-lt" id="antes-de-agendar" aria-labelledby="t-pol">
-    <!-- [CONFIRMAR: políticas 2027] — texto do flyer de agenda de dezembro/2026, levemente editado -->
-    <div class="wrapv pol-grid">
-      <div class="pol-l rv">
-        <p class="kick kick--short" data-i18n="p.kick">Políticas do estúdio</p>
-        <h2 class="disp" id="t-pol" data-i18n="p.t">Antes de agendar</h2>
-        <p class="ital" data-i18n="p.it">Combinados simples para que cada atendimento aconteça com calma e no seu horário.</p>
-        <!-- [CONFIRMAR] horário: o único dado publicado é "Não haverá atendimento aos domingos" -->
-        <dl class="hours">
-          <dt data-i18n="p.hours">Horário</dt><dd data-i18n="p.h1">Segunda a sábado · [HORÁRIO]</dd><dd data-i18n="p.h2">Domingo · fechado</dd>
-          <dt data-i18n="p.where">Onde</dt><dd data-i18n="p.w1">Goiânia · GO — [ENDEREÇO]</dd>
-        </dl>
-      </div>
-      <div class="faq" data-stag=".05">
-        <details class="fade" open><summary><span class="rn">i.</span><span class="t" data-i18n="p.q1">Sinal de 50% via Pix</span></summary><p class="ans" data-i18n="p.a1">Para garantir o seu horário, é necessário um sinal de 50% por Pix do valor do procedimento desejado. O sinal é uma garantia da reserva e é descontado do valor total do seu atendimento.</p></details><details class="fade"><summary><span class="rn">ii.</span><span class="t" data-i18n="p.q2">Tolerância de 10 minutos</span></summary><p class="ans" data-i18n="p.a2">A tolerância é de 10 minutos. Após esse tempo, o seu horário será cancelado e reagendado. Chegue de 10 a 15 minutos antes.</p></details><details class="fade"><summary><span class="rn">iii.</span><span class="t" data-i18n="p.q3">Reagendamento com 48h</span></summary><p class="ans" data-i18n="p.a3">Para reagendar, é necessário avisar com pelo menos 48 horas de antecedência. Em caso de falta ou cancelamento em cima da hora, o sinal não será reembolsado.</p></details><details class="fade"><summary><span class="rn">iv.</span><span class="t" data-i18n="p.q4">Formas de pagamento</span></summary><p class="ans" data-i18n="p.a4">Aceitamos Pix, dinheiro e cartão (crédito ou débito).</p></details><details class="fade"><summary><span class="rn">v.</span><span class="t" data-i18n="p.q5">Confirmação pelo WhatsApp</span></summary><p class="ans" data-i18n="p.a5">No dia do seu atendimento, você recebe uma mensagem pelo WhatsApp para a confirmação do seu horário.</p></details>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec tone-alt" id="depoimentos" aria-labelledby="t-depo" style="padding-block:clamp(80px,10vw,140px)">
-    <!-- NUNCA inventar depoimentos: substituir pelos prints do destaque FEEDBACK, com autorização -->
-    <div class="wrapv">
-      <p class="kick kick--c" data-i18n="d.kick">Depoimentos</p>
-      <h2 class="disp rv" id="t-depo" style="text-align:center;font-size:clamp(2.2rem,4vw,3.6rem);margin-bottom:clamp(2.4rem,5vw,3.6rem)" data-i18n="d.t">Quem confia</h2>
-      <div class="depo-grid" data-stag=".08">
-        <blockquote class="depo fade" style="margin:0"><p data-i18n="d.ph">“[Depoimento real — print do destaque FEEDBACK]”</p><span data-i18n="d.name">— [NOME]</span></blockquote><blockquote class="depo fade" style="margin:0"><p data-i18n="d.ph">“[Depoimento real — print do destaque FEEDBACK]”</p><span data-i18n="d.name">— [NOME]</span></blockquote><blockquote class="depo fade" style="margin:0"><p data-i18n="d.ph">“[Depoimento real — print do destaque FEEDBACK]”</p><span data-i18n="d.name">— [NOME]</span></blockquote>
-      </div>
-      <p class="depo-note" data-i18n="d.note">Espaço reservado · depoimentos reais com autorização das clientes</p>
-    </div>
-  </section>
-
-  <section class="finale" id="agendar" aria-labelledby="t-fin">
-    <div class="finale-media" aria-hidden="true"><img class="lv" src="/demo/_shared/luciana-alvarenga/img/luciana-blazer-1280.webp" srcset="/demo/_shared/luciana-alvarenga/img/luciana-blazer-480.webp 480w, /demo/_shared/luciana-alvarenga/img/luciana-blazer-800.webp 800w, /demo/_shared/luciana-alvarenga/img/luciana-blazer-1280.webp 1280w" sizes="100vw" width="1280" height="1707" alt="" loading="lazy" decoding="async"></div>
-    <i class="lx-glow" aria-hidden="true"></i><i class="grain" aria-hidden="true"></i>
-    <div class="finale-c">
-      <span class="caps-xs fade" data-i18n="f.kick">Agende seu horário</span>
-      <h2 class="rv" id="t-fin" data-i18n="f.t">Seu olhar começa aqui.</h2>
-      <p class="q-line fade"><span class="q">Não é apenas sobre beleza, é sobre identidade, autoridade e excelência em cada detalhe.</span><span class="tr">It isn’t only about beauty — it’s about identity, authority and excellence in every detail.</span></p>
-      <div class="ctas fade" style="--d:.1s">
-        <a class="btnv btnv--champ" href="https://api.whatsapp.com/send?phone=5562993055281&text=Ol%C3%A1%2Cgostaria+de+agendar+um+hor%C3%A1rio%21" target="_blank" rel="noopener"><span data-i18n="h.cta">Agendar pelo WhatsApp</span></a>
-        <a class="tlk" href="https://www.instagram.com/studiolucianaalvarenga/" target="_blank" rel="noopener"><span data-i18n="f.ig">Seguir no Instagram</span></a>
-      </div>
-    </div>
+  <section class="m-cta" id="agendar" aria-labelledby="iv-cta">
+    <h2 id="iv-cta" data-i18n="x.cta">Pronta para o seu novo olhar?</h2>
+    <a class="pill pill--light" href="https://api.whatsapp.com/send?phone=5562993055281&text=Ol%C3%A1%2Cgostaria+de+agendar+um+hor%C3%A1rio%21" target="_blank" rel="noopener"><span data-i18n="h.cta">Agendar pelo WhatsApp</span></a>
   </section>
 </main>
 
@@ -903,15 +779,15 @@ img.lv{animation:lvRise 14s ease-in-out infinite alternate;will-change:transform
         <a href="#antes-de-agendar" data-i18n="ft.n7">Antes de agendar</a><a href="https://www.instagram.com/studiolucianaalvarenga/" target="_blank" rel="noopener">Instagram</a>
         <a href="https://api.whatsapp.com/send?phone=5562993055281&text=Ol%C3%A1%2Cgostaria+de+agendar+um+hor%C3%A1rio%21" target="_blank" rel="noopener">WhatsApp · (62) 99305-5281</a>
       </nav>
-      <div class="foot-logo"><!-- recreated, replace with the vector --><svg viewBox="0 0 480 262" role="img" aria-label="Studio Luciana Alvarenga — Designer de Sobrancelhas"><defs><linearGradient id="lg3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FEE8B0"/><stop offset="1" stop-color="#C9A06E"/></linearGradient></defs>
-    <g transform="translate(120 0)"><path d="M50 96A72 72 0 0 1 190 96" fill="none" stroke="url(#lg3)" stroke-width="1.1"/>
-      <text x="92" y="122" text-anchor="middle" font-family="'Bodoni Moda',Didot,Georgia,serif" font-size="98" fill="url(#lg3)">L</text>
-      <text x="139" y="126" text-anchor="middle" font-family="'Bodoni Moda',Didot,Georgia,serif" font-size="88" fill="url(#lg3)">A</text>
-      <path d="M40 100C70 74 100 78 122 90S164 112 200 80" fill="none" stroke="url(#lg3)" stroke-width="1.7" stroke-linecap="round"/>
-      <path d="M58 104C86 90 106 92 124 99" fill="none" stroke="url(#lg3)" stroke-width=".8" stroke-linecap="round" opacity=".8"/></g>
+      <div class="foot-logo"><!-- recreated, replace with the vector --><svg viewBox="0 0 480 262" role="img" aria-label="Studio Luciana Alvarenga — Designer de Sobrancelhas"><defs><linearGradient id="lg4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FEE8B0"/><stop offset="1" stop-color="#C9A06E"/></linearGradient></defs>
+    <g transform="translate(120 0)"><path d="M50 96A72 72 0 0 1 190 96" fill="none" stroke="url(#lg4)" stroke-width="1.1"/>
+      <text x="92" y="122" text-anchor="middle" font-family="'Bodoni Moda',Didot,Georgia,serif" font-size="98" fill="url(#lg4)">L</text>
+      <text x="139" y="126" text-anchor="middle" font-family="'Bodoni Moda',Didot,Georgia,serif" font-size="88" fill="url(#lg4)">A</text>
+      <path d="M40 100C70 74 100 78 122 90S164 112 200 80" fill="none" stroke="url(#lg4)" stroke-width="1.7" stroke-linecap="round"/>
+      <path d="M58 104C86 90 106 92 124 99" fill="none" stroke="url(#lg4)" stroke-width=".8" stroke-linecap="round" opacity=".8"/></g>
     <text x="240" y="196" text-anchor="middle" font-family="Cinzel,'Trajan Pro',Georgia,serif" font-size="22" letter-spacing="5.2" fill="currentColor">STUDIO LUCIANA ALVARENGA</text>
-    <text x="240" y="224" text-anchor="middle" font-family="Cinzel,'Trajan Pro',Georgia,serif" font-size="12" letter-spacing="5.4" fill="url(#lg3)">DESIGNER DE SOBRANCELHAS</text>
-    <path d="M150 246H226M254 246H330" stroke="url(#lg3)" stroke-width=".8"/><path transform="translate(240 246)" d="M0 -7C.9-1 1-.9 7 0C1 .9.9 1 0 7C-.9 1-1 .9-7 0C-1-.9-.9-1 0-7Z" fill="url(#lg3)"/></svg></div>
+    <text x="240" y="224" text-anchor="middle" font-family="Cinzel,'Trajan Pro',Georgia,serif" font-size="12" letter-spacing="5.4" fill="url(#lg4)">DESIGNER DE SOBRANCELHAS</text>
+    <path d="M150 246H226M254 246H330" stroke="url(#lg4)" stroke-width=".8"/><path transform="translate(240 246)" d="M0 -7C.9-1 1-.9 7 0C1 .9.9 1 0 7C-.9 1-1 .9-7 0C-1-.9-.9-1 0-7Z" fill="url(#lg4)"/></svg></div>
       <p class="foot-verse"><span class="q">Faça por amor e com amor, e Deus honrará as tuas mãos!</span><span class="tr">Do it for love and with love, and God will honor your hands!</span></p>
       <span class="foot-ref">Luciana Alvarenga</span>
       <div class="foot-bar">
@@ -929,7 +805,7 @@ img.lv{animation:lvRise 14s ease-in-out infinite alternate;will-change:transform
 </div>
 <button id="toTop" type="button" aria-label="Voltar ao topo" data-i18n-label="top">&uarr;</button>
 <div class="pv-flag" aria-hidden="true">Prévia · Variação IV — Preto & Branco</div>
-<script>window.__DICT={"pt":{"meta.title":"Designer de Sobrancelhas em Goiânia — Brow Lamination, Henna & Lash Lifting · Studio Luciana Alvarenga","skip":"Pular para o conteúdo","nav.book":"Agendar","nav.menu":"Menu","nav.close":"Fechar","m.1":"Início","m.2":"Resultados","m.3":"Serviços","m.4":"O Estúdio","m.5":"Sobre","m.6":"Agendar","m.sub1":"Brow lamination","m.sub2":"Lash lifting","m.sub3":"Antes de agendar","m.foot1":"Goiânia · Goiás","m.foot2":"Segunda a sábado · [HORÁRIO]","h.v1.1":"Aqui seu olhar","h.v1.2":"é minha responsabilidade","h.v2.1":"Realçar olhares","h.v2.2":"valorizar a beleza","h.v3.1":"Mais que um estúdio","h.v3.2":"uma nova experiência","h.it":"Design de sobrancelhas, brow lamination e lash lifting em Goiânia.","h.cta":"Agendar pelo WhatsApp","h.link":"Ver resultados","h.cue":"Descubra","h.kick":"Designer de Sobrancelhas · Goiânia","a.kick":"Conheça a Luciana","a.t":"A Artista","a.p2":"Aqui, cada detalhe é planejado de acordo com o seu rosto — do design personalizado ao brow lamination e ao lash lifting, agora no novo estúdio em Goiânia.","a.cert":"Profissional certificada em Design de Sobrancelhas","a.cap":"Luciana Alvarenga · Designer de Sobrancelhas","a.tags":"Design <i>✦</i> Henna <i>✦</i> Tintura <i>✦</i> Brow lamination <i>✦</i> Lash lifting","a.link":"Agendar com a Luciana","r.kick":"Resultados reais","r.t":"O Olhar","r.it":"Cada detalhe planejado de acordo com o seu rosto.","r.count":"dez olhares — um só cuidado","r.1":"Design com henna","r.2":"Brow lamination","r.3":"Lash lifting","r.4":"Brow lamination","r.5":"Lash lifting","r.6":"Brow lamination","r.7":"Design + lash lifting","r.8":"O processo · Design com tintura","r.9":"Lash lifting","r.10":"Brow lamination com tintura","r.end":"Veja mais no Instagram","r.endl":"Abrir o Instagram","r.vid":"Vídeo","s.slate":"Assinatura","s.t":"Brow Lamination","s.line":"Fios alinhados, preenchidos e do seu jeito.","s.attr":"Luciana, sobre brow lamination","s.i1":"Brow lamination com tintura","s.n1":"sobrancelhas mais preenchidas e volumosas","s.i2":"Brow lamination sem tintura","s.n2":"para quem prefere o tom natural dos fios","s.i3":"Design com tintura","s.n3":"desenho e cor em harmonia","s.i4":"Brow lamination + lash lifting","s.n4":"o combo do olhar completo","s.capsmall":"Resultado de uma cliente · não é uma garantia de duração","s.cta":"Agendar brow lamination","s.link":"Ver todos os serviços","sv.kick":"Goiânia · Goiás","sv.t":"Serviços","sv.it":"Cada procedimento pensado para o seu rosto. Valores sob consulta pelo WhatsApp.","sv.ghost":"sobrancelhas","sv.1":"Design personalizado","sv.1d":"Pensado para o formato do seu rosto, preservando a naturalidade que encanta.","sv.2":"Design com henna","sv.2d":"Tons castanho claro, médio, escuro ou preta — e o delicado efeito ombré.","sv.3":"Design com tintura","sv.3d":"O design personalizado com cor para definir e realçar os fios.","sv.4":"Brow lamination","sv.4d":"Com ou sem tintura: fios alinhados, preenchidos e do seu jeito.","sv.5":"Lash lifting","sv.5d":"Curvatura, alongamento e definição nos seus cílios naturais, sem extensões.","sv.6":"Design masculino & infantil","sv.6d":"Simetria e harmonia para eles; para elas, o primeiro design respeitando a naturalidade.","sv.price":"Valor sob consulta","sv.book":"Agendar","sv.combos":"<b>Combos</b> &nbsp;Design + lash lifting <b>✦</b> Brow lamination + lash lifting","sv.cta":"Agendar pelo WhatsApp","l.kick":"Cílios naturais","l.t":"Lash Lifting","l.cap":"Naturalidade e delicadeza","l.cta":"Agendar lash lifting","l.link":"Combos com design","st.kick":"Um novo capítulo · Nov 2026","st.t":"O Estúdio","st.it":"Mais que um estúdio — uma nova experiência para você.","st.c1":"A sala de atendimento","st.c2":"O espelho","st.c3":"Os detalhes","st.c4":"O lounge","st.addr":"Goiânia · GO — [ENDEREÇO]","p.kick":"Políticas do estúdio","p.t":"Antes de agendar","p.it":"Combinados simples para que cada atendimento aconteça com calma e no seu horário.","p.q1":"Sinal de 50% via Pix","p.a1":"Para garantir o seu horário, é necessário um sinal de 50% por Pix do valor do procedimento desejado. O sinal é uma garantia da reserva e é descontado do valor total do seu atendimento.","p.q2":"Tolerância de 10 minutos","p.a2":"A tolerância é de 10 minutos. Após esse tempo, o seu horário será cancelado e reagendado. Chegue de 10 a 15 minutos antes.","p.q3":"Reagendamento com 48h","p.a3":"Para reagendar, é necessário avisar com pelo menos 48 horas de antecedência. Em caso de falta ou cancelamento em cima da hora, o sinal não será reembolsado.","p.q4":"Formas de pagamento","p.a4":"Aceitamos Pix, dinheiro e cartão (crédito ou débito).","p.q5":"Confirmação pelo WhatsApp","p.a5":"No dia do seu atendimento, você recebe uma mensagem pelo WhatsApp para a confirmação do seu horário.","p.hours":"Horário","p.h1":"Segunda a sábado · [HORÁRIO]","p.h2":"Domingo · fechado","p.where":"Onde","p.w1":"Goiânia · GO — [ENDEREÇO]","d.kick":"Depoimentos","d.t":"Quem confia","d.ph":"“[Depoimento real — print do destaque FEEDBACK]”","d.name":"— [NOME]","d.note":"Espaço reservado · depoimentos reais com autorização das clientes","f.kick":"Agende seu horário","f.t":"Seu olhar começa aqui.","f.ig":"Seguir no Instagram","ft.follow":"Siga","ft.n1":"Início","ft.n2":"Resultados","ft.n3":"Brow lamination","ft.n4":"Serviços","ft.n5":"Lash lifting","ft.n6":"O Estúdio","ft.n7":"Antes de agendar","ft.n8":"Instagram","ft.n9":"WhatsApp","ft.bar3":"Aqui seu olhar é minha responsabilidade","bar.cta":"Agendar","bar.sub":"Goiânia · WhatsApp","top":"Voltar ao topo"},"en":{"meta.title":"Brow Designer in Goiânia — Brow Lamination, Henna & Lash Lifting · Studio Luciana Alvarenga","skip":"Skip to content","nav.book":"Book","nav.menu":"Menu","nav.close":"Close","m.1":"Home","m.2":"Results","m.3":"Services","m.4":"The Studio","m.5":"About","m.6":"Book","m.sub1":"Brow lamination","m.sub2":"Lash lifting","m.sub3":"Before you book","m.foot1":"Goiânia · Goiás, Brazil","m.foot2":"Monday to Saturday · [HOURS]","h.v1.1":"Your gaze","h.v1.2":"is my responsibility","h.v2.1":"Enhancing the gaze","h.v2.2":"honoring your beauty","h.v3.1":"More than a studio","h.v3.2":"a new experience","h.it":"Brow design, brow lamination and lash lifting in Goiânia.","h.cta":"Book on WhatsApp","h.link":"See results","h.cue":"Discover","h.kick":"Brow Designer · Goiânia","a.kick":"Meet Luciana","a.t":"The Artist","a.p2":"Here, every detail is planned around your face — from custom brow design to brow lamination and lash lifting, now in the new studio in Goiânia.","a.cert":"Certified brow design professional","a.cap":"Luciana Alvarenga · Brow Designer","a.tags":"Brow design <i>✦</i> Henna <i>✦</i> Tint <i>✦</i> Brow lamination <i>✦</i> Lash lifting","a.link":"Book with Luciana","r.kick":"Real results","r.t":"The Gaze","r.it":"Every detail planned around your face.","r.count":"ten looks — one standard of care","r.1":"Henna brow design","r.2":"Brow lamination","r.3":"Lash lifting","r.4":"Brow lamination","r.5":"Lash lifting","r.6":"Brow lamination","r.7":"Brow design + lash lifting","r.8":"The process · Tinted brow design","r.9":"Lash lifting","r.10":"Tinted brow lamination","r.end":"See more on Instagram","r.endl":"Open Instagram","r.vid":"Video","s.slate":"Signature","s.t":"Brow Lamination","s.line":"Aligned, fuller brows — exactly your way.","s.attr":"Luciana, on brow lamination","s.i1":"Tinted brow lamination","s.n1":"fuller, more voluminous brows","s.i2":"Brow lamination, no tint","s.n2":"for those who prefer their natural shade","s.i3":"Tinted brow design","s.n3":"shape and colour in harmony","s.i4":"Brow lamination + lash lifting","s.n4":"the complete-gaze combo","s.capsmall":"One client’s result · not a guaranteed duration","s.cta":"Book brow lamination","s.link":"See all services","sv.kick":"Goiânia · Goiás","sv.t":"Services","sv.it":"Every treatment planned for your face. Pricing on request via WhatsApp.","sv.ghost":"sobrancelhas","sv.1":"Custom brow design","sv.1d":"Designed around the shape of your face, keeping the natural look that charms.","sv.2":"Henna brow design","sv.2d":"Light, medium or dark brown or black tones — and a soft ombré effect.","sv.3":"Tinted brow design","sv.3d":"Custom design with colour to define and lift the brow hairs.","sv.4":"Brow lamination","sv.4d":"With or without tint: aligned, fuller brows, your way.","sv.5":"Lash lifting","sv.5d":"Curl, length and definition for your natural lashes, no extensions.","sv.6":"Men’s & first brow design","sv.6d":"Symmetry and harmony for him; for girls, a first design that respects their natural brows.","sv.price":"Price on request","sv.book":"Book","sv.combos":"<b>Combos</b> &nbsp;Brow design + lash lifting <b>✦</b> Brow lamination + lash lifting","sv.cta":"Book on WhatsApp","l.kick":"Natural lashes","l.t":"Lash Lifting","l.cap":"Natural and delicate","l.cta":"Book lash lifting","l.link":"Combos with brow design","st.kick":"A new chapter · Nov 2026","st.t":"The Studio","st.it":"More than a studio — a new experience for you.","st.c1":"The treatment room","st.c2":"The mirror","st.c3":"The details","st.c4":"The lounge","st.addr":"Goiânia · GO — [ADDRESS]","p.kick":"Studio policies","p.t":"Before you book","p.it":"A few simple agreements so every appointment runs calmly and on time.","p.q1":"50% deposit via Pix","p.a1":"To secure your appointment, a 50% deposit of the treatment price is required via Pix. It guarantees your slot and is deducted from your total.","p.q2":"10-minute grace period","p.a2":"The grace period is 10 minutes. After that, your appointment is cancelled and rescheduled. Please arrive 10 to 15 minutes early.","p.q3":"Rescheduling with 48h notice","p.a3":"To reschedule, please give at least 48 hours’ notice. For no-shows or last-minute cancellations, the deposit is not refunded.","p.q4":"Payment methods","p.a4":"We accept Pix, cash and card (credit or debit).","p.q5":"WhatsApp confirmation","p.a5":"On the day of your appointment you’ll receive a WhatsApp message to confirm your time.","p.hours":"Hours","p.h1":"Monday to Saturday · [HOURS]","p.h2":"Sunday · closed","p.where":"Where","p.w1":"Goiânia · GO — [ADDRESS]","d.kick":"Kind words","d.t":"In their words","d.ph":"“[Real testimonial — from the FEEDBACK highlight]”","d.name":"— [NAME]","d.note":"Placeholder · real testimonials with clients’ permission","f.kick":"Book your appointment","f.t":"Your gaze begins here.","f.ig":"Follow on Instagram","ft.follow":"Follow","ft.n1":"Home","ft.n2":"Results","ft.n3":"Brow lamination","ft.n4":"Services","ft.n5":"Lash lifting","ft.n6":"The Studio","ft.n7":"Before you book","ft.n8":"Instagram","ft.n9":"WhatsApp","ft.bar3":"Your gaze is my responsibility","bar.cta":"Book","bar.sub":"Goiânia · WhatsApp","top":"Back to top"}};</script>
+<script>window.__DICT={"pt":{"meta.title":"Designer de Sobrancelhas em Goiânia — Brow Lamination, Henna & Lash Lifting · Studio Luciana Alvarenga","skip":"Pular para o conteúdo","nav.book":"Agendar","nav.menu":"Menu","nav.close":"Fechar","m.1":"Início","m.2":"Resultados","m.3":"Serviços","m.4":"O Estúdio","m.5":"Sobre","m.6":"Agendar","m.sub1":"Brow lamination","m.sub2":"Lash lifting","m.sub3":"Antes de agendar","m.foot1":"Goiânia · Goiás","m.foot2":"Segunda a sábado · [HORÁRIO]","h.v1.1":"Aqui seu olhar","h.v1.2":"é minha responsabilidade","h.v2.1":"Realçar olhares","h.v2.2":"valorizar a beleza","h.v3.1":"Mais que um estúdio","h.v3.2":"uma nova experiência","h.it":"Design de sobrancelhas, brow lamination e lash lifting em Goiânia.","h.cta":"Agendar pelo WhatsApp","h.link":"Ver resultados","h.cue":"Descubra","h.kick":"Designer de Sobrancelhas · Goiânia","a.kick":"Conheça a Luciana","a.t":"A Artista","a.p2":"Aqui, cada detalhe é planejado de acordo com o seu rosto — do design personalizado ao brow lamination e ao lash lifting, agora no novo estúdio em Goiânia.","a.cert":"Profissional certificada em Design de Sobrancelhas","a.cap":"Luciana Alvarenga · Designer de Sobrancelhas","a.tags":"Design <i>✦</i> Henna <i>✦</i> Tintura <i>✦</i> Brow lamination <i>✦</i> Lash lifting","a.link":"Agendar com a Luciana","r.kick":"Resultados reais","r.t":"O Olhar","r.it":"Cada detalhe planejado de acordo com o seu rosto.","r.count":"dez olhares — um só cuidado","r.1":"Design com henna","r.2":"Brow lamination","r.3":"Lash lifting","r.4":"Brow lamination","r.5":"Lash lifting","r.6":"Brow lamination","r.7":"Design + lash lifting","r.8":"O processo · Design com tintura","r.9":"Lash lifting","r.10":"Brow lamination com tintura","r.end":"Veja mais no Instagram","r.endl":"Abrir o Instagram","r.vid":"Vídeo","s.slate":"Assinatura","s.t":"Brow Lamination","s.line":"Fios alinhados, preenchidos e do seu jeito.","s.attr":"Luciana, sobre brow lamination","s.i1":"Brow lamination com tintura","s.n1":"sobrancelhas mais preenchidas e volumosas","s.i2":"Brow lamination sem tintura","s.n2":"para quem prefere o tom natural dos fios","s.i3":"Design com tintura","s.n3":"desenho e cor em harmonia","s.i4":"Brow lamination + lash lifting","s.n4":"o combo do olhar completo","s.capsmall":"Resultado de uma cliente · não é uma garantia de duração","s.cta":"Agendar brow lamination","s.link":"Ver todos os serviços","sv.kick":"Goiânia · Goiás","sv.t":"Serviços","sv.it":"Cada procedimento pensado para o seu rosto. Valores sob consulta pelo WhatsApp.","sv.ghost":"sobrancelhas","sv.1":"Design personalizado","sv.1d":"Pensado para o formato do seu rosto, preservando a naturalidade que encanta.","sv.2":"Design com henna","sv.2d":"Tons castanho claro, médio, escuro ou preta — e o delicado efeito ombré.","sv.3":"Design com tintura","sv.3d":"O design personalizado com cor para definir e realçar os fios.","sv.4":"Brow lamination","sv.4d":"Com ou sem tintura: fios alinhados, preenchidos e do seu jeito.","sv.5":"Lash lifting","sv.5d":"Curvatura, alongamento e definição nos seus cílios naturais, sem extensões.","sv.6":"Design masculino & infantil","sv.6d":"Simetria e harmonia para eles; para elas, o primeiro design respeitando a naturalidade.","sv.price":"Valor sob consulta","sv.book":"Agendar","sv.combos":"<b>Combos</b> &nbsp;Design + lash lifting <b>✦</b> Brow lamination + lash lifting","sv.cta":"Agendar pelo WhatsApp","l.kick":"Cílios naturais","l.t":"Lash Lifting","l.cap":"Naturalidade e delicadeza","l.cta":"Agendar lash lifting","l.link":"Combos com design","st.kick":"Um novo capítulo · Nov 2026","st.t":"O Estúdio","st.it":"Mais que um estúdio — uma nova experiência para você.","st.c1":"A sala de atendimento","st.c2":"O espelho","st.c3":"Os detalhes","st.c4":"O lounge","st.addr":"Goiânia · GO — [ENDEREÇO]","p.kick":"Políticas do estúdio","p.t":"Antes de agendar","p.it":"Combinados simples para que cada atendimento aconteça com calma e no seu horário.","p.q1":"Sinal de 50% via Pix","p.a1":"Para garantir o seu horário, é necessário um sinal de 50% por Pix do valor do procedimento desejado. O sinal é uma garantia da reserva e é descontado do valor total do seu atendimento.","p.q2":"Tolerância de 10 minutos","p.a2":"A tolerância é de 10 minutos. Após esse tempo, o seu horário será cancelado e reagendado. Chegue de 10 a 15 minutos antes.","p.q3":"Reagendamento com 48h","p.a3":"Para reagendar, é necessário avisar com pelo menos 48 horas de antecedência. Em caso de falta ou cancelamento em cima da hora, o sinal não será reembolsado.","p.q4":"Formas de pagamento","p.a4":"Aceitamos Pix, dinheiro e cartão (crédito ou débito).","p.q5":"Confirmação pelo WhatsApp","p.a5":"No dia do seu atendimento, você recebe uma mensagem pelo WhatsApp para a confirmação do seu horário.","p.hours":"Horário","p.h1":"Segunda a sábado · [HORÁRIO]","p.h2":"Domingo · fechado","p.where":"Onde","p.w1":"Goiânia · GO — [ENDEREÇO]","d.kick":"Depoimentos","d.t":"Quem confia","d.ph":"“[Depoimento real — print do destaque FEEDBACK]”","d.name":"— [NOME]","d.note":"Espaço reservado · depoimentos reais com autorização das clientes","f.kick":"Agende seu horário","f.t":"Seu olhar começa aqui.","f.ig":"Seguir no Instagram","ft.follow":"Siga","ft.n1":"Início","ft.n2":"Resultados","ft.n3":"Brow lamination","ft.n4":"Serviços","ft.n5":"Lash lifting","ft.n6":"O Estúdio","ft.n7":"Antes de agendar","ft.n8":"Instagram","ft.n9":"WhatsApp","ft.bar3":"Aqui seu olhar é minha responsabilidade","bar.cta":"Agendar","bar.sub":"Goiânia · WhatsApp","top":"Voltar ao topo","x.nav1":"Resultados","x.nav2":"Serviços","x.nav3":"Sobre","x.nav4":"Como agendar","x.h":"Aqui seu olhar é minha responsabilidade.","x.sub":"Design de sobrancelhas, brow lamination e lash lifting no novo estúdio em Goiânia.","x.svc":"O menu","x.svct":"Procedimentos","x.res":"Trabalho recente","x.rest":"Resultados reais","x.about":"Sobre","x.how":"Como agendar","x.howt":"Três passos, tudo pelo WhatsApp","x.s1":"Chame no WhatsApp","x.s1d":"Conte qual procedimento deseja e receba os horários disponíveis.","x.s2":"Garanta com o sinal","x.s2d":"Sinal de 50% via Pix, descontado do valor total no dia.","x.s3":"Confirmação no dia","x.s3d":"Você recebe uma mensagem para confirmar. Chegue 10 a 15 minutos antes.","x.more":"Ver todas as políticas","x.studio":"O novo estúdio","x.cta":"Pronta para o seu novo olhar?","x.choose":"Escolha o seu procedimento","x.swipe":"deslize para ver todos","x.reels":"Em movimento","x.hi":"Olá, eu sou a Luciana","x.open":"Novo estúdio · Nov 2026"},"en":{"meta.title":"Brow Designer in Goiânia — Brow Lamination, Henna & Lash Lifting · Studio Luciana Alvarenga","skip":"Skip to content","nav.book":"Book","nav.menu":"Menu","nav.close":"Close","m.1":"Home","m.2":"Results","m.3":"Services","m.4":"The Studio","m.5":"About","m.6":"Book","m.sub1":"Brow lamination","m.sub2":"Lash lifting","m.sub3":"Before you book","m.foot1":"Goiânia · Goiás, Brazil","m.foot2":"Monday to Saturday · [HOURS]","h.v1.1":"Your gaze","h.v1.2":"is my responsibility","h.v2.1":"Enhancing the gaze","h.v2.2":"honoring your beauty","h.v3.1":"More than a studio","h.v3.2":"a new experience","h.it":"Brow design, brow lamination and lash lifting in Goiânia.","h.cta":"Book on WhatsApp","h.link":"See results","h.cue":"Discover","h.kick":"Brow Designer · Goiânia","a.kick":"Meet Luciana","a.t":"The Artist","a.p2":"Here, every detail is planned around your face — from custom brow design to brow lamination and lash lifting, now in the new studio in Goiânia.","a.cert":"Certified brow design professional","a.cap":"Luciana Alvarenga · Brow Designer","a.tags":"Brow design <i>✦</i> Henna <i>✦</i> Tint <i>✦</i> Brow lamination <i>✦</i> Lash lifting","a.link":"Book with Luciana","r.kick":"Real results","r.t":"The Gaze","r.it":"Every detail planned around your face.","r.count":"ten looks — one standard of care","r.1":"Henna brow design","r.2":"Brow lamination","r.3":"Lash lifting","r.4":"Brow lamination","r.5":"Lash lifting","r.6":"Brow lamination","r.7":"Brow design + lash lifting","r.8":"The process · Tinted brow design","r.9":"Lash lifting","r.10":"Tinted brow lamination","r.end":"See more on Instagram","r.endl":"Open Instagram","r.vid":"Video","s.slate":"Signature","s.t":"Brow Lamination","s.line":"Aligned, fuller brows — exactly your way.","s.attr":"Luciana, on brow lamination","s.i1":"Tinted brow lamination","s.n1":"fuller, more voluminous brows","s.i2":"Brow lamination, no tint","s.n2":"for those who prefer their natural shade","s.i3":"Tinted brow design","s.n3":"shape and colour in harmony","s.i4":"Brow lamination + lash lifting","s.n4":"the complete-gaze combo","s.capsmall":"One client’s result · not a guaranteed duration","s.cta":"Book brow lamination","s.link":"See all services","sv.kick":"Goiânia · Goiás","sv.t":"Services","sv.it":"Every treatment planned for your face. Pricing on request via WhatsApp.","sv.ghost":"sobrancelhas","sv.1":"Custom brow design","sv.1d":"Designed around the shape of your face, keeping the natural look that charms.","sv.2":"Henna brow design","sv.2d":"Light, medium or dark brown or black tones — and a soft ombré effect.","sv.3":"Tinted brow design","sv.3d":"Custom design with colour to define and lift the brow hairs.","sv.4":"Brow lamination","sv.4d":"With or without tint: aligned, fuller brows, your way.","sv.5":"Lash lifting","sv.5d":"Curl, length and definition for your natural lashes, no extensions.","sv.6":"Men’s & first brow design","sv.6d":"Symmetry and harmony for him; for girls, a first design that respects their natural brows.","sv.price":"Price on request","sv.book":"Book","sv.combos":"<b>Combos</b> &nbsp;Brow design + lash lifting <b>✦</b> Brow lamination + lash lifting","sv.cta":"Book on WhatsApp","l.kick":"Natural lashes","l.t":"Lash Lifting","l.cap":"Natural and delicate","l.cta":"Book lash lifting","l.link":"Combos with brow design","st.kick":"A new chapter · Nov 2026","st.t":"The Studio","st.it":"More than a studio — a new experience for you.","st.c1":"The treatment room","st.c2":"The mirror","st.c3":"The details","st.c4":"The lounge","st.addr":"Goiânia · GO — [ADDRESS]","p.kick":"Studio policies","p.t":"Before you book","p.it":"A few simple agreements so every appointment runs calmly and on time.","p.q1":"50% deposit via Pix","p.a1":"To secure your appointment, a 50% deposit of the treatment price is required via Pix. It guarantees your slot and is deducted from your total.","p.q2":"10-minute grace period","p.a2":"The grace period is 10 minutes. After that, your appointment is cancelled and rescheduled. Please arrive 10 to 15 minutes early.","p.q3":"Rescheduling with 48h notice","p.a3":"To reschedule, please give at least 48 hours’ notice. For no-shows or last-minute cancellations, the deposit is not refunded.","p.q4":"Payment methods","p.a4":"We accept Pix, cash and card (credit or debit).","p.q5":"WhatsApp confirmation","p.a5":"On the day of your appointment you’ll receive a WhatsApp message to confirm your time.","p.hours":"Hours","p.h1":"Monday to Saturday · [HOURS]","p.h2":"Sunday · closed","p.where":"Where","p.w1":"Goiânia · GO — [ADDRESS]","d.kick":"Kind words","d.t":"In their words","d.ph":"“[Real testimonial — from the FEEDBACK highlight]”","d.name":"— [NAME]","d.note":"Placeholder · real testimonials with clients’ permission","f.kick":"Book your appointment","f.t":"Your gaze begins here.","f.ig":"Follow on Instagram","ft.follow":"Follow","ft.n1":"Home","ft.n2":"Results","ft.n3":"Brow lamination","ft.n4":"Services","ft.n5":"Lash lifting","ft.n6":"The Studio","ft.n7":"Before you book","ft.n8":"Instagram","ft.n9":"WhatsApp","ft.bar3":"Your gaze is my responsibility","bar.cta":"Book","bar.sub":"Goiânia · WhatsApp","top":"Back to top","x.nav1":"Results","x.nav2":"Services","x.nav3":"About","x.nav4":"How to book","x.h":"Your gaze is my responsibility.","x.sub":"Brow design, brow lamination and lash lifting in the new studio in Goiânia.","x.svc":"The menu","x.svct":"Treatments","x.res":"Recent work","x.rest":"Real results","x.about":"About","x.how":"How to book","x.howt":"Three steps, all on WhatsApp","x.s1":"Message on WhatsApp","x.s1d":"Tell her which treatment you want and get the available times.","x.s2":"Secure it with a deposit","x.s2d":"50% deposit via Pix, deducted from the total on the day.","x.s3":"Confirmation on the day","x.s3d":"You’ll get a message to confirm. Arrive 10 to 15 minutes early.","x.more":"See all policies","x.studio":"The new studio","x.cta":"Ready for your new look?","x.choose":"Choose your treatment","x.swipe":"swipe to see them all","x.reels":"In motion","x.hi":"Hi, I’m Luciana","x.open":"New studio · Nov 2026"}};</script>
 <script>/* Shared runtime — ported from the Leti Silva v2 runtime (menu, stagger, reveals, ghost words,
    runway) plus demo additions: PT|EN, lazy in-view video, hero crossfade, mobile booking bar. */
 (() => {
