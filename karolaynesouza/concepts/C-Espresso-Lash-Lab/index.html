@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Karolayne Souza · Lash Lab · Milford, MA</title>
+<meta name="description" content="Design preview — Karolayne Souza, Brazilian lash & brow artist in Milford, MA.">
+<meta name="theme-color" content="#1A120C">
+<link rel="icon" href="{{img:ks-mark.png}}">
+<style>
+@font-face{font-family:"Fraunces";font-weight:300 700;font-style:normal;font-display:swap;src:url({{font:fraunces-latin-wght-normal.woff2}}) format("woff2")}
+@font-face{font-family:"Fraunces";font-weight:300 700;font-style:italic;font-display:swap;src:url({{font:fraunces-latin-wght-italic.woff2}}) format("woff2")}
+@font-face{font-family:"Manrope";font-weight:200 800;font-display:swap;src:url({{font:manrope-latin-wght-normal.woff2}}) format("woff2")}
+/* ===== C · ESPRESSO LASH LAB — dark, warm, interactive ===== */
+:root{
+  --esp:#1A120C; --esp2:#24180F; --esp3:#33231A; --nude:#E8D6C4; --cream:#F5EBE1; --text:#D9C7B6; --mute:#A8927F;
+  --caramel:#B9845A; --caramel2:#D09A6C; --line:rgba(232,214,196,.14); --line2:rgba(232,214,196,.28);
+  --glass:rgba(255,244,232,.07); --serif:"Fraunces",Georgia,serif; --sans:"Manrope","Helvetica Neue",Arial,sans-serif;
+  --w:min(1200px,calc(100vw - 40px)); --ease:cubic-bezier(.2,.7,.2,1);
+}
+html[data-lang="pt"] [data-l="en"],html:not([data-lang="pt"]) [data-l="pt"]{display:none!important}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--esp);color:var(--text);font:400 1rem/1.7 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:clip}
+h1,h2,h3{font-family:var(--serif);font-weight:350;color:var(--cream);margin:0;line-height:1.02;letter-spacing:-.02em}
+h1 em,h2 em,h3 em{font-style:italic;font-weight:300;color:var(--caramel2)}
+p{margin:0} a{color:inherit;text-decoration:none} img{display:block;max-width:100%}
+.wrap{width:var(--w);margin-inline:auto}
+:focus-visible{outline:2px solid var(--caramel2);outline-offset:3px}
+.tag{display:inline-flex;align-items:center;gap:.6rem;font:700 .64rem/1 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--caramel2)}
+.tag::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 0 4px rgba(208,154,108,.18)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;min-height:50px;padding:0 1.5rem;border-radius:14px;font:700 .78rem/1 var(--sans);letter-spacing:.06em;transition:transform .3s var(--ease),background .3s,box-shadow .3s,border-color .3s}
+.btn:active{transform:scale(.98)}
+.btn--c{background:var(--caramel);color:#1A120C;box-shadow:0 14px 30px -14px rgba(185,132,90,.8)}
+.btn--c:hover{background:var(--caramel2)}
+.btn--g{background:var(--glass);color:var(--cream);border:1px solid var(--line2);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn--g:hover{border-color:var(--nude)}
+.btn svg{width:17px;height:17px}
+.ks{display:inline-block;width:var(--s,32px);aspect-ratio:675/666;background:currentColor;-webkit-mask:url({{img:ks-mark.png}}) center/contain no-repeat;mask:url({{img:ks-mark.png}}) center/contain no-repeat}
+.rv{opacity:0;transform:translateY(22px) scale(.985);transition:opacity .8s var(--ease),transform 1s var(--ease);transition-delay:var(--d,0s)}
+.rv.in{opacity:1;transform:none}
+
+/* header */
+.hd{position:fixed;top:12px;left:0;right:0;z-index:50}
+.hd-in{width:var(--w);margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:.8rem;padding:8px 8px 8px 16px;border-radius:18px;transition:background .4s,border-color .4s,box-shadow .4s;border:1px solid transparent}
+.hd.is-scrolled .hd-in{background:rgba(26,18,12,.72);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-color:var(--line);box-shadow:0 20px 40px -24px rgba(0,0,0,.7)}
+.brand{display:flex;align-items:center;gap:.7rem;color:var(--cream);font:700 .7rem/1.2 var(--sans);letter-spacing:.24em;text-transform:uppercase}
+.nav{display:flex;gap:1.6rem;font:600 .8rem/1 var(--sans);color:var(--text)}
+.nav a:hover{color:var(--cream)}
+.tools{display:flex;align-items:center;gap:.6rem}
+.lang{display:flex;background:var(--glass);border:1px solid var(--line);border-radius:12px;padding:3px}
+.lang button{border:0;background:none;color:var(--mute);font:800 .64rem/1 var(--sans);letter-spacing:.12em;padding:.6rem .7rem;border-radius:9px;cursor:pointer;min-height:34px;min-width:38px}
+.lang button[aria-pressed="true"]{background:var(--nude);color:var(--esp)}
+.hd .btn{min-height:42px;padding:0 1.1rem}
+@media(max-width:980px){.nav{display:none}}
+@media(max-width:560px){.brand span{display:none}.hd .btn{display:none}}
+
+/* hero */
+.hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden;isolation:isolate}
+.hero-media{position:absolute;inset:0;z-index:-2}
+.hero-media img{width:100%;height:100%;object-fit:cover;object-position:46% 50%;animation:kb 22s ease-in-out infinite alternate;filter:saturate(.9) contrast(1.02)}
+@keyframes kb{from{transform:scale(1.06)}to{transform:scale(1.2) translate(-2%,1%)}}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(26,18,12,.94) 0%,rgba(26,18,12,.7) 38%,rgba(26,18,12,.15) 70%),linear-gradient(0deg,var(--esp) 0%,rgba(26,18,12,0) 34%)}
+.hero-in{width:var(--w);margin-inline:auto;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:2rem;align-items:end;padding:8rem 0 4.5rem}
+.hero h1{font-size:clamp(3rem,7vw,6.4rem);margin:1.2rem 0 1.2rem}
+.hero .lede{max-width:30em;color:var(--text);font-size:1.05rem}
+.glass{background:var(--glass);border:1px solid var(--line2);border-radius:22px;-webkit-backdrop-filter:blur(18px) saturate(1.2);backdrop-filter:blur(18px) saturate(1.2);box-shadow:0 30px 60px -30px rgba(0,0,0,.6)}
+.hcard{padding:1.4rem;justify-self:end;width:min(100%,380px)}
+.hcard dl{margin:0 0 1.2rem;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border-radius:14px;overflow:hidden}
+.hcard dl div{background:rgba(26,18,12,.55);padding:.9rem 1rem}
+.hcard dt{font:700 .58rem/1.3 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+.hcard dd{margin:.3rem 0 0;font:400 1.8rem/1 var(--serif);color:var(--cream)}
+.hcard .ctas{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.hcard p{margin-top:1rem;font-size:.78rem;color:var(--mute);text-align:center}
+@media(max-width:900px){.hero-in{grid-template-columns:1fr;padding:7rem 0 2.6rem}.hcard{justify-self:stretch;width:100%}.hero::before{background:linear-gradient(0deg,var(--esp) 0%,rgba(26,18,12,.86) 42%,rgba(26,18,12,.25) 75%,rgba(26,18,12,.45) 100%)}.hero-media img{object-position:40% 30%}}
+
+/* lash sweep divider */
+.sweep{display:block;width:100%;height:auto;margin:0;overflow:visible}
+.sweep path{fill:none;stroke:var(--caramel2);stroke-linecap:round;stroke-dasharray:1 1;stroke-dashoffset:1;transition:stroke-dashoffset 1.4s var(--ease)}
+.sweep .s-l{transition-delay:calc(.5s + var(--k) * 18ms);transition-duration:.5s}
+.sweep.in path{stroke-dashoffset:0}
+
+/* section heads */
+.sec{padding:clamp(4.5rem,10vw,8rem) 0}
+.sh{max-width:760px;margin-bottom:clamp(2.2rem,5vw,3.4rem)}
+.sh h2{font-size:clamp(2.4rem,5.4vw,4.4rem);margin:1rem 0 1rem}
+.sh p{max-width:36em}
+.sh--c{text-align:center;margin-inline:auto}
+.sh--c p{margin-inline:auto}
+
+/* services */
+.svc{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.sc{position:relative;padding:1.4rem 1.3rem 1.3rem;border-radius:22px;background:linear-gradient(180deg,var(--esp3),var(--esp2));border:1px solid var(--line);display:flex;flex-direction:column;gap:.9rem;transition:transform .5s var(--ease),border-color .4s}
+.sc:hover{transform:translateY(-4px);border-color:var(--line2)}
+.sc .eye{height:84px;display:flex;align-items:flex-end}
+.sc svg{width:100%;height:auto;fill:none;stroke:var(--nude);stroke-linecap:round;overflow:visible}
+.sc h3{font-size:1.55rem}
+.sc .pt{font:italic 300 .98rem/1 var(--serif);color:var(--mute)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
+.chip{display:inline-flex;align-items:baseline;gap:.35rem;padding:.5rem .7rem;border-radius:10px;background:rgba(232,214,196,.08);border:1px solid var(--line);font:600 .7rem/1 var(--sans);color:var(--text)}
+.chip b{font:500 .95rem/1 var(--serif);color:var(--cream)}
+.chip.main{background:var(--nude);border-color:var(--nude);color:var(--esp)}
+.chip.main b{color:var(--esp)}
+.brows{margin-top:12px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.bc{padding:1.5rem;border-radius:22px;background:var(--esp2);border:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.bc h3{font-size:1.5rem}.bc .pt{font:italic 300 .95rem/1.3 var(--serif);color:var(--mute);margin-top:.3rem}
+.bc .price{font:400 2.2rem/1 var(--serif);color:var(--cream)}
+.svc-note{margin-top:1rem;font-size:.84rem;color:var(--mute)}
+@media(max-width:1020px){.svc{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.svc,.brows{grid-template-columns:1fr}}
+
+/* lab */
+.lab{position:relative;border-radius:30px;padding:clamp(1.2rem,3.4vw,2.6rem);background:radial-gradient(120% 90% at 50% 0%,var(--esp3),var(--esp2) 55%,#150E09);border:1px solid var(--line);overflow:hidden}
+.lab-g{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:clamp(1.2rem,3vw,2.4rem);align-items:center}
+.lab-eye{position:relative;padding:clamp(1rem,3vw,2.2rem);border-radius:22px;background:radial-gradient(70% 60% at 50% 55%,rgba(232,214,196,.08),transparent 70%)}
+.lab-eye svg{width:100%;height:auto;fill:none;stroke:var(--nude);stroke-linecap:round;overflow:visible}
+.eye-lid{stroke-width:1.8}.eye-lower{stroke-width:.9;opacity:.35}
+.lashes path{stroke-width:var(--w,1);stroke-dasharray:1 1;stroke-dashoffset:0}
+svg.draw .lashes path{animation:sweepIn .6s var(--ease) both;animation-delay:calc(var(--k) * 10ms)}
+@keyframes sweepIn{from{stroke-dashoffset:1;opacity:.2}to{stroke-dashoffset:0;opacity:1}}
+.lab-eye .lbl{position:absolute;left:16px;top:14px;font:700 .58rem/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}
+.step{font:800 .6rem/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--mute);margin:0 0 .7rem}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:1rem}
+.seg button,.seg2 button{border:1px solid var(--line2);background:rgba(232,214,196,.05);color:var(--text);font:700 .8rem/1.1 var(--sans);border-radius:14px;min-height:54px;cursor:pointer;transition:background .3s,color .3s,border-color .3s,transform .3s}
+.seg button small,.seg2 button small{display:block;margin-top:.25rem;font:500 .66rem/1 var(--sans);color:inherit;opacity:.7}
+.seg button[aria-pressed="true"],.seg2 button[aria-pressed="true"]{background:var(--nude);color:var(--esp);border-color:var(--nude)}
+.seg2{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:1rem}
+.res{padding:1.3rem;border-radius:20px;margin-top:.4rem}
+.res h3{font-size:clamp(1.8rem,3vw,2.4rem)}
+.res .alt{font:italic 300 1rem/1.3 var(--serif);color:var(--mute);margin:.25rem 0 .8rem}
+.res .desc{font-size:.92rem;margin-bottom:1rem}
+.res-p{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:1rem}
+.res-p div{border-radius:12px;background:rgba(26,18,12,.5);border:1px solid var(--line);padding:.75rem .5rem;text-align:center}
+.res-p b{display:block;font:400 1.6rem/1 var(--serif);color:var(--cream)}
+.res-p span{display:block;margin-top:.35rem;font:700 .54rem/1.2 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.res-p div:first-child{background:var(--nude)}.res-p div:first-child b,.res-p div:first-child span{color:var(--esp)}
+.res .ctas{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+@media(max-width:900px){.lab-g{grid-template-columns:1fr}}
+
+.timer{margin-top:12px;border-radius:30px;padding:clamp(1.2rem,3.4vw,2.4rem);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1.5rem 3rem;align-items:center;background:var(--esp2);border:1px solid var(--line)}
+.timer h3{font-size:clamp(1.7rem,3vw,2.4rem);margin-bottom:.5rem}
+.timer label{display:block;margin:1.1rem 0 .55rem;font:800 .6rem/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
+.timer select{width:100%;min-height:50px;border-radius:14px;border:1px solid var(--line2);background:var(--esp3);color:var(--cream);font:600 .95rem var(--sans);padding:0 .9rem}
+.timer input[type=range]{width:100%;accent-color:var(--caramel);height:30px}
+.days{display:flex;align-items:baseline;gap:.4rem}
+.days b{font:400 2.6rem/1 var(--serif);color:var(--cream)}
+.tout{border-radius:22px;padding:1.6rem;text-align:center;background:linear-gradient(180deg,rgba(232,214,196,.1),rgba(232,214,196,.03));border:1px solid var(--line2)}
+.tout [data-k=label]{display:block;font:800 .62rem/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--caramel2)}
+.tout [data-k=price]{display:block;font:400 3.4rem/1.05 var(--serif);color:var(--cream);margin:.4rem 0}
+.tout [data-k=set]{display:block;font:italic 300 1.1rem var(--serif);color:var(--nude)}
+.tout [data-k=note]{display:block;margin-top:.6rem;font-size:.84rem;color:var(--mute)}
+@media(max-width:820px){.timer{grid-template-columns:1fr}}
+
+/* gallery */
+.gal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:minmax(160px,auto);gap:12px}
+.gal figure{margin:0;border-radius:22px;overflow:hidden;position:relative;background:var(--esp2);border:1px solid var(--line)}
+.gal .big{grid-column:span 2;grid-row:span 2}
+.gal img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.gal figure:hover img{transform:scale(1.05)}
+.gal figcaption{position:absolute;left:12px;bottom:12px;font:800 .58rem/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--cream);background:rgba(26,18,12,.55);padding:.6em .9em;border-radius:10px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.gq{display:flex;flex-direction:column;justify-content:center;padding:1.6rem}
+.gq p{font:italic 300 clamp(1.3rem,2vw,1.7rem)/1.25 var(--serif);color:var(--cream)}
+.gq small{display:block;margin-top:.8rem;font-size:.78rem;color:var(--mute)}
+.gi{display:flex;flex-direction:column;justify-content:space-between;padding:1.6rem;background:var(--nude)!important;color:var(--esp)}
+.gi .tag{color:#7A4F2E}.gi b{font:400 clamp(1.2rem,1.8vw,1.5rem)/1.2 var(--serif);overflow-wrap:anywhere}
+.gi span.go{font:800 .7rem/1 var(--sans);letter-spacing:.12em;text-transform:uppercase}
+@media(max-width:760px){.gal{grid-template-columns:1fr 1fr}.gal .big{grid-column:1/-1;grid-row:auto;aspect-ratio:4/5}.gq,.gi{grid-column:span 1}}
+@media(max-width:420px){.gal{grid-template-columns:1fr}}
+
+/* about */
+.ab{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.ab-photo{position:relative;border-radius:30px;overflow:hidden;min-height:520px;background:var(--esp2)}
+.ab-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%}
+.ab-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(26,18,12,.75),rgba(26,18,12,0) 45%)}
+.ab-photo .glass{position:absolute;left:14px;right:14px;bottom:14px;z-index:2;padding:1rem 1.1rem;display:flex;align-items:center;gap:.9rem}
+.ab-photo .glass b{display:block;font:400 1.2rem/1.1 var(--serif);color:var(--cream)}
+.ab-photo .glass span{font-size:.8rem;color:var(--text)}
+.ab-t{border-radius:30px;background:var(--nude);color:#3B2A1E;padding:clamp(1.6rem,4vw,3.2rem);display:flex;flex-direction:column;justify-content:center}
+.ab-t .tag{color:#7A4F2E}
+.ab-t h2{color:var(--esp);font-size:clamp(2.2rem,4.4vw,3.6rem);margin:1rem 0 1.2rem}
+.ab-t h2 em{color:#8A5A36}
+.ab-t p+p{margin-top:.9rem}
+.facts{display:flex;flex-wrap:wrap;gap:6px;margin-top:1.6rem}
+.facts span{padding:.55rem .8rem;border-radius:10px;border:1px solid rgba(59,42,30,.25);font:700 .72rem/1 var(--sans)}
+@media(max-width:860px){.ab{grid-template-columns:1fr}.ab-photo{min-height:440px}}
+
+/* visit */
+.vs{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:12px}
+.map{position:relative;border-radius:30px;overflow:hidden;min-height:360px;border:1px solid var(--line)}
+.map img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:invert(.92) hue-rotate(180deg) sepia(.35) saturate(.7) brightness(.85) contrast(.95)}
+.map .pin{position:absolute;left:50%;top:50%;transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center;gap:6px}
+.map .pin i{width:14px;height:14px;border-radius:50%;background:var(--caramel2);box-shadow:0 0 0 8px rgba(208,154,108,.25),0 0 0 18px rgba(208,154,108,.1)}
+.vc{border-radius:30px;padding:clamp(1.6rem,3.4vw,2.6rem);background:var(--esp2);border:1px solid var(--line);display:flex;flex-direction:column;gap:1.2rem;justify-content:center}
+.vc h2{font-size:clamp(2.2rem,4vw,3.2rem)}
+.vc address{font:normal 400 1.5rem/1.3 var(--serif);color:var(--cream)}
+.vc .row{display:flex;justify-content:space-between;gap:1rem;padding-top:1rem;border-top:1px solid var(--line);font-size:.92rem}
+.vc .row span{color:var(--mute)}.vc .row a{color:var(--cream);font-weight:700}
+@media(max-width:860px){.vs{grid-template-columns:1fr}}
+
+/* final + footer */
+.fin{text-align:center;padding:clamp(4.5rem,10vw,8rem) 0;position:relative}
+.fin .ks{--s:58px;color:var(--caramel2);margin-bottom:1.4rem}
+.fin h2{font-size:clamp(2.6rem,6vw,5rem);margin-bottom:1.2rem}
+.fin p{max-width:30em;margin:0 auto 2rem}
+.fin .ctas{display:flex;justify-content:center;flex-wrap:wrap;gap:.6rem}
+.ft{border-top:1px solid var(--line);padding:3rem 0 7.5rem}
+.ft-in{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:2rem}
+.ft .brand{font-size:.66rem}
+.ft ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.6rem 1.6rem;font:600 .86rem/1 var(--sans)}
+.ft ul a:hover{color:var(--cream)}
+.ft small{display:block;margin-top:2rem;color:var(--mute);font-size:.74rem}
+
+/* dock */
+.dock{display:none}
+@media(max-width:760px){
+  .dock{display:grid;grid-template-columns:1fr 1fr 1.25fr;gap:6px;position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:60;padding:6px;border-radius:20px;background:rgba(26,18,12,.82);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--line2);box-shadow:0 20px 40px -18px rgba(0,0,0,.8)}
+  .dock a{display:flex;align-items:center;justify-content:center;gap:.4rem;min-height:48px;border-radius:14px;font:800 .72rem/1 var(--sans);letter-spacing:.06em;color:var(--cream);background:var(--glass)}
+  .dock a svg{width:17px;height:17px}
+  .dock a.go{background:var(--caramel);color:var(--esp)}
+  body{padding-bottom:84px}
+}
+.flag{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom));z-index:55;font:800 .58rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;background:var(--nude);color:var(--esp);padding:.55em 1em;border-radius:999px;opacity:.85;pointer-events:none;white-space:nowrap}
+@media(max-width:760px){.flag{bottom:calc(84px + env(safe-area-inset-bottom))}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}.sweep path{stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+<span hidden data-title-en="Karolayne Souza · Lash Lab · Milford, MA" data-title-pt="Karolayne Souza · Lash Lab · Milford, MA"></span>
+
+<header class="hd" data-header>
+  <div class="hd-in">
+    <a class="brand" href="#top" aria-label="Karolayne Souza — home"><i class="ks"></i><span>Karolayne Souza</span></a>
+    <nav class="nav" aria-label="Primary">
+      <a href="#services"><span data-l="en">Prices</span><span data-l="pt">Valores</span></a>
+      <a href="#lab">Lash Lab</a>
+      <a href="#results"><span data-l="en">Results</span><span data-l="pt">Resultados</span></a>
+      <a href="#about"><span data-l="en">About</span><span data-l="pt">Sobre</span></a>
+      <a href="#visit"><span data-l="en">Visit</span><span data-l="pt">Visite</span></a>
+    </nav>
+    <div class="tools">
+      <div class="lang" role="group" aria-label="Language / Idioma"><button type="button" data-setlang="en" aria-pressed="true">EN</button><button type="button" data-setlang="pt" aria-pressed="false">PT</button></div>
+      <a class="btn btn--c" href="https://squareup.com/appointments/book/LR6ZD40XEYFP5" rel="external"><span data-l="en">Book now</span><span data-l="pt">Agendar</span></a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="hero-media"><img src="{{img:lashes-closeup.webp}}" alt="Close-up of lash extensions by Karolayne Souza"></div>
+    <div class="hero-in">
+      <div>
+        <p class="tag rv"><span data-l="en">Milford, MA · Lashes &amp; brows</span><span data-l="pt">Milford, MA · Cílios e sobrancelhas</span></p>
+        <h1 class="rv" style="--d:.08s"><span data-l="en">Lashes, <em>made to measure.</em></span><span data-l="pt">Cílios <em>sob medida.</em></span></h1>
+        <p class="lede rv" style="--d:.16s"><span data-l="en">Brazilian lash &amp; brow artist Karolayne Souza — a premium finish and perfect symmetry, from a private studio on Main Street.</span><span data-l="pt">Karolayne Souza, lash designer brasileira — acabamento premium e simetria perfeita, em um estúdio privado na Main Street.</span></p>
+      </div>
+      <div class="hcard glass rv" style="--d:.22s">
+        <dl>
+          <div><dt><span data-l="en">Full sets from</span><span data-l="pt">Aplicação a partir de</span></dt><dd>$80</dd></div>
+          <div><dt><span data-l="en">Brows from</span><span data-l="pt">Sobrancelhas a partir de</span></dt><dd>$25</dd></div>
+        </dl>
+        <div class="ctas">
+          <a class="btn btn--c" href="https://squareup.com/appointments/book/LR6ZD40XEYFP5" rel="external"><span data-l="en">Book now</span><span data-l="pt">Agendar</span></a>
+          <a class="btn btn--g" data-wa href="https://wa.me/message/TUZVGBQYHKYWP1" rel="external">WhatsApp</a>
+        </div>
+        <p><span data-l="en">English &amp; Português · Online booking on Square</span><span data-l="pt">Português e inglês · Agendamento online pelo Square</span></p>
+      </div>
+    </div>
+  </section>
+
+  <svg class="sweep rv" viewBox="0 0 1200 70" preserveAspectRatio="none" aria-hidden="true" id="sweep"></svg>
+
+  <section class="sec" id="services">
+    <div class="wrap">
+      <div class="sh">
+        <p class="tag rv"><span data-l="en">Prices</span><span data-l="pt">Valores</span></p>
+        <h2 class="rv" style="--d:.06s"><span data-l="en">Four sets, <em>one studio.</em></span><span data-l="pt">Quatro técnicas, <em>um estúdio.</em></span></h2>
+        <p class="rv" style="--d:.1s"><span data-l="en">From Karolayne’s price list: full set, 2-week fill (15 days) and fill at 16–25 days.</span><span data-l="pt">Da tabela da Karolayne: aplicação completa, refil de 15 dias e refil de 16 a 25 dias.</span></p>
+      </div>
+      <div class="svc">
+        <article class="sc rv"><div class="eye"><svg data-eye="classic" aria-hidden="true"></svg></div><h3><span data-l="en">Classic set</span><span data-l="pt">Clássica fio a fio</span></h3><p class="pt"><span data-l="en">Clássica fio a fio</span><span data-l="pt">Classic set</span></p><div class="chips"><span class="chip main"><span data-l="en">Full</span><span data-l="pt">Aplicação</span> <b>$80</b></span><span class="chip">15d <b>$55</b></span><span class="chip">16–25d <b>$65</b></span></div></article>
+        <article class="sc rv" style="--d:.06s"><div class="eye"><svg data-eye="hybrid" aria-hidden="true"></svg></div><h3><span data-l="en">Hybrid volume</span><span data-l="pt">Volume híbrido</span></h3><p class="pt"><span data-l="en">Volume híbrido</span><span data-l="pt">Hybrid volume</span></p><div class="chips"><span class="chip main"><span data-l="en">Full</span><span data-l="pt">Aplicação</span> <b>$90</b></span><span class="chip">15d <b>$60</b></span><span class="chip">16–25d <b>$70</b></span></div></article>
+        <article class="sc rv" style="--d:.12s"><div class="eye"><svg data-eye="brazilian" aria-hidden="true"></svg></div><h3><span data-l="en">Brazilian volume</span><span data-l="pt">Volume brasileiro</span></h3><p class="pt"><span data-l="en">Volume brasileiro</span><span data-l="pt">Brazilian volume</span></p><div class="chips"><span class="chip main"><span data-l="en">Full</span><span data-l="pt">Aplicação</span> <b>$100</b></span><span class="chip">15d <b>$65</b></span><span class="chip">16–25d <b>$75</b></span></div></article>
+        <article class="sc rv" style="--d:.18s"><div class="eye"><svg data-eye="russian" aria-hidden="true"></svg></div><h3><span data-l="en">Russian volume</span><span data-l="pt">Volume russo</span></h3><p class="pt"><span data-l="en">Volume russo</span><span data-l="pt">Russian volume</span></p><div class="chips"><span class="chip main"><span data-l="en">Full</span><span data-l="pt">Aplicação</span> <b>$120</b></span><span class="chip">15d <b>$75</b></span><span class="chip">16–25d <b>$85</b></span></div></article>
+      </div>
+      <div class="brows">
+        <div class="bc rv"><div><h3><span data-l="en">Eyebrow design</span><span data-l="pt">Design de sobrancelhas</span></h3><p class="pt"><span data-l="en">Design de sobrancelhas</span><span data-l="pt">Eyebrow design</span></p></div><span class="price">$25</span></div>
+        <div class="bc rv" style="--d:.06s"><div><h3><span data-l="en">Design + henna</span><span data-l="pt">Design com henna</span></h3><p class="pt"><span data-l="en">Design com henna</span><span data-l="pt">Eyebrow design + henna</span></p></div><span class="price">$35</span></div>
+      </div>
+      <p class="svc-note"><span data-l="en">Prices in US dollars. Line drawings show how each set is built — not photographs.</span><span data-l="pt">Valores em dólares. Os desenhos mostram como cada técnica é feita — não são fotos.</span></p>
+    </div>
+  </section>
+
+  <section class="sec" id="lab" style="padding-top:0">
+    <div class="wrap">
+      <div class="sh sh--c">
+        <p class="tag rv">Lash Lab</p>
+        <h2 class="rv" style="--d:.06s"><span data-l="en">Design <em>your set.</em></span><span data-l="pt">Monte <em>o seu volume.</em></span></h2>
+        <p class="rv" style="--d:.1s"><span data-l="en">Tap a style and watch the lashes redraw. Your price and a booking button appear on the right.</span><span data-l="pt">Toque em uma técnica e veja os fios se redesenharem. O valor e o botão de agendamento aparecem ao lado.</span></p>
+      </div>
+      <div class="lab rv" data-picker data-start="hybrid">
+        <div class="lab-g">
+          <div class="lab-eye"><span class="lbl"><span data-l="en">Live preview</span><span data-l="pt">Prévia ao vivo</span></span><svg data-pick-eye role="img" aria-label="Line drawing of the selected lash set"></svg></div>
+          <div>
+            <p class="step"><span data-l="en">01 · Style</span><span data-l="pt">01 · Técnica</span></p>
+            <div class="seg">
+              <button type="button" data-pick-set="classic">Classic<small><span data-l="en">1 per lash</span><span data-l="pt">fio a fio</span></small></button>
+              <button type="button" data-pick-set="hybrid">Hybrid<small><span data-l="en">mixed</span><span data-l="pt">híbrido</span></small></button>
+              <button type="button" data-pick-set="volume">Volume<small><span data-l="en">fans</span><span data-l="pt">fans</span></small></button>
+            </div>
+            <div data-vol-row hidden>
+              <p class="step"><span data-l="en">02 · Volume type</span><span data-l="pt">02 · Tipo de volume</span></p>
+              <div class="seg2">
+                <button type="button" data-pick-vol="brazilian">Brazilian<small><span data-l="en">light, airy</span><span data-l="pt">leve, aerado</span></small></button>
+                <button type="button" data-pick-vol="russian">Russian<small><span data-l="en">fullest</span><span data-l="pt">mais cheio</span></small></button>
+              </div>
+            </div>
+            <div class="res glass" aria-live="polite">
+              <h3 data-out="name">Hybrid volume</h3>
+              <p class="alt" data-out="alt">Volume híbrido</p>
+              <p class="desc" data-out="desc"></p>
+              <div class="res-p">
+                <div><b data-out="full">$90</b><span data-l="en">Full set</span><span data-l="pt">Aplicação</span></div>
+                <div><b data-out="fill2">$60</b><span data-l="en">15 days</span><span data-l="pt">15 dias</span></div>
+                <div><b data-out="fill3">$70</b><span data-l="en">16–25 days</span><span data-l="pt">16–25 dias</span></div>
+              </div>
+              <div class="ctas">
+                <a class="btn btn--c" href="https://squareup.com/appointments/book/LR6ZD40XEYFP5" rel="external"><span data-l="en">Book this set</span><span data-l="pt">Agendar</span></a>
+                <a class="btn btn--g" data-out-wa href="https://wa.me/message/TUZVGBQYHKYWP1" rel="external">WhatsApp</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timer rv" data-fill>
+        <div>
+          <p class="tag"><span data-l="en">Fill timer</span><span data-l="pt">Calculadora de refil</span></p>
+          <h3 style="margin-top:.8rem"><span data-l="en">Which fill do you need?</span><span data-l="pt">Qual refil você precisa?</span></h3>
+          <label for="fsC"><span data-l="en">Your set</span><span data-l="pt">Sua técnica</span></label>
+          <select id="fsC"><option value="classic">Classic · Clássica</option><option value="hybrid" selected>Hybrid · Híbrido</option><option value="brazilian">Brazilian · Brasileiro</option><option value="russian">Russian · Russo</option></select>
+          <label for="frC"><span data-l="en">Days since your last set</span><span data-l="pt">Dias desde a última aplicação</span></label>
+          <div class="days"><b data-fill-days>14</b><span data-l="en">days</span><span data-l="pt">dias</span></div>
+          <input id="frC" type="range" min="7" max="35" value="14" aria-label="Days since your last set">
+        </div>
+        <div class="tout" data-fill-out aria-live="polite"><span data-k="label"></span><span data-k="price"></span><span data-k="set"></span><span data-k="note"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="results" style="padding-top:0">
+    <div class="wrap">
+      <div class="sh">
+        <p class="tag rv"><span data-l="en">Results</span><span data-l="pt">Resultados</span></p>
+        <h2 class="rv" style="--d:.06s"><span data-l="en">Fresh from <em>her chair.</em></span><span data-l="pt">Direto <em>do estúdio.</em></span></h2>
+      </div>
+      <div class="gal">
+        <figure class="big rv"><img src="{{img:lashes-closeup.webp}}" alt="Lash extensions in profile, close up" loading="lazy"><figcaption><span data-l="en">Lashes</span><span data-l="pt">Cílios</span></figcaption></figure>
+        <figure class="gq rv" style="--d:.06s"><p lang="pt-BR">“Acabamento premium e simetria perfeita.”</p><small><span data-l="en">Premium finish, perfect symmetry — her words</span><span data-l="pt">Nas palavras dela</span></small></figure>
+        <a class="gi rv" style="--d:.12s" href="https://www.instagram.com/karolaynesouzabeauty.us/" rel="external"><span class="tag"><span data-l="en">More on Instagram</span><span data-l="pt">Mais no Instagram</span></span><b>@karolaynesouzabeauty.us</b><span class="go"><span data-l="en">See her reels →</span><span data-l="pt">Ver os reels →</span></span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="about" style="padding-top:0">
+    <div class="wrap ab">
+      <div class="ab-photo rv"><img src="{{img:portrait.webp}}" alt="Karolayne Souza, long dark hair, black top and gold necklace" loading="lazy"><div class="glass"><i class="ks" style="--s:30px;color:var(--nude)"></i><div><b>Karolayne Souza</b><span>Lashes • Eyebrow designer</span></div></div></div>
+      <div class="ab-t rv" style="--d:.08s">
+        <p class="tag"><span data-l="en">Meet Karolayne</span><span data-l="pt">Conheça a Karolayne</span></p>
+        <h2><span data-l="en">Brazilian artist, <em>Milford studio.</em></span><span data-l="pt">Artista brasileira, <em>estúdio em Milford.</em></span></h2>
+        <p><span data-l="en">Karolayne is a Brazilian lash &amp; brow artist working from her own private studio in Milford, Massachusetts.</span><span data-l="pt">Karolayne é lash designer e designer de sobrancelhas brasileira, com estúdio privado em Milford, Massachusetts.</span></p>
+        <p><span data-l="en">Her line, straight from her Instagram: “acabamento premium e simetria perfeita” — a premium finish and perfect symmetry.</span><span data-l="pt">A frase dela, direto do Instagram: “acabamento premium e simetria perfeita”.</span></p>
+        <div class="facts"><span data-l="en">Private studio</span><span data-l="pt">Estúdio privado</span><span>English &amp; Português</span><span data-l="en">Lashes &amp; brows</span><span data-l="pt">Cílios e sobrancelhas</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="visit" style="padding-top:0">
+    <div class="wrap vs">
+      <div class="map rv"><img src="{{img:map.webp}}" alt="Map of 153 Main St, Milford, MA" loading="lazy"></div>
+      <div class="vc rv" style="--d:.08s">
+        <p class="tag"><span data-l="en">Visit</span><span data-l="pt">Visite</span></p>
+        <h2><span data-l="en">Find <em>the studio.</em></span><span data-l="pt">Como <em>chegar.</em></span></h2>
+        <address>153 Main St<br>Milford, MA 01757</address>
+        <div class="row"><span data-l="en">Call or WhatsApp</span><span data-l="pt">Ligue ou WhatsApp</span><a href="tel:+13512102876">(351) 210-2876</a></div>
+        <div class="row"><span>Instagram</span><a href="https://www.instagram.com/karolaynesouzabeauty.us/" rel="external">@karolaynesouzabeauty.us</a></div>
+        <a class="btn btn--c" href="https://maps.app.goo.gl/biwgyD9JFyAWDFcA9" rel="external"><span data-l="en">Get directions</span><span data-l="pt">Abrir no mapa</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="fin">
+    <div class="wrap">
+      <i class="ks"></i>
+      <h2 class="rv"><span data-l="en">Ready when <em>you are.</em></span><span data-l="pt">Quando você <em>quiser.</em></span></h2>
+      <p class="rv" style="--d:.08s"><span data-l="en">Book online on Square, or send Karolayne a WhatsApp — in English or Portuguese.</span><span data-l="pt">Agende online pelo Square ou mande um WhatsApp para a Karolayne — em português ou inglês.</span></p>
+      <div class="ctas rv" style="--d:.14s"><a class="btn btn--c" href="https://squareup.com/appointments/book/LR6ZD40XEYFP5" rel="external"><span data-l="en">Book now</span><span data-l="pt">Agendar</span></a><a class="btn btn--g" data-wa href="https://wa.me/message/TUZVGBQYHKYWP1" rel="external">WhatsApp</a></div>
+    </div>
+  </section>
+</main>
+
+<footer class="ft">
+  <div class="wrap">
+    <div class="ft-in">
+      <a class="brand" href="#top"><i class="ks"></i>Karolayne Souza · Lashes &amp; Brows</a>
+      <ul><li><a href="https://www.instagram.com/karolaynesouzabeauty.us/" rel="external">Instagram</a></li><li><a data-wa href="https://wa.me/message/TUZVGBQYHKYWP1" rel="external">WhatsApp</a></li><li><a href="https://squareup.com/appointments/book/LR6ZD40XEYFP5" rel="external">Square</a></li><li><a href="tel:+13512102876">(351) 210-2876</a></li></ul>
+    </div>
+    <small>© 2026 Karolayne Souza Beauty · 153 Main St, Milford, MA 01757 · Beleza · Cuidado · Autoestima</small>
+  </div>
+</footer>
+
+<nav class="dock" aria-label="Quick actions">
+  <a href="tel:+13512102876"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><span data-l="en">Call</span><span data-l="pt">Ligar</span></a>
+  <a data-wa href="https://wa.me/message/TUZVGBQYHKYWP1" rel="external"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/></svg>WhatsApp</a>
+  <a class="go" href="https://squareup.com/appointments/book/LR6ZD40XEYFP5" rel="external"><span data-l="en">Book now</span><span data-l="pt">Agendar</span></a>
+</nav>
+<div class="flag" aria-hidden="true">Design preview · not the live website</div>
+<script>{{js:common}}</script>
+<script>
+/* C only: the lash-sweep divider — a long lid line with lashes along it, drawn on scroll. */
+(function(){var s=document.getElementById('sweep');if(!s)return;var NS='http://www.w3.org/2000/svg',h='';
+  h+='<path d="M0 50Q600 -10 1200 50" pathLength="1"/>';
+  for(var i=0;i<60;i++){var t=.02+.96*i/59,x=1200*t,y=(1-t)*(1-t)*50+2*(1-t)*t*-10+t*t*50,dx=1200,dy=2*(1-t)*(-60)+2*t*60,a=Math.atan2(dy,dx)+Math.PI/2,L=6+16*Math.sin(t*Math.PI);
+    h+='<path class="s-l" style="--k:'+i+'" pathLength="1" d="M'+x.toFixed(1)+' '+y.toFixed(1)+'Q'+(x+Math.cos(a)*L*.55).toFixed(1)+' '+(y+Math.sin(a)*L*.55).toFixed(1)+' '+(x+Math.cos(a)*L+L*.25).toFixed(1)+' '+(y+Math.sin(a)*L).toFixed(1)+'"/>';}
+  s.innerHTML=h;})();
+</script>
+</body>
+</html>
