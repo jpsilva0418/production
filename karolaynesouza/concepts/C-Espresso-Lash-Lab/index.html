@@ -93,8 +93,14 @@ p{margin:0} a{color:inherit;text-decoration:none} img{display:block;max-width:10
 .svc{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
 .sc{position:relative;padding:1.4rem 1.3rem 1.3rem;border-radius:22px;background:linear-gradient(180deg,var(--esp3),var(--esp2));border:1px solid var(--line);display:flex;flex-direction:column;gap:.9rem;transition:transform .5s var(--ease),border-color .4s}
 .sc:hover{transform:translateY(-4px);border-color:var(--line2)}
-.sc .eye{height:84px;display:flex;align-items:flex-end}
-.sc svg{width:100%;height:auto;fill:none;stroke:var(--nude);stroke-linecap:round;overflow:visible}
+.sc{padding:.6rem .6rem 1.1rem}
+.sc>h3,.sc>.pt,.sc>.chips,.sc>.sc-go{margin-inline:.7rem}
+.sc-ph{display:block;aspect-ratio:4/5;border-radius:16px;overflow:hidden;background:var(--esp3)}
+.sc-ph img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.sc:hover .sc-ph img{transform:scale(1.05)}
+.sc-go{font:800 .7rem/1 var(--sans);letter-spacing:.08em;color:var(--caramel2)}
+.bc-ph{flex:0 0 76px;height:96px;border-radius:14px;overflow:hidden}.bc-ph img{width:100%;height:100%;object-fit:cover}
+.bc>div{flex:1}
 .sc h3{font-size:1.55rem}
 .sc .pt{font:italic 300 .98rem/1 var(--serif);color:var(--mute)}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
@@ -113,13 +119,16 @@ p{margin:0} a{color:inherit;text-decoration:none} img{display:block;max-width:10
 /* lab */
 .lab{position:relative;border-radius:30px;padding:clamp(1.2rem,3.4vw,2.6rem);background:radial-gradient(120% 90% at 50% 0%,var(--esp3),var(--esp2) 55%,#150E09);border:1px solid var(--line);overflow:hidden}
 .lab-g{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:clamp(1.2rem,3vw,2.4rem);align-items:center}
-.lab-eye{position:relative;padding:clamp(1rem,3vw,2.2rem);border-radius:22px;background:radial-gradient(70% 60% at 50% 55%,rgba(232,214,196,.08),transparent 70%)}
+.lab-ph{position:relative;aspect-ratio:4/5;max-width:460px;width:100%;margin-inline:auto;border-radius:22px;overflow:hidden;background:var(--esp3);box-shadow:0 40px 80px -40px rgba(0,0,0,.8)}
+.lab-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity .7s var(--ease),transform 1.2s var(--ease)}
+.lab-ph img.on{opacity:1;transform:none}
+.lab-ph .lbl{z-index:2;background:rgba(26,18,12,.55);padding:.5em .8em;border-radius:9px;color:var(--cream)}
 .lab-eye svg{width:100%;height:auto;fill:none;stroke:var(--nude);stroke-linecap:round;overflow:visible}
 .eye-lid{stroke-width:1.8}.eye-lower{stroke-width:.9;opacity:.35}
 .lashes path{stroke-width:var(--w,1);stroke-dasharray:1 1;stroke-dashoffset:0}
 svg.draw .lashes path{animation:sweepIn .6s var(--ease) both;animation-delay:calc(var(--k) * 10ms)}
 @keyframes sweepIn{from{stroke-dashoffset:1;opacity:.2}to{stroke-dashoffset:0;opacity:1}}
-.lab-eye .lbl{position:absolute;left:16px;top:14px;font:700 .58rem/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}
+.lab-ph .lbl{position:absolute;left:16px;top:14px;font:700 .58rem/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}
 .step{font:800 .6rem/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--mute);margin:0 0 .7rem}
 .seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:1rem}
 .seg button,.seg2 button{border:1px solid var(--line2);background:rgba(232,214,196,.05);color:var(--text);font:700 .8rem/1.1 var(--sans);border-radius:14px;min-height:54px;cursor:pointer;transition:background .3s,color .3s,border-color .3s,transform .3s}
@@ -153,9 +162,10 @@ svg.draw .lashes path{animation:sweepIn .6s var(--ease) both;animation-delay:cal
 @media(max-width:820px){.timer{grid-template-columns:1fr}}
 
 /* gallery */
-.gal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:minmax(160px,auto);gap:12px}
+.gal{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.gal figure{aspect-ratio:4/5}
 .gal figure{margin:0;border-radius:22px;overflow:hidden;position:relative;background:var(--esp2);border:1px solid var(--line)}
-.gal .big{grid-column:span 2;grid-row:span 2}
+.gal .big{grid-column:span 2;grid-row:span 2;aspect-ratio:auto}
 .gal img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
 .gal figure:hover img{transform:scale(1.05)}
 .gal figcaption{position:absolute;left:12px;bottom:12px;font:800 .58rem/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--cream);background:rgba(26,18,12,.55);padding:.6em .9em;border-radius:10px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
@@ -165,8 +175,7 @@ svg.draw .lashes path{animation:sweepIn .6s var(--ease) both;animation-delay:cal
 .gi{display:flex;flex-direction:column;justify-content:space-between;padding:1.6rem;background:var(--nude)!important;color:var(--esp)}
 .gi .tag{color:#7A4F2E}.gi b{font:400 clamp(1.2rem,1.8vw,1.5rem)/1.2 var(--serif);overflow-wrap:anywhere}
 .gi span.go{font:800 .7rem/1 var(--sans);letter-spacing:.12em;text-transform:uppercase}
-@media(max-width:760px){.gal{grid-template-columns:1fr 1fr}.gal .big{grid-column:1/-1;grid-row:auto;aspect-ratio:4/5}.gq,.gi{grid-column:span 1}}
-@media(max-width:420px){.gal{grid-template-columns:1fr}}
+@media(max-width:760px){.gal{grid-template-columns:1fr 1fr}.gal .big{grid-column:1/-1;grid-row:auto}.gi{grid-column:1/-1}}
 
 /* about */
 .ab{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
@@ -247,7 +256,7 @@ svg.draw .lashes path{animation:sweepIn .6s var(--ease) both;animation-delay:cal
 
 <main id="top">
   <section class="hero">
-    <div class="hero-media"><img src="{{img:lashes-closeup.webp}}" alt="Close-up of lash extensions by Karolayne Souza"></div>
+    <div class="hero-media"><img src="{{img:hero-russian.webp}}" alt="Russian volume lashes and laminated brows by Karolayne Souza"></div>
     <div class="hero-in">
       <div>
         <p class="tag rv"><span data-l="en">Milford, MA · Lashes &amp; brows</span><span data-l="pt">Milford, MA · Cílios e sobrancelhas</span></p>
@@ -278,16 +287,16 @@ svg.draw .lashes path{animation:sweepIn .6s var(--ease) both;animation-delay:cal
         <p class="rv" style="--d:.1s"><span data-l="en">From Karolayne’s price list: full set, 2-week fill (15 days) and fill at 16–25 days.</span><span data-l="pt">Da tabela da Karolayne: aplicação completa, refil de 15 dias e refil de 16 a 25 dias.</span></p>
       </div>
       <div class="svc">
-        <article class="sc rv"><div class="eye"><svg data-eye="classic" aria-hidden="true"></svg></div><h3><span data-l="en">Classic set</span><span data-l="pt">Clássica fio a fio</span></h3><p class="pt"><span data-l="en">Clássica fio a fio</span><span data-l="pt">Classic set</span></p><div class="chips"><span class="chip main"><span data-l="en">Full</span><span data-l="pt">Aplicação</span> <b>$80</b></span><span class="chip">15d <b>$55</b></span><span class="chip">16–25d <b>$65</b></span></div></article>
-        <article class="sc rv" style="--d:.06s"><div class="eye"><svg data-eye="hybrid" aria-hidden="true"></svg></div><h3><span data-l="en">Hybrid volume</span><span data-l="pt">Volume híbrido</span></h3><p class="pt"><span data-l="en">Volume híbrido</span><span data-l="pt">Hybrid volume</span></p><div class="chips"><span class="chip main"><span data-l="en">Full</span><span data-l="pt">Aplicação</span> <b>$90</b></span><span class="chip">15d <b>$60</b></span><span class="chip">16–25d <b>$70</b></span></div></article>
-        <article class="sc rv" style="--d:.12s"><div class="eye"><svg data-eye="brazilian" aria-hidden="true"></svg></div><h3><span data-l="en">Brazilian volume</span><span data-l="pt">Volume brasileiro</span></h3><p class="pt"><span data-l="en">Volume brasileiro</span><span data-l="pt">Brazilian volume</span></p><div class="chips"><span class="chip main"><span data-l="en">Full</span><span data-l="pt">Aplicação</span> <b>$100</b></span><span class="chip">15d <b>$65</b></span><span class="chip">16–25d <b>$75</b></span></div></article>
-        <article class="sc rv" style="--d:.18s"><div class="eye"><svg data-eye="russian" aria-hidden="true"></svg></div><h3><span data-l="en">Russian volume</span><span data-l="pt">Volume russo</span></h3><p class="pt"><span data-l="en">Volume russo</span><span data-l="pt">Russian volume</span></p><div class="chips"><span class="chip main"><span data-l="en">Full</span><span data-l="pt">Aplicação</span> <b>$120</b></span><span class="chip">15d <b>$75</b></span><span class="chip">16–25d <b>$85</b></span></div></article>
+        <a class="sc rv" style="--d:0s" data-book="classic" href="https://squareup.com/appointments/book/LR6ZD40XEYFP5"><span class="sc-ph"><img src="{{img:svc-classic.webp}}" alt="" loading="lazy"></span><h3><span data-l="en">Classic set</span><span data-l="pt">Clássica fio a fio</span></h3><p class="pt"><span data-l="en">Clássica fio a fio</span><span data-l="pt">Classic set</span></p><div class="chips"><span class="chip main"><span data-l="en">Full</span><span data-l="pt">Aplicação</span> <b>$80</b></span><span class="chip">15d <b>$55</b></span><span class="chip">16–25d <b>$65</b></span></div><span class="sc-go"><span data-l="en">Book this set</span><span data-l="pt">Agendar</span> →</span></a>
+        <a class="sc rv" style="--d:.06s" data-book="hybrid" href="https://squareup.com/appointments/book/LR6ZD40XEYFP5"><span class="sc-ph"><img src="{{img:svc-hybrid.webp}}" alt="" loading="lazy"></span><h3><span data-l="en">Hybrid volume</span><span data-l="pt">Volume híbrido</span></h3><p class="pt"><span data-l="en">Volume híbrido</span><span data-l="pt">Hybrid volume</span></p><div class="chips"><span class="chip main"><span data-l="en">Full</span><span data-l="pt">Aplicação</span> <b>$90</b></span><span class="chip">15d <b>$60</b></span><span class="chip">16–25d <b>$70</b></span></div><span class="sc-go"><span data-l="en">Book this set</span><span data-l="pt">Agendar</span> →</span></a>
+        <a class="sc rv" style="--d:.12s" data-book="brazilian" href="https://squareup.com/appointments/book/LR6ZD40XEYFP5"><span class="sc-ph"><img src="{{img:svc-brazilian.webp}}" alt="" loading="lazy"></span><h3><span data-l="en">Brazilian volume</span><span data-l="pt">Volume brasileiro</span></h3><p class="pt"><span data-l="en">Volume brasileiro</span><span data-l="pt">Brazilian volume</span></p><div class="chips"><span class="chip main"><span data-l="en">Full</span><span data-l="pt">Aplicação</span> <b>$100</b></span><span class="chip">15d <b>$65</b></span><span class="chip">16–25d <b>$75</b></span></div><span class="sc-go"><span data-l="en">Book this set</span><span data-l="pt">Agendar</span> →</span></a>
+        <a class="sc rv" style="--d:.18s" data-book="russian" href="https://squareup.com/appointments/book/LR6ZD40XEYFP5"><span class="sc-ph"><img src="{{img:svc-russian.webp}}" alt="" loading="lazy"></span><h3><span data-l="en">Russian volume</span><span data-l="pt">Volume russo</span></h3><p class="pt"><span data-l="en">Volume russo</span><span data-l="pt">Russian volume</span></p><div class="chips"><span class="chip main"><span data-l="en">Full</span><span data-l="pt">Aplicação</span> <b>$120</b></span><span class="chip">15d <b>$75</b></span><span class="chip">16–25d <b>$85</b></span></div><span class="sc-go"><span data-l="en">Book this set</span><span data-l="pt">Agendar</span> →</span></a>
       </div>
       <div class="brows">
-        <div class="bc rv"><div><h3><span data-l="en">Eyebrow design</span><span data-l="pt">Design de sobrancelhas</span></h3><p class="pt"><span data-l="en">Design de sobrancelhas</span><span data-l="pt">Eyebrow design</span></p></div><span class="price">$25</span></div>
-        <div class="bc rv" style="--d:.06s"><div><h3><span data-l="en">Design + henna</span><span data-l="pt">Design com henna</span></h3><p class="pt"><span data-l="en">Design com henna</span><span data-l="pt">Eyebrow design + henna</span></p></div><span class="price">$35</span></div>
+        <a class="bc rv" data-book="browdesign" href="https://squareup.com/appointments/book/LR6ZD40XEYFP5"><span class="bc-ph"><img src="{{img:svc-browdesign.webp}}" alt="" loading="lazy"></span><div><h3><span data-l="en">Eyebrow design</span><span data-l="pt">Design de sobrancelhas</span></h3><p class="pt"><span data-l="en">Design de sobrancelhas</span><span data-l="pt">Eyebrow design</span></p></div><span class="price">$25</span></a>
+        <a class="bc rv" style="--d:.06s" data-book="henna" href="https://squareup.com/appointments/book/LR6ZD40XEYFP5"><span class="bc-ph"><img src="{{img:svc-henna.webp}}" alt="" loading="lazy"></span><div><h3><span data-l="en">Design + henna</span><span data-l="pt">Design com henna</span></h3><p class="pt"><span data-l="en">Design com henna</span><span data-l="pt">Eyebrow design + henna</span></p></div><span class="price">$35</span></a>
       </div>
-      <p class="svc-note"><span data-l="en">Prices in US dollars. Line drawings show how each set is built — not photographs.</span><span data-l="pt">Valores em dólares. Os desenhos mostram como cada técnica é feita — não são fotos.</span></p>
+      <p class="svc-note"><span data-l="en">Prices in US dollars. Tap a service to book it.</span><span data-l="pt">Valores em dólares. Toque em um serviço para agendar.</span></p>
     </div>
   </section>
 
@@ -296,11 +305,11 @@ svg.draw .lashes path{animation:sweepIn .6s var(--ease) both;animation-delay:cal
       <div class="sh sh--c">
         <p class="tag rv">Lash Lab</p>
         <h2 class="rv" style="--d:.06s"><span data-l="en">Design <em>your set.</em></span><span data-l="pt">Monte <em>o seu volume.</em></span></h2>
-        <p class="rv" style="--d:.1s"><span data-l="en">Tap a style and watch the lashes redraw. Your price and a booking button appear on the right.</span><span data-l="pt">Toque em uma técnica e veja os fios se redesenharem. O valor e o botão de agendamento aparecem ao lado.</span></p>
+        <p class="rv" style="--d:.1s"><span data-l="en">Tap a style to see it on one of her clients, with your price and a button that books it.</span><span data-l="pt">Toque em uma técnica para ver em uma cliente dela, com o valor e o botão para agendar.</span></p>
       </div>
       <div class="lab rv" data-picker data-start="hybrid">
         <div class="lab-g">
-          <div class="lab-eye"><span class="lbl"><span data-l="en">Live preview</span><span data-l="pt">Prévia ao vivo</span></span><svg data-pick-eye role="img" aria-label="Line drawing of the selected lash set"></svg></div>
+          <div class="lab-ph"><span class="lbl"><span data-l="en">Her work</span><span data-l="pt">Trabalho dela</span></span><img data-pick-img="classic" src="{{img:svc-classic.webp}}" alt="Classic set by Karolayne"><img data-pick-img="hybrid" src="{{img:svc-hybrid.webp}}" alt="Hybrid volume by Karolayne"><img data-pick-img="brazilian" src="{{img:svc-brazilian.webp}}" alt="Brazilian volume by Karolayne"><img data-pick-img="russian" src="{{img:svc-russian.webp}}" alt="Russian volume by Karolayne"></div>
           <div>
             <p class="step"><span data-l="en">01 · Style</span><span data-l="pt">01 · Técnica</span></p>
             <div class="seg">
@@ -325,7 +334,7 @@ svg.draw .lashes path{animation:sweepIn .6s var(--ease) both;animation-delay:cal
                 <div><b data-out="fill3">$70</b><span data-l="en">16–25 days</span><span data-l="pt">16–25 dias</span></div>
               </div>
               <div class="ctas">
-                <a class="btn btn--c" href="https://squareup.com/appointments/book/LR6ZD40XEYFP5" rel="external"><span data-l="en">Book this set</span><span data-l="pt">Agendar</span></a>
+                <a class="btn btn--c" data-out-book href="https://squareup.com/appointments/book/LR6ZD40XEYFP5" rel="external"><span data-l="en">Book this set</span><span data-l="pt">Agendar</span></a>
                 <a class="btn btn--g" data-out-wa href="https://wa.me/message/TUZVGBQYHKYWP1" rel="external">WhatsApp</a>
               </div>
             </div>
@@ -355,9 +364,12 @@ svg.draw .lashes path{animation:sweepIn .6s var(--ease) both;animation-delay:cal
         <h2 class="rv" style="--d:.06s"><span data-l="en">Fresh from <em>her chair.</em></span><span data-l="pt">Direto <em>do estúdio.</em></span></h2>
       </div>
       <div class="gal">
-        <figure class="big rv"><img src="{{img:lashes-closeup.webp}}" alt="Lash extensions in profile, close up" loading="lazy"><figcaption><span data-l="en">Lashes</span><span data-l="pt">Cílios</span></figcaption></figure>
-        <figure class="gq rv" style="--d:.06s"><p lang="pt-BR">“Acabamento premium e simetria perfeita.”</p><small><span data-l="en">Premium finish, perfect symmetry — her words</span><span data-l="pt">Nas palavras dela</span></small></figure>
-        <a class="gi rv" style="--d:.12s" href="https://www.instagram.com/karolaynesouzabeauty.us/" rel="external"><span class="tag"><span data-l="en">More on Instagram</span><span data-l="pt">Mais no Instagram</span></span><b>@karolaynesouzabeauty.us</b><span class="go"><span data-l="en">See her reels →</span><span data-l="pt">Ver os reels →</span></span></a>
+        <figure class="big rv"><img src="{{img:svc-brazilian.webp}}" alt="Brazilian volume lashes, side view" loading="lazy"><figcaption><span data-l="en">Brazilian volume</span><span data-l="pt">Volume brasileiro</span></figcaption></figure>
+        <figure class="rv" style="--d:.06s"><img src="{{img:svc-henna.webp}}" alt="Henna brows" loading="lazy"><figcaption>Henna</figcaption></figure>
+        <figure class="rv" style="--d:.1s"><img src="{{img:lashes-closeup.webp}}" alt="Lash extensions in profile" loading="lazy"><figcaption><span data-l="en">Lashes</span><span data-l="pt">Cílios</span></figcaption></figure>
+        <figure class="rv" style="--d:.14s"><img src="{{img:svc-hybrid.webp}}" alt="Hybrid lashes on green eyes" loading="lazy"><figcaption><span data-l="en">Hybrid</span><span data-l="pt">Híbrido</span></figcaption></figure>
+        <figure class="rv" style="--d:.18s"><img src="{{img:svc-classic.webp}}" alt="Classic set, natural finish" loading="lazy"><figcaption><span data-l="en">Classic</span><span data-l="pt">Fio a fio</span></figcaption></figure>
+        <a class="gi rv" style="--d:.22s" href="https://www.instagram.com/karolaynesouzabeauty.us/" rel="external"><span class="tag"><span data-l="en">More on Instagram</span><span data-l="pt">Mais no Instagram</span></span><b>@karolaynesouzabeauty.us</b><span class="go"><span data-l="en">See her reels →</span><span data-l="pt">Ver os reels →</span></span></a>
       </div>
     </div>
   </section>

@@ -3,8 +3,9 @@
  *  · EN | PT: every bilingual string is written twice in the markup (data-l="en" / data-l="pt");
  *    CSS hides the inactive one. The choice is remembered when storage is available.
  *  · Lash drawing: a closed-eye lash map redrawn live for each set (illustration, not a photo).
- *  · Set picker + fill helper: prices from her list; booking goes to Square or a WhatsApp message
- *    pre-filled with the chosen set (her own api.whatsapp.com number link from Linktree).
+ *  · Set picker + fill helper: prices from her list; the picker shows her real photo of the chosen
+ *    set, and booking goes straight to that service on Square (where its ID is known) or to a
+ *    WhatsApp message pre-filled with the set (her own api.whatsapp.com number link from Linktree).
  *  · Nothing here sends data anywhere. */
 (function () {
   'use strict';
@@ -27,6 +28,19 @@
                  dpt: 'Fans feitos à mão para o resultado mais cheio e marcante.' }
   };
   var WA_PHONE = '13512102876';
+
+  /* ---------- booking: straight to the service on her Square site ----------
+   * Square's per-service link is …/location/LR6ZD40XEYFP5?…&service_id=<ID>. The founder supplied
+   * Brazilian Volume's ID (QD52BJNCKGB6SGPICOSCNDG5). Add the others here as they arrive; until a
+   * service has an ID its buttons open her full Square service list instead of guessing. */
+  var SQUARE_SERVICE = 'https://book.squareup.com/appointments/zdyq0s02f101ih/location/LR6ZD40XEYFP5?buttonTextColor=ffffff&color=000000&locale=en&referrer=so&service_id=';
+  var SQUARE_ALL = 'https://squareup.com/appointments/book/LR6ZD40XEYFP5';
+  var SERVICE_IDS = {
+    classic: '', hybrid: '', brazilian: 'QD52BJNCKGB6SGPICOSCNDG5', russian: '',
+    browdesign: '', henna: ''
+  };
+  function bookUrl(key) { return SERVICE_IDS[key] ? SQUARE_SERVICE + SERVICE_IDS[key] : SQUARE_ALL; }
+  d.querySelectorAll('[data-book]').forEach(function (a) { a.href = bookUrl(a.getAttribute('data-book')); a.rel = 'external'; });
   var lang = function () { return root.getAttribute('data-lang') === 'pt' ? 'pt' : 'en'; };
 
   /* ---------- language ---------- */
@@ -109,6 +123,8 @@
       o('full', money(s.p[0])); o('fill2', money(s.p[1])); o('fill3', money(s.p[2]));
       var msg = l === 'pt' ? 'Olá Karolayne! Gostaria de agendar: ' + s.pt + ' (aplicação completa).' : 'Hi Karolayne! I’d like to book a full set: ' + s.en + '.';
       pk.querySelectorAll('[data-out-wa]').forEach(function (a) { a.href = waLink(msg); });
+      pk.querySelectorAll('[data-out-book]').forEach(function (a) { a.href = bookUrl(k); });
+      pk.querySelectorAll('[data-pick-img]').forEach(function (im) { im.classList.toggle('on', im.getAttribute('data-pick-img') === k); });
       if (eye) drawEye(eye, k);
     }
     pk.addEventListener('click', function (e) {

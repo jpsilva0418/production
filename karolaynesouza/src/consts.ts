@@ -49,6 +49,15 @@ export const SITE = {
   ],
 } as const;
 
+/** Booking straight to a service on her Square site: …/location/LR6ZD40XEYFP5?…&service_id=<ID>.
+ *  The founder supplied Brazilian Volume's ID. Add the others as they arrive; a service without an
+ *  ID books through her full Square service list rather than a guessed link. */
+const SQUARE_SERVICE = 'https://book.squareup.com/appointments/zdyq0s02f101ih/location/LR6ZD40XEYFP5?buttonTextColor=ffffff&color=000000&locale=en&referrer=so&service_id=';
+export const SERVICE_IDS: Record<string, string> = {
+  classic: '', hybrid: '', brazilian: 'QD52BJNCKGB6SGPICOSCNDG5', russian: '', browdesign: '', henna: '',
+};
+export const bookUrl = (key: string) => (SERVICE_IDS[key] ? SQUARE_SERVICE + SERVICE_IDS[key] : SITE.booking);
+
 export const TEL = `tel:${SITE.phoneE164}`;
 /** External links open in the SAME tab: the smoothest one-tap handoff, especially inside
  *  Instagram's in-app browser. */

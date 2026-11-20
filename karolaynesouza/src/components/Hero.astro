@@ -4,9 +4,9 @@
  *     lids, iris, then the lashes flick out one by one — her KS monogram settles as the iris, the
  *     wordmark beneath, then the view rushes through the eye onto the hero. ~2.8 s; any scroll, tap or key skips it; a failsafe removes it if the script stalls.
  *   · Media: a montage of her work that ends on her portrait and holds there —
- *       lash line (close-up) → brow (close-up) → the full eye → KS beat → Karolayne.
- *     Built from the only work photo supplied; every new photo or reel of hers is one more frame in
- *     MONTAGE. MEDIA.heroFilm (a clip with NO burned-in text) replaces the montage when set.
+ *       Russian volume → Brazilian volume → henna brows → hybrid → KS beat → Karolayne.
+ *     Her real work (Russian volume, Brazilian volume, henna brows, hybrid); every new photo or reel
+ *     of hers is one more frame in MONTAGE. MEDIA.heroFilm (a clip with NO burned-in text) replaces the montage when set.
  *     Reduced motion: the portrait alone, still.
  *   · No pinning: the hero scrolls away normally, so nothing ever slides over the booking buttons.
  *  Desktop: words left, media in a tall arched gold-ruled frame right. Phone: media fills the top,
@@ -22,12 +22,14 @@ const plates = import.meta.glob<{ default: ImageMetadata }>('../assets/plates/*.
 const plate = (id: string) => plates[`../assets/plates/${id}.jpg`].default;
 const portrait = plate(MEDIA.plates.portrait);
 const lashes = plate(MEDIA.plates.lashes);
+const russian = plate(MEDIA.plates.russian);
 const film = MEDIA.heroFilm;
 /** Montage frames before the portrait. `move` names a camera move in the CSS below. */
 const MONTAGE = [
-  { src: lashes, move: 'lashline', tag: 'Lashes' },
-  { src: lashes, move: 'brow', tag: 'Brows' },
-  { src: lashes, move: 'eye', tag: 'Lashes & brows' },
+  { src: russian, move: 'lashline', tag: 'Russian volume' },
+  { src: plate('svc-brazilian'), move: 'eye', tag: 'Brazilian volume' },
+  { src: plate('svc-henna'), move: 'brow', tag: 'Henna brows' },
+  { src: plate('svc-hybrid'), move: 'eye', tag: 'Hybrid volume' },
 ];
 ---
 <script is:inline>
@@ -60,7 +62,7 @@ const MONTAGE = [
     <div class="hx-fr">
       {!film && MONTAGE.map((f, i) => (
         <div class:list={['hx-sl', `hx-sl--${f.move}`]} style={`--i:${i}`}>
-          <Image src={f.src} alt="" widths={[640, 941]} sizes="(max-width:899px) 100vw, 46vw" loading="eager" quality={90} />
+          <Image src={f.src} alt="" widths={[640, 1000]} sizes="(max-width:899px) 100vw, 46vw" loading="eager" quality={90} />
           <span class="hx-tag">{f.tag}</span>
         </div>
       ))}
@@ -176,8 +178,8 @@ const MONTAGE = [
   :global(html.ks-go) .hx-prog i::after{animation:hxBar var(--step,2.2s) linear both;animation-delay:calc(var(--i) * 2.2s)}
   :global(html.ks-intro) .hx-prog i::after{animation:hxBar 2.2s linear both;animation-delay:calc(2.4s + var(--i) * 2.2s)}
   :global(html.ks-go) .hx-prog,:global(html.ks-intro) .hx-prog{animation:hxProgOut .6s ease forwards}
-  :global(html.ks-go) .hx-prog{animation-delay:11.6s}
-  :global(html.ks-intro) .hx-prog{animation-delay:14s}
+  :global(html.ks-go) .hx-prog{animation-delay:13.8s}
+  :global(html.ks-intro) .hx-prog{animation-delay:16.2s}
   .hx-sl--lashline :global(img){object-position:42% 55%;animation:camLash var(--step) linear both;animation-delay:inherit}
   .hx-sl--brow :global(img){object-position:75% 45%;animation:camBrow var(--step) linear both;animation-delay:inherit}
   .hx-sl--eye :global(img){object-position:50% 50%;animation:camEye var(--step) linear both;animation-delay:inherit}

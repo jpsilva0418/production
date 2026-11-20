@@ -3,8 +3,8 @@
  * Rule: no invented numbers, credentials, reviews, hours or prices. Prices are her official price
  * list (media-intake/brand-price-list-en.jpg); anything not on it reads "Ask".
  */
-import { SITE, TEL, ext } from '../consts';
-export { SITE, TEL, ext };
+import { SITE, TEL, ext, bookUrl } from '../consts';
+export { SITE, TEL, ext, bookUrl };
 
 export interface Film { webm: string; mp4: string; poster: string; alt: string; ratio?: string }
 
@@ -19,7 +19,7 @@ export const MEDIA: {
   heroFilm: Film | null;
   pinnedFilm: Film | null;
   reels: Film[];
-  plates: { portrait: string; portraitAbout: string; lashes: string };
+  plates: { portrait: string; portraitAbout: string; lashes: string; russian: string };
 } = {
   heroFilm: null,
   pinnedFilm: null,
@@ -32,6 +32,7 @@ export const MEDIA: {
     /** About page portrait — swap for a second photo of her when one arrives (same folder). */
     portraitAbout: 'karolayne-portrait',
     lashes: 'lashes-closeup',
+    russian: 'work-russian-full',
   },
 };
 
@@ -43,7 +44,12 @@ export type WorkItem =
  *  drop the photo into src/assets/plates (lashes-*, brows-*, combo-*) and add one line; reels go
  *  through MEDIA.reels and are mixed in below. */
 const PHOTOS: WorkItem[] = [
-  { kind: 'photo', plate: 'lashes-closeup', alt: 'A client’s eye in profile: full, soft lash extensions and a groomed brow', tag: 'Lashes', span: 'big' },
+  { kind: 'photo', plate: 'svc-russian', alt: 'Russian volume lashes and laminated brows, close up', tag: 'Russian volume', span: 'big' },
+  { kind: 'photo', plate: 'svc-brazilian', alt: 'Brazilian volume lashes and defined brows, side view', tag: 'Brazilian volume' },
+  { kind: 'photo', plate: 'svc-henna', alt: 'Bold henna brows with soft lashes', tag: 'Henna brows' },
+  { kind: 'photo', plate: 'svc-hybrid', alt: 'Hybrid lashes on green eyes', tag: 'Hybrid volume' },
+  { kind: 'photo', plate: 'svc-classic', alt: 'A natural classic set and softly shaped brows', tag: 'Classic set' },
+  { kind: 'photo', plate: 'lashes-closeup', alt: 'Lash extensions in profile, close up', tag: 'Lashes' },
 ];
 const interleave = (a: WorkItem[], b: WorkItem[]) => {
   const out: WorkItem[] = [];
@@ -82,10 +88,10 @@ export const LASHES = {
   cols: ['Full set', '2-week fill', 'Fill 16–25 days'],
   colsNote: ['', '15 days', ''],
   rows: [
-    { name: 'Classic set', pt: 'Clássica fio a fio', prices: [80, 55, 65], line: 'One extension on each natural lash — clean, defined, natural.' },
-    { name: 'Hybrid volume', pt: 'Volume híbrido', prices: [90, 60, 70], line: 'Classic and volume mixed — fuller, still soft.' },
-    { name: 'Brazilian volume', pt: 'Volume brasileiro', prices: [100, 65, 75], line: 'Light, airy fullness with a polished line.' },
-    { name: 'Russian volume', pt: 'Volume russo', prices: [120, 75, 85], line: 'Handmade fans for the fullest, most dramatic set.' },
+    { key: 'classic', plate: 'svc-classic', name: 'Classic set', pt: 'Clássica fio a fio', prices: [80, 55, 65], line: 'One extension on each natural lash — clean, defined, natural.' },
+    { key: 'hybrid', plate: 'svc-hybrid', name: 'Hybrid volume', pt: 'Volume híbrido', prices: [90, 60, 70], line: 'Classic and volume mixed — fuller, still soft.' },
+    { key: 'brazilian', plate: 'svc-brazilian', name: 'Brazilian volume', pt: 'Volume brasileiro', prices: [100, 65, 75], line: 'Light, airy fullness with a polished line.' },
+    { key: 'russian', plate: 'svc-russian', name: 'Russian volume', pt: 'Volume russo', prices: [120, 75, 85], line: 'Handmade fans for the fullest, most dramatic set.' },
   ],
 } as const;
 
@@ -93,13 +99,13 @@ export const BROWS = {
   title: 'Eyebrow design',
   pt: 'Design de sobrancelhas',
   rows: [
-    { name: 'Eyebrow design', pt: 'Design de sobrancelhas', price: 25 as number | null },
-    { name: 'Eyebrow design + henna', pt: 'Design com henna', price: 35 as number | null },
+    { key: 'browdesign', plate: 'svc-browdesign', name: 'Eyebrow design', pt: 'Design de sobrancelhas', price: 25 as number | null },
+    { key: 'henna', plate: 'svc-henna', name: 'Eyebrow design + henna', pt: 'Design com henna', price: 35 as number | null },
   ],
 } as const;
 
 /** Offered (an Instagram highlight is titled "Lash Removal") but not priced on her list. */
-export const EXTRAS = [{ name: 'Lash removal', pt: 'Remoção de cílios', price: null as number | null }];
+export const EXTRAS = [{ key: '', plate: '', name: 'Lash removal', pt: 'Remoção de cílios', price: null as number | null }];
 
 export const PRICE_NOTE = 'Prices from Karolayne’s current price list, in US dollars. Fills are priced by how long it has been since your last appointment.';
 
