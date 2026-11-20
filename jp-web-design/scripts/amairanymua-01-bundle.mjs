@@ -106,7 +106,10 @@ const ASSET_RE = new RegExp(`${BASE.replace(/[/.]/g, '\\$&')}/(?:[a-z]+/)?assets
 /* --no-clips: leave the video files out (for viewers that never play video, e.g. the iOS file
    viewer); each clip's address becomes empty, so the page shows the still underneath it */
 const NOCLIPS = process.argv.includes('--no-clips');
-const tokenize = (text) => text.replace(ASSET_RE, (u) => (NOCLIPS && /\.mp4$/.test(u) ? '' : token(u)));
+/* --keep-clip <name>: with --no-clips, still carry this one clip (e.g. the video of her) */
+const KEEP = process.argv.includes('--keep-clip') ? process.argv[process.argv.indexOf('--keep-clip') + 1] : null;
+const dropClip = (u) => NOCLIPS && /\.mp4$/.test(u) && !(KEEP && u.endsWith(`/${KEEP}.mp4`));
+const tokenize = (text) => text.replace(ASSET_RE, (u) => (dropClip(u) ? '' : token(u)));
 
 /* ---- stylesheets and scripts: stored once, spliced into each page at run time ---- */
 const css = {}, js = {};
@@ -140,6 +143,9 @@ for (const path of pagesOf(site)) {
   const tail = [];
   h = h.replace(/<script\b[^>]*\bsrc="([^"]+)"[^>]*>\s*<\/script>/g, (m, u) => { if (u.startsWith(BASE)) tail.push(jsText(u)); return ''; });
   h = h.replace(/<\/body>/, `${tail.map((u) => `<!--am01js:${u}-->`).join('')}</body>`);
+  /* viewers that never paint video (the iOS file viewer shows neither the clip nor its poster): put
+     each clip's poster under it as a real image, so its place is never an empty block */
+  if (LITE) h = h.replace(/<video\b[^>]*\bposter="([^"]+)"[^>]*>/g, (m, poster) => `<img src="${poster}" alt="" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">${m.replace('<video', '<video style="position:relative;z-index:1"')}`);
   pages[path] = tokenize(h);
 }
 

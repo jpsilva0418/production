@@ -167,7 +167,7 @@ ${book('event', '<span>Book event glam</span>', 'btn btn--sec')}
    arched top, and a smaller tall card overlapping its lower right corner holding one of her clips
    (f8, the bridesmaids getting ready; no burned-in caption) over a frame of that same clip, labelled
    "Getting ready". If the clip never plays the card is that frame, never an empty block. */
-const COMP = { photo: 'artist-brushes', film: 'f8', still: 'reel-bridesmaid-half-up', start: 1, label: 'Getting ready' };
+const COMP = { photo: 'artist-brushes', film: 'f15', still: 'artist-copper', start: 0, label: 'Amairany' }; /* founder, 2026-11-19: her own video in this card */
 const composition = () => {
   const f = FILMS[COMP.film];
   return `<figure class="cmp rv">
