@@ -35,6 +35,16 @@
     });
   });
 
+  /* the home page's named galleries open this page at #bridal, #full or #hair: select that category */
+  var fromHash = function () {
+    var h = (location.hash || '').slice(1);
+    if (!h) return;
+    var chip = chips.filter(function (c) { return c.getAttribute('data-cat') === h; })[0];
+    if (chip && chip.getAttribute('aria-pressed') !== 'true') chip.click();
+  };
+  fromHash();
+  win.addEventListener('hashchange', fromHash);
+
   /* ---------------- the look viewer ----------------
      A modal dialog moved to the end of <body> so everything else can be made inert while it is
      open. Focus goes to Close and stays inside; Escape and Close shut it; the arrow keys, the arrow
@@ -137,6 +147,9 @@
       if (my !== token) return;
       img.width = +a.getAttribute('data-w') || 1280; img.height = +a.getAttribute('data-h') || 1600;
       img.sizes = pre.sizes; img.srcset = pre.srcset; img.src = pre.src;
+      /* never wider than the file allows: half its width on a phone, its width elsewhere */
+      var fw = +a.getAttribute('data-w') || 1280, cap = Math.round(win.innerWidth <= 600 ? fw / 2 : fw);
+      img.style.maxWidth = 'min(100%, ' + Math.min(600, cap) + 'px)';
       img.alt = a.getAttribute('data-alt') || '';
       if (dir && !reduced && img.animate) {
         img.animate([{ clipPath: dir > 0 ? 'inset(0 0 0 100%)' : 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0 0 0)' }], { duration: 680, easing: EASE_IO });

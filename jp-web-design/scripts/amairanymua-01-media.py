@@ -42,6 +42,40 @@ STILLS = {
     "14_editorial-glam-makeup_f93.jpg": "reel-editorial",
 }
 
+# round four (2026-11-19): more of her work. More frames from her clips, and the client photos inside
+# her own booking-page graphics (price sheet B4, service tiles B2, FAQ page B5). Her fiancé's film
+# photography tiles in B2 are NOT used: that is his work, not hers. One B4 photo (The Radiant Bride)
+# is the same bride as `bride-crystal`, and its Glam Hair photo is the same look as tile-event-glam:
+# both skipped. Frames with her burned-in captions are skipped too.
+STILLS_MORE = {
+    "01_pinned_copper-hair-glam_1.6M_f55.jpg": "reel-copper-2",
+    "06_bride-glam-reveal-deep-skin_f85.jpg": "reel-pearls-updo-2",
+    "08_bride-reactions-burgundy-hair_f80.jpg": "reel-burgundy-2",
+    "09_early-bridal-morning-veil_f99.jpg": "reel-morning-veil-2",
+    "10_bridesmaids-hairstyles_f20.jpg": "reel-bridesmaid-updo",
+    "11_curly-updo_f90.jpg": "reel-curly-updo-2",
+    "12_pink-hair-transformation_f97.jpg": "reel-pink-2",
+    "14_editorial-glam-makeup_f98.jpg": "reel-editorial-2",
+}
+# graphic -> {key: (left, top, right, bottom) in source pixels}
+BRAND_CROPS = {
+    "B4_bridal-packages-price-sheet.jpg": {
+        "sheet-luxe-bride": (34, 403, 296, 740),
+        "sheet-signature": (664, 804, 946, 1145),
+        "sheet-luxe-gala": (34, 1227, 306, 1569),
+        "sheet-luxe-glam": (1022, 704, 1286, 1057),
+    },
+    "B2_service-categories_bridal-engagement-eventglam-film.jpg": {
+        "tile-bridal": (44, 38, 454, 652),
+        "tile-engagement": (505, 38, 913, 652),
+        "tile-event-glam": (982, 42, 1441, 656),
+    },
+    "B5_faqs-how-to-prepare.jpg": {
+        "studio-waves": (1066, 136, 1999, 1408),
+        "studio-updo": (0, 1965, 709, 2866),
+    },
+}
+
 # clip file (in videos/) -> (film name, poster time in seconds)
 CLIPS = {
     "04_bride-veil-glam-reveal.mp4": ("veil-reveal", 6.0),
@@ -99,10 +133,30 @@ def clips(src: Path) -> None:
         print("clip", key, mp4.stat().st_size // 1024, "kB")
 
 
+def more(src: Path) -> None:
+    for name, key in STILLS_MORE.items():
+        im = Image.open(src / "stills" / name).convert("RGB")
+        for w in (480, 576):
+            out = im if im.width == w else im.resize((w, round(im.height * w / im.width)), Image.LANCZOS)
+            out.save(IMG / f"{key}-{w}.webp", "WEBP", quality=84, method=6)
+        print("still", key)
+    for graphic, crops in BRAND_CROPS.items():
+        g = Image.open(src / "brand-images" / graphic).convert("RGB")
+        for key, box in crops.items():
+            im = g.crop(box)
+            widths = sorted({w for w in (480, 800) if w < im.width} | {im.width})
+            for w in widths:
+                out = im if im.width == w else im.resize((w, round(im.height * w / im.width)), Image.LANCZOS)
+                out.save(IMG / f"{key}-{w}.webp", "WEBP", quality=86, method=6)
+            print("crop", key, im.size, widths)
+
+
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
+    if len(sys.argv) < 2:
         sys.exit(__doc__)
     folder = Path(sys.argv[1])
     stills(folder)
     portrait(folder)
-    clips(folder)
+    more(folder)
+    if "--no-clips" not in sys.argv:
+        clips(folder)

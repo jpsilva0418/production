@@ -235,8 +235,9 @@ ${kicker(FINAL.label, 'kick--c rv')}
 <div class="rv">${path === 'bridal-inquiry' ? `<div class="acts acts--light acts--c"><a class="btn btn--pri" href="#inquiry"><span>Back to your inquiry</span></a>${book('event', '<span>Book event glam</span>', 'btn btn--sec')}</div>` : actions({ align: 'c' })}</div>
 ${bookingLine('rv')}
 </div>
+<div class="ft-mark"><a class="ft-logo" href="${href(S)}" aria-label="Glam By Amairanymua: ${SITE.name}, home">${lockup({ cls: 'lk--xl' })}</a></div>
 <div class="ft-grid">
-<div class="ft-brand"><a class="ft-logo" href="${href(S)}" aria-label="Glam By Amairanymua: ${SITE.name}, home">${lockup({ cls: 'lk--lg' })}</a><p class="ft-line">${FOOTER.line}</p></div>
+<div class="ft-brand"><p class="ft-line">${FOOTER.line}</p></div>
 <div><p class="ft-k">Explore</p><ul class="ft-l"><li><a href="${href(S)}">Home</a></li>${ANAV.map((n) => `<li><a href="${href(S, n.path)}">${n.menu}</a></li>`).join('')}</ul></div>
 <div><p class="ft-k">Book</p><ul class="ft-l"><li>${inquire(S, 'Bridal inquiry')}</li><li>${book('bridal-services', 'Bridal services')}</li><li>${book('event', 'Event hair &amp; makeup')}</li><li><a href="${L.mail}">Email</a></li></ul></div>
 <div><p class="ft-k">Follow</p><ul class="ft-l"><li><a href="${L.ig}" rel="external">Instagram</a></li><li><a href="${L.tiktok}" rel="external">TikTok</a></li><li><a href="${L.google}" rel="external">Google reviews</a></li></ul></div>
@@ -251,6 +252,14 @@ ${spec([SITE.handle, ...HER.badges, SITE.areaLong])}
 }
 
 /* ---------- the document ---------- */
+/* site.mjs's src() falls back to a -480 file for photographs that have a single smaller file
+   (sheet-*, tile-*: widths [262] etc.), which does not exist. The srcset is right, so browsers are
+   fine, but the plain src must point at a real file: every Atelier page is passed through this. */
+const fixSrc = (html) => html.replace(/(<img src=")([^"]*\/img\/)([a-z0-9-]+)-(\d+)\.webp"/g, (m, a, dir, k, w) => {
+  const ws = PHOTOS[k]?.widths;
+  if (!ws || ws.includes(+w)) return m;
+  return `${a}${dir}${k}-${ws[ws.length - 1]}.webp"`;
+});
 const FONT_PRELOAD = ['noto-serif-display-cond-var', 'montserrat-var'].map((f) => `<link rel="preload" href="${A}/fonts/${f}.woff2" as="font" type="font/woff2" crossorigin>`).join('\n');
 const asset = (x, ext) => (x.includes('/') ? x : `${AT}/${x}.${ext}`);
 
@@ -275,7 +284,7 @@ ${opening}<a class="skip" href="#main">Skip to content</a>
 ${SYMBOL}
 ${header(path)}
 <main id="main">
-${main}
+${fixSrc(main)}
 </main>
 ${footer(path)}
 ${marker(S, path)}

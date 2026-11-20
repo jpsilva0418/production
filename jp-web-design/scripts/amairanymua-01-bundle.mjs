@@ -36,8 +36,22 @@ const [site, out] = process.argv.slice(2);
 /* --lite: a file small enough for chat viewers that refuse big attachments (~2 MB): photos at
    phone width, each clip's last 6 s (her clips end on the finished look) at 240 wide */
 const LITE = process.argv.includes('--lite');
+/* --sizes <json>: how wide each image family is really drawn (phone CSS px x2, desktop x1), measured
+   in a browser. With it, --lite carries every photo at the sharpness it needs instead of one small
+   width for all (a 360-wide photo stretched across a phone screen looked blurry: founder, 2026-11-19). */
+const SIZES = process.argv.includes('--sizes') ? JSON.parse(readFileSync(process.argv[process.argv.indexOf('--sizes') + 1], 'utf8')) : null;
+const familyOf = (url) => url.replace(/-\d+\.(?:webp|jpe?g|png)$/, '');
+/* the largest file of an image family on disk (name-480.webp, name-800.webp, ...) */
+const largestOf = (url) => {
+  const fam = familyOf(url);
+  if (fam === url) return { file: fileOf(url), w: 0 };
+  const dir = dirname(fileOf(url)), base = fam.split('/').pop();
+  let best = null;
+  for (const f of readdirSync(dir)) { const m = f.match(/^(.*)-(\d+)\.(webp|jpe?g|png)$/); if (m && m[1] === base && (!best || +m[2] > best.w)) best = { file: join(dir, f), w: +m[2] }; }
+  return best || { file: fileOf(url), w: 0 };
+};
 const IMG = process.argv.includes('--img') ? process.argv[process.argv.indexOf('--img') + 1] : (LITE ? '480' : '800');
-if (!SITES[site] || !out) { console.error(`usage: node scripts/amairanymua-01-bundle.mjs <${Object.keys(SITES).join('|')}> <out.html> [--img 480|800] [--lite]`); process.exit(1); }
+if (!SITES[site] || !out) { console.error(`usage: node scripts/amairanymua-01-bundle.mjs <${Object.keys(SITES).join('|')}> <out.html> [--img 480|800] [--lite [--sizes measured.json]]`); process.exit(1); }
 const DEMO = join(dirname(fileURLToPath(import.meta.url)), '..', 'public', 'demo', 'amairanymua-01');
 const fileOf = (url) => join(DEMO, url.slice(BASE.length + 1));
 
@@ -70,8 +84,14 @@ const token = (url) => {
         : ['-v', 'error', '-y', '-i', f, '-an', '-vf', 'scale=360:-2', '-c:v', 'libx264', '-preset', 'slow', '-crf', '34', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', tmp]);
       bytes = readFileSync(tmp); rmSync(tmp, { force: true });
     }
-    if (LITE && /^(webp|jpe?g)$/.test(ext) && bytes.length > 14 * 1024) {
-      bytes = execFileSync('python3', ['-I', '-c', 'import sys,io\nfrom PIL import Image\nim=Image.open(io.BytesIO(sys.stdin.buffer.read()))\nhas_a=im.mode in ("RGBA","LA")\nim=im.convert("RGBA" if has_a else "RGB")\nw=min(im.width,360)\nim=im.resize((w,round(im.height*w/im.width)),Image.LANCZOS)\nb=io.BytesIO();im.save(b,"WEBP",quality=60,method=6);sys.stdout.buffer.write(b.getvalue())'], { input: bytes, maxBuffer: 64 * 1024 * 1024 });
+    if (LITE && SIZES && /^(webp|jpe?g|png)$/.test(ext)) {
+      const src = largestOf(url), want = SIZES[familyOf(url)];
+      const target = Math.max(160, Math.min(want || 360, 1100));
+      bytes = execFileSync('python3', ['-I', '-c', 'import sys,io\nfrom PIL import Image\nim=Image.open(sys.argv[1])\nhas_a=im.mode in ("RGBA","LA")\nim=im.convert("RGBA" if has_a else "RGB")\nw=min(im.width,int(sys.argv[2]))\nim=im.resize((w,round(im.height*w/im.width)),Image.LANCZOS) if w<im.width else im\nb=io.BytesIO();im.save(b,"WEBP",quality=76,method=6);sys.stdout.buffer.write(b.getvalue())', src.file, String(target)], { maxBuffer: 64 * 1024 * 1024 });
+      mime = 'image/webp';
+    } else if (LITE && /^(webp|jpe?g)$/.test(ext) && bytes.length > 14 * 1024) {
+      const hero = /artist-chair/.test(url); /* her portrait is a hero centrepiece: keep it sharper */
+      bytes = execFileSync('python3', ['-I', '-c', 'import sys,io\nfrom PIL import Image\nim=Image.open(io.BytesIO(sys.stdin.buffer.read()))\nhas_a=im.mode in ("RGBA","LA")\nim=im.convert("RGBA" if has_a else "RGB")\nw=min(im.width,' + (hero ? 480 : 360) + ')\nim=im.resize((w,round(im.height*w/im.width)),Image.LANCZOS)\nb=io.BytesIO();im.save(b,"WEBP",quality=' + (hero ? 74 : 60) + ',method=6);sys.stdout.buffer.write(b.getvalue())'], { input: bytes, maxBuffer: 64 * 1024 * 1024 });
       mime = 'image/webp';
     } else if (/^(webp|jpe?g|png)$/.test(ext) && bytes.length > 110 * 1024) {
       // too heavy for a single-file preview: re-encode at phone size (Pillow), keeping the picture as is
@@ -83,7 +103,13 @@ const token = (url) => {
   return assets.get(url);
 };
 const ASSET_RE = new RegExp(`${BASE.replace(/[/.]/g, '\\$&')}/(?:[a-z]+/)?assets/[A-Za-z0-9_./-]+\\.(?:webp|jpg|jpeg|png|svg|woff2|mp4)`, 'g');
-const tokenize = (text) => text.replace(ASSET_RE, (u) => token(u));
+/* --no-clips: leave the video files out (for viewers that never play video, e.g. the iOS file
+   viewer); each clip's address becomes empty, so the page shows the still underneath it */
+const NOCLIPS = process.argv.includes('--no-clips');
+/* --keep-clip <name>: with --no-clips, still carry this one clip (e.g. the video of her) */
+const KEEP = process.argv.includes('--keep-clip') ? process.argv[process.argv.indexOf('--keep-clip') + 1] : null;
+const dropClip = (u) => NOCLIPS && /\.mp4$/.test(u) && !(KEEP && u.endsWith(`/${KEEP}.mp4`));
+const tokenize = (text) => text.replace(ASSET_RE, (u) => (dropClip(u) ? '' : token(u)));
 
 /* ---- stylesheets and scripts: stored once, spliced into each page at run time ---- */
 const css = {}, js = {};
@@ -117,6 +143,9 @@ for (const path of pagesOf(site)) {
   const tail = [];
   h = h.replace(/<script\b[^>]*\bsrc="([^"]+)"[^>]*>\s*<\/script>/g, (m, u) => { if (u.startsWith(BASE)) tail.push(jsText(u)); return ''; });
   h = h.replace(/<\/body>/, `${tail.map((u) => `<!--am01js:${u}-->`).join('')}</body>`);
+  /* viewers that never paint video (the iOS file viewer shows neither the clip nor its poster): put
+     each clip's poster under it as a real image, so its place is never an empty block */
+  if (LITE) h = h.replace(/<video\b[^>]*\bposter="([^"]+)"[^>]*>/g, (m, poster) => `<img src="${poster}" alt="" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">${m.replace('<video', '<video style="position:relative;z-index:1"')}`);
   pages[path] = tokenize(h);
 }
 
@@ -142,7 +171,10 @@ const INJECT = `<script>(function(){var P=window.parent!==window?window.parent:n
 function mem(n){var s;try{s=P&&P.__am01store&&P.__am01store[n]}catch(e){}if(!s){s={}}return{getItem:function(k){return Object.prototype.hasOwnProperty.call(s,k)?s[k]:null},setItem:function(k,v){s[k]=String(v)},removeItem:function(k){delete s[k]},clear:function(){for(var k in s)delete s[k]},key:function(i){return Object.keys(s)[i]||null},get length(){return Object.keys(s).length}}}
 ['sessionStorage','localStorage'].forEach(function(n){var ok=false;try{window[n].setItem('__t','1');window[n].removeItem('__t');ok=true}catch(e){}if(!ok){try{Object.defineProperty(window,n,{value:mem(n),configurable:true})}catch(e){}}});
 document.addEventListener('click',function(e){if(e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;var a=e.target&&e.target.closest&&e.target.closest('a[href]');if(!a)return;var h=a.getAttribute('href');if(!h||h.charAt(0)==='#')return;
-if(h.indexOf(${JSON.stringify(BASE)})===0||/^https?:|^mailto:/.test(h)){e.preventDefault();try{P.postMessage({am01:h},'*')}catch(x){}}},false);
+/* a link out (her booking, TikTok, Instagram): a real tap on a real link aimed at the whole window.
+   Viewers that refuse scripted navigation (the iOS file viewer) still honour this */
+if(/^https?:|^mailto:/.test(h)){a.setAttribute('target','_top');return}
+if(h.indexOf(${JSON.stringify(BASE)})===0){e.preventDefault();try{P.postMessage({am01:h},'*')}catch(x){}}},false);
 /* a sandboxed viewer may block form submission outright (no submit event at all); the inquiry
    never submits anywhere, so its step button is turned into a plain submit EVENT here */
 document.addEventListener('click',function(e){var b=e.target&&e.target.closest&&e.target.closest('button[type="submit"],input[type="submit"]');if(!b||!b.form)return;e.preventDefault();var ev;try{ev=new SubmitEvent('submit',{bubbles:true,cancelable:true,submitter:b})}catch(x){ev=new Event('submit',{bubbles:true,cancelable:true})}b.form.dispatchEvent(ev)},true);
