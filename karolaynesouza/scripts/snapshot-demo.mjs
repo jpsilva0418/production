@@ -142,12 +142,21 @@ await fs.writeFile(path.join(DIST, 'DEMO.json'), JSON.stringify({
   slug, url: ORIGIN + BASE, client: CLIENT, direction: palette, sourceRepo: 'jpsilva0418/production', sourceDir: 'karolaynesouza',
   sourceCommit, sourceDirty: dirty, builtAt: new Date().toISOString(), pages: pages.length,
   shared: { assets: `${SHARED}/assets/`, media: `${SHARED}/${CLIENT_KEY}/` },
+  directions: { a: BASE, b: `${BASE}/ivory-atelier`, c: `${BASE}/espresso-lash-lab`, d: `${BASE}/lash-book` },
   note: 'Unlisted design demo — not the live website. noindex. Forms are demo-only: nothing is sent anywhere.',
 }, null, 2) + '\n');
 
 // ---- 4 · publish into the library: only this slug's folder is written ----
+// The single-file concept previews (B, C, D) live in sub-folders of this slug and are published by
+// concepts/build.py --publish; a republish of A must carry them over untouched, never delete them.
+const KEEP = ['ivory-atelier', 'espresso-lash-lab', 'lash-book'];
+const kept = path.join(HERE, '.kept-concepts');
+await fs.rm(kept, { recursive: true, force: true });
+for (const k of KEEP) if (existsSync(path.join(OUT, k))) { await fs.mkdir(kept, { recursive: true }); await fs.cp(path.join(OUT, k), path.join(kept, k), { recursive: true }); }
 await fs.rm(OUT, { recursive: true, force: true });
 await fs.cp(DIST, OUT, { recursive: true });
+for (const k of KEEP) if (existsSync(path.join(kept, k))) await fs.cp(path.join(kept, k), path.join(OUT, k), { recursive: true });
+await fs.rm(kept, { recursive: true, force: true });
 console.log(`✓ /demo/${slug}: direction ${palette.toUpperCase()}, ${pages.length} pages (source ${sourceCommit.slice(0, 7)}${dirty ? ', UNCOMMITTED changes' : ''})`);
 console.log(`  shared assets: +${sharedAssets.added} new, ${sharedAssets.reused} reused · ${CLIENT_KEY} media: +${sharedMedia.added} new, ${sharedMedia.reused} reused`);
 console.log('  Run `npm run build` afterwards to restore the review build in dist/.');

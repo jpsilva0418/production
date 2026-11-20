@@ -5,13 +5,19 @@
   "direction": "a",
   "sourceRepo": "jpsilva0418/production",
   "sourceDir": "karolaynesouza",
-  "sourceCommit": "8140b1f02238a47e1ac879fe6fefd29fea713a45",
-  "sourceDirty": false,
-  "builtAt": "2026-11-20T16:30:54.759Z",
+  "sourceCommit": "fb01e2b863a0be9c86a5484e0752d0dc060703c8",
+  "sourceDirty": true,
+  "builtAt": "2026-11-20T16:35:14.471Z",
   "pages": 9,
   "shared": {
     "assets": "/demo/_shared/assets/",
     "media": "/demo/_shared/karolaynesouza/"
+  },
+  "directions": {
+    "a": "/demo/karolaynesouza-01",
+    "b": "/demo/karolaynesouza-01/ivory-atelier",
+    "c": "/demo/karolaynesouza-01/espresso-lash-lab",
+    "d": "/demo/karolaynesouza-01/lash-book"
   },
   "note": "Unlisted design demo — not the live website. noindex. Forms are demo-only: nothing is sent anywhere."
 }

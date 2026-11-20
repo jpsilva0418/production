@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build the single-file concept previews.
 
-    python3 -I concepts/build.py <out-dir>
+    python3 -I concepts/build.py <out-dir> [--publish]
 
 Each concepts/<name>/index.html is a template. Tokens are replaced with inlined data:
   {{font:<file>}}  -> data:font/woff2;base64,...   (from assets/fonts)
@@ -12,6 +12,11 @@ inlined). Links out (Square, WhatsApp, Instagram, Maps) are ordinary links."""
 import base64, os, re, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = sys.argv[1]
+# --publish writes each concept into the demo library as /demo/karolaynesouza-01/<slot>/index.html
+PUBLISH = '--publish' in sys.argv
+LIB = os.path.normpath(os.path.join(HERE, '..', '..', 'jp-web-design', 'public', 'demo', 'karolaynesouza-01'))
+SLOTS = {'B-Ivory-Atelier': 'ivory-atelier', 'C-Espresso-Lash-Lab': 'espresso-lash-lab', 'D-The-Lash-Book': 'lash-book'}
+if PUBLISH and not os.path.isdir(LIB): raise SystemExit(f'demo slug folder missing: {LIB}')
 MIME = {'.woff2': 'font/woff2', '.png': 'image/png', '.webp': 'image/webp', '.jpg': 'image/jpeg'}
 def uri(folder, name):
     p = os.path.join(HERE, 'assets', folder, name)
@@ -39,3 +44,7 @@ for name in sorted(os.listdir(HERE)):
     out = os.path.join(OUT, f'Karolayne-Souza-{name}.html')
     open(out, 'w').write(html)
     print(f'{os.path.basename(out)}  {os.path.getsize(out)/1e6:.2f} MB')
+    if PUBLISH and name in SLOTS:
+        dest = os.path.join(LIB, SLOTS[name]); os.makedirs(dest, exist_ok=True)
+        open(os.path.join(dest, 'index.html'), 'w').write(html)
+        print(f'  published -> /demo/karolaynesouza-01/{SLOTS[name]}/')
