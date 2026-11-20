@@ -16,11 +16,17 @@ normal Vercel deploy. No subdomains, no DNS, no separate project.
 | `yariiimakeup-01` | YariiiMakeup — makeup & hair artist (Poinciana / Kissimmee, FL) | Concept 01 · All eyes on you: her logo draws and its eyes open onto a hero of her work in motion, portfolio of stills and film, About, demo-only inquiry form, Booksy booking (prospect concept, 2026-11-19) | hand-built, in this folder; notes in `docs/demo-yariiimakeup-01.md` |
 | `amairanymua-01` | Amairany Sierra — @amairanymua, bridal hair & makeup (FL) | Nine complete sites to choose from (2026-11-19), in three rounds: Atelier, Blush, Cocoa (lighter, after four reference sites); Rouge, Maison, Darkroom (her red, black and white, softened to a rose); Veil, Noir, The Edit. Each has its own opening, an on-site bridal inquiry in demo mode with her JotForm's questions, and her real clips. Published for review 2026-11-19; awaiting founder's pick | hand-built by `scripts/amairanymua-01-build.mjs` + `scripts/amairanymua-01/`; Rouge from `amairanymua-01-rouge/` (Astro). See `docs/demo-amairanymua-01.md` |
 | `karolaynesouza-01` | Karolayne Souza Beauty — @karolaynesouzabeauty.us, Brazilian lash & brow artist (Milford, MA) | Four directions to choose from (2026-11-20), all with her real work, her price list, EN/PT and booking: **A · Noir Studio** at the slug root (Astro: blink opening, eyelid hero); **B · Ivory Atelier** `/ivory-atelier` (light editorial, doors opening); **C · Espresso Lash Lab** `/espresso-lash-lab` (dark, closed-eye opening, Lash Lab); **D · The Lash Book** `/lash-book` (lookbook, book-cover opening). B–D are single-file pages. Awaiting founder's pick | A: `jpsilva0418/production` → `karolaynesouza/` (`scripts/snapshot-demo.mjs`); B–D: `karolaynesouza/concepts/build.py --publish`. See `DEMO.json` |
+| `luciana-alvarenga-01` | Studio Luciana Alvarenga — @studiolucianaalvarenga, brow designer (Goiânia, GO, Brazil) | Three home-page variations to choose from (2026-11-20), PT-first with PT \| EN, her real result reels, WhatsApp booking with per-service messages, Dec 2026 policies: **I · Champagne Glow** at the slug root (full-bleed video hero); **II · Noir Dourado** `/noir-dourado` (split-screen, noir-led); **III · Atelier Porcelana** `/atelier-porcelana` (light, video inside her brand arch). Built on the Leti Silva Beauty foundation. Awaiting founder's pick | `jpsilva0418/production` → `luciana-alvarenga/` (`node src/build.mjs --publish`). See `DEMO.json` |
 
 Each generated demo has a `DEMO.json` that records its client, concept, source
 commit and build time.
 
 ## Rules
+
+0. **Hand JP the link, never a file.** Every demo is delivered as its
+   `https://jpsilvadigital.com/demo/<slug>` URL. Self-contained HTML files and
+   `.vercel.app` preview links do not open reliably on his phone (files don't
+   render in the Claude app; preview URLs sit behind Vercel login).
 
 1. **A slug belongs to one client, forever.** Never reuse, rename or overwrite
    another client's folder. A new company, or a new direction worth keeping

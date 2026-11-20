@@ -1,0 +1,29 @@
+{
+  "slug": "luciana-alvarenga-01",
+  "url": "https://jpsilvadigital.com/demo/luciana-alvarenga-01",
+  "client": "Studio Luciana Alvarenga",
+  "sourceRepo": "jpsilva0418/production",
+  "sourceDir": "luciana-alvarenga",
+  "sourceCommit": "73a1d738eb018ef968c42b5f0db3f89ab19201dd",
+  "sourceDirty": true,
+  "builtAt": "2026-11-20T20:41:05.780Z",
+  "pages": 3,
+  "shared": {
+    "media": "/demo/_shared/luciana-alvarenga/"
+  },
+  "variations": {
+    "I": {
+      "name": "Champagne Glow",
+      "path": "/demo/luciana-alvarenga-01"
+    },
+    "II": {
+      "name": "Noir Dourado",
+      "path": "/demo/luciana-alvarenga-01/noir-dourado"
+    },
+    "III": {
+      "name": "Atelier Porcelana",
+      "path": "/demo/luciana-alvarenga-01/atelier-porcelana"
+    }
+  },
+  "note": "Unlisted design demo — not the live website. noindex. Booking buttons open her real WhatsApp; nothing is sent by the page itself."
+}
