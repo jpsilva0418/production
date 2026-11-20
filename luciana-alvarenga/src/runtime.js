@@ -186,23 +186,49 @@
     m.parentNode.insertBefore(a, m); a.appendChild(m);
   });
 
-  /* ---------- swipe rows move on their own (pause while the visitor touches them) ---------- */
-  if (!reduced) {
+  /* ---------- slideshows: every swipe row advances one slide at a time, with dots ---------- */
+  {
     const rows = [...d.querySelectorAll('.rw-vp,.r-swipe,.r-strip,.r-phones,.m-studio')];
+    const ease = (x) => 1 - Math.pow(1 - x, 3);
     rows.forEach((row) => {
-      let hold = 0, vis = false;
-      const stop = () => { hold = Date.now() + 6000; };
-      ['pointerdown', 'touchstart', 'wheel'].forEach((e) => row.addEventListener(e, stop, { passive: true }));
-      if ('IntersectionObserver' in window) new IntersectionObserver((es) => es.forEach((e) => { vis = e.isIntersecting; }), { threshold: 0.4 }).observe(row);
-      setInterval(() => {
-        if (!vis || Date.now() < hold || d.hidden) return;
-        if (row.scrollWidth <= row.clientWidth + 4) return;          // not a swipe row at this width (e.g. pinned runway on desktop)
-        if (row.closest('.runway.rw-js')) return;
-        const kids = [...row.children[0] && row.classList.contains('rw-vp') ? row.children[0].children : row.children];
-        const step = kids.length > 1 ? kids[1].getBoundingClientRect().left - kids[0].getBoundingClientRect().left : row.clientWidth * 0.8;
-        const end = row.scrollLeft + row.clientWidth >= row.scrollWidth - 8;
-        row.scrollTo({ left: end ? 0 : row.scrollLeft + step, behavior: 'smooth' });
-      }, 3200);
+      const track = row.classList.contains('rw-vp') ? row.querySelector('.rw-track') : row;
+      const slides = () => [...track.children].filter((c) => c.offsetWidth > 0);
+      let i = 0, hold = 0, vis = false, anim = 0;
+      const dots = d.createElement('div'); dots.className = 'ss-dots'; dots.setAttribute('aria-hidden', 'true');
+      (row.classList.contains('rw-vp') ? row : row).after(dots);
+      const active = () => row.scrollWidth > row.clientWidth + 4 && !row.closest('.runway.rw-js');
+      const paint = () => {
+        const n = slides().length;
+        if (dots.childElementCount !== n) dots.innerHTML = '<i></i>'.repeat(n);
+        dots.style.display = active() ? '' : 'none';
+        [...dots.children].forEach((dt, k) => dt.classList.toggle('on', k === i));
+      };
+      const goTo = (k) => {
+        const ss = slides(); if (!ss.length) return;
+        i = (k + ss.length) % ss.length;
+        const target = Math.min(row.scrollWidth - row.clientWidth,
+          Math.max(0, ss[i].offsetLeft - track.offsetLeft - (row.clientWidth - ss[i].offsetWidth) / 2 + (track === row ? 0 : 0)));
+        const from = row.scrollLeft, t0 = performance.now(), dur = reduced ? 1 : 700;
+        cancelAnimationFrame(anim);
+        row.style.scrollSnapType = 'none';
+        const step = (now) => {
+          const p = Math.min(1, (now - t0) / dur);
+          row.scrollLeft = from + (target - from) * ease(p);
+          if (p < 1) anim = requestAnimationFrame(step); else setTimeout(() => { row.style.scrollSnapType = ''; }, 60);
+        };
+        anim = requestAnimationFrame(step); paint();
+      };
+      // keep the dot in sync when the visitor swipes
+      let st; row.addEventListener('scroll', () => { clearTimeout(st); st = setTimeout(() => {
+        const ss = slides(), mid = row.scrollLeft + row.clientWidth / 2;
+        let best = 0, bd = 1e9; ss.forEach((el, k) => { const c = el.offsetLeft - track.offsetLeft + el.offsetWidth / 2, dd = Math.abs(c - mid); if (dd < bd) { bd = dd; best = k; } });
+        i = best; paint();
+      }, 120); }, { passive: true });
+      ['touchstart', 'pointerdown', 'wheel'].forEach((e) => row.addEventListener(e, () => { hold = Date.now() + 5000; cancelAnimationFrame(anim); row.style.scrollSnapType = ''; }, { passive: true }));
+      if ('IntersectionObserver' in window) new IntersectionObserver((es) => es.forEach((e) => { vis = e.isIntersecting; }), { threshold: 0.15 }).observe(row);
+      else vis = true;
+      paint(); addEventListener('resize', paint);
+      if (!reduced) setInterval(() => { if (vis && !d.hidden && Date.now() > hold && active()) goTo(i + 1); }, 3000);
     });
   }
 })();

@@ -520,3 +520,15 @@ img.lv{animation:lvRise 14s ease-in-out infinite alternate;will-change:transform
 
 a.ig-link{display:block;width:100%;height:100%;color:inherit}
 video::-webkit-media-controls,video::-webkit-media-controls-start-playback-button{display:none!important;-webkit-appearance:none}
+
+/* slideshow dots + one-slide-per-view on phones */
+.ss-dots{display:flex;justify-content:center;gap:7px;margin-top:1rem}
+.ss-dots i{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.28;transition:opacity .3s,width .3s}
+.ss-dots i.on{opacity:.9;width:18px;border-radius:3px}
+.runway .ss-dots{color:var(--acc)}
+@media(max-width:899px){
+  .runway:not(.rw-js) .rw-fig,.runway:not(.rw-js) .rw-end{flex-basis:78vw!important;min-height:0}
+  .runway:not(.rw-js) .rw-track{gap:5vw;padding-inline:11vw}
+  .runway:not(.rw-js) .rw-vp{padding-bottom:.6rem}
+  .r-swipe>.r-svc{flex-basis:80vw}
+}
