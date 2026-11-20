@@ -1,0 +1,17 @@
+{
+  "slug": "karolaynesouza-01",
+  "url": "https://jpsilvadigital.com/demo/karolaynesouza-01",
+  "client": "Karolayne Souza Beauty",
+  "direction": "a",
+  "sourceRepo": "jpsilva0418/production",
+  "sourceDir": "karolaynesouza",
+  "sourceCommit": "07c5ece352b1b74a469af53a7bd8c0d70033f201",
+  "sourceDirty": false,
+  "builtAt": "2026-11-20T13:23:40.856Z",
+  "pages": 9,
+  "shared": {
+    "assets": "/demo/_shared/assets/",
+    "media": "/demo/_shared/karolaynesouza/"
+  },
+  "note": "Unlisted design demo — not the live website. noindex. Forms are demo-only: nothing is sent anywhere."
+}
