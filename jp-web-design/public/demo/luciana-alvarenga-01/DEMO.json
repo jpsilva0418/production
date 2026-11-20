@@ -4,9 +4,9 @@
   "client": "Studio Luciana Alvarenga",
   "sourceRepo": "jpsilva0418/production",
   "sourceDir": "luciana-alvarenga",
-  "sourceCommit": "edbbcd354bfda1e902e121a3b70eedb68575fb5e",
+  "sourceCommit": "47db9f37636cfdaf23c831da5df041ce946d776b",
   "sourceDirty": true,
-  "builtAt": "2026-11-20T22:30:28.243Z",
+  "builtAt": "2026-11-20T23:16:51.267Z",
   "pages": 5,
   "shared": {
     "media": "/demo/_shared/luciana-alvarenga/"
@@ -14,7 +14,7 @@
   "variations": {
     "I": {
       "name": "Champagne Glow",
-      "path": "/demo/luciana-alvarenga-01"
+      "path": "/demo/luciana-alvarenga-01/champagne-glow"
     },
     "II": {
       "name": "Noir Dourado",
