@@ -361,7 +361,7 @@ img.lv{animation:lvRise 14s ease-in-out infinite alternate;will-change:transform
 .sig-media .ph-s{aspect-ratio:4/5}
 .sig-cap{margin-top:1.3rem;font-style:italic;font-size:1rem;line-height:1.55;color:var(--ink-soft)}
 .sig-cap small{display:block;font-style:normal;font-family:var(--engraved);text-transform:uppercase;letter-spacing:.26em;font-size:.54rem;color:var(--acc);margin-top:.6rem}
-@media(max-width:719px){.sig-media{grid-template-columns:1fr}.sig-media .ph-s{max-width:70%}}
+@media(max-width:719px){.sig-media{grid-template-columns:1.5fr 1fr;align-items:start;gap:0}.sig-media figure:last-child{position:relative;z-index:2;margin:30% 0 0 -8%}.sig-media .ph-s{box-shadow:0 18px 40px -18px rgba(0,0,0,.7)}.sig-media .ph--framed{outline-offset:6px}.sig-cap{font-size:.92rem;padding-right:10%}}
 .sig-cta{margin-top:clamp(2.2rem,4vw,3rem)}
 
 /* --- services --- */
