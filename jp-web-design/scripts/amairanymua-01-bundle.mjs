@@ -165,7 +165,10 @@ const INJECT = `<script>(function(){var P=window.parent!==window?window.parent:n
 function mem(n){var s;try{s=P&&P.__am01store&&P.__am01store[n]}catch(e){}if(!s){s={}}return{getItem:function(k){return Object.prototype.hasOwnProperty.call(s,k)?s[k]:null},setItem:function(k,v){s[k]=String(v)},removeItem:function(k){delete s[k]},clear:function(){for(var k in s)delete s[k]},key:function(i){return Object.keys(s)[i]||null},get length(){return Object.keys(s).length}}}
 ['sessionStorage','localStorage'].forEach(function(n){var ok=false;try{window[n].setItem('__t','1');window[n].removeItem('__t');ok=true}catch(e){}if(!ok){try{Object.defineProperty(window,n,{value:mem(n),configurable:true})}catch(e){}}});
 document.addEventListener('click',function(e){if(e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;var a=e.target&&e.target.closest&&e.target.closest('a[href]');if(!a)return;var h=a.getAttribute('href');if(!h||h.charAt(0)==='#')return;
-if(h.indexOf(${JSON.stringify(BASE)})===0||/^https?:|^mailto:/.test(h)){e.preventDefault();try{P.postMessage({am01:h},'*')}catch(x){}}},false);
+/* a link out (her booking, TikTok, Instagram): a real tap on a real link aimed at the whole window.
+   Viewers that refuse scripted navigation (the iOS file viewer) still honour this */
+if(/^https?:|^mailto:/.test(h)){a.setAttribute('target','_top');return}
+if(h.indexOf(${JSON.stringify(BASE)})===0){e.preventDefault();try{P.postMessage({am01:h},'*')}catch(x){}}},false);
 /* a sandboxed viewer may block form submission outright (no submit event at all); the inquiry
    never submits anywhere, so its step button is turned into a plain submit EVENT here */
 document.addEventListener('click',function(e){var b=e.target&&e.target.closest&&e.target.closest('button[type="submit"],input[type="submit"]');if(!b||!b.form)return;e.preventDefault();var ev;try{ev=new SubmitEvent('submit',{bubbles:true,cancelable:true,submitter:b})}catch(x){ev=new Event('submit',{bubbles:true,cancelable:true})}b.form.dispatchEvent(ev)},true);
