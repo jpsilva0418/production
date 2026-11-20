@@ -13,3 +13,12 @@ and `*.vercel.app` preview URLs sit behind Vercel login. So every client demo is
 
 Pushing to `claude/jp-silva-digital-launch` puts the change on jpsilvadigital.com,
 so get JP's OK for that push. Never send the demo only as files.
+
+## Preview links that always open
+
+Before a demo goes live on jpsilvadigital.com, it gets its own Vercel project named
+`<client>-demo-preview` (deploy from the branch, root `jp-web-design`), with **Vercel
+Authentication turned off** (`ssoProtection: null`). Its link —
+`https://<client>-demo-preview.vercel.app/demo/<slug>` — then opens on any phone,
+permanently, with no login and no expiring share token. Never hand JP a
+`_vercel_share` link or a protected preview URL.
