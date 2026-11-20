@@ -40,6 +40,12 @@ const url = (rel) => {
 };
 const variantHref = (v) => MODE === 'publish' ? `/demo/${SLUG}${v.path}` : `${v.slug}.html`;
 const widthsOf = (name) => [480, 800, 1280].filter((w) => dims[`${name}-${w}.webp`]);
+// Each result's own Instagram post (from media-manifest.csv)
+const IGP = { r01: 'p/Dcm7enauTBH', r03: 'p/DQ3LJBKjp9f', r04: 'p/DSQZswTgTCL', r05: 'p/DSVyg_RgRcE', r06: 'p/DdNgqMoDmbI', r07: 'p/Da4ID5qOwPX',
+  r08: 'p/DRtbe7Jjm8x', r09: 'p/DT4Gj8hjCiT', r11: 'p/DelNi2njq65', r14: 'p/DO2T6gPjPVP', r16: 'p/DIIZHcDR0Bb', r17: 'p/Dd0PMlojj1s', r18: 'p/DdVV32hDsFn',
+  r19: 'p/Da4JAUJuQ40', masculino: 'p/DNPQFUXRMBT', 'studio-room': 'p/Df7ft4VILvj', 'studio-mirror': 'p/Df7ft4VILvj', 'studio-cart': 'p/Df7ft4VILvj', 'studio-lounge': 'p/Df7ft4VILvj',
+  'v01-lamination': 'reel/DRZ-SbADkVR', 'v03-six-weeks': 'reel/DIFzpwmxwI5', 'v04-process': 'reel/DNw5lKcWAK8', 'v05-lash': 'reel/DQ3Kg65jtlj', 'v06-lash': 'reel/DSVx4yWAaVI' };
+const igAttr = (n) => IGP[n] ? ` data-ig="https://www.instagram.com/${IGP[n]}/"` : '';
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 
 function img(name, { alt = '', sizes = '100vw', cls = '', eager = false, inlineW = 800, pos = '' } = {}) {
@@ -50,11 +56,11 @@ function img(name, { alt = '', sizes = '100vw', cls = '', eager = false, inlineW
   const srcset = INLINE ? '' : ` srcset="${ws.map((x) => `${url(`img/${name}-${x}.webp`)} ${x}w`).join(', ')}" sizes="${sizes}"`;
   const load = eager ? ' loading="eager" fetchpriority="high"' : ' loading="lazy" decoding="async"';
   const style = pos ? ` style="object-position:${pos}"` : '';
-  return `<img${cls ? ` class="${cls}"` : ''} src="${url(`img/${name}-${pick}.webp`)}"${srcset} width="${w}" height="${h}" alt="${esc(alt)}"${load}${style}>`;
+  return `<img${igAttr(name)}${cls ? ` class="${cls}"` : ''} src="${url(`img/${name}-${pick}.webp`)}"${srcset} width="${w}" height="${h}" alt="${esc(alt)}"${load}${style}>`;
 }
 function vid(name, { label = '', cls = '', loop = true, pos = '' } = {}) {
   const style = pos ? ` style="object-position:${pos}"` : '';
-  return `<video${cls ? ` class="${cls}"` : ''} muted playsinline${loop ? ' loop' : ''} preload="none" disablepictureinpicture poster="${url(`video/${name}-poster.webp`)}" data-src="${url(`video/${name}.mp4`)}"${label ? ` aria-label="${esc(label)}"` : ' aria-hidden="true"'}${style}></video>`;
+  return `<video${igAttr(name)}${cls ? ` class="${cls}"` : ''} muted autoplay playsinline webkit-playsinline${loop ? ' loop' : ''} preload="none" disablepictureinpicture poster="${url(`video/${name}-poster.webp`)}" data-src="${url(`video/${name}.mp4`)}"${label ? ` aria-label="${esc(label)}"` : ' aria-hidden="true"'}${style}></video>`;
 }
 
 /* ---------------- i18n helpers ---------------- */

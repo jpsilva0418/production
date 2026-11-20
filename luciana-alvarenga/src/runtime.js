@@ -176,4 +176,33 @@
   };
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
   if (tt) tt.addEventListener('click', () => scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' }));
+
+  /* ---------- results link to their Instagram post (not service cards, not the opening screen) ---------- */
+  d.querySelectorAll('[data-ig]').forEach((m) => {
+    if (m.closest('a,.svc,.r-svc,.hero,.r-hero,.m-hero')) return;
+    const a = d.createElement('a');
+    a.href = m.dataset.ig; a.target = '_blank'; a.rel = 'noopener'; a.className = 'ig-link';
+    a.setAttribute('aria-label', (m.getAttribute('alt') || m.getAttribute('aria-label') || 'Resultado') + ' — ver no Instagram');
+    m.parentNode.insertBefore(a, m); a.appendChild(m);
+  });
+
+  /* ---------- swipe rows move on their own (pause while the visitor touches them) ---------- */
+  if (!reduced) {
+    const rows = [...d.querySelectorAll('.rw-vp,.r-swipe,.r-strip,.r-phones,.m-studio')];
+    rows.forEach((row) => {
+      let hold = 0, vis = false;
+      const stop = () => { hold = Date.now() + 6000; };
+      ['pointerdown', 'touchstart', 'wheel'].forEach((e) => row.addEventListener(e, stop, { passive: true }));
+      if ('IntersectionObserver' in window) new IntersectionObserver((es) => es.forEach((e) => { vis = e.isIntersecting; }), { threshold: 0.4 }).observe(row);
+      setInterval(() => {
+        if (!vis || Date.now() < hold || d.hidden) return;
+        if (row.scrollWidth <= row.clientWidth + 4) return;          // not a swipe row at this width (e.g. pinned runway on desktop)
+        if (row.closest('.runway.rw-js')) return;
+        const kids = [...row.children[0] && row.classList.contains('rw-vp') ? row.children[0].children : row.children];
+        const step = kids.length > 1 ? kids[1].getBoundingClientRect().left - kids[0].getBoundingClientRect().left : row.clientWidth * 0.8;
+        const end = row.scrollLeft + row.clientWidth >= row.scrollWidth - 8;
+        row.scrollTo({ left: end ? 0 : row.scrollLeft + step, behavior: 'smooth' });
+      }, 3200);
+    });
+  }
 })();
