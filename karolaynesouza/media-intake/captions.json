@@ -1,0 +1,82 @@
+{
+  "note": "Instagram post and reel captions could not be retrieved without login on 2026-11-20 (America/New_York). The profile biography and display name below were retrieved from the public Instagram profile object via instaloader (posts themselves were blocked). All other marketing copy is transcribed from official pages linked on her Linktree.",
+  "profile": {
+    "username": "karolaynesouzabeauty.us",
+    "instagram_user_id": "40044590724",
+    "full_name": "Karolayne Souza | Lashes and Brows in Milford, Ma 🇺🇸🇧🇷",
+    "biography": "LASHES • EYEBROW DESIGNER\nBrazilian Lash & Brow Artist \n✨Acabamento premium e simetria perfeita\n📍Milford, Ma | Book NOW 15% off ⬇️",
+    "followers": 601,
+    "following": 693,
+    "is_private": false,
+    "is_verified": false,
+    "has_any_clips": true,
+    "bio_link": {
+      "title": "Whats",
+      "url": "https://wa.me/message/TUZVGBQYHKYWP1"
+    },
+    "posts_observed_on_profile_screenshot": 43,
+    "highlights": [
+      {
+        "title": "Lashes",
+        "id": "18089143967388819"
+      },
+      {
+        "title": "Brows",
+        "id": "18160053448487356"
+      },
+      {
+        "title": "Combo",
+        "id": "18092896097409765"
+      },
+      {
+        "title": "My space 🖤✨",
+        "id": "17984258784089939"
+      },
+      {
+        "title": "✨💕",
+        "id": "18119104130005022"
+      },
+      {
+        "title": "Lash Removal",
+        "id": "18334954408262358"
+      },
+      {
+        "title": "💁",
+        "id": "18100044763802455"
+      },
+      {
+        "title": "Hi, Girls",
+        "id": "18172300144431290"
+      },
+      {
+        "title": "Ready",
+        "id": "18073090967367959"
+      }
+    ],
+    "latest_reel_media_unix": 1795099339,
+    "latest_reel_media_local": "2026-11-19 09:42:19 America/New_York"
+  },
+  "posts": [],
+  "other_official_copy": {
+    "linktree_page_title": "Karolayne Souza Beauty",
+    "linktree_description": "Lash Extensions • Brow Design",
+    "price_list_portuguese": {
+      "source": "https://www.canva.com/design/DAHQzrZmOqs/dPePZnXvoYqBw0IOVrLQLQ/view",
+      "headline": "TABELA de preços",
+      "tagline": "REALÇANDO SUA BELEZA com elegância.",
+      "brand_line": "KAROLAYNE SOUZA — LASHES & BROWS",
+      "footer": "BELEZA • CUIDADO • AUTOESTIMA",
+      "cta": "Agende seu horário! FALE COMIGO NO WHATSAPP",
+      "location_line": "ATENDIMENTO EM Milford, MA"
+    },
+    "price_list_english": {
+      "source": "https://www.canva.com/design/DAHQzrZmOqs/dPePZnXvoYqBw0IOVrLQLQ/view",
+      "headline": "PRICE LIST",
+      "tagline": "ENHANCING YOUR NATURAL BEAUTY with elegance.",
+      "brand_line": "KAROLAYNE SOUZA — LASHES & BROWS",
+      "footer": "BEAUTY • CARE • CONFIDENCE",
+      "cta": "Book Your Appointment! MESSAGE ME ON WHATSAPP",
+      "location_line": "SERVING CLIENTS IN Milford, MA"
+    }
+  }
+}

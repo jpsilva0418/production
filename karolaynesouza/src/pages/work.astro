@@ -1,0 +1,29 @@
+---
+/** WORK — every photo and reel of hers in one mixed grid (reels play muted, lazily, and stay as
+ *  posters under reduced motion or Save-Data), then her Instagram. */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import WorkGrid from '../components/WorkGrid.astro';
+import { SITE, ext, WORK_ITEMS } from '../lib/content';
+---
+<BaseLayout title="Work — lashes & brows" description={`Lash extensions and eyebrow design by ${SITE.owner}, ${SITE.role} in ${SITE.area.label}.`} path="/work">
+  <section class="cov">
+    <div class="cov-c">
+      <p class="cov-kick fade">The work</p>
+      <h1 class="disp rv">Lashes &amp; brows, <span class="ital">up close.</span></h1>
+      <p class="cov-sub rv" style="--d:.08s">Photos and reels from Karolayne’s chair — full sets, fills and brow design. Her newest work goes up on Instagram first.</p>
+    </div>
+  </section>
+  <section class="wk">
+    <div class="wrap">
+      <WorkGrid items={WORK_ITEMS} />
+      <div class="wk-foot fade">
+        <a class="btn btn--solid" href={SITE.whatsapp} {...ext(SITE.whatsapp)}>Book on WhatsApp</a>
+        <a class="tlk" href={SITE.links.services}>Services &amp; prices</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .wk{padding-bottom:var(--pad)}
+  .wk-foot{display:flex;align-items:center;gap:1.2rem 2.4rem;flex-wrap:wrap;margin-top:clamp(2rem,4vw,3rem)}
+</style>

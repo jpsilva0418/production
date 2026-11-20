@@ -1,0 +1,75 @@
+---
+/** MEET KAROLAYNE — her portrait (MEDIA.plates.portraitAbout: a second photo of her drops in here),
+ *  who she is in her own published words, what she does, and the studio. */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Plate from '../components/Plate.astro';
+import { SITE, ext, MEDIA, STUDIO } from '../lib/content';
+---
+<BaseLayout title="Meet Karolayne" description={`${SITE.owner} — ${SITE.role} in ${SITE.area.label}. ${SITE.mottoEn}.`} path="/about">
+  <section class="ab">
+    <div class="wrap ab-in">
+      <div class="ab-t">
+        <p class="cov-kick fade">Meet Karolayne</p>
+        <h1 class="disp rv">Karolayne <span class="ital">Souza.</span></h1>
+        <p class="ab-role rv" style="--d:.06s">Lashes &bull; Eyebrow designer</p>
+        <p class="ab-lead rv" style="--d:.1s">A Brazilian lash &amp; brow artist working from her own private studio in Milford, Massachusetts.</p>
+        <p class="rv" style="--d:.16s">Her promise is the line she wrote on her Instagram: <em lang="pt-BR">acabamento premium e simetria perfeita</em> — a premium finish and perfect symmetry. Every set is mapped to the eyes in front of her, and brows are designed to frame them, so lashes and brows finish each other.</p>
+        <p class="rv" style="--d:.2s">She works in English and Portuguese, and books on WhatsApp or online.</p>
+        <ul class="ab-do fade" style="--d:.26s" aria-label="What she does">
+          <li><b>Lash extensions</b><span>Classic, hybrid, Brazilian &amp; Russian volume</span></li>
+          <li><b>Lash fills</b><span>At two weeks, or 16–25 days</span></li>
+          <li><b>Eyebrow design</b><span>With or without henna</span></li>
+        </ul>
+      </div>
+      <figure class="ab-f">
+        <div class="ph ph--framed rv-im" style="--d:.1s"><Plate id={MEDIA.plates.portraitAbout} alt="Karolayne Souza, long dark hair, in a black top and a gold necklace" sizes="(max-width:899px) 90vw, 480px" widths={[480, 800, 1086]} loading="eager" /><i class="grain" aria-hidden="true"></i></div>
+        <figcaption class="fade" style="--d:.2s">Karolayne Souza &middot; {SITE.area.label}</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec sec--dk ab-st">
+    <i class="lx-dusk" aria-hidden="true"></i>
+    <div class="wrap-text ab-st-in">
+      <p class="kick kick--c rv">The studio</p>
+      <h2 class="disp rv" style="--d:.06s">{STUDIO.heading[0]} <span class="ital">{STUDIO.heading[1]}</span></h2>
+      <p class="rv" style="--d:.12s">{STUDIO.body}</p>
+      <p class="ab-addr fade" style="--d:.18s"><a href={SITE.maps} {...ext(SITE.maps)}>{SITE.address.label}</a></p>
+    </div>
+  </section>
+
+  <section class="sec ab-end">
+    <div class="wrap-text" style="text-align:center">
+      <h2 class="disp rv">Come see <span class="ital">her.</span></h2>
+      <div class="ab-cta fade">
+        <a class="btn btn--solid" href={SITE.whatsapp} {...ext(SITE.whatsapp)}>Book on WhatsApp</a>
+        <a class="tlk" href={SITE.links.work}>See her work</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .ab{padding:clamp(8rem,16vh,10.5rem) 0 var(--pad)}
+  .ab-in{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(2.4rem,6vw,6rem);align-items:center}
+  .ab-t h1{font-size:clamp(2.8rem,6.4vw,5.6rem);margin-bottom:.8rem}
+  .ab-role{font-family:var(--utility);font-weight:600;font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;color:var(--brass);margin-bottom:clamp(1.6rem,3vw,2.2rem)}
+  .ab-lead{font-family:var(--display);font-size:clamp(1.35rem,2.1vw,1.85rem);line-height:1.35;color:var(--ink);max-width:22em;margin-bottom:1.2rem;font-variation-settings:'opsz' 48}
+  .ab-t>p:not(.ab-lead):not(.ab-role):not(.cov-kick){max-width:34em;margin-bottom:1em}
+  .ab-t em{font-family:var(--display);color:var(--ink)}
+  .ab-do{list-style:none;margin:clamp(1.6rem,3vw,2.2rem) 0 0;padding:0;border-top:1px solid var(--hair-strong)}
+  .ab-do li{display:flex;justify-content:space-between;gap:.4rem 1.6rem;flex-wrap:wrap;padding:.95rem 0;border-bottom:1px solid var(--hair)}
+  .ab-do b{font-family:var(--display);font-weight:400;font-size:1.2rem;color:var(--ink)}
+  .ab-do span{font-size:.92rem;color:var(--ink-soft)}
+  .ab-f{margin:0}
+  .ab-f .ph{aspect-ratio:4/5}
+  .ab-f .ph :global(img){object-position:50% 25%}
+  .ab-f figcaption{margin-top:1.4rem;text-align:center;font-family:var(--display);font-style:italic;color:var(--ink-soft)}
+  .ab-st-in{text-align:center;position:relative;z-index:4}
+  .ab-st .disp{font-size:clamp(2.2rem,4.6vw,3.8rem);margin-bottom:1.4rem}
+  .ab-st p{font-family:var(--display);font-size:clamp(1.1rem,1.5vw,1.3rem);line-height:1.6;font-variation-settings:'opsz' 28}
+  .ab-addr{margin-top:1.6rem}
+  .ab-addr a{color:var(--gold-lt);border-bottom:1px solid var(--hairdk-strong)}
+  .ab-end .disp{font-size:clamp(2.2rem,4.6vw,3.8rem);margin-bottom:2rem}
+  .ab-cta{display:flex;justify-content:center;align-items:center;gap:1.2rem 2.4rem;flex-wrap:wrap}
+  @media(max-width:899px){.ab-in{grid-template-columns:1fr}.ab-f{width:min(480px,100%);margin-inline:auto;order:-1}}
+</style>

@@ -1,0 +1,114 @@
+---
+/** SERVICES & PRICES — her official price list as a real, readable table (English, with her
+ *  Portuguese names), then brows, then what she offers but hasn't priced ("Ask"). */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE, ext, LASHES, BROWS, EXTRAS, PRICE_NOTE, money } from '../lib/content';
+import { serviceJsonLd } from '../lib/seo';
+const ld = [...LASHES.rows.map((r) => serviceJsonLd({ name: `${r.name} lash extensions`, description: r.line, path: '/services', serviceType: 'Eyelash extensions' })),
+  ...BROWS.rows.map((b) => serviceJsonLd({ name: b.name, description: b.name, path: '/services', serviceType: 'Eyebrow design' }))];
+---
+<BaseLayout title="Services & prices" description={`Lash extension and eyebrow design prices — classic from $80, hybrid $90, Brazilian volume $100, Russian volume $120, brows from $25. ${SITE.name}, ${SITE.area.label}.`} path="/services" jsonLd={ld}>
+  <section class="cov">
+    <div class="cov-c">
+      <p class="cov-kick fade">Services &amp; prices</p>
+      <h1 class="disp rv">The <span class="ital">menu.</span></h1>
+      <p class="cov-sub rv" style="--d:.08s">Four lash sets, from a natural classic to Russian volume, and eyebrow design with or without henna.</p>
+    </div>
+  </section>
+
+  <section class="pr" aria-labelledby="prLash">
+    <div class="wrap">
+      <header class="pr-h fade">
+        <h2 class="disp" id="prLash">{LASHES.title}</h2>
+        <p class="ital" lang="pt-BR">{LASHES.pt}</p>
+      </header>
+      <div class="pr-tbl fade" role="table" aria-labelledby="prLash">
+        <div class="pr-row pr-row--h" role="row">
+          <span role="columnheader" class="pr-name">Set</span>
+          {LASHES.cols.map((c, i) => <span role="columnheader" class="pr-c">{c}{LASHES.colsNote[i] && <em>{LASHES.colsNote[i]}</em>}</span>)}
+        </div>
+        {LASHES.rows.map((r) => (
+          <div class="pr-row" role="row">
+            <span role="rowheader" class="pr-name"><b>{r.name}</b><em lang="pt-BR">{r.pt}</em><small>{r.line}</small></span>
+            {r.prices.map((p, i) => <span role="cell" class="pr-c" data-col={LASHES.cols[i]}>{money(p)}</span>)}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="pr pr--2" aria-labelledby="prBrow">
+    <div class="wrap pr-two">
+      <div class="fade">
+        <header class="pr-h"><h2 class="disp" id="prBrow">{BROWS.title}</h2><p class="ital" lang="pt-BR">{BROWS.pt}</p></header>
+        <ul class="pr-list">
+          {BROWS.rows.map((b) => <li><span><b>{b.name}</b><em lang="pt-BR">{b.pt}</em></span><span class="pr-dots" aria-hidden="true"></span><span class="pr-v">{money(b.price)}</span></li>)}
+        </ul>
+      </div>
+      <div class="fade" style="--d:.08s">
+        <header class="pr-h"><h2 class="disp">Also offered</h2><p class="ital">Price on request</p></header>
+        <ul class="pr-list">
+          {EXTRAS.map((b) => <li><span><b>{b.name}</b><em lang="pt-BR">{b.pt}</em></span><span class="pr-dots" aria-hidden="true"></span><span class="pr-v pr-v--ask">{money(b.price)}</span></li>)}
+        </ul>
+        <p class="pr-ask">Message Karolayne on WhatsApp for the price.</p>
+      </div>
+    </div>
+    <div class="wrap">
+      <p class="pr-note fade">{PRICE_NOTE}</p>
+    </div>
+  </section>
+
+  <section class="sec sec--dk pr-cta">
+    <div class="wrap pr-cta-in">
+      <div>
+        <p class="kick rv">{SITE.offer}</p>
+        <h2 class="disp rv" style="--d:.06s">Ready for <span class="ital">your set?</span></h2>
+        <p class="rv" style="--d:.1s">Her Instagram offer is book now, 15% off — ask her for the details when you message.</p>
+      </div>
+      <div class="pr-cta-b fade">
+        <a class="btn btn--ivory" href={SITE.whatsapp} {...ext(SITE.whatsapp)}>Book on WhatsApp</a>
+        <a class="btn btn--ghost" href={SITE.booking} {...ext(SITE.booking)}>Book online</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .pr{padding-bottom:clamp(3.5rem,7vw,6rem)}
+  .pr--2{background:var(--linen);padding-top:clamp(3.5rem,7vw,6rem)}
+  .pr-h{display:flex;align-items:baseline;gap:.4rem 1.4rem;flex-wrap:wrap;margin-bottom:clamp(1.4rem,2.6vw,2rem)}
+  .pr-h .disp{font-size:clamp(1.9rem,3.4vw,2.8rem)}
+  .pr-h .ital{color:var(--brass);font-size:1.05rem}
+  .pr-tbl{border-top:1px solid var(--hair-strong)}
+  .pr-row{display:grid;grid-template-columns:minmax(0,2.2fr) repeat(3,minmax(0,1fr));gap:1rem;align-items:center;padding:clamp(1.1rem,2vw,1.5rem) 0;border-bottom:1px solid var(--hair)}
+  .pr-row--h{padding-block:.9rem}
+  .pr-row--h span{font-family:var(--utility);font-weight:600;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--brass)}
+  .pr-row--h em{display:block;font-style:normal;font-weight:500;letter-spacing:.08em;text-transform:none;font-size:.7rem;color:var(--ink-soft);margin-top:.2rem}
+  .pr-name b{display:block;font-family:var(--display);font-weight:400;font-size:clamp(1.3rem,2vw,1.65rem);color:var(--ink);line-height:1.15}
+  .pr-name em{display:block;font-family:var(--display);font-size:.95rem;color:var(--ink-soft);margin-top:.15rem}
+  .pr-name small{display:block;font-size:.88rem;color:var(--ink-soft);margin-top:.45rem;max-width:30em}
+  .pr-c{text-align:right;font-family:var(--display);font-size:clamp(1.3rem,2vw,1.7rem);color:var(--ink);font-variation-settings:'opsz' 48}
+  .pr-row--h .pr-c{text-align:right}
+  .pr-two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,6vw,6rem)}
+  .pr-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair-strong)}
+  .pr-list li{display:flex;align-items:flex-end;gap:1rem;padding:1.1rem 0;border-bottom:1px solid var(--hair)}
+  .pr-list b{display:block;font-family:var(--display);font-weight:400;font-size:clamp(1.15rem,1.6vw,1.35rem);color:var(--ink)}
+  .pr-list em{display:block;font-family:var(--display);font-size:.92rem;color:var(--ink-soft)}
+  .pr-dots{flex:1;border-bottom:1px dotted var(--hair-strong);margin-bottom:.45rem}
+  .pr-v{font-family:var(--display);font-size:1.5rem;color:var(--ink)}
+  .pr-v--ask{font-style:italic;color:var(--brass)}
+  .pr-ask{margin-top:1rem;font-size:.92rem;color:var(--ink-soft)}
+  .pr-note{margin-top:clamp(2rem,4vw,3rem);font-size:.88rem;color:var(--ink-soft);max-width:44em}
+  .pr-cta-in{display:flex;align-items:flex-end;justify-content:space-between;gap:2rem 4rem;flex-wrap:wrap}
+  .pr-cta .kick{margin-bottom:1.2rem}
+  .pr-cta .disp{font-size:clamp(2.2rem,4.4vw,3.8rem);margin-bottom:1rem}
+  .pr-cta-b{display:flex;gap:12px;flex-wrap:wrap}
+  @media(max-width:719px){
+    .pr-row{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:.8rem}
+    .pr-row .pr-name{grid-column:1/-1}
+    .pr-row--h .pr-name{display:none}
+    .pr-c{text-align:left}
+    .pr-row--h .pr-c{text-align:left}
+    .pr-two{grid-template-columns:1fr}
+    .pr-cta-b{flex-direction:column;width:100%}.pr-cta-b .btn{width:100%}
+  }
+</style>

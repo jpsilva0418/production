@@ -1,0 +1,275 @@
+---
+/** HOME, top to bottom:
+ *  ① opening — her portrait (or a clean clip), her words, WhatsApp + online booking →
+ *  ② Meet Karolayne — who she is, beside a card carrying her own Portuguese line →
+ *  ③ the menu — her four lash sets and two brow services, prices from her list →
+ *  ④ pinned film — her best reel, full height (only once MEDIA.pinnedFilm is set) →
+ *  ⑤ the work — photos and reels mixed, plus her Instagram →
+ *  ⑥ the studio — a private room at 153 Main St, Milford →
+ *  ⑦ book — WhatsApp or online. */
+import Hero from './Hero.astro';
+import Logo from './Logo.astro';
+import WorkGrid from './WorkGrid.astro';
+import { SITE, ext, INTRO, LASHES, BROWS, WORK, WORK_ITEMS, STUDIO, FINAL, MEDIA, money } from '../lib/content';
+const film = MEDIA.pinnedFilm;
+---
+<div class="c7-prog" id="c7Prog" aria-hidden="true"></div>
+
+<!-- ① THE OPENING -->
+<Hero />
+
+<!-- ② MEET KAROLAYNE -->
+<section class="c7-ch c7-ch--first" id="about" data-chapter="about" data-tone="light" data-curve>
+  <div class="wrap c7-mis">
+    <div class="c7-mis-t">
+      <p class="kick rv">{INTRO.eyebrow}</p>
+      <h2 class="disp c7-mis-h rv" style="--d:.06s">{INTRO.heading[0]} <span class="ital">{INTRO.heading[1]}</span></h2>
+      <p class="c7-mis-s c7-mis-s--lead rv" style="--d:.14s">{INTRO.lead}</p>
+      {INTRO.sentences.map((s, i) => <p class="c7-mis-s rv" style={`--d:${(0.24 + i * 0.1).toFixed(2)}s`}>{s}</p>)}
+      <div class="c7-mis-foot fade" style="--d:.5s">
+        <ul class="c7-vals" aria-label="Specialties">{INTRO.values.map((v) => <li>{v}</li>)}</ul>
+        <a class="tlk" href={SITE.links.about}>More about Karolayne</a>
+      </div>
+    </div>
+    <figure class="c7-card fade" style="--d:.2s">
+      <Logo full class="c7-card-ks" />
+      <span class="c7-card-rule" aria-hidden="true"></span>
+      <blockquote lang="pt-BR"><p>“{SITE.motto}.”</p></blockquote>
+      <figcaption><span>{SITE.mottoEn}</span><span class="caps-xs">From her Instagram</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ③ THE MENU -->
+<section class="c7-menu" id="menu-prices" data-chapter="services" data-tone="light" aria-labelledby="c7MenuH">
+  <div class="wrap">
+    <div class="c7-sh">
+      <div>
+        <p class="kick rv">{LASHES.title} &amp; brows</p>
+        <h2 class="disp rv" id="c7MenuH" style="--d:.06s">The <span class="ital">menu.</span></h2>
+      </div>
+      <p class="c7-sh-line rv" style="--d:.1s">Full-set prices from her price list. Fills, brow design and henna on the services page.</p>
+    </div>
+    <ul class="c7-sets" data-stag=".08">
+      {LASHES.rows.map((r, i) => (
+        <li class="c7-set fade">
+          <span class="c7-set-n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <h3>{r.name}</h3>
+          <p class="c7-set-pt" lang="pt-BR">{r.pt}</p>
+          <p class="c7-set-l">{r.line}</p>
+          <p class="c7-set-p"><span class="caps-xs">Full set</span><b>{money(r.prices[0])}</b></p>
+        </li>
+      ))}
+    </ul>
+    <div class="c7-brows fade">
+      <div><span class="caps-xs">{BROWS.title}</span><p>{BROWS.rows.map((b) => <span>{b.name} <b>{money(b.price)}</b></span>)}</p></div>
+      <a class="btn btn--line" href={SITE.links.services}>All services &amp; prices</a>
+    </div>
+  </div>
+</section>
+
+<!-- ④ PINNED FILM — only when her reel is in -->
+{film && (
+  <section class="c7-band" data-pin data-chapter="film" data-tone="film" style={`--poster:url(${film.poster})`} aria-label={film.alt}>
+    <div class="c7-band-amb" aria-hidden="true"></div>
+    <div class="c7-band-fr">
+      <video data-film autoplay muted loop playsinline preload="none" poster={film.poster} disablepictureinpicture tabindex="-1" aria-label={film.alt}>
+        <source data-src={film.webm} type="video/webm" />
+        <source data-src={film.mp4} type="video/mp4" />
+      </video>
+    </div>
+    <p class="c7-band-cap">{SITE.name} <b>&middot;</b> {SITE.area.label}</p>
+  </section>
+)}
+
+<!-- ⑤ THE WORK -->
+<section class:list={['c7-ch c7-work', { 'c7-ch--after-film': film }]} id="work" data-chapter="work" data-tone="light" data-curve>
+  <div class="wrap">
+    <div class="c7-sh">
+      <div>
+        <p class="kick rv">The work</p>
+        <h2 class="disp rv" style="--d:.06s">{WORK.heading[0]} <span class="ital">{WORK.heading[1]}</span></h2>
+      </div>
+      <p class="c7-sh-line rv" style="--d:.1s">{WORK.line}</p>
+    </div>
+    <WorkGrid items={WORK_ITEMS} limit={5} />
+    <div class="c7-work-foot fade"><a class="btn btn--line" href={SITE.links.work}>{WORK.all}</a></div>
+  </div>
+</section>
+
+<!-- ⑥ THE STUDIO -->
+<section class="sec sec--dk c7-studio" id="studio" data-chapter="studio" data-tone="dark" aria-labelledby="c7StH">
+  <i class="lx-dusk" aria-hidden="true"></i>
+  <div class="wrap c7-st">
+    <div class="c7-st-sign fade" aria-hidden="true">
+      <span class="c7-st-k">Lashes &amp; Brows</span>
+      <span class="c7-st-by">by Karolayne Souza</span>
+    </div>
+    <div>
+      <p class="kick rv">The studio</p>
+      <h2 class="disp rv" id="c7StH" style="--d:.06s">{STUDIO.heading[0]} <span class="ital">{STUDIO.heading[1]}</span></h2>
+      <p class="c7-st-b rv" style="--d:.12s">{STUDIO.body}</p>
+      <address class="c7-st-a fade" style="--d:.2s">
+        <span class="caps-xs">Find her</span>
+        <a href={SITE.maps} {...ext(SITE.maps)}>{SITE.address.street}, {SITE.address.city}, {SITE.address.region} {SITE.address.zip}</a>
+      </address>
+      <a class="tlk tlk--lt fade" style="--d:.26s" href={SITE.maps} {...ext(SITE.maps)}>Open in Maps</a>
+    </div>
+  </div>
+</section>
+
+<!-- ⑦ BOOK -->
+<section class="c7-final" id="book" data-chapter="book" data-tone="light" aria-labelledby="c7FinH">
+  <div class="wrap c7-fin">
+    <p class="kick kick--c rv" lang="pt-BR">{FINAL.eyebrow}</p>
+    <h2 class="disp rv" id="c7FinH" style="--d:.06s">Book your <span class="ital">appointment.</span></h2>
+    <p class="c7-fin-b rv" style="--d:.12s">{FINAL.body}</p>
+    <div class="c7-fin-cta fade" style="--d:.2s">
+      <a class="btn btn--solid" href={SITE.whatsapp} {...ext(SITE.whatsapp)}>Book on WhatsApp</a>
+      <a class="btn btn--line" href={SITE.booking} {...ext(SITE.booking)}>Book online</a>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  body{--gut:max(20px,calc((100vw - var(--wrap)) / 2));--peek:56px}
+  @media(max-width:599px){body{--wrap:calc(100vw - 40px)}}
+  @media(max-width:899px){body{--peek:38px}}
+  main{position:relative}
+  .rv{transform:translateY(30px);transition-duration:.9s,1.05s,.7s}
+  .rv.in{transform:none}
+</style>
+
+<style>
+  .c7-prog{position:fixed;top:0;left:0;right:0;height:2px;z-index:72;background:var(--sage);transform:scaleX(0);transform-origin:left;pointer-events:none;display:none}
+  @media(max-width:1023px){.c7-prog{display:block}}
+
+  /* ===== chapter cards: a curved top edge that eases flatter as the card rises ===== */
+  .c7-ch{--cv:44px;--lip:12px;--c-bg:var(--ivory);position:relative;z-index:1;isolation:isolate;padding-block:var(--pad)}
+  .c7-ch::before,.c7-ch::after{content:"";position:absolute;left:0;right:0;border-radius:50% 50% 0 0/var(--cv) var(--cv) 0 0;pointer-events:none}
+  .c7-ch::before{top:calc(-1 * var(--lip));height:160px;background:var(--sage);z-index:-2}
+  .c7-ch::after{top:0;bottom:0;background:var(--c-bg);z-index:-1;box-shadow:0 -26px 60px -34px rgba(0,0,0,.5)}
+  .c7-ch--first{margin-top:calc(-1 * var(--peek))}
+
+  /* shared section head */
+  .c7-sh{display:flex;align-items:flex-end;justify-content:space-between;gap:1.2rem 3rem;flex-wrap:wrap;margin-bottom:clamp(2.2rem,4.4vw,3.6rem)}
+  .c7-sh>div{flex:1 1 420px}
+  .c7-sh .kick{margin-bottom:1.2rem}
+  .c7-sh .disp{font-size:clamp(2.3rem,4.6vw,4.2rem)}
+  .c7-sh-line{margin:0;max-width:26em;font-family:var(--display);font-style:italic;font-size:1.08rem;color:var(--ink-soft);font-variation-settings:'opsz' 28}
+
+  /* ===== ② meet ===== */
+  .c7-mis{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(2.4rem,6vw,6.5rem);align-items:center}
+  .c7-mis .kick{margin-bottom:clamp(1.2rem,2vw,1.6rem)}
+  .c7-mis-h{font-size:clamp(2.6rem,5.2vw,4.8rem);margin:0 0 clamp(1.2rem,2vw,1.6rem)}
+  .c7-mis-s{font-size:clamp(1.02rem,1.2vw,1.12rem);line-height:1.75;color:var(--ink-soft);max-width:34em;margin:0 0 1em}
+  .c7-mis-s--lead{font-family:var(--display);font-size:clamp(1.35rem,2.1vw,1.9rem);line-height:1.35;color:var(--ink);max-width:22em;font-variation-settings:'opsz' 48}
+  .c7-mis-foot{display:flex;align-items:center;justify-content:space-between;gap:1.2rem 2rem;flex-wrap:wrap;margin-top:clamp(1.6rem,2.6vw,2.2rem);padding-top:1.2rem;border-top:1px solid var(--hair)}
+  .c7-vals{list-style:none;display:flex;gap:.6rem 2rem;flex-wrap:wrap;margin:0;padding:0;font-family:var(--utility);font-weight:600;font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
+  .c7-vals li{display:inline-flex;align-items:center;gap:.7rem}
+  .c7-vals li::before{content:"";width:5px;height:5px;transform:rotate(45deg);background:var(--sage)}
+  .c7-card{position:relative;margin:0;background:var(--leaf);color:var(--ivory);border-radius:var(--r-lg);padding:clamp(2.6rem,5vw,4rem) clamp(1.6rem,4vw,3rem);text-align:center;box-shadow:var(--shadow-lg);display:flex;flex-direction:column;align-items:center}
+  .c7-card::before{content:"";position:absolute;inset:12px;border:1px solid var(--hairdk-strong);border-radius:calc(var(--r-lg) - 8px);pointer-events:none}
+  .c7-card :global(.c7-card-ks){--ks:clamp(84px,9vw,112px);--ks-n:clamp(.95rem,1.4vw,1.2rem);--ks-t:.58rem;color:var(--ivory)}
+  .c7-card-rule{width:56px;height:1px;background:var(--gold-lt);opacity:.6;margin:clamp(1.8rem,3vw,2.4rem) 0}
+  .c7-card blockquote{margin:0}
+  .c7-card blockquote p{font-family:var(--display);font-style:italic;font-size:clamp(1.35rem,2.2vw,1.9rem);line-height:1.35;color:var(--ivory);max-width:14em;font-variation-settings:'opsz' 48}
+  .c7-card figcaption{margin-top:1.2rem;display:flex;flex-direction:column;gap:.5rem;font-size:.95rem;color:color-mix(in srgb,var(--ivory) 72%,transparent)}
+  .c7-card figcaption .caps-xs{color:var(--gold-lt)}
+  @media(max-width:899px){.c7-mis{grid-template-columns:1fr;gap:2.6rem}.c7-card{width:min(520px,100%);margin-inline:auto}}
+
+  /* ===== ③ menu ===== */
+  .c7-menu{position:relative;z-index:1;background:var(--linen);padding-block:var(--pad)}
+  .c7-sets{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(1rem,1.8vw,1.4rem)}
+  .c7-set{position:relative;display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--hair);border-radius:var(--r);padding:clamp(1.4rem,2.2vw,1.9rem);transition:border-color .4s var(--ease),box-shadow .45s var(--ease),transform .45s var(--ease)}
+  .c7-set:hover{border-color:var(--hair-strong);box-shadow:var(--shadow);transform:translateY(-3px)}
+  .c7-set-n{font-family:var(--display);font-style:italic;font-size:1rem;color:var(--brass);margin-bottom:1.4rem}
+  .c7-set h3{font-size:clamp(1.35rem,1.8vw,1.6rem);line-height:1.1;color:var(--ink)}
+  .c7-set-pt{font-family:var(--display);font-style:italic;font-size:.95rem;color:var(--ink-soft);margin:.35rem 0 1rem}
+  .c7-set-l{font-size:.92rem;line-height:1.6;color:var(--ink-soft);margin-bottom:1.6rem}
+  .c7-set-p{margin-top:auto;padding-top:1rem;border-top:1px solid var(--hair);display:flex;align-items:baseline;justify-content:space-between;gap:1rem}
+  .c7-set-p b{font-family:var(--display);font-weight:500;font-size:clamp(1.8rem,2.4vw,2.2rem);line-height:1;color:var(--ink);font-variation-settings:'opsz' 96}
+  .c7-brows{margin-top:clamp(1.2rem,2vw,1.6rem);display:flex;align-items:center;justify-content:space-between;gap:1.2rem 2rem;flex-wrap:wrap;padding:clamp(1.2rem,2vw,1.6rem) clamp(1.4rem,2.2vw,1.9rem);border:1px solid var(--hair-strong);border-radius:var(--r)}
+  .c7-brows p{display:flex;flex-wrap:wrap;gap:.3rem 2.2rem;margin-top:.3rem;font-family:var(--display);font-size:1.15rem;color:var(--ink)}
+  .c7-brows b{font-weight:500;margin-left:.4rem;color:var(--brass)}
+  @media(max-width:1023px){.c7-sets{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:559px){.c7-sets{grid-template-columns:1fr}.c7-brows .btn{width:100%}}
+
+  /* ===== ④ pinned film ===== */
+  .c7-band{position:sticky;top:0;z-index:0;height:100vh;height:100svh;overflow:hidden;background:var(--leaf-deep);display:grid;place-items:center}
+  .c7-band.is-covered{visibility:hidden}
+  .c7-band-amb{position:absolute;inset:-8%;background:var(--poster) center/cover no-repeat;filter:blur(46px) saturate(.9);transform:scale(1.1)}
+  .c7-band-amb::after{content:"";position:absolute;inset:0;background:color-mix(in srgb,var(--leaf-deep) 70%,transparent)}
+  .c7-band-fr{position:relative;height:88svh;aspect-ratio:9/16;border-radius:var(--r-lg);overflow:hidden;box-shadow:0 60px 120px -50px rgba(0,0,0,.7),0 0 0 1px var(--hairdk-strong)}
+  .c7-band video{width:100%;height:100%;object-fit:cover}
+  .c7-band-cap{position:absolute;left:0;right:0;bottom:clamp(96px,15vh,132px);z-index:2;text-align:center;padding:0 20px;font-family:var(--utility);font-weight:600;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--ivory);text-shadow:0 1px 18px rgba(0,0,0,.6)}
+  .c7-band-cap b{color:var(--gold-lt)}
+  @media(max-width:899px){.c7-band-amb{display:none}.c7-band-fr{position:absolute;inset:0;height:auto;aspect-ratio:auto;border-radius:0;box-shadow:none}}
+
+  /* ===== ⑤ work ===== */
+  .c7-work{--lip:0px}
+  .c7-work::before{display:none}
+  .c7-work-foot{margin-top:clamp(1.6rem,3vw,2.6rem)}
+
+  /* ===== ⑥ studio ===== */
+  .c7-studio{overflow:hidden}
+  .c7-st{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:clamp(2.4rem,6vw,6rem);align-items:center;position:relative;z-index:4}
+  .c7-st-sign{aspect-ratio:4/5;border-radius:var(--r-lg);background:radial-gradient(70% 60% at 50% 40%,#fff 0%,#F2F0EC 60%,#E2DED8 100%);color:#111;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;text-align:center;padding:2rem;box-shadow:var(--shadow-lg),inset 0 0 0 1px rgba(0,0,0,.06)}
+  .c7-st-k{font-family:var(--display);font-style:italic;font-size:clamp(2.2rem,4.4vw,3.8rem);line-height:1;font-variation-settings:'opsz' 96}
+  .c7-st-by{font-family:var(--utility);font-weight:500;font-size:clamp(.6rem,.9vw,.72rem);letter-spacing:.42em;text-indent:.42em;text-transform:uppercase}
+  .c7-st .disp{font-size:clamp(2.3rem,4.6vw,4.2rem);margin-bottom:1.4rem}
+  .c7-st-b{font-family:var(--display);font-size:clamp(1.1rem,1.5vw,1.32rem);line-height:1.6;color:color-mix(in srgb,var(--ivory) 86%,transparent);max-width:28em;margin-bottom:2rem;font-variation-settings:'opsz' 28}
+  .c7-st-a{font-style:normal;display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.6rem}
+  .c7-st-a a{font-family:var(--display);font-size:clamp(1.15rem,1.6vw,1.4rem);color:var(--ivory)}
+  .c7-st-a a:hover{color:var(--gold-lt)}
+  @media(max-width:899px){.c7-st{grid-template-columns:1fr}.c7-st-sign{aspect-ratio:16/10;order:2}}
+
+  /* ===== ⑦ book ===== */
+  .c7-final{position:relative;z-index:1;background:var(--ivory);padding-block:var(--pad)}
+  .c7-fin{text-align:center;max-width:820px}
+  .c7-fin .disp{font-size:clamp(2.4rem,5.4vw,4.6rem);margin-bottom:1.4rem}
+  .c7-fin-b{font-family:var(--display);font-style:italic;font-size:clamp(1.08rem,1.5vw,1.28rem);line-height:1.6;color:var(--ink-soft);max-width:32em;margin:0 auto;font-variation-settings:'opsz' 28}
+  .c7-fin-cta{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:clamp(2rem,4vh,2.8rem)}
+  .c7-fin-cta .btn{min-width:220px}
+  @media(max-width:560px){.c7-fin-cta{flex-direction:column;align-items:stretch}.c7-fin-cta .btn{min-width:0}}
+
+  @media (prefers-reduced-motion:reduce){
+    .c7-band{position:relative;visibility:visible!important;height:70vh;height:70svh}
+    .c7-prog,.c7-set{transition:none}
+  }
+</style>
+
+<script>
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const small = matchMedia('(max-width:640px)');
+  const pins = Array.from(document.querySelectorAll<HTMLElement>('[data-pin]'));
+  const curves = Array.from(document.querySelectorAll<HTMLElement>('[data-curve]'));
+  const prog = document.getElementById('c7Prog');
+  const after = (el: HTMLElement) => { let n = el.nextElementSibling; while (n && (n.tagName === 'SCRIPT' || n.tagName === 'STYLE' || n.tagName === 'LINK')) n = n.nextElementSibling; return n as HTMLElement | null; };
+  let ticking = false;
+  const frame = () => {
+    ticking = false;
+    const y = scrollY, vh = innerHeight;
+    if (prog) { const max = document.documentElement.scrollHeight - vh; prog.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`; }
+    if (reduced) return;
+    pins.forEach((pin) => {
+      const next = after(pin);
+      const covered = !!next && next.getBoundingClientRect().top <= 0;
+      if (pin.classList.contains('is-covered') === covered) return;
+      pin.classList.toggle('is-covered', covered);
+      const v = pin.querySelector('video');
+      if (v) { if (covered) v.pause(); else if (v.currentSrc) v.play().catch(() => {}); }
+    });
+    const deep = small.matches ? 34 : 70, flat = small.matches ? 16 : 26;
+    curves.forEach((c) => {
+      const t = c.getBoundingClientRect().top;
+      if (t > vh + 80 || t < -vh) return;
+      const p = Math.min(1, Math.max(0, 1 - t / vh));
+      c.style.setProperty('--cv', `${(deep - (deep - flat) * p).toFixed(1)}px`);
+    });
+  };
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }, { passive: true });
+  addEventListener('resize', frame);
+  frame();
+</script>

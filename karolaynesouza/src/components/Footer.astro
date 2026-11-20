@@ -1,0 +1,53 @@
+---
+/** Footer: monogram + wordmark and one line, the destinations, both booking paths and every way
+ *  to reach Karolayne. Only facts she published — no hours, no email. */
+import Logo from './Logo.astro';
+import { SITE, TEL, ext } from '../consts';
+import { FOOTER } from '../lib/content';
+const year = new Date().getUTCFullYear();
+---
+<footer class="foot">
+  <i class="lx-dusk" aria-hidden="true"></i>
+  <div class="foot-in">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <Logo full class="foot-ks" label={`${SITE.name} — ${SITE.tagline}`} />
+        <p>{FOOTER.line}</p>
+      </div>
+      <div>
+        <p class="foot-h">Explore</p>
+        <ul class="foot-nav">
+          <li><a href="/">Home</a></li>
+          {SITE.nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+        </ul>
+      </div>
+      <div>
+        <p class="foot-h">Book</p>
+        <ul class="foot-contact">
+          <li><span class="k">WhatsApp</span><a href={SITE.whatsapp} {...ext(SITE.whatsapp)}>Message Karolayne</a></li>
+          <li><span class="k">Online</span><a href={SITE.booking} {...ext(SITE.booking)}>Book on Square</a></li>
+          <li><span class="k">Offer</span>{SITE.offer}</li>
+        </ul>
+      </div>
+      <div>
+        <p class="foot-h">Visit</p>
+        <ul class="foot-contact">
+          <li><span class="k">Studio</span><a href={SITE.maps} {...ext(SITE.maps)}>{SITE.address.street}<br />{SITE.address.city}, {SITE.address.region} {SITE.address.zip}</a></li>
+          <li><span class="k">Call or WhatsApp</span><a href={TEL}>{SITE.phone}</a></li>
+          <li><span class="k">Instagram</span><a href={SITE.instagram.url} {...ext(SITE.instagram.url)} style="overflow-wrap:anywhere">{SITE.instagram.handle}</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bar">
+      <span>&copy; {year} {SITE.name}</span>
+      <span>{SITE.motto}</span>
+      <span>{SITE.area.label}</span>
+    </div>
+  </div>
+</footer>
+<style>
+  .foot-brand :global(.foot-ks){--ks:76px;--ks-n:1.15rem;--ks-t:.56rem;color:var(--ivory);align-items:flex-start;margin-bottom:1.8rem}
+  .foot-brand :global(.foot-ks .ks-w){align-items:flex-start}
+  .foot-brand :global(.foot-ks .ks-n),.foot-brand :global(.foot-ks .ks-t){text-indent:0}
+  .foot-brand :global(.foot-ks .ks-t::before){display:none}
+</style>

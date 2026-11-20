@@ -1,0 +1,69 @@
+---
+/** Site header + full-screen menu. KS monogram + wordmark on the left, the four destinations on
+ *  desktop, and the lead action (WhatsApp). On phones: monogram + Book + MENU.
+ *  Variants: `light` over the dark hero, `prologue` fades in with the opening.
+ *  Menu logic (scroll lock, focus, close-on-navigate) lives in BaseLayout's runtime. */
+import Logo from './Logo.astro';
+import { SITE, TEL, ext } from '../consts';
+interface Props { light?: boolean; prologue?: boolean; current?: string }
+const { light = false, prologue = false, current = '' } = Astro.props;
+const isCurrent = (href: string) => current === href || (href !== '/' && current.startsWith(href + '/'));
+const primary = SITE.nav.filter((n) => n.href !== SITE.links.book);
+---
+<header class:list={['hd', { 'hd--lt': light, 'hd--plg': prologue }]} id="siteHeader">
+  <div class="hd-in">
+    <a class="hd-logo" href="/" aria-label={`${SITE.name} — home`}><Logo inline class="hd-ks" /></a>
+    <nav class="hd-nav" aria-label="Primary">
+      {primary.map((n) => <a href={n.href} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a>)}
+    </nav>
+    <div class="hd-tools">
+      <a class="btn btn--solid hd-cta" href={SITE.links.book} aria-current={isCurrent(SITE.links.book) ? 'page' : undefined}>Book</a>
+      <button class="menu-btn" id="menuOpen" type="button" aria-expanded="false" aria-controls="menu">Menu <span class="bars" aria-hidden="true"><i></i><i></i></span></button>
+    </div>
+  </div>
+</header>
+<nav class="menu" id="menu" aria-label="Main menu" aria-hidden="true" inert>
+  <div class="menu-top">
+    <a class="hd-logo" href="/" aria-label={`${SITE.name} — home`} tabindex="-1"><Logo inline class="hd-ks" /></a>
+    <button class="menu-close" id="menuClose" type="button">Close <span class="x" aria-hidden="true">&times;</span></button>
+  </div>
+  <div class="menu-body">
+    <ul class="menu-list">
+      <li><a href="/" aria-current={current === '/' ? 'page' : undefined}><span class="mlb">Home</span><span class="mnote">Start here</span></a></li>
+      {SITE.nav.map((n) => (
+        <li><a href={n.href} aria-current={isCurrent(n.href) ? 'page' : undefined}><span class="mlb">{n.label}</span><span class="mnote">{n.note}</span></a></li>
+      ))}
+    </ul>
+    <div class="menu-cta">
+      <a class="btn btn--ivory" href={SITE.whatsapp} {...ext(SITE.whatsapp)}>Book on WhatsApp</a>
+      <a class="btn btn--ghost" href={SITE.booking} {...ext(SITE.booking)}>Book online</a>
+    </div>
+    <div class="menu-sub">
+      <a href={SITE.instagram.url} {...ext(SITE.instagram.url)}>Instagram {SITE.instagram.handle}</a>
+      <a href={TEL}>Call {SITE.phone}</a>
+    </div>
+  </div>
+  <div class="menu-foot">
+    <span>{SITE.name}</span>
+    <span>{SITE.address.label}</span>
+  </div>
+</nav>
+<style is:global>
+  .hd-logo{padding-block:4px;color:var(--ink)}
+  .hd-ks{--ks:40px}
+  .hd--lt .hd-logo{color:var(--ivory)}
+  .hd--lt .hd-ks .ks-t{color:var(--gold-lt)}
+  .hd-ks .ks-t{color:var(--brass)}
+  .hd--stuck .hd-logo{color:var(--ink)}
+  .hd--stuck .hd-ks{--ks:34px}
+  .hd--stuck .hd-ks .ks-t{color:var(--brass)}
+  .menu .hd-logo{color:var(--ivory)}
+  .menu .hd-ks .ks-t{color:var(--gold-lt)}
+  .menu-list a{gap:0}
+  @media(max-width:560px){
+    .hd-ks .ks-w{display:none}
+    .hd-cta{display:inline-flex;padding:.85em 1.3em .8em;min-height:40px;font-size:.6rem;letter-spacing:.14em}
+    .menu-btn{font-size:0;gap:0}.menu-btn .bars{margin-left:0}
+    .menu-list .mlb{font-size:clamp(1.7rem,8vw,2.3rem)}
+  }
+</style>

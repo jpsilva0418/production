@@ -1,0 +1,30 @@
+---
+/** Her KS monogram, traced from her own price list (media-intake/brand-ks-wordmark-crop.png) into
+ *  a transparent mask (src/assets/brand/ks-mark.png, hashed by the build), so it takes any palette colour through CSS.
+ *  `full` adds the wordmark set under it the way her price list does: KAROLAYNE SOUZA /
+ *  — LASHES & BROWS —. Every placement goes through this one component, so her original logo
+ *  file is a one-file swap when she sends it. */
+import mark from '../assets/brand/ks-mark.png';
+interface Props { full?: boolean; class?: string; label?: string; inline?: boolean }
+const { full = false, inline = false, class: cls, label } = Astro.props;
+---
+<span class:list={['ks', { 'ks--full': full, 'ks--inline': inline }, cls]} role={label ? 'img' : undefined} aria-label={label} aria-hidden={label ? undefined : 'true'}>
+  <i class="ks-m" style={`--ks-img:url(${mark.src})`}></i>
+  {(full || inline) && <span class="ks-w"><span class="ks-n">Karolayne Souza</span><span class="ks-t">Lashes &amp; Brows</span></span>}
+</span>
+<style is:global>
+  .ks{display:inline-flex;flex-direction:column;align-items:center;color:inherit;line-height:1}
+  .ks-m{display:block;width:var(--ks,44px);aspect-ratio:675/666;background:currentColor;
+    -webkit-mask:var(--ks-img) center/contain no-repeat;mask:var(--ks-img) center/contain no-repeat}
+  .ks-w{display:flex;flex-direction:column;align-items:center;gap:.7em}
+  .ks-n{font-family:var(--display);font-weight:400;letter-spacing:.16em;text-indent:.16em;text-transform:uppercase;font-size:var(--ks-n,1.5rem);white-space:nowrap;font-variation-settings:'opsz' 28}
+  .ks-t{display:flex;align-items:center;gap:.9em;font-family:var(--utility);font-weight:500;letter-spacing:.42em;text-indent:.42em;text-transform:uppercase;font-size:var(--ks-t,.66rem);color:var(--ks-accent,var(--gold-lt));white-space:nowrap}
+  .ks-t::before,.ks-t::after{content:"";width:1.6em;height:1px;background:currentColor;opacity:.8}
+  .ks--full{gap:1.4rem}
+  /* inline: monogram + a compact two-line wordmark, for the header */
+  .ks--inline{flex-direction:row;gap:.8rem}
+  .ks--inline .ks-w{align-items:flex-start;gap:.45em}
+  .ks--inline .ks-n{font-size:.95rem;letter-spacing:.14em;text-indent:0}
+  .ks--inline .ks-t{font-size:.5rem;letter-spacing:.34em;text-indent:0}
+  .ks--inline .ks-t::before,.ks--inline .ks-t::after{display:none}
+</style>

@@ -1,0 +1,114 @@
+---
+/** HERO — her face, her words, two ways to book.
+ *   · Media: MEDIA.heroFilm (a clip of hers with NO burned-in text) plays muted over her portrait,
+ *     which is always the poster and the fallback (reduced motion, Save-Data, no film yet).
+ *   · Words: her bio, "Lashes • Eyebrow designer", and her own line "Acabamento premium e simetria
+ *     perfeita", in English with the Portuguese beneath.
+ *   · Actions: WhatsApp (her bio link, the lead) and Square online booking; her bio offer.
+ *  Desktop: text left, the media in a tall gold-ruled frame right. Phone: the media fills the
+ *  screen, the words sit on a dark gradient at the foot. */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { SITE, HERO, MEDIA, ext } from '../lib/content';
+const plates = import.meta.glob<{ default: ImageMetadata }>('../assets/plates/*.jpg', { eager: true });
+const portrait = plates[`../assets/plates/${MEDIA.plates.portrait}.jpg`].default;
+const film = MEDIA.heroFilm;
+---
+<section class="hx" id="hero" data-pin data-chapter="hero" data-tone="film" aria-labelledby="hxTitle">
+  <div class="hx-media" aria-hidden={film ? undefined : 'true'}>
+    <div class="hx-fr">
+      <Image src={portrait} alt="" widths={[640, 900, 1086]} sizes="(max-width:899px) 100vw, 46vw" loading="eager" fetchpriority="high" quality={90} class="hx-still" />
+      {film && (
+        <video class="hx-film" data-film autoplay muted loop playsinline preload="none" poster={film.poster} disablepictureinpicture tabindex="-1" aria-label={film.alt}>
+          <source data-src={film.webm} type="video/webm" />
+          <source data-src={film.mp4} type="video/mp4" />
+        </video>
+      )}
+      <i class="grain" aria-hidden="true"></i>
+    </div>
+  </div>
+  <div class="hx-c">
+    <p class="hx-eye">{HERO.eyebrow.map((e, i) => <><span>{e}</span>{i < HERO.eyebrow.length - 1 && <i aria-hidden="true">✦</i>}</>)}</p>
+    <h1 class="hx-h" id="hxTitle">
+      <span class="hx-l">{HERO.lines[0]}</span>
+      <span class="hx-l ital">{HERO.italic}</span>
+    </h1>
+    <p class="hx-pt" lang="pt-BR">“{SITE.motto}.”</p>
+    <p class="hx-sub">{HERO.sub}</p>
+    <div class="hx-ctas">
+      <a class="btn btn--ivory" href={HERO.ctaHref} {...ext(HERO.ctaHref)}>{HERO.cta}</a>
+      <a class="btn btn--ghost" href={HERO.onlineHref} {...ext(HERO.onlineHref)}>{HERO.online}</a>
+    </div>
+    <p class="hx-offer"><span class="hx-dot" aria-hidden="true"></span>{SITE.offer}<span class="hx-offer-n">· from her Instagram</span></p>
+  </div>
+  <a class="hx-cue" href="#about"><span>{HERO.cue}</span><i class="ln" aria-hidden="true"></i></a>
+</section>
+
+<style>
+  .hx{--peek:56px;position:sticky;top:var(--pin-top,0px);z-index:0;min-height:100vh;min-height:100svh;overflow:hidden;color:var(--ivory);
+    background:radial-gradient(90% 80% at 75% 40%,var(--leaf-2) 0%,var(--leaf) 55%,var(--leaf-deep) 100%);
+    display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);align-items:center;
+    padding:clamp(6.5rem,13vh,8.5rem) var(--gut,5vw) calc(var(--peek) + clamp(3rem,8vh,5rem));gap:clamp(2rem,5vw,5rem)}
+  .hx.is-covered{visibility:hidden}
+  .hx-c{position:relative;z-index:2;max-width:600px}
+  .hx-eye{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem 1rem;margin:0 0 clamp(1.4rem,3vh,2.2rem);font-family:var(--utility);font-weight:600;font-size:.64rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-lt)}
+  .hx-eye i{font-style:normal;font-size:.55rem;opacity:.8}
+  .hx-h{font-size:clamp(2.8rem,5vw,5.2rem);line-height:1;letter-spacing:-.015em;color:var(--ivory);margin:0 0 clamp(1rem,2vh,1.4rem);font-variation-settings:'opsz' 96}
+  .hx-l{display:block;white-space:nowrap}
+  .hx-h .ital{color:var(--gold-lt)}
+  .hx-pt{font-family:var(--display);font-style:italic;font-size:clamp(1rem,1.4vw,1.2rem);color:color-mix(in srgb,var(--ivory) 70%,transparent);margin:0 0 clamp(1.2rem,2.4vh,1.6rem);font-variation-settings:'opsz' 28}
+  .hx-sub{max-width:31em;font-size:clamp(1rem,1.2vw,1.1rem);line-height:1.7;color:color-mix(in srgb,var(--ivory) 84%,transparent);margin:0 0 clamp(1.8rem,3.6vh,2.6rem)}
+  .hx-ctas{display:flex;flex-wrap:wrap;gap:12px}
+  .hx-ctas .btn{min-width:200px}
+  .hx-offer{display:inline-flex;align-items:center;flex-wrap:wrap;gap:.55rem;margin:clamp(1.4rem,3vh,2rem) 0 0;padding:.6rem 1rem .55rem;border:1px solid var(--hairdk-strong);border-radius:999px;
+    font-family:var(--utility);font-weight:600;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ivory)}
+  .hx-offer-n{color:color-mix(in srgb,var(--gold-lt) 85%,transparent);letter-spacing:.12em;font-weight:500}
+  .hx-dot{width:7px;height:7px;border-radius:50%;background:var(--gold-lt);box-shadow:0 0 0 4px color-mix(in srgb,var(--gold-lt) 22%,transparent)}
+  /* the media frame */
+  .hx-media{position:relative;z-index:1;order:2;justify-self:end;width:min(100%,520px)}
+  .hx-fr{position:relative;aspect-ratio:4/5;border-radius:240px 240px var(--r) var(--r);overflow:hidden;background:var(--leaf-deep);
+    box-shadow:0 60px 120px -50px rgba(0,0,0,.8),0 0 0 1px var(--hairdk-strong)}
+  .hx-media::after{content:"";position:absolute;inset:-14px;border:1px solid var(--hairdk);border-radius:254px 254px calc(var(--r) + 10px) calc(var(--r) + 10px);pointer-events:none}
+  .hx-fr :global(img),.hx-film{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
+  .hx-film{z-index:1}
+  .hx-fr .grain{opacity:.04}
+  .hx-cue{position:absolute;bottom:calc(var(--peek) + clamp(1rem,2.6vh,1.6rem));left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:.6rem;min-height:44px;padding:6px 14px;color:var(--gold-lt)}
+  .hx-cue span{font-family:var(--utility);font-weight:600;text-transform:uppercase;letter-spacing:.36em;text-indent:.36em;font-size:.6rem}
+  .hx-cue .ln{width:1px;height:26px;background:linear-gradient(currentColor,transparent);transform-origin:top}
+  .hx-cue:hover,.hx-cue:focus-visible{color:var(--ivory)}
+  @media (prefers-reduced-motion:no-preference){
+    .hx-c>*{animation:fadeUp .9s var(--ease) both}
+    .hx-c>:nth-child(2){animation-delay:.08s}.hx-c>:nth-child(3){animation-delay:.16s}.hx-c>:nth-child(4){animation-delay:.22s}
+    .hx-c>:nth-child(5){animation-delay:.28s}.hx-c>:nth-child(6){animation-delay:.34s}
+    .hx-media{animation:hxIn 1.4s var(--ease) .1s both}
+    .hx-cue .ln{animation:cuePulse 2.8s ease-in-out 2s infinite}
+  }
+  @keyframes hxIn{from{opacity:0;transform:translateY(30px) scale(.97)}to{opacity:1;transform:none}}
+  @keyframes cuePulse{0%,100%{transform:scaleY(.35);opacity:.5}50%{transform:scaleY(1);opacity:1}}
+  /* tablet & phone: the media fills the screen, the words sit at its foot */
+  @media(max-width:899px){
+    .hx{--peek:38px;grid-template-columns:1fr;align-items:end;padding:0 20px calc(var(--peek) + 4.6rem)}
+    .hx-media{position:absolute;inset:0;width:100%;justify-self:stretch;order:0}
+    .hx-media::after{display:none}
+    .hx-fr{position:absolute;inset:0;aspect-ratio:auto;border-radius:0;box-shadow:none}
+    .hx-fr::after{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,.1) 40%,color-mix(in srgb,var(--leaf-deep) 88%,transparent) 72%,var(--leaf-deep) 100%)}
+    .hx-fr :global(img),.hx-film{object-position:50% 18%}
+    .hx-c{padding-top:44vh;padding-top:44svh}
+    .hx-h{font-size:clamp(2.2rem,10vw,3.4rem)}
+    .hx-sub{font-size:.98rem;margin-bottom:1.5rem}
+    .hx-ctas{flex-direction:column;align-items:stretch;max-width:340px}
+    .hx-ctas .btn{min-width:0}
+    .hx-cue{display:none}
+  }
+  @media(max-width:899px) and (min-aspect-ratio:3/4){.hx-c{padding-top:30vh}}
+  @media (prefers-reduced-motion:reduce){.hx{position:relative;top:auto!important;visibility:visible!important}}
+</style>
+<script>
+  // Pin: when the hero is taller than the screen, it scrolls until its foot reaches the screen's
+  // foot, then holds while the next chapter rises over it.
+  const hero = document.getElementById('hero');
+  if (hero && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const pin = () => { hero.style.setProperty('--pin-top', `${Math.min(0, innerHeight - hero.offsetHeight)}px`); };
+    pin(); addEventListener('resize', pin);
+  }
+</script>

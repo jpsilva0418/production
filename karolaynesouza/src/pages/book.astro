@@ -1,0 +1,108 @@
+---
+/** BOOK — her two real booking paths (WhatsApp, the link in her bio; Square, linked from her
+ *  Linktree), every way to reach her, and a demo-only request form that never sends anything. */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE, TEL, ext, REQUEST } from '../lib/content';
+---
+<BaseLayout title="Book an appointment" description={`Book lash extensions or eyebrow design with ${SITE.owner} — on WhatsApp or online. ${SITE.address.label}.`} path="/book">
+  <section class="cov bk-cov">
+    <div class="cov-c">
+      <p class="cov-kick fade" lang="pt-BR">Agende seu horário</p>
+      <h1 class="disp rv">Book your <span class="ital">appointment.</span></h1>
+      <p class="cov-sub rv" style="--d:.08s">Two ways to book with Karolayne. Her Instagram offer: <b>book now, 15% off</b> — ask her for the details.</p>
+    </div>
+  </section>
+
+  <section class="bk">
+    <div class="wrap bk-two">
+      <a class="bk-card bk-card--wa fade" href={SITE.whatsapp} {...ext(SITE.whatsapp)}>
+        <span class="caps-xs">Fastest</span>
+        <span class="bk-t">WhatsApp</span>
+        <span class="bk-b">Message Karolayne directly — the link in her Instagram bio. Tell her the set you want and a day that works.</span>
+        <span class="btn btn--ivory">Book on WhatsApp</span>
+      </a>
+      <a class="bk-card fade" style="--d:.08s" href={SITE.booking} {...ext(SITE.booking)}>
+        <span class="caps-xs">Any time</span>
+        <span class="bk-t">Online</span>
+        <span class="bk-b">Pick a service and an open time on her Square booking page.</span>
+        <span class="btn btn--line">Book online</span>
+      </a>
+    </div>
+
+    <div class="wrap bk-more">
+      <dl class="bk-ways fade">
+        <div><dt>Studio</dt><dd><a href={SITE.maps} {...ext(SITE.maps)}>{SITE.address.street}<br />{SITE.address.city}, {SITE.address.region} {SITE.address.zip}</a></dd></div>
+        <div><dt>Call or WhatsApp</dt><dd><a href={TEL}>{SITE.phone}</a></dd></div>
+        <div><dt>Instagram</dt><dd><a href={SITE.instagram.url} {...ext(SITE.instagram.url)}>{SITE.instagram.handle}</a></dd></div>
+        <div><dt>Languages</dt><dd>English &amp; Português</dd></div>
+      </dl>
+
+      <form class="rq fade" id="rq" novalidate data-demo>
+        <h2 class="disp">{REQUEST.heading}</h2>
+        <p class="rq-b">{REQUEST.body}</p>
+        <div class="rq-g">
+          <label><span>Your name</span><input name="name" autocomplete="name" required /></label>
+          <label><span>WhatsApp or phone</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" required /></label>
+          <label class="rq-w"><span>Service</span>
+            <select name="service" required>
+              <option value="">Choose one</option>
+              {REQUEST.services.map((s) => <option>{s}</option>)}
+            </select>
+          </label>
+          <label class="rq-w"><span>Preferred day and time <em>(optional)</em></span><input name="when" /></label>
+          <label class="rq-w"><span>Anything she should know? <em>(optional)</em></span><textarea name="note" rows="3"></textarea></label>
+        </div>
+        <p class="rq-err" id="rqErr" role="alert" hidden>Please add your name, a number and a service.</p>
+        <button class="btn btn--solid" type="submit">Send request</button>
+        <p class="rq-done" id="rqDone" role="status" hidden>{REQUEST.demo}</p>
+      </form>
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .bk-cov .cov-sub b{font-style:normal;font-weight:500;color:var(--ink)}
+  .bk{padding-bottom:var(--pad)}
+  .bk-two{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(1rem,2vw,1.6rem)}
+  .bk-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:1rem;padding:clamp(1.8rem,3.6vw,3rem);border-radius:var(--r-lg);background:var(--paper);border:1px solid var(--hair-strong);color:var(--ink-soft);transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+  .bk-card:hover,.bk-card:focus-visible{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+  .bk-card--wa{background:var(--leaf);border-color:var(--leaf);color:color-mix(in srgb,var(--ivory) 82%,transparent)}
+  .bk-card--wa::before{content:"";position:absolute;inset:12px;border:1px solid var(--hairdk);border-radius:calc(var(--r-lg) - 8px);pointer-events:none}
+  .bk-card--wa .caps-xs{color:var(--gold-lt)}
+  .bk-t{font-family:var(--display);font-size:clamp(2.2rem,4.4vw,3.6rem);line-height:1;color:var(--ink)}
+  .bk-card--wa .bk-t{color:var(--ivory)}
+  .bk-b{max-width:28em;margin-bottom:.8rem}
+  .bk-card .btn{margin-top:auto}
+  .bk-more{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(2rem,6vw,6rem);margin-top:clamp(3rem,6vw,5rem);align-items:start}
+  .bk-ways{margin:0;border-top:1px solid var(--hair-strong)}
+  .bk-ways div{display:flex;flex-direction:column;gap:.2rem;padding:1rem 0;border-bottom:1px solid var(--hair)}
+  .bk-ways dt{font-family:var(--utility);font-weight:600;font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--brass)}
+  .bk-ways dd{margin:0;font-family:var(--display);font-size:1.2rem;color:var(--ink)}
+  .bk-ways a:hover{color:var(--brass)}
+  .rq{background:var(--linen);border-radius:var(--r-lg);padding:clamp(1.6rem,3.6vw,2.8rem)}
+  .rq .disp{font-size:clamp(1.8rem,3vw,2.4rem);margin-bottom:.6rem}
+  .rq-b{margin-bottom:1.6rem}
+  .rq-g{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.4rem}
+  .rq-w{grid-column:1/-1}
+  .rq label{display:flex;flex-direction:column;gap:.4rem}
+  .rq label span{font-family:var(--utility);font-weight:600;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink)}
+  .rq label em{font-style:normal;font-weight:500;letter-spacing:.04em;text-transform:none;color:var(--ink-soft)}
+  .rq input,.rq select,.rq textarea{font:inherit;font-size:1rem;color:var(--ink);background:var(--paper);border:1px solid var(--hair-strong);border-radius:var(--r-sm);padding:.8rem .9rem;min-height:48px;width:100%}
+  .rq textarea{resize:vertical}
+  .rq-err{color:#8E2B22;font-size:.92rem;margin-bottom:1rem}
+  .rq-done{margin-top:1.2rem;padding:1rem 1.1rem;border-radius:var(--r-sm);background:var(--leaf);color:var(--ivory);font-size:.95rem}
+  @media(max-width:899px){.bk-two,.bk-more{grid-template-columns:1fr}}
+  @media(max-width:560px){.rq-g{grid-template-columns:1fr}.bk-card .btn,.rq .btn{width:100%}}
+</style>
+<script>
+  // DEMO ONLY: the request never leaves the page — no fetch, no form action, no network.
+  const form = document.getElementById('rq') as HTMLFormElement | null;
+  if (form) form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const err = document.getElementById('rqErr'), done = document.getElementById('rqDone');
+    const ok = ['name', 'phone', 'service'].every((n) => String((form.elements.namedItem(n) as HTMLInputElement | null)?.value ?? '').trim() !== '');
+    if (err) err.hidden = ok;
+    if (!ok) return;
+    if (done) { done.hidden = false; done.focus?.(); }
+    form.querySelector('button[type="submit"]')?.setAttribute('disabled', '');
+  });
+</script>

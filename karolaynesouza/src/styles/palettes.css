@@ -1,0 +1,46 @@
+/* ============ THE THREE DIRECTIONS ============
+   Same structure, content and type; only token values change. Small caps (--brass on --ivory)
+   and body text keep AA contrast in each; --leaf is the dark chapter / primary button colour.
+
+   A · NOIR STUDIO     black, cream, gold — her black-and-white studio and gold price list
+   B · BLUSH NOIR      blush grounds, black, rose-gold accent
+   C · NUDE ESPRESSO   warm nude, espresso, caramel */
+
+/* ---- A · noir studio ---- (also the :root default in tokens.css) */
+body.pal-a{
+  --ivory:#F7F2EA; --linen:#EFE7DB; --paper:#FFFDF9; --blush:#F3ECE1;
+  --leaf:#0F0E0D; --leaf-2:#2A2622; --leaf-deep:#070706;
+  --moss:#6E5A33; --sage:#C9A24A; --sage-band:#EFE6D3;
+  --petal:#E8D9BC; --petal-deep:#C4A877;
+  --brass:#7C6127; --gold-lt:#D9BC72;
+  --ink:#141210; --ink-soft:#4E4740;
+  --hair:rgba(20,18,16,.14); --hair-strong:rgba(20,18,16,.3);
+  --hairdk:rgba(217,188,114,.2); --hairdk-strong:rgba(217,188,114,.42);
+  --shadow-lg:0 50px 90px -46px rgba(0,0,0,.45); --shadow:0 24px 48px -30px rgba(0,0,0,.36);
+}
+
+/* ---- B · blush noir ---- */
+body.pal-b{
+  --ivory:#FBF4F1; --linen:#F4E6E1; --paper:#FFFFFF; --blush:#F7E9E5;
+  --leaf:#161213; --leaf-2:#33292B; --leaf-deep:#0B0909;
+  --moss:#9A6B63; --sage:#D9A79C; --sage-band:#F4E2DD;
+  --petal:#EED3CC; --petal-deep:#D6A99F;
+  --brass:#8A5249; --gold-lt:#E9C2B7;
+  --ink:#1A1415; --ink-soft:#5A4B4C;
+  --hair:rgba(26,20,21,.14); --hair-strong:rgba(26,20,21,.3);
+  --hairdk:rgba(233,194,183,.22); --hairdk-strong:rgba(233,194,183,.44);
+  --shadow-lg:0 50px 90px -46px rgba(40,18,18,.4); --shadow:0 24px 48px -30px rgba(40,18,18,.32);
+}
+
+/* ---- C · nude espresso ---- */
+body.pal-c{
+  --ivory:#F6EEE6; --linen:#EDE1D5; --paper:#FFFBF7; --blush:#F1E5DA;
+  --leaf:#2B1F19; --leaf-2:#47352B; --leaf-deep:#1C140F;
+  --moss:#8C6648; --sage:#C79A72; --sage-band:#EEDFD0;
+  --petal:#E3CDB8; --petal-deep:#C6A281;
+  --brass:#83593A; --gold-lt:#E0C09E;
+  --ink:#24180F; --ink-soft:#5B4B3F;
+  --hair:rgba(43,31,25,.15); --hair-strong:rgba(43,31,25,.32);
+  --hairdk:rgba(224,192,158,.22); --hairdk-strong:rgba(224,192,158,.44);
+  --shadow-lg:0 50px 90px -46px rgba(28,20,15,.45); --shadow:0 24px 48px -30px rgba(28,20,15,.34);
+}
