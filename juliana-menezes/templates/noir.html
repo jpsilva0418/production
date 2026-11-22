@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Ju Menezes Beauty — Nails · Brows · Lips</title>
+<meta name="description" content="Prévia conceitual — Juliana Menezes, nail designer e artista de micropigmentação em Malden, MA.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0b1020; --ink-2:#111830; --navy:#1d2847; --ivory:#efe9df; --mist:#a7abb8; --gold:#c8ad82; --gold-2:#e2cfa9;
+  --line:rgba(200,173,130,.28);
+  --serif:"Cormorant Garamond",Georgia,serif; --caps:"Cinzel",Georgia,serif; --sans:"Jost",system-ui,sans-serif;
+  --gut:clamp(20px,5vw,64px); --max:1240px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{background:var(--ink);color:var(--ivory);font:300 17px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit}
+html[lang=en] .pt{display:none} html:not([lang=en]) .en{display:none}
+:focus-visible{outline:1px solid var(--gold-2);outline-offset:4px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gut)}
+.eyebrow{font:500 11px/1 var(--caps);letter-spacing:.32em;text-transform:uppercase;color:var(--gold)}
+h2{font:300 clamp(40px,5.6vw,76px)/1 var(--serif);letter-spacing:-.01em}
+h2 em{font-style:italic;color:var(--gold-2)}
+.btn{display:inline-flex;align-items:center;gap:.7em;font:500 12px/1 var(--caps);letter-spacing:.24em;text-transform:uppercase;
+  padding:18px 28px;text-decoration:none;border:1px solid var(--gold);transition:background .35s,color .35s}
+.btn-solid{background:var(--gold);color:var(--ink)} .btn-solid:hover{background:var(--gold-2)}
+.btn-ghost{color:var(--ivory)} .btn-ghost:hover{background:rgba(200,173,130,.12)}
+/* header */
+.top{position:fixed;inset:0 0 auto;z-index:20;transition:background .4s;background:linear-gradient(var(--ink),rgba(11,16,32,0))}
+.top .wrap{display:flex;align-items:center;gap:28px;height:78px}
+.mark{text-decoration:none;font:400 19px/1 var(--caps);letter-spacing:.28em;white-space:nowrap}
+.mark small{display:block;font-size:9px;letter-spacing:.62em;color:var(--gold);margin-top:6px}
+.nav{display:flex;gap:30px;margin-left:auto}
+.nav a{text-decoration:none;font:400 13px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--mist);transition:color .3s}
+.nav a:hover{color:var(--ivory)}
+.lang{display:flex;border:1px solid var(--line)}
+.lang button{background:none;border:0;color:var(--mist);font:500 10px/1 var(--caps);letter-spacing:.2em;padding:9px 10px;cursor:pointer}
+.lang button[aria-pressed=true]{color:var(--ink);background:var(--gold)}
+.top .btn{padding:13px 20px}
+.burger{display:none;background:none;border:0;color:var(--ivory);width:40px;height:40px;cursor:pointer}
+.burger span{display:block;height:1px;background:currentColor;margin:7px 8px}
+/* hero */
+.hero{position:relative;min-height:100svh;display:grid;grid-template-columns:1.05fr .95fr;align-items:end;overflow:hidden}
+.hero-copy{padding:140px 0 clamp(56px,9vh,110px) var(--gut);max-width:720px;position:relative;z-index:2}
+.hero h1{font:300 clamp(58px,8.6vw,132px)/.9 var(--serif);letter-spacing:-.02em;margin:26px 0 30px}
+.hero h1 em{display:block;font-style:italic;color:var(--gold-2);padding-left:.55em}
+.hero p.lede{max-width:30em;color:var(--mist);font-size:18px}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:14px;margin-top:38px}
+.hero-photo{position:relative;height:100%;min-height:100svh;overflow:hidden;background:var(--ink)}
+.hero-photo img{position:absolute;top:0;left:-14%;width:128%;height:100%;object-fit:cover;object-position:50% 12%;mix-blend-mode:lighten;filter:brightness(.92) contrast(1.05)}
+.hero-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--ink) 0%,rgba(11,16,32,.35) 30%,rgba(11,16,32,0) 60%),linear-gradient(270deg,var(--ink) 0%,rgba(11,16,32,0) 18%),linear-gradient(0deg,var(--ink) 0%,rgba(11,16,32,0) 28%)}
+.hero-sign{position:absolute;right:var(--gut);bottom:clamp(56px,9vh,110px);z-index:2;text-align:right;font:300 italic 18px/1.4 var(--serif);color:var(--mist)}
+.hero-sign b{display:block;font:400 12px/1 var(--caps);letter-spacing:.3em;color:var(--ivory);font-style:normal;margin-bottom:8px}
+.trio{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.trio .wrap{display:flex;justify-content:space-between;align-items:center;height:76px;font:400 clamp(13px,1.4vw,15px)/1 var(--caps);letter-spacing:.5em;text-transform:uppercase}
+.trio i{width:5px;height:5px;background:var(--gold);transform:rotate(45deg)}
+section{padding:clamp(88px,12vw,160px) 0}
+/* cartela (signature) */
+.cartela-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(36px,6vw,96px);align-items:center}
+.cartela-intro p{color:var(--mist);margin:26px 0 40px;max-width:28em}
+.chips{display:grid;grid-template-columns:repeat(4,1fr);gap:22px 14px}
+.chip{background:none;border:0;color:var(--mist);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:12px;font:400 10.5px/1.2 var(--caps);letter-spacing:.16em;text-transform:uppercase;padding:6px 0;transition:color .3s}
+.chip .tip{width:46px;height:62px;border-radius:50% 50% 44% 44% / 62% 62% 38% 38%;background:var(--c);box-shadow:inset -6px -8px 14px rgba(0,0,0,.28),inset 5px 6px 10px rgba(255,255,255,.22);transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.chip:hover,.chip[aria-pressed=true]{color:var(--ivory)}
+.chip:hover .tip{transform:translateY(-4px)}
+.chip[aria-pressed=true] .tip{transform:translateY(-6px);outline:1px solid var(--gold);outline-offset:6px}
+.vitrine{position:relative;aspect-ratio:4/5;background:var(--ink-2)}
+.vitrine img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .7s ease}
+.vitrine img.on{opacity:1}
+.vitrine figcaption{position:absolute;left:-1px;bottom:28px;background:var(--ink);padding:14px 22px;font:300 italic 22px/1 var(--serif)}
+.vitrine figcaption .eyebrow{display:block;font-size:9px;margin-bottom:8px;font-style:normal}
+.thumbs{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:clamp(48px,6vw,80px)}
+.thumbs img{aspect-ratio:1;object-fit:cover;filter:saturate(.92);transition:filter .4s,transform .6s}
+.thumbs a{overflow:hidden;display:block}
+.thumbs a:hover img{filter:saturate(1.1);transform:scale(1.05)}
+/* brows & lips */
+.pmu{background:var(--ink-2)}
+.pmu-head{display:flex;justify-content:space-between;align-items:end;gap:40px;flex-wrap:wrap;margin-bottom:64px}
+.pmu-head p{color:var(--mist);max-width:30em}
+.pmu-grid{display:grid;grid-template-columns:1.25fr .75fr 1fr;gap:18px;align-items:start}
+.pmu-card img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.pmu-card:nth-child(2){margin-top:90px}
+.pmu-card:nth-child(1) img{aspect-ratio:5/4}
+.pmu-card h3{font:400 28px/1.1 var(--serif);margin:22px 0 8px}
+.pmu-card p{color:var(--mist);font-size:15px}
+.pmu-card .from{font:500 11px/1 var(--caps);letter-spacing:.22em;color:var(--gold);margin-top:14px;display:block}
+/* menu */
+.menu-wrap{display:grid;grid-template-columns:repeat(2,1fr);gap:20px clamp(40px,6vw,96px);margin-top:64px}
+.menu-title{font:500 12px/1 var(--caps);letter-spacing:.32em;text-transform:uppercase;color:var(--gold);padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:6px}
+.menu li{list-style:none;display:flex;align-items:baseline;gap:12px;padding:14px 0;border-bottom:1px solid rgba(239,233,223,.06)}
+.svc{display:flex;flex-direction:column;gap:3px}
+.svc-name{font:400 21px/1.2 var(--serif)}
+.svc-time{font-size:12px;letter-spacing:.12em;color:var(--mist);text-transform:uppercase}
+.dots{flex:1;border-bottom:1px dotted rgba(200,173,130,.4);transform:translateY(-6px)}
+.price{font:400 22px/1 var(--serif);color:var(--gold-2)}
+.policy{margin-top:48px;padding:26px 30px;border:1px solid var(--line);color:var(--mist);font-size:15px;max-width:780px}
+.policy b{color:var(--ivory);font-weight:400}
+.menu-wrap .menu-group:first-child{grid-row:span 3}
+.menu-wrap .policy{margin-top:20px}
+.menu-photo{width:100%;aspect-ratio:4/3;object-fit:cover;margin-top:20px}
+.side-note{margin-top:40px;color:var(--mist);font-size:15px}
+/* about */
+.about-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(40px,7vw,110px);align-items:center}
+.about-photo{position:relative}
+.about-photo img{aspect-ratio:4/5;object-fit:cover;object-position:50% 15%;width:100%}
+.about-photo::before{content:"";position:absolute;inset:-18px 18px 18px -18px;border:1px solid var(--line);z-index:-1}
+.about blockquote{font:300 italic clamp(30px,3.4vw,46px)/1.15 var(--serif);margin:28px 0 30px;color:var(--ivory)}
+.about p{color:var(--mist);max-width:34em}
+.traits{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px;list-style:none}
+.traits li{border:1px solid var(--line);padding:10px 16px;font:400 11px/1 var(--caps);letter-spacing:.2em;text-transform:uppercase}
+/* reviews */
+.reviews{background:var(--ivory);color:var(--ink)}
+.reviews .eyebrow{color:#8a6f45}
+.rating{display:flex;align-items:baseline;gap:22px;flex-wrap:wrap;margin-top:22px}
+.rating strong{font:300 clamp(80px,10vw,140px)/.85 var(--serif)}
+.rating span{font:400 12px/1.6 var(--caps);letter-spacing:.24em;text-transform:uppercase;color:#5b5f6b}
+.stars{color:#a8834b;letter-spacing:.3em;font-size:16px}
+.review-row{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(28px,4vw,56px);margin-top:72px}
+.review{border-top:1px solid rgba(11,16,32,.2);padding-top:26px}
+.review blockquote{font:400 23px/1.35 var(--serif)}
+.review figcaption{margin-top:16px;font:500 11px/1 var(--caps);letter-spacing:.24em;text-transform:uppercase;color:#5b5f6b}
+.review-src{margin-top:48px;font-size:14px;color:#5b5f6b}
+/* course */
+.course-box{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,96px);border:1px solid var(--line);padding:clamp(32px,5vw,72px)}
+.course-meta{display:flex;gap:40px;margin:34px 0}
+.course-meta div{font:300 44px/1 var(--serif);color:var(--gold-2)}
+.course-meta small{display:block;font:400 10px/1 var(--caps);letter-spacing:.26em;color:var(--mist);margin-top:10px}
+.course ul{columns:2;column-gap:32px;list-style:none;color:var(--mist);font-size:15px}
+.course li{break-inside:avoid;padding:9px 0 9px 20px;position:relative;border-bottom:1px solid rgba(239,233,223,.06)}
+.course li::before{content:"";position:absolute;left:0;top:18px;width:6px;height:1px;background:var(--gold)}
+/* visit */
+.visit{background:radial-gradient(120% 90% at 80% 0%,var(--navy),var(--ink) 60%)}
+.visit-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(40px,6vw,96px);align-items:end}
+.visit h2{font-size:clamp(48px,7vw,104px)}
+.hours{list-style:none;margin-top:10px}
+.hours li{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line);font-size:16px}
+.hours li span:last-child{color:var(--gold-2)}
+.visit .ctas{display:flex;flex-wrap:wrap;gap:14px;margin-top:42px}
+.visit .place{margin-top:26px;color:var(--mist)}
+footer{border-top:1px solid var(--line);padding:34px 0 110px;font-size:13px;color:var(--mist)}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.demo-note{color:var(--gold)}
+.sticky-book{display:none}
+/* motion */
+.js .reveal{opacity:0;transform:translateY(26px);transition:opacity 1s ease,transform 1s cubic-bezier(.2,.7,.2,1)}
+.js .reveal.in{opacity:1;transform:none}
+.hero h1,.hero .lede,.hero .ctas,.hero .eyebrow{animation:rise 1.2s cubic-bezier(.2,.7,.2,1) both}
+.hero h1{animation-delay:.15s}.hero .lede{animation-delay:.35s}.hero .ctas{animation-delay:.5s}
+.hero-photo img{animation:slow 2.4s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}}
+@keyframes slow{from{opacity:0;transform:scale(1.06)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* responsive */
+@media (max-width:980px){
+  .nav,.top .btn{display:none}.burger{display:block}.lang{margin-left:auto}
+  body.nav-open .nav{display:flex;position:fixed;inset:78px 0 auto;flex-direction:column;gap:0;background:var(--ink);padding:10px var(--gut) 26px;border-bottom:1px solid var(--line)}
+  body.nav-open .nav a{padding:16px 0;border-bottom:1px solid rgba(239,233,223,.07);font-size:14px}
+  .hero{grid-template-columns:1fr;align-items:end}
+  .hero-photo{position:absolute;inset:70px 0 auto;height:66svh;min-height:0}
+  .hero-photo img{left:0;width:100%;object-position:50% 8%}
+  .hero-photo::after{background:linear-gradient(0deg,var(--ink) 18%,rgba(11,16,32,.55) 55%,rgba(11,16,32,.15) 100%)}
+  .hero-copy{padding:58svh var(--gut) 56px}
+  .hero-sign{display:none}
+  .cartela-grid,.about-grid,.visit-grid,.course-box{grid-template-columns:1fr}
+  .pmu-grid{grid-template-columns:1fr 1fr}.pmu-card:nth-child(1){grid-column:1/-1}.pmu-card:nth-child(2){margin-top:0}
+  .menu-wrap{grid-template-columns:1fr}
+  .review-row{grid-template-columns:1fr}
+  .thumbs{grid-template-columns:repeat(3,1fr)}
+  .sticky-book{display:flex;opacity:0;pointer-events:none;transition:opacity .4s;position:fixed;left:14px;right:14px;bottom:14px;z-index:30;justify-content:center}
+}
+@media (max-width:560px){
+  body{font-size:16px}
+  .trio .wrap{letter-spacing:.28em;font-size:12px}
+  .chips{grid-template-columns:repeat(4,1fr);gap:18px 6px}.chip{font-size:9px;letter-spacing:.08em}
+  .course ul{columns:1}.course-meta{gap:28px}
+  .svc-name{font-size:19px}
+  .pmu-grid{grid-template-columns:1fr}
+}
+body.scrolled .sticky-book{opacity:1;pointer-events:auto}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="#inicio">JU MENEZES<small>BEAUTY</small></a>
+    <nav class="nav" aria-label="Principal">
+      <a href="#cartela">[[Unhas||Nails]]</a><a href="#pmu">[[Sobrancelhas & Lábios||Brows & Lips]]</a>
+      <a href="#menu">[[Serviços||Menu]]</a><a href="#sobre">[[Sobre||About]]</a><a href="#curso">[[Curso||Course]]</a><a href="#visita">[[Contato||Contact]]</a>
+    </nav>
+    <div class="lang" role="group" aria-label="Idioma / Language"><button data-lang="pt">PT</button><button data-lang="en">EN</button></div>
+    <a class="btn btn-solid" href="{{BOOK}}" target="_blank" rel="noopener">[[Agendar||Book]]</a>
+    <button class="burger" data-nav-toggle aria-expanded="false" aria-label="Menu"><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="inicio">
+  <section class="hero" style="padding:0">
+    <div class="hero-copy">
+      <p class="eyebrow">Nail &amp; PMU artist · Malden, MA</p>
+      <h1>[[Faço o meu melhor<em>ou não faço.</em>||I do my best<em>or I don't do it.</em>]]</h1>
+      <p class="lede">[[Unhas naturais e resistentes, design de sobrancelhas e micropigmentação — cada atendimento pensado para realçar sua beleza com naturalidade e elegância.||Natural, strong nails, brow design and permanent makeup — every appointment designed to bring out your beauty with ease and elegance.]]</p>
+      <div class="ctas">
+        <a class="btn btn-solid" href="{{BOOK}}" target="_blank" rel="noopener">[[Agendar horário||Book an appointment]]</a>
+        <a class="btn btn-ghost" href="{{WA}}" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+    <div class="hero-photo"><img src="img/portrait-navy.jpg" alt="Juliana Menezes em retrato de estúdio, blazer azul-marinho"></div>
+    <p class="hero-sign"><b>JULIANA MENEZES</b>[[De BH para Boston||From Belo Horizonte to Boston]]</p>
+  </section>
+  <div class="trio"><div class="wrap"><span>Nails</span><i></i><span>Brows</span><i></i><span>Lips</span></div></div>
+
+  <section id="cartela">
+    <div class="wrap">
+      <div class="cartela-grid">
+        <div class="cartela-intro reveal">
+          <p class="eyebrow">[[A cartela||The colour chart]]</p>
+          <h2>[[Escolha <em>a cor.</em>||Pick <em>a shade.</em>]]</h2>
+          <p>[[Toque em um tom para ver o trabalho da Juliana. Cutículas fundinhas, acabamento limpo e esmaltação que dura.||Tap a shade to see Juliana's work. Close cuticle work, clean finish, colour that lasts.]]</p>
+          <div class="chips" role="group" aria-label="Cores">
+            <button class="chip" style="--c:#2c68d8" data-img="0" aria-pressed="true"><span class="tip"></span>[[Azul royal||Royal blue]]</button>
+            <button class="chip" style="--c:#1b1f58" data-img="1"><span class="tip"></span>[[Marinho||Navy]]</button>
+            <button class="chip" style="--c:#5a1020" data-img="2"><span class="tip"></span>[[Bordô||Bordeaux]]</button>
+            <button class="chip" style="--c:#97175a" data-img="3"><span class="tip"></span>Magenta</button>
+            <button class="chip" style="--c:#b28a8f" data-img="4"><span class="tip"></span>[[Malva||Mauve]]</button>
+            <button class="chip" style="--c:#6e402c" data-img="5"><span class="tip"></span>[[Chocolate||Cocoa]]</button>
+            <button class="chip" style="--c:#8c34c8" data-img="6"><span class="tip"></span>[[Violeta||Violet]]</button>
+            <button class="chip" style="--c:#c3121d" data-img="7"><span class="tip"></span>[[Cereja||Cherry]]</button>
+          </div>
+        </div>
+        <figure class="vitrine reveal" aria-live="polite">
+          <img class="on" src="img/n-royal-blue.jpg" alt="Unhas coffin azul royal">
+          <img src="img/n-navy.jpg" alt="Unhas curtas azul-marinho">
+          <img src="img/n-bordo.jpg" alt="Unhas coffin bordô">
+          <img src="img/n-magenta.jpg" alt="Unhas coffin magenta">
+          <img src="img/n-mauve.jpg" alt="Unhas coffin malva">
+          <img src="img/n-choc.jpg" alt="Unhas curtas chocolate">
+          <img src="img/n-purple.jpg" alt="Unhas curtas violeta">
+          <img src="img/n-cherry.jpg" alt="Unhas curtas vermelho cereja">
+          <figcaption><span class="eyebrow">[[Tom||Shade]]</span><span data-cap>[[Azul royal||Royal blue]]</span></figcaption>
+        </figure>
+      </div>
+      <div class="thumbs reveal">
+        <a href="{{IG}}" target="_blank" rel="noopener"><img src="img/n-mauve-ring.jpg" alt="Unhas amendoadas malva"></a>
+        <a href="{{IG}}" target="_blank" rel="noopener"><img src="img/n-lilac-ombre.jpg" alt="Unhas lilás degradê"></a>
+        <a href="{{IG}}" target="_blank" rel="noopener"><img src="img/n-blue-french.jpg" alt="Francesinha azul"></a>
+        <a href="{{IG}}" target="_blank" rel="noopener"><img src="img/n-white-french.jpg" alt="Francesinha branca"></a>
+        <a href="{{IG}}" target="_blank" rel="noopener"><img src="img/n-black-almond.jpg" alt="Unhas pretas amendoadas"></a>
+        <a href="{{IG}}" target="_blank" rel="noopener"><img src="img/n-red-almond.jpg" alt="Unhas vermelhas amendoadas"></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="pmu" class="pmu">
+    <div class="wrap">
+      <div class="pmu-head reveal">
+        <div><p class="eyebrow">[[Sobrancelhas & Lábios||Brows & Lips]]</p><h2>[[Natural, <em>só que melhor.</em>||Natural, <em>only better.</em>]]</h2></div>
+        <p>[[Design que respeita o formato do seu rosto e micropigmentação com resultado delicado, elegante e duradouro.||Shaping that follows your face, and permanent makeup that heals soft, elegant and long-lasting.]]</p>
+      </div>
+      <div class="pmu-grid">
+        <article class="pmu-card reveal"><img src="img/b-closeup.jpg" alt="Sobrancelha fio a fio">
+          <h3>[[Fio a fio||Hair-stroke brows]]</h3><p>[[Preenche falhas e valoriza o rosto, com efeito natural e personalizado.||Fills gaps and frames the face with a natural, tailored effect.]]</p><span class="from">3h · $399</span></article>
+        <article class="pmu-card reveal"><img src="img/l-closeup.jpg" alt="Micropigmentação labial">
+          <h3>[[Labial||Lip blush]]</h3><p>[[Redefine o contorno, corrige pequenas assimetrias e intensifica a cor.||Redefines the outline, softens small asymmetries and deepens the colour.]]</p><span class="from">3h · $399</span></article>
+        <article class="pmu-card reveal"><img src="img/b-brush.jpg" alt="Brow lamination">
+          <h3>[[Design & lamination||Design & lamination]]</h3><p>[[Alinhamento, simetria e acabamento — com cera e pinça, ou fios alinhados pela lamination.||Alignment, symmetry and finish — by wax and tweezers, or set in place with lamination.]]</p><span class="from">[[a partir de||from]] $35</span></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="menu">
+    <div class="wrap">
+      <div class="reveal"><p class="eyebrow">[[Serviços & valores||Services & prices]]</p><h2>[[O <em>menu.</em>||The <em>menu.</em>]]</h2></div>
+      <div class="menu-wrap reveal">{{SERVICES}}
+      <p class="policy">[[<b>Política de cancelamento.</b> Imprevistos acontecem — pedimos aviso com 24 horas de antecedência. Sem aviso dentro do prazo, é cobrado 100% do valor do procedimento.||<b>Cancellation policy.</b> Life happens — please give 24 hours' notice. Without notice inside that window, 100% of the service price is charged.]]</p>
+      <img class="menu-photo" src="img/b-eyes-closed.jpg" alt="Sobrancelhas após micropigmentação"></div>
+    </div>
+  </section>
+
+  <section id="sobre" class="about">
+    <div class="wrap about-grid">
+      <div class="about-photo reveal"><img src="img/portrait-navy-stand.jpg" alt="Juliana Menezes em retrato de estúdio"></div>
+      <div class="reveal">
+        <p class="eyebrow">[[Quem é a Juliana||Meet Juliana]]</p>
+        <blockquote>[[“Elevar a autoestima de outras mulheres é o meu objetivo.”||“Lifting other women's self-esteem is my purpose.”]]</blockquote>
+        <p>[[Nail designer e artista de micropigmentação, de Belo Horizonte para Boston. Atende em Malden com hora marcada, com foco em qualidade, segurança e uma experiência acolhedora do início ao fim.||Nail designer and permanent-makeup artist, from Belo Horizonte to Boston. By appointment in Malden, focused on quality, safety and a warm experience from start to finish.]]</p>
+        <ul class="traits">
+          <li>[[Super detalhista||Detail-obsessed]]</li><li>[[Empresária||Business owner]]</li><li>[[Mãe e esposa||Wife & mother]]</li><li>[[Apaixonada por café||Coffee lover]]</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="reviews">
+    <div class="wrap">
+      <p class="eyebrow">[[Clientes||Clients]]</p>
+      <div class="rating"><strong>5.0</strong><span><span class="stars" aria-hidden="true">★★★★★</span><br>[[11 avaliações no Setmore||11 reviews on Setmore]]</span></div>
+      <div class="review-row">{{REVIEWS}}</div>
+      <p class="review-src">[[Avaliações reais de clientes, publicadas na página de agendamento da Juliana.||Real client reviews, published on Juliana's booking page.]]</p>
+    </div>
+  </section>
+
+  <section id="curso" class="course">
+    <div class="wrap">
+      <div class="course-box reveal">
+        <div>
+          <p class="eyebrow">[[Para profissionais||For nail techs]]</p>
+          <h2>[[Curso de <em>Cutilagem.</em>||Cuticle <em>Masterclass.</em>]]</h2>
+          <div class="course-meta"><div>9h<small>[[DE AULA||OF CLASS]]</small></div><div>$550<small>[[INVESTIMENTO||TUITION]]</small></div></div>
+          <a class="btn btn-solid" href="{{COURSE}}" target="_blank" rel="noopener">[[Quero saber mais||Ask about the course]]</a>
+        </div>
+        <ul>
+          <li>[[Anatomia da unha||Nail anatomy]]</li><li>[[Doenças das unhas||Nail conditions]]</li><li>[[Materiais e higienização||Tools & sanitation]]</li>
+          <li>[[Cutilagem fundinha da mão||Deep, clean cuticle work]]</li><li>[[Pé perfeito||The perfect pedicure]]</li><li>[[Como não tirar bifes||Working without nicks]]</li>
+          <li>[[Cutículas fininhas e difíceis||Thin, difficult cuticles]]</li><li>[[Esmaltação comum||Classic polish]]</li><li>[[Aula prática||Hands-on practice]]</li>
+          <li>[[Precificação||Pricing your work]]</li><li>[[Indicação de materiais e marcas||Recommended tools & brands]]</li><li>Coffee break</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="visita" class="visit">
+    <div class="wrap visit-grid">
+      <div class="reveal">
+        <p class="eyebrow">[[Agende seu momento||Book your moment]]</p>
+        <h2>[[Te espero <em>em Malden.</em>||See you <em>in Malden.</em>]]</h2>
+        <p class="place">[[Malden, Massachusetts · atendimento com hora marcada||Malden, Massachusetts · by appointment]]</p>
+        <div class="ctas">
+          <a class="btn btn-solid" href="{{BOOK}}" target="_blank" rel="noopener">[[Agendar online||Book online]]</a>
+          <a class="btn btn-ghost" href="{{WA}}" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="btn btn-ghost" href="{{IG}}" target="_blank" rel="noopener">Instagram</a>
+        </div>
+      </div>
+      <div class="reveal">
+        <p class="eyebrow">[[Horários||Hours]]</p>
+        <ul class="hours">
+          <li><span>[[Segunda a sexta||Monday – Friday]]</span><span>9:30 – 18:30</span></li>
+          <li><span>[[Sábado||Saturday]]</span><span>7:00 – 18:30</span></li>
+          <li><span>[[Domingo||Sunday]]</span><span>[[Fechado||Closed]]</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap"><span>© Ju Menezes Beauty · @unhasdajuboston</span><span class="demo-note">[[Prévia conceitual criada para Juliana Menezes — não é o site oficial.||Concept preview made for Juliana Menezes — not the official site.]]</span></div></footer>
+<a class="btn btn-solid sticky-book" href="{{BOOK}}" target="_blank" rel="noopener">[[Agendar horário||Book an appointment]]</a>
+<script>
+{{COMMON_JS}}
+(function(){
+  var chips=document.querySelectorAll('.chip'),imgs=document.querySelectorAll('.vitrine img'),cap=document.querySelector('[data-cap]');
+  chips.forEach(function(c){c.addEventListener('click',function(){
+    chips.forEach(function(x){x.setAttribute('aria-pressed','false')});c.setAttribute('aria-pressed','true');
+    imgs.forEach(function(i,n){i.classList.toggle('on',n==c.dataset.img)});
+    cap.innerHTML=Array.prototype.filter.call(c.childNodes,function(n){return !(n.classList&&n.classList.contains('tip'))}).map(function(n){return n.outerHTML||n.textContent}).join('');
+  });});
+})();
+</script>
+</body>
+</html>

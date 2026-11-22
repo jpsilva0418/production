@@ -1,0 +1,27 @@
+{
+  "slug": "juliana-menezes-01",
+  "url": "https://jpsilvadigital.com/demo/juliana-menezes-01",
+  "client": "Ju Menezes Beauty — Juliana Menezes (@unhasdajuboston)",
+  "sourceRepo": "jpsilva0418/production",
+  "sourceDir": "juliana-menezes",
+  "sourceCommit": "49e159ba2c43ce439c1c35506488a086bbd6aa6f",
+  "builtAt": "2026-11-22T22:15:15+00:00",
+  "pages": 3,
+  "shared": {
+    "media": "/demo/_shared/juliana-menezes/"
+  },
+  "variations": {
+    "01": {
+      "name": "Noir",
+      "path": "/demo/juliana-menezes-01/noir"
+    },
+    "02": {
+      "name": "Atelier",
+      "path": "/demo/juliana-menezes-01/atelier"
+    },
+    "03": {
+      "name": "Fúcsia",
+      "path": "/demo/juliana-menezes-01/fucsia"
+    }
+  }
+}

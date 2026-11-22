@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<link rel="canonical" href="https://jpsilvadigital.com/demo/juliana-menezes-01/atelier">
+<title>Ju Menezes Beauty — Atelier</title>
+<meta name="description" content="Prévia conceitual — Juliana Menezes, Nails · Brows · Lips em Malden, MA.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --greige:#e6e7e4; --paper:#f4f4f1; --char:#1a191d; --stone:#77756f; --mauve:#7b5563; --mauve-2:#a98592; --rule:rgba(26,25,29,.14);
+  --disp:"Italiana","Didot","Bodoni 72",Georgia,serif; --sans:"Manrope",system-ui,sans-serif;
+  --gut:clamp(18px,4.5vw,64px); --max:1320px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{background:var(--greige);color:var(--char);font:400 16px/1.7 var(--sans);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit}
+html[lang=en] .pt{display:none} html:not([lang=en]) .en{display:none}
+:focus-visible{outline:2px solid var(--mauve);outline-offset:3px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gut)}
+.label{font:600 11px/1 var(--sans);letter-spacing:.26em;text-transform:uppercase;color:var(--mauve)}
+h2{font:400 clamp(44px,6.4vw,96px)/.95 var(--disp);letter-spacing:.005em}
+.btn{display:inline-flex;align-items:center;gap:12px;font:600 12px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;text-decoration:none;padding:17px 26px;border-radius:999px;border:1px solid var(--char);transition:background .3s,color .3s}
+.btn-dark{background:var(--char);color:var(--paper)} .btn-dark:hover{background:var(--mauve);border-color:var(--mauve)}
+.btn-line:hover{background:var(--char);color:var(--paper)}
+.btn .arr{width:18px;height:1px;background:currentColor;position:relative}
+.btn .arr::after{content:"";position:absolute;right:0;top:-3px;width:7px;height:7px;border-top:1px solid;border-right:1px solid;transform:rotate(45deg)}
+/* header */
+.top{position:sticky;top:0;z-index:20;background:rgba(230,231,228,.86);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--rule)}
+.top .wrap{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:68px}
+.nav{display:flex;gap:26px}
+.nav a{text-decoration:none;font:500 12.5px/1 var(--sans);letter-spacing:.08em;color:var(--stone)}
+.nav a:hover{color:var(--char)}
+.mark{font:400 26px/1 var(--disp);letter-spacing:.14em;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.top-r{display:flex;justify-content:flex-end;align-items:center;gap:14px}
+.lang{display:flex;gap:2px}
+.lang button{background:none;border:0;font:600 11px/1 var(--sans);letter-spacing:.14em;color:var(--stone);padding:8px;cursor:pointer;border-radius:99px}
+.lang button[aria-pressed=true]{color:var(--char);background:var(--paper)}
+.top .btn{padding:12px 18px}
+.burger{display:none;background:none;border:0;width:40px;height:40px;cursor:pointer}
+.burger span{display:block;height:1px;background:var(--char);margin:6px 9px}
+/* hero: three panels (signature) */
+.hero{padding:26px 0 0}
+.hero-intro{display:flex;justify-content:space-between;align-items:end;gap:30px;flex-wrap:wrap;padding-bottom:26px}
+.hero-intro h1{font:400 clamp(17px,1.6vw,21px)/1.5 var(--sans);font-weight:400;max-width:24em;color:var(--stone)}
+.hero-intro h1 strong{display:block;color:var(--char);font:400 clamp(30px,3.2vw,44px)/1.1 var(--disp);margin-bottom:8px}
+.panels{display:flex;gap:10px;height:clamp(420px,calc(100svh - 250px),720px)}
+.panel{position:relative;flex:1;overflow:hidden;text-decoration:none;color:#fff;transition:flex-grow .8s cubic-bezier(.2,.7,.2,1);min-width:0}
+.panel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.panel::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(26,25,29,.55),rgba(26,25,29,0) 45%)}
+.panel .word{position:absolute;left:clamp(14px,2vw,30px);bottom:clamp(14px,2vw,28px);z-index:2;font:400 clamp(54px,8.4vw,140px)/.8 var(--disp);letter-spacing:.02em}
+.panel .meta{position:absolute;right:clamp(14px,2vw,28px);bottom:clamp(20px,2.4vw,34px);z-index:2;font:600 11px/1.5 var(--sans);letter-spacing:.2em;text-transform:uppercase;text-align:right;opacity:0;transform:translateY(8px);transition:.5s}
+@media (hover:hover) and (min-width:861px){
+  .panels:hover .panel{flex-grow:.7}
+  .panels .panel:hover,.panels .panel:focus-visible{flex-grow:1.9}
+  .panel:hover img{transform:scale(1.04)}
+  .panel:hover .meta,.panel:focus-visible .meta{opacity:1;transform:none}
+}
+.tagline{display:flex;justify-content:space-between;gap:20px;padding:22px 0;border-bottom:1px solid var(--rule);font:500 12px/1.4 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--stone)}
+section{padding:clamp(80px,11vw,150px) 0}
+/* manifesto */
+.manifesto{display:grid;grid-template-columns:200px 1fr;gap:40px}
+.manifesto p.big{font:400 clamp(30px,3.9vw,58px)/1.14 var(--disp)}
+.manifesto p.big em{font-style:normal;color:var(--mauve)}
+.manifesto .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:44px}
+/* portfolio */
+.port-head{display:flex;justify-content:space-between;align-items:end;gap:30px;flex-wrap:wrap;margin-bottom:56px}
+.port-head p{max-width:24em;color:var(--stone)}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(10px,1.4vw,20px)}
+.grid figure{position:relative}
+.grid img{width:100%;height:auto;object-fit:cover}
+.g1{display:flex;flex-direction:column}
+.grid figcaption{margin-top:12px;font:600 10.5px/1.4 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--stone);display:flex;justify-content:space-between}
+.g1{grid-column:1/6;grid-row:span 2}.g1 img{flex:1;min-height:0;aspect-ratio:auto}
+.g2{grid-column:6/9}.g2 img{aspect-ratio:3/4}
+.g3{grid-column:9/13}.g3 img{aspect-ratio:1}
+.g4{grid-column:6/10}.g4 img{aspect-ratio:4/3}
+.g5{grid-column:10/13}.g5 img{aspect-ratio:3/4}
+.g6{grid-column:1/4}.g6 img{aspect-ratio:3/4}
+.g7{grid-column:4/9}.g7 img{aspect-ratio:5/4}
+.g8{grid-column:9/13}.g8 img{aspect-ratio:4/5}
+.port-foot{margin-top:40px;display:flex;justify-content:center}
+/* menu */
+.menu-sec{background:var(--paper)}
+.menu-grid{display:grid;grid-template-columns:5fr 7fr;gap:clamp(40px,7vw,120px)}
+.menu-side{position:sticky;top:110px;align-self:start}
+.menu-side p{color:var(--stone);margin:24px 0 34px;max-width:26em}
+.menu-side img{aspect-ratio:4/5;object-fit:cover;width:100%;max-width:420px}
+.tabs{display:flex;gap:8px;margin-bottom:34px;flex-wrap:wrap}
+.tab{font:600 12px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;padding:14px 20px;border-radius:99px;border:1px solid var(--rule);background:none;color:var(--stone);cursor:pointer}
+.tab[aria-selected=true]{background:var(--char);border-color:var(--char);color:var(--paper)}
+.menu-title{display:none}
+.menu{list-style:none;border-top:1px solid var(--rule)}
+.menu li{display:flex;align-items:baseline;gap:18px;padding:17px 0;border-bottom:1px solid var(--rule)}
+.svc{display:flex;flex-direction:column;gap:2px;flex:1}
+.svc-name{font:500 16px/1.35 var(--sans)}
+.svc-time{font-size:12.5px;color:var(--stone)}
+.dots{display:none}
+.price{font:400 28px/1 var(--disp);white-space:nowrap}
+.js [data-panel][hidden]{display:none}
+.policy{margin-top:30px;font-size:14px;color:var(--stone);padding-left:16px;border-left:2px solid var(--mauve-2)}
+/* about */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,7vw,120px);align-items:center}
+.about-img{position:relative}
+.about-img img{aspect-ratio:1;object-fit:cover;width:100%}
+.about-img span{position:absolute;right:-12px;bottom:28px;background:var(--char);color:var(--paper);font:600 10.5px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;padding:14px 18px}
+.about q{display:block;font:400 clamp(36px,4.4vw,64px)/1.02 var(--disp);margin:24px 0 30px;quotes:none}
+.about p{color:var(--stone);max-width:32em}
+.facts{display:grid;grid-template-columns:1fr 1fr;margin-top:36px;border-top:1px solid var(--rule)}
+.facts div{padding:16px 0;border-bottom:1px solid var(--rule);font-size:14px}
+.facts b{display:block;font:600 10px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--mauve);margin-bottom:6px}
+/* reviews */
+.rev-head{display:flex;align-items:end;justify-content:space-between;gap:30px;flex-wrap:wrap}
+.score{display:flex;align-items:center;gap:18px}
+.score b{font:400 84px/1 var(--disp)}
+.score span{font-size:13px;color:var(--stone);line-height:1.5}
+.score i{font-style:normal;color:var(--mauve);letter-spacing:.2em}
+.review-row{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;margin-top:50px;padding-bottom:18px;scrollbar-width:thin}
+.review{flex:0 0 min(380px,82%);scroll-snap-align:start;background:var(--paper);padding:34px 30px;border-radius:2px;display:flex;flex-direction:column;justify-content:space-between;min-height:260px}
+.review blockquote{font:400 25px/1.25 var(--disp)}
+.review figcaption{margin-top:24px;font:600 10.5px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--stone)}
+.rev-note{font-size:13px;color:var(--stone);margin-top:14px}
+/* course */
+.course{background:var(--char);color:var(--paper)}
+.course .label{color:var(--mauve-2)}
+.course-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,100px);align-items:start}
+.course .price-line{display:flex;gap:30px;margin:30px 0 36px;font:400 46px/1 var(--disp)}
+.course .price-line small{display:block;font:600 10px/1 var(--sans);letter-spacing:.24em;color:#a3a19b;margin-top:10px;text-transform:uppercase}
+.course .btn{border-color:var(--paper);color:var(--paper)} .course .btn:hover{background:var(--paper);color:var(--char)}
+.syllabus{list-style:none;counter-reset:s;display:grid;grid-template-columns:1fr 1fr;column-gap:30px}
+.syllabus li{padding:13px 0;border-bottom:1px solid rgba(244,244,241,.12);font-size:15px;color:#cfcdc7}
+/* visit */
+.visit-grid{display:grid;grid-template-columns:7fr 5fr;gap:clamp(40px,6vw,100px);align-items:end}
+.visit h2{font-size:clamp(56px,9vw,150px);padding-bottom:.12em}
+.visit .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:40px}
+.hours{list-style:none;border-top:1px solid var(--char)}
+.hours li{display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--rule)}
+.where{margin-top:22px;color:var(--stone);font-size:14px}
+footer{padding:30px 0 100px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--stone)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.demo{color:var(--mauve)}
+.sticky{display:none}
+.js .reveal{opacity:0;transform:translateY(22px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+.js .reveal.in{opacity:1;transform:none}
+.panel{animation:up 1.1s cubic-bezier(.2,.7,.2,1) both}.panel:nth-child(2){animation-delay:.12s}.panel:nth-child(3){animation-delay:.24s}
+@keyframes up{from{opacity:0;transform:translateY(40px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:860px){
+  .top .wrap{grid-template-columns:auto 1fr auto}
+  .nav{display:none}.top .btn{display:none}.burger{display:block;order:3}
+  .mark{font-size:21px}.top-r{order:2}
+  body.nav-open .nav{display:flex;position:fixed;top:68px;left:0;right:0;flex-direction:column;gap:0;background:var(--greige);padding:6px var(--gut) 22px;border-bottom:1px solid var(--rule)}
+  body.nav-open .nav a{padding:15px 0;border-bottom:1px solid var(--rule);font-size:15px}
+  .panels{height:64svh;gap:6px}
+  .panel .word{writing-mode:vertical-rl;transform:rotate(180deg);left:auto;right:10px;bottom:14px;font-size:clamp(48px,13vw,72px)}
+  .tagline{flex-direction:column;gap:6px;letter-spacing:.14em}
+  .manifesto,.menu-grid,.about-grid,.course-grid,.visit-grid{grid-template-columns:1fr}
+  .menu-side{position:static}.menu-side img{display:none}
+  .g1{grid-column:1/-1}.g1 img{aspect-ratio:4/5;flex:none}.about-img span{right:12px}
+  .port-foot .btn{font-size:11px;letter-spacing:.12em;text-align:center}.g2,.g3,.g4,.g5,.g6,.g7,.g8{grid-column:span 6}
+  .g4 img,.g7 img,.g3 img{aspect-ratio:3/4}
+  .syllabus{grid-template-columns:1fr}
+  .sticky{display:flex;justify-content:center;position:fixed;left:14px;right:14px;bottom:14px;z-index:30;opacity:0;pointer-events:none;transition:opacity .4s}
+  body.scrolled .sticky{opacity:1;pointer-events:auto}
+}
+</style>
+<style>
+.jm-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom));z-index:60;display:flex;align-items:center;gap:6px;
+  padding:5px 6px 5px 14px;border-radius:999px;background:rgba(18,14,16,.88);color:#f3ece6;font:600 10.5px/1 system-ui,-apple-system,'Segoe UI',sans-serif;letter-spacing:.12em;text-transform:uppercase;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 12px 30px -12px rgba(0,0,0,.5);white-space:nowrap}
+.jm-bar span{opacity:.75;margin-right:4px}
+.jm-bar a{display:inline-grid;place-items:center;min-width:30px;height:30px;padding:0 8px;border-radius:15px;color:#f3ece6;text-decoration:none;letter-spacing:.06em}
+.jm-bar a[aria-current="true"]{background:#f3ece6;color:#161113}
+.jm-bar a:focus-visible{outline:2px solid #fff;outline-offset:2px}
+@media(hover:hover){.jm-bar a:not([aria-current="true"]):hover{background:rgba(255,255,255,.16)}}
+@media(max-width:980px){.jm-bar{transition:bottom .35s ease}body.scrolled .jm-bar{bottom:calc(84px + env(safe-area-inset-bottom))}}
+@media(max-width:380px){.jm-bar span{display:none}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <nav class="nav" aria-label="Principal"><a href="#portfolio"><span class="pt">Portfólio</span><span class="en" lang="en">Portfolio</span></a><a href="#servicos"><span class="pt">Serviços</span><span class="en" lang="en">Services</span></a><a href="#sobre"><span class="pt">Sobre</span><span class="en" lang="en">About</span></a><a href="#curso"><span class="pt">Curso</span><span class="en" lang="en">Course</span></a><a href="#contato"><span class="pt">Contato</span><span class="en" lang="en">Contact</span></a></nav>
+  <a class="mark" href="#">Ju Menezes</a>
+  <div class="top-r">
+    <div class="lang" role="group" aria-label="Idioma / Language"><button data-lang="pt">PT</button><button data-lang="en">EN</button></div>
+    <a class="btn btn-dark" href="https://julianamenezes.setmore.com/" target="_blank" rel="noopener"><span class="pt">Agendar</span><span class="en" lang="en">Book</span></a>
+    <button class="burger" data-nav-toggle aria-expanded="false" aria-label="Menu"><span></span><span></span></button>
+  </div>
+</div></header>
+<main>
+  <section class="hero" style="padding-bottom:0">
+    <div class="wrap">
+      <div class="hero-intro">
+        <h1><strong>Juliana Menezes</strong><span class="pt">Nail designer e artista de micropigmentação em Malden, MA.</span><span class="en" lang="en">Nail designer and permanent-makeup artist in Malden, MA.</span></h1>
+        <a class="btn btn-line" href="https://julianamenezes.setmore.com/" target="_blank" rel="noopener"><span class="pt">Agende seu momento</span><span class="en" lang="en">Book your moment</span> <span class="arr"></span></a>
+      </div>
+      <div class="panels">
+        <a class="panel" href="#portfolio"><img src="/demo/_shared/juliana-menezes/img/n-mauve-ring.jpg" alt="Unhas amendoadas malva"><span class="word">Nails</span><span class="meta"><span class="pt">Gel · banho de gel<br>alongamento</span><span class="en" lang="en">Gel · overlay<br>extensions</span></span></a>
+        <a class="panel" href="#servicos"><img src="/demo/_shared/juliana-menezes/img/b-lash.jpg" alt="Sobrancelha com design"><span class="word">Brows</span><span class="meta"><span class="pt">Design · lamination<br>fio a fio</span><span class="en" lang="en">Design · lamination<br>hair-stroke</span></span></a>
+        <a class="panel" href="#servicos"><img src="/demo/_shared/juliana-menezes/img/l-closeup.jpg" alt="Micropigmentação labial"><span class="word">Lips</span><span class="meta"><span class="pt">Micropigmentação<br>labial</span><span class="en" lang="en">Lip<br>blush</span></span></a>
+      </div>
+      <div class="tagline"><span><span class="pt">Realçando a beleza e autoestima feminina</span><span class="en" lang="en">Enhancing women's beauty and confidence</span></span><span>Malden · Boston</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap manifesto reveal">
+      <p class="label">Atelier</p>
+      <div>
+        <p class="big"><span class="pt">Cada atendimento é pensado para realçar sua beleza com <em>naturalidade, elegância e excelência</em> — com foco em qualidade, segurança e uma experiência acolhedora do início ao fim.</span><span class="en" lang="en">Every appointment is designed to bring out your beauty with <em>ease, elegance and excellence</em> — focused on quality, safety and a warm experience from start to finish.</span></p>
+        <div class="ctas"><a class="btn btn-dark" href="https://julianamenezes.setmore.com/" target="_blank" rel="noopener"><span class="pt">Ver horários</span><span class="en" lang="en">See availability</span> <span class="arr"></span></a><a class="btn btn-line" href="https://wa.me/17815028753" target="_blank" rel="noopener">WhatsApp</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="portfolio" style="padding-top:0">
+    <div class="wrap">
+      <div class="port-head reveal"><div><p class="label"><span class="pt">Portfólio</span><span class="en" lang="en">Portfolio</span></p><h2><span class="pt">Trabalhos recentes</span><span class="en" lang="en">Recent work</span></h2></div><p><span class="pt">Unhas naturais e resistentes, cutículas fundinhas e um acabamento que se vê de perto.</span><span class="en" lang="en">Natural, strong nails, close cuticle work and a finish that holds up up close.</span></p></div>
+      <div class="grid">
+        <figure class="g1 reveal"><img src="/demo/_shared/juliana-menezes/img/n-lilac-ombre.jpg" alt="Unhas amendoadas lilás degradê"><figcaption><span><span class="pt">Degradê lilás</span><span class="en" lang="en">Lilac ombré</span></span><span><span class="pt">Amendoada</span><span class="en" lang="en">Almond</span></span></figcaption></figure>
+        <figure class="g2 reveal"><img src="/demo/_shared/juliana-menezes/img/n-red.jpg" alt="Unhas vermelhas"><figcaption><span><span class="pt">Vermelho</span><span class="en" lang="en">Red</span></span></figcaption></figure>
+        <figure class="g3 reveal"><img src="/demo/_shared/juliana-menezes/img/b-closeup.jpg" alt="Sobrancelha fio a fio"><figcaption><span><span class="pt">Fio a fio</span><span class="en" lang="en">Hair-stroke</span></span></figcaption></figure>
+        <figure class="g4 reveal"><img src="/demo/_shared/juliana-menezes/img/n-blue-french.jpg" alt="Francesinha azul"><figcaption><span><span class="pt">Francesinha azul</span><span class="en" lang="en">Blue French</span></span></figcaption></figure>
+        <figure class="g5 reveal"><img src="/demo/_shared/juliana-menezes/img/n-nude-ring.jpg" alt="Unhas nude"><figcaption><span>Nude</span></figcaption></figure>
+        <figure class="g6 reveal"><img src="/demo/_shared/juliana-menezes/img/n-mauve.jpg" alt="Unhas coffin malva"><figcaption><span><span class="pt">Malva</span><span class="en" lang="en">Mauve</span></span><span>Coffin</span></figcaption></figure>
+        <figure class="g7 reveal"><img src="/demo/_shared/juliana-menezes/img/b-front.jpg" alt="Design de sobrancelhas"><figcaption><span><span class="pt">Design de sobrancelhas</span><span class="en" lang="en">Brow design</span></span></figcaption></figure>
+        <figure class="g8 reveal"><img src="/demo/_shared/juliana-menezes/img/n-white-french.jpg" alt="Francesinha branca"><figcaption><span><span class="pt">Francesinha</span><span class="en" lang="en">French</span></span></figcaption></figure>
+      </div>
+      <div class="port-foot"><a class="btn btn-line" href="https://www.instagram.com/unhasdajuboston/" target="_blank" rel="noopener"><span class="pt">Mais no Instagram</span><span class="en" lang="en">More on Instagram</span> · @unhasdajuboston</a></div>
+    </div>
+  </section>
+
+  <section id="servicos" class="menu-sec">
+    <div class="wrap menu-grid">
+      <div class="menu-side reveal">
+        <p class="label"><span class="pt">Serviços & valores</span><span class="en" lang="en">Services & prices</span></p>
+        <h2><span class="pt">O menu</span><span class="en" lang="en">The menu</span></h2>
+        <p><span class="pt">Valores em dólar. Agende online pelo Setmore ou fale direto pelo WhatsApp.</span><span class="en" lang="en">Prices in USD. Book online through Setmore or message directly on WhatsApp.</span></p>
+        <img src="/demo/_shared/juliana-menezes/img/n-pink-glitter.jpg" alt="Unhas pink com glitter dourado">
+      </div>
+      <div class="reveal">
+        <div class="tabs" role="tablist">
+          <button class="tab" role="tab" aria-selected="true" data-tab="0"><span class="pt">Unhas</span><span class="en" lang="en">Nails</span></button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="1"><span class="pt">Sobrancelhas & Lábios</span><span class="en" lang="en">Brows & Lips</span></button>
+        </div>
+        <div data-panel="0" role="tabpanel"><div class="menu-group"><h3 class="menu-title"><span class="pt">Unhas</span><span class="en" lang="en">Nails</span></h3><ul class="menu">
+<li><span class="svc"><span class="svc-name"><span class="pt">Manicure Regular</span><span class="en" lang="en">Classic manicure</span></span><span class="svc-time">50 min</span></span><span class="dots" aria-hidden="true"></span><span class="price">$40</span></li>
+<li><span class="svc"><span class="svc-name"><span class="pt">Pedicure Regular</span><span class="en" lang="en">Classic pedicure</span></span><span class="svc-time">55 min</span></span><span class="dots" aria-hidden="true"></span><span class="price">$45</span></li>
+<li><span class="svc"><span class="svc-name"><span class="pt">Manicure e Pedicure</span><span class="en" lang="en">Manicure &amp; pedicure</span></span><span class="svc-time">1h40</span></span><span class="dots" aria-hidden="true"></span><span class="price">$65</span></li>
+<li><span class="svc"><span class="svc-name"><span class="pt">Manicure + Esmaltação em Gel</span><span class="en" lang="en">Manicure + gel polish</span></span><span class="svc-time">1h30</span></span><span class="dots" aria-hidden="true"></span><span class="price">$45</span></li>
+<li><span class="svc"><span class="svc-name"><span class="pt">Pedicure + Esmaltação em Gel</span><span class="en" lang="en">Pedicure + gel polish</span></span><span class="svc-time">1h30</span></span><span class="dots" aria-hidden="true"></span><span class="price">$50</span></li>
+<li><span class="svc"><span class="svc-name"><span class="pt">Pé e Mão com Esmaltação em Gel</span><span class="en" lang="en">Hands &amp; feet, gel polish</span></span><span class="svc-time">2h30</span></span><span class="dots" aria-hidden="true"></span><span class="price">$85</span></li>
+<li><span class="svc"><span class="svc-name"><span class="pt">Mão c/ Esmalte em Gel + Pé Regular</span><span class="en" lang="en">Gel hands + classic pedicure</span></span><span class="svc-time">2h30</span></span><span class="dots" aria-hidden="true"></span><span class="price">$80</span></li>
+<li><span class="svc"><span class="svc-name"><span class="pt">Banho de Gel</span><span class="en" lang="en">Gel overlay</span></span><span class="svc-time">2h</span></span><span class="dots" aria-hidden="true"></span><span class="price">$80</span></li>
+<li><span class="svc"><span class="svc-name"><span class="pt">Banho de Gel + Pé Regular</span><span class="en" lang="en">Gel overlay + classic pedicure</span></span><span class="svc-time">3h</span></span><span class="dots" aria-hidden="true"></span><span class="price">$120</span></li>
+<li><span class="svc"><span class="svc-name"><span class="pt">Banho de Gel + Pé + Esmalte em Gel</span><span class="en" lang="en">Gel overlay + pedicure with gel</span></span><span class="svc-time">3h30</span></span><span class="dots" aria-hidden="true"></span><span class="price">$125</span></li>
+<li><span class="svc"><span class="svc-name"><span class="pt">Alongamento — Primeira Aplicação</span><span class="en" lang="en">Extensions — first set</span></span><span class="svc-time">3h</span></span><span class="dots" aria-hidden="true"></span><span class="price">$120</span></li>
+<li><span class="svc"><span class="svc-name"><span class="pt">Manutenção</span><span class="en" lang="en">Extension fill</span></span><span class="svc-time">2h30</span></span><span class="dots" aria-hidden="true"></span><span class="price">$90</span></li>
+<li><span class="svc"><span class="svc-name"><span class="pt">Manutenção + Pé c/ Esmalte em Gel</span><span class="en" lang="en">Fill + pedicure with gel</span></span><span class="svc-time">3h30</span></span><span class="dots" aria-hidden="true"></span><span class="price">$135</span></li>
+<li><span class="svc"><span class="svc-name"><span class="pt">Manutenção + Pé com Esmalte Regular</span><span class="en" lang="en">Fill + classic pedicure</span></span><span class="svc-time">3h30</span></span><span class="dots" aria-hidden="true"></span><span class="price">$130</span></li>
+<li><span class="svc"><span class="svc-name"><span class="pt">Remoção do Alongamento</span><span class="en" lang="en">Extension removal, with cuticle care &amp; polish</span></span><span class="svc-time">1h30</span></span><span class="dots" aria-hidden="true"></span><span class="price">$65</span></li>
+<li><span class="svc"><span class="svc-name"><span class="pt">Spa dos Pés</span><span class="en" lang="en">Foot spa — e-file smoothing, cuticle care &amp; polish</span></span><span class="svc-time">2h</span></span><span class="dots" aria-hidden="true"></span><span class="price">$70</span></li>
+<li><span class="svc"><span class="svc-name"><span class="pt">Troca de Esmalte em Gel (sem cutícula)</span><span class="en" lang="en">Gel polish change (no cuticle work)</span></span><span class="svc-time">40 min</span></span><span class="dots" aria-hidden="true"></span><span class="price">$25</span></li>
+<li><span class="svc"><span class="svc-name"><span class="pt">Remoção do Esmalte em Gel (sem cutícula)</span><span class="en" lang="en">Gel polish removal (no cuticle work)</span></span><span class="svc-time">30 min</span></span><span class="dots" aria-hidden="true"></span><span class="price">$15</span></li>
+<li><span class="svc"><span class="svc-name"><span class="pt">Reposição de 1 Unha</span><span class="en" lang="en">Single nail repair</span></span><span class="svc-time">30 min</span></span><span class="dots" aria-hidden="true"></span><span class="price">$15</span></li>
+</ul></div></div>
+        <div data-panel="1" role="tabpanel" hidden><div class="menu-group"><h3 class="menu-title"><span class="pt">Sobrancelhas & Lábios</span><span class="en" lang="en">Brows & Lips</span></h3><ul class="menu">
+<li><span class="svc"><span class="svc-name"><span class="pt">Design de Sobrancelhas</span><span class="en" lang="en">Brow design — wax &amp; tweezers, shaped to your face</span></span><span class="svc-time">40 min</span></span><span class="dots" aria-hidden="true"></span><span class="price">$35</span></li>
+<li><span class="svc"><span class="svc-name"><span class="pt">Brow Lamination</span><span class="en" lang="en">Brow lamination</span></span><span class="svc-time">1h</span></span><span class="dots" aria-hidden="true"></span><span class="price">$70</span></li>
+<li><span class="svc"><span class="svc-name"><span class="pt">Micropigmentação Fio a Fio</span><span class="en" lang="en">Hair-stroke brow microblading</span></span><span class="svc-time">3h</span></span><span class="dots" aria-hidden="true"></span><span class="price">$399</span></li>
+<li><span class="svc"><span class="svc-name"><span class="pt">Micropigmentação Labial</span><span class="en" lang="en">Lip blush (lip PMU)</span></span><span class="svc-time">3h</span></span><span class="dots" aria-hidden="true"></span><span class="price">$399</span></li>
+<li><span class="svc"><span class="svc-name"><span class="pt">Retoque de Micropigmentação</span><span class="en" lang="en">PMU touch-up</span></span><span class="svc-time">2h</span></span><span class="dots" aria-hidden="true"></span><span class="price">$80</span></li>
+</ul></div></div>
+        <p class="policy"><span class="pt">Aviso de cancelamento com 24 horas de antecedência. Sem aviso dentro do prazo, é cobrado 100% do valor do procedimento.</span><span class="en" lang="en">Please cancel at least 24 hours ahead. Without notice inside that window, 100% of the service price is charged.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="sobre">
+    <div class="wrap about-grid">
+      <div class="about-img reveal"><img src="/demo/_shared/juliana-menezes/img/portrait-navy-sq.jpg" alt="Juliana Menezes"><span><span class="pt">De BH para Boston</span><span class="en" lang="en">From BH to Boston</span></span></div>
+      <div class="about reveal">
+        <p class="label"><span class="pt">Sobre</span><span class="en" lang="en">About</span></p>
+        <q><span class="pt">Faço o meu melhor ou não faço.</span><span class="en" lang="en">I do my best, or I don't do it.</span></q>
+        <p><span class="pt">Juliana é nail designer e artista de micropigmentação. Super detalhista, empresária, mãe e esposa — e com um objetivo claro: elevar a autoestima de outras mulheres.</span><span class="en" lang="en">Juliana is a nail designer and permanent-makeup artist. Detail-obsessed, business owner, wife and mother — with one clear purpose: lifting other women's self-esteem.</span></p>
+        <div class="facts">
+          <div><b><span class="pt">Especialidades</span><span class="en" lang="en">Specialties</span></b>Nails · Brows · Lips</div>
+          <div><b><span class="pt">Atendimento</span><span class="en" lang="en">Appointments</span></b><span class="pt">Com hora marcada</span><span class="en" lang="en">By appointment</span></div>
+          <div><b><span class="pt">Agendamento</span><span class="en" lang="en">Booking</span></b><span class="pt">Online · WhatsApp</span><span class="en" lang="en">Online · WhatsApp</span></div>
+          <div><b><span class="pt">Local</span><span class="en" lang="en">Location</span></b>Malden, MA</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="rev-head reveal"><div><p class="label"><span class="pt">Clientes</span><span class="en" lang="en">Clients</span></p><h2><span class="pt">Em suas palavras</span><span class="en" lang="en">In their words</span></h2></div>
+        <div class="score"><b>5.0</b><span><i aria-hidden="true">★★★★★</i><br><span class="pt">11 avaliações no Setmore</span><span class="en" lang="en">11 reviews on Setmore</span></span></div></div>
+      <div class="review-row reveal"><figure class="review"><blockquote lang="pt-BR">Queria te elogiar pelo trabalho de hoje. Minhas unhas ficaram perfeitas e impecáveis! Adorei a atenção aos detalhes.</blockquote><figcaption>Daniela A.</figcaption></figure>
+<figure class="review"><blockquote lang="pt-BR">Como sempre um trabalho impecável, cutículas fundinhas e perfeitas.</blockquote><figcaption>Jessica D.</figcaption></figure>
+<figure class="review"><blockquote lang="pt-BR">Juliana é a melhor! Super atenciosa e detalhista.</blockquote><figcaption>Paula E.</figcaption></figure>
+<figure class="review"><blockquote lang="pt-BR">Excelente profissional. Sempre saio muito satisfeita e feliz.</blockquote><figcaption>Rose V.</figcaption></figure>
+<figure class="review"><blockquote lang="en">The best, my nails always beautiful!</blockquote><figcaption>Bruna</figcaption></figure>
+<figure class="review"><blockquote lang="pt-BR">Juliana é perfeita no trabalho dela ♥️</blockquote><figcaption>Laura C.</figcaption></figure></div>
+      <p class="rev-note"><span class="pt">Avaliações reais publicadas na página de agendamento.</span><span class="en" lang="en">Real reviews from the booking page.</span></p>
+    </div>
+  </section>
+
+  <section id="curso" class="course">
+    <div class="wrap course-grid">
+      <div class="reveal">
+        <p class="label"><span class="pt">Para profissionais</span><span class="en" lang="en">For professionals</span></p>
+        <h2><span class="pt">Curso de Cutilagem</span><span class="en" lang="en">Cuticle Course</span></h2>
+        <div class="price-line"><div>9h<small><span class="pt">de aula</span><span class="en" lang="en">of class</span></small></div><div>$550<small><span class="pt">investimento</span><span class="en" lang="en">tuition</span></small></div></div>
+        <a class="btn" href="https://wa.link/t5uszo" target="_blank" rel="noopener"><span class="pt">Falar sobre o curso</span><span class="en" lang="en">Ask about the course</span> <span class="arr"></span></a>
+      </div>
+      <ul class="syllabus reveal">
+        <li><span class="pt">Anatomia da unha</span><span class="en" lang="en">Nail anatomy</span></li><li><span class="pt">Doenças das unhas</span><span class="en" lang="en">Nail conditions</span></li><li><span class="pt">Materiais e higienização</span><span class="en" lang="en">Tools & sanitation</span></li><li><span class="pt">Cutilagem fundinha da mão</span><span class="en" lang="en">Deep, clean cuticle work</span></li>
+        <li><span class="pt">Pé perfeito</span><span class="en" lang="en">The perfect pedicure</span></li><li><span class="pt">Como não tirar bifes</span><span class="en" lang="en">Working without nicks</span></li><li><span class="pt">Cutículas fininhas e difíceis</span><span class="en" lang="en">Thin, difficult cuticles</span></li><li><span class="pt">Esmaltação comum</span><span class="en" lang="en">Classic polish</span></li>
+        <li><span class="pt">Aula prática</span><span class="en" lang="en">Hands-on practice</span></li><li><span class="pt">Precificação</span><span class="en" lang="en">Pricing</span></li><li><span class="pt">Materiais e marcas indicados</span><span class="en" lang="en">Recommended tools & brands</span></li><li>Coffee break</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="contato">
+    <div class="wrap visit-grid">
+      <div class="reveal"><p class="label"><span class="pt">Contato</span><span class="en" lang="en">Contact</span></p><h2><span class="pt">Agende<br>seu momento</span><span class="en" lang="en">Book<br>your moment</span></h2>
+        <div class="ctas"><a class="btn btn-dark" href="https://julianamenezes.setmore.com/" target="_blank" rel="noopener"><span class="pt">Agendar online</span><span class="en" lang="en">Book online</span> <span class="arr"></span></a><a class="btn btn-line" href="https://wa.me/17815028753" target="_blank" rel="noopener">WhatsApp</a><a class="btn btn-line" href="https://www.instagram.com/unhasdajuboston/" target="_blank" rel="noopener">Instagram</a></div></div>
+      <div class="reveal"><p class="label" style="margin-bottom:16px"><span class="pt">Horários</span><span class="en" lang="en">Hours</span></p>
+        <ul class="hours"><li><span><span class="pt">Segunda a sexta</span><span class="en" lang="en">Mon – Fri</span></span><span>9:30 – 18:30</span></li><li><span><span class="pt">Sábado</span><span class="en" lang="en">Saturday</span></span><span>7:00 – 18:30</span></li><li><span><span class="pt">Domingo</span><span class="en" lang="en">Sunday</span></span><span><span class="pt">Fechado</span><span class="en" lang="en">Closed</span></span></li></ul>
+        <p class="where">Malden, Massachusetts</p></div>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap"><span>© Ju Menezes Beauty</span><span class="demo"><span class="pt">Prévia conceitual criada para Juliana Menezes — não é o site oficial.</span><span class="en" lang="en">Concept preview made for Juliana Menezes — not the official site.</span></span></div></footer>
+<a class="btn btn-dark sticky" href="https://julianamenezes.setmore.com/" target="_blank" rel="noopener"><span class="pt">Agendar horário</span><span class="en" lang="en">Book an appointment</span></a>
+<nav class="jm-bar" aria-label="Prévias de design"><span>Prévia de design</span><a href="/demo/juliana-menezes-01/noir" aria-label="Prévia 1, Noir">01</a><a href="/demo/juliana-menezes-01/atelier" aria-current="true" aria-label="Prévia 2, Atelier">02</a><a href="/demo/juliana-menezes-01/fucsia" aria-label="Prévia 3, Fúcsia">03</a><a href="/demo/juliana-menezes-01" aria-label="Ver todas as prévias">Todas</a></nav>
+<script>
+(function(){
+  var root=document.documentElement; root.classList.add('js');
+  try{var saved=localStorage.getItem('jm-lang'); if(saved) root.lang=saved;}catch(e){}
+  function sync(){document.querySelectorAll('[data-lang]').forEach(function(b){
+    b.setAttribute('aria-pressed', String((root.lang==='en')===(b.dataset.lang==='en')));});}
+  document.querySelectorAll('[data-lang]').forEach(function(b){b.addEventListener('click',function(){
+    root.lang=b.dataset.lang==='en'?'en':'pt-BR'; try{localStorage.setItem('jm-lang',root.lang);}catch(e){} sync();});});
+  sync();
+  var nav=document.querySelector('[data-nav-toggle]');
+  if(nav){nav.addEventListener('click',function(){var o=document.body.classList.toggle('nav-open');nav.setAttribute('aria-expanded',String(o));});
+    document.querySelectorAll('.nav a').forEach(function(a){a.addEventListener('click',function(){document.body.classList.remove('nav-open');nav.setAttribute('aria-expanded','false');});});}
+  function sc(){document.body.classList.toggle('scrolled',scrollY>innerHeight*.75)} addEventListener('scroll',sc,{passive:true}); sc();
+  var els=document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches){els.forEach(function(e){e.classList.add('in')});return;}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{rootMargin:'0px 0px -8% 0px'});
+  els.forEach(function(e){io.observe(e)});
+})();
+
+(function(){
+  var tabs=document.querySelectorAll('.tab'),panels=document.querySelectorAll('[data-panel]');
+  tabs.forEach(function(t){t.addEventListener('click',function(){
+    tabs.forEach(function(x){x.setAttribute('aria-selected',String(x===t))});
+    panels.forEach(function(p){p.hidden=p.dataset.panel!==t.dataset.tab});});});
+})();
+</script>
+</body>
+</html>
