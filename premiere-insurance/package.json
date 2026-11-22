@@ -10,7 +10,8 @@
     "start": "node ./dist/server/entry.mjs",
     "test": "vitest run",
     "e2e": "playwright test --trace off",
-    "db:migrate": "node scripts/migrate.mjs"
+    "db:migrate": "node scripts/migrate.mjs",
+    "preview:file": "PUBLIC_DEMO_BANNER=true ADAPTER=node astro build && node scripts/preview/build.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.65.1",
