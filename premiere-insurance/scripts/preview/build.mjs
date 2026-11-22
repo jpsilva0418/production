@@ -26,6 +26,11 @@ const dist = join(root, 'dist/client');
 const out = process.argv[2];
 const mode = (process.argv.find((a) => a.startsWith('--mode=')) ?? '--mode=panel').slice(7) === 'call' ? 'call' : 'panel';
 const lite = process.argv.includes('--lite');
+// --artifact writes a page fragment for a hosted viewer that supplies its own document shell and
+// blocks iframes and alert(): no doctype/html/head/body, the map becomes a link, and a fixed
+// "demo" tag stays on screen.
+const artifact = process.argv.includes('--artifact');
+const artifactTitle = (process.argv.find((a) => a.startsWith('--title=')) ?? '--title=Premiere Insurance Demo').slice(8);
 if (!out) throw new Error('usage: node scripts/preview/build.mjs <out.html> [--mode=panel|call] [--lite]');
 const cacheDir = join(process.env.PREVIEW_CACHE ?? tmpdir(), 'premiere-preview-cache');
 mkdirSync(cacheDir, { recursive: true });
@@ -61,6 +66,10 @@ let strings = '', headStyle = '';
     // The assistant's three-language strings are identical on every page: keep one copy.
     body = body.replace(/(<script type="application\/json" data-a="strings">)([\s\S]*?)(<\/script>)/, (_, a, s, c) => { strings = s; return `${a}@@STRINGS@@${c}`; });
     body = body.replace('Not the live website.</p>', `Not the live website.${NOTE}</p>`);
+    if (artifact) {
+      body = body.replace(/<iframe class="map"[^>]*><\/iframe>/g, '<p class="map map--link"><a class="btn btn--ghost" href="https://www.google.com/maps/search/?api=1&query=Premiere+Insurance+Summer+St+Chelmsford+MA" target="_blank" rel="noopener">Google Maps</a></p>');
+      body += '<p class="pv-tag" aria-hidden="true">Demo preview · not the live site</p>';
+    }
     pages[key] = { lang: html.match(/<html lang="([^"]+)"/)[1], locale: html.match(/<body data-locale="([^"]+)"/)[1], title: html.match(/<title>([\s\S]*?)<\/title>/)[1], body };
   }
 })(dist);
@@ -157,8 +166,11 @@ const boot = `
   }
   function hydrateVideos() {
     document.querySelectorAll('source[data-pv-video]').forEach(function (s) {
-      s.src = videoUrl(s.getAttribute('data-pv-video'));
-      var v = s.parentElement; v.load(); var p = v.play(); if (p && p.catch) p.catch(function () {});
+      var id = s.getAttribute('data-pv-video'), v = s.parentElement;
+      // Some viewers refuse blob: media; fall back to the embedded data once.
+      s.addEventListener('error', function () { if (s.src.indexOf('blob:') === 0) { s.src = 'data:video/mp4;base64,' + vids[id]; v.load(); var q = v.play(); if (q && q.catch) q.catch(function () {}); } }, { once: true });
+      s.src = videoUrl(id);
+      v.load(); var p = v.play(); if (p && p.catch) p.catch(function () {});
     });
   }
   // Listeners the page script adds to document/window are tracked so they can be removed on navigation.
@@ -177,7 +189,7 @@ const boot = `
   }
   function go(path, hash) {
     var pg = pages[path];
-    if (!pg) { alert('This page is in the full preview file. This smaller file holds the three home pages only.'); return; }
+    if (!pg) return;
     try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch (e) {}
     tracked.forEach(function (l) { l[0].removeEventListener(l[1], l[2], l[3]); });
     tracked = [];
@@ -238,5 +250,22 @@ const html = `<!doctype html>
 </body>
 </html>
 `;
-writeFileSync(out, html);
-console.log(`${mode}: ${Object.keys(pages).length} pages, ${assets.length} images, ${Object.keys(videos).length} videos → ${out} (${(html.length / 1024 / 1024).toFixed(1)} MB; media ${(mediaBytes / 1024 / 1024).toFixed(1)} MB)`);
+const extraCss = `.pv-tag{position:fixed;left:8px;bottom:calc(var(--dock-h) + env(safe-area-inset-bottom,0px) + 8px);z-index:60;margin:0;padding:5px 9px;background:#000;color:#fff;font:700 11px/1.2 var(--body);letter-spacing:.04em;opacity:.82;pointer-events:none}
+.map--link{display:grid;place-items:center;height:auto;padding:20px 0;background:none}
+:root{color-scheme:light}
+.site-header{top:env(safe-area-inset-top,0px)}`;
+const fragment = `<title>${artifactTitle}</title>
+<script>document.documentElement.lang=${JSON.stringify(home.lang)};document.documentElement.dataset.voice=${JSON.stringify(mode)};document.body.dataset.locale=${JSON.stringify(home.locale)};</script>
+<style>${headStyle}</style>
+<style>${css.replace(/<\/style/gi, '<\\/style')}${extraCss}</style>
+${withData(home.body).replace('@@STRINGS@@', () => strings)}
+<script id="pv-pages" type="application/json">${inlineJson(JSON.stringify(pages))}</script>
+<script id="pv-assets" type="application/json">${JSON.stringify(assets)}</script>
+<script id="pv-videos" type="application/json">${JSON.stringify(videos)}</script>
+<script id="pv-strings" type="application/json">${inlineJson(strings)}</script>
+<script id="pv-app" type="text/plain">${inline(appJs)}</script>
+<script>${inline(engineJs)}</script>
+<script>${inline(boot)}</script>
+`;
+writeFileSync(out, artifact ? fragment : html);
+console.log(`${mode}: ${Object.keys(pages).length} pages, ${assets.length} images, ${Object.keys(videos).length} videos → ${out} (${((artifact ? fragment : html).length / 1024 / 1024).toFixed(1)} MB; media ${(mediaBytes / 1024 / 1024).toFixed(1)} MB)`);
