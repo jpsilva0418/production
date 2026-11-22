@@ -9,7 +9,7 @@ Nothing below has been done. Each item is waiting on a named person's yes.
 | A1 | **Preview deployment** (Vercel project + a Postgres database, e.g. Supabase) | Creates infrastructure under an account and puts the agency's brand on a public URL | Vercel Hobby is free but is for non-commercial use; a business site needs Pro, about $20/month per seat. Supabase: free tier may be enough for a pilot; Pro is about $25/month |
 | A2 | **Claude as the assistant's brain** (`ANTHROPIC_API_KEY`) | Paid, and sends customer conversation text to a third-party AI provider | Default model `claude-opus-5-5`: roughly $0.12–$0.25 per ten-turn conversation, so about $35–$75/month at 300 conversations. `claude-haiku-5-5` is faster and far cheaper (about $1–$2/month at the same volume) — a cost/quality choice for the agency. Computed from list prices and an assumed conversation length; not measured |
 | A3 | **Email delivery of leads** (Resend key + a verified sending domain) | Needs DNS records on a domain the agency controls, and real rep addresses | Free tier is expected to cover this volume; confirm on Resend's pricing page |
-| A4 | **Premium realtime voice** (server-side speech instead of the browser's) | Paid per minute; sends customer **audio** to a provider, which changes the privacy disclosure | Not quoted. Per-minute pricing varies by provider and changes often — get a current quote |
+| A4 | **Premium realtime voice for B** (server-side streaming speech, like the reference site's call widget) | Paid per minute; sends customer **audio** to a provider, which changes the privacy disclosure. It is what makes B fully hands-free on every phone, understand either language without choosing, and work inside Instagram's browser | Not quoted. Per-minute pricing varies by provider and changes often — get a current quote |
 | A5 | **Phone-answering AI** | Touches live call routing; recording law; paid per minute | See `PHONE.md`. Not quoted |
 | A6 | **Turning on GTM, Elfsight reviews and Callbell** on the new site (flags exist), and deciding whether to re-add the ads-measurement pixel (not carried over) | They write into the agency's real analytics and chat inbox | Already paid for by the agency, if they are still subscribed |
 | A7 | **Production cutover** (DNS from Webflow to the new host) | Replaces the live site | — |
@@ -64,6 +64,13 @@ proven against a local PostgreSQL and a scripted email provider only.
   gzipped script; media loads lazily from the existing CDN.
 - **Portuguese and Spanish wording** of the new strings was written natively but has not been
   read by a native-speaking reviewer at the agency.
+
+- **B's hands-free loop on iPhone.** B restarts listening by itself after each reply. Whether
+  iOS Safari allows that without a tap each turn was not observed on a device; if it does not,
+  B shows "Tap to keep talking" and continues on the next tap.
+- **Language detection by voice.** Browser speech recognition listens in one language at a
+  time — the one chosen on screen. Saying "Português" / "English" switches it. Speaking
+  Portuguese while English is selected is not understood automatically; A4 would remove that limit.
 
 ## E. Rollout and rollback, once approved
 

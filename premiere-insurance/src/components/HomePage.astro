@@ -2,17 +2,19 @@
 import Base from '../layouts/Base.astro';
 import Icon from './Icon.astro';
 import Sections from './Sections.astro';
-import { site, assets, services } from '../content/site';
+import VoiceCall from './VoiceCall.astro';
+import { site, assets, services, homeCardOrder } from '../content/site';
 import { t, homePath, pagePath, type Locale } from '../i18n';
+import { voiceDict } from '../i18n/voice';
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const d = t(locale);
+const v = voiceDict[locale];
 const alternates = { en: homePath('en'), pt: homePath('pt'), es: homePath('es') };
 const reviews = import.meta.env.PUBLIC_ENABLE_ELFSIGHT === 'true';
-const groups = [
-  { id: 'personal', label: d.services.personal, items: services.filter((s) => s.line === 'personal') },
-  { id: 'commercial', label: d.services.commercial, items: services.filter((s) => s.line === 'commercial') },
-];
+const cards = homeCardOrder.map((slug) => services.find((s) => s.slug === slug)!);
+const agency = 'Premiere Insurance Agency';
+const boldAgency = (text: string) => text.split(agency);
 ---
 <Base locale={locale} title={d.meta.homeTitle} description={d.meta.homeDescription} alternates={alternates}>
   {locale === 'en' && (
@@ -29,95 +31,93 @@ const groups = [
     </script>
   )}
 
-  <section class="hero on-orange" aria-labelledby="hero-h">
+  <section class="hero" aria-labelledby="hero-h">
+    <img class="hero__mark" src={assets.logoLight} alt="" width="636" height="560" />
     <div class="wrap hero__inner">
-      <div>
-        <h1 class="display hero__title" id="hero-h">{d.hero.title}</h1>
-        <p class="hero__tagline">{d.hero.tagline}</p>
-        <div class="hero__actions">
-          <a class="btn btn--ink" href={`tel:${site.phone.e164}`}><Icon name="phone" />{d.hero.call}</a>
-          <a class="btn btn--ghost" href="#getaquote">{d.hero.quote}</a>
-        </div>
-      </div>
+      <h1 class="hero__title" id="hero-h"><span>{d.hero.title}</span></h1>
+      <p class="hero__tagline">{d.hero.tagline}</p>
+      <div class="only-call"><VoiceCall locale={locale} /></div>
+    </div>
+  </section>
+
+  {/* "A": the assistant panel, opened from here in the chosen language. */}
+  <section class="talk-band only-panel" aria-labelledby="talk-h">
+    <div class="wrap">
       <div class="talk-card on-dark" id="talk">
         <div class="talk-card__top">
           <span class="mark" aria-hidden="true"><i></i><i></i><i></i></span>
           <div>
-            <h2>{d.hero.talk}</h2>
+            <h2 id="talk-h">{d.hero.talk}</h2>
             <p>{d.hero.talkSub}</p>
           </div>
         </div>
-        <button class="btn btn--primary" type="button" data-open-assistant="voice"><Icon name="mic" />{d.assistant.startVoice}</button>
+        <div class="talk-card__langs" role="group" aria-label={v.langLabel}>
+          <button class="btn btn--primary" type="button" data-open-assistant="voice" data-lang="en" lang="en"><Icon name="mic" />English</button>
+          <button class="btn btn--primary" type="button" data-open-assistant="voice" data-lang="pt" lang="pt-BR"><Icon name="mic" />Português</button>
+        </div>
         <div class="talk-card__alt">
           <button type="button" data-open-assistant="text">{d.assistant.startText}</button>
+          <a href={`tel:${site.phone.e164}`}>{d.hero.call}</a>
           <a href={site.whatsapp} target="_blank" rel="noopener">{d.dock.whatsapp}</a>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section section--white" aria-labelledby="about-h">
-    <div class="wrap about">
-      <div class="about__media">
-        <video muted loop playsinline preload="none" poster={assets.heroVideo.poster} data-autoplay aria-label={d.about.videoLabel}>
+  <section class="who grain" aria-labelledby="about-h">
+    <div class="who__grid">
+      <div class="who__text">
+        <h2 class="who__title" id="about-h">{d.about.heading}</h2>
+        <p class="who__body">{boldAgency(d.about.body).map((part, i) => i === 0 ? part : <><strong>{agency}</strong>{part}</>)}</p>
+        <a class="btn btn--primary" href="#getaquote">{d.about.cta}</a>
+      </div>
+      <div class="who__media">
+        <video muted loop playsinline autoplay preload="metadata" poster={assets.heroVideo.poster} data-autoplay aria-label={d.about.videoLabel}>
           <source src={assets.heroVideo.mp4} type="video/mp4" />
         </video>
       </div>
-      <div class="stack" style="--gap:18px">
-        <h2 class="h2" id="about-h">{d.about.heading}</h2>
-        <p class="lede">{d.about.body}</p>
-        <p><a class="btn btn--primary" href="#getaquote">{d.hero.quote}</a></p>
-      </div>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="services-h">
+  <section class="products grain" aria-labelledby="services-h">
     <div class="wrap">
-      <div class="center stack" style="--gap:16px">
-        <h2 class="h2" id="services-h">{d.services.heading}</h2>
-        <p class="lede">{d.services.body}</p>
+      <h2 class="section-title" id="services-h">{d.services.heading}</h2>
+      <p class="section-lede">{d.services.body}</p>
+      <div class="cards">
+        {cards.map((s) => (
+          <article class="card">
+            <a class="card__img" href={pagePath(locale, s.slug)} tabindex="-1" aria-hidden="true"><img src={s.image} alt="" loading="lazy" width="700" height="433" /></a>
+            <div class="card__body paper">
+              <h3 class="card__title">{d.cards[s.slug][0]}</h3>
+              <p>{d.cards[s.slug][1]}</p>
+              <div class="card__links">
+                <a href={pagePath(locale, s.slug)}>{d.services.learnMore}<span class="sr-only">: {d.cards[s.slug][0]}</span> →</a>
+                <button type="button" data-open-assistant data-topic={d.cards[s.slug][0]}>{d.services.askAi}<span class="sr-only">: {d.cards[s.slug][0]}</span></button>
+              </div>
+            </div>
+          </article>
+        ))}
       </div>
-      {groups.map((g) => (
-        <>
-          <h3 class="h3 group-title" id={g.id}>{g.label}</h3>
-          <div class="cards">
-            {g.items.map((s) => (
-              <article class="card">
-                <a class="card__img" href={pagePath(locale, s.slug)} tabindex="-1" aria-hidden="true"><img src={s.image} alt="" loading="lazy" width="600" height="400" /></a>
-                <div class="card__body">
-                  <h4 class="h3">{d.cards[s.slug][0]}</h4>
-                  <p>{d.cards[s.slug][1]}</p>
-                  <div class="card__links">
-                    <a href={pagePath(locale, s.slug)}>{d.services.learnMore}<span class="sr-only">: {d.cards[s.slug][0]}</span> →</a>
-                    <button type="button" data-open-assistant data-topic={d.cards[s.slug][0]}>{d.services.askAi}<span class="sr-only">: {d.cards[s.slug][0]}</span></button>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </>
-      ))}
     </div>
   </section>
 
-  <section class="section section--white" aria-labelledby="reviews-h">
-    <div class="wrap center stack" style="--gap:18px">
-      <h2 class="h2" id="reviews-h">{d.reviews.heading}</h2>
+  <section class="reviews paper" aria-labelledby="reviews-h">
+    <div class="wrap center">
+      <h2 class="section-title" id="reviews-h">{d.reviews.heading}</h2>
       {reviews
         ? <><script is:inline src="https://static.elfsight.com/platform/platform.js" defer></script><div class={site.integrations.elfsightReviewsApp} data-elfsight-app-lazy></div></>
-        : <p class="lede">{d.reviews.fallback}</p>}
+        : <p class="section-lede">{d.reviews.fallback}</p>}
     </div>
   </section>
 
-  <section class="section" aria-labelledby="docs-h">
-    <div class="wrap docs">
-      <div class="stack" style="--gap:16px">
-        <h2 class="h2" id="docs-h">{d.documents.heading}</h2>
-        <p class="lede">{d.documents.body}</p>
-        <p><a class="btn btn--ghost" href={site.whatsapp} target="_blank" rel="noopener"><Icon name="whatsapp" />{d.dock.whatsapp}</a></p>
-      </div>
-      <div class="docs__imgs" aria-hidden="true">{assets.documents.map((src) => <img src={src} alt="" loading="lazy" width="200" height="266" />)}</div>
+  <section class="docs grain" aria-labelledby="docs-h">
+    <div class="docs__imgs docs__imgs--top" aria-hidden="true">{assets.documents.slice(0, 2).map((src) => <img src={src} alt="" loading="lazy" width="240" height="320" />)}</div>
+    <div class="wrap docs__text">
+      <h2 class="section-title" id="docs-h">{d.documents.heading}</h2>
+      <p class="section-lede">{d.documents.body}</p>
+      <p><a class="btn btn--ghost" href={site.whatsapp} target="_blank" rel="noopener"><Icon name="whatsapp" />{d.dock.whatsapp}</a></p>
     </div>
+    <div class="docs__imgs docs__imgs--bottom" aria-hidden="true">{assets.documents.slice(2).map((src) => <img src={src} alt="" loading="lazy" width="240" height="320" />)}</div>
   </section>
 
   <Sections locale={locale} />

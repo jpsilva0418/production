@@ -14,6 +14,22 @@ npm run dev                      # http://localhost:4321 — pages work; inquiri
 DATABASE_URL=postgres://… npm run db:migrate
 ```
 
+## Two voice experiences (A / B)
+
+Both are in every build; `PUBLIC_VOICE_MODE=panel|call` picks which one leads, and `?voice=panel`
+or `?voice=call` switches it on any page for side-by-side review.
+
+| | **A — assistant panel** (`panel`, default) | **B — tap once and talk** (`call`) |
+|---|---|---|
+| Entry | Card under the hero with **English \| Português** buttons; one tap opens the panel and starts talking in that language | Orb in the hero with **English \| Português** right under it; one tap asks for the microphone and starts a hands-free call |
+| During | Transcript bubbles, mic button, typing box always available | Live captions; it listens again after every reply; tap to interrupt, tap to end |
+| Finish | Editable review card in the panel | Editable review card in a bottom sheet |
+| No microphone | Explains, switches to typing, offers a sample call | Explains, offers a sample call and typing |
+
+Both use the same conversation engine, the same lead pipeline and the browser's own speech
+services (free; no audio recorded). The **sample call** plays scripted customer lines against
+the real engine and is labelled as a demonstration; it never sends a lead.
+
 ## What the audit of the live site found (2026-11-21)
 
 | | Live site | This build |
@@ -39,7 +55,7 @@ src/
     assistant/  guided.ts (no-provider engine) · llm.ts (Claude) · kb.ts (facts from the site only)
 db/schema.sql   leads, lead_deliveries, lead_events (audit), rate_limits — RLS on, no policies
 tests/unit      54 tests — validation, routing, pipeline against real PostgreSQL, conversation engine
-tests/e2e       40 browser tests — both languages, voice, text, failures, security, phone intake
+tests/e2e       browser tests — both languages, both voice modes, text, failures, security, phone intake
 ```
 
 ## Tests
@@ -56,6 +72,18 @@ E2E_DATABASE_URL=postgres://postgres@127.0.0.1:5432/premiere_e2e npm run e2e
 In the browser tests the microphone and loudspeaker are stand-ins (CI has neither); the
 conversation engine, the API routes and the database behind them are the real ones.
 **No test here proves behaviour on a physical iPhone** — see the open questions.
+
+## Single-file previews
+
+```bash
+PUBLIC_DEMO_BANNER=true npm run build:node
+node scripts/preview/build.mjs preview/premiere-A-panel.html --mode=panel
+node scripts/preview/build.mjs preview/premiere-B-call.html --mode=call
+```
+Photos, textures, logos, fonts and the two homepage videos are embedded (videos need `ffmpeg`),
+so the file works offline. There is no server in a preview: nothing is stored and reference
+numbers read `SAMPLE-…`. Voice works only where the viewer grants microphone access — a real
+browser does; most in-app file viewers do not.
 
 ## Media
 

@@ -1,14 +1,15 @@
 ---
-// The contact dock, the "reach us" sheet and the AI assistant dialog.
+// The contact dock, the "reach us" sheet and the assistant dialog (voice or text).
 // One entry point for every channel, so there are never two competing chat widgets.
 import Icon from './Icon.astro';
 import { site, services } from '../content/site';
 import { t, dict, locales, localeName, speechLang, type Locale } from '../i18n';
+import { voiceDict } from '../i18n/voice';
 interface Props { locale: Locale; liveChat: boolean; }
 const { locale, liveChat } = Astro.props;
 const d = t(locale);
-// Every locale's assistant strings ship with the page: the customer can switch language mid-conversation.
-const strings = Object.fromEntries(locales.map((l) => [l, { a: dict[l].assistant, cats: Object.fromEntries(services.map((s) => [s.category, dict[l].cards[s.slug][0]])), pref: dict[l].form.preferredOptions, call: dict[l].hero.call, whatsapp: dict[l].contact.whatsapp, form: dict[l].dock.form, livechat: dict[l].dock.livechat, invalid: dict[l].form.invalid, close: dict[l].nav.close, name: localeName[l], speech: speechLang[l] }]));
+// Every locale's strings ship with the page: the customer can switch language mid-conversation.
+const strings = Object.fromEntries(locales.map((l) => [l, { a: dict[l].assistant, v: voiceDict[l], cats: Object.fromEntries(services.map((s) => [s.category, dict[l].cards[s.slug][0]])), pref: dict[l].form.preferredOptions, call: dict[l].hero.call, whatsapp: dict[l].contact.whatsapp, form: dict[l].dock.form, livechat: dict[l].dock.livechat, invalid: dict[l].form.invalid, close: dict[l].nav.close, name: localeName[l], speech: speechLang[l] }]));
 ---
 <div class="dock" data-dock>
   <a class="dock__call" href={`tel:${site.phone.e164}`}><Icon name="phone" /><span>{d.nav.call}</span></a>
@@ -30,21 +31,30 @@ const strings = Object.fromEntries(locales.map((l) => [l, { a: dict[l].assistant
   </ul>
 </dialog>
 
+<dialog class="sheet review-sheet" id="call-review" aria-labelledby="call-review-h">
+  <div class="sheet__head">
+    <h2 id="call-review-h" data-call-review-title>{voiceDict[locale].checkDetails}</h2>
+    <button class="icon-btn" type="button" data-close-dialog aria-label={d.nav.close}><Icon name="close" /></button>
+  </div>
+  <div data-call-review-body></div>
+</dialog>
+
 <dialog class="assistant" id="assistant" aria-labelledby="assistant-h" data-locale={locale} data-live-chat={liveChat ? '1' : undefined}>
   <div class="assistant__head">
     <span class="mark" style="width:40px;height:40px" aria-hidden="true"><i></i><i></i></span>
     <h2 id="assistant-h"><small data-t="badge">{d.assistant.badge}</small><span data-t="title">{d.assistant.title}</span></h2>
-    <label class="sr-only" for="assistant-lang" data-t="switchTo">{d.assistant.switchTo}</label>
-    <select id="assistant-lang" data-a="lang">
-      {locales.map((l) => <option value={l} selected={l === locale}>{localeName[l]}</option>)}
-    </select>
+    <div class="assistant__langs" role="group" data-a="langs" aria-label={voiceDict[locale].langLabel}>
+      <button type="button" data-a-lang="en" lang="en" aria-pressed={locale !== 'pt' ? 'true' : 'false'}>EN</button>
+      <button type="button" data-a-lang="pt" lang="pt-BR" aria-pressed={locale === 'pt' ? 'true' : 'false'}>PT</button>
+    </div>
     <button class="icon-btn" type="button" data-a="close" aria-label={d.nav.close}><Icon name="close" /></button>
   </div>
+  <p class="assistant__notice" data-v="notice">{voiceDict[locale].notice}</p>
 
   <div class="assistant__body" data-a="log" role="log" aria-live="polite" aria-relevant="additions" tabindex="0"></div>
 
-  <div class="stage" data-a="stage" hidden>
-    <div class="voice" data-a="voice">
+  <div class="stage" data-a="stage">
+    <div class="voice" data-a="voice" hidden>
       <p class="voice__status" data-a="status" role="status"></p>
       <button class="mic" type="button" data-a="mic" data-state="idle"><b></b><i></i><Icon name="mic" /><span class="sr-only" data-a="mic-label"></span></button>
       <div class="voice__tools">
@@ -58,6 +68,7 @@ const strings = Object.fromEntries(locales.map((l) => [l, { a: dict[l].assistant
     </form>
     <div class="stage__links">
       <button type="button" data-a="human" data-t="human">{d.assistant.human}</button>
+      <button type="button" data-a="sample" data-v="sample">{voiceDict[locale].sample}</button>
       <button type="button" data-a="end" data-t="end">{d.assistant.end}</button>
     </div>
   </div>

@@ -1,0 +1,31 @@
+---
+// "B": tap once and talk. A hands-free call with the assistant, right in the hero.
+// The conversation language is chosen on the same screen (English | Português).
+import { voiceDict } from '../i18n/voice';
+import type { Locale } from '../i18n';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const v = voiceDict[locale];
+const start: 'en' | 'pt' = locale === 'pt' ? 'pt' : 'en';
+---
+<div class="call" data-call data-lang={start}>
+  <h2 class="call__title">{v.callTitle}</h2>
+  <p class="call__sub">{v.callSub}</p>
+  <button class="orb" type="button" data-call-orb data-state="idle" aria-describedby="call-hint">
+    <span class="orb__ring" aria-hidden="true"></span><span class="orb__ring" aria-hidden="true"></span><span class="orb__ring" aria-hidden="true"></span>
+    <span class="orb__core" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V22h2v-3.08A7 7 0 0 0 19 12z"/></svg></span>
+    <span class="orb__hint" id="call-hint" data-call-hint>{v.tapToTalk}</span>
+  </button>
+  <div class="call__langs" role="group" aria-label={v.langLabel}>
+    <button type="button" data-call-lang="en" lang="en" aria-pressed={start === 'en' ? 'true' : 'false'}>English</button>
+    <button type="button" data-call-lang="pt" lang="pt-BR" aria-pressed={start === 'pt' ? 'true' : 'false'}>Português</button>
+  </div>
+  <div class="call__captions" data-call-captions aria-live="polite"></div>
+  <div class="call__panel" data-call-panel hidden></div>
+  <p class="call__note">{v.notice}</p>
+  <p class="call__links">
+    <button type="button" data-call-type>{v.typeInstead}</button>
+    <span aria-hidden="true">·</span>
+    <button type="button" data-call-sample>{v.sample}</button>
+  </p>
+</div>

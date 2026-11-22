@@ -9,7 +9,7 @@ const SLUGS = ['life-insurance', 'homeowners', 'personal-auto', 'recreational-ve
 test.describe('language', () => {
   test('Português | English is in the header without opening the menu, and switches the whole page', async ({ page }) => {
     await page.goto('/');
-    const sw = page.getByRole('group', { name: 'Language' });
+    const sw = page.getByRole('group', { name: 'Language', exact: true });
     await expect(sw).toBeVisible();
     await expect(sw.getByRole('link')).toHaveText(['Português', 'English']);
     await expect(sw.getByRole('link', { name: 'English' })).toHaveAttribute('aria-current', 'true');
@@ -33,14 +33,14 @@ test.describe('language', () => {
 
   test('remembers the chosen language on return, and never traps the visitor in it', async ({ page }) => {
     await page.goto('/');
-    await page.getByRole('group', { name: 'Language' }).getByRole('link', { name: 'Português' }).click();
+    await page.getByRole('group', { name: 'Language', exact: true }).getByRole('link', { name: 'Português' }).click();
     await expect(page).toHaveURL(/\/pt\/home$/);
     // A later visit to the root (new tab = new session) lands on Portuguese.
     await page.evaluate(() => sessionStorage.clear());
     await page.goto('/');
     await expect(page).toHaveURL(/\/pt\/home$/);
     // Choosing English sticks: no bouncing back.
-    await page.getByRole('group', { name: 'Idioma' }).getByRole('link', { name: 'English' }).click();
+    await page.getByRole('group', { name: 'Idioma', exact: true }).getByRole('link', { name: 'English' }).click();
     await expect(page).toHaveURL(/127\.0\.0\.1:\d+\/$/);
     await page.evaluate(() => sessionStorage.clear());
     await page.reload();
@@ -55,7 +55,7 @@ test.describe('language', () => {
 
   test('the switch keeps you on the same page, and Spanish is still reachable', async ({ page }) => {
     await page.goto('/en/workers-compensation');
-    await page.getByRole('group', { name: 'Language' }).getByRole('link', { name: 'Português' }).click();
+    await page.getByRole('group', { name: 'Language', exact: true }).getByRole('link', { name: 'Português' }).click();
     await expect(page).toHaveURL(/\/pt\/workers-compensation$/);
     await page.getByRole('button', { name: 'Menu' }).click();
     await page.locator('#mobile-menu').getByRole('link', { name: 'Español' }).click();
@@ -79,10 +79,10 @@ test.describe('nothing that worked on the live site is lost', () => {
     await page.goto('/en/personal-auto');
     await expect(page.locator('a[href="tel:+19782210139"]').first()).toBeAttached();
     await expect(page.locator('a[href="https://wa.me/19782210139"]').first()).toBeAttached();
-    await expect(page.getByText('Summer St, Unit 19, Chelmsford, MA 01824').first()).toBeVisible();
-    await expect(page.getByText('116 Union St, Clinton, MA 01510')).toBeVisible();
+    await expect(page.getByText('Summer St, Unit 19, Chelmsford, MA, 01824').first()).toBeVisible();
+    await expect(page.getByText('116 Union St, Clinton, MA, 01510')).toBeVisible();
     await expect(page.locator('iframe.map')).toHaveAttribute('src', /google\.com\/maps\/embed/);
-    await expect(page.locator('.carriers img')).toHaveCount(17);
+    await expect(page.locator('.carriers img:not([alt=""])')).toHaveCount(17); // the marquee repeats the row once, hidden from screen readers
     await expect(page.getByRole('heading', { name: 'Factors Affecting Your Auto Insurance Premiums' })).toBeVisible();
   });
   test('the menu lists the same personal and commercial lines as the live navigation', async ({ page }) => {
@@ -96,7 +96,7 @@ test.describe('nothing that worked on the live site is lost', () => {
   test('desktop header shows navigation, the language switch and the call button together @desktop', async ({ page }) => {
     await page.goto('/pt/home');
     await expect(page.getByRole('navigation', { name: 'Primary' })).toBeVisible();
-    await expect(page.getByRole('group', { name: 'Idioma' })).toBeVisible();
+    await expect(page.getByRole('group', { name: 'Idioma', exact: true })).toBeVisible();
     await expect(page.getByRole('link', { name: /Ligar \(978\) 221-0139/ }).first()).toBeVisible();
     await page.getByText('Seguros Comerciais').first().click();
     await expect(page.getByRole('navigation', { name: 'Primary' }).getByRole('link', { name: 'Seguro de Propriedade Comercial' })).toBeVisible();

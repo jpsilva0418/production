@@ -63,6 +63,9 @@ export const assets = {
   logoFooter: cdn('667227f8043ef99bd3f12c48_Logo_Horizontal_SemFundo%20(1).png'),
   favicon: cdn('679a57b9aff362efe81f0680_favicon-32x32.png'),
   touchIcon: cdn('672a5403f3f5b26276560171_logo.png'),
+  paperTexture: cdn('6714014d0aa4ddf068415263_watercolor-paper-texture.jpg'),
+  grain: cdn('66e250906555dbf95f80df5c_graain.png'),
+  check: cdn('66e7d7daaf060e8c0d45de26_66e3354f06efdfef61cc1ab7_check.png'),
   heroVideo: vid('66e25a56e8d82cb9468a0c2b_video_2024-09-12_00-04-35'),
   aerialVideo: vid('670df505891c270ca4747287_Aereo%202'),
   documents: [
@@ -97,6 +100,8 @@ export const services: ServiceDef[] = [
 ];
 
 // "Trusted by" carrier logos, in the live order.
+export const homeCardOrder = ['life-insurance', 'homeowners', 'personal-auto', 'commercial-auto', 'general-liability', 'workers-compensation', 'commercial-property', 'inland-marine', 'umbrella', 'recreational-vehicle-insurance'];
+
 export const carriers = [
   ['National Life Group', '67d498e6357677028614331f_NLG-logo.png'],
   ['GEICO', '67d495e0ace9711453162d3c_Geico.png'],

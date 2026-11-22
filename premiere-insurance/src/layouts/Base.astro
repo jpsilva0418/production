@@ -21,6 +21,9 @@ const flag = (k: string) => import.meta.env[k] === 'true';
 const gtm = flag('PUBLIC_ENABLE_GTM');
 const callbell = flag('PUBLIC_ENABLE_CALLBELL');
 const demo = import.meta.env.PUBLIC_DEMO_BANNER === 'true';
+// Which voice experience leads: 'panel' (A: assistant panel) or 'call' (B: tap once and talk).
+// Set at build time; ?voice=call|panel overrides it for side-by-side review.
+const voiceMode = import.meta.env.PUBLIC_VOICE_MODE === 'call' ? 'call' : 'panel';
 const ld = {
   '@context': 'https://schema.org', '@type': 'InsuranceAgency', name: site.agencyName, url: site.domain, telephone: site.phone.e164, image: assets.touchIcon,
   address: { '@type': 'PostalAddress', streetAddress: site.offices[0].street, addressLocality: site.offices[0].city, addressRegion: site.offices[0].state, postalCode: site.offices[0].zip, addressCountry: 'US' },
@@ -29,7 +32,7 @@ const ld = {
 };
 ---
 <!doctype html>
-<html lang={htmlLang[locale]}>
+<html lang={htmlLang[locale]} data-voice={voiceMode}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -51,6 +54,8 @@ const ld = {
     <link rel="apple-touch-icon" href={assets.touchIcon} />
     <link rel="preconnect" href="https://cdn.prod.website-files.com" crossorigin />
     <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+    <style is:inline set:html={`:root{--tex-paper:url("${assets.paperTexture}");--tex-grain:url("${assets.grain}");--tex-check:url("${assets.check}")}`}></style>
+    <script is:inline>try{var m=new URLSearchParams(location.search).get('voice');if(m==='call'||m==='panel'){sessionStorage.setItem('pi-voice',m);}else{m=sessionStorage.getItem('pi-voice');}if(m==='call'||m==='panel')document.documentElement.dataset.voice=m;}catch(e){}</script>
     <slot name="head" />
     {gtm && <script is:inline define:vars={{ id: site.integrations.gtmId }}>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',id);</script>}
   </head>
@@ -64,6 +69,7 @@ const ld = {
     <script>
       import '../client/site.ts';
       import '../client/assistant.ts';
+      import '../client/call.ts';
     </script>
   </body>
 </html>

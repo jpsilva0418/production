@@ -1,37 +1,28 @@
 ---
-import { site, assets, services } from '../content/site';
+import { site, assets } from '../content/site';
 import { t, homePath, pagePath, localeName, locales, type Locale } from '../i18n';
 interface Props { locale: Locale; alternates: Record<Locale, string>; }
 const { locale, alternates } = Astro.props;
 const d = t(locale);
 ---
 <footer class="site-footer on-dark">
-  <div class="wrap">
-    <div class="site-footer__grid">
-      <div>
-        <img src={assets.logoFooter} alt={`${site.name} Agency`} width="160" height="56" loading="lazy" />
-        <p style="margin-top:14px;color:#b9bbbf;font-size:.95rem">
-          {site.offices[0].street}, {site.offices[0].city}, {site.offices[0].state} {site.offices[0].zip}<br />
-          <a href={`tel:${site.phone.e164}`}>{site.phone.display}</a>
-        </p>
-      </div>
+  <div class="wrap site-footer__inner">
+    <img src={assets.logoFooter} alt={`${site.name} Agency`} width="200" height="70" loading="lazy" />
+    <div class="site-footer__cols">
       <div>
         <h2>{d.footer.changeLanguage}</h2>
         <ul>
-          {locales.map((l) => (
-            <li><a href={alternates[l]} lang={l === 'pt' ? 'pt-BR' : l} hreflang={l} data-set-lang={l} aria-current={l === locale ? 'true' : undefined}>{localeName[l]}</a></li>
+          {locales.filter((l) => l !== locale).map((l) => (
+            <li><a href={alternates[l]} lang={l === 'pt' ? 'pt-BR' : l} hreflang={l} data-set-lang={l}>{localeName[l]}</a></li>
           ))}
         </ul>
       </div>
       <div>
-        <h2>{d.nav.personal}</h2>
-        <ul>{services.filter((s) => s.line === 'personal').map((s) => <li><a href={pagePath(locale, s.slug)}>{d.navService[s.slug]}</a></li>)}</ul>
-      </div>
-      <div>
         <h2>{d.footer.about}</h2>
         <ul>
-          <li><a href={homePath(locale)}>{d.footer.home}</a></li>
+          <li><a class="is-accent" href={homePath(locale)}>{d.footer.home}</a></li>
           <li><a href={pagePath(locale, 'privacy-policy')}>{d.footer.terms}</a></li>
+          <li><a href={`tel:${site.phone.e164}`}>{site.phone.display}</a></li>
         </ul>
       </div>
     </div>

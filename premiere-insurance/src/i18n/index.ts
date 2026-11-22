@@ -73,6 +73,7 @@ const en = {
     whatsapp: { title: 'WhatsApp a specialist', text: 'Message our team directly.' },
   },
   about: {
+    cta: "Get my free quote",
     heading: 'Who we are',
     body: "Premiere Insurance Agency has been a standout provider since 2019, offering the best customer experience. With an exceptional commitment to customer satisfaction, a wide range of services, partnerships with top carriers, and personalized and professional service, the agency has become a leader in the insurance market. If you're looking for a reliable and dedicated agency to protect you, Premiere Insurance Agency is the right choice.",
     videoLabel: 'Video of the Premiere Insurance team at the Chelmsford office',
@@ -312,6 +313,7 @@ const pt: Dict = {
     whatsapp: { title: 'Fale com um especialista no WhatsApp', text: 'Mande uma mensagem direto para a equipe.' },
   },
   about: {
+    cta: "Contate-nos agora!",
     heading: 'Quem nós somos',
     body: 'A Premiere Insurance Agency tem se destacado desde 2019, oferecendo a melhor experiência para os clientes. Com um compromisso excepcional com a satisfação do cliente, uma ampla variedade de serviços, parcerias com as melhores seguradoras e um atendimento personalizado e profissional, a agência se tornou uma líder no mercado de seguros. Se você busca uma agência confiável e dedicada para protegê-lo, a Premiere Insurance Agency é a escolha certa.',
     videoLabel: 'Vídeo da equipe da Premiere Insurance no escritório de Chelmsford',
@@ -546,6 +548,7 @@ const es: Dict = {
     whatsapp: { title: 'Escribe a un especialista por WhatsApp', text: 'Envía un mensaje directo al equipo.' },
   },
   about: {
+    cta: "Contáctanos ahora mismo",
     heading: 'Quiénes somos',
     body: 'Premiere Insurance Agency ha sido un proveedor destacado desde 2019, ofreciendo la mejor experiencia al cliente. Con un compromiso excepcional con la satisfacción del cliente, una amplia gama de servicios, asociaciones con las principales aseguradoras y un servicio personalizado y profesional, la agencia se ha convertido en un líder en el mercado de seguros. Si estás buscando una agencia confiable y dedicada para protegerte, Premiere Insurance Agency es la elección correcta.',
     videoLabel: 'Video del equipo de Premiere Insurance en la oficina de Chelmsford',

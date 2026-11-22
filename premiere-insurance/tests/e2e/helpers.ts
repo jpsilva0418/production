@@ -33,25 +33,29 @@ export async function fakeSpeech(page: Page, opts: { mic?: 'ok' | 'deny' | 'none
     // The native utterance only accepts native voice objects; the stand-in voices need a plain one.
     w.SpeechSynthesisUtterance = class { text: string; lang = ''; voice: any = null; rate = 1; onend: any; onerror: any; constructor(t: string) { this.text = t; } };
     if (mic === 'none') { delete w.SpeechRecognition; delete w.webkitSpeechRecognition; return; }
+    w.__silenceMs = 150;
+    w.__starts = 0;
     class FakeRecognition {
       lang = ''; interimResults = false; continuous = false; maxAlternatives = 1;
-      onstart: any; onresult: any; onerror: any; onend: any;
+      onstart: any; onresult: any; onerror: any; onend: any; live = false;
       start() {
         w.__recognition = this;
         w.__listenLang = this.lang;
+        w.__starts++;
         setTimeout(() => {
           if (mic === 'deny') { this.onerror?.({ error: 'not-allowed' }); this.onend?.({}); return; }
+          this.live = true;
           this.onstart?.({});
         }, 10);
       }
-      stop() { setTimeout(() => this.onend?.({}), 5); }
-      abort() { if (w.__recognition === this) w.__recognition = null; }
+      stop() { if (!this.live) return; this.live = false; if (w.__recognition === this) w.__recognition = null; setTimeout(() => this.onend?.({}), 5); }
+      abort() { this.live = false; if (w.__recognition === this) w.__recognition = null; }
     }
     w.SpeechRecognition = FakeRecognition;
     w.webkitSpeechRecognition = FakeRecognition;
     w.__say = (text: string) => {
       const r = w.__recognition;
-      if (!r) throw new Error('assistant is not listening');
+      if (!r || !r.live) throw new Error('assistant is not listening');
       r.onresult?.({ resultIndex: 0, results: [Object.assign([{ transcript: text }], { isFinal: true })] });
     };
   }, { mic: opts.mic ?? 'ok', slowVoice: !!opts.slowVoice });
@@ -60,10 +64,20 @@ export async function fakeSpeech(page: Page, opts: { mic?: 'ok' | 'deny' | 'none
 export const assistant = (page: Page) => page.locator('#assistant');
 export const botSays = (page: Page, text: string | RegExp) => expect(assistant(page).locator('.msg--bot').last()).toContainText(text);
 export const listening = (page: Page) => expect(assistant(page).locator('[data-a="mic"]')).toHaveAttribute('data-state', 'listening');
+export const callListening = (page: Page) => expect(page.locator('[data-call-orb]')).toHaveAttribute('data-state', 'listening');
 
+/** The customer speaks (panel). */
 export async function say(page: Page, text: string) {
   await listening(page);
   await page.evaluate((t) => (window as any).__say(t), text);
+  // The turn ends on the pause after speech; wait for it so the next line is a new turn.
+  await expect(assistant(page).locator('[data-a="mic"]')).not.toHaveAttribute('data-state', 'listening');
+}
+/** The customer speaks (tap-and-talk call). */
+export async function sayOnCall(page: Page, text: string) {
+  await callListening(page);
+  await page.evaluate((t) => (window as any).__say(t), text);
+  await expect(page.locator('[data-call-orb]')).not.toHaveAttribute('data-state', 'listening');
 }
 export async function type(page: Page, text: string) {
   const input = assistant(page).locator('[data-a="input"]');

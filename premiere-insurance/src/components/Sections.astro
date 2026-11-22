@@ -1,5 +1,5 @@
 ---
-// Contact, visit and carriers: the shared lower half of every page, as on the live site.
+// Contact, visit and carriers: the shared lower half of every page, laid out as on the live site.
 import Icon from './Icon.astro';
 import ContactForm from './ContactForm.astro';
 import { site, assets, carriers } from '../content/site';
@@ -8,55 +8,59 @@ interface Props { locale: Locale; preselect?: string; heading?: string; }
 const { locale, preselect, heading } = Astro.props;
 const d = t(locale);
 ---
-<section class="section" id="getaquote" aria-labelledby="contact-h">
-  <div class="wrap contact">
-    <div class="stack" style="--gap:18px">
-      <p class="eyebrow">{d.contact.chatHeading}</p>
-      <h2 class="h2" id="contact-h">{heading ?? d.contact.heading}</h2>
-      <p class="lede">{d.contact.intro}</p>
-      <h3 class="h3" style="margin-top:28px">{d.contact.whyHeading}</h3>
-      <ul class="checks">{d.contact.why.map((w) => <li>{w}</li>)}</ul>
-      <p style="color:var(--ink-2)">{d.contact.chatBody}</p>
-      <div class="stack" style="--gap:10px">
+<section class="contact paper" id="getaquote" aria-labelledby="contact-h">
+  <div class="wrap">
+    <div class="contact__head">
+      <h2 class="section-title" id="contact-h">{heading ?? d.contact.heading}</h2>
+      <p class="section-lede">{d.contact.intro}</p>
+    </div>
+    <div class="contact__grid">
+      <div class="contact__side">
+        <h3 class="contact__h3">{d.contact.whyHeading}</h3>
+        <ul class="checks">{d.contact.why.map((w) => <li>{w}</li>)}</ul>
+        <h3 class="contact__h3">{d.contact.chatHeading}</h3>
+        <p class="contact__p">{d.contact.chatBody}</p>
         <a class="btn btn--primary btn--block" href={site.whatsapp} target="_blank" rel="noopener"><Icon name="whatsapp" />{d.contact.whatsapp}</a>
         <button class="btn btn--ink btn--block" type="button" data-open-assistant><Icon name="mic" />{d.hero.talk}</button>
         <a class="btn btn--ghost btn--block" href={`tel:${site.phone.e164}`}><Icon name="phone" />{d.hero.call}</a>
       </div>
+      <ContactForm locale={locale} preselect={preselect} />
     </div>
-    <ContactForm locale={locale} preselect={preselect} />
   </div>
 </section>
 
-<section class="visit section" aria-labelledby="visit-h">
-  <video class="visit__bg" muted loop playsinline preload="none" poster={assets.aerialVideo.poster} data-autoplay aria-hidden="true">
-    <source src={assets.aerialVideo.mp4} type="video/mp4" />
-  </video>
-  <div class="wrap visit__inner">
-    <div class="visit__panel">
-      <h2 class="h2" id="visit-h">{d.visit.heading}</h2>
-      <p style="margin-top:14px">{d.visit.body}</p>
-      <div class="offices">
-        {site.offices.map((o) => (
-          <div class="office">
-            <h3 class="h3" style="font-size:1.05rem">{d.visit.office[o.id]}</h3>
-            <p>{o.street.replace('Unit', d.visit.unit)}, {o.city}, {o.state} {o.zip}</p>
-            <dl>
-              <dt>{d.visit.phone}</dt><dd><a href={`tel:${o.phoneE164}`}>{o.phone}</a></dd>
-              <dt>{d.visit.fax}</dt><dd>{o.fax}</dd>
-            </dl>
-          </div>
-        ))}
+<section class="visit" aria-labelledby="visit-h">
+  <div class="visit__media">
+    <video muted loop playsinline autoplay preload="metadata" poster={assets.aerialVideo.poster} data-autoplay aria-hidden="true">
+      <source src={assets.aerialVideo.mp4} type="video/mp4" />
+    </video>
+  </div>
+  <div class="visit__card paper">
+    <h2 class="section-title" id="visit-h">{d.visit.heading}</h2>
+    <hr />
+    <p>{d.visit.body}</p>
+    <hr />
+    {site.offices.map((o) => (
+      <div class="office">
+        <h3>{d.visit.office[o.id]}:</h3>
+        <p>{o.street.replace('Unit', d.visit.unit)}, {o.city}, {o.state}, {o.zip}</p>
+        <p>{d.visit.phone}: <a href={`tel:${o.phoneE164}`}>{o.phone}</a><br />{d.visit.fax}: {o.fax}</p>
       </div>
-    </div>
+    ))}
+  </div>
+  <div class="visit__map">
     <iframe class="map" src={site.mapEmbed} title={d.visit.mapTitle} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
   </div>
 </section>
 
-<section class="section section--white" aria-labelledby="carriers-h">
-  <div class="wrap center">
-    <h2 class="h2" id="carriers-h">{d.carriers.heading}</h2>
+<section class="carriers-band grain" aria-labelledby="carriers-h">
+  <h2 class="section-title" id="carriers-h">{d.carriers.heading}</h2>
+  <div class="marquee">
     <ul class="carriers">
-      {carriers.map((c) => <li><img src={c.src} alt={c.name} loading="lazy" width="140" height="44" /></li>)}
+      {carriers.map((c) => <li><img src={c.src} alt={c.name} loading="lazy" width="160" height="60" /></li>)}
+    </ul>
+    <ul class="carriers" aria-hidden="true">
+      {carriers.map((c) => <li><img src={c.src} alt="" loading="lazy" width="160" height="60" /></li>)}
     </ul>
   </div>
 </section>
