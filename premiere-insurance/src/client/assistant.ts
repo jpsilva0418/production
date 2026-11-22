@@ -9,7 +9,7 @@
 // Nothing is submitted by the conversation. The customer reviews an editable summary and
 // taps Send; success is shown only when /api/leads confirms the lead is stored.
 
-import { newKey, openLiveChat, sendLead } from './site';
+import { newKey, onSubmit, openLiveChat, sendLead } from './site';
 
 type Locale = 'en' | 'pt' | 'es';
 type Phase = 'intro' | 'chat' | 'review' | 'sent' | 'ended';
@@ -348,8 +348,7 @@ function init(dialog: HTMLDialogElement) {
     scroll();
     if (mode === 'text') card.querySelector<HTMLInputElement>('input')?.focus({ preventScroll: true });
 
-    card.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    onSubmit(card, async () => {
       if (send.disabled) return; // a second tap while the first is still in flight
       const fd = new FormData(card), val = (k: string) => String(fd.get(k) ?? '').trim();
       const inv = S.invalid, errs: Record<string, string> = {};
@@ -445,7 +444,7 @@ function init(dialog: HTMLDialogElement) {
     q('mute-label').textContent = muted ? a().unmute : a().mute;
     if (muted && voiceState === 'speaking') { stopSpeaking(); setVoice('idle'); }
   });
-  composer.addEventListener('submit', (e) => { e.preventDefault(); const v = input.value.trim(); if (!v) return; input.value = ''; sendUser(v); });
+  onSubmit(composer, () => { const v = input.value.trim(); if (!v) return; input.value = ''; sendUser(v); });
   q('human').addEventListener('click', () => { const box = el('div', 'msg msg--sys'); box.append(el('strong', undefined, a().humanTitle)); humanOptions(box); log.append(box); scroll(); });
   q('end').addEventListener('click', end);
   q('close').addEventListener('click', () => dialog.close());

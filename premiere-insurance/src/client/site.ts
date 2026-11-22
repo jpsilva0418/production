@@ -78,6 +78,24 @@ if (!calm && 'IntersectionObserver' in window) {
   $$<HTMLVideoElement>('video[data-autoplay]').forEach((v) => io.observe(v));
 }
 
+/**
+ * Run `handler` when a form is submitted — by its button, by Enter in a field, or by a
+ * native submit event. Embedded viewers that sandbox the page without form permission
+ * never fire `submit`, so the button and the Enter key are handled directly as well.
+ */
+export function onSubmit(form: HTMLFormElement, handler: () => void) {
+  form.addEventListener('submit', (e) => { e.preventDefault(); handler(); });
+  form.addEventListener('click', (e) => {
+    const b = (e.target as Element).closest('button[type=submit], input[type=submit]');
+    if (b && form.contains(b)) { e.preventDefault(); handler(); }
+  });
+  form.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' || e.isComposing) return;
+    const t = e.target as HTMLElement;
+    if (t instanceof HTMLInputElement && !['checkbox', 'radio', 'button', 'submit'].includes(t.type)) { e.preventDefault(); handler(); }
+  });
+}
+
 // ── quote form ─────────────────────────────────────────────────────────────
 export const newKey = () => (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`).replace(/[^A-Za-z0-9_-]/g, '');
 
@@ -120,8 +138,7 @@ $$<HTMLFormElement>('[data-lead-form]').forEach((form) => {
   };
   const show = (kind: 'ok' | 'bad', html: string) => { status.innerHTML = `<div class="notice ${kind === 'ok' ? 'notice--ok' : ''}">${html}</div>`; };
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+  onSubmit(form, async () => {
     if (button.disabled) return; // a second tap while the first is still in flight
     const fd = new FormData(form);
     const val = (k: string) => String(fd.get(k) ?? '').trim();
