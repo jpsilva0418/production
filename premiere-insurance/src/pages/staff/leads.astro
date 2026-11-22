@@ -1,0 +1,105 @@
+---
+// Staff lead inbox — the system of record for every inquiry, and the interim place reps
+// work from until the agency's own CRM is connected (see docs/BACKEND.md).
+// Access: a shared staff token (STAFF_INBOX_TOKEN). Suitable for a small office pilot;
+// per-person sign-in is listed as a launch item.
+import { createHmac, timingSafeEqual } from 'node:crypto';
+import Base from '../../layouts/Base.astro';
+import { runDue } from '../../server/leads/delivery';
+import { runtime } from '../../server/runtime';
+
+export const prerender = false;
+
+const { cfg, store } = runtime();
+const COOKIE = 'pi_staff';
+const same = (a: string, b: string) => a.length === b.length && timingSafeEqual(Buffer.from(a), Buffer.from(b));
+const session = cfg.staffToken ? createHmac('sha256', cfg.staffToken).update('staff-session-v1').digest('hex') : '';
+let authed = !!session && same(Astro.cookies.get(COOKIE)?.value ?? '', session);
+let loginError = false;
+let rateLimited = false;
+
+if (Astro.request.method === 'POST' && cfg.staffToken && store) {
+  const form = await Astro.request.formData();
+  const action = String(form.get('action') ?? '');
+  if (action === 'login') {
+    // Slow down guessing: 10 attempts per 10 minutes per address.
+    let ip = 'unknown';
+    try { ip = Astro.clientAddress; } catch {}
+    if ((await store.hit(`staff-login:${ip}`, 600)) > 10) rateLimited = true;
+    else if (same(String(form.get('token') ?? ''), cfg.staffToken)) {
+      Astro.cookies.set(COOKIE, session, { httpOnly: true, secure: import.meta.env.PROD, sameSite: 'strict', path: '/staff', maxAge: 60 * 60 * 12 });
+      await store.addEvent(null, 'staff', 'inbox_login');
+      return Astro.redirect('/staff/leads');
+    } else loginError = true;
+  } else if (authed) {
+    const id = String(form.get('id') ?? '');
+    if (action === 'logout') { Astro.cookies.delete(COOKIE, { path: '/staff' }); return Astro.redirect('/staff/leads'); }
+    if (/^[0-9a-f-]{36}$/.test(id)) {
+      if (action === 'status' && ['new', 'contacted', 'quoted', 'closed', 'spam'].includes(String(form.get('status')))) await store.setFollowUp(id, String(form.get('status')), 'staff');
+      if (action === 'requeue') { await store.requeue(id, 'staff'); await runDue({ cfg, store }, { leadId: id }); }
+    }
+    return Astro.redirect('/staff/leads');
+  }
+}
+
+const leads = authed && store ? await store.listLeads(100) : [];
+const alt = { en: '/staff/leads', pt: '/staff/leads', es: '/staff/leads' };
+const when = (d: Date) => new Date(d).toLocaleString('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+const SOURCE: Record<string, string> = { web_voice: 'AI voice', web_text: 'AI text', form: 'Form', phone: 'Phone AI' };
+const pill = (s: string) => (s === 'delivered' ? 'pill--ok' : s === 'dead' || s === 'failed' ? 'pill--bad' : s === 'pending' || s === 'held' ? 'pill--warn' : '');
+const emailOn = !!(cfg.resendKey && cfg.fromEmail);
+---
+<Base locale="en" title="Lead inbox | Premiere Insurance" description="Staff lead inbox" alternates={alt} chrome={false} noindex>
+  <div class="wrap staff section" style="padding-block:28px">
+    <h1 class="h2" style="font-size:1.6rem">Lead inbox</h1>
+    {!cfg.staffToken || !store ? (
+      <p class="banner" style="margin-top:16px">The inbox is not configured on this deployment ({!store ? 'no database' : 'no staff token'}).</p>
+    ) : !authed ? (
+      <form method="post" class="form" style="max-width:420px;margin-top:20px">
+        <input type="hidden" name="action" value="login" />
+        <div class="field">
+          <label for="token">Staff access code</label>
+          <input class="input" id="token" name="token" type="password" autocomplete="current-password" required />
+          {loginError && <p class="err" role="alert">That code is not correct.</p>}
+          {rateLimited && <p class="err" role="alert">Too many attempts. Wait ten minutes and try again.</p>}
+        </div>
+        <button class="btn btn--ink" type="submit">Open inbox</button>
+      </form>
+    ) : (
+      <>
+        <p class="banner" style="margin:16px 0">
+          <strong>Interim inbox.</strong> Every inquiry from the website is stored here.
+          {emailOn ? ' Email delivery to the queue’s representatives is ON.' : ' Email delivery is NOT configured, so this inbox is the only place leads arrive.'}
+          {cfg.crmWebhookUrl ? ' CRM delivery is ON.' : ' No CRM is connected.'}
+        </p>
+        <form method="post" style="margin-bottom:16px"><input type="hidden" name="action" value="logout" /><button class="linkish" type="submit">Sign out</button></form>
+        {leads.length === 0 ? <p>No inquiries yet.</p> : (
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Received (ET)</th><th>Customer</th><th>Request</th><th>Queue</th><th>Delivery</th><th>Follow-up</th></tr></thead>
+              <tbody>
+                {leads.map((l) => (
+                  <tr data-ref={l.ref}>
+                    <td>{when(l.created_at)}<br /><strong>{l.ref}</strong><br /><span class="pill">{SOURCE[l.source] ?? l.source}</span> <span class="pill">{l.locale}</span></td>
+                    <td><strong>{l.name}</strong><br />{l.phone && <><a href={`tel:${l.phone}`}>{l.phone}</a><br /></>}{l.email && <><a href={`mailto:${l.email}`}>{l.email}</a><br /></>}
+                      {l.preferred_contact && <span>Prefers {l.preferred_contact}</span>}{l.callback_time && <span> · {l.callback_time}</span>}</td>
+                    <td style="max-width:360px"><strong>{l.categories.join(', ') || '—'}</strong> <span class="pill">{l.line}</span>{l.state && <> · {l.state}</>}{l.urgency && <> · {l.urgency}</>}<br />{l.summary}
+                      {l.transcript && <details><summary>Transcript (shared with consent)</summary>{l.transcript.map((m) => <p><strong>{m.role === 'user' ? 'Customer' : 'Assistant'}:</strong> {m.text}</p>)}</details>}</td>
+                    <td><span class="pill">{l.queue}</span></td>
+                    <td><span class={`pill ${pill(l.delivery_status)}`}>{l.delivery_status}</span>
+                      {l.deliveries.filter((d) => d.channel !== 'inbox').map((d) => <div style="font-size:.82rem;margin-top:4px">{d.channel} → {d.target}: {d.status} ({d.attempts}){d.last_error && <><br /><span class="err" style="font-weight:400">{d.last_error}</span></>}</div>)}
+                      {(l.delivery_status === 'failed' || l.delivery_status === 'dead') && <form method="post" style="margin-top:6px"><input type="hidden" name="action" value="requeue" /><input type="hidden" name="id" value={l.id} /><button class="linkish" type="submit">Retry now</button></form>}</td>
+                    <td><form method="post"><input type="hidden" name="action" value="status" /><input type="hidden" name="id" value={l.id} />
+                      <label class="sr-only" for={`fu-${l.ref}`}>Follow-up status for {l.ref}</label>
+                      <select class="input" id={`fu-${l.ref}`} name="status" style="min-height:40px;padding:4px 8px">{['new', 'contacted', 'quoted', 'closed', 'spam'].map((s) => <option selected={s === l.follow_up_status}>{s}</option>)}</select>
+                      <button class="linkish" type="submit">Save</button></form></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </>
+    )}
+  </div>
+</Base>

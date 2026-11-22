@@ -1,0 +1,69 @@
+---
+import '@fontsource/anton/400.css';
+import '@fontsource/lato/400.css';
+import '@fontsource/lato/700.css';
+import '@fontsource/lato/900.css';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Assistant from '../components/Assistant.astro';
+import { site, assets } from '../content/site';
+import { t, htmlLang, type Locale } from '../i18n';
+
+interface Props { locale: Locale; title: string; description: string; alternates: Record<Locale, string>; chrome?: boolean; noindex?: boolean; }
+const { locale, title, description, alternates, chrome = true, noindex = false } = Astro.props;
+const d = t(locale);
+const abs = (p: string) => new URL(p, site.domain).href;
+
+// Third-party integrations found on the live site are opt-in per deployment, so a demo on
+// another domain never writes into the business's analytics or its real chat inbox.
+const flag = (k: string) => import.meta.env[k] === 'true';
+const gtm = flag('PUBLIC_ENABLE_GTM');
+const callbell = flag('PUBLIC_ENABLE_CALLBELL');
+const demo = import.meta.env.PUBLIC_DEMO_BANNER === 'true';
+const ld = {
+  '@context': 'https://schema.org', '@type': 'InsuranceAgency', name: site.agencyName, url: site.domain, telephone: site.phone.e164, image: assets.touchIcon,
+  address: { '@type': 'PostalAddress', streetAddress: site.offices[0].street, addressLocality: site.offices[0].city, addressRegion: site.offices[0].state, postalCode: site.offices[0].zip, addressCountry: 'US' },
+  openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: site.hours.opens, closes: site.hours.closes }],
+  knowsLanguage: ['en', 'pt-BR', 'es'],
+};
+---
+<!doctype html>
+<html lang={htmlLang[locale]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {(noindex || demo) && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={abs(alternates[locale])} />
+    <link rel="alternate" hreflang="en" href={abs(alternates.en)} />
+    <link rel="alternate" hreflang="pt" href={abs(alternates.pt)} />
+    <link rel="alternate" hreflang="es" href={abs(alternates.es)} />
+    <link rel="alternate" hreflang="x-default" href={abs(alternates.en)} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={abs(alternates[locale])} />
+    <meta property="og:image" content={assets.touchIcon} />
+    <meta name="theme-color" content="#fd6301" />
+    <link rel="icon" href={assets.favicon} type="image/png" />
+    <link rel="apple-touch-icon" href={assets.touchIcon} />
+    <link rel="preconnect" href="https://cdn.prod.website-files.com" crossorigin />
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+    <slot name="head" />
+    {gtm && <script is:inline define:vars={{ id: site.integrations.gtmId }}>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',id);</script>}
+  </head>
+  <body data-locale={locale} data-callbell={callbell ? JSON.stringify(site.integrations.callbell) : undefined}>
+    <a class="skip" href="#main">{d.nav.skip}</a>
+    {demo && <p class="demo-flag"><strong>Demo preview</strong> — built for Premiere Insurance to review. Not the live website.</p>}
+    {chrome && <Header locale={locale} alternates={alternates} />}
+    <main id="main"><slot /></main>
+    {chrome && <Footer locale={locale} alternates={alternates} />}
+    {chrome && <Assistant locale={locale} liveChat={callbell} />}
+    <script>
+      import '../client/site.ts';
+      import '../client/assistant.ts';
+    </script>
+  </body>
+</html>

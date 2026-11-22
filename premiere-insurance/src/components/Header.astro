@@ -1,0 +1,63 @@
+---
+import Icon from './Icon.astro';
+import { site, assets, services } from '../content/site';
+import { t, homePath, pagePath, type Locale } from '../i18n';
+interface Props { locale: Locale; alternates: Record<Locale, string>; }
+const { locale, alternates } = Astro.props;
+const d = t(locale);
+const groups = [
+  { label: d.nav.personal, items: services.filter((s) => s.line === 'personal') },
+  { label: d.nav.commercial, items: services.filter((s) => s.line === 'commercial') },
+];
+---
+<header class="site-header">
+  <div class="wrap site-header__bar">
+    <a class="brand" href={homePath(locale)} aria-label={`${site.name} — ${d.nav.home}`}>
+      <img src={assets.logoDark} alt={site.name} width="74" height="38" />
+    </a>
+
+    <nav class="nav" aria-label="Primary">
+      <a href={homePath(locale)}>{d.nav.home}</a>
+      {groups.map((g) => (
+        <details name="nav">
+          <summary>{g.label}</summary>
+          <ul>{g.items.map((s) => <li><a href={pagePath(locale, s.slug)}>{d.navService[s.slug]}</a></li>)}</ul>
+        </details>
+      ))}
+      {locale === 'es'
+        ? <a href={alternates.es} aria-current="true" lang="es">Español</a>
+        : <a href={alternates.es} lang="es" hreflang="es" data-set-lang="es">Español</a>}
+    </nav>
+
+    {/* The quick switch: always visible, never behind the menu. */}
+    <div class="lang" role="group" aria-label={d.nav.language}>
+      <a href={alternates.pt} lang="pt-BR" hreflang="pt-BR" data-set-lang="pt" aria-current={locale === 'pt' ? 'true' : undefined} aria-label="Português (Brasil)">Português</a>
+      <span class="lang__sep" aria-hidden="true"></span>
+      <a href={alternates.en} lang="en" hreflang="en" data-set-lang="en" aria-current={locale === 'en' ? 'true' : undefined} aria-label="English">English</a>
+    </div>
+
+    <a class="btn btn--primary header-call" href={`tel:${site.phone.e164}`}><Icon name="phone" />{d.nav.call} {site.phone.display}</a>
+    <button class="icon-btn menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle data-label-open={d.nav.menu} data-label-close={d.nav.close}>
+      <span class="sr-only" data-menu-label>{d.nav.menu}</span>
+      <span data-menu-icon="open"><Icon name="menu" /></span>
+      <span data-menu-icon="close" hidden><Icon name="close" /></span>
+    </button>
+  </div>
+
+  <nav class="mobile-menu" id="mobile-menu" aria-label={d.nav.menu} hidden>
+    <ul><li><a href={homePath(locale)}>{d.nav.home}</a></li></ul>
+    {groups.map((g) => (
+      <>
+        <h2>{g.label}</h2>
+        <ul>{g.items.map((s) => <li><a href={pagePath(locale, s.slug)}>{d.navService[s.slug]}</a></li>)}</ul>
+      </>
+    ))}
+    <h2>{d.nav.otherLanguages}</h2>
+    <ul>
+      {locale !== 'es' && <li><a href={alternates.es} lang="es" hreflang="es" data-set-lang="es">Español</a></li>}
+      {locale !== 'pt' && <li><a href={alternates.pt} lang="pt-BR" hreflang="pt-BR" data-set-lang="pt">Português</a></li>}
+      {locale !== 'en' && <li><a href={alternates.en} lang="en" hreflang="en" data-set-lang="en">English</a></li>}
+    </ul>
+    <a class="btn btn--primary btn--block" href={`tel:${site.phone.e164}`}><Icon name="phone" />{d.hero.call}</a>
+  </nav>
+</header>

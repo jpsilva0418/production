@@ -1,0 +1,75 @@
+---
+import { services } from '../content/site';
+import { t, pagePath, type Locale } from '../i18n';
+interface Props { locale: Locale; preselect?: string; idPrefix?: string; }
+const { locale, preselect, idPrefix = 'q' } = Astro.props;
+const d = t(locale);
+const f = d.form;
+const id = (s: string) => `${idPrefix}-${s}`;
+// The live form's checkbox list, including its order.
+const policyOrder = ['life-insurance', 'personal-auto', 'homeowners', 'recreational-vehicle-insurance', 'commercial-auto', 'general-liability', 'workers-compensation', 'commercial-property', 'inland-marine', 'umbrella'];
+const policies = policyOrder.map((slug) => ({ ...services.find((s) => s.slug === slug)!, label: d.cards[slug][0] }));
+---
+<form class="form" novalidate data-lead-form data-locale={locale}
+  data-msg={JSON.stringify({ sending: f.sending, submit: f.submit, successTitle: f.successTitle, successBody: f.successBody, errorGeneric: f.errorGeneric, errorOffline: f.errorOffline, errorRate: f.errorRate, errorUnavailable: f.errorUnavailable, invalid: f.invalid })}>
+  <div class="field">
+    <label for={id('name')}>{f.name}</label>
+    <input class="input" id={id('name')} name="name" type="text" autocomplete="name" maxlength="120" placeholder={f.namePh} required aria-describedby={id('name-err')} />
+    <p class="err" id={id('name-err')} data-err="name" hidden></p>
+  </div>
+  <div class="field">
+    <label for={id('phone')}>{f.phone}</label>
+    <input class="input" id={id('phone')} name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="40" placeholder={f.phonePh} aria-describedby={id('phone-err')} />
+    <p class="err" id={id('phone-err')} data-err="phone" hidden></p>
+  </div>
+  <div class="field">
+    <label for={id('email')}>{f.email}</label>
+    <input class="input" id={id('email')} name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" placeholder={f.emailPh} aria-describedby={id('email-err')} />
+    <p class="err" id={id('email-err')} data-err="email" hidden></p>
+    <p class="err" data-err="contact" hidden></p>
+  </div>
+  <div class="field">
+    <label for={id('preferred')}>{f.preferred}</label>
+    <select class="input" id={id('preferred')} name="preferredContact">
+      {Object.entries(f.preferredOptions).map(([v, label]) => <option value={v}>{label}</option>)}
+    </select>
+  </div>
+  <div class="field">
+    <label for={id('address')}>{f.address} <span class="opt">({f.optional})</span></label>
+    <input class="input" id={id('address')} name="address" type="text" autocomplete="street-address" maxlength="200" placeholder={f.addressPh} />
+  </div>
+  <div class="row">
+    <div class="field">
+      <label for={id('city')}>{f.city}</label>
+      <input class="input" id={id('city')} name="city" type="text" autocomplete="address-level2" maxlength="80" />
+    </div>
+    <div class="field">
+      <label for={id('state')}>{f.state}</label>
+      <select class="input" id={id('state')} name="state" autocomplete="address-level1"><option>MA</option><option>NH</option></select>
+    </div>
+    <div class="field">
+      <label for={id('zip')}>{f.zip}</label>
+      <input class="input" id={id('zip')} name="zip" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="10" placeholder="01824" />
+    </div>
+  </div>
+  <fieldset class="fieldset" aria-describedby={id('cat-err')}>
+    <legend>{f.policies}</legend>
+    <div class="choices">
+      {policies.map((p) => (
+        <label class="choice"><input type="checkbox" name="categories" value={p.category} checked={preselect === p.slug} />{p.label}</label>
+      ))}
+    </div>
+    <p class="err" id={id('cat-err')} data-err="categories" hidden></p>
+  </fieldset>
+  <div class="field">
+    <label for={id('message')}>{f.message} <span class="opt">({f.optional})</span></label>
+    <textarea class="input" id={id('message')} name="summary" maxlength="1000" rows="3"></textarea>
+  </div>
+  <label class="consent">
+    <input type="checkbox" name="smsConsent" />
+    <span>{f.smsConsent} <a href={pagePath(locale, 'privacy-policy')}>{f.privacyLink}</a> {f.smsConsentTail}</span>
+  </label>
+  <div class="hp" aria-hidden="true"><label>Company website<input type="text" name="company_website" tabindex="-1" autocomplete="off" /></label></div>
+  <div role="status" aria-live="polite" data-form-status></div>
+  <button class="btn btn--primary btn--block" type="submit">{f.submit}</button>
+</form>

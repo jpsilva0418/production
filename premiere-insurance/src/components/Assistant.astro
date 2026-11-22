@@ -1,0 +1,67 @@
+---
+// The contact dock, the "reach us" sheet and the AI assistant dialog.
+// One entry point for every channel, so there are never two competing chat widgets.
+import Icon from './Icon.astro';
+import { site, services } from '../content/site';
+import { t, dict, locales, localeName, speechLang, type Locale } from '../i18n';
+interface Props { locale: Locale; liveChat: boolean; }
+const { locale, liveChat } = Astro.props;
+const d = t(locale);
+// Every locale's assistant strings ship with the page: the customer can switch language mid-conversation.
+const strings = Object.fromEntries(locales.map((l) => [l, { a: dict[l].assistant, cats: Object.fromEntries(services.map((s) => [s.category, dict[l].cards[s.slug][0]])), pref: dict[l].form.preferredOptions, call: dict[l].hero.call, whatsapp: dict[l].contact.whatsapp, form: dict[l].dock.form, livechat: dict[l].dock.livechat, invalid: dict[l].form.invalid, close: dict[l].nav.close, name: localeName[l], speech: speechLang[l] }]));
+---
+<div class="dock" data-dock>
+  <a class="dock__call" href={`tel:${site.phone.e164}`}><Icon name="phone" /><span>{d.nav.call}</span></a>
+  <button class="dock__ai" type="button" data-open-assistant><Icon name="mic" /><span>{d.assistant.badge}</span></button>
+  <button type="button" data-open-reach aria-haspopup="dialog"><Icon name="more" /><span>{d.dock.open}</span></button>
+</div>
+
+<dialog class="sheet" id="reach" aria-labelledby="reach-h">
+  <div class="sheet__head">
+    <h2 id="reach-h">{d.dock.title}</h2>
+    <button class="icon-btn" type="button" data-close-dialog aria-label={d.nav.close}><Icon name="close" /></button>
+  </div>
+  <ul class="options">
+    <li><button class="option" type="button" data-open-assistant><Icon name="mic" /><span><strong>{d.dock.ai}</strong><span>{d.dock.aiSub}</span></span></button></li>
+    <li><a class="option" href={`tel:${site.phone.e164}`}><Icon name="phone" /><span><strong>{d.dock.call}</strong><span>{d.dock.callSub}</span></span></a></li>
+    <li><a class="option" href={site.whatsapp} target="_blank" rel="noopener"><Icon name="whatsapp" /><span><strong>{d.dock.whatsapp}</strong><span>{d.dock.whatsappSub}</span></span></a></li>
+    {liveChat && <li><button class="option" type="button" data-open-livechat><Icon name="chat" /><span><strong>{d.dock.livechat}</strong><span>{d.dock.livechatSub}</span></span></button></li>}
+    <li><a class="option" href="#getaquote" data-close-dialog><Icon name="form" /><span><strong>{d.dock.form}</strong><span>{d.dock.formSub}</span></span></a></li>
+  </ul>
+</dialog>
+
+<dialog class="assistant" id="assistant" aria-labelledby="assistant-h" data-locale={locale} data-live-chat={liveChat ? '1' : undefined}>
+  <div class="assistant__head">
+    <span class="mark" style="width:40px;height:40px" aria-hidden="true"><i></i><i></i></span>
+    <h2 id="assistant-h"><small data-t="badge">{d.assistant.badge}</small><span data-t="title">{d.assistant.title}</span></h2>
+    <label class="sr-only" for="assistant-lang" data-t="switchTo">{d.assistant.switchTo}</label>
+    <select id="assistant-lang" data-a="lang">
+      {locales.map((l) => <option value={l} selected={l === locale}>{localeName[l]}</option>)}
+    </select>
+    <button class="icon-btn" type="button" data-a="close" aria-label={d.nav.close}><Icon name="close" /></button>
+  </div>
+
+  <div class="assistant__body" data-a="log" role="log" aria-live="polite" aria-relevant="additions" tabindex="0"></div>
+
+  <div class="stage" data-a="stage" hidden>
+    <div class="voice" data-a="voice">
+      <p class="voice__status" data-a="status" role="status"></p>
+      <button class="mic" type="button" data-a="mic" data-state="idle"><b></b><i></i><Icon name="mic" /><span class="sr-only" data-a="mic-label"></span></button>
+      <div class="voice__tools">
+        <button class="icon-btn" type="button" data-a="mute" aria-pressed="false"><span data-a="mute-on"><Icon name="volume" /></span><span data-a="mute-off" hidden><Icon name="mute" /></span><span class="sr-only" data-a="mute-label"></span></button>
+      </div>
+    </div>
+    <form class="composer" data-a="composer">
+      <label class="sr-only" for="assistant-input" data-t="inputPh">{d.assistant.inputPh}</label>
+      <input class="input" id="assistant-input" data-a="input" type="text" autocomplete="off" maxlength="600" enterkeyhint="send" />
+      <button class="btn btn--ink" type="submit"><Icon name="send" /><span class="sr-only" data-t="send">{d.assistant.send}</span></button>
+    </form>
+    <div class="stage__links">
+      <button type="button" data-a="human" data-t="human">{d.assistant.human}</button>
+      <button type="button" data-a="end" data-t="end">{d.assistant.end}</button>
+    </div>
+  </div>
+
+  <script type="application/json" data-a="strings" set:html={JSON.stringify(strings).replace(/</g, '\\u003c')}></script>
+  <script type="application/json" data-a="site" set:html={JSON.stringify({ tel: `tel:${site.phone.e164}`, whatsapp: site.whatsapp })}></script>
+</dialog>

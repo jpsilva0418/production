@@ -1,0 +1,86 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import Sections from '../../components/Sections.astro';
+import servicesJson from '../../content/services.json';
+import privacyJson from '../../content/privacy.json';
+import { site, services } from '../../content/site';
+import { t, locales, pagePath, type Locale } from '../../i18n';
+
+export function getStaticPaths() {
+  return locales.flatMap((lang) => [...services.map((s) => s.slug), 'privacy-policy'].map((slug) => ({ params: { lang, slug } })));
+}
+type Block = { type: 'lead' | 'p'; text: string } | { type: 'list'; items: { term?: string; text: string }[] };
+type Page = { title: string; description: string; poster: string | null; video: string | null; h1: string; summary: string; chapter: string; sections: { title: string; blocks: Block[] }[] };
+
+const locale = Astro.params.lang as Locale;
+const slug = Astro.params.slug as string;
+const d = t(locale);
+const alternates = { en: pagePath('en', slug), pt: pagePath('pt', slug), es: pagePath('es', slug) };
+const isLegal = slug === 'privacy-policy';
+const page = isLegal ? null : (servicesJson as unknown as Record<string, Record<Locale, Page>>)[slug][locale];
+// The policy is the business's own legal text, reproduced verbatim (including where the live
+// site has not translated it). It changes only with their approval.
+const legal = isLegal ? (privacyJson as unknown as Record<Locale, { title: string; h1: string; intro: string[]; blocks: { t: 'h' | 'sub' | 'li' | 'p'; x: string }[] }>)[locale] : null;
+const def = services.find((s) => s.slug === slug);
+const anchor = (i: number) => `s${i + 1}`;
+---
+{page && def && (
+  <Base locale={locale} title={page.title} description={page.description} alternates={alternates}>
+    <section class="page-hero on-dark">
+      {page.video
+        ? <video muted loop playsinline preload="none" poster={page.poster ?? undefined} data-autoplay aria-hidden="true"><source src={page.video} type="video/mp4" /></video>
+        : <img src={def.image} alt="" />}
+      <div class="wrap page-hero__inner">
+        <p class="eyebrow" style="color:var(--orange-soft)">{def.line === 'personal' ? d.nav.personal : d.nav.commercial}</p>
+        <h1 class="display">{page.h1}</h1>
+        <p>{page.summary}</p>
+      </div>
+    </section>
+
+    <div class="cta-band on-orange">
+      <div class="wrap cta-band__inner">
+        <p style="font-weight:900;font-size:1.1rem">{d.journeys.talk.text}</p>
+        <div class="actions">
+          <button class="btn btn--ink" type="button" data-open-assistant data-topic={d.cards[slug][0]}><Icon name="mic" />{d.hero.talk}</button>
+          <a class="btn btn--ghost" href="#getaquote">{d.service.cta}</a>
+        </div>
+      </div>
+    </div>
+
+    <section class="section section--white">
+      <div class="wrap article">
+        <nav class="toc" aria-labelledby="toc-h">
+          <h2 class="eyebrow" id="toc-h">{d.service.onThisPage}</h2>
+          <ol>{page.sections.map((s, i) => <li><a href={`#${anchor(i)}`}>{s.title}</a></li>)}</ol>
+        </nav>
+        <div class="article__body">
+          <h2 class="h2" style="margin-bottom:32px">{page.chapter}</h2>
+          {page.sections.map((s, i) => (
+            <section id={anchor(i)} aria-labelledby={`${anchor(i)}-h`}>
+              <h3 id={`${anchor(i)}-h`}>{s.title}</h3>
+              {s.blocks.map((b) => b.type === 'list'
+                ? <ul>{b.items.map((it) => <li>{it.term && <strong>{it.term}: </strong>}{it.text}</li>)}</ul>
+                : <p class={b.type === 'lead' ? 'lead' : undefined}>{b.text}</p>)}
+            </section>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <Sections locale={locale} preselect={slug} heading={d.service.ctaHeading} />
+  </Base>
+)}
+
+{legal && (
+  <Base locale={locale} title={`${legal.title} | ${site.name}`} description={legal.intro[0]?.slice(0, 155) ?? legal.title} alternates={alternates}>
+    <section class="section section--white">
+      <div class="wrap legal" style="max-width:820px">
+        <h1 class="h2">{legal.h1}</h1>
+        {legal.intro.map((p) => <p>{p}</p>)}
+        {legal.blocks.map((b) => b.t === 'h' ? <h2>{b.x}</h2> : b.t === 'sub' ? <h3>{b.x}</h3> : b.t === 'li' ? <ul><li>{b.x}</li></ul> : <p>{b.x}</p>)}
+      </div>
+    </section>
+    <Sections locale={locale} />
+  </Base>
+)}
